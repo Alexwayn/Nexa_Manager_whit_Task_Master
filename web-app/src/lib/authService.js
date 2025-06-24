@@ -219,35 +219,8 @@ export class AuthService {
     }
   }
 
-  /**
-   * Initiates social login (OAuth) with a specified provider.
-   * @param {string} provider - The OAuth provider (e.g., 'google', 'github').
-   * @returns {Promise<Object>} An object containing the social login result.
-   */
-  static async socialLogin(provider) {
-    try {
-      if (!provider) {
-        throw new Error('Provider is required.');
-      }
-
-      const { data, error } = await supabase.auth.signInWithOAuth({
-        provider: provider,
-        options: {
-          redirectTo: `${window.location.origin}/dashboard`,
-        },
-      });
-
-      if (error) throw error;
-
-      return {
-        success: true,
-        data: data,
-      };
-    } catch (error) {
-      Logger.error('Social login error:', error);
-      throw new Error('An error occurred during social login.');
-    }
-  }
+  // Note: Social login (OAuth) is now handled by Clerk
+  // The socialLogin method has been removed as OAuth is managed by Clerk's SignIn component
 
   /**
    * Updates the current user's profile information.

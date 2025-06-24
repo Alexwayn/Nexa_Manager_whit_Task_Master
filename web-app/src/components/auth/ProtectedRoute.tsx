@@ -32,6 +32,20 @@ export default function ProtectedRoute({ children }: ProtectedRouteProps) {
     );
   }
 
-  // User is authenticated, render protected content
+  // Check if user has completed onboarding (except when already on onboarding page)
+  const hasCompletedOnboarding = user.publicMetadata?.onboardingComplete === true;
+  const isOnOnboardingPage = location.pathname === '/onboarding';
+  
+  // If user hasn't completed onboarding and is not on onboarding page, redirect to onboarding
+  if (!hasCompletedOnboarding && !isOnOnboardingPage) {
+    return <Navigate to='/onboarding' replace />;
+  }
+  
+  // If user has completed onboarding but is on onboarding page, redirect to dashboard
+  if (hasCompletedOnboarding && isOnOnboardingPage) {
+    return <Navigate to='/dashboard' replace />;
+  }
+
+  // User is authenticated and onboarding flow is properly handled, render protected content
   return <>{children}</>;
 }

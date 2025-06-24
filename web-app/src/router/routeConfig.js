@@ -37,6 +37,8 @@ const TaxAndPDFTest = lazy(() => import('@pages/TaxAndPDFTest'));
 
 // Auth components - keep these immediately loaded as they're critical for app initialization
 import Login from '@pages/Login';
+import Register from '@pages/Register';
+import Onboarding from '@pages/Onboarding';
 import ResetPassword from '@pages/ResetPassword';
 import RSVPPage from '@pages/RSVPPage';
 
@@ -49,6 +51,11 @@ export const publicRoutes = [
     path: '/login',
     element: Login,
     name: 'Login',
+  },
+  {
+    path: '/register',
+    element: Register,
+    name: 'Register',
   },
   {
     path: '/reset-password',
@@ -104,6 +111,12 @@ export const mainRoutes = [
     element: Dashboard,
     name: 'Dashboard',
     category: 'main',
+  },
+  {
+    path: '/onboarding',
+    element: Onboarding,
+    name: 'Onboarding',
+    category: 'account',
   },
   {
     path: '/clients',
