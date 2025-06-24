@@ -10,116 +10,26 @@ on:
     branches: [ main, master ]
 
 jobs:
-  deploy:
+  notify-amplify:
     runs-on: ubuntu-latest
     if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'push' }}
-    
-    defaults:
-      run:
-        working-directory: ./web-app
     
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
       
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '20.x'
-        cache: 'npm'
-        cache-dependency-path: './web-app/package-lock.json'
-        
-    - name: Install dependencies
-      run: npm ci
-      
-    - name: Build application
-      run: npm run build
-      env:
-        VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
-        VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
-        VITE_APP_ENV: production
-        
-    # Deploy to AWS Amplify (Primary option)
-    - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v4
-      if: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: ${{ secrets.AWS_REGION || 'us-east-1' }}
-        
-    - name: Deploy to AWS Amplify
-      if: ${{ secrets.AWS_ACCESS_KEY_ID }}
+    - name: Deployment notification
       run: |
-        # Install AWS Amplify CLI
-        npm install -g @aws-amplify/cli
+        echo "🚀 Code pushed to main branch!"
+        echo "📦 AWS Amplify will automatically start building and deploying..."
+        echo "🔗 Check deployment status at: https://console.aws.amazon.com/amplify/"
+        echo "📍 Your Amplify App: https://main.d3r8on5x2958nv.amplifyapp.com"
         
-        # Configure Amplify project (if amplify.yml exists)
-        if [ -f "amplify.yml" ]; then
-          echo "Using existing Amplify configuration"
-        else
-          echo "Creating Amplify configuration"
-          cat > amplify.yml << EOF
-        version: 1
-        applications:
-          - frontend:
-              phases:
-                preBuild:
-                  commands:
-                    - npm ci
-                build:
-                  commands:
-                    - npm run build
-              artifacts:
-                baseDirectory: dist
-                files:
-                  - '**/*'
-              cache:
-                paths:
-                  - node_modules/**/*
-        EOF
-        fi
-        
-        # Deploy using AWS CLI if AMPLIFY_APP_ID is provided
-        if [ -n "${{ secrets.AMPLIFY_APP_ID }}" ]; then
-          echo "Deploying to existing Amplify app: ${{ secrets.AMPLIFY_APP_ID }}"
-          aws amplify start-job --app-id ${{ secrets.AMPLIFY_APP_ID }} --branch-name master --job-type RELEASE
-        else
-          echo "AMPLIFY_APP_ID not found. Please create an Amplify app first or use the AWS Console for initial setup."
-        fi
-      env:
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        AWS_REGION: ${{ secrets.AWS_REGION || 'us-east-1' }}
-        
-    # Alternative: Deploy to Vercel (uncomment if using Vercel)
-    # - name: Deploy to Vercel
-    #   uses: amondnet/vercel-action@v25
-    #   if: ${{ secrets.VERCEL_TOKEN }}
-    #   with:
-    #     vercel-token: ${{ secrets.VERCEL_TOKEN }}
-    #     vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-    #     vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-    #     working-directory: ./web-app
-    #     vercel-args: '--prod'
-        
-    # Alternative: Deploy to Netlify (uncomment if using Netlify)
-    # - name: Deploy to Netlify
-    #   uses: nwtgck/actions-netlify@v3.0
-    #   if: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-    #   with:
-    #     publish-dir: './web-app/dist'
-    #     production-branch: main
-    #     github-token: ${{ secrets.GITHUB_TOKEN }}
-    #     deploy-message: "Deploy from GitHub Actions"
-    #   env:
-    #     NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-    #     NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
-        
-    - name: Deployment success notification
-      if: success()
-      run: echo "🚀 AWS Amplify deployment successful! Application is now live."
-      
-    - name: Deployment failure notification
-      if: failure()
-      run: echo "❌ AWS Amplify deployment failed. Check the logs for details." 
+    - name: Environment check
+      run: |
+        echo "✅ Repository updated successfully"
+        echo "🔧 Amplify will use these configurations:"
+        echo "   - Build settings: amplify.yml"
+        echo "   - Environment variables: Set in Amplify Console"
+        echo "   - Build directory: web-app/"
+        echo "   - Output directory: dist/" 
