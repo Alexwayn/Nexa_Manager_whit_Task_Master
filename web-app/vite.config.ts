@@ -18,6 +18,7 @@ export default defineConfig({
       '@styles': path.resolve(__dirname, './src/styles'),
       '@i18n': path.resolve(__dirname, './src/i18n'),
       '@types': path.resolve(__dirname, './src/types'),
+      '@router': path.resolve(__dirname, './src/router'),
     },
   },
   esbuild: {
