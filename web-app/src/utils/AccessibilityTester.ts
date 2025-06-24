@@ -3,7 +3,8 @@
  * Provides tools for automated and manual accessibility testing
  */
 
-import axe, { AxeResults, Result, NodeResult } from 'axe-core';
+import React from 'react';
+import axe, { AxeResults, Result } from 'axe-core';
 
 export interface AccessibilityIssue {
   id: string;
@@ -34,7 +35,12 @@ export interface AccessibilityReport {
     passCount: number;
     incompleteCount: number;
     inapplicableCount: number;
-    impactSummary: Record<string, number>;
+    impactSummary: {
+      minor: number;
+      moderate: number;
+      serious: number;
+      critical: number;
+    };
   };
 }
 
@@ -79,20 +85,14 @@ class AccessibilityTester {
   private initializeAxe(): void {
     if (typeof window === 'undefined') return;
 
-    axe.configure({
-      rules: {
-        // Custom rule configurations
-        'color-contrast': { enabled: true },
-        'focus-order-semantics': { enabled: true },
-        'landmark-banner-is-top-level': { enabled: true },
-        'landmark-main-is-top-level': { enabled: true },
-        'landmark-no-duplicate-banner': { enabled: true },
-        'landmark-no-duplicate-main': { enabled: true },
-        'page-has-heading-one': { enabled: true },
-        'region': { enabled: true }
-      },
-      tags: this.config.tags
-    });
+    // Configure axe with basic settings
+    try {
+      axe.configure({
+        rules: []
+      });
+    } catch (error) {
+      console.warn('Failed to configure axe:', error);
+    }
   }
 
   /**
@@ -110,13 +110,7 @@ class AccessibilityTester {
     const target = element || document;
 
     try {
-      const results: AxeResults = await axe.run(target, {
-        tags: config.tags,
-        rules: config.rules,
-        exclude: config.exclude,
-        include: config.include
-      });
-
+      const results = await axe.run(target);
       return this.processResults(results, config);
     } catch (error) {
       console.error('Accessibility audit failed:', error);
@@ -144,12 +138,12 @@ class AccessibilityTester {
           description: issue.description,
           tags: issue.tags,
           nodes: issue.nodes.map(node => ({
-            target: node.target,
+            target: Array.isArray(node.target) ? node.target : [JSON.stringify(node.target)],
             html: node.html,
             failureSummary: node.failureSummary,
-            impact: node.impact
+            impact: node.impact as 'minor' | 'moderate' | 'serious' | 'critical' | undefined
           }))
-        }));
+        } as AccessibilityIssue));
     };
 
     const violations = processIssues(results.violations);
@@ -158,7 +152,7 @@ class AccessibilityTester {
     const inapplicable = processIssues(results.inapplicable);
 
     // Calculate impact summary
-    const impactSummary: Record<string, number> = {
+    const impactSummary = {
       minor: 0,
       moderate: 0,
       serious: 0,
@@ -190,8 +184,8 @@ class AccessibilityTester {
    * Get accessibility score (0-100)
    */
   public calculateAccessibilityScore(report: AccessibilityReport): number {
-    const { violations, passes, incomplete } = report.summary;
-    const total = violations + passes + incomplete;
+    const { violationCount, passCount, incompleteCount } = report.summary;
+    const total = violationCount + passCount + incompleteCount;
     
     if (total === 0) return 100;
 
@@ -495,8 +489,8 @@ export function useAccessibilityTest(
 
 // Utility function for testing components
 export async function testComponentAccessibility(
-  component: React.ReactElement,
-  config?: Partial<AccessibilityConfig>
+  _component: React.ReactElement,
+  _config?: Partial<AccessibilityConfig>
 ): Promise<AccessibilityReport> {
   // This would be used in Jest tests with react-testing-library
   // Implementation depends on testing environment

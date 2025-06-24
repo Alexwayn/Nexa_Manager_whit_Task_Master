@@ -70,7 +70,7 @@ class PerformanceMonitor {
         for (const entry of list.getEntries()) {
           this.recordMetric({
             name: entry.name,
-            value: entry.value || 0,
+            value: (entry as any).value || entry.duration || 0,
             timestamp: Date.now(),
             tags: { type: 'web-vital' }
           });
@@ -380,7 +380,7 @@ class PerformanceMonitor {
 export const performanceMonitor = PerformanceMonitor.getInstance();
 
 // Utility decorators and HOCs for easy integration
-export function measurePerformance(name: string, tags?: Record<string, string>) {
+export function measurePerformance(_name: string, _tags?: Record<string, string>) {
   return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
     const originalMethod = descriptor.value;
     
@@ -388,7 +388,7 @@ export function measurePerformance(name: string, tags?: Record<string, string>) 
       return performanceMonitor.measureFunction(
         `${target.constructor.name}.${propertyKey}`,
         () => originalMethod.apply(this, args),
-        tags
+        _tags
       );
     };
     
@@ -396,7 +396,7 @@ export function measurePerformance(name: string, tags?: Record<string, string>) 
   };
 }
 
-export function measureAsyncPerformance(name: string, tags?: Record<string, string>) {
+export function measureAsyncPerformance(_name: string, _tags?: Record<string, string>) {
   return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
     const originalMethod = descriptor.value;
     
@@ -404,7 +404,7 @@ export function measureAsyncPerformance(name: string, tags?: Record<string, stri
       return performanceMonitor.measureAsyncFunction(
         `${target.constructor.name}.${propertyKey}`,
         () => originalMethod.apply(this, args),
-        tags
+        _tags
       );
     };
     

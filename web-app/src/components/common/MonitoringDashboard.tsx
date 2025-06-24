@@ -31,7 +31,12 @@ interface SystemMetrics {
   accessibility: {
     score: number;
     violationCount: number;
-    impactSummary: Record<string, number>;
+    impactSummary: {
+      minor: number;
+      moderate: number;
+      serious: number;
+      critical: number;
+    };
   };
 }
 

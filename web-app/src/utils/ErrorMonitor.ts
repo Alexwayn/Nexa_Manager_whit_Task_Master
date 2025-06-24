@@ -3,6 +3,8 @@
  * Captures, categorizes, and reports application errors
  */
 
+import React from 'react';
+
 export interface ErrorReport {
   id: string;
   message: string;
@@ -102,10 +104,12 @@ class ErrorMonitor {
         stack: event.error?.stack,
         type: ErrorType.JAVASCRIPT,
         severity: ErrorSeverity.HIGH,
-        filename: event.filename,
-        lineno: event.lineno,
-        colno: event.colno,
-        error: event.error
+        additionalData: { 
+          filename: event.filename,
+          lineno: event.lineno,
+          colno: event.colno,
+          error: event.error?.toString()
+        }
       });
     });
 
@@ -116,7 +120,7 @@ class ErrorMonitor {
         stack: event.reason?.stack,
         type: ErrorType.PROMISE_REJECTION,
         severity: ErrorSeverity.HIGH,
-        reason: event.reason
+        additionalData: { reason: event.reason }
       });
     });
 
@@ -126,7 +130,7 @@ class ErrorMonitor {
         message: 'Network connection lost',
         type: ErrorType.NETWORK,
         severity: ErrorSeverity.MEDIUM,
-        networkStatus: 'offline'
+        additionalData: { networkStatus: 'offline' }
       });
     });
   }
@@ -345,7 +349,7 @@ class ErrorMonitor {
    * Determine error severity based on error data
    */
   private determineSeverity(errorData: Partial<ErrorReport>): ErrorSeverity {
-    if (errorData.type === ErrorType.CRITICAL) return ErrorSeverity.CRITICAL;
+    if (errorData.severity === ErrorSeverity.CRITICAL) return ErrorSeverity.CRITICAL;
     if (errorData.type === ErrorType.AUTHENTICATION) return ErrorSeverity.HIGH;
     if (errorData.type === ErrorType.API && errorData.additionalData?.status >= 500) {
       return ErrorSeverity.HIGH;
