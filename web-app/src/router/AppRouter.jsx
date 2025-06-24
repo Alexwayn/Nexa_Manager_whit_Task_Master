@@ -18,12 +18,31 @@ const RouteLoader = () => (
 );
 
 /**
- * Enhanced RouteGroup component with Suspense support for lazy loading
+ * Helper function to render public routes (no lazy loading needed)
  */
-const RouteGroup = ({ routes, useLayout = false, useProtection = false }) => {
-  const renderRoute = route => {
+const renderPublicRoutes = () => {
+  return publicRoutes.map(route => {
     const RouteComponent = route.element;
+    return (
+      <Route
+        key={route.path}
+        path={route.path}
+        element={
+          <ErrorBoundary>
+            <RouteComponent />
+          </ErrorBoundary>
+        }
+      />
+    );
+  });
+};
 
+/**
+ * Helper function to render test routes (with lazy loading)
+ */
+const renderTestRoutes = () => {
+  return testRoutes.map(route => {
+    const RouteComponent = route.element;
     return (
       <Route
         key={route.path}
@@ -37,65 +56,29 @@ const RouteGroup = ({ routes, useLayout = false, useProtection = false }) => {
         }
       />
     );
-  };
+  });
+};
 
-  if (useLayout && useProtection) {
-    // Protected routes with layout
+/**
+ * Helper function to render protected routes with layout (with lazy loading)
+ */
+const renderProtectedRoutes = () => {
+  return protectedRoutes.map(route => {
+    const RouteComponent = route.element;
     return (
       <Route
+        key={route.path}
+        path={route.path}
         element={
-          <ProtectedRoute>
-            <Layout />
-          </ProtectedRoute>
-        }
-      >
-        {routes.map(renderRoute)}
-
-        {/* Default routes for protected area */}
-        <Route
-          index
-          element={
-            <ErrorBoundary>
-              <Suspense fallback={<RouteLoader />}>
-                <defaultRoutes.index />
-              </Suspense>
-            </ErrorBoundary>
-          }
-        />
-        <Route
-          path='*'
-          element={
-            <ErrorBoundary>
-              <Suspense fallback={<RouteLoader />}>
-                <defaultRoutes.fallback />
-              </Suspense>
-            </ErrorBoundary>
-          }
-        />
-      </Route>
-    );
-  }
-
-  // Regular routes without layout (public routes don't need Suspense since they're not lazy)
-  if (routes === publicRoutes) {
-    return routes.map(route => {
-      const RouteComponent = route.element;
-      return (
-        <Route
-          key={route.path}
-          path={route.path}
-          element={
-            <ErrorBoundary>
+          <ErrorBoundary>
+            <Suspense fallback={<RouteLoader />}>
               <RouteComponent />
-            </ErrorBoundary>
-          }
-        />
-      );
-    });
-  }
-
-  // Test routes and other lazy-loaded routes
-  return routes.map(renderRoute);
+            </Suspense>
+          </ErrorBoundary>
+        }
+      />
+    );
+  });
 };
 
 /**
@@ -106,13 +89,43 @@ const AppRouter = () => {
     <ErrorBoundary>
       <Routes>
         {/* Public routes - no authentication required, no lazy loading */}
-        <RouteGroup routes={publicRoutes} />
+        {renderPublicRoutes()}
 
         {/* Test routes - lazy loaded for better performance */}
-        <RouteGroup routes={testRoutes} />
+        {renderTestRoutes()}
 
         {/* Protected routes with Layout - all lazy loaded */}
-        <RouteGroup routes={protectedRoutes} useLayout={true} useProtection={true} />
+        <Route
+          element={
+            <ProtectedRoute>
+              <Layout />
+            </ProtectedRoute>
+          }
+        >
+          {renderProtectedRoutes()}
+
+          {/* Default routes for protected area */}
+          <Route
+            index
+            element={
+              <ErrorBoundary>
+                <Suspense fallback={<RouteLoader />}>
+                  <defaultRoutes.index />
+                </Suspense>
+              </ErrorBoundary>
+            }
+          />
+          <Route
+            path='*'
+            element={
+              <ErrorBoundary>
+                <Suspense fallback={<RouteLoader />}>
+                  <defaultRoutes.fallback />
+                </Suspense>
+              </ErrorBoundary>
+            }
+          />
+        </Route>
       </Routes>
     </ErrorBoundary>
   );
