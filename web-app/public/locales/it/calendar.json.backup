@@ -1,0 +1,231 @@
+{
+  "title": "Calendario",
+  "events": "Eventi",
+  "searchPlaceholder": "Cerca eventi...",
+  "newEvent": "Nuovo Evento",
+  "createEvent": "Crea Evento",
+  "editEvent": "Modifica Evento",
+  "deleteEvent": "Elimina Evento",
+  "eventDetails": "Dettagli Evento",
+  "upcoming": "Prossimi Eventi",
+  "viewAll": "Visualizza Tutto",
+  "quickActions": "Azioni Rapide",
+  "schedule": "Programma",
+  "tasks": "Attività",
+  "meetings": "Riunioni",
+  "filters": "Filtri",
+  "myCalendars": "I Miei Calendari",
+  "eventTypes": "Tipi di Evento",
+  "teamMembers": "Membri del Team",
+  "personal": "Personale",
+  "work": "Lavoro",
+  "family": "Famiglia",
+  "organizer": "Organizzatore",
+  "attendees": "Partecipanti",
+  "description": "Descrizione",
+  "location": "Posizione",
+  "date": "Data",
+  "time": "Ora",
+  "duration": "Durata",
+  "eventTitle": "Titolo Evento",
+  "eventTitlePlaceholder": "Inserisci il titolo dell'evento...",
+  "locationPlaceholder": "Inserisci la posizione o il link della riunione...",
+  "descriptionPlaceholder": "Aggiungi descrizione dell'evento...",
+  "cancel": "Annulla",
+  "edit": "Modifica",
+  "delete": "Elimina",
+  "share": "Condividi",
+  "save": "Salva",
+  "more": "più",
+  "hour": "ora",
+  "hours": "ore",
+  "minute": "minuto",
+  "minutes": "minuti",
+  "allDay": "Tutto il giorno",
+  "repeat": "Ripeti",
+  "reminder": "Promemoria",
+  "categories": {
+    "meetings": "Riunioni",
+    "presentations": "Presentazioni",
+    "invoices": "Fatture",
+    "calls": "Chiamate",
+    "reviews": "Revisioni"
+  },
+  "views": {
+    "month": "Mese",
+    "week": "Settimana",
+    "day": "Giorno",
+    "list": "Lista"
+  },
+  "days": {
+    "sunday": "Domenica",
+    "monday": "Lunedì",
+    "tuesday": "Martedì",
+    "wednesday": "Mercoledì",
+    "thursday": "Giovedì",
+    "friday": "Venerdì",
+    "saturday": "Sabato"
+  },
+  "daysShort": {
+    "sunday": "Dom",
+    "monday": "Lun",
+    "tuesday": "Mar",
+    "wednesday": "Mer",
+    "thursday": "Gio",
+    "friday": "Ven",
+    "saturday": "Sab"
+  },
+  "daysMin": {
+    "sunday": "D",
+    "monday": "L",
+    "tuesday": "M",
+    "wednesday": "M",
+    "thursday": "G",
+    "friday": "V",
+    "saturday": "S"
+  },
+  "months": {
+    "january": "Gennaio",
+    "february": "Febbraio",
+    "march": "Marzo",
+    "april": "Aprile",
+    "may": "Maggio",
+    "june": "Giugno",
+    "july": "Luglio",
+    "august": "Agosto",
+    "september": "Settembre",
+    "october": "Ottobre",
+    "november": "Novembre",
+    "december": "Dicembre"
+  },
+  "monthsShort": {
+    "january": "Gen",
+    "february": "Feb",
+    "march": "Mar",
+    "april": "Apr",
+    "may": "Mag",
+    "june": "Giu",
+    "july": "Lug",
+    "august": "Ago",
+    "september": "Set",
+    "october": "Ott",
+    "november": "Nov",
+    "december": "Dic"
+  },
+  "today": "Oggi",
+  "allDayEvent": "Evento di un'intera giornata",
+  "addParticipants": "Aggiungi partecipanti",
+  "starts": "Inizia",
+  "ends": "Finisce",
+  "eventType": "Tipo di evento",
+  "sampleData": {
+    "selectedEvent": {
+      "title": "Revisione Trimestrale",
+      "type": "Riunione di Revisione",
+      "date": "15 settembre 2023",
+      "time": "11:00 - 12:30 (1,5 ore)",
+      "location": "Sala Conferenze B",
+      "organizer": "John Doe (Tu)",
+      "participants": ["Jane Smith", "Mike Johnson", "Sarah Williams"],
+      "description": "Riunione trimestrale di revisione delle performance per discutere i risultati del Q3 e pianificare le iniziative del Q4. Si prega di portare i rapporti del proprio dipartimento e di essere pronti a presentare le metriche chiave."
+    },
+    "events": {
+      "clientMeeting": "Incontro con Cliente",
+      "projectPresentation": "Presentazione Progetto",
+      "invoiceDue": "Fattura in Scadenza - Soylent Corp",
+      "teamMeeting": "Riunione del Team",
+      "clientCall": "Chiamata con Cliente",
+      "quarterlyReview": "Revisione Trimestrale"
+    },
+    "upcomingEvents": [
+      {
+        "title": "Incontro con Cliente",
+        "company": "Acme Corporation",
+        "location": "Virtuale",
+        "duration": "1 ora"
+      },
+      {
+        "title": "Presentazione Progetto",
+        "company": "Globex Industries",
+        "location": "Ufficio",
+        "duration": "2 ore"
+      },
+      {
+        "title": "Fattura in Scadenza",
+        "company": "Soylent Corp",
+        "location": "N/D",
+        "duration": "Tutto il giorno"
+      },
+      {
+        "title": "Riunione del Team",
+        "company": "Interno",
+        "location": "Sala Conferenze A",
+        "duration": "30 minuti"
+      }
+    ],
+    "filters": {
+      "meetings": "Riunioni",
+      "presentations": "Presentazioni",
+      "invoices": "Fatture",
+      "calls": "Chiamate",
+      "reviews": "Revisioni"
+    },
+    "calendars": {
+      "work": "Lavoro",
+      "personal": "Personale",
+      "team": "Team"
+    },
+    "eventCategories": {
+      "meetings": "Riunioni",
+      "presentations": "Presentazioni",
+      "deadlines": "Scadenze",
+      "other": "Altro"
+    },
+    "teamMembers": [
+      "John Doe",
+      "Jane Smith",
+      "Mike Johnson",
+      "Sarah Williams"
+    ]
+  },
+  "eventModal": {
+    "titleRequired": "Il titolo è obbligatorio",
+    "dateRequired": "La data è obbligatoria",
+    "endTimeAfterStartTime": "L'ora di fine deve essere successiva all'ora di inizio.",
+    "errorSaving": "Si è verificato un errore durante il salvataggio dell'evento.",
+    "titleLabel": "Titolo Evento",
+    "dateLabel": "Data",
+    "startTimeLabel": "Ora Inizio",
+    "endTimeLabel": "Ora Fine",
+    "locationLabel": "Luogo",
+    "locationPlaceholder": "Es. Ufficio, link Zoom",
+    "typeLabel": "Tipo Evento",
+    "priorityLabel": "Priorità",
+    "clientLabel": "Cliente Associato",
+    "selectClient": "Seleziona un cliente",
+    "notesLabel": "Note",
+    "notesPlaceholder": "Aggiungi note pertinenti...",
+    "saveButton": "Salva Evento",
+    "savingButton": "Salvataggio...",
+    "cancelButton": "Annulla"
+  },
+  "pageDescription": "Gestisci i tuoi eventi e appuntamenti",
+  "deleteConfirmation": "Sei sicuro di voler eliminare questo evento?",
+  "deleteError": "Errore nell'eliminazione dell'evento",
+  "allTypes": "Tutti i tipi",
+  "types": {
+    "appointment": "Appuntamento",
+    "quote": "Preventivo",
+    "invoice": "Fattura",
+    "income": "Entrata",
+    "expense": "Spesa",
+    "reminder": "Promemoria"
+  },
+  "allPriorities": "Tutte le priorità",
+  "priorities": {
+    "high": "Alta",
+    "medium": "Media",
+    "low": "Bassa"
+  },
+  "clearFilters": "Pulisci Filtri"
+} 

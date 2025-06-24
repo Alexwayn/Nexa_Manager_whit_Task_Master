@@ -1,0 +1,194 @@
+{
+  "title": "Calendario",
+  "events": "Eventi",
+  "searchPlaceholder": "Cerca eventi...",
+  "newEvent": "Nuovo Evento",
+  "createEvent": "Crea Evento",
+  "editEvent": "Modifica Evento",
+  "deleteEvent": "Elimina Evento",
+  "eventDetails": "Dettagli Evento",
+  "upcoming": "Prossimi Eventi",
+  "viewAll": "Visualizza Tutto",
+  "quickActions": "Azioni Rapide",
+  "schedule": "Programma",
+  "tasks": "Attività",
+  "meetings": "Riunioni",
+  "filters": "Filtri",
+  "myCalendars": "I Miei Calendari",
+  "eventTypes": "Tipi di Evento",
+  "teamMembers": "Membri del Team",
+  "personal": "Personale",
+  "work": "Lavoro",
+  "family": "Famiglia",
+  "organizer": "Organizzatore",
+  "attendees": "Partecipanti",
+  "description": "Descrizione",
+  "location": "Posizione",
+  "date": "Data",
+  "time": "Ora",
+  "duration": "Durata",
+  "eventTitle": "Titolo Evento",
+  "eventTitlePlaceholder": "Inserisci il titolo dell'evento...",
+  "locationPlaceholder": "Inserisci la posizione o il link della riunione...",
+  "descriptionPlaceholder": "Aggiungi descrizione dell'evento...",
+  "cancel": "Annulla",
+  "edit": "Modifica",
+  "delete": "Elimina",
+  "share": "Condividi",
+  "save": "Salva",
+  "more": "più",
+  "hour": "ora",
+  "hours": "ore",
+  "minute": "minuto",
+  "minutes": "minuti",
+  "allDay": "Tutto il giorno",
+  "allDayEvent": "Evento tutto il giorno",
+  "repeat": "Ripeti",
+  "reminder": "Promemoria",
+  "today": "Oggi",
+  "eventType": "Tipo di evento",
+  "addParticipants": "Aggiungi Partecipanti",
+  "categories": {
+    "meetings": "Riunioni",
+    "presentations": "Presentazioni",
+    "invoices": "Fatture",
+    "calls": "Chiamate",
+    "reviews": "Revisioni"
+  },
+  "views": {
+    "month": "Mese",
+    "week": "Settimana",
+    "day": "Giorno",
+    "list": "Lista"
+  },
+  "days": {
+    "sunday": "Domenica",
+    "monday": "Lunedì",
+    "tuesday": "Martedì",
+    "wednesday": "Mercoledì",
+    "thursday": "Giovedì",
+    "friday": "Venerdì",
+    "saturday": "Sabato"
+  },
+  "daysShort": {
+    "sunday": "Dom",
+    "monday": "Lun",
+    "tuesday": "Mar",
+    "wednesday": "Mer",
+    "thursday": "Gio",
+    "friday": "Ven",
+    "saturday": "Sab"
+  },
+  "daysMin": {
+    "sunday": "D",
+    "monday": "L",
+    "tuesday": "M",
+    "wednesday": "M",
+    "thursday": "G",
+    "friday": "V",
+    "saturday": "S"
+  },
+  "months": {
+    "january": "Gennaio",
+    "february": "Febbraio",
+    "march": "Marzo",
+    "april": "Aprile",
+    "may": "Maggio",
+    "june": "Giugno",
+    "july": "Luglio",
+    "august": "Agosto",
+    "september": "Settembre",
+    "october": "Ottobre",
+    "november": "Novembre",
+    "december": "Dicembre"
+  },
+  "monthsShort": {
+    
+    "dateRequired": "La data è obbligatoria",
+    "endTimeAfterStartTime": "L'ora di fine deve essere successiva all'ora di inizio.",
+    "errorSaving": "Si è verificato un errore durante il salvataggio dell'evento.",
+    "titleLabel": "Titolo Evento",
+    "dateLabel": "Data",
+    "startTimeLabel": "Ora Inizio",
+    "endTimeLabel": "Ora Fine",
+    "locationLabel": "Luogo",
+    "typeLabel": "Tipo Evento",
+    "priorityLabel": "Priorità",
+    "clientLabel": "Cliente Associato",
+    "selectClient": "Seleziona un cliente",
+    "notesLabel": "Note",
+    "notesPlaceholder": "Aggiungi note pertinenti...",
+    "saveButton": "Salva Evento",
+    "savingButton": "Salvataggio...",
+    "cancelButton": "Annulla"
+  },
+  "pageDescription": "Gestisci i tuoi eventi e appuntamenti",
+  "deleteConfirmation": "Sei sicuro di voler eliminare questo evento?",
+  "deleteError": "Errore nell'eliminazione dell'evento",
+  "allTypes": "Tutti i tipi",
+  "types": {
+    "appointment": "Appuntamento",
+    "quote": "Preventivo",
+    "invoice": "Fattura",
+    "income": "Entrata",
+    "expense": "Spesa",
+    "medium": "Media",
+    "low": "Bassa"
+  },
+  "clearFilters": "Pulisci Filtri",
+  "sampleData": {
+    "selectedEvent": {
+      "title": "Riunione Cliente",
+      "type": "Riunione",
+      "date": "Oggi",
+      "time": "10:00",
+      "location": "Sala Conferenze",
+      "organizer": "Mario Rossi",
+      "participants": ["Giulia Bianchi", "Luca Verdi"],
+      "description": "Discussione sui requisiti del progetto e pianificazione delle prossime fasi."
+    },
+    "events": {
+      "clientMeeting": "Riunione Cliente",
+      "projectPresentation": "Presentazione Progetto",
+      "invoiceDue": "Scadenza Fattura",
+      "teamMeeting": "Riunione Team",
+      "clientCall": "Chiamata Cliente",
+      "quarterlyReview": "Revisione Trimestrale"
+    },
+    "upcomingEvents": [
+      {
+        "title": "Riunione Cliente",
+        "company": "Acme Corp",
+        "time": "10:00",
+        "location": "Sala A",
+        "duration": "1h"
+      },
+      {
+        "title": "Presentazione Progetto",
+        "company": "Tech Solutions",
+        "time": "14:00",
+        "location": "Online",
+        "duration": "2h"
+      }
+    ],
+    "filters": {
+      "meetings": "Riunioni",
+      "presentations": "Presentazioni",
+      "invoices": "Fatture",
+      "calls": "Chiamate",
+      "reviews": "Revisioni"
+    },
+    "calendars": {
+      "personal": "Personale",
+      "work": "Lavoro",
+      "family": "Famiglia"
+    },
+    "eventCategories": {
+      "meetings": "Riunioni",
+      "presentations": "Presentazioni",
+      "invoices": "Fatture",
+      "calls": "Chiamate",
+      "reviews": "Revisioni"
+    }
+  }
+}

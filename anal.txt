@@ -1,0 +1,392 @@
+FIXED ISSUES LOG - Reports Page
+=====================================
+
+FIXED:
+✅ TrendingDownIcon import error - Changed to ArrowTrendingDownIcon
+✅ TrendingUpIcon import error - Changed to ArrowTrendingUpIcon
+✅ Missing Italian translations for reports namespace
+✅ Added all missing translation keys for:
+   - tabs (financials, invoices, clients, quotes, analytics, custom, clientsAdvanced)
+   - categories (invoices, quotes, clients, analytics)
+   - cards (all report card titles and descriptions)
+   - financials section (loading, error messages, metrics, etc.)
+   - invoices, quotes, clients, analytics sections
+✅ Documents page function hoisting issue fixed
+✅ Documents page translation namespace issue fixed
+
+REMAINING ISSUES:
+⚠️  incomeService.getIncomeByPeriod method does not exist (method should be getIncomes)
+⚠️  Browser cache may be loading old version of Reports component
+
+NOTES:
+- Current Reports.jsx file is clean and doesn't have service imports
+- Error seems to be coming from cached version or different file
+- All translation keys have been added to it/reports.json
+- Heroicons imports have been corrected
+
+=====================================
+
+ORIGINAL ERROR LOG:
+ Download the React DevTools for a better development experience: https://react.dev/link/react-devtools
+ [INFO] SUPABASE_URL: https://bmumnhsdiiryyxpjrggs.supabase.co
+ [INFO] SUPABASE_ANON_KEY: eyJhbGci...
+ GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.160Z #_acquireLock begin -1
+ GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.161Z #onAuthStateChange() registered callback with id 70ec2ff7-89ba-4685-af95-56a27333428c
+ [INFO] Supabase client available at window.supabase for debugging
+ GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.208Z #onAuthStateChange() registered callback with id bfe353eb-a699-4c59-8d5d-22e0a13b734b
+ GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.208Z #unsubscribe() state change callback with id removed bfe353eb-a699-4c59-8d5d-22e0a13b734b
+ GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.208Z #onAuthStateChange() registered callback with id 049f7a49-2ce7-45e4-88c4-6bcb8dd1318f
+ GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.210Z #_acquireLock lock acquired for storage key sb-bmumnhsdiiryyxpjrggs-auth-token
+ GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.210Z #_recoverAndRefresh() begin
+ GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.210Z #_recoverAndRefresh() session from storage Object
+ GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.210Z #_recoverAndRefresh() session has not expired with margin of 90000s
+ GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.210Z #_notifyAllSubscribers(SIGNED_IN) begin Object broadcast = true
+ [INFO] Auth state changed SIGNED_IN
+ GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.210Z #_notifyAllSubscribers(SIGNED_IN) end
+ GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.210Z #_recoverAndRefresh() end
+ GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.210Z #_handleVisibilityChange()
+ GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.210Z #_onVisibilityChanged(true) visibilityState visible
+ GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.210Z #_stopAutoRefresh()
+ GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.210Z #_startAutoRefresh()
+ GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.210Z #_initialize() end
+ GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.210Z #_acquireLock lock released for storage key sb-bmumnhsdiiryyxpjrggs-auth-token
+ GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.210Z #_acquireLock end
+ GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.210Z #_acquireLock begin -1
+ GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.210Z #_acquireLock begin -1
+ GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.210Z #_acquireLock begin -1
+ GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.210Z #_acquireLock begin -1
+ GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.210Z #_acquireLock begin -1
+ GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.285Z #_autoRefreshTokenTick() begin
+ GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.285Z #_acquireLock begin 0
+ i18next::backendConnector: loaded namespace common for language it Object
+ i18next::backendConnector: loaded namespace calendar for language it Object
+ i18next::backendConnector: loaded namespace navigation for language it Object
+ i18next::backendConnector: loaded namespace forms for language it Object
+ i18next::backendConnector: loaded namespace buttons for language it Object
+ i18next::backendConnector: loaded namespace receipts for language it Object
+ i18next::backendConnector: loaded namespace inventory for language it Object
+ i18next::backendConnector: loaded namespace documentation for language it Object
+ i18next::backendConnector: loaded namespace dashboard for language it Object
+ i18next::backendConnector: loaded namespace invoices for language it Object
+ GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.288Z #_acquireLock lock acquired for storage key sb-bmumnhsdiiryyxpjrggs-auth-token
+ GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.288Z #_useSession begin
+ GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.289Z #__loadSession() begin
+ GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.289Z #getSession() session from storage Object
+ GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.289Z #__loadSession() session has not expired expires_at 1750692290
+ GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.289Z #__loadSession() end
+ GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.289Z INITIAL_SESSION callback id 70ec2ff7-89ba-4685-af95-56a27333428c session Object
+ GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.289Z #_acquireLock lock released for storage key sb-bmumnhsdiiryyxpjrggs-auth-token
+ GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.289Z #_useSession end
+ GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.289Z #_acquireLock end
+ GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.289Z #_acquireLock end
+ GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.289Z auto refresh token tick lock not available
+ GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.291Z #_acquireLock lock acquired for storage key sb-bmumnhsdiiryyxpjrggs-auth-token
+ GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.291Z #_useSession begin
+ GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.291Z #__loadSession() begin
+ GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.291Z #getSession() session from storage Object
+ GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.291Z #__loadSession() session has not expired expires_at 1750692290
+ GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.291Z #__loadSession() end
+ GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.291Z #_useSession end
+ GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.291Z #_acquireLock lock released for storage key sb-bmumnhsdiiryyxpjrggs-auth-token
+ GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.291Z #_acquireLock end
+ i18next: hasLoadedNamespace: i18next was not initialized Array(2)
+output @ i18next.js:207
+ i18next::translator: key "recentFiles.q2Report" for languages "it, en" won't get resolved as namespace "documents" was not yet loaded This means something IS WRONG in your setup. You access the t function before i18next.init / i18next.loadNamespace / i18next.changeLanguage was done. Wait for the callback or Promise to resolve before accessing it!!!
+output @ i18next.js:207
+ i18next::translator: missingKey it documents recentFiles.q2Report recentFiles.q2Report
+ i18next::translator: missingKey it documents time.daysAgo time.daysAgo
+ i18next::translator: missingKey it documents recentFiles.meetingNotes recentFiles.meetingNotes
+ i18next::translator: missingKey it documents time.daysAgo time.daysAgo
+ i18next::translator: missingKey it documents recentFiles.marketingStrategy recentFiles.marketingStrategy
+ i18next::translator: missingKey it documents time.weekAgo time.weekAgo
+ i18next::translator: missingKey it documents recentFiles.budgetAnalysis recentFiles.budgetAnalysis
+ i18next::translator: missingKey it documents time.today time.today
+ i18next::translator: missingKey it documents folders.clientDocs folders.clientDocs
+ i18next::translator: missingKey it documents time.daysAgo time.daysAgo
+ i18next::translator: missingKey it documents folders.financialReports folders.financialReports
+ i18next::translator: missingKey it documents time.weekAgo time.weekAgo
+ i18next::translator: missingKey it documents folders.marketingMaterials folders.marketingMaterials
+ i18next::translator: missingKey it documents time.daysAgo time.daysAgo
+ i18next::translator: missingKey it documents folders.projectResources folders.projectResources
+ i18next::translator: missingKey it documents time.today time.today
+ i18next::translator: missingKey it documents allFilesTable.annualReport allFilesTable.annualReport
+ i18next::translator: missingKey it documents time.today time.today
+ i18next::translator: missingKey it documents allFilesTable.clientPresentation allFilesTable.clientPresentation
+ i18next::translator: missingKey it documents time.yesterday time.yesterday
+ i18next::translator: missingKey it documents allFilesTable.projectTimeline allFilesTable.projectTimeline
+ i18next::translator: missingKey it documents allFilesTable.contractTemplate allFilesTable.contractTemplate
+ i18next::translator: missingKey it documents allFilesTable.marketingAssets allFilesTable.marketingAssets
+ i18next::translator: missingKey it documents allFilesTable.productPhotos allFilesTable.productPhotos
+ i18next::translator: missingKey it documents loading loading
+ i18next::translator: missingKey it documents recentFiles.q2Report recentFiles.q2Report
+ i18next::translator: missingKey it documents time.daysAgo time.daysAgo
+ i18next::translator: missingKey it documents recentFiles.meetingNotes recentFiles.meetingNotes
+ i18next::translator: missingKey it documents time.daysAgo time.daysAgo
+ i18next::translator: missingKey it documents recentFiles.marketingStrategy recentFiles.marketingStrategy
+ i18next::translator: missingKey it documents time.weekAgo time.weekAgo
+ i18next::translator: missingKey it documents recentFiles.budgetAnalysis recentFiles.budgetAnalysis
+ i18next::translator: missingKey it documents time.today time.today
+ i18next::translator: missingKey it documents folders.clientDocs folders.clientDocs
+ i18next::translator: missingKey it documents time.daysAgo time.daysAgo
+ i18next::translator: missingKey it documents folders.financialReports folders.financialReports
+ i18next::translator: missingKey it documents time.weekAgo time.weekAgo
+ i18next::translator: missingKey it documents folders.marketingMaterials folders.marketingMaterials
+ i18next::translator: missingKey it documents time.daysAgo time.daysAgo
+ i18next::translator: missingKey it documents folders.projectResources folders.projectResources
+ i18next::translator: missingKey it documents time.today time.today
+ i18next::translator: missingKey it documents allFilesTable.annualReport allFilesTable.annualReport
+ i18next::translator: missingKey it documents time.today time.today
+ i18next::translator: missingKey it documents allFilesTable.clientPresentation allFilesTable.clientPresentation
+ i18next::translator: missingKey it documents time.yesterday time.yesterday
+ i18next::translator: missingKey it documents allFilesTable.projectTimeline allFilesTable.projectTimeline
+ i18next::translator: missingKey it documents allFilesTable.contractTemplate allFilesTable.contractTemplate
+ i18next::translator: missingKey it documents allFilesTable.marketingAssets allFilesTable.marketingAssets
+ i18next::translator: missingKey it documents allFilesTable.productPhotos allFilesTable.productPhotos
+ i18next::translator: missingKey it documents loading loading
+ [ERROR] Error loading documents: 
+error @ Logger.ts:36
+ [ERROR] Error loading documents: 
+error @ Logger.ts:36
+ i18next::translator: missingKey it documents recentFiles.q2Report recentFiles.q2Report
+ i18next::translator: missingKey it documents time.daysAgo time.daysAgo
+ i18next::translator: missingKey it documents recentFiles.meetingNotes recentFiles.meetingNotes
+ i18next::translator: missingKey it documents time.daysAgo time.daysAgo
+ i18next::translator: missingKey it documents recentFiles.marketingStrategy recentFiles.marketingStrategy
+ i18next::translator: missingKey it documents time.weekAgo time.weekAgo
+ i18next::translator: missingKey it documents recentFiles.budgetAnalysis recentFiles.budgetAnalysis
+ i18next::translator: missingKey it documents time.today time.today
+ i18next::translator: missingKey it documents folders.clientDocs folders.clientDocs
+ i18next::translator: missingKey it documents time.daysAgo time.daysAgo
+ i18next::translator: missingKey it documents folders.financialReports folders.financialReports
+ i18next::translator: missingKey it documents time.weekAgo time.weekAgo
+ i18next::translator: missingKey it documents folders.marketingMaterials folders.marketingMaterials
+ i18next::translator: missingKey it documents time.daysAgo time.daysAgo
+ i18next::translator: missingKey it documents folders.projectResources folders.projectResources
+ i18next::translator: missingKey it documents time.today time.today
+ i18next::translator: missingKey it documents allFilesTable.annualReport allFilesTable.annualReport
+ i18next::translator: missingKey it documents time.today time.today
+ i18next::translator: missingKey it documents allFilesTable.clientPresentation allFilesTable.clientPresentation
+ i18next::translator: missingKey it documents time.yesterday time.yesterday
+ i18next::translator: missingKey it documents allFilesTable.projectTimeline allFilesTable.projectTimeline
+ i18next::translator: missingKey it documents allFilesTable.contractTemplate allFilesTable.contractTemplate
+ i18next::translator: missingKey it documents allFilesTable.marketingAssets allFilesTable.marketingAssets
+ i18next::translator: missingKey it documents allFilesTable.productPhotos allFilesTable.productPhotos
+ i18next::translator: missingKey it documents title title
+ i18next::translator: missingKey it documents title title
+ i18next::translator: missingKey it documents upload upload
+ i18next::translator: missingKey it documents newFolder newFolder
+ i18next::translator: missingKey it documents searchPlaceholder searchPlaceholder
+ i18next::translator: missingKey it documents filterAll filterAll
+ i18next::translator: missingKey it documents filterDocuments filterDocuments
+ i18next::translator: missingKey it documents filterFolders filterFolders
+ i18next::translator: missingKey it documents tabs.allFiles tabs.allFiles
+ i18next::translator: missingKey it documents tabs.recent tabs.recent
+ i18next::translator: missingKey it documents allFilesTable.name allFilesTable.name
+ i18next::translator: missingKey it documents allFilesTable.owner allFilesTable.owner
+ i18next::translator: missingKey it documents allFilesTable.lastModified allFilesTable.lastModified
+ i18next::translator: missingKey it documents allFilesTable.fileSize allFilesTable.fileSize
+ i18next::translator: missingKey it documents pagination.previous pagination.previous
+ i18next::translator: missingKey it documents pagination.next pagination.next
+ i18next: hasLoadedNamespace: i18next was not initialized Array(2)
+output @ i18next.js:207
+ i18next::translator: key "footer.company.description" for languages "it, en" won't get resolved as namespace "common" was not yet loaded This means something IS WRONG in your setup. You access the t function before i18next.init / i18next.loadNamespace / i18next.changeLanguage was done. Wait for the callback or Promise to resolve before accessing it!!!
+output @ i18next.js:207
+ i18next::translator: missingKey it documents recentFiles.q2Report recentFiles.q2Report
+ i18next::translator: missingKey it documents time.daysAgo time.daysAgo
+ i18next::translator: missingKey it documents recentFiles.meetingNotes recentFiles.meetingNotes
+ i18next::translator: missingKey it documents time.daysAgo time.daysAgo
+ i18next::translator: missingKey it documents recentFiles.marketingStrategy recentFiles.marketingStrategy
+ i18next::translator: missingKey it documents time.weekAgo time.weekAgo
+ i18next::translator: missingKey it documents recentFiles.budgetAnalysis recentFiles.budgetAnalysis
+ i18next::translator: missingKey it documents time.today time.today
+ i18next::translator: missingKey it documents folders.clientDocs folders.clientDocs
+ i18next::translator: missingKey it documents time.daysAgo time.daysAgo
+ i18next::translator: missingKey it documents folders.financialReports folders.financialReports
+ i18next::translator: missingKey it documents time.weekAgo time.weekAgo
+ i18next::translator: missingKey it documents folders.marketingMaterials folders.marketingMaterials
+ i18next::translator: missingKey it documents time.daysAgo time.daysAgo
+ i18next::translator: missingKey it documents folders.projectResources folders.projectResources
+ i18next::translator: missingKey it documents time.today time.today
+ i18next::translator: missingKey it documents allFilesTable.annualReport allFilesTable.annualReport
+ i18next::translator: missingKey it documents time.today time.today
+ i18next::translator: missingKey it documents allFilesTable.clientPresentation allFilesTable.clientPresentation
+ i18next::translator: missingKey it documents time.yesterday time.yesterday
+ i18next::translator: missingKey it documents allFilesTable.projectTimeline allFilesTable.projectTimeline
+ i18next::translator: missingKey it documents allFilesTable.contractTemplate allFilesTable.contractTemplate
+ i18next::translator: missingKey it documents allFilesTable.marketingAssets allFilesTable.marketingAssets
+ i18next::translator: missingKey it documents allFilesTable.productPhotos allFilesTable.productPhotos
+ i18next::translator: missingKey it documents title title
+ i18next::translator: missingKey it documents title title
+ i18next::translator: missingKey it documents upload upload
+ i18next::translator: missingKey it documents newFolder newFolder
+ i18next::translator: missingKey it documents searchPlaceholder searchPlaceholder
+ i18next::translator: missingKey it documents filterAll filterAll
+ i18next::translator: missingKey it documents filterDocuments filterDocuments
+ i18next::translator: missingKey it documents filterFolders filterFolders
+ i18next::translator: missingKey it documents tabs.allFiles tabs.allFiles
+ i18next::translator: missingKey it documents tabs.recent tabs.recent
+ i18next::translator: missingKey it documents allFilesTable.name allFilesTable.name
+ i18next::translator: missingKey it documents allFilesTable.owner allFilesTable.owner
+ i18next::translator: missingKey it documents allFilesTable.lastModified allFilesTable.lastModified
+ i18next::translator: missingKey it documents allFilesTable.fileSize allFilesTable.fileSize
+ i18next::translator: missingKey it documents pagination.previous pagination.previous
+ i18next::translator: missingKey it documents pagination.next pagination.next
+ GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.320Z #_acquireLock begin -1
+ GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.320Z #_acquireLock begin -1
+ i18next::backendConnector: loaded namespace clients for language it Object
+ GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.347Z #_acquireLock lock acquired for storage key sb-bmumnhsdiiryyxpjrggs-auth-token
+ GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.347Z #_useSession begin
+ GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.347Z #__loadSession() begin
+ GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.347Z #getSession() session from storage Object
+ GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.347Z #__loadSession() session has not expired expires_at 1750692290
+ GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.347Z #__loadSession() end
+ GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.347Z INITIAL_SESSION callback id bfe353eb-a699-4c59-8d5d-22e0a13b734b session Object
+ GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.347Z #_acquireLock lock released for storage key sb-bmumnhsdiiryyxpjrggs-auth-token
+ GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.347Z #_useSession end
+ GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.347Z #_acquireLock end
+ i18next::backendConnector: loaded namespace quotes for language it Object
+ i18next::backendConnector: loaded namespace reports for language it Object
+ i18next::backendConnector: loaded namespace settings for language it Object
+ i18next::backendConnector: loaded namespace analytics for language it Object
+ i18next::backendConnector: loaded namespace transactions for language it Object
+ i18next::backendConnector: loaded namespace documents for language it Object
+ i18next::backendConnector: loaded namespace email for language it Object
+ i18next::backendConnector: loaded namespace scan for language it Object
+ i18next::backendConnector: loaded namespace voice for language it Object
+ i18next::backendConnector: loaded namespace common for language en Object
+ GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.350Z #_acquireLock lock acquired for storage key sb-bmumnhsdiiryyxpjrggs-auth-token
+ GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.350Z #_useSession begin
+ GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.350Z #__loadSession() begin
+ GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.350Z #getSession() session from storage Object
+ GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.350Z #__loadSession() session has not expired expires_at 1750692290
+ GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.350Z #__loadSession() end
+ GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.350Z #_useSession end
+@supabase_supabase-js.js?v=caab7718:5117 GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.350Z #_acquireLock lock released for storage key sb-bmumnhsdiiryyxpjrggs-auth-token
+@supabase_supabase-js.js?v=caab7718:5117 GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.350Z #_acquireLock end
+@supabase_supabase-js.js?v=caab7718:5117 GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.355Z #_acquireLock begin -1
+i18next.js?v=caab7718:207 i18next::backendConnector: loaded namespace calendar for language en Object
+@supabase_supabase-js.js?v=caab7718:5117 GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.356Z #_acquireLock lock acquired for storage key sb-bmumnhsdiiryyxpjrggs-auth-token
+@supabase_supabase-js.js?v=caab7718:5117 GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.356Z #_useSession begin
+@supabase_supabase-js.js?v=caab7718:5117 GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.356Z #__loadSession() begin
+@supabase_supabase-js.js?v=caab7718:5117 GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.356Z #getSession() session from storage Object
+@supabase_supabase-js.js?v=caab7718:5117 GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.356Z #__loadSession() session has not expired expires_at 1750692290
+@supabase_supabase-js.js?v=caab7718:5117 GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.356Z #__loadSession() end
+Logger.ts:76 [INFO] Auth state changed INITIAL_SESSION
+@supabase_supabase-js.js?v=caab7718:5117 GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.356Z INITIAL_SESSION callback id 049f7a49-2ce7-45e4-88c4-6bcb8dd1318f session Object
+@supabase_supabase-js.js?v=caab7718:5117 GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.356Z #_acquireLock lock released for storage key sb-bmumnhsdiiryyxpjrggs-auth-token
+@supabase_supabase-js.js?v=caab7718:5117 GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.356Z #_useSession end
+@supabase_supabase-js.js?v=caab7718:5117 GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.356Z #_acquireLock end
+i18next.js?v=caab7718:207 i18next::backendConnector: loaded namespace navigation for language en Object
+i18next.js?v=caab7718:207 i18next::backendConnector: loaded namespace forms for language en Object
+i18next.js?v=caab7718:207 i18next::backendConnector: loaded namespace buttons for language en Object
+i18next.js?v=caab7718:207 i18next::backendConnector: loaded namespace receipts for language en Object
+i18next.js?v=caab7718:207 i18next::backendConnector: loaded namespace inventory for language en Object
+i18next.js?v=caab7718:207 i18next::backendConnector: loaded namespace documentation for language en Object
+i18next.js?v=caab7718:207 i18next::backendConnector: loaded namespace dashboard for language en Object
+i18next.js?v=caab7718:207 i18next::backendConnector: loaded namespace invoices for language en Object
+i18next.js?v=caab7718:207 i18next::backendConnector: loaded namespace clients for language en Object
+@supabase_supabase-js.js?v=caab7718:5117 GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.361Z #_acquireLock begin -1
+@supabase_supabase-js.js?v=caab7718:5117 GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.362Z #_acquireLock lock acquired for storage key sb-bmumnhsdiiryyxpjrggs-auth-token
+@supabase_supabase-js.js?v=caab7718:5117 GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.362Z #_useSession begin
+@supabase_supabase-js.js?v=caab7718:5117 GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.362Z #__loadSession() begin
+@supabase_supabase-js.js?v=caab7718:5117 GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.362Z #getSession() session from storage Object
+@supabase_supabase-js.js?v=caab7718:5117 GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.362Z #__loadSession() session has not expired expires_at 1750692290
+@supabase_supabase-js.js?v=caab7718:5117 GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.362Z #__loadSession() end
+@supabase_supabase-js.js?v=caab7718:5117 GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.362Z #_useSession end
+@supabase_supabase-js.js?v=caab7718:5117 GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.362Z #_acquireLock lock released for storage key sb-bmumnhsdiiryyxpjrggs-auth-token
+@supabase_supabase-js.js?v=caab7718:5117 GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.362Z #_acquireLock end
+i18next.js?v=caab7718:207 i18next::backendConnector: loaded namespace quotes for language en Object
+i18next.js?v=caab7718:207 i18next::backendConnector: loaded namespace reports for language en Object
+i18next.js?v=caab7718:207 i18next::backendConnector: loaded namespace settings for language en Object
+i18next.js?v=caab7718:207 i18next::backendConnector: loaded namespace analytics for language en Object
+i18next.js?v=caab7718:207 i18next::backendConnector: loaded namespace transactions for language en Object
+i18next.js?v=caab7718:207 i18next::backendConnector: loaded namespace documents for language en Object
+i18next.js?v=caab7718:207 i18next::backendConnector: loaded namespace email for language en Object
+@supabase_supabase-js.js?v=caab7718:5117 GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.362Z #_acquireLock lock acquired for storage key sb-bmumnhsdiiryyxpjrggs-auth-token
+@supabase_supabase-js.js?v=caab7718:5117 GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.362Z #_useSession begin
+@supabase_supabase-js.js?v=caab7718:5117 GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.362Z #__loadSession() begin
+@supabase_supabase-js.js?v=caab7718:5117 GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.362Z #getSession() session from storage Object
+@supabase_supabase-js.js?v=caab7718:5117 GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.362Z #__loadSession() session has not expired expires_at 1750692290
+@supabase_supabase-js.js?v=caab7718:5117 GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.362Z #__loadSession() end
+@supabase_supabase-js.js?v=caab7718:5117 GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.362Z #_useSession end
+@supabase_supabase-js.js?v=caab7718:5117 GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.362Z #_acquireLock lock released for storage key sb-bmumnhsdiiryyxpjrggs-auth-token
+@supabase_supabase-js.js?v=caab7718:5117 GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.362Z #_acquireLock end
+@supabase_supabase-js.js?v=caab7718:5117 GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.362Z #_acquireLock lock acquired for storage key sb-bmumnhsdiiryyxpjrggs-auth-token
+@supabase_supabase-js.js?v=caab7718:5117 GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.362Z #_useSession begin
+@supabase_supabase-js.js?v=caab7718:5117 GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.362Z #__loadSession() begin
+@supabase_supabase-js.js?v=caab7718:5117 GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.362Z #getSession() session from storage Object
+@supabase_supabase-js.js?v=caab7718:5117 GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.362Z #__loadSession() session has not expired expires_at 1750692290
+@supabase_supabase-js.js?v=caab7718:5117 GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.362Z #__loadSession() end
+@supabase_supabase-js.js?v=caab7718:5117 GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.362Z #_useSession end
+@supabase_supabase-js.js?v=caab7718:5117 GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.363Z #_acquireLock lock released for storage key sb-bmumnhsdiiryyxpjrggs-auth-token
+@supabase_supabase-js.js?v=caab7718:5117 GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.363Z #_acquireLock end
+@supabase_supabase-js.js?v=caab7718:5117 GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.366Z #_acquireLock lock acquired for storage key sb-bmumnhsdiiryyxpjrggs-auth-token
+@supabase_supabase-js.js?v=caab7718:5117 GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.367Z #_useSession begin
+@supabase_supabase-js.js?v=caab7718:5117 GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.367Z #__loadSession() begin
+@supabase_supabase-js.js?v=caab7718:5117 GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.367Z #getSession() session from storage Object
+@supabase_supabase-js.js?v=caab7718:5117 GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.367Z #__loadSession() session has not expired expires_at 1750692290
+@supabase_supabase-js.js?v=caab7718:5117 GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.367Z #__loadSession() end
+@supabase_supabase-js.js?v=caab7718:5117 GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.367Z #_useSession end
+@supabase_supabase-js.js?v=caab7718:5117 GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.367Z #_acquireLock lock released for storage key sb-bmumnhsdiiryyxpjrggs-auth-token
+@supabase_supabase-js.js?v=caab7718:5117 GoTrueClient@0 (2.69.1) 2025-06-23T14:26:48.367Z #_acquireLock end
+i18next.js?v=caab7718:207 i18next::backendConnector: loaded namespace scan for language en Object
+i18next.js?v=caab7718:207 i18next::backendConnector: loaded namespace voice for language en Object
+i18next.js?v=caab7718:207 i18next: languageChanged it
+i18next.js?v=caab7718:207 i18next: initialized Object
+index.ts:80 i18next initialized successfully
+i18next.js?v=caab7718:207 i18next::translator: missingKey it reports tabs.invoices tabs.invoices
+i18next.js?v=caab7718:207 i18next::translator: missingKey it reports tabs.clients tabs.clients
+i18next.js?v=caab7718:207 i18next::translator: missingKey it reports categories.invoices.name categories.invoices.name
+i18next.js?v=caab7718:207 i18next::translator: missingKey it reports categories.invoices.description categories.invoices.description
+i18next.js?v=caab7718:207 i18next::translator: missingKey it reports categories.quotes.name categories.quotes.name
+i18next.js?v=caab7718:207 i18next::translator: missingKey it reports categories.quotes.description categories.quotes.description
+i18next.js?v=caab7718:207 i18next::translator: missingKey it reports categories.clients.name categories.clients.name
+i18next.js?v=caab7718:207 i18next::translator: missingKey it reports categories.clients.description categories.clients.description
+i18next.js?v=caab7718:207 i18next::translator: missingKey it reports categories.analytics.name categories.analytics.name
+i18next.js?v=caab7718:207 i18next::translator: missingKey it reports categories.analytics.description categories.analytics.description
+i18next.js?v=caab7718:207 i18next::translator: missingKey it reports backToCategorySelection backToCategorySelection
+i18next.js?v=caab7718:207 i18next::translator: missingKey it reports selectReportCategory selectReportCategory
+i18next.js?v=caab7718:207 i18next::translator: missingKey it reports tabs.invoices tabs.invoices
+i18next.js?v=caab7718:207 i18next::translator: missingKey it reports tabs.clients tabs.clients
+i18next.js?v=caab7718:207 i18next::translator: missingKey it reports categories.invoices.name categories.invoices.name
+i18next.js?v=caab7718:207 i18next::translator: missingKey it reports categories.invoices.description categories.invoices.description
+i18next.js?v=caab7718:207 i18next::translator: missingKey it reports categories.quotes.name categories.quotes.name
+i18next.js?v=caab7718:207 i18next::translator: missingKey it reports categories.quotes.description categories.quotes.description
+i18next.js?v=caab7718:207 i18next::translator: missingKey it reports categories.clients.name categories.clients.name
+i18next.js?v=caab7718:207 i18next::translator: missingKey it reports categories.clients.description categories.clients.description
+i18next.js?v=caab7718:207 i18next::translator: missingKey it reports categories.analytics.name categories.analytics.name
+i18next.js?v=caab7718:207 i18next::translator: missingKey it reports categories.analytics.description categories.analytics.description
+i18next.js?v=caab7718:207 i18next::translator: missingKey it reports backToCategorySelection backToCategorySelection
+i18next.js?v=caab7718:207 i18next::translator: missingKey it reports selectReportCategory selectReportCategory
+i18next.js?v=caab7718:207 i18next::translator: missingKey it common close close
+i18next.js?v=caab7718:207 i18next::translator: missingKey it common close close
+i18next.js?v=caab7718:207 i18next::translator: missingKey it reports financials.loading financials.loading
+i18next.js?v=caab7718:207 i18next::translator: missingKey it reports financials.loading financials.loading
+Logger.ts:54 [ERROR] Error loading financials data: TypeError: incomeService.getIncomeByPeriod is not a function
+    at loadFinancialsData (Reports.jsx:337:27)
+    at Reports.jsx:354:5
+    at react-stack-bottom-frame (react-dom_client.js?v=caab7718:17478:20)
+    at runWithFiberInDEV (react-dom_client.js?v=caab7718:1485:72)
+    at commitHookEffectListMount (react-dom_client.js?v=caab7718:8460:122)
+    at commitHookPassiveMountEffects (react-dom_client.js?v=caab7718:8518:60)
+    at commitPassiveMountOnFiber (react-dom_client.js?v=caab7718:9887:29)
+    at recursivelyTraversePassiveMountEffects (react-dom_client.js?v=caab7718:9868:13)
+    at commitPassiveMountOnFiber (react-dom_client.js?v=caab7718:9984:13)
+    at recursivelyTraversePassiveMountEffects (react-dom_client.js?v=caab7718:9868:13)
+error @ Logger.ts:54
+i18next.js?v=caab7718:207 i18next::translator: missingKey it reports financials.error.message financials.error.message
+Logger.ts:54 [ERROR] Error loading financials data: TypeError: incomeService.getIncomeByPeriod is not a function
+    at loadFinancialsData (Reports.jsx:337:27)
+    at Reports.jsx:354:5
+    at react-stack-bottom-frame (react-dom_client.js?v=caab7718:17478:20)
+    at runWithFiberInDEV (react-dom_client.js?v=caab7718:1485:72)
+    at commitHookEffectListMount (react-dom_client.js?v=caab7718:8460:122)
+    at commitHookPassiveMountEffects (react-dom_client.js?v=caab7718:8518:60)
+    at reconnectPassiveEffects (react-dom_client.js?v=caab7718:10016:13)
+    at recursivelyTraverseReconnectPassiveEffects (react-dom_client.js?v=caab7718:9995:11)
+    at reconnectPassiveEffects (react-dom_client.js?v=caab7718:10054:13)
+    at recursivelyTraverseReconnectPassiveEffects (react-dom_client.js?v=caab7718:9995:11)
+error @ Logger.ts:54
+i18next.js?v=caab7718:207 i18next::translator: missingKey it reports financials.error.message financials.error.message
+i18next.js?v=caab7718:207 i18next::translator: missingKey it reports financials.error.retry financials.error.retry
+i18next.js?v=caab7718:207 i18next::translator: missingKey it reports financials.error.retry financials.error.retry

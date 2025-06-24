@@ -1,0 +1,120 @@
+{
+  "title": "Voice Assistant",
+  "subtitle": "Control your workspace with natural voice commands",
+  "status": {
+    "ready": "Voice Ready",
+    "listening": "Listening...",
+    "processing": "Processing...",
+    "tapToSpeak": "Tap to Speak"
+  },
+  "instructions": {
+    "listening": "Speak your command now",
+    "processing": "Understanding your request",
+    "idle": "Press and hold the microphone to give voice commands",
+    "placeholder": "Your voice commands will appear here"
+  },
+  "buttons": {
+    "tryDemo": "Try Demo",
+    "help": "Help"
+  },
+  "howItWorks": {
+    "title": "How It Works",
+    "step1": {
+      "title": "Press and Hold",
+      "description": "Hold the microphone button and speak clearly"
+    },
+    "step2": {
+      "title": "Speak Naturally",
+      "description": "Use any of the voice commands from the categories below"
+    },
+    "step3": {
+      "title": "Get Results",
+      "description": "Watch as your voice commands are executed automatically"
+    }
+  },
+  "commands": {
+    "title": "Voice Commands",
+    "categories": {
+      "navigation": "Navigation",
+      "dataEntry": "Data Entry",
+      "search": "Search",
+      "reports": "Reports",
+      "system": "System"
+    },
+    "examples": {
+      "navigation": {
+        "dashboard": "Go to dashboard",
+        "clients": "Open clients page",
+        "reports": "Show reports",
+        "calendar": "View calendar"
+      },
+      "dataEntry": {
+        "newClient": "Create new client",
+        "invoice": "Add invoice",
+        "meeting": "Schedule meeting",
+        "transaction": "Log transaction"
+      },
+      "search": {
+        "findClient": "Find client John Doe",
+        "pendingInvoices": "Show pending invoices",
+        "documents": "Search documents",
+        "transaction": "Look up transaction"
+      },
+      "reports": {
+        "sales": "Generate sales report",
+        "monthly": "Show monthly summary",
+        "export": "Export client data",
+        "analytics": "View analytics"
+      },
+      "system": {
+        "settings": "Open settings",
+        "notifications": "Check notifications",
+        "theme": "Switch theme",
+        "help": "Show help"
+      }
+    }
+  },
+  "tips": {
+    "title": "Voice Tips",
+    "speakClearly": {
+      "title": "Speak Clearly",
+      "description": "Enunciate your words for better recognition accuracy"
+    },
+    "useKeywords": {
+      "title": "Use Keywords",
+      "description": "Include action words like \"open\", \"create\", \"show\", \"find\""
+    },
+    "normalVolume": {
+      "title": "Normal Volume",
+      "description": "Speak at a normal volume in a quiet environment"
+    }
+  },
+  "statistics": {
+    "title": "Voice Statistics",
+    "commandsToday": "Commands Today",
+    "successRate": "Success Rate",
+    "timeSaved": "Time Saved",
+    "favoriteCommand": "Favorite Command"
+  },
+  "settings": {
+    "title": "Voice Settings",
+    "language": "Language",
+    "sensitivity": "Sensitivity",
+    "wakeWord": "Wake Word",
+    "values": {
+      "english": "English",
+      "high": "High",
+      "heyNexa": "Hey Nexa"
+    }
+  },
+  "recent": {
+    "title": "Recent Commands",
+    "analytics": "Show analytics",
+    "newClient": "Create new client",
+    "calendar": "Open calendar",
+    "timeAgo": {
+      "minutes": "{{count}}min ago",
+      "hours": "{{count}}h ago"
+    }
+  }
+}

@@ -1,0 +1,29 @@
+
+# i18n Translation Audit Summary
+
+Generated: 2025-06-22T13:26:26.310Z
+Base Language: en
+Total Languages: 2
+Total Files: 60
+
+## Overall Health: POOR (0/100)
+
+## Completion Status
+- it: 98%
+
+## Issues Summary
+- Errors: 24
+- Warnings: 4
+- Total Issues: 28
+
+## Critical Issues
+None
+
+## High Priority Recommendations
+None
+
+## Next Steps
+1. Standardize placeholder patterns across all translation files
+2. Consider removing unused translation keys to reduce bundle size
+
+For detailed analysis, see the full JSON report.

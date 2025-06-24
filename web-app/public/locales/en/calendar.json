@@ -1,0 +1,194 @@
+{
+  "title": "Calendar",
+  "events": "Events",
+  "searchPlaceholder": "Search events...",
+  "newEvent": "New Event",
+  "createEvent": "Create Event",
+  "editEvent": "Edit Event",
+  "deleteEvent": "Delete Event",
+  "eventDetails": "Event Details",
+  "upcoming": "Upcoming Events",
+  "viewAll": "View All",
+  "quickActions": "Quick Actions",
+  "schedule": "Schedule",
+  "tasks": "Tasks",
+  "meetings": "Meetings",
+  "filters": "Filters",
+  "myCalendars": "My Calendars",
+  "eventTypes": "Event Types",
+  "teamMembers": "Team Members",
+  "personal": "Personal",
+  "work": "Work",
+  "family": "Family",
+  "organizer": "Organizer",
+  "attendees": "Attendees",
+  "description": "Description",
+  "location": "Location",
+  "date": "Date",
+  "time": "Time",
+  "duration": "Duration",
+  "eventTitle": "Event Title",
+  "eventTitlePlaceholder": "Enter event title...",
+  "locationPlaceholder": "Enter location or meeting link...",
+  "descriptionPlaceholder": "Add event description...",
+  "cancel": "Cancel",
+  "edit": "Edit",
+  "delete": "Delete",
+  "share": "Share",
+  "save": "Save",
+  "more": "more",
+  "hour": "hour",
+  "hours": "hours",
+  "minute": "minute",
+  "minutes": "minutes",
+  "allDay": "All day",
+  "allDayEvent": "All day event",
+  "repeat": "Repeat",
+  "reminder": "Reminder",
+  "today": "Today",
+  "eventType": "Event type",
+  "addParticipants": "Add Participants",
+  "categories": {
+    "meetings": "Meetings",
+    "presentations": "Presentations",
+    "invoices": "Invoices",
+    "calls": "Calls",
+    "reviews": "Reviews"
+  },
+  "views": {
+    "month": "Month",
+    "week": "Week",
+    "day": "Day",
+    "list": "List"
+  },
+  "days": {
+    "sunday": "Sunday",
+    "monday": "Monday",
+    "tuesday": "Tuesday",
+    "wednesday": "Wednesday",
+    "thursday": "Thursday",
+    "friday": "Friday",
+    "saturday": "Saturday"
+  },
+  "daysShort": {
+    "sunday": "Sun",
+    "monday": "Mon",
+    "tuesday": "Tue",
+    "wednesday": "Wed",
+    "thursday": "Thu",
+    "friday": "Fri",
+    "saturday": "Sat"
+  },
+  "daysMin": {
+    "sunday": "S",
+    "monday": "M",
+    "tuesday": "T",
+    "wednesday": "W",
+    "thursday": "T",
+    "friday": "F",
+    "saturday": "S"
+  },
+  "months": {
+    "january": "January",
+    "february": "February",
+    "march": "March",
+    "april": "April",
+    "may": "May",
+    "june": "June",
+    "july": "July",
+    "august": "August",
+    "september": "September",
+    "october": "October",
+    "november": "November",
+    "december": "December"
+  },
+  "monthsShort": {
+    
+    "dateRequired": "Date is required",
+    "endTimeAfterStartTime": "End time must be after start time.",
+    "errorSaving": "An error occurred while saving the event.",
+    "titleLabel": "Event Title",
+    "dateLabel": "Date",
+    "startTimeLabel": "Start Time",
+    "endTimeLabel": "End Time",
+    "locationLabel": "Location",
+    "typeLabel": "Event Type",
+    "priorityLabel": "Priority",
+    "clientLabel": "Associated Client",
+    "selectClient": "Select a client",
+    "notesLabel": "Notes",
+    "notesPlaceholder": "Add any relevant notes...",
+    "saveButton": "Save Event",
+    "savingButton": "Saving...",
+    "cancelButton": "Cancel"
+  },
+  "pageDescription": "Manage your events and appointments",
+  "deleteConfirmation": "Are you sure you want to delete this event?",
+  "deleteError": "Error deleting event",
+  "allTypes": "All Types",
+  "types": {
+    "appointment": "Appointment",
+    "quote": "Quote",
+    "invoice": "Invoice",
+    "income": "Income",
+    "expense": "Expense",
+    "medium": "Medium",
+    "low": "Low"
+  },
+  "clearFilters": "Clear Filters",
+  "sampleData": {
+    "selectedEvent": {
+      "title": "Client Meeting",
+      "type": "Meeting",
+      "date": "Today",
+      "time": "10:00 AM",
+      "location": "Conference Room",
+      "organizer": "John Doe",
+      "participants": ["Jane Smith", "Bob Johnson"],
+      "description": "Discussion about project requirements and planning next phases."
+    },
+    "events": {
+      "clientMeeting": "Client Meeting",
+      "projectPresentation": "Project Presentation",
+      "invoiceDue": "Invoice Due",
+      "teamMeeting": "Team Meeting",
+      "clientCall": "Client Call",
+      "quarterlyReview": "Quarterly Review"
+    },
+    "upcomingEvents": [
+      {
+        "title": "Client Meeting",
+        "company": "Acme Corp",
+        "time": "10:00 AM",
+        "location": "Room A",
+        "duration": "1h"
+      },
+      {
+        "title": "Project Presentation",
+        "company": "Tech Solutions",
+        "time": "2:00 PM",
+        "location": "Online",
+        "duration": "2h"
+      }
+    ],
+    "filters": {
+      "meetings": "Meetings",
+      "presentations": "Presentations",
+      "invoices": "Invoices",
+      "calls": "Calls",
+      "reviews": "Reviews"
+    },
+    "calendars": {
+      "personal": "Personal",
+      "work": "Work",
+      "family": "Family"
+    },
+    "eventCategories": {
+      "meetings": "Meetings",
+      "presentations": "Presentations",
+      "invoices": "Invoices",
+      "calls": "Calls",
+      "reviews": "Reviews"
+    }
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "header": {
+    "title": "Scansiona e Gestisci Ricevute",
+    "subtitle": "Carica le tue ricevute per tenere traccia delle spese e gestire la contabilità"
+  },
+  "quickActions": {
+    "upload": {
+      
+      "subtitle": "Carica foto o PDF delle tue ricevute"
+    },
+    "scan": {
+      
+      "subtitle": "Usa la camera per scansionare (Prossimamente)"
+    },
+    "ocr": {
+      
+      "subtitle": "Estrazione automatica dati (Prossimamente)"
+    }
+  },
+  "recentUploads": {
+    
+    "success": "Caricata con successo",
+    "view": "Visualizza ricevuta"
+  },
+  "emptyState": {
+    
+    "button": "Carica Prima Ricevuta"
+  },
+  "stats": {
+    "total": "Ricevute Totali",
+    "today": "Caricate Oggi",
+    "toProcess": "Da Processare"
+  },
+  "uploadModal": {
+    
+    "description": "Seleziona le immagini o i PDF delle tue ricevute. Supportiamo JPG, PNG, GIF e PDF fino a 10MB per file."
+  },
+  "notifications": {
+    "uploadSuccess": "{{count}} ricevute caricate con successo!"
+  }
+}

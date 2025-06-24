@@ -1,0 +1,160 @@
+{
+  "title": "Email Management",
+  "subtitle": "Send invoices, reminders, and manage email templates",
+  "tabs": {
+    "send": "Send Email",
+    "activity": "History",
+    "templates": "Templates",
+    "settings": "Settings"
+  },
+  "sendInvoice": {
+    "title": "Send Invoice",
+    "selectInvoice": "Select an invoice",
+    "selectPlaceholder": "Select an invoice...",
+    "recipientEmail": "Recipient's Email",
+    "recipientPlaceholder": "client@example.com",
+    "customMessage": "Custom Message (optional)",
+    "messagePlaceholder": "e.g., Here is the invoice for the recent services...",
+    "sendButton": "Send Invoice"
+  },
+  "sendReminder": {
+    "title": "Payment Reminders",
+    "description": "Send automatic reminders for overdue invoices",
+    "selectInvoice": "Select an invoice to send a reminder",
+    "selectPlaceholder": "Select an invoice to remind...",
+    "firstReminder": "Send 1st Reminder",
+    "secondReminder": "Send 2nd Reminder",
+    "overdueNotice": "Send Overdue Notice"
+  },
+  "activityLog": {
+    "title": "Email Activity Log",
+    "recipient": "Recipient",
+    "subject": "Subject",
+    "date": "Date",
+    "status": "Status"
+  },
+  "templates": {
+    "title": "Email Templates",
+    "selectTemplate": "Select a template to edit",
+    "subject": "Subject",
+    "body": "Body",
+    "saveButton": "Save Template",
+    "placeholders": "Available Placeholders"
+  },
+  "settings": {
+    "title": "Email Settings",
+    "configure": "Configure your SMTP settings for sending emails.",
+    "testTitle": "Test Email Configuration",
+    "testEmail": "Email for testing",
+    "testPlaceholder": "test@example.com",
+    "sendTestButton": "Send Test Email",
+    "systemInfo": "System Information",
+    "provider": "Email Provider",
+    "status": "Status",
+    "active": "Active",
+    "emailsSentToday": "Emails sent today"
+  },
+  "alerts": {
+    "selectInvoiceAndEmail": "Please select an invoice and enter an email address",
+    "emailSentSuccess": "Email sent successfully!",
+    "sendError": "Error sending: {{error}}",
+    "genericSendError": "Error sending email",
+    "reminderSentSuccess": "Reminder sent successfully!",
+    "genericReminderError": "Error sending reminder",
+    "enterTestEmail": "Please enter an email address for testing",
+    "testSentSuccess": "Test email sent successfully!",
+    "testError": "Error during test: {{error}}",
+    "genericTestError": "Error during email test"
+  },
+  "status": {
+    "sent": "Sent",
+    "failed": "Failed",
+    "pending": "Pending",
+    "overdue": "Overdue"
+  },
+  "clientEmail": {
+    "subject": "Communication from {{companyName}}",
+    "defaultMessage": "Custom message for the client",
+    "companyName": "My Company",
+    "companyEmail": "info@mycompany.com"
+  },
+  "quoteSender": {
+    "title": "Send Quote via Email",
+    "steps": {
+      "setup": "Setup",
+      "preview": "Preview",
+      "send": "Send",
+      "result": "Result"
+    },
+    "labels": {
+      "recipientEmail": "Recipient Email",
+      "recipientName": "Recipient Name",
+      "template": "Template",
+      "customMessage": "Custom Message",
+      "includeAttachment": "Include PDF Attachment",
+      "scheduleSend": "Schedule Send (optional)"
+    },
+    "placeholders": {
+      "recipientEmail": "e.g., client@example.com",
+      "recipientName": "e.g., John Doe",
+      "customMessage": "Add a personal message..."
+    },
+    "templates": {
+      "quote_sent": {
+        "name": "Send Quote",
+        "description": "Standard template for sending the quote"
+      },
+      "quote_reminder": {
+        "name": "Reminder",
+        "description": "Reminder for expiring quote"
+      },
+      "quote_accepted": {
+        "name": "Acceptance Confirmation",
+        "description": "Confirmation of quote acceptance"
+      }
+    },
+    "validation": {
+      "emailRequired": "Recipient email is required",
+      "emailInvalid": "Invalid email address",
+      "nameRequired": "Recipient name is required"
+    },
+    "buttons": {
+      "next": "Next",
+      "back": "Back",
+      "send": "Send Email",
+      "close": "Close",
+      "tryAgain": "Try Again",
+      "sendAnother": "Send Another Email"
+    },
+    "preview": {
+      "title": "Email Preview",
+      "subject": "Subject:",
+      "body": "Body:",
+      "attachment": "Attachment:",
+      "quotePdf": "Quote_{{quoteNumber}}.pdf"
+    },
+    "sending": {
+      "title": "Sending Email...",
+      "subtitle": "Please wait, we are sending your quote."
+    },
+    "result": {
+      "successTitle": "Email Sent Successfully!",
+      "successMessage": "The email has been successfully sent to {{recipient}}.",
+      "messageId": "Message ID:",
+      "timestamp": "Timestamp:",
+      "errorTitle": "Error Sending Email",
+      "errorMessage": "An unexpected error occurred. Please try again later.",
+      "errorDetails": "Error details:"
+    },
+    "reminders": {
+      "scheduled": "Reminders scheduled for quote {{quoteNumber}}.",
+      "notScheduled": "Reminders not scheduled."
+    }
+  },
+  "companyDetails": {
+    "name": "Nexa Manager",
+    "email": "info@nexamanager.com",
+    "phone": "+39 123 456 7890",
+    "address": "Via Roma 123, 00100 Roma (RM)"
+  }
+} 

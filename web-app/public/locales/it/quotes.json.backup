@@ -1,0 +1,314 @@
+{
+  "title": "Preventivi",
+  "breadcrumb": "Preventivi",
+  "actions": {
+    "createNew": "Crea Nuovo Preventivo",
+    "export": "Esporta"
+  },
+  "stats": {
+    "totalPending": {
+      "title": "Totale in Sospeso",
+      "subtitle": "Da {{count}} preventivi",
+      "trend": "{{percent}}% dall'ultimo mese"
+    },
+    "acceptedThisMonth": {
+      "title": "Accettati Questo Mese",
+      "subtitle": "Da {{count}} preventivi",
+      "trend": "{{percent}}% dall'ultimo mese"
+    },
+    "rejected": {
+      "title": "Rifiutati",
+      "subtitle": "Da {{count}} preventivi",
+      "trend": "{{percent}}% dall'ultimo mese"
+    },
+    "averageResponseTime": {
+      "title": "Tempo Medio di Risposta",
+      "subtitle": "Ultimi 30 giorni",
+      "trend": "{{days}} giorno di miglioramento"
+    }
+  },
+  "table": {
+    "quoteNumber": "Preventivo #",
+    "client": "Cliente",
+    "issueDate": "Data di Emissione",
+    "dueDate": "Data di Scadenza",
+    "amount": "Importo",
+    "status": "Stato",
+    "actions": "Azioni"
+  },
+  "status": {
+    "accepted": "Accettato",
+    "pending": "In Sospeso",
+    "rejected": "Rifiutato",
+    "draft": "Bozza",
+    "unknown": "Sconosciuto"
+  },
+  "topClients": {
+    "title": "Migliori Clienti per Valore Preventivi",
+    "totalQuotes": "Preventivi Totali",
+    "acceptedQuotes": "Accettati",
+    "totalValue": "Valore Totale",
+    "acceptanceRate": "Tasso di Accettazione"
+  },
+  "recentActivities": {
+    "title": "Attività Recenti",
+    "quoteCreated": "Preventivo {{quoteNumber}} creato per {{clientName}}",
+    "quoteAccepted": "Preventivo {{quoteNumber}} accettato da {{clientName}}",
+    "quoteSent": "Preventivo {{quoteNumber}} inviato a {{clientName}}",
+    "quoteRejected": "Preventivo {{quoteNumber}} rifiutato da {{clientName}}"
+  },
+  "search": {
+    "placeholder": "Cerca preventivi..."
+  },
+  "searchFilter": {
+    "placeholder": "Cerca preventivi per numero, note o cliente...",
+    "results_one": "{{count}} preventivo",
+    "results_other": "{{count}} preventivi",
+    "filters": "Filtri",
+    "clear": "Cancella",
+    "dateRange": "Periodo",
+    "from": "Da",
+    "to": "A",
+    "amount": "Importo",
+    "min": "Min €",
+    "max": "Max €",
+    "sort": "Ordinamento",
+    "allStatuses": "Tutti gli stati",
+    "status": {
+      "draft": "Bozza",
+      "sent": "Inviato",
+      "accepted": "Accettato",
+      "rejected": "Rifiutato",
+      "expired": "Scaduto",
+      "converted": "Convertito"
+    },
+    "sortOptions": {
+      "createdAt": "Data creazione",
+      "issueDate": "Data emissione",
+      "dueDate": "Data scadenza",
+      "quoteNumber": "Numero preventivo",
+      "totalAmount": "Importo totale",
+      "clientName": "Cliente"
+    },
+    "sortOrder": {
+      "desc": "Decrescente",
+      "asc": "Crescente"
+    },
+    "client": "Cliente",
+    "clientPlaceholder": "Cerca per ID cliente o nome"
+  },
+  "filters": {
+    "all": "Tutti",
+    "accepted": "Accettati",
+    "pending": "In Sospeso",
+    "rejected": "Rifiutati",
+    "draft": "Bozza"
+  },
+  "pagination": {
+    "showing": "Mostrando",
+    "to": "a",
+    "of": "di",
+    "results": "risultati",
+    "previous": "Precedente",
+    "next": "Successivo"
+  },
+  "actionsDropdown": {
+    "view": "Vedi",
+    "edit": "Modifica",
+    "delete": "Elimina",
+    "sendEmail": "Invia Email",
+    "convertToInvoice": "Converti in Fattura"
+  },
+  "nexaManager": "Nexa Manager",
+  "lifecycle": {
+    "title": "Gestisci Ciclo di Vita Preventivo",
+    "currentStatus": "Stato Corrente:",
+    "status": {
+      "bozza": {
+        "name": "Bozza",
+        "description": "Preventivo in preparazione"
+      },
+      "inviato": {
+        "name": "Inviato",
+        "description": "Preventivo inviato al cliente"
+      },
+      "accettato": {
+        "name": "Accettato",
+        "description": "Preventivo accettato dal cliente"
+      },
+      "rifiutato": {
+        "name": "Rifiutato",
+        "description": "Preventivo rifiutato dal cliente"
+      },
+      "scaduto": {
+        "name": "Scaduto",
+        "description": "Preventivo scaduto"
+      },
+      "convertito": {
+        "name": "Convertito",
+        "description": "Preventivo convertito in fattura"
+      }
+    },
+    "actions": {
+      "send": {
+        "label": "Invia Preventivo",
+        "description": "Invia il preventivo al cliente"
+      },
+      "markAccepted": {
+        "label": "Segna come Accettato",
+        "description": "Il cliente ha accettato il preventivo"
+      },
+      "markRejected": {
+        "label": "Segna come Rifiutato",
+        "description": "Il cliente ha rifiutato il preventivo"
+      },
+      "markExpired": {
+        "label": "Segna come Scaduto",
+        "description": "Il preventivo è scaduto"
+      },
+      "convertToInvoice": {
+        "label": "Converti in Fattura",
+        "description": "Crea una fattura da questo preventivo"
+      },
+      "revise": {
+        "label": "Rivedi e Ripristina",
+        "description": "Modifica il preventivo e riportalo in bozza"
+      },
+      "duplicate": {
+        "label": "Duplica Preventivo",
+        "description": "Crea una copia di questo preventivo"
+      }
+    },
+    "workflow": "Flusso di Lavoro Preventivo",
+    "nextActions": "Prossime Azioni Possibili",
+    "confirmAction": {
+      "title": "Conferma Azione",
+      "message": "Sei sicuro di voler cambiare lo stato in '{{status}}'?",
+      "notesLabel": "Note (opzionale)",
+      "notesPlaceholder": "Aggiungi una nota su questo cambio di stato...",
+      "confirmButton": "Conferma",
+      "cancelButton": "Annulla"
+    },
+    "errors": {
+      "statusUpdate": "Errore durante l'aggiornamento dello stato del preventivo.",
+      "duplication": "Errore durante la duplicazione del preventivo."
+    }
+  },
+  "templateManager": {
+    "title": "Gestione Template Preventivi",
+    "loadError": "Errore durante il caricamento dei template.",
+    "deleteConfirm": "Sei sicuro di voler eliminare questo template?",
+    "deleteError": "Errore durante l'eliminazione del template.",
+    "selectAndClose": "Seleziona & Chiudi",
+    "select": "Seleziona",
+    "createNew": "Crea Nuovo Template",
+    "edit": "Modifica",
+    "preview": "Anteprima",
+    "duplicate": "Duplica",
+    "delete": "Elimina",
+    "noTemplates": "Nessun template trovato.",
+    "searchPlaceholder": "Cerca template...",
+    "category": "Categoria",
+    "allCategories": "Tutte le Categorie",
+    "duplicateSuffix": "(Copia)",
+    "form": {
+      "createTitle": "Crea Nuovo Template",
+      "editTitle": "Modifica Template",
+      "nameLabel": "Nome Template",
+      "namePlaceholder": "Es. Consulenza Standard",
+      "descriptionLabel": "Descrizione",
+      "descriptionPlaceholder": "Es. Template per servizi di consulenza",
+      "categoryLabel": "Categoria",
+      "categoryPlaceholder": "Es. Servizi",
+      "itemsTitle": "Elementi del Preventivo",
+      "itemDescriptionLabel": "Descrizione",
+      "itemDescriptionPlaceholder": "Es. Consulenza tecnica",
+      "itemQuantityLabel": "Qtà",
+      "itemUnitPriceLabel": "Prezzo Unitario",
+      "itemTaxRateLabel": "IVA %",
+      "addItem": "Aggiungi Elemento",
+      "notesLabel": "Note",
+      "notesPlaceholder": "Termini di pagamento, info consegna, ecc.",
+      "termsLabel": "Termini e Condizioni",
+      "termsPlaceholder": "Garanzia, supporto, ecc.",
+      "save": "Salva Template",
+      "saving": "Salvataggio...",
+      "cancel": "Annulla",
+      "validation": {
+        "nameRequired": "Il nome del template è obbligatorio.",
+        "itemDescriptionRequired": "La descrizione dell'elemento è obbligatoria."
+      },
+      "saveError": "Errore durante il salvataggio del template.",
+      "tableHeaders": {
+        "description": "Descrizione",
+        "quantity": "Qtà",
+        "unitPrice": "Prezzo Unitario",
+        "taxRate": "IVA %",
+        "actions": "Azioni"
+      }
+    },
+    "previewModal": {
+      "title": "Anteprima Template",
+      "subtotal": "Subtotale:",
+      "taxTotal": "Totale IVA:",
+      "total": "Totale Preventivo:",
+      "close": "Chiudi",
+      "table": {
+        "description": "Descrizione",
+        "quantity": "Qtà",
+        "unitPrice": "Prezzo Unitario",
+        "tax": "IVA",
+        "lineTotal": "Totale Riga"
+      }
+    },
+    "defaultTemplates": {
+      "standardConsulting": {
+        "name": "Consulenza Standard",
+        "description": "Template per servizi di consulenza con tariffe orarie",
+        "category": "Servizi",
+        "item1": "Consulenza tecnica",
+        "item2": "Analisi e documentazione",
+        "notes": "Il pagamento è richiesto entro 30 giorni dalla data di emissione.",
+        "terms": "Consulenza fornita secondo standard professionali del settore."
+      },
+      "softwareDevelopment": {
+        "name": "Sviluppo Software",
+        "description": "Template per progetti di sviluppo software",
+        "category": "Sviluppo",
+        "item1": "Analisi requisiti e progettazione",
+        "item2": "Sviluppo applicazione",
+        "item3": "Testing e documentazione",
+        "notes": "Pagamento in 3 rate: 30% all'inizio, 50% a metà progetto, 20% alla consegna.",
+        "terms": "Il progetto include supporto post-lancio di 30 giorni."
+      },
+      "systemMaintenance": {
+        "name": "Manutenzione Sistemi",
+        "description": "Template per contratti di manutenzione periodica",
+        "category": "Manutenzione",
+        "item1": "Manutenzione preventiva mensile",
+        "item2": "Supporto telefonico/email",
+        "notes": "Contratto annuale con fatturazione mensile.",
+        "terms": "Interventi di emergenza entro 4 ore dall'apertura ticket."
+      },
+      "productSale": {
+        "name": "Vendita Prodotti",
+        "description": "Template per vendita di prodotti fisici",
+        "category": "Prodotti",
+        "item1": "Prodotto A",
+        "item2": "Installazione e configurazione",
+        "notes": "Consegna prevista entro 15 giorni lavorativi.",
+        "terms": "Garanzia 24 mesi su prodotti, 12 mesi su servizi."
+      },
+      "customProject": {
+        "name": "Progetto Personalizzato",
+        "description": "Template generico per progetti su misura",
+        "category": "Altro",
+        "item1": "Fase 1 - Analisi e pianificazione",
+        "item2": "Fase 2 - Implementazione",
+        "item3": "Fase 3 - Test e consegna",
+        "notes": "Progetto personalizzato secondo specifiche cliente.",
+        "terms": "Pagamento 50% all'inizio, 50% alla consegna."
+      }
+    }
+  }
+} 

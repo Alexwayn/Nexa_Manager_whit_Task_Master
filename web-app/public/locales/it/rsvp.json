@@ -1,0 +1,50 @@
+{
+  "loader": {
+    "loading": "Caricamento invito..."
+  },
+  "error": {
+    "title": "Invito non trovato",
+    "description": "L'invito potrebbe essere scaduto o il link non è valido.",
+    "loadError": "Errore nel caricamento dell'invito"
+  },
+  "submitted": {
+    
+    "organizerNotified": "L'organizzatore dell'evento è stato notificato della tua risposta.",
+    "seeYou": "Ci vediamo all'evento! Riceverai ulteriori dettagli se necessario."
+  },
+  "form": {
+    "header": {
+      
+      "subtitle": "Conferma la tua partecipazione"
+    },
+    "details": {
+      "date": "Data",
+      "time": "Orario",
+      "location": "Luogo",
+      "personalMessage": "Messaggio personale",
+      "allDay": "Tutto il giorno"
+    },
+    "status": {
+      "current": "Stato attuale della tua risposta:",
+      "respondedOn": "Risposto il {{date}}"
+    },
+    "yourResponse": {
+      
+      "accept": "Parteciperò",
+      "decline": "Non parteciperò",
+      "maybe": "Forse",
+      "accepted": "Hai accettato",
+      "declined": "Hai rifiutato",
+      "maybeResponse": "Hai risposto 'Forse'",
+      "pending": "In attesa di risposta"
+    },
+    "guests": {
+      "label": "Numero di ospiti (incluso/a te)",
+      "placeholder": "es. 2"
+    },
+    "message": {
+      
+      "genericSubmitError": "Errore nell'invio della risposta"
+    }
+  }
+}

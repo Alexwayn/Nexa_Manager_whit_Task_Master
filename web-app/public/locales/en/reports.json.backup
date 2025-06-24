@@ -1,0 +1,302 @@
+{
+  "title": "Reports and Analysis",
+  "user": "User: {{email}}",
+  "export": {
+    "revenue": "Export Revenue PDF",
+    "invoices": "Export Invoices PDF",
+    "clients": "Export Clients PDF",
+    "aging": "Export Aging PDF",
+    "tax": "Export Tax PDF"
+  },
+  "error": {
+    "title": "Error",
+    "export": "Error exporting: {{message}}",
+    "close": "Close"
+  },
+  "tabs": {
+    "financials": "Income and Expenses",
+    "invoices": "Invoices",
+    "quotes": "Quotes",
+    "clients": "Clients",
+    "analytics": "Analysis",
+    "clientsAdvanced": "Advanced Client Reports"
+  },
+  "categories": {
+    "incomeExpenses": {
+      "name": "Income and Expenses",
+      "description": "View reports and graphs on your business's income and expenses"
+    },
+    "invoices": {
+      "name": "Invoices",
+      "description": "Analyze issued invoices and received payments"
+    },
+    "quotes": {
+      "name": "Quotes",
+      "description": "Monitor issued, accepted, and rejected quotes"
+    },
+    "clients": {
+      "name": "Clients",
+      "description": "View statistics and analysis on your clients"
+    },
+    "analytics": {
+      "name": "Advanced Analysis",
+      "description": "Dig deeper with detailed analysis and forecasts"
+    }
+  },
+  "financials": {
+    "title": "Complete Financial Reports",
+    "subtitle": "Detailed analysis of your finances from {{startDate}} to {{endDate}}",
+    "loading": "Loading financial data...",
+    "error": {
+      "title": "Loading Error",
+      "retry": "Retry",
+      "message": "Error loading financial data"
+    },
+    "tabs": {
+      "overview": "Overview",
+      "income": "Income Statement",
+      "expenses": "Expense Report",
+      "categories": "Category Analysis",
+      "vendors": "Vendors",
+      "tax": "Tax Summary"
+    },
+    "metrics": {
+      "totalIncome": "Total Income",
+      "totalExpenses": "Total Expenses",
+      "netProfit": "Net Profit",
+      "profitMargin": "Profit Margin",
+      "transactions": "{{count}} transactions",
+      "entries": "{{count}} entries",
+      "deductible": "Deductible",
+      "savings": "Savings: {{amount}}",
+      "margin": "Margin: {{percentage}}",
+      "estimatedTaxSavings": "Estimated Tax Savings",
+      "onDeductible": "On {{amount}} deductible",
+      "avgMonthlyIncome": "Average Monthly Income",
+      "avgMonthlyExpenses": "Average Monthly Expenses",
+      "totalTransactions": "Total Transactions",
+      "deductibleExpensePercentage": "Deductible Expense Percentage"
+    },
+    "health": {
+      "title": "Financial Health Indicators",
+      "incomeExpenseRatio": "Income/Expense Ratio",
+      "deductiblePercentage": "Deductible Expense Percentage",
+      "avgExpenseTransaction": "Average Expense per Transaction",
+      "avgIncomeTransaction": "Average Income per Transaction",
+      "liquidity": "Liquidity (Income - Expenses)",
+      "taxEfficiency": "Tax Efficiency"
+    },
+    "distribution": {
+      "title": "Financial Distribution",
+      "income": "Income",
+      "expenses": "Expenses",
+      "profit": "Profit"
+    }
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Error loading data",
+    "retry": "Retry",
+    "noData": "No data available for the selected period",
+    "unexpectedError": "An unexpected error occurred"
+  },
+  "date": {
+    "from": "from",
+    "to": "to"
+  },
+  "invoices": {
+    "title": "Detailed Invoice Report",
+    "subtitle": "Complete analysis of invoices from {{startDate}} to {{endDate}}",
+    "loading": "Loading invoice data...",
+    "error": {
+      "message": "Error loading invoice data"
+    },
+    "metrics": {
+      "issued": "Invoices Issued",
+      "paid": "Invoices Paid",
+      "pending": "Pending Invoices",
+      "overdue": "Overdue Invoices",
+      "selectedPeriod": "In the selected period",
+      "ofTotal": "{{percentage}} of total",
+      "awaitingPayment": "Awaiting payment",
+      "toRecover": "To be recovered"
+    },
+    "charts": {
+      "monthlyRevenue": "Monthly Revenue",
+      "monthlyRevenueLabel": "Monthly Revenue (€)"
+    },
+    "aging": {
+      "title": "Invoices by Due Date",
+      "period": "Period",
+      "invoiceCount": "Number of Invoices",
+      "totalAmount": "Total Amount",
+      "percentage": "Percentage"
+    },
+    "performance": {
+      "title": "Performance Metrics",
+      "avgPaymentTime": "Average Payment Time",
+      "collectionRate": "Collection Rate",
+      "overdueRate": "Overdue Invoices",
+      "days": "days"
+    },
+    "summary": {
+      "title": "Financial Summary",
+      "totalRevenue": "Total Revenue",
+      "totalVAT": "VAT Collected",
+      "avgInvoiceValue": "Average Invoice Value"
+    }
+  },
+  "quotes": {
+    "title": "Complete Quote Report",
+    "subtitle": "Detailed analysis of quotes from {{startDate}} to {{endDate}}",
+    "loading": "Loading quote data...",
+    "error": {
+        "message": "Error loading quote data"
+    },
+    "charts": {
+      "trend": "Quote Trends",
+      "trendPlaceholder": "Quote trend graph",
+      "byCategory": "Quotes by Category",
+      "byCategoryPlaceholder": "Quotes by category graph"
+    },
+    "metrics": {
+      "sent": "Quotes Sent",
+      "sentChange": "+{{count}} compared to last month",
+      "conversionRate": "Conversion Rate",
+      "conversionChange": "+{{percentage}} compared to last month",
+      "avgValue": "Average Value",
+      "avgValueChange": "+{{amount}} compared to last month",
+      "totalValue": "Total Value",
+      "totalValueChange": "+{{amount}} compared to last month"
+    },
+    "status": {
+      "draft": "Draft",
+      "sent": "Sent",
+      "accepted": "Accepted",
+      "rejected": "Rejected",
+      "expired": "Expired",
+      "pending": "Pending"
+    },
+    "tables": {
+      "topQuotes": "Top Quotes",
+      "quoteNumber": "Quote Number",
+      "client": "Client",
+      "value": "Value",
+      "status": "Status"
+    }
+  },
+  "clients": {
+    "title": "Complete Client Report",
+    "subtitle": "Detailed analysis of clients from {{startDate}} to {{endDate}}",
+    "loading": "Loading client data...",
+    "error": {
+        "message": "Error loading client data"
+    },
+    "metrics": {
+      "total": "Total Clients",
+      "totalClients": "Total Clients",
+      "totalClientsChange": "+{{count}} compared to last month",
+      "active": "Active Clients",
+      "activeClients": "Active Clients",
+      "activePercentage": "{{percentage}} of total",
+      "newClients": "New Clients",
+      "avgRevenue": "Average Revenue per Client",
+      "avgValue": "Average Value per Client",
+      "avgValueChange": "+{{amount}} compared to last month"
+    },
+    "charts": {
+      "growth": "Client Growth",
+      "revenue": "Revenue by Client",
+      "revenuePlaceholder": "Graph of revenue by client"
+    },
+    "tables": {
+      "topClients": "Top Clients",
+      "client": "Client",
+      "totalValue": "Total Value",
+      "lastPurchase": "Last Purchase"
+    }
+  },
+  "analytics": {
+    "title": "Advanced Analysis",
+    "subtitle": "In-depth analysis from {{startDate}} to {{endDate}}",
+    "loading": "Loading advanced analysis...",
+    "error": {
+      "message": "Error loading advanced analysis"
+    }
+  },
+  "backToCategorySelection": "Back to Category Selection",
+  "selectReportCategory": "Select a Report Category",
+  "financialForecast": {
+    "title": "Financial Forecast",
+    "projectedIncome": "Projected Income",
+    "projectedExpenses": "Projected Expenses",
+    "netProfit": "Net Profit",
+    "cumulativeProfit": "Cumulative Profit",
+    "avgMonthlyProfit": "Average Monthly Profit",
+    "totalProjectedIncome": "Total Projected Income",
+    "totalProjectedExpenses": "Total Projected Expenses",
+    "totalProjectedProfit": "Total Projected Profit",
+    "high": "High",
+    "medium": "Medium",
+    "low": "Low",
+    "chart": "Chart",
+    "data": "Data",
+    "configuration": "Configuration",
+    "forecastMonths": "Forecast Months",
+    "method": "Method",
+    "confidenceLevel": "Confidence Level",
+    "summary": "Summary",
+    "months3": "3 Months",
+    "months6": "6 Months",
+    "months12": "12 Months",
+    "months24": "24 Months",
+    "linear": "Linear",
+    "exponential": "Exponential",
+    "logarithmic": "Logarithmic",
+    "monthsToForecast": "Months to Forecast",
+    "forecastMethod": "Forecast Method",
+    "updateForecast": "Update Forecast",
+    "detailedForecast": "Detailed Forecast",
+    "month": "Month",
+    "income": "Income",
+    "expenses": "Expenses",
+    "profit": "Profit",
+    "cumulative": "Cumulative",
+    "noData": "Data not available."
+  },
+  "forecast": {
+    "title": "Financial Forecast",
+    "description": "Projection of financial outcomes based on historical data.",
+    "revenue": "Revenue",
+    "expenses": "Expenses",
+    "profit": "Profit",
+    "optimistic": "Optimistic",
+    "pessimistic": "Pessimistic",
+    "projected": "Projected",
+    "actual": "Actual",
+    "netProfit": "Net Profit",
+    "grossProfit": "Gross Profit",
+    "operatingExpenses": "Operating Expenses"
+  },
+  "header": {
+    "dateRange": "from {{startDate}} to {{endDate}}"
+  },
+  "dateFilter": {
+    "startDate": "Start Date",
+    "endDate": "End Date",
+    "presets": "Presets",
+    "options": {
+      "last7days": "Last 7 days",
+      "last30days": "Last 30 days",
+      "last3months": "Last 3 months",
+      "last6months": "Last 6 months",
+      "thisMonth": "This month",
+      "thisYear": "This year",
+      "lastYear": "Last year"
+    }
+  },
+  "advancedClientReports": {
+    "title": "Advanced Client Reports",
+    "subtitle": "Analysis of clients by profitability, loyalty, and purchase frequency"
+  }
+} 

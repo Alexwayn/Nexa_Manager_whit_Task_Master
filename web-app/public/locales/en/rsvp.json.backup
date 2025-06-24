@@ -1,0 +1,68 @@
+{
+  "loader": {
+    "loading": "Loading invitation..."
+  },
+  "error": {
+    "title": "Invitation Not Found",
+    "description": "The invitation may have expired or the link is invalid.",
+    "loadError": "Error loading invitation"
+  },
+  "submitted": {
+    "title": "Response Sent!",
+    "organizerNotified": "The event organizer has been notified of your response.",
+    "seeYou": "See you at the event! You will receive further details if necessary."
+  },
+  "form": {
+    "header": {
+      "title": "You're Invited!",
+      "subtitle": "Confirm your attendance"
+    },
+    "details": {
+      "date": "Date",
+      "time": "Time",
+      "location": "Location",
+      "description": "Description",
+      "personalMessage": "Personal Message",
+      "allDay": "All day"
+    },
+    "status": {
+      "current": "Current status of your response:",
+      "respondedOn": "Responded on {{date}}"
+    },
+    "yourResponse": {
+      "title": "Your Response",
+      "accept": "I will attend",
+      "decline": "I will not attend",
+      "maybe": "Maybe",
+      "accepted": "You have accepted",
+      "declined": "You have declined",
+      "maybeResponse": "You responded 'Maybe'",
+      "pending": "Awaiting response"
+    },
+    "guests": {
+      "label": "Number of Guests (including you)",
+      "placeholder": "e.g. 2"
+    },
+    "message": {
+      "label": "Message for the organizer (optional)",
+      "placeholder": "Let the organizer know if you have any questions..."
+    },
+    "dietary": {
+      "label": "Dietary Restrictions (optional)",
+      "placeholder": "e.g. Vegetarian, gluten-free..."
+    },
+    "specialRequests": {
+      "label": "Special Requests (optional)",
+      "placeholder": "e.g. Wheelchair access..."
+    },
+    "submitButton": {
+      "submit": "Submit RSVP",
+      "update": "Update Response"
+    },
+    "alerts": {
+      "selectResponse": "Please select a response",
+      "submitError": "Error submitting response: {{error}}",
+      "genericSubmitError": "Error submitting response"
+    }
+  }
+} 

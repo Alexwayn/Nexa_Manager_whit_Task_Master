@@ -1,0 +1,95 @@
+{
+  "breadcrumb": {
+    "inventory": "Inventory",
+    "management": "Management"
+  },
+  "searchPlaceholder": "Search products by name, category, or SKU...",
+  "header": {
+    "title": "Inventory Management",
+    "subtitle": "Track, control, and manage all your products."
+  },
+  "buttons": {
+    "reports": "Reports",
+    "export": "Export",
+    "addNewItem": "Add New Item"
+  },
+  "stats": {
+    "totalValue": "Total Inventory Value",
+    "lowStock": "Low Stock Items",
+    "itemsToReorder": "Items to Reorder",
+    "needsAttention": "{{count}} items need attention",
+    "criticallyLow": "{{count}} out of stock",
+    "trend": "+8.2%"
+  },
+  "tabs": {
+    "allProducts": "All Products",
+    "categories": "Categories",
+    "suppliers": "Suppliers",
+    "locations": "Locations"
+  },
+  "table": {
+    "product": "Product",
+    "category": "Category",
+    "location": "Location",
+    "stock": "Stock",
+    "price": "Price",
+    "supplier": "Supplier",
+    "lastUpdated": "Last Updated",
+    "actions": "Actions",
+    "showing": "Showing",
+    "to": "to",
+    "of": "of",
+    "results": "results",
+    "previous": "Previous",
+    "next": "Next"
+  },
+  "status": {
+    "inStock": "In Stock",
+    "lowStock": "Low Stock",
+    "outOfStock": "Out of Stock"
+  },
+  "sortOptions": {
+    "name_az": "Name (A-Z)",
+    "name_za": "Name (Z-A)",
+    "stock_high": "Stock (High-Low)",
+    "stock_low": "Stock (Low-High)",
+    "price_high": "Price (High-Low)",
+    "price_low": "Price (Low-High)"
+  },
+  "sampleData": {
+    "macbook": {
+      "name": "MacBook Pro 16\"",
+      "category": "Electronics",
+      "location": "Warehouse A",
+      "supplier": "Apple Inc."
+    },
+    "officeChair": {
+      "name": "Office Chair",
+      "category": "Furniture",
+      "location": "Warehouse B",
+      "supplier": "Herman Miller"
+    },
+    "wirelessMouse": {
+      "name": "Wireless Mouse",
+      "category": "Electronics",
+      "location": "Warehouse A",
+      "supplier": "Logitech"
+    },
+    "standingDesk": {
+      "name": "Standing Desk",
+      "category": "Furniture",
+      "location": "Warehouse B",
+      "supplier": "IKEA"
+    },
+    "monitor": {
+      "name": "Monitor 27\"",
+      "category": "Electronics",
+      "location": "Warehouse A",
+      "supplier": "Dell"
+    }
+  },
+  "emptyState": {
+    "title": "No products found",
+    "message": "Try adjusting your search or filters to find what you're looking for."
+  }
+} 

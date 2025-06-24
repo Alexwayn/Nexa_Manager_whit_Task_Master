@@ -1,0 +1,265 @@
+{
+  "breadcrumb": "Fatture e Preventivi",
+  "title": "Fatture e Preventivi",
+  "actions": {
+    "createNew": "Crea Nuovo",
+    "export": "Esporta"
+  },
+  "tabs": {
+    "invoices": "Fatture",
+    "quotes": "Preventivi"
+  },
+  "stats": {
+    "totalOutstanding": {
+      "title": "Totale in Sospeso",
+      "subtitle": "Da {{count}} fatture",
+      "trend": "{{percent}}% dall'ultimo mese"
+    },
+    "paidThisMonth": {
+      "title": "Pagato Questo Mese",
+      "subtitle": "Incassi mensili",
+      "trend": "{{percent}}% dall'ultimo mese"
+    },
+    "overdue": {
+      "title": "Scadute",
+      "subtitle": "Fatture scadute",
+      "trend": "{{percent}}% dall'ultimo mese"
+    },
+    "averagePaymentTime": {
+      "title": "Tempo Medio di Pagamento",
+      "subtitle": "Giorni medi",
+      "trend": "{{percent}}% dall'ultimo mese"
+    }
+  },
+  "filters": {
+    "title": "Filtri",
+    "clearAll": "Cancella Tutto",
+    "status": {
+      "label": "Stato",
+      "all": "Tutti",
+      "paid": "Pagato",
+      "sent": "Inviato",
+      "overdue": "Scaduto",
+      "draft": "Bozza"
+    },
+    "client": {
+      "label": "Cliente",
+      "all": "Tutti i Clienti"
+    },
+    "dateRange": {
+      "label": "Intervallo Date",
+      "placeholder": "Seleziona intervallo"
+    },
+    "amount": {
+      "label": "Importo",
+      "any": "Qualsiasi Importo"
+    },
+    "applyFilters": "Applica Filtri"
+  },
+  "table": {
+    "title": "Elenco Fatture",
+    "show": "Mostra",
+    "perPage": {
+      "10": "10 per pagina",
+      "25": "25 per pagina",
+      "50": "50 per pagina"
+    },
+    "headers": {
+      "invoice": "Fattura #",
+      "client": "Cliente",
+      "issueDate": "Data Emissione",
+      "dueDate": "Data Scadenza",
+      "amount": "Importo",
+      "status": "Stato",
+      "actions": "Azioni"
+    }
+  },
+  "status": {
+    "paid": "Pagato",
+    "sent": "Inviato",
+    "overdue": "Scaduto",
+    "draft": "Bozza"
+  },
+  "pagination": {
+    "showing": "Mostrando",
+    "previous": "Precedente",
+    "next": "Successivo"
+  },
+  "recentActivity": {
+    "title": "Attività Recente",
+    "viewAll": "Visualizza Tutto",
+    "payment": "Pagamento ricevuto",
+    "created": "Fattura creata",
+    "reminder": "Promemoria inviato",
+    "overdue": "Fattura scaduta",
+    "time": {
+      "minutesAgo": "{{count}} minuti fa",
+      "hourAgo": "1 ora fa",
+      "hoursAgo": "{{count}} ore fa",
+      "dayAgo": "1 giorno fa",
+      "daysAgo": "{{count}} giorni fa"
+    }
+  },
+  "quickActions": {
+    "createInvoice": {
+      "title": "Crea Fattura",
+      "description": "Crea una nuova fattura per un cliente",
+      "button": "Nuova Fattura"
+    },
+    "createQuote": {
+      "title": "Crea Preventivo",
+      "description": "Crea un nuovo preventivo per un cliente",
+      "button": "Nuovo Preventivo"
+    },
+    "sendReminders": {
+      "title": "Invia Promemoria",
+      "description": "Invia promemoria per fatture scadute",
+      "button": "Invia Promemoria"
+    },
+    "generateReport": {
+      "title": "Genera Report",
+      "description": "Genera report delle fatture",
+      "button": "Genera Report"
+    }
+  },
+  "analytics": {
+    "paymentStatus": {
+      "title": "Stato Pagamenti",
+      "paid": "Pagato",
+      "pending": "In Attesa",
+      "overdue": "Scaduto"
+    },
+    "monthlyInvoices": {
+      "title": "Fatture Mensili",
+      "subtitle": "Andamento mensile",
+      "created": "Create",
+      "paid": "Pagate",
+      "thisMonth": "Questo Mese"
+    },
+    "topClients": {
+      "title": "Migliori Clienti",
+      "viewAllClients": "Visualizza Tutti i Clienti"
+    }
+  },
+  "footer": {
+    "description": "Semplifica le operazioni aziendali con la nostra piattaforma di gestione completa.",
+    "resources": "Risorse",
+    "legal": "Legale",
+    "contact": "Contattaci",
+    "copyright": "© 2025 Nexa Manager. Tutti i diritti riservati.",
+    "securityVerified": "Sicurezza Verificata",
+    "language": "Italiano (IT)",
+    "resources": {
+      "helpCenter": "Centro Assistenza",
+      "documentation": "Documentazione",
+      "apiReference": "Riferimento API",
+      "systemStatus": "Stato del Sistema"
+    },
+    "legal": {
+      "termsOfService": "Termini di Servizio",
+      "privacyPolicy": "Informativa sulla Privacy",
+      "security": "Sicurezza",
+      "compliance": "Conformità"
+    },
+    "contact": {
+      "email": "support@nexamanager.com",
+      "phone": "Supporto Live (+39 351 693 692)",
+      "description": "Hai bisogno di assistenza? Il nostro team di supporto è disponibile 24/7 per aiutarti.",
+      "button": "Contatta il Supporto"
+    },
+    "quoteToInvoice": "Converti Preventivo in Fattura",
+    "quoteToInvoiceSuccess": "Preventivo convertito in fattura con successo."
+  },
+  "paymentModal": {
+    "newPayment": "Nuovo Pagamento",
+    "totalInvoice": "Totale Fattura:",
+    "alreadyPaid": "Già Pagato:",
+    "remainingBalance": "Saldo Rimanente:",
+    "newBalance": "Nuovo Saldo:",
+    "paymentAmount": "Importo Pagamento *",
+    "fullBalance": "Saldo Completo",
+    "halfBalance": "Metà Saldo",
+    "paymentDate": "Data Pagamento *",
+    "paymentMethod": "Metodo di Pagamento *",
+    "reference": "Riferimento",
+    "referencePlaceholder": "Es. ID Transazione",
+    "notesPlaceholder": "Es. Pagamento anticipato",
+    "recordPayment": "Registra Pagamento",
+    "recordingPayment": "Registrazione...",
+    "paymentHistory": "Storico Pagamenti",
+    "noPayments": "Nessun pagamento ancora registrato.",
+    "date": "Data",
+    "method": "Metodo",
+    "errorInvalidAmount": "Inserire un importo valido maggiore di zero.",
+    "errorAmountExceeds": "L'importo non può superare il saldo rimanente di €{{balance}}.",
+    "errorDateRequired": "Selezionare una data di pagamento.",
+    "errorDateInFuture": "La data di pagamento non può essere futura.",
+    "successMessage": "Pagamento registrato con successo!",
+    "errorMessage": "Errore durante la registrazione del pagamento",
+    "loadingDashboard": "Caricamento dashboard...",
+    "retry": "Riprova",
+    "period": "Periodo:",
+    "last7Days": "Ultimi 7 giorni",
+    "last30Days": "Ultimi 30 giorni",
+    "last90Days": "Ultimi 90 giorni",
+    "lastYear": "Ultimo anno",
+    "totalInvoices": "Totale Fatture",
+    "selectedPeriod": "Periodo selezionato",
+    "totalAmount": "Importo Totale",
+    "totalValue": "Valore totale",
+    "paidAmount": "Importo Pagato",
+    "ofTotal": "del totale",
+    "outstanding": "In Sospeso",
+    "toCollect": "Da incassare",
+    "invoiceStatus": "Stato Fattura",
+    "overdueInvoices": "Fatture Scadute",
+    "daysOverdue": "{{count}} giorni di ritardo",
+    "viewAllOverdue": "Visualizza tutte le fatture scadute ({{count}} altre)"
+  },
+  "paymentMethods": {
+    "cash": "Contanti",
+    "bank_transfer": "Bonifico Bancario",
+    "credit_card": "Carta di Credito",
+    "debit_card": "Carta di Debito",
+    "check": "Assegno",
+    "paypal": "PayPal",
+    "stripe": "Stripe",
+    "other": "Altro"
+  },
+  "footer": {
+    "description": "Semplifica le operazioni aziendali con la nostra piattaforma di gestione completa.",
+    "resourcesTitle": "Risorse",
+    "legalTitle": "Legale",
+    "contactTitle": "Contattaci",
+    "copyright": "© 2025 Nexa Manager. Tutti i diritti riservati.",
+    "securityVerified": "Sicurezza Verificata",
+    "language": "Italiano (IT)",
+    "resources": {
+      "helpCenter": "Centro Assistenza",
+      "documentation": "Documentazione",
+      "apiReference": "Riferimento API",
+      "systemStatus": "Stato del Sistema"
+    },
+    "legal": {
+      "termsOfService": "Termini di Servizio",
+      "privacyPolicy": "Informativa sulla Privacy",
+      "security": "Sicurezza",
+      "compliance": "Conformità"
+    },
+    "contact": {
+      "email": "support@nexamanager.com",
+      "phone": "Supporto Live (+39 351 693 692)",
+      "description": "Hai bisogno di assistenza? Il nostro team di supporto è disponibile 24/7 per aiutarti.",
+      "button": "Contatta il Supporto"
+    }
+  },
+  "invoices": {
+    "pagination": {
+      "next": "Successivo"
+    },
+    "recentActivity": {
+      "title": "Attività Recente",
+      "viewAll": "Visualizza Tutto"
+    }
+  }
+}

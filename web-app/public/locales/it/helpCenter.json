@@ -1,0 +1,70 @@
+{
+  "header": {
+    "title": "Centro Assistenza",
+    "subtitle": "Trova risposte alle tue domande e guide per utilizzare al meglio Nexa Manager"
+  },
+  "search": {
+    "placeholder": "Cerca nella documentazione..."
+  },
+  "quickActions": {
+    "documentation": {
+      
+      "description": "Guide complete e tutorial dettagliati",
+      "button": "Esplora →"
+    },
+    "supportChat": {
+      
+      "button": "Inizia Chat →"
+    },
+    "phoneSupport": {
+      
+      "button": "Chiama Ora →"
+    }
+  },
+  "popularGuides": {
+    
+    "readingTime": "Tempo di lettura: {{time}}"
+  },
+  "guides": {
+    "quickStart": {
+      
+      "time": "5 min"
+    },
+    "clientManagement": {
+      
+      "time": "10 min"
+    },
+    "invoicing": {
+      
+      "time": "15 min"
+    },
+    "analyticsAndReports": {
+      
+      "time": "12 min"
+    }
+  },
+  "faq": {
+    
+    "q2": {
+      
+      "answer": "Vai alla sezione Clienti per aggiungere, modificare e organizzare le informazioni dei tuoi clienti. Puoi importare contatti esistenti o aggiungerne di nuovi manualmente."
+    },
+    "q3": {
+      
+      "answer": "Nella sezione Fatture, clicca 'Nuova Fattura', compila i dettagli del cliente e dei servizi, personalizza il design e invia direttamente via email o scarica in PDF."
+    },
+    "q4": {
+      
+      "answer": "Sì, Nexa Manager offre API e integrazioni con i principali software di contabilità, CRM e sistemi di pagamento. Consulta la documentazione API per maggiori dettagli."
+    },
+    "q5": {
+      
+      "answer": "I report sono disponibili nella sezione Analytics. Puoi generare report personalizzati per fatturato, spese, clienti e performance aziendali con filtri per periodo e categoria."
+    }
+  },
+  "contact": {
+    
+    "emailButton": "Invia Email",
+    "callButton": "Chiama +39 351 693 692"
+  }
+}

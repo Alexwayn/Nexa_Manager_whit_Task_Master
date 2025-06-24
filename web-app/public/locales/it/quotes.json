@@ -1,0 +1,97 @@
+{
+  "title": "Preventivi",
+  "breadcrumb": "Preventivi",
+  "actions": {
+    "createNew": "Crea Nuovo Preventivo",
+    "export": "Esporta"
+  },
+  "stats": {
+    "totalPending": {
+      
+      "subtitle": "Da {{count}} preventivi",
+      "trend": "{{percent}}% dall'ultimo mese"
+    },
+    "acceptedThisMonth": {
+      
+      "asc": "Crescente"
+    },
+    "clientPlaceholder": "Cerca per ID cliente o nome"
+  },
+  "actionsDropdown": {
+    "view": "Vedi",
+    "edit": "Modifica",
+    "delete": "Elimina",
+    "sendEmail": "Invia Email",
+    "convertToInvoice": "Converti in Fattura"
+  },
+  "status": {
+    "pending": "In Attesa",
+    "accepted": "Accettato",
+    "rejected": "Rifiutato",
+    "draft": "Bozza",
+    "sent": "Inviato",
+    "expired": "Scaduto",
+    "unknown": "Sconosciuto"
+  },
+  "recentActivities": {
+    "quoteCreated": "Preventivo {{quoteNumber}} creato per {{clientName}}",
+    "quoteAccepted": "Preventivo {{quoteNumber}} accettato da {{clientName}}",
+    "quoteSent": "Preventivo {{quoteNumber}} inviato a {{clientName}}",
+    "quoteRejected": "Preventivo {{quoteNumber}} rifiutato da {{clientName}}"
+  },
+  "nexaManager": "Nexa Manager",
+  "lifecycle": {
+    
+    "currentStatus": "Stato Corrente:",
+    "status": {
+      "bozza": {
+        "name": "Bozza",
+        "description": "Preventivo in preparazione"
+      },
+      "inviato": {
+        
+        "description": "Preventivo inviato al cliente"
+      },
+      "accettato": {
+        
+        "description": "Preventivo accettato dal cliente"
+      },
+      "rifiutato": {
+        
+        "description": "Preventivo rifiutato dal cliente"
+      },
+      "scaduto": {
+        
+        "description": "Preventivo scaduto"
+      },
+      "convertito": {
+        
+        "description": "Invia il preventivo al cliente"
+      },
+      "markAccepted": {
+        
+        "description": "Il cliente ha accettato il preventivo"
+      },
+      "markRejected": {
+        
+        "description": "Il cliente ha rifiutato il preventivo"
+      },
+      "markExpired": {
+        
+        "description": "Il preventivo è scaduto"
+      },
+      "systemMaintenance": {
+        
+        "terms": "Interventi di emergenza entro 4 ore dall'apertura ticket."
+      },
+      "productSale": {
+        
+        "terms": "Garanzia 24 mesi su prodotti, 12 mesi su servizi."
+      },
+      "customProject": {
+        
+        "terms": "Pagamento 50% all'inizio, 50% alla consegna."
+      }
+    }
+  }
+}

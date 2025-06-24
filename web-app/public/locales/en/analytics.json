@@ -1,0 +1,247 @@
+{
+  "title": "Financial Analytics",
+  "subtitle": "Deep dive into your business performance",
+  "autoRefresh": "Auto Refresh",
+  "tabs": {
+    "overview": {
+      "name": "Overview",
+      "description": "Real-time financial dashboard"
+    },
+    "detailed": {
+      "name": "Detailed Analytics",
+      "description": "In-depth financial analysis and advanced metrics",
+      "pending": "Pending",
+      "overdue": "Overdue"
+    },
+    "forecasting": {
+      "name": "Forecasting",
+      "description": "Financial projections and predictive analytics"
+    },
+    "invoiceAging": {
+      
+      "label": "Outstanding Amount",
+      "period1": "0-30 days",
+      "period2": "31-60 days",
+      "period3": "61-90 days",
+      "period4": "90+ days"
+    },
+    "paymentVelocity": {
+      
+      "services": "Services"
+    },
+    "monthlyExpenses": {
+      
+      "may": "May",
+      "jun": "Jun"
+    }
+  },
+  "kpi": {
+    "totalRevenue": "Total Revenue",
+    "yoyGrowth": "YoY Growth",
+    "avgInvoiceValue": "Avg. Invoice Value",
+    "paymentTime": "Avg. Payment Time",
+    "paidInvoices": "Paid Invoices",
+    "overdueInvoices": "Overdue Invoices",
+    "activeClients": "Active Clients",
+    "newClients": "New Clients",
+    "performance": "Performance",
+    "vsPreviousMonth": "vs Previous Month"
+  },
+  "charts": {
+    "revenue": "Revenue",
+    "revenueTitle": "Revenue Trend",
+    "invoiceStatusTitle": "Invoice Status",
+    "months": {
+      "january": "January",
+      "february": "February",
+      "march": "March",
+      "april": "April",
+      "may": "May",
+      "june": "June",
+      "july": "July",
+      "august": "August",
+      "september": "September",
+      "october": "October",
+      "november": "November",
+      "december": "December"
+    },
+    "invoiceStatus": {
+      "paid": "Paid",
+      "pending": "Pending",
+      "overdue": "Overdue"
+    },
+    "invoiceAging": {
+      "label": "Invoice Aging",
+      "period1": "0-30 days",
+      "period2": "31-60 days",
+      "period3": "61-90 days",
+      "period4": "90+ days"
+    },
+    "paymentVelocity": {
+      "label": "Payment Velocity"
+    },
+    "invoiceGeneration": {
+      "label": "Invoice Generation"
+    },
+    "revenueBreakdown": {
+      "consulting": "Consulting",
+      "products": "Products",
+      "services": "Services"
+    },
+    "monthlyExpenses": {
+      "label": "Monthly Expenses"
+    },
+    "cashFlow": {
+      "label": "Cash Flow"
+    },
+    "profitMargin": {
+      "label": "Profit Margin"
+    },
+    "forecastProjection": {
+      "label": "Forecast Projection"
+    }
+  },
+  "timeSelector": {
+    "last30Days": "Last 30 Days",
+    "last90Days": "Last 90 Days",
+    "presets": {
+      "today": "Today",
+      "yesterday": "Yesterday",
+      "thisWeek": "This Week",
+      "lastWeek": "Last Week",
+      "thisMonth": "This Month",
+      "lastMonth": "Last Month",
+      "thisQuarter": "This Quarter",
+      "thisYear": "This Year",
+      "ytd": "Year to Date",
+      "customPeriod": "Custom Period"
+    },
+    "compare": {
+      "comparePeriod": "Compare Period"
+    }
+  },
+  "status": {
+    "paid": "Paid",
+    "pending": "Pending",
+    "overdue": "Overdue"
+  },
+  "common": {
+    "loading": "Loading analytics...",
+    "noData": "No data available for the selected period.",
+    "error": "An error occurred while loading data.",
+    "retry": "Retry",
+    "refresh": "Refresh",
+    "refreshing": "Refreshing...",
+    "days": "days"
+  },
+  "errors": {
+    "loadFailed": "Failed to load analytics data"
+  },
+  "kpi": {
+    "totalRevenue": "Total Revenue",
+    "totalInvoices": "Total Invoices",
+    "activeClients": "Active Clients",
+    "avgPaymentTime": "Average Payment Time"
+  },
+  "insights": {
+    "title": "Insights",
+    "avgMonthlyRevenue": "Average Monthly Revenue",
+    "paymentRate": "Payment Rate",
+    "avgInvoiceValue": "Average Invoice Value"
+  },
+  "lastUpdated": "Last updated",
+  "pageTitle": "Financial Analytics",
+  "pageSubtitle": "Deep dive into your business performance",
+  "advanced": {
+    "totalRevenue": "Total Revenue",
+    "profitMargin": "Profit Margin",
+    "totalExpenses": "Total Expenses",
+    "netProfit": "Net Profit",
+    "revenueGrowth": "Revenue Growth",
+    "expenseGrowth": "Expense Growth",
+    "income": "Income",
+    "expenses": "Expenses",
+    "netCashFlow": "Net Cash Flow",
+    "cashFlowTrend": "Cash Flow Trend",
+    "categoryDistribution": "Category Distribution",
+    "incomeDistribution": "Income Distribution",
+    "expenseDistribution": "Expense Distribution",
+    "noDataForDistribution": "No data for {{type}} distribution.",
+    "unknownCategory": "Unknown Category",
+    "noDataAvailable": "No data available",
+    "period": "Period",
+    "month": "Month",
+    "quarter": "Quarter",
+    "year": "Year",
+    "view": "View",
+    "details": "Details",
+    "applyFilters": "Apply Filters",
+    "exportData": "Export Data",
+    "kpiOverview": "KPI Overview",
+    "financialCharts": "Financial Charts"
+  },
+  "dashboard": {
+    "previousPeriod": "Previous",
+    "currentPeriod": "Current",
+    "financialHealth": "Financial Health",
+    "financialHealthSubtitle": "Key indicators of your business",
+    "overallScore": "Overall Score",
+    "liquidity": "Liquidity",
+    "profitability": "Profitability",
+    "growth": "Growth",
+    "efficiency": "Efficiency",
+    "excellent": "Excellent",
+    "good": "Good",
+    "fair": "Fair",
+    "poor": "Poor",
+    "monthlyTrend": "Monthly Trend",
+    "incomeVsExpenses": "Income vs Expenses",
+    "budgetVsActual": "Budget vs Actual",
+    "budget": "Budget",
+    "actual": "Actual",
+    "forecast": "Forecast",
+    "category": "Category",
+    "allCategories": "All Categories",
+    "autoRefresh": "Auto-refresh",
+    "editLayout": "Edit Layout",
+    "compareMode": "Compare",
+    "refresh": "Refresh",
+    "lastMonth": "Last Month",
+    "lastQuarter": "Last Quarter",
+    "currentYear": "Current Year",
+    "custom": "Custom",
+    "trends": "Trends",
+    "kpis": "KPIs",
+    "budgets": "Budgets",
+    "forecasts": "Forecasts",
+    "subtitle": "A complete overview of your finances",
+    "totalIncome": "Total Income",
+    "expenseRatio": "Expense Ratio",
+    "taxDeductible": "Tax Deductible",
+    "taxSavings": "Est. Tax Savings",
+    "incomeGrowth": "Income Growth",
+    "last30Days": "Last 30 Days",
+    "last90Days": "Last 90 Days",
+    "last12Months": "Last 12 Months",
+    "customRange": "Custom Range",
+    "startDate": "Start Date",
+    "endDate": "End Date",
+    "apply": "Apply",
+    "presets": {
+      "today": "Today",
+      "yesterday": "Yesterday",
+      "thisWeek": "This Week",
+      "lastWeek": "Last Week",
+      "thisMonth": "This Month",
+      "thisQuarter": "This Quarter",
+      "thisYear": "This Year",
+      "ytd": "Year to Date",
+      "customPeriod": "Custom Period"
+    },
+    "compare": {
+      "comparePeriod": "Compare Period",
+      "comparisonOptions": "Comparison Options",
+      "previousYear": "Previous Year"
+    }
+  }
+}

@@ -1,0 +1,67 @@
+{
+  "title": "Clienti",
+  "breadcrumb": "Clienti",
+  "search": {
+    "placeholder": "Cerca clienti..."
+  },
+  "addClient": "Aggiungi Cliente",
+  "tabs": {
+    "all": "Tutti i Clienti",
+    "active": "Attivi",
+    "pending": "In attesa",
+    "inactive": "Inattivi"
+  },
+  "filters": {
+    "clearFilters": "Pulisci Filtri",
+    "status": "Stato",
+    "revenue": "Fatturato",
+    "allStatus": "Tutti gli Stati",
+    "allRevenue": "Tutto il Fatturato",
+    "high": "Alto (≥€100.000)",
+    "medium": "Medio (€10.000 - €99.999)",
+    "low": "Basso (<€10.000)"
+  },
+  "actions": {
+    "refresh": "Aggiorna clienti",
+    "switchToCard": "Passa a vista a schede",
+    "switchToTable": "Passa a vista a tabella",
+    "view": "Vedi",
+    "edit": "Modifica",
+    "delete": "Elimina",
+    "createInvoice": "Crea Fattura",
+    "createQuote": "Crea Preventivo",
+    "viewProfile": "Vedi Profilo",
+    "sendEmail": "Invia Email",
+    "call": "Chiama",
+    "map": "Mappa"
+  },
+  "sort": {
+    "by": "Ordina per:",
+    "company": "Nome Azienda",
+    "date": "Ultimo Contatto",
+    "location": "SEDE",
+    "lastContact": "ULTIMO CONTATTO",
+    "editClient": "Modifica Cliente",
+    "clientName": "Nome Cliente",
+    "clientEmail": "Email Cliente",
+    "clientPhone": "Telefono Cliente",
+    "clientAddress": "Indirizzo Cliente",
+    "clientNotes": "Note Cliente",
+    "required": "*",
+    "placeholders": {
+      "name": "Inserisci nome cliente",
+      "email": "Inserisci email",
+      "phone": "Inserisci numero di telefono",
+      "address": "Inserisci indirizzo",
+      "notes": "Inserisci note"
+    },
+    "cancel": "Annulla",
+    "save": "Salva",
+    "saving": "Salvataggio...",
+    "validation": {
+      
+      "format": "Formato Esportazione",
+      "selectFormat": "Seleziona formato"
+    }
+  }
+}

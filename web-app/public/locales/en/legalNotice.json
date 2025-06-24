@@ -1,0 +1,137 @@
+{
+  "pageTitle": "Privacy Policy",
+  "header": {
+    "title": "Privacy Policy",
+    "subtitle": "How we protect and use your personal data",
+    "gdprCompliant": "GDPR Compliant",
+    "effectiveDate": "Effective Date: May 25, 2024",
+    "lastModified": "Last Modified: January 15, 2024",
+    "version": "Version: 3.2"
+  },
+  "introduction": {
+    "title": "Your Privacy is Important",
+    "p1": "At Nexa Manager, we take the protection of your personal data very seriously. This Privacy Policy explains how we collect, use, protect, and share your information when you use our services.",
+    "p2": "We are fully compliant with the European Union's General Data Protection Regulation (GDPR) and other applicable data privacy laws."
+  },
+  "sections": {
+    "dataCollection": {
+      "title": "1. Data We Collect",
+      "content": "We collect various types of data to provide you with our services: registration data (name, email, phone), usage data (platform activity, preferences), technical data (IP address, browser, device), and business data (customer information, invoices, documents). All data is collected with your explicit consent."
+    },
+    "dataUsage": {
+      "title": "2. How We Use Your Data",
+      "content": "We use your data to: provide and improve our services, process payments and transactions, communicate with you about the service, personalize your experience, ensure platform security, and comply with legal obligations. We never use your data for purposes other than those stated."
+    },
+    "dataSharing": {
+      "title": "3. Data Sharing",
+      "content": "We never sell your personal data. We only share data when necessary: with trusted service providers who help us operate (under strict confidentiality agreements), when required by law or competent authorities, to protect our legal rights, or with your explicit consent for third-party integrations."
+    },
+    "dataSecurity": {
+      "title": "4. Data Security",
+      "content": "We implement advanced security measures: end-to-end encryption for all sensitive data, automatic backups and geographic redundancy, continuous monitoring for suspicious activity, limited data access on a 'need-to-know' basis, ISO 27001 and SOC 2 security certifications, and regular third-party security audits."
+    }
+  },
+  "gdpr": {
+    "title": "Your GDPR Rights",
+    "intro": "In accordance with GDPR, you have the following rights regarding your personal data:",
+    "rights": {
+      "access": {
+        "title": "Right to Access",
+        "description": "You can request a copy of all the personal data we hold about you"
+      },
+      "rectification": {
+        "title": "Right to Rectification",
+        "description": "You can correct or update your personal data at any time"
+      },
+      "erasure": {
+        "title": "Right to Erasure",
+        "description": "You can request the deletion of your data ('right to be forgotten')"
+      },
+      "portability": {
+        "title": "Right to Portability",
+        "description": "You can obtain your data in a structured, readable format"
+      },
+      "restriction": {
+        "title": "Right to Restriction",
+        "description": "You can restrict the processing of your data in certain circumstances"
+      },
+      "objection": {
+        "title": "Right to Object",
+        "description": "You can object to the processing of your data for direct marketing"
+      }
+    },
+    "exerciseRights": "How to exercise your rights:",
+    "exerciseRightsDetails": "Contact us at privacy@nexamanager.com or use your account settings. We will respond within 30 days."
+  },
+  "retention": {
+    "title": "Data Retention",
+    "intro": "We retain your data only for as long as necessary for the purposes for which it was collected:",
+    "tableHeaders": {
+      "type": "Data Type",
+      "period": "Retention Period",
+      "reason": "Reason"
+    },
+    "rows": {
+      "account": {
+        "type": "Account Data",
+        "period": "For the duration of the service + 2 years",
+        "reason": "Contractual and tax compliance"
+      },
+      "billing": {
+        "type": "Billing Data",
+        "period": "10 years",
+        "reason": "Tax and accounting obligations"
+      },
+      "security": {
+        "type": "Security Logs",
+        "period": "2 years",
+        "reason": "Security and fraud prevention"
+      },
+      "marketing": {
+        "type": "Marketing Data",
+        "period": "Until consent is withdrawn",
+        "reason": "Marketing and communications"
+      },
+      "support": {
+        "type": "Support Data",
+        "period": "3 years",
+        "reason": "Service improvement"
+      }
+    }
+  },
+  "cookies": {
+    "title": "Cookies and Similar Technologies",
+    "essential": {
+      "title": "Essential Cookies",
+      "description": "Necessary for the service to function (authentication, security)"
+    },
+    "analytics": {
+      "title": "Analytics Cookies",
+      "description": "Help us understand how you use the service to improve it (with your consent)"
+    },
+    "marketing": {
+      "title": "Marketing Cookies",
+      "description": "Used to personalize content and advertisements (only with explicit consent)"
+    }
+  },
+  "transfers": {
+    "title": "International Transfers",
+    "intro": "Your data may be transferred to and processed in countries other than where you reside. When we transfer data outside the EU, we ensure adequate protections through:",
+    "methods": [
+      "Standard contractual clauses approved by the European Commission",
+      "Adequacy certifications for destination countries",
+      "Specific data protection agreements",
+      "Legal and technical guarantees equivalent to GDPR"
+    ]
+  },
+  "updates": {
+    "title": "Privacy Policy Updates",
+    "content": "We may update this Privacy Policy periodically to reflect changes in our services or applicable laws. We will notify you of any changes."
+  },
+  "contact": {
+    "title": "Questions about the Privacy Policy?",
+    "subtitle": "If you have questions or concerns, do not hesitate to contact us",
+    "email": "privacy@nexamanager.com",
+    "phone": "+39 351 693 692"
+  }
+}

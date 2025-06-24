@@ -1,0 +1,31 @@
+/* Stili per tutti gli input nei form */
+input[type='text'],
+input[type='email'],
+input[type='tel'],
+input[type='password'],
+input[type='number'],
+input[type='date'],
+input[type='search'],
+textarea,
+select {
+  padding: 0.75rem 1rem !important;
+  height: auto !important;
+  min-height: 2.75rem !important;
+  font-size: 1rem !important;
+}
+
+/* Aggiustamenti per le label */
+label {
+  margin-bottom: 0.5rem !important;
+}
+
+/* Stile per i gruppi di form */
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+/* Stile specifico per il container degli input */
+.input-container {
+  width: 100%;
+  position: relative;
+}

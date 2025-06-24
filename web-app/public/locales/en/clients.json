@@ -1,0 +1,67 @@
+{
+  "title": "Clients",
+  "breadcrumb": "Clients",
+  "search": {
+    "placeholder": "Search clients..."
+  },
+  "addClient": "Add Client",
+  "tabs": {
+    "all": "All Clients",
+    "active": "Active",
+    "pending": "Pending",
+    "inactive": "Inactive"
+  },
+  "filters": {
+    "clearFilters": "Clear Filters",
+    "status": "Status",
+    "revenue": "Revenue",
+    "allStatus": "All Status",
+    "allRevenue": "All Revenue",
+    "high": "High (≥€100,000)",
+    "medium": "Medium (€10,000 - €99,999)",
+    "low": "Low (<€10,000)"
+  },
+  "actions": {
+    "refresh": "Refresh clients",
+    "switchToCard": "Switch to card view",
+    "switchToTable": "Switch to table view",
+    "view": "View",
+    "edit": "Edit",
+    "delete": "Delete",
+    "createInvoice": "Create Invoice",
+    "createQuote": "Create Quote",
+    "viewProfile": "View Profile",
+    "sendEmail": "Send Email",
+    "call": "Call",
+    "map": "Map"
+  },
+  "sort": {
+    "by": "Sort by:",
+    "company": "Company Name",
+    "date": "Last Contact",
+    "location": "LOCATION",
+    "lastContact": "LAST CONTACT",
+    "editClient": "Edit Client",
+    "clientName": "Client Name",
+    "clientEmail": "Client Email",
+    "clientPhone": "Client Phone",
+    "clientAddress": "Client Address",
+    "clientNotes": "Client Notes",
+    "required": "*",
+    "placeholders": {
+      "name": "Enter client name",
+      "email": "Enter email",
+      "phone": "Enter phone number",
+      "address": "Enter address",
+      "notes": "Enter notes"
+    },
+    "cancel": "Cancel",
+    "save": "Save",
+    "saving": "Saving...",
+    "validation": {
+      
+      "format": "Export Format",
+      "selectFormat": "Select format"
+    }
+  }
+}

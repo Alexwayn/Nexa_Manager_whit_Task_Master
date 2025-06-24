@@ -1,0 +1,272 @@
+{
+  "title": "Clients",
+  "breadcrumb": "Clients",
+  "search": {
+    "placeholder": "Search clients..."
+  },
+  "addClient": "Add Client",
+  "tabs": {
+    "all": "All Clients",
+    "active": "Active",
+    "pending": "Pending",
+    "inactive": "Inactive"
+  },
+  "filters": {
+    "clearFilters": "Clear Filters",
+    "status": "Status",
+    "revenue": "Revenue",
+    "allStatus": "All Status",
+    "allRevenue": "All Revenue",
+    "high": "High (≥€100,000)",
+    "medium": "Medium (€10,000 - €99,999)",
+    "low": "Low (<€10,000)"
+  },
+  "actions": {
+    "refresh": "Refresh clients",
+    "switchToCard": "Switch to card view",
+    "switchToTable": "Switch to table view",
+    "view": "View",
+    "edit": "Edit",
+    "delete": "Delete",
+    "createInvoice": "Create Invoice",
+    "createQuote": "Create Quote",
+    "viewProfile": "View Profile",
+    "sendEmail": "Send Email",
+    "call": "Call",
+    "map": "Map"
+  },
+  "sort": {
+    "by": "Sort by:",
+    "company": "Company Name",
+    "date": "Last Contact",
+    "revenue": "Revenue"
+  },
+  "table": {
+    "company": "COMPANY",
+    "industry": "INDUSTRY",
+    "status": "STATUS",
+    "location": "LOCATION",
+    "lastContact": "LAST CONTACT",
+    "revenue": "REVENUE",
+    "actions": "ACTIONS"
+  },
+  "status": {
+    "active": "Active",
+    "pending": "Pending",
+    "inactive": "Inactive"
+  },
+  "pagination": {
+    "showing": "Showing",
+    "to": "to",
+    "of": "of",
+    "results": "results"
+  },
+  "modal": {
+    "newClient": "New Client",
+    "editClient": "Edit Client",
+    "clientName": "Client Name",
+    "clientEmail": "Client Email",
+    "clientPhone": "Client Phone",
+    "clientAddress": "Client Address",
+    "clientNotes": "Client Notes",
+    "required": "*",
+    "placeholders": {
+      "name": "Enter client name",
+      "email": "Enter email",
+      "phone": "Enter phone number",
+      "address": "Enter address",
+      "notes": "Enter notes"
+    },
+    "cancel": "Cancel",
+    "save": "Save",
+    "saving": "Saving...",
+    "validation": {
+      "required": "Name, email and phone are required fields"
+    }
+  },
+  "delete": {
+    "title": "Confirm Deletion",
+    "message": "Are you sure you want to delete client \"{{clientName}}\"? This action cannot be undone.",
+    "confirm": "Delete",
+    "deleting": "Deleting...",
+    "cancel": "Cancel"
+  },
+  "invoice": {
+    "title": "Create Invoice for {{clientName}}",
+    "number": "Invoice Number",
+    "date": "Invoice Date",
+    "dueDate": "Due Date",
+    "items": "Items",
+    "description": "Description",
+    "quantity": "Qty",
+    "price": "Price",
+    "total": "Total",
+    "addItem": "Add Item",
+    "removeItem": "Remove Item",
+    "subtotal": "Subtotal",
+    "tax": "Tax (22%)",
+    "grandTotal": "Grand Total",
+    "notes": "Notes",
+    "placeholders": {
+      "description": "Item description",
+      "notes": "Additional notes..."
+    },
+    "create": "Create Invoice",
+    "creating": "Creating..."
+  },
+  "quote": {
+    "title": "Create Quote for {{clientName}}",
+    "number": "Quote Number",
+    "date": "Quote Date",
+    "validUntil": "Valid Until",
+    "items": "Items",
+    "description": "Description",
+    "quantity": "Qty",
+    "price": "Price",
+    "total": "Total",
+    "addItem": "Add Item",
+    "removeItem": "Remove Item",
+    "subtotal": "Subtotal",
+    "tax": "Tax (22%)",
+    "grandTotal": "Grand Total",
+    "notes": "Notes",
+    "placeholders": {
+      "description": "Item description",
+      "notes": "Additional notes..."
+    },
+    "create": "Create Quote",
+    "creating": "Creating..."
+  },
+  "tableRow": {
+    "viewClient": "View client",
+    "editClient": "Edit client",
+    "createInvoice": "Create invoice",
+    "createQuote": "Create quote",
+    "deleteClient": "Delete client"
+  },
+  "card": {
+    "fallbackName": "Client",
+    "noPhone": "No phone",
+    "noCity": "No city",
+    "vatNumber": "VAT:",
+    "createdAt": "Created on",
+    "notAvailable": "N/A"
+  },
+  "time": {
+    "today": "Today",
+    "yesterday": "Yesterday",
+    "daysAgo": "{{count}} days ago",
+    "weeksAgo": "{{count}} weeks ago",
+    "monthsAgo": "{{count}} months ago",
+    "never": "Never"
+  },
+  "messages": {
+    "noClients": "No clients found",
+    "loading": "Loading clients...",
+    "error": "Error loading clients",
+    "saved": "Client saved successfully",
+    "deleted": "Client deleted successfully",
+    "invoiceCreated": "Invoice created successfully",
+    "quoteCreated": "Quote created successfully"
+  },
+  "industry": {
+    "technology": "Technology",
+    "manufacturing": "Manufacturing",
+    "healthcare": "Healthcare",
+    "finance": "Finance",
+    "retail": "Retail",
+    "consulting": "Consulting",
+    "education": "Education",
+    "realestate": "Real Estate",
+    "other": "Other"
+  },
+  "searchFilter": {
+    "placeholder": "Search clients by name, email, phone or city...",
+    "sort": "Sort",
+    "filters": "Filters",
+    "clear": "Clear",
+    "showingOf": "Showing {{filteredCount}} of {{totalClients}} clients",
+    "advancedFilters": "Advanced filters",
+    "city": "City",
+    "cityPlaceholder": "Enter city",
+    "all": "All",
+    "yes": "Yes",
+    "no": "No",
+    "hasEmail": "Has Email",
+    "hasPhone": "Has Phone",
+    "hasVatNumber": "Has VAT Number",
+    "apply": "Apply Filters",
+    "activeFilters": "Active filters:",
+    "sortOptions": {
+      "nameAsc": "Name (A-Z)",
+      "nameDesc": "Name (Z-A)",
+      "emailAsc": "Email (A-Z)",
+      "emailDesc": "Email (Z-A)",
+      "cityAsc": "City (A-Z)",
+      "cityDesc": "City (Z-A)",
+      "dateAsc": "Creation date (Oldest)",
+      "dateDesc": "Creation date (Newest)"
+    }
+  },
+  "history": {
+    "title": "Client History",
+    "back": "Back to clients",
+    "loadingError": "Error loading client history",
+    "loadingErrorMsg": "Unable to load client data",
+    "call": "Call",
+    "email": "Email",
+    "totalRevenue": "Total Revenue",
+    "invoices": "Invoices",
+    "quotes": "Quotes",
+    "appointments": "Appointments",
+    "timeline": "Timeline",
+    "invoiceTitle": "Invoice {{number}}",
+    "quoteTitle": "Quote {{number}}",
+    "status": {
+      "draft": "Draft",
+      "sent": "Sent",
+      "paid": "Paid",
+      "overdue": "Overdue",
+      "cancelled": "Cancelled",
+      "accepted": "Accepted",
+      "rejected": "Rejected",
+      "expired": "Expired",
+      "scheduled": "Scheduled",
+      "completed": "Completed"
+    }
+  },
+  "importExport": {
+    "title": "Import/Export Clients",
+    "importTab": "Import",
+    "exportTab": "Export",
+    "close": "Close",
+    "import": {
+      "unsupportedFormat": "Unsupported file format. Use CSV or Excel (.csv, .xls, .xlsx)",
+      "fileTooLarge": "File too large. Maximum size: 5MB",
+      "selectFile": "Select a file to import",
+      "dragAndDrop": "Drag and drop your file here",
+      "or": "or",
+      "browse": "Browse files",
+      "fileSelected": "File selected:",
+      "change": "Change",
+      "downloadTemplate": "Download CSV Template",
+      "importButton": "Import Clients",
+      "importing": "Importing...",
+      "reImport": "Import Another File",
+      "results": "Import Results",
+      "success": "Import completed: {{count}} clients imported",
+      "warning": "{{count}} errors during import",
+      "error": "Error during import",
+      "errorMessage": "Error during import: {{message}}",
+      "errorsList": "Errors:"
+    },
+    "export": {
+      "noClients": "No clients to export",
+      "success": "Exported {{count}} clients",
+      "error": "Error during export: {{message}}",
+      "exportButton": "Export Clients",
+      "format": "Export Format",
+      "selectFormat": "Select format"
+    }
+  }
+}

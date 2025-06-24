@@ -1,0 +1,196 @@
+{
+  "tabs": {
+    "overview": {
+      "name": "Panoramica",
+      "description": "Dashboard finanziaria in tempo reale"
+    },
+    "detailed": {
+      "name": "Analisi Dettagliata",
+      "description": "Analisi complete e grafici dettagliati"
+    },
+    "forecasting": {
+      "name": "Previsioni",
+      "description": "Previsioni e proiezioni"
+    }
+  },
+  "charts": {
+    "invoiceStatus": {
+      "title": "Stato Fatture",
+      "paid": "Pagato",
+      "pending": "In attesa",
+      "overdue": "Scaduto"
+    },
+    "invoiceAging": {
+      "title": "Report Scaduto Fatture",
+      "label": "Importo Scaduto",
+      "period1": "0-30 giorni",
+      "period2": "31-60 giorni",
+      "period3": "61-90 giorni",
+      "period4": "90+ giorni"
+    },
+    "paymentVelocity": {
+      "title": "Velocità di Pagamento",
+      "label": "Giorni al Pagamento"
+    },
+    "invoiceGeneration": {
+      "title": "Generazione Fatture",
+      "label": "Fatture Generate"
+    },
+    "revenueBreakdown": {
+      "title": "Dettaglio Entrate",
+      "consulting": "Consulenza",
+      "products": "Prodotti",
+      "services": "Servizi"
+    },
+    "monthlyExpenses": {
+      "title": "Spese Mensili",
+      "label": "Spese Mensili"
+    },
+    "cashFlow": {
+      "title": "Flusso di Cassa",
+      "label": "Flusso di Cassa"
+    },
+    "profitMargin": {
+      "title": "Margine di Profitto",
+      "label": "Margine di Profitto (%)"
+    },
+    "forecastProjection": {
+      "title": "Proiezione Previsionale",
+      "label": "Entrate Previste"
+    },
+    "months": {
+      "jan": "Gen",
+      "feb": "Feb",
+      "mar": "Mar",
+      "apr": "Apr",
+      "may": "Mag",
+      "jun": "Giu"
+    }
+  },
+  "kpi": {
+    "totalRevenue": "Entrate Totali",
+    "yoyGrowth": "Crescita su base annua",
+    "avgInvoiceValue": "Valore Medio Fattura",
+    "paymentTime": "Tempo Medio Pagamento",
+    "paidInvoices": "Fatture Pagate",
+    "overdueInvoices": "Fatture Scadute",
+    "activeClients": "Clienti Attivi",
+    "newClients": "Nuovi Clienti",
+    "performance": "Performance",
+    "vsPreviousMonth": "vs Mese Precedente"
+  },
+  "common": {
+    "loading": "Caricamento analytics...",
+    "noData": "Nessun dato disponibile per il periodo selezionato.",
+    "error": "Si è verificato un errore durante il caricamento dei dati."
+  },
+  "pageTitle": "Analisi Finanziaria",
+  "pageSubtitle": "Approfondimento sulle performance del tuo business",
+  "advanced": {
+    "totalRevenue": "Entrate Totali",
+    "totalExpenses": "Spese Totali",
+    "netProfit": "Profitto Netto",
+    "profitMargin": "Margine di Profitto",
+    "revenueGrowth": "Crescita Entrate",
+    "expenseGrowth": "Crescita Spese",
+    "cashFlow": "Flusso di Cassa",
+    "income": "Entrate",
+    "expenses": "Spese",
+    "netCashFlow": "Flusso di Cassa Netto",
+    "cashFlowTrend": "Andamento Flusso di Cassa",
+    "categoryDistribution": "Distribuzione Categorie",
+    "incomeDistribution": "Distribuzione Entrate",
+    "expenseDistribution": "Distribuzione Spese",
+    "noDataForDistribution": "Nessun dato per la distribuzione delle {{type}}.",
+    "unknownCategory": "Categoria Sconosciuta",
+    "noDataAvailable": "Nessun dato disponibile",
+    "period": "Periodo",
+    "month": "Mese",
+    "quarter": "Trimestre",
+    "year": "Anno",
+    "view": "Vista",
+    "overview": "Panoramica",
+    "details": "Dettagli",
+    "applyFilters": "Applica Filtri",
+    "exportData": "Esporta Dati",
+    "kpiOverview": "Panoramica KPI",
+    "financialCharts": "Grafici Finanziari"
+  },
+  "dashboard": {
+    "previousPeriod": "Precedente",
+    "currentPeriod": "Corrente",
+    "financialHealth": "Salute Finanziaria",
+    "financialHealthSubtitle": "Indicatori chiave del tuo business",
+    "overallScore": "Punteggio Generale",
+    "liquidity": "Liquidità",
+    "profitability": "Redditività",
+    "growth": "Crescita",
+    "efficiency": "Efficienza",
+    "excellent": "Eccellente",
+    "good": "Buono",
+    "fair": "Sufficiente",
+    "poor": "Scarso",
+    "monthlyTrend": "Andamento Mensile",
+    "incomeVsExpenses": "Entrate vs Spese",
+    "budgetVsActual": "Budget vs Effettivo",
+    "budget": "Budget",
+    "actual": "Effettivo",
+    "forecast": "Previsione",
+    "category": "Categoria",
+    "allCategories": "Tutte le Categorie",
+    "autoRefresh": "Aggiornamento automatico",
+    "editLayout": "Modifica Layout",
+    "compareMode": "Confronta",
+    "refresh": "Aggiorna",
+    "period": "Periodo",
+    "lastMonth": "Ultimo Mese",
+    "lastQuarter": "Ultimo Trimestre",
+    "currentYear": "Anno Corrente",
+    "custom": "Personalizzato",
+    "overview": "Panoramica",
+    "trends": "Andamenti",
+    "kpis": "KPIs",
+    "budgets": "Budget",
+    "forecasts": "Previsioni",
+    "title": "Dashboard Finanziaria",
+    "subtitle": "Una panoramica completa delle tue finanze",
+    "totalIncome": "Entrate Totali",
+    "totalExpenses": "Spese Totali",
+    "netProfit": "Profitto Netto",
+    "profitMargin": "Margine di Profitto",
+    "expenseRatio": "Rapporto Spese/Ricavi",
+    "taxDeductible": "Deducibilità Fiscale",
+    "taxSavings": "Risparmio Fiscale Stimato",
+    "incomeGrowth": "Crescita Entrate",
+    "expenseGrowth": "Crescita Spese"
+  },
+  "timeSelector": {
+    "title": "Seleziona Periodo di Tempo",
+    "last7Days": "Ultimi 7 Giorni",
+    "last30Days": "Ultimi 30 Giorni",
+    "last90Days": "Ultimi 90 Giorni",
+    "last12Months": "Ultimi 12 Mesi",
+    "customRange": "Intervallo Personalizzato",
+    "startDate": "Data di Inizio",
+    "endDate": "Data di Fine",
+    "apply": "Applica",
+    "presets": {
+      "today": "Oggi",
+      "yesterday": "Ieri",
+      "thisWeek": "Questa Settimana",
+      "lastWeek": "Settimana Scorsa",
+      "thisMonth": "Questo Mese",
+      "lastMonth": "Mese Scorso",
+      "thisQuarter": "Questo Trimestre",
+      "thisYear": "Quest'Anno",
+      "ytd": "Anno a Oggi",
+      "customPeriod": "Periodo Personalizzato"
+    },
+    "compare": {
+      "comparePeriod": "Confronta Periodo",
+      "comparisonOptions": "Opzioni di Confronto",
+      "previousPeriod": "Periodo Precedente",
+      "previousYear": "Anno Precedente"
+    }
+  }
+}

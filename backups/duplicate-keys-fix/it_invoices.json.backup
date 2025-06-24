@@ -1,0 +1,285 @@
+{
+  "breadcrumb": "Fatture e Preventivi",
+  "title": "Fatture e Preventivi",
+  "actions": {
+    "createNew": "Crea Nuovo",
+    "export": "Esporta"
+  },
+  "tabs": {
+    "invoices": "Fatture",
+    "quotes": "Preventivi"
+  },
+  "stats": {
+    "totalOutstanding": {
+      "title": "Totale Insoluto",
+      "subtitle": "Da {{count}} fatture",
+      "trend": "{{percent}}% dall'ultimo mese"
+    },
+    "paidThisMonth": {
+      "title": "Pagato Questo Mese",
+      "subtitle": "Da {{count}} fatture",
+      "trend": "{{percent}}% dall'ultimo mese"
+    },
+    "overdue": {
+      "title": "Scaduto",
+      "subtitle": "Da {{count}} fatture",
+      "trend": "{{percent}}% dall'ultimo mese"
+    },
+    "averagePaymentTime": {
+      "title": "Tempo Medio di Pagamento",
+      "subtitle": "Ultimi 30 giorni",
+      "trend": "{{days}} giorni di miglioramento"
+    }
+  },
+  "quickActions": {
+    "createInvoice": {
+      "title": "Crea Fattura",
+      "description": "Genera nuova fattura",
+      "button": "Crea Ora"
+    },
+    "createQuote": {
+      "title": "Crea Preventivo",
+      "description": "Genera nuovo preventivo",
+      "button": "Crea Ora"
+    },
+    "sendReminders": {
+      "title": "Invia Promemoria",
+      "description": "Promemoria di pagamento",
+      "button": "Invia Ora"
+    },
+    "generateReport": {
+      "title": "Genera Report",
+      "description": "Analisi finanziaria",
+      "button": "Genera"
+    }
+  },
+  "analytics": {
+    "paymentStatus": {
+      "title": "Stato Pagamenti",
+      "paid": "Pagato",
+      "pending": "In attesa",
+      "overdue": "Scaduto"
+    },
+    "monthlyInvoices": {
+      "title": "Fatture Mensili",
+      "subtitle": "Performance ultimi 6 mesi",
+      "created": "Create",
+      "paid": "Pagate",
+      "thisMonth": "Questo mese"
+    },
+    "topClients": {
+      "title": "Migliori Clienti",
+      "viewAll": "Vedi Tutti",
+      "viewAllClients": "Vedi Tutti i Clienti"
+    }
+  },
+  "filters": {
+    "title": "Filtri",
+    "clearAll": "Pulisci Tutti",
+    "status": {
+      "label": "Stato",
+      "all": "Tutti gli Stati",
+      "paid": "Pagato",
+      "sent": "Inviato",
+      "overdue": "Scaduto",
+      "draft": "Bozza"
+    },
+    "client": {
+      "label": "Cliente",
+      "all": "Tutti i Clienti"
+    },
+    "dateRange": {
+      "label": "Intervallo di Date",
+      "placeholder": "Seleziona intervallo di date"
+    },
+    "amount": {
+      "label": "Importo",
+      "any": "Qualsiasi Importo"
+    },
+    "applyFilters": "Applica Filtri"
+  },
+  "table": {
+    "title": "Tutte le Fatture",
+    "show": "Mostra:",
+    "perPage": {
+      "10": "10 per pagina",
+      "25": "25 per pagina",
+      "50": "50 per pagina"
+    },
+    "headers": {
+      "invoice": "Fattura #",
+      "client": "Cliente",
+      "issueDate": "Data Emissione",
+      "dueDate": "Data Scadenza",
+      "amount": "Importo",
+      "status": "Stato",
+      "actions": "Azioni"
+    }
+  },
+  "status": {
+    "paid": "Pagato",
+    "sent": "Inviato",
+    "overdue": "Scaduto",
+    "draft": "Bozza"
+  },
+  "pagination": {
+    "showing": "Mostrando da {{start}} a {{end}} di {{total}} voci",
+    "previous": "Precedente",
+    "next": "Successivo"
+  },
+  "recentActivity": {
+    "title": "Attività Recente",
+    "viewAll": "Vedi Tutto",
+    "payment": "La fattura #{{invoiceId}} è stata pagata da {{clientName}}",
+    "created": "È stata creata una nuova fattura #{{invoiceId}} per {{clientName}}",
+    "reminder": "Promemoria di pagamento inviato a {{clientName}} per la fattura #{{invoiceId}}",
+    "overdue": "La fattura #{{invoiceId}} per {{clientName}} è ora scaduta",
+    "time": {
+      "minutesAgo": "{{count}} minuti fa",
+      "hourAgo": "1 ora fa",
+      "hoursAgo": "{{count}} ore fa",
+      "dayAgo": "1 giorno fa",
+      "daysAgo": "{{count}} giorni fa"
+    }
+  },
+  "footer": {
+    "description": "Semplifica le operazioni aziendali con la nostra piattaforma di gestione completa.",
+    "resources": {
+      "title": "Risorse",
+      "helpCenter": "Centro Assistenza",
+      "documentation": "Documentazione",
+      "apiReference": "Riferimento API",
+      "systemStatus": "Stato del Sistema"
+    },
+    "legal": {
+      "title": "Legale",
+      "termsOfService": "Termini di Servizio",
+      "privacyPolicy": "Informativa sulla Privacy",
+      "security": "Sicurezza",
+      "compliance": "Conformità"
+    },
+    "contact": {
+      "title": "Contattaci",
+      "email": "support@nexamanager.com",
+      "phone": "Supporto Live (+39 351 693 692)",
+      "description": "Hai bisogno di assistenza? Il nostro team di supporto è disponibile 24/7 per aiutarti.",
+      "button": "Contatta il Supporto"
+    },
+    "copyright": "© 2025 Nexa Manager. Tutti i diritti riservati.",
+    "securityVerified": "Sicurezza Verificata",
+    "language": "Italiano (IT)"
+  },
+  "quoteConverter": {
+    "title": "Converti Preventivo in Fattura",
+    "subtitle": "Converti il Preventivo n.{{quoteNumber}} in una nuova fattura.",
+    "steps": {
+      "validation": "Validazione",
+      "options": "Opzioni",
+      "confirmation": "Conferma"
+    },
+    "validation": {
+      "title": "Validazione Conversione",
+      "status": "Stato",
+      "client": "Cliente",
+      "items": "Articoli",
+      "total": "Totale",
+      "warnings": "Avvisi",
+      "errors": "Errori",
+      "canConvert": "Pronto per la Conversione",
+      "cannotConvert": "Conversione non Possibile"
+    },
+    "options": {
+      "title": "Opzioni Fattura",
+      "issueDate": "Data di Emissione Fattura",
+      "paymentTerms": "Termini di Pagamento (giorni)",
+      "dueDate": "Data di Scadenza",
+      "notes": "Note Fattura",
+      "preserveQuoteNotes": "Conserva le note del preventivo originale",
+      "sendEmail": "Invia la fattura al cliente alla creazione"
+    },
+    "confirmation": {
+      "title": "Conferma Conversione",
+      "message": "Stai per convertire il Preventivo n.{{quoteNumber}} in una nuova fattura. Questa azione non può essere annullata.",
+      "invoiceSummary": "Riepilogo Nuova Fattura",
+      "client": "Cliente:",
+      "issueDate": "Data di Emissione:",
+      "dueDate": "Data di Scadenza:",
+      "total": "Importo Totale:"
+    },
+    "buttons": {
+      "next": "Avanti",
+      "back": "Indietro",
+      "convert": "Converti in Fattura",
+      "converting": "Conversione in corso...",
+      "close": "Chiudi"
+    },
+    "errors": {
+      "generic": "Errore durante la conversione del preventivo.",
+      "status": "Il preventivo deve essere nello stato 'Accettato' per essere convertito.",
+      "alreadyConverted": "Questo preventivo è già stato convertito in fattura.",
+      "noItems": "Il preventivo deve contenere almeno un articolo per essere convertito.",
+      "noClient": "Il preventivo deve essere associato a un cliente valido.",
+      "cannotConvert": "Impossibile convertire il preventivo. Risolvi tutti gli errori prima di procedere."
+    },
+    "warnings": {
+      "expired": "Il preventivo è scaduto. Assicurati che il cliente abbia confermato l'accettazione.",
+      "missingFiscalCode": "Il cliente ha una P.IVA ma manca il codice fiscale. Potrebbe essere necessario per la fatturazione."
+    },
+    "success": {
+      "title": "Conversione Riuscita!",
+      "message": "Il Preventivo n.{{quoteNumber}} è stato convertito con successo nella Fattura n.{{invoiceNumber}}."
+    },
+    "statusLabels": {
+      "draft": "Bozza",
+      "sent": "Inviato",
+      "accepted": "Accettato",
+      "rejected": "Rifiutato",
+      "expired": "Scaduto",
+      "converted": "Convertito"
+    },
+    "quoteToInvoice": "Converti Preventivo in Fattura",
+    "quoteToInvoiceSuccess": "Preventivo convertito in fattura con successo."
+  },
+  "paymentModal": {
+    "title": "Registra Pagamento",
+    "subtitle": "Fattura {{invoiceNumber}} - {{clientName}}",
+    "newPayment": "Nuovo Pagamento",
+    "totalInvoice": "Totale Fattura:",
+    "alreadyPaid": "Già Pagato:",
+    "remainingBalance": "Saldo Rimanente:",
+    "newBalance": "Nuovo Saldo:",
+    "paymentAmount": "Importo Pagamento *",
+    "fullBalance": "Saldo Completo",
+    "halfBalance": "Metà Saldo",
+    "paymentDate": "Data Pagamento *",
+    "paymentMethod": "Metodo di Pagamento *",
+    "reference": "Riferimento",
+    "referencePlaceholder": "Es. ID Transazione",
+    "notes": "Note",
+    "notesPlaceholder": "Es. Pagamento anticipato",
+    "recordPayment": "Registra Pagamento",
+    "recordingPayment": "Registrazione...",
+    "paymentHistory": "Storico Pagamenti",
+    "noPayments": "Nessun pagamento ancora registrato.",
+    "date": "Data",
+    "amount": "Importo",
+    "method": "Metodo",
+    "close": "Chiudi",
+    "errorInvalidAmount": "Inserire un importo valido maggiore di zero.",
+    "errorAmountExceeds": "L'importo non può superare il saldo rimanente di €{{balance}}.",
+    "errorDateRequired": "Selezionare una data di pagamento.",
+    "errorDateInFuture": "La data di pagamento non può essere futura.",
+    "successMessage": "Pagamento registrato con successo!",
+    "errorMessage": "Errore durante la registrazione del pagamento"
+  },
+  "paymentMethods": {
+    "cash": "Contanti",
+    "bank_transfer": "Bonifico Bancario",
+    "credit_card": "Carta di Credito",
+    "debit_card": "Carta di Debito",
+    "check": "Assegno",
+    "paypal": "PayPal",
+    "stripe": "Stripe",
+    "other": "Altro"
+  }
+}

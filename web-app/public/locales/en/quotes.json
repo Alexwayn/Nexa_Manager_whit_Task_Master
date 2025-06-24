@@ -1,0 +1,101 @@
+{
+  "title": "Quotes",
+  "breadcrumb": "Quotes",
+  "actions": {
+    "createNew": "Create New Quote",
+    "export": "Export"
+  },
+  "stats": {
+    "totalPending": {
+      
+      "subtitle": "From {{count}} quotes",
+      "trend": "{{percent}}% from last month"
+    },
+    "acceptedThisMonth": {
+      
+      "asc": "Ascending"
+    },
+    "clientPlaceholder": "Search by client ID or name"
+  },
+  "actionsDropdown": {
+    "view": "View",
+    "edit": "Edit",
+    "delete": "Delete",
+    "sendEmail": "Send Email",
+    "convertToInvoice": "Convert to Invoice"
+  },
+  "status": {
+    "pending": "Pending",
+    "accepted": "Accepted",
+    "rejected": "Rejected",
+    "draft": "Draft",
+    "sent": "Sent",
+    "expired": "Expired",
+    "unknown": "Unknown"
+  },
+  "recentActivities": {
+    "quoteCreated": "Quote {{quoteNumber}} created for {{clientName}}",
+    "quoteAccepted": "Quote {{quoteNumber}} accepted by {{clientName}}",
+    "quoteSent": "Quote {{quoteNumber}} sent to {{clientName}}",
+    "quoteRejected": "Quote {{quoteNumber}} rejected by {{clientName}}"
+  },
+  "nexaManager": "Nexa Manager",
+  "lifecycle": {
+    
+    "currentStatus": "Current Status:",
+    "status": {
+      "bozza": {
+        "name": "Draft",
+        "description": "Quote in preparation"
+      },
+      "inviato": {
+        
+        "description": "Quote sent to the client"
+      },
+      "accettato": {
+        
+        "description": "Quote accepted by the client"
+      },
+      "rifiutato": {
+        
+        "description": "Quote rejected by the client"
+      },
+      "scaduto": {
+        
+        "description": "Quote has expired"
+      },
+      "convertito": {
+        
+        "description": "Send the quote to the client"
+      },
+      "markAccepted": {
+        
+        "description": "The client has accepted the quote"
+      },
+      "markRejected": {
+        
+        "description": "The client has rejected the quote"
+      },
+      "markExpired": {
+        
+        "terms": "Standard consulting terms apply."
+      },
+      "softwareDevelopment": {
+        
+        "terms": "Payment upon milestone completion."
+      },
+      "systemMaintenance": {
+        
+        "terms": "Monthly recurring payment."
+      },
+      "productSale": {
+        
+        "terms": "Product returnable within 14 days."
+      },
+      "customProject": {
+        
+        "terms": "Terms to be agreed upon."
+      }
+    }
+  }
+}

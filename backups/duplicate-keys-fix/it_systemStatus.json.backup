@@ -1,0 +1,72 @@
+{
+  "header": {
+    "title": "Stato del Sistema",
+    "subtitle": "Monitora lo stato dei servizi Nexa Manager in tempo reale"
+  },
+  "overallStatus": {
+    "allOperational": "Tutti i sistemi operativi",
+    "serviceOutage": "Interruzione del servizio",
+    "partiallyDegraded": "Servizi parzialmente degradati",
+    "lastUpdate": "Ultimo aggiornamento: {{time}}"
+  },
+  "metrics": {
+    "globalUptime": "Uptime Globale",
+    "avgResponseTime": "Tempo Risposta Medio",
+    "requestsPerMinute": "Richieste/Minuto",
+    "activeUsers": "Utenti Attivi"
+  },
+  "services": {
+    "title": "Stato dei Servizi",
+    "apiCore": {
+      "name": "API Core",
+      "description": "Servizi API principali"
+    },
+    "database": {
+      "name": "Database",
+      "description": "Database principale e backup"
+    },
+    "webApp": {
+      "name": "Web Application",
+      "description": "Interfaccia web e dashboard"
+    },
+    "emailService": {
+      "name": "Servizio Email",
+      "description": "Invio email e notifiche"
+    },
+    "paymentGateway": {
+      "name": "Gateway di Pagamento",
+      "description": "Processamento pagamenti"
+    },
+    "fileStorage": {
+      "name": "Archiviazione File",
+      "description": "Archiviazione documenti e file"
+    },
+    "status": {
+      "operational": "Operativo",
+      "maintenance": "Manutenzione",
+      "degraded": "Degradato",
+      "outage": "Non disponibile",
+      "unknown": "Sconosciuto"
+    }
+  },
+  "incidents": {
+    "title": "Incidenti e Manutenzione",
+    "noIncidents": "Nessun incidente attivo.",
+    "plannedMaintenance": "Manutenzione programmata Gateway di Pagamento",
+    "apiSlowdown": "Rallentamenti API risolti",
+    "status": {
+      "in-progress": "In corso",
+      "resolved": "Risolto"
+    },
+    "severity": {
+      "low": "Bassa",
+      "medium": "Media",
+      "high": "Alta"
+    },
+    "updates": "Aggiornamenti",
+    "maintenanceStart": "Iniziata manutenzione programmata",
+    "issueResolved": "Problema risolto. Tutte le API funzionano normalmente.",
+    "causeIdentified": "Identificata la causa. Implementando la correzione.",
+    "slowdownReported": "Segnalati rallentamenti nelle API. Investigando."
+  }
+}

@@ -1,0 +1,85 @@
+{
+  "title": "Gestione Email",
+  "subtitle": "Invia fatture, promemoria e gestisci i template email",
+  "tabs": {
+    "send": "Invia Email",
+    "activity": "Cronologia",
+    "templates": "Template",
+    "settings": "Impostazioni"
+  },
+  "sendInvoice": {
+    
+    "selectInvoice": "Seleziona una fattura",
+    "selectPlaceholder": "Seleziona una fattura...",
+    "recipientEmail": "Email del destinatario",
+    "recipientPlaceholder": "cliente@esempio.com",
+    "customMessage": "Messaggio personalizzato (opzionale)",
+    "messagePlaceholder": "es. Ecco la fattura per i servizi recenti...",
+    "sendButton": "Invia Fattura"
+  },
+  "sendReminder": {
+    
+    "description": "Invia promemoria automatici per le fatture scadute",
+    "firstReminder": "Invia 1° Promemoria",
+    "secondReminder": "Invia 2° Promemoria",
+    "overdueNotice": "Invia Avviso di Scadenza"
+  },
+  "activityLog": {
+    
+    "recipient": "Destinatario",
+    "subject": "Oggetto",
+    "date": "Data",
+    "status": "Stato"
+  },
+  "alerts": {
+    "selectInvoiceAndEmail": "Seleziona una fattura e inserisci un indirizzo email",
+    "emailSentSuccess": "Email inviata con successo!",
+    "sendError": "Errore nell'invio: {{error}}",
+    "genericSendError": "Errore durante l'invio dell'email",
+    "reminderSentSuccess": "Promemoria inviato con successo!",
+    "genericReminderError": "Errore durante l'invio del promemoria",
+    "enterTestEmail": "Inserisci un indirizzo email per il test",
+    "testSentSuccess": "Email di test inviata con successo!",
+    "testError": "Errore nel test: {{error}}",
+    "genericTestError": "Errore durante il test email"
+  },
+  "clientEmail": {
+    
+    "defaultMessage": "Messaggio personalizzato per il cliente",
+    "companyName": "La mia Azienda",
+    "companyEmail": "info@lamiaazienda.com"
+  },
+  "quoteSender": {
+    
+    "steps": {
+      "setup": "Impostazione",
+      "preview": "Anteprima",
+      "result": "Risultato"
+    },
+    "labels": {
+      
+      "recipientName": "Nome Destinatario",
+      "template": "Modello",
+      "includeAttachment": "Includi Allegato PDF",
+      "scheduleSend": "Programma Invio (opzionale)"
+    },
+    "buttons": {
+      "next": "Avanti",
+      "back": "Indietro",
+      "close": "Chiudi",
+      "tryAgain": "Riprova",
+      "sendAnother": "Invia un'altra Email"
+    },
+    "sending": {
+      
+      "subtitle": "Attendere prego, stiamo inviando il preventivo."
+    },
+    "notScheduled": "Promemoria non pianificati."
+  },
+  "companyDetails": {
+    
+    "email": "info@nexamanager.com",
+    "phone": "+39 123 456 7890",
+    "address": "Via Roma 123, 00100 Roma (RM)"
+  }
+}

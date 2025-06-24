@@ -1,0 +1,102 @@
+{
+  "title": "Accedi al tuo account",
+  "subtitle": "Inserisci le tue credenziali per accedere al tuo account",
+  "email": "Indirizzo email",
+  "password": "Password",
+  "rememberMe": "Ricordami",
+  "forgotPassword": "Password dimenticata?",
+  "signIn": "Accedi",
+  "signInWithGoogle": "Accedi con Google",
+  "signInWithApple": "Accedi con Apple",
+  "noAccount": "Non hai un account?",
+  "createAccount": "Crea un account gratuito",
+  "social": {
+    "divider": "oppure",
+    "google": "Continua con Google",
+    "apple": "Continua con Apple"
+  },
+  "buttons": {
+    "signIn": "Accedi",
+    "demo": "Prova Demo",
+    "loading": "Caricamento..."
+  },
+  "tabs": {
+    "login": "Accedi",
+    "register": "Registrati"
+  },
+  "placeholders": {
+    "email": "Inserisci il tuo indirizzo email",
+    "password": "Inserisci la tua password",
+    "fullName": {
+      "label": "Nome completo",
+      "placeholder": "Inserisci il tuo nome completo"
+    },
+    "phone": {
+      
+      "optional": "(opzionale)"
+    },
+    "businessType": {
+      
+      "help": "Questo ci aiuta a personalizzare la tua esperienza"
+    },
+    "vatNumber": {
+      
+      "reviews": "Valutazione media"
+    },
+    "feature1": {
+      
+      "stats": "1000+ clienti gestiti"
+    },
+    "feature2": {
+      
+      "stats": "50k+ fatture generate"
+    },
+    "feature3": {
+      
+      "noCard": "Nessuna carta richiesta"
+    }
+  },
+  "passwordRecoveryModal": {
+    "titleStep1": "Recupera Password",
+    "step1Instruction": "Inserisci il tuo indirizzo email e ti invieremo un link per reimpostare la password",
+    "emailLabel": "Indirizzo Email",
+    "emailPlaceholder": "Inserisci il tuo indirizzo email",
+    "cancel": "Annulla",
+    "sendLink": "Invia Link di Recupero"
+  },
+  "marketing": {
+    "badge": "Nuovo",
+    "logoAlt": "Nexa Manager Logo",
+    "description": {
+      "main": "Gestisci il tuo business con",
+      "highlight": "Nexa Manager",
+      "main_after": "la piattaforma completa per professionisti e aziende"
+    },
+    "stats": {
+      "users": "10.000+ utenti attivi",
+      "uptime": "99.9% uptime garantito",
+      "reviews": "4.9/5 stelle di valutazione"
+    },
+    "feature1": {
+      "title": "Gestione Clienti",
+      "description": "Organizza e gestisci tutti i tuoi clienti in un unico posto",
+      "stats": "1000+ clienti gestiti"
+    },
+    "feature2": {
+      "title": "Fatturazione Automatica",
+      "description": "Crea e invia fatture professionali in pochi click",
+      "stats": "50k+ fatture generate"
+    },
+    "feature3": {
+      "title": "Analisi Avanzate",
+      "description": "Monitora le performance del tuo business in tempo reale",
+      "stats": "Dashboard in tempo reale"
+    },
+    "cta": {
+      "title": "Inizia Gratis Oggi",
+      "description": "Prova tutte le funzionalità per 30 giorni senza impegno",
+      "button": "Inizia Prova Gratuita",
+      "noCard": "Nessuna carta richiesta"
+    }
+  }
+}

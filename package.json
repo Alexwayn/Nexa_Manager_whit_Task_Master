@@ -1,0 +1,30 @@
+{
+  "name": "nexa-manager-with-task-master",
+  "version": "1.0.0",
+  "description": "Business Management Application with Task Master Integration",
+  "private": true,
+  "workspaces": [
+    "web-app"
+  ],
+  "scripts": {
+    "dev": "node startup-check.js && cd web-app && npm run dev",
+    "build": "cd web-app && npm run build",
+    "preview": "cd web-app && npm run preview",
+    "lint": "cd web-app && npm run lint",
+    "install-all": "npm install && cd web-app && npm install",
+    "clean": "cd web-app && rm -rf node_modules && rm -f package-lock.json && npm install",
+    "start": "npm run dev",
+    "check": "node startup-check.js"
+  },
+  "keywords": [
+    "business-management",
+    "react",
+    "task-master",
+    "supabase"
+  ],
+  "author": "Alex Ventures Studio",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+} 

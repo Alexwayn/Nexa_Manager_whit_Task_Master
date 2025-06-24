@@ -1,0 +1,47 @@
+{
+  "title": "Generatore PDF Fatture",
+  "subtitle": "Sistema di generazione PDF professionale per fatture italiane",
+  "configTitle": "Configurazione PDF",
+  "templateLabel": "Template",
+  "templates": {
+    "standard": "Standard",
+    "professional": "Professionale",
+    "minimal": "Minimale",
+    "detailed": "Dettagliato"
+  },
+  "optionsLabel": "Opzioni",
+  "includeQR": "Includi codice QR per verifica digitale",
+  "includePaymentSlip": "Includi bollettino di pagamento",
+  "watermarkLabel": "Filigrana (opzionale)",
+  "watermarkPlaceholder": "es. BOZZA, COPIA, PAGATO",
+  "generateButton": "Genera PDF",
+  "generatingButton": "Generazione in corso...",
+  "sampleInvoiceTitle": "Dati Fattura di Esempio",
+  "sampleInvoiceNumber": "Numero",
+  "sampleInvoiceClient": "Cliente",
+  "sampleInvoiceAmount": "Importo",
+  "resultTitle": "Risultato Generazione",
+  "downloadButton": "Scarica PDF",
+  "viewButton": "Visualizza PDF",
+  "errorGeneric": "Errore durante la generazione del PDF",
+  "errorUnexpected": "Errore imprevisto durante la generazione del PDF",
+  "pdfDetails": {
+    "fileName": "Nome File",
+    "size": "Dimensione",
+    "pages": "Pagine",
+    "templateUsed": "Template Usato"
+  },
+  "invoiceData": {
+    "notes": "Servizi di consulenza informatica per il mese di gennaio 2025.",
+    "paymentMethod": "Bonifico bancario",
+    "paymentTerms": "Pagamento entro 30 giorni dalla data di emissione",
+    "clientName": "Mario Rossi",
+    "clientCompanyName": "Rossi Consulting S.r.l.",
+    "companyName": "Nexa Manager S.r.l.",
+    "item1Description": "Consulenza sviluppo software",
+    "item2Description": "Analisi requisiti sistema",
+    "taxRate": "22% IVA Ordinaria",
+    "complianceNote1": "Fattura emessa ai sensi del DPR 633/72",
+    "complianceNote2": "Operazione soggetta ad IVA"
+  }
+} 

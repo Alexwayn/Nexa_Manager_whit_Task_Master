@@ -1,0 +1,35 @@
+{
+  "header": {
+    "title": "System Status",
+    "subtitle": "Monitor the status of Nexa Manager services in real time"
+  },
+  "overallStatus": {
+    "allOperational": "All systems operational",
+    "serviceOutage": "Service outage",
+    "partiallyDegraded": "Partially degraded services",
+    "lastUpdate": "Last update: {{time}}"
+  },
+  "metrics": {
+    "globalUptime": "Global Uptime",
+    "avgResponseTime": "Avg. Response Time",
+    "requestsPerMinute": "Requests/Minute",
+    "activeUsers": "Active Users"
+  },
+  "services": {
+    
+    "apiCore": {
+      "name": "API Core",
+      "description": "Main API services"
+    },
+    "database": {
+      
+      "medium": "Medium",
+      "high": "High"
+    },
+    "updates": "Updates",
+    "maintenanceStart": "Scheduled maintenance started",
+    "issueResolved": "Issue resolved. All APIs are operating normally.",
+    "causeIdentified": "Cause identified. Implementing the fix.",
+    "slowdownReported": "API slowdown reported. Investigating."
+  }
+}

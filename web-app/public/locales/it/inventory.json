@@ -1,0 +1,95 @@
+{
+  "breadcrumb": {
+    "inventory": "Inventario",
+    "management": "Gestione"
+  },
+  "searchPlaceholder": "Cerca prodotti per nome, categoria o SKU...",
+  "header": {
+    "title": "Gestione Inventario",
+    "subtitle": "Traccia, controlla e gestisci tutti i tuoi prodotti."
+  },
+  "buttons": {
+    "reports": "Report",
+    "export": "Esporta",
+    "addNewItem": "Aggiungi Nuovo Articolo"
+  },
+  "stats": {
+    "totalValue": "Valore Totale Inventario",
+    "lowStock": "Articoli in Scarsità",
+    "itemsToReorder": "Articoli da Riordinare",
+    "needsAttention": "{{count}} articoli richiedono attenzione",
+    "criticallyLow": "{{count}} esauriti",
+    "trend": "+8.2%"
+  },
+  "tabs": {
+    "allProducts": "Tutti i Prodotti",
+    "categories": "Categorie",
+    "suppliers": "Fornitori",
+    "locations": "Sedi"
+  },
+  "table": {
+    "product": "Prodotto",
+    "category": "Categoria",
+    "location": "Sede",
+    "stock": "Scorta",
+    "price": "Prezzo",
+    "supplier": "Fornitore",
+    "lastUpdated": "Ultimo Aggiornamento",
+    "actions": "Azioni",
+    "showing": "Mostrando",
+    "to": "a",
+    "of": "di",
+    "results": "risultati",
+    "previous": "Precedente",
+    "next": "Successivo"
+  },
+  "status": {
+    "inStock": "In Magazzino",
+    "lowStock": "Scorta Bassa",
+    "outOfStock": "Esaurito"
+  },
+  "sortOptions": {
+    "name_az": "Nome (A-Z)",
+    "name_za": "Nome (Z-A)",
+    "stock_high": "Scorta (Alto-Basso)",
+    "stock_low": "Scorta (Basso-Alto)",
+    "price_high": "Prezzo (Alto-Basso)",
+    "price_low": "Prezzo (Basso-Alto)"
+  },
+  "sampleData": {
+    "macbook": {
+      "name": "MacBook Pro 16\"",
+      "category": "Elettronica",
+      "location": "Magazzino A",
+      "supplier": "Apple Inc."
+    },
+    "officeChair": {
+      "name": "Sedia da Ufficio",
+      "category": "Mobili",
+      "location": "Magazzino B",
+      "supplier": "Herman Miller"
+    },
+    "wirelessMouse": {
+      "name": "Mouse Wireless",
+      "category": "Elettronica",
+      "location": "Magazzino A",
+      "supplier": "Logitech"
+    },
+    "standingDesk": {
+      "name": "Scrivania in Piedi",
+      "category": "Mobili",
+      "location": "Magazzino B",
+      "supplier": "IKEA"
+    },
+    "monitor": {
+      "name": "Monitor 27\"",
+      "category": "Elettronica",
+      "location": "Magazzino A",
+      "supplier": "Dell"
+    }
+  },
+  "emptyState": {
+    "title": "Nessun prodotto trovato",
+    "message": "Prova a modificare la ricerca o i filtri per trovare quello che cerchi."
+  }
+}

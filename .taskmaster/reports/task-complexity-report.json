@@ -1,0 +1,93 @@
+{
+	"meta": {
+		"generatedAt": "2025-06-18T18:39:15.924Z",
+		"tasksAnalyzed": 10,
+		"totalTasks": 10,
+		"analysisCount": 10,
+		"thresholdScore": 5,
+		"projectName": "Taskmaster",
+		"usedResearch": false
+	},
+	"complexityAnalysis": [
+		{
+			"taskId": 41,
+			"taskTitle": "Setup Supabase Backend Infrastructure",
+			"complexityScore": 8,
+			"recommendedSubtasks": 5,
+			"expansionPrompt": "Break down the Supabase backend setup into detailed implementation steps covering: 1) Project initialization and database schema creation, 2) Authentication system configuration, 3) Storage setup and configuration, 4) Security policies and RLS implementation, 5) Performance optimization and real-time subscriptions.",
+			"reasoning": "High complexity due to multiple interconnected components (database, auth, storage, security) requiring specialized knowledge. The task involves critical infrastructure that affects all other components and requires careful planning for security and performance."
+		},
+		{
+			"taskId": 42,
+			"taskTitle": "Implement React Web Application Foundation",
+			"complexityScore": 7,
+			"recommendedSubtasks": 4,
+			"expansionPrompt": "Break down the React web application foundation implementation into detailed steps covering: 1) Project initialization with Vite and core dependencies, 2) UI framework setup with Tailwind CSS and component libraries, 3) Routing and state management implementation, 4) Core layout and theming system.",
+			"reasoning": "Moderately high complexity due to the need to set up multiple frontend technologies and establish patterns that will be used throughout the application. Requires decisions about project structure and architecture that will impact all future development."
+		},
+		{
+			"taskId": 43,
+			"taskTitle": "Develop User Authentication & Profile Management",
+			"complexityScore": 7,
+			"recommendedSubtasks": 4,
+			"expansionPrompt": "Break down the user authentication and profile management implementation into detailed steps covering: 1) Registration and email verification flow, 2) Login, token management and session handling, 3) Password recovery and security features, 4) Profile and settings management interfaces.",
+			"reasoning": "High complexity due to security implications and the need to implement multiple interconnected flows. Authentication is critical infrastructure that must be robust and secure, with proper error handling and user experience considerations."
+		},
+		{
+			"taskId": 44,
+			"taskTitle": "Build Client Management System",
+			"complexityScore": 6,
+			"recommendedSubtasks": 3,
+			"expansionPrompt": "Break down the client management system implementation into detailed steps covering: 1) Client data service and CRUD operations, 2) Client listing with search, filtering, and pagination, 3) Client detail views, history tracking, and import/export functionality.",
+			"reasoning": "Moderate complexity involving standard CRUD operations but with additional features like search, filtering, history tracking, and import/export capabilities. The data model is well-defined but requires careful implementation of validation and business rules."
+		},
+		{
+			"taskId": 45,
+			"taskTitle": "Implement Quote Management System",
+			"complexityScore": 7,
+			"recommendedSubtasks": 4,
+			"expansionPrompt": "Break down the quote management system implementation into detailed steps covering: 1) Quote creation interface with line items and calculations, 2) Quote templates and lifecycle management, 3) PDF generation and email functionality, 4) Quote tracking, search, and conversion to invoices.",
+			"reasoning": "High complexity due to financial calculations, document generation, and lifecycle management. Requires implementation of business logic for tax calculations, state transitions, and integration with PDF generation and email systems."
+		},
+		{
+			"taskId": 46,
+			"taskTitle": "Develop Invoice Management System",
+			"complexityScore": 8,
+			"recommendedSubtasks": 4,
+			"expansionPrompt": "Break down the invoice management system implementation into detailed steps covering: 1) Invoice creation and numbering system, 2) Payment tracking and lifecycle management, 3) Tax calculations and PDF generation, 4) Invoice analytics, reporting, and email functionality.",
+			"reasoning": "High complexity due to financial implications, payment tracking, and tax calculations. Invoices are critical business documents requiring precise implementation of business rules, numbering systems, and payment tracking with proper validation."
+		},
+		{
+			"taskId": 47,
+			"taskTitle": "Implement Calendar & Event Management",
+			"complexityScore": 7,
+			"recommendedSubtasks": 3,
+			"expansionPrompt": "Break down the calendar and event management implementation into detailed steps covering: 1) Calendar interface with multiple views and event creation, 2) Recurring events and reminders with notifications, 3) Event integration with other entities and interactive features.",
+			"reasoning": "High complexity due to date/time handling, recurring event patterns, and integration with notifications. Calendar interfaces require careful implementation of different views and interactive features like drag-and-drop rescheduling."
+		},
+		{
+			"taskId": 48,
+			"taskTitle": "Build Financial Tracking & Reporting",
+			"complexityScore": 8,
+			"recommendedSubtasks": 4,
+			"expansionPrompt": "Break down the financial tracking and reporting implementation into detailed steps covering: 1) Income and expense tracking interfaces, 2) Receipt management and categorization, 3) Financial reports and data visualization, 4) Export capabilities and forecasting features.",
+			"reasoning": "High complexity due to financial calculations, reporting requirements, and data visualization. Requires accurate implementation of financial business logic, categorization systems, and generation of various reports with proper calculations."
+		},
+		{
+			"taskId": 49,
+			"taskTitle": "Implement Document Management System",
+			"complexityScore": 7,
+			"recommendedSubtasks": 3,
+			"expansionPrompt": "Break down the document management system implementation into detailed steps covering: 1) Document generation and template customization, 2) Email integration and secure storage, 3) Document versioning, sharing, and preview functionality.",
+			"reasoning": "High complexity due to PDF generation, template customization, and secure document handling. Requires integration with storage systems, email services, and implementation of secure sharing mechanisms with proper access controls."
+		},
+		{
+			"taskId": 50,
+			"taskTitle": "Develop Dashboard & Analytics",
+			"complexityScore": 8,
+			"recommendedSubtasks": 4,
+			"expansionPrompt": "Break down the dashboard and analytics implementation into detailed steps covering: 1) KPI widgets and data aggregation services, 2) Interactive charts and real-time updates, 3) Customizable layout and time period selectors, 4) Export options and drill-down capabilities.",
+			"reasoning": "High complexity due to data aggregation, visualization requirements, and real-time updates. Requires implementation of complex queries, chart rendering, and interactive features with proper performance considerations for large datasets."
+		}
+	]
+}

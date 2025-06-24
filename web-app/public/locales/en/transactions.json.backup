@@ -1,0 +1,101 @@
+{
+  "breadcrumb": "Income & Expenses",
+  "title": "Income & Expenses",
+  "period": {
+    "monthly": "Monthly",
+    "quarterly": "Quarterly",
+    "yearly": "Yearly",
+    "june2023": "June 2023"
+  },
+  "actions": {
+    "export": "Export",
+    "addTransaction": "Add Transaction"
+  },
+  "summary": {
+    "totalIncome": "Total Income",
+    "totalExpenses": "Total Expenses",
+    "netProfit": "Net Profit",
+    "budget": "Budget: ${{amount}}",
+    "ofBudget": "{{percent}}% of budget",
+    "savingsRate": "Savings Rate"
+  },
+  "income": {
+    "title": "Income Transactions",
+    "category": {
+      "consulting": "Consulting",
+      "services": "Services",
+      "products": "Products"
+    },
+    "status": {
+      "received": "Received"
+    }
+  },
+  "expenses": {
+    "title": "Expense Transactions",
+    "category": {
+      "officeRent": "Office Rent",
+      "utilities": "Utilities",
+      "software": "Software",
+      "salaries": "Salaries",
+      "marketing": "Marketing"
+    },
+    "status": {
+      "paid": "Paid"
+    }
+  },
+  "budgetPerformance": {
+    "title": "Budget Performance",
+    "category": "Category",
+    "actual": "Actual",
+    "budget": "Budget",
+    "variance": "Variance",
+    "status": {
+      "under": "Under",
+      "over": "Over"
+    }
+  },
+  "table": {
+    "date": "Date",
+    "category": "Category",
+    "client": "Client/Vendor",
+    "amount": "Amount",
+    "status": "Status"
+  },
+  "nexaManager": "Nexa Manager",
+  "taxCalculator": {
+    "title": "Italian Tax Calculator",
+    "subtitle": "VAT, Reverse Charge, and Withholding Tax calculation system",
+    "calculationParameters": "Calculation Parameters",
+    "baseAmount": "Base Amount (€)",
+    "baseAmountPlaceholder": "100.00",
+    "ivaRate": "VAT Rate",
+    "withholdingTax": "Withholding Tax",
+    "specialCases": "Special Cases",
+    "reverseCharge": "Reverse Charge (EU B2B)",
+    "exemptOperation": "Exempt Operation",
+    "clientInfo": "Client Information (Reverse Charge)",
+    "clientCountry": "Client Country",
+    "clientVatNumber": "Client VAT Number",
+    "clientVatPlaceholder": "e.g., DE123456789",
+    "results": "Calculation Results",
+    "taxableAmount": "Taxable Amount:",
+    "vatAmount": "VAT ({{rate}}):",
+    "withholdingAmount": "Withholding ({{rate}}):",
+    "totalInvoice": "Total Invoice:",
+    "netPayable": "Net Payable:",
+    "taxNote": "Tax Note:",
+    "complianceNotes": "Compliance Notes:",
+    "effectiveIVARate": "Effective VAT Rate",
+    "effectiveIVARateTooltip": "The effective VAT rate applied after considering exemptions or reverse charge.",
+    "withholdingIncidence": "Withholding Incidence",
+    "withholdingIncidenceTooltip": "The percentage incidence of the withholding tax on the taxable amount.",
+    "countries": {
+      "IT": "Italy",
+      "DE": "Germany",
+      "FR": "France",
+      "ES": "Spain",
+      "NL": "Netherlands",
+      "US": "United States"
+    }
+  }
+} 

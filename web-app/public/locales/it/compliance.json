@@ -1,0 +1,63 @@
+{
+  "header": {
+    "title": "Compliance e Conformità",
+    "subtitle": "Trasparenza totale sui nostri standard di conformità e certificazioni",
+    "globalCompliance": "Conformità Globale",
+    "description": "Nexa Manager mantiene le più rigorose certificazioni internazionali e si conforma a tutte le normative applicabili per garantire la massima protezione dei tuoi dati."
+  },
+  "metrics": {
+    
+    "regulatoryCompliance": "Conformità Normative",
+    "auditsPassed": "Audit Superati",
+    "activeCertifications": "Certificazioni Attive",
+    "avgRemediationTime": "Tempo Medio Remediation"
+  },
+  "regulations": {
+    
+    "gdpr": {
+      "name": "GDPR",
+      "fullName": "General Data Protection Regulation",
+      "region": "Unione Europea",
+      "status": "Conforme",
+      "description": "Regolamento sulla protezione dei dati personali"
+    },
+    "iso27001": {
+      
+      "implemented": "3 miglioramenti implementati"
+    }
+  },
+  "documents": {
+    
+    "lastUpdated": "Ultimo Aggiornamento: {{date}}",
+    "download": "Scarica",
+    "privacyPolicy": {
+      
+      "description": "Informativa completa sul trattamento dei dati personali"
+    },
+    "dpa": {
+      
+      "description": "Accordo per il trattamento dei dati per clienti B2B"
+    },
+    "soc2Report": {
+      
+      "description": "Report completo sui controlli di sicurezza e disponibilità"
+    },
+    "isoCertificate": {
+      
+      "description": "Certificato di conformità allo standard ISO 27001"
+    },
+    "pciAttestation": {
+      
+      "description": "Attestazione di conformità PCI DSS Level 1"
+    },
+    "bcp": {
+      
+      "description": "Piano di continuità operativa e disaster recovery"
+    }
+  },
+  "contact": {
+    
+    "email": "Contatta il Team Conformità",
+    "phone": "Chiama il nostro Ufficio Conformità"
+  }
+}

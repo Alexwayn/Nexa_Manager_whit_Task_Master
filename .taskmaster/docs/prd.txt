@@ -1,0 +1,331 @@
+# Nexa Manager - Product Requirements Document
+
+## 1. Executive Summary
+
+### 1.1 Product Overview
+Nexa Manager is a comprehensive business management platform designed for small to medium enterprises, freelancers, and service providers. The system offers integrated management of clients, invoices, quotes, calendar events, and financial tracking through both web and mobile applications.
+
+### 1.2 Business Objectives
+- Provide a unified platform for complete business lifecycle management
+- Enable seamless synchronization between web and mobile platforms
+- Streamline invoicing, quoting, and client management processes
+- Offer real-time financial tracking and reporting capabilities
+- Support offline functionality with cloud synchronization
+
+### 1.3 Target Users
+- Small business owners
+- Freelancers and consultants
+- Service providers
+- Sales professionals
+- Small accounting teams
+
+## 2. System Architecture & Technology Stack
+
+### 2.1 Backend Infrastructure
+- **Database**: Supabase (PostgreSQL) with real-time capabilities
+- **Authentication**: Supabase Auth with JWT tokens
+- **API**: RESTful API with real-time subscriptions
+- **Storage**: Supabase Storage for documents and receipts
+- **Security**: Row Level Security (RLS) policies
+
+### 2.2 Web Application
+- **Framework**: React 19.0 with Vite build system
+- **Styling**: Tailwind CSS with responsive design
+- **UI Components**: Headless UI, Heroicons, React Icons
+- **Routing**: React Router DOM v7.5
+- **Charts**: Chart.js with React integration
+- **PDF Generation**: jsPDF with AutoTable
+- **State Management**: React Context API
+- **Notifications**: React Hot Toast
+
+### 2.3 Mobile Application
+- **Framework**: React Native (planned/existing)
+- **Navigation**: Tab Bar and Drawer navigation
+- **Offline Support**: SQLite with AsyncStorage
+- **Push Notifications**: Local and remote notifications
+- **Synchronization**: Real-time sync with Supabase
+
+## 3. Core Data Entities
+
+### 3.1 Users & Authentication
+- **Users Table**: Managed by Supabase Auth
+- **Profiles Table**: Extended user information
+- **Settings Table**: User preferences and configurations
+- **Features**: JWT authentication, role-based access, password recovery
+
+### 3.2 Client Management
+- **Clients Table**: Complete customer information
+- **Fields**: Name, email, phone, address, VAT number, fiscal code, company flag
+- **Features**: Contact integration, client history, duplicate prevention
+- **Relationships**: One-to-many with quotes, invoices, events
+
+### 3.3 Financial Documents
+- **Quotes Table**: Quotation management with line items
+- **Invoices Table**: Invoice generation and tracking
+- **Quote/Invoice Items**: Detailed line items with tax calculations
+- **Features**: PDF generation, email sending, status tracking, quote-to-invoice conversion
+
+### 3.4 Calendar & Events
+- **Events Table**: Multi-purpose calendar system
+- **Event Types**: Appointments, invoices, quotes, income, expenses
+- **Features**: Recurring events, reminders, location tracking, priority levels
+- **Integration**: Connected to clients and financial documents
+
+### 3.5 Financial Tracking
+- **Income Table**: Revenue tracking and categorization
+- **Expenses Table**: Expense management with tax deduction flags
+- **Products Table**: Service/product catalog
+- **Features**: Payment method tracking, receipt storage, category management
+
+## 4. Functional Requirements
+
+### 4.1 User Authentication & Profile Management
+- **User Registration**: Email-based registration with email verification
+- **User Login**: Secure authentication with session management
+- **Profile Management**: Update personal information, company details
+- **Password Management**: Change password, password recovery
+- **Settings Configuration**: Application preferences, notifications, themes
+
+### 4.2 Client Management System
+- **Client CRUD Operations**: Create, read, update, delete clients
+- **Client Search & Filtering**: Search by name, email, phone; filter by type
+- **Client Communication**: Direct call, email integration
+- **Client History**: View all related documents and events
+- **Import/Export**: Bulk client operations, data portability
+
+### 4.3 Quote Management
+- **Quote Creation**: Multi-line quotes with tax calculations
+- **Quote Templates**: Reusable quote templates
+- **Quote Lifecycle**: Draft → Sent → Accepted/Rejected → Converted
+- **Quote Actions**: PDF generation, email sending, duplication
+- **Quote Tracking**: Status updates, client responses, follow-ups
+
+### 4.4 Invoice Management
+- **Invoice Generation**: From scratch or from accepted quotes
+- **Invoice Numbering**: Auto-generated progressive numbering
+- **Invoice Lifecycle**: Draft → Issued → Paid/Overdue → Archived
+- **Payment Tracking**: Payment status, due date alerts
+- **Tax Calculations**: Automatic VAT/tax computations
+
+### 4.5 Calendar & Event Management
+- **Multi-Type Events**: Appointments, financial events, reminders
+- **Calendar Views**: Month, week, day, list views
+- **Event Scheduling**: Date/time selection, duration management
+- **Recurring Events**: Daily, weekly, monthly patterns
+- **Event Reminders**: Push notifications, email alerts
+- **Event Integration**: Link events to clients and documents
+
+### 4.6 Financial Tracking & Reporting
+- **Income Tracking**: Revenue categorization and analysis
+- **Expense Management**: Business expense tracking with receipts
+- **Financial Reports**: Income statements, expense reports, tax summaries
+- **Dashboard Analytics**: Visual charts and KPIs
+- **Export Capabilities**: PDF reports, CSV exports
+
+### 4.7 Document Management
+- **PDF Generation**: Professional invoices and quotes
+- **Email Integration**: Send documents directly from application
+- **Document Storage**: Secure cloud storage for all documents
+- **Receipt Management**: Photo upload and storage for expenses
+- **Document Templates**: Customizable templates for branding
+
+## 5. Non-Functional Requirements
+
+### 5.1 Performance Requirements
+- **Response Time**: < 2 seconds for standard operations
+- **Database Queries**: Optimized with proper indexing
+- **File Upload**: Support for files up to 10MB
+- **Concurrent Users**: Support for 1000+ concurrent users
+- **API Rate Limiting**: Prevent abuse with rate limiting
+
+### 5.2 Security Requirements
+- **Data Encryption**: HTTPS for all communications
+- **Authentication**: JWT tokens with secure storage
+- **Authorization**: Row Level Security (RLS) policies
+- **Data Privacy**: GDPR compliance, data anonymization
+- **Backup & Recovery**: Automated backups, disaster recovery
+
+### 5.3 Scalability Requirements
+- **Horizontal Scaling**: Cloud-native architecture
+- **Database Scaling**: Supabase managed scaling
+- **CDN Integration**: Global content delivery
+- **Caching Strategy**: Application and database caching
+- **Load Balancing**: Automatic load distribution
+
+### 5.4 Reliability Requirements
+- **Uptime**: 99.9% availability SLA
+- **Error Handling**: Graceful error recovery
+- **Offline Support**: Core functions available offline
+- **Data Synchronization**: Conflict resolution for offline changes
+- **Monitoring**: Application performance monitoring
+
+## 6. User Interface Requirements
+
+### 6.1 Web Application UI
+- **Responsive Design**: Desktop, tablet, mobile optimization
+- **Modern Interface**: Clean, intuitive design with Tailwind CSS
+- **Dark/Light Mode**: Theme switching capability
+- **Accessibility**: WCAG 2.1 AA compliance
+- **Navigation**: Sidebar navigation with breadcrumbs
+
+### 6.2 Mobile Application UI
+- **Native Feel**: Platform-specific design guidelines
+- **Touch Optimization**: Finger-friendly controls
+- **Offline Indicators**: Clear offline/online status
+- **Quick Actions**: Swipe gestures, quick access buttons
+- **Push Notifications**: Timely alerts and reminders
+
+### 6.3 Dashboard & Analytics
+- **KPI Widgets**: Revenue, expenses, client metrics
+- **Interactive Charts**: Revenue trends, expense categories
+- **Real-time Updates**: Live data synchronization
+- **Customizable Layout**: User-configurable dashboard
+- **Export Options**: PDF, CSV, Excel exports
+
+## 7. Integration Requirements
+
+### 7.1 Email Integration
+- **Email Sending**: SMTP integration for document delivery
+- **Email Templates**: Professional email templates
+- **Email Tracking**: Delivery and read receipts
+- **Bulk Email**: Mass communication capabilities
+
+### 7.2 Payment Processing
+- **Payment Gateways**: Integration with Stripe, PayPal
+- **Payment Tracking**: Automatic payment reconciliation
+- **Payment Links**: Generate payment links for invoices
+- **Subscription Management**: Recurring payment handling
+
+### 7.3 Accounting Software Integration
+- **Export Formats**: QuickBooks, Xero compatible exports
+- **API Connections**: Direct integration with accounting platforms
+- **Data Mapping**: Field mapping for seamless transfers
+- **Sync Scheduling**: Automated data synchronization
+
+### 7.4 Communication Platforms
+- **WhatsApp Integration**: Direct messaging to clients
+- **SMS Notifications**: Text message alerts
+- **Calendar Sync**: Google Calendar, Outlook integration
+- **Contact Sync**: Phone contact integration
+
+## 8. Development Phases
+
+### 8.1 Phase 1: Core Foundation (MVP)
+**Duration**: 6-8 weeks
+- User authentication and profile management
+- Basic client management (CRUD operations)
+- Simple invoice creation and PDF generation
+- Basic dashboard with key metrics
+- Database setup and API development
+
+### 8.2 Phase 2: Enhanced Features
+**Duration**: 4-6 weeks
+- Quote management system
+- Quote-to-invoice conversion
+- Calendar and event management
+- Email integration for documents
+- Enhanced search and filtering
+
+### 8.3 Phase 3: Financial Tracking
+**Duration**: 4-5 weeks
+- Income and expense tracking
+- Financial reporting and analytics
+- Receipt management and storage
+- Tax calculation improvements
+- Advanced dashboard analytics
+
+### 8.4 Phase 4: Mobile Application
+**Duration**: 6-8 weeks
+- React Native mobile app development
+- Offline functionality implementation
+- Push notifications setup
+- Mobile-specific UI optimization
+- Cross-platform synchronization
+
+### 8.5 Phase 5: Advanced Features
+**Duration**: 4-6 weeks
+- Payment gateway integration
+- Accounting software integration
+- Advanced reporting and exports
+- Bulk operations and automation
+- Performance optimization
+
+## 9. Success Metrics
+
+### 9.1 User Engagement Metrics
+- **Daily Active Users (DAU)**: Target 70% of registered users
+- **Monthly Active Users (MAU)**: Target 90% of registered users
+- **Session Duration**: Average 15+ minutes per session
+- **Feature Adoption**: 80% of users using core features
+- **User Retention**: 85% retention after 30 days
+
+### 9.2 Business Impact Metrics
+- **Invoice Processing Time**: Reduce by 50% compared to manual methods
+- **Quote Response Rate**: Improve client response rates by 30%
+- **Payment Collection**: Reduce payment delays by 25%
+- **Administrative Efficiency**: 40% reduction in administrative tasks
+- **Client Satisfaction**: Net Promoter Score (NPS) > 70
+
+### 9.3 Technical Performance Metrics
+- **API Response Time**: < 500ms for 95% of requests
+- **Page Load Time**: < 3 seconds for all pages
+- **Error Rate**: < 1% of all operations
+- **Uptime**: 99.9% availability
+- **Data Sync Success**: 99.5% sync success rate
+
+## 10. Risk Assessment & Mitigation
+
+### 10.1 Technical Risks
+- **Data Migration**: Risk of data loss during migrations
+  - *Mitigation*: Comprehensive backup strategy, staged migrations
+- **Third-party Dependencies**: API changes or service outages
+  - *Mitigation*: Fallback mechanisms, multiple provider options
+- **Scalability Issues**: Performance degradation with growth
+  - *Mitigation*: Load testing, scalable architecture design
+
+### 10.2 Business Risks
+- **Market Competition**: Established competitors with similar features
+  - *Mitigation*: Focus on unique value propositions, superior UX
+- **Regulatory Changes**: Tax law or data protection changes
+  - *Mitigation*: Flexible architecture, compliance monitoring
+- **User Adoption**: Slow user adoption or high churn rates
+  - *Mitigation*: User feedback loops, iterative improvements
+
+### 10.3 Security Risks
+- **Data Breaches**: Unauthorized access to sensitive business data
+  - *Mitigation*: Regular security audits, encryption, access controls
+- **Payment Fraud**: Financial transaction security
+  - *Mitigation*: PCI compliance, secure payment processing
+- **API Vulnerabilities**: Exposure of sensitive endpoints
+  - *Mitigation*: Authentication, rate limiting, input validation
+
+## 11. Support & Maintenance
+
+### 11.1 User Support
+- **Documentation**: Comprehensive user guides and tutorials
+- **Help System**: In-app help and tooltips
+- **Support Channels**: Email, chat, knowledge base
+- **Training Materials**: Video tutorials, webinars
+- **Community Forum**: User community for peer support
+
+### 11.2 Technical Maintenance
+- **Regular Updates**: Monthly feature releases, weekly bug fixes
+- **Security Patches**: Immediate security updates
+- **Performance Monitoring**: Continuous performance tracking
+- **Backup Procedures**: Daily automated backups
+- **Disaster Recovery**: Comprehensive recovery procedures
+
+### 11.3 Evolution & Growth
+- **Feature Roadmap**: Quarterly feature planning
+- **User Feedback Integration**: Regular feedback collection and implementation
+- **Market Analysis**: Competitive analysis and feature gap assessment
+- **Technology Updates**: Regular technology stack updates
+- **Scalability Planning**: Proactive scaling based on growth projections
+
+## 12. Conclusion
+
+Nexa Manager represents a comprehensive solution for modern business management, combining the power of cloud computing with intuitive user interfaces across web and mobile platforms. The system is designed to grow with businesses, providing essential tools for client management, financial tracking, and business analytics.
+
+The phased development approach ensures rapid time-to-market while maintaining high quality standards. The focus on real-time synchronization, offline capabilities, and user experience positions Nexa Manager as a competitive solution in the business management software market.
+
+Success will be measured through user engagement, business impact, and technical performance metrics, with continuous improvement driven by user feedback and market demands. The robust architecture and scalable design ensure the platform can evolve with changing business needs and technological advances. 

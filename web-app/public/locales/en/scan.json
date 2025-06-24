@@ -1,0 +1,77 @@
+{
+  "header": {
+    "title": "Document Scanner",
+    "subtitle": "Scan and process your documents with OCR technology"
+  },
+  "breadcrumb": {
+    "documents": "Documents",
+    "scanner": "Document Scanner"
+  },
+  "steps": {
+    "scan": "Scan Document",
+    "process": "Process OCR",
+    "review": "Review & Export"
+  },
+  "scanOptions": {
+    "title": "Scan Options",
+    "camera": {
+      "title": "Use Camera",
+      "description": "Capture document using your device camera"
+    },
+    "upload": {
+      "title": "Upload File",
+      "description": "Upload document from your device"
+    },
+    "recent": {
+      "title": "Recent Scans",
+      "description": "View and reuse your recent scans"
+    },
+    "documentType": "Document Type",
+    "ocrLanguage": "OCR Language"
+  },
+  "documentTypes": {
+    "invoice": "Invoice",
+    "receipt": "Receipt",
+    "contract": "Contract",
+    "report": "Report",
+    "other": "Other"
+  },
+  "languages": {
+    "english": "English",
+    "italian": "Italian",
+    "spanish": "Spanish",
+    "french": "French",
+    "german": "German"
+  },
+  "upload": {
+    "title": "Upload Document",
+    "description": "Drag and drop your document here, or click to browse files. Supported formats: PDF, JPG, PNG, TIFF",
+    "browseButton": "Browse Files",
+    "maxSize": "Maximum file size: 10MB",
+    "filesSelected": "{{count}} files selected",
+    "dragActive": "Drop files here to upload"
+  },
+  "enhancement": {
+    "title": "Enhancement Options",
+    "brightness": "Brightness",
+    "contrast": "Contrast",
+    "autoEnhance": "Auto-enhance document",
+    "autoCrop": "Auto-crop document edges"
+  },
+  "recentScans": {
+    "title": "Recent Scans",
+    "viewAll": "View All",
+    "scannedAgo": "Scanned {{time}} ago"
+  },
+  "actions": {
+    "back": "Back",
+    "continue": "Continue",
+    "help": "Help",
+    "uploadDocument": "Upload Document"
+  },
+  "notifications": {
+    "filesSelected": "{{count}} files selected successfully!",
+    "uploadSuccess": "Documents uploaded successfully!",
+    "uploadError": "Error uploading documents. Please try again."
+  }
+}

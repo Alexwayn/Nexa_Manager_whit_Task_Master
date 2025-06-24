@@ -1,0 +1,22 @@
+{
+  "demo": {
+    "title": "ReceiptUpload Component Demo",
+    "description": "Example of how to use the receipt upload component",
+    "uploadButton": "Upload Receipts",
+    "clearButton": "Clear List",
+    "uploadedCount": "Uploaded Receipts",
+    "uploadsCompleted": "Uploads Completed",
+    "views": "Views",
+    "uploadedReceiptsTitle": "Uploaded Receipts ({{count}})",
+    "uploadSuccess": "Successfully uploaded",
+    "viewReceiptTitle": "View receipt",
+    "noReceipts": "No receipts uploaded",
+    "noReceiptsDescription": "Click the button above to upload your first receipts",
+    "uploadFirstReceipt": "Upload First Receipt",
+    "exampleCode": "Example Code",
+    "modalTitle": "Demo - Upload Receipts",
+    "modalDescription": "This is an example of the ReceiptUpload component. Upload your receipts to see how it works!",
+    "uploadSuccessNotification": "{{count}} receipts uploaded successfully!",
+    "listClearedNotification": "Receipt list cleared"
+  }
+} 

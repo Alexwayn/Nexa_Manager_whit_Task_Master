@@ -1,0 +1,120 @@
+{
+  "title": "Assistente Vocale",
+  "subtitle": "Controlla il tuo spazio di lavoro con comandi vocali naturali",
+  "status": {
+    "ready": "Voce Pronta",
+    "listening": "In ascolto...",
+    "processing": "Elaborazione...",
+    "tapToSpeak": "Tocca per Parlare"
+  },
+  "instructions": {
+    "listening": "Pronuncia il tuo comando ora",
+    "processing": "Sto comprendendo la tua richiesta",
+    "idle": "Premi e tieni premuto il microfono per dare comandi vocali",
+    "placeholder": "I tuoi comandi vocali appariranno qui"
+  },
+  "buttons": {
+    "tryDemo": "Prova Demo",
+    "help": "Aiuto"
+  },
+  "howItWorks": {
+    "title": "Come Funziona",
+    "step1": {
+      "title": "Premi e Tieni Premuto",
+      "description": "Tieni premuto il pulsante del microfono e parla chiaramente"
+    },
+    "step2": {
+      "title": "Parla Naturalmente",
+      "description": "Usa qualsiasi comando vocale dalle categorie qui sotto"
+    },
+    "step3": {
+      "title": "Ottieni Risultati",
+      "description": "Guarda come i tuoi comandi vocali vengono eseguiti automaticamente"
+    }
+  },
+  "commands": {
+    "title": "Comandi Vocali",
+    "categories": {
+      "navigation": "Navigazione",
+      "dataEntry": "Inserimento Dati",
+      "search": "Ricerca",
+      "reports": "Report",
+      "system": "Sistema"
+    },
+    "examples": {
+      "navigation": {
+        "dashboard": "Vai alla dashboard",
+        "clients": "Apri pagina clienti",
+        "reports": "Mostra report",
+        "calendar": "Visualizza calendario"
+      },
+      "dataEntry": {
+        "newClient": "Crea nuovo cliente",
+        "invoice": "Aggiungi fattura",
+        "meeting": "Programma riunione",
+        "transaction": "Registra transazione"
+      },
+      "search": {
+        "findClient": "Trova cliente Mario Rossi",
+        "pendingInvoices": "Mostra fatture in sospeso",
+        "documents": "Cerca documenti",
+        "transaction": "Cerca transazione"
+      },
+      "reports": {
+        "sales": "Genera report vendite",
+        "monthly": "Mostra riepilogo mensile",
+        "export": "Esporta dati clienti",
+        "analytics": "Visualizza analisi"
+      },
+      "system": {
+        "settings": "Apri impostazioni",
+        "notifications": "Controlla notifiche",
+        "theme": "Cambia tema",
+        "help": "Mostra aiuto"
+      }
+    }
+  },
+  "tips": {
+    "title": "Suggerimenti Vocali",
+    "speakClearly": {
+      "title": "Parla Chiaramente",
+      "description": "Pronuncia bene le parole per una migliore precisione di riconoscimento"
+    },
+    "useKeywords": {
+      "title": "Usa Parole Chiave",
+      "description": "Includi parole d'azione come \"apri\", \"crea\", \"mostra\", \"trova\""
+    },
+    "normalVolume": {
+      "title": "Volume Normale",
+      "description": "Parla a volume normale in un ambiente silenzioso"
+    }
+  },
+  "statistics": {
+    "title": "Statistiche Vocali",
+    "commandsToday": "Comandi Oggi",
+    "successRate": "Tasso di Successo",
+    "timeSaved": "Tempo Risparmiato",
+    "favoriteCommand": "Comando Preferito"
+  },
+  "settings": {
+    "title": "Impostazioni Vocali",
+    "language": "Lingua",
+    "sensitivity": "Sensibilità",
+    "wakeWord": "Parola di Attivazione",
+    "values": {
+      "english": "Inglese",
+      "high": "Alta",
+      "heyNexa": "Ciao Nexa"
+    }
+  },
+  "recent": {
+    "title": "Comandi Recenti",
+    "analytics": "Mostra analisi",
+    "newClient": "Crea nuovo cliente",
+    "calendar": "Apri calendario",
+    "timeAgo": {
+      "minutes": "{{count}}min fa",
+      "hours": "{{count}}h fa"
+    }
+  }
+}

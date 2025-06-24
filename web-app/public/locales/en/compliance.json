@@ -1,0 +1,63 @@
+{
+  "header": {
+    "title": "Compliance and Conformity",
+    "subtitle": "Full transparency on our compliance standards and certifications",
+    "globalCompliance": "Global Compliance",
+    "description": "Nexa Manager maintains the strictest international certifications and complies with all applicable regulations to ensure the maximum protection of your data."
+  },
+  "metrics": {
+    
+    "regulatoryCompliance": "Regulatory Compliance",
+    "auditsPassed": "Audits Passed",
+    "activeCertifications": "Active Certifications",
+    "avgRemediationTime": "Avg. Remediation Time"
+  },
+  "regulations": {
+    
+    "gdpr": {
+      "name": "GDPR",
+      "fullName": "General Data Protection Regulation",
+      "region": "European Union",
+      "status": "Compliant",
+      "description": "Regulation on personal data protection"
+    },
+    "iso27001": {
+      
+      "implemented": "3 improvements implemented"
+    }
+  },
+  "documents": {
+    
+    "lastUpdated": "Last Updated: {{date}}",
+    "download": "Download",
+    "privacyPolicy": {
+      
+      "description": "Complete information on personal data processing"
+    },
+    "dpa": {
+      
+      "description": "Agreement for data processing for B2B customers"
+    },
+    "soc2Report": {
+      
+      "description": "Complete report on security and availability controls"
+    },
+    "isoCertificate": {
+      
+      "description": "Certificate of compliance with the ISO 27001 standard"
+    },
+    "pciAttestation": {
+      
+      "description": "PCI DSS Level 1 attestation of compliance"
+    },
+    "bcp": {
+      
+      "description": "Business continuity and disaster recovery plan"
+    }
+  },
+  "contact": {
+    
+    "email": "Contact Compliance Team",
+    "phone": "Call our Compliance Office"
+  }
+}

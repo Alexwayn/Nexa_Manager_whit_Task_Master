@@ -1,0 +1,160 @@
+{
+  "title": "Gestione Email",
+  "subtitle": "Invia fatture, promemoria e gestisci i template email",
+  "tabs": {
+    "send": "Invia Email",
+    "activity": "Cronologia",
+    "templates": "Template",
+    "settings": "Impostazioni"
+  },
+  "sendInvoice": {
+    "title": "Invia Fattura",
+    "selectInvoice": "Seleziona una fattura",
+    "selectPlaceholder": "Seleziona una fattura...",
+    "recipientEmail": "Email del destinatario",
+    "recipientPlaceholder": "cliente@esempio.com",
+    "customMessage": "Messaggio personalizzato (opzionale)",
+    "messagePlaceholder": "es. Ecco la fattura per i servizi recenti...",
+    "sendButton": "Invia Fattura"
+  },
+  "sendReminder": {
+    "title": "Promemoria di Pagamento",
+    "description": "Invia promemoria automatici per le fatture scadute",
+    "selectInvoice": "Seleziona una fattura per inviare un promemoria",
+    "selectPlaceholder": "Seleziona una fattura per il promemoria...",
+    "firstReminder": "Invia 1° Promemoria",
+    "secondReminder": "Invia 2° Promemoria",
+    "overdueNotice": "Invia Avviso di Scadenza"
+  },
+  "activityLog": {
+    "title": "Registro Attività Email",
+    "recipient": "Destinatario",
+    "subject": "Oggetto",
+    "date": "Data",
+    "status": "Stato"
+  },
+  "templates": {
+    "title": "Template Email",
+    "selectTemplate": "Seleziona un template da modificare",
+    "subject": "Oggetto",
+    "body": "Corpo",
+    "saveButton": "Salva Template",
+    "placeholders": "Placeholder Disponibili"
+  },
+  "settings": {
+    "title": "Impostazioni Email",
+    "configure": "Configura le tue impostazioni SMTP per l'invio di email.",
+    "testTitle": "Test Configurazione Email",
+    "testEmail": "Email per il test",
+    "testPlaceholder": "test@esempio.com",
+    "sendTestButton": "Invia Email di Test",
+    "systemInfo": "Informazioni Sistema",
+    "provider": "Provider Email",
+    "status": "Stato",
+    "active": "Attivo",
+    "emailsSentToday": "Email inviate oggi"
+  },
+  "alerts": {
+    "selectInvoiceAndEmail": "Seleziona una fattura e inserisci un indirizzo email",
+    "emailSentSuccess": "Email inviata con successo!",
+    "sendError": "Errore nell'invio: {{error}}",
+    "genericSendError": "Errore durante l'invio dell'email",
+    "reminderSentSuccess": "Promemoria inviato con successo!",
+    "genericReminderError": "Errore durante l'invio del promemoria",
+    "enterTestEmail": "Inserisci un indirizzo email per il test",
+    "testSentSuccess": "Email di test inviata con successo!",
+    "testError": "Errore nel test: {{error}}",
+    "genericTestError": "Errore durante il test email"
+  },
+  "status": {
+    "sent": "Inviato",
+    "failed": "Fallito",
+    "pending": "In attesa",
+    "overdue": "Scaduta"
+  },
+  "clientEmail": {
+    "subject": "Comunicazione da {{companyName}}",
+    "defaultMessage": "Messaggio personalizzato per il cliente",
+    "companyName": "La mia Azienda",
+    "companyEmail": "info@lamiaazienda.com"
+  },
+  "quoteSender": {
+    "title": "Invia Preventivo via Email",
+    "steps": {
+      "setup": "Impostazione",
+      "preview": "Anteprima",
+      "send": "Invio",
+      "result": "Risultato"
+    },
+    "labels": {
+      "recipientEmail": "Email Destinatario",
+      "recipientName": "Nome Destinatario",
+      "template": "Modello",
+      "customMessage": "Messaggio Personalizzato",
+      "includeAttachment": "Includi Allegato PDF",
+      "scheduleSend": "Programma Invio (opzionale)"
+    },
+    "placeholders": {
+      "recipientEmail": "es. cliente@esempio.com",
+      "recipientName": "es. Mario Rossi",
+      "customMessage": "Aggiungi un messaggio personale..."
+    },
+    "templates": {
+      "quote_sent": {
+        "name": "Invio Preventivo",
+        "description": "Template standard per l'invio del preventivo"
+      },
+      "quote_reminder": {
+        "name": "Promemoria",
+        "description": "Promemoria per preventivo in scadenza"
+      },
+      "quote_accepted": {
+        "name": "Conferma Accettazione",
+        "description": "Conferma di accettazione del preventivo"
+      }
+    },
+    "validation": {
+      "emailRequired": "Email destinatario richiesta",
+      "emailInvalid": "Indirizzo email non valido",
+      "nameRequired": "Nome destinatario richiesto"
+    },
+    "buttons": {
+      "next": "Avanti",
+      "back": "Indietro",
+      "send": "Invia Email",
+      "close": "Chiudi",
+      "tryAgain": "Riprova",
+      "sendAnother": "Invia un'altra Email"
+    },
+    "preview": {
+      "title": "Anteprima Email",
+      "subject": "Oggetto:",
+      "body": "Corpo:",
+      "attachment": "Allegato:",
+      "quotePdf": "Preventivo_{{quoteNumber}}.pdf"
+    },
+    "sending": {
+      "title": "Invio Email in corso...",
+      "subtitle": "Attendere prego, stiamo inviando il preventivo."
+    },
+    "result": {
+      "successTitle": "Email Inviata con Successo!",
+      "successMessage": "L'email è stata inviata con successo a {{recipient}}.",
+      "messageId": "ID Messaggio:",
+      "timestamp": "Data e ora:",
+      "errorTitle": "Errore durante l'invio dell'Email",
+      "errorMessage": "Si è verificato un errore imprevisto. Riprova più tardi.",
+      "errorDetails": "Dettagli errore:"
+    }
+  },
+  "reminders": {
+    "scheduled": "Promemoria pianificati per il preventivo {{quoteNumber}}.",
+    "notScheduled": "Promemoria non pianificati."
+  },
+  "companyDetails": {
+    "name": "Nexa Manager",
+    "email": "info@nexamanager.com",
+    "phone": "+39 123 456 7890",
+    "address": "Via Roma 123, 00100 Roma (RM)"
+  }
+}

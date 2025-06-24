@@ -1,0 +1,247 @@
+{
+  "title": "Analisi Finanziaria",
+  "subtitle": "Approfondimento sulle performance del tuo business",
+  "autoRefresh": "Aggiornamento Automatico",
+  "tabs": {
+    "overview": {
+      "name": "Panoramica",
+      "description": "Dashboard finanziaria in tempo reale"
+    },
+    "detailed": {
+      "name": "Analisi Dettagliata",
+      "description": "Analisi finanziaria approfondita e metriche avanzate",
+      "pending": "In attesa",
+      "overdue": "Scaduto"
+    },
+    "forecasting": {
+      "name": "Previsioni",
+      "description": "Proiezioni finanziarie e analisi predittive"
+    },
+    "invoiceAging": {
+      
+      "label": "Importo Scaduto",
+      "period1": "0-30 giorni",
+      "period2": "31-60 giorni",
+      "period3": "61-90 giorni",
+      "period4": "90+ giorni"
+    },
+    "paymentVelocity": {
+      
+      "services": "Servizi"
+    },
+    "monthlyExpenses": {
+      
+      "may": "Mag",
+      "jun": "Giu"
+    }
+  },
+  "kpi": {
+    "totalRevenue": "Entrate Totali",
+    "yoyGrowth": "Crescita su base annua",
+    "avgInvoiceValue": "Valore Medio Fattura",
+    "paymentTime": "Tempo Medio Pagamento",
+    "paidInvoices": "Fatture Pagate",
+    "overdueInvoices": "Fatture Scadute",
+    "activeClients": "Clienti Attivi",
+    "newClients": "Nuovi Clienti",
+    "performance": "Performance",
+    "vsPreviousMonth": "vs Mese Precedente"
+  },
+  "charts": {
+    "revenue": "Entrate",
+    "revenueTitle": "Andamento Entrate",
+    "invoiceStatusTitle": "Stato Fatture",
+    "months": {
+      "january": "Gennaio",
+      "february": "Febbraio",
+      "march": "Marzo",
+      "april": "Aprile",
+      "may": "Maggio",
+      "june": "Giugno",
+      "july": "Luglio",
+      "august": "Agosto",
+      "september": "Settembre",
+      "october": "Ottobre",
+      "november": "Novembre",
+      "december": "Dicembre"
+    },
+    "invoiceStatus": {
+      "paid": "Pagato",
+      "pending": "In Attesa",
+      "overdue": "Scaduto"
+    },
+    "invoiceAging": {
+      "label": "Scadenzario Fatture",
+      "period1": "0-30 giorni",
+      "period2": "31-60 giorni",
+      "period3": "61-90 giorni",
+      "period4": "90+ giorni"
+    },
+    "paymentVelocity": {
+      "label": "Velocità di Pagamento"
+    },
+    "invoiceGeneration": {
+      "label": "Generazione Fatture"
+    },
+    "revenueBreakdown": {
+      "consulting": "Consulenza",
+      "products": "Prodotti",
+      "services": "Servizi"
+    },
+    "monthlyExpenses": {
+      "label": "Spese Mensili"
+    },
+    "cashFlow": {
+      "label": "Flusso di Cassa"
+    },
+    "profitMargin": {
+      "label": "Margine di Profitto"
+    },
+    "forecastProjection": {
+      "label": "Proiezione Previsionale"
+    }
+  },
+  "timeSelector": {
+    "last30Days": "Ultimi 30 Giorni",
+    "last90Days": "Ultimi 90 Giorni",
+    "presets": {
+      "today": "Oggi",
+      "yesterday": "Ieri",
+      "thisWeek": "Questa Settimana",
+      "lastWeek": "Settimana Scorsa",
+      "thisMonth": "Questo Mese",
+      "lastMonth": "Mese Scorso",
+      "thisQuarter": "Questo Trimestre",
+      "thisYear": "Quest'Anno",
+      "ytd": "Anno a Oggi",
+      "customPeriod": "Periodo Personalizzato"
+    },
+    "compare": {
+      "comparePeriod": "Confronta Periodo"
+    }
+  },
+  "status": {
+    "paid": "Pagato",
+    "pending": "In Attesa",
+    "overdue": "Scaduto"
+  },
+  "common": {
+    "loading": "Caricamento analytics...",
+    "noData": "Nessun dato disponibile per il periodo selezionato.",
+    "error": "Si è verificato un errore durante il caricamento dei dati.",
+    "retry": "Riprova",
+    "refresh": "Aggiorna",
+    "refreshing": "Aggiornamento...",
+    "days": "giorni"
+  },
+  "errors": {
+    "loadFailed": "Errore nel caricamento dei dati analytics"
+  },
+  "kpi": {
+    "totalRevenue": "Entrate Totali",
+    "totalInvoices": "Fatture Totali",
+    "activeClients": "Clienti Attivi",
+    "avgPaymentTime": "Tempo Medio Pagamento"
+  },
+  "insights": {
+    "title": "Approfondimenti",
+    "avgMonthlyRevenue": "Entrate Mensili Medie",
+    "paymentRate": "Tasso di Pagamento",
+    "avgInvoiceValue": "Valore Medio Fattura"
+  },
+  "lastUpdated": "Ultimo aggiornamento",
+  "pageTitle": "Analisi Finanziaria",
+  "pageSubtitle": "Approfondimento sulle performance del tuo business",
+  "advanced": {
+    "totalRevenue": "Entrate Totali",
+    "profitMargin": "Margine di Profitto",
+    "totalExpenses": "Spese Totali",
+    "netProfit": "Profitto Netto",
+    "revenueGrowth": "Crescita Entrate",
+    "expenseGrowth": "Crescita Spese",
+    "income": "Entrate",
+    "expenses": "Spese",
+    "netCashFlow": "Flusso di Cassa Netto",
+    "cashFlowTrend": "Andamento Flusso di Cassa",
+    "categoryDistribution": "Distribuzione Categorie",
+    "incomeDistribution": "Distribuzione Entrate",
+    "expenseDistribution": "Distribuzione Spese",
+    "noDataForDistribution": "Nessun dato per la distribuzione delle {{type}}.",
+    "unknownCategory": "Categoria Sconosciuta",
+    "noDataAvailable": "Nessun dato disponibile",
+    "period": "Periodo",
+    "month": "Mese",
+    "quarter": "Trimestre",
+    "year": "Anno",
+    "view": "Vista",
+    "details": "Dettagli",
+    "applyFilters": "Applica Filtri",
+    "exportData": "Esporta Dati",
+    "kpiOverview": "Panoramica KPI",
+    "financialCharts": "Grafici Finanziari"
+  },
+  "dashboard": {
+    "previousPeriod": "Precedente",
+    "currentPeriod": "Corrente",
+    "financialHealth": "Salute Finanziaria",
+    "financialHealthSubtitle": "Indicatori chiave del tuo business",
+    "overallScore": "Punteggio Generale",
+    "liquidity": "Liquidità",
+    "profitability": "Redditività",
+    "growth": "Crescita",
+    "efficiency": "Efficienza",
+    "excellent": "Eccellente",
+    "good": "Buono",
+    "fair": "Sufficiente",
+    "poor": "Scarso",
+    "monthlyTrend": "Andamento Mensile",
+    "incomeVsExpenses": "Entrate vs Spese",
+    "budgetVsActual": "Budget vs Effettivo",
+    "budget": "Budget",
+    "actual": "Effettivo",
+    "forecast": "Previsione",
+    "category": "Categoria",
+    "allCategories": "Tutte le Categorie",
+    "autoRefresh": "Aggiornamento automatico",
+    "editLayout": "Modifica Layout",
+    "compareMode": "Confronta",
+    "refresh": "Aggiorna",
+    "lastMonth": "Ultimo Mese",
+    "lastQuarter": "Ultimo Trimestre",
+    "currentYear": "Anno Corrente",
+    "custom": "Personalizzato",
+    "trends": "Andamenti",
+    "kpis": "KPIs",
+    "budgets": "Budget",
+    "forecasts": "Previsioni",
+    "subtitle": "Una panoramica completa delle tue finanze",
+    "totalIncome": "Entrate Totali",
+    "expenseRatio": "Rapporto Spese/Ricavi",
+    "taxDeductible": "Deducibilità Fiscale",
+    "taxSavings": "Risparmio Fiscale Stimato",
+    "incomeGrowth": "Crescita Entrate",
+    "last30Days": "Ultimi 30 Giorni",
+    "last90Days": "Ultimi 90 Giorni",
+    "last12Months": "Ultimi 12 Mesi",
+    "customRange": "Intervallo Personalizzato",
+    "startDate": "Data di Inizio",
+    "endDate": "Data di Fine",
+    "apply": "Applica",
+    "presets": {
+      "today": "Oggi",
+      "yesterday": "Ieri",
+      "thisWeek": "Questa Settimana",
+      "lastWeek": "Settimana Scorsa",
+      "thisMonth": "Questo Mese",
+      "thisQuarter": "Questo Trimestre",
+      "thisYear": "Quest'Anno",
+      "ytd": "Anno a Oggi",
+      "customPeriod": "Periodo Personalizzato"
+    },
+    "compare": {
+      "comparePeriod": "Confronta Periodo",
+      "comparisonOptions": "Opzioni di Confronto",
+      "previousYear": "Anno Precedente"
+    }
+  }
+}

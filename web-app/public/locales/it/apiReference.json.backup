@@ -1,0 +1,99 @@
+{
+  "header": {
+    "title": "API Reference",
+    "subtitle": "Documentazione completa delle API REST di Nexa Manager"
+  },
+  "apiInfo": {
+    "baseUrl": "Base URL: https://api.nexamanager.com/v1",
+    "apiKey": "Richiede Chiave API"
+  },
+  "search": {
+    "placeholder": "Cerca endpoint..."
+  },
+  "sidebar": {
+    "endpoints": "Endpoint"
+  },
+  "content": {
+    "parameters": "Parametri",
+    "name": "Nome",
+    "type": "Tipo",
+    "required": "Obbligatorio",
+    "description": "Descrizione",
+    "exampleRequest": "Esempio Richiesta",
+    "exampleResponse": "Esempio Risposta",
+    "copy": "Copia",
+    "copied": "Copiato!"
+  },
+  "methods": {
+    "GET": "GET",
+    "POST": "POST",
+    "PUT": "PUT",
+    "DELETE": "DELETE"
+  },
+  "endpointsList": {
+    "auth": "Autenticazione",
+    "clients": "Clienti",
+    "invoices": "Fatture",
+    "payments": "Pagamenti",
+    "reports": "Report"
+  },
+  "api": {
+    "auth": {
+      "title": "Autenticazione",
+      "description": "Gestisci l'autenticazione e i token di accesso",
+      "endpoints": {
+        "login": {
+          "description": "Effettua il login e ottieni un token di accesso",
+          "parameters": {
+            "email": "Email dell'utente",
+            "password": "Password dell'utente"
+          }
+        },
+        "refresh": {
+          "description": "Rinnova il token di accesso",
+          "parameters": {
+            "refresh_token": "Token di refresh"
+          }
+        }
+      }
+    },
+    "clients": {
+      "title": "Gestione Clienti",
+      "description": "CRUD operations per la gestione dei clienti",
+      "endpoints": {
+        "getClients": {
+          "description": "Ottieni la lista di tutti i clienti",
+          "parameters": {
+            "page": "Numero di pagina (default: 1)",
+            "limit": "Elementi per pagina (default: 20)",
+            "search": "Termine di ricerca"
+          }
+        },
+        "createClient": {
+          "description": "Crea un nuovo cliente",
+          "parameters": {
+            "name": "Nome del cliente",
+            "email": "Email del cliente",
+            "phone": "Telefono del cliente",
+            "address": "Indirizzo del cliente"
+          }
+        }
+      }
+    },
+    "invoices": {
+      "title": "Sistema Fatturazione",
+      "description": "Gestisci fatture, preventivi e documenti fiscali",
+      "endpoints": {
+        "getInvoices": {
+          "description": "Ottieni la lista delle fatture",
+          "parameters": {
+            "status": "Filtra per stato (draft, sent, paid)",
+            "client_id": "Filtra per cliente",
+            "date_from": "Data inizio (YYYY-MM-DD)",
+            "date_to": "Data fine (YYYY-MM-DD)"
+          }
+        }
+      }
+    }
+  }
+} 

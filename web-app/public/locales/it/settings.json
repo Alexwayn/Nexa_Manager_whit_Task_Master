@@ -1,0 +1,70 @@
+{
+  "tabs": {
+    "profile": "Profilo",
+    "security": "Sicurezza",
+    "notifications": "Notifiche",
+    "company": "Azienda",
+    "billing": "Fatturazione"
+  },
+  "title": "Impostazioni",
+  "subtitle": "Gestisci il tuo profilo e le preferenze dell'account",
+  "success": {
+    "profilePhoto": "Foto del profilo aggiornata con successo!",
+    "companyLogo": "Logo aziendale aggiornato con successo!",
+    "companyLogoRemoved": "Logo aziendale rimosso con successo!",
+    "profilePartial": "Profilo aggiornato con successo (alcune impostazioni di notifica potrebbero non essere state salvate).",
+    "deviceDisconnected": "Dispositivo disconnesso con successo!",
+    "passwordUpdated": "Password aggiornata con successo!",
+    "companyFavicon": "Favicon aziendale aggiornato con successo!"
+  },
+  "errors": {
+    "profileSave": "Errore nel salvataggio del profilo.",
+    "profileReference": "Errore di riferimento con il profilo utente. Potrebbe essere necessario effettuare nuovamente l'accesso.",
+    "permissionDenied": "Permesso negato. Non hai l'autorizzazione per modificare questo profilo.",
+    "notificationSettings": "Errore con le impostazioni di notifica. Riprova più tardi.",
+    "retryNotifications": "Errore con notification_settings, tentativo di salvataggio senza questo campo",
+    "deviceDisconnect": "Errore durante la disconnessione del dispositivo.",
+    "passwordMismatch": "Le password non corrispondono",
+    "passwordLength": "La password deve contenere almeno 8 caratteri.",
+    "passwordUpdate": "Errore durante l'aggiornamento della password: ",
+    "imageUpload": "Errore durante il caricamento dell'immagine: ",
+    "logoUpload": "Errore durante il caricamento del logo: ",
+    "logoRemove": "Errore durante la rimozione del logo. Riprova più tardi.",
+    "sessionsFetch": "Errore nel recupero delle sessioni",
+    "checkConsole": "Controlla la console per i dettagli"
+  },
+  "logs": {
+    "hideAfterSeconds": "Nascondi dopo 5 secondi",
+    "fetchingProfile": "Recupero profilo per l'ID utente:",
+    "profileNotFound": "Profilo non trovato, creazione profilo di base...",
+    "profileCreated": "Profilo di base creato con successo",
+    "profileCreateError": "Errore durante la creazione del profilo di base:",
+    "profileFetched": "Profilo recuperato:",
+    "savingProfile": "Salvataggio profilo per l'ID utente:",
+    "updatingProfile": "Aggiornamento profilo esistente",
+    "creatingProfile": "Creazione nuovo profilo",
+    "notificationConverted": "notification_settings convertito da stringa a oggetto",
+    "notificationParseError": "Errore nel parsing di notification_settings:",
+    "dataToSave": "Dati da salvare:",
+    "checkingExistingProfile": "Errore durante il controllo del profilo esistente:",
+    "errorDuringOperation": "Errore durante l'operazione {{operation}} del profilo:",
+    "updateOperation": "aggiornamento",
+    "operationInsert": "inserimento",
+    "uploadingFile": "Caricamento file:",
+    "publicImageUrl": "URL immagine pubblica:",
+    "uploadingLogo": "Caricamento logo:",
+    "publicLogoUrl": "URL logo pubblico:",
+    "addTimestampToUrl": "Aggiungi timestamp all'URL per evitare la cache",
+    "saveOriginalUrl": "Salva URL originale senza timestamp",
+    "addCompanyFields": "Aggiungi campi azienda",
+    "addNotificationSettings": "Aggiungi notification_settings solo se è un oggetto valido",
+    "loadSessionsSecurityTab": "Carica sessioni quando la scheda Sicurezza è attivata"
+  },
+  "nav": {
+    "sidebar": "Navigazione impostazioni"
+  },
+  "a11y": {
+    "close": "Chiudi",
+    "noRenderFunction": "Funzione di rendering non fornita"
+  }
+}

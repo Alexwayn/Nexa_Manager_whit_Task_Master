@@ -1,0 +1,68 @@
+{
+  "loader": {
+    "loading": "Caricamento invito..."
+  },
+  "error": {
+    "title": "Invito non trovato",
+    "description": "L'invito potrebbe essere scaduto o il link non è valido.",
+    "loadError": "Errore nel caricamento dell'invito"
+  },
+  "submitted": {
+    "title": "Risposta inviata!",
+    "organizerNotified": "L'organizzatore dell'evento è stato notificato della tua risposta.",
+    "seeYou": "Ci vediamo all'evento! Riceverai ulteriori dettagli se necessario."
+  },
+  "form": {
+    "header": {
+      "title": "Sei invitato/a!",
+      "subtitle": "Conferma la tua partecipazione"
+    },
+    "details": {
+      "date": "Data",
+      "time": "Orario",
+      "location": "Luogo",
+      "description": "Descrizione",
+      "personalMessage": "Messaggio personale",
+      "allDay": "Tutto il giorno"
+    },
+    "status": {
+      "current": "Stato attuale della tua risposta:",
+      "respondedOn": "Risposto il {{date}}"
+    },
+    "yourResponse": {
+      "title": "La tua risposta",
+      "accept": "Parteciperò",
+      "decline": "Non parteciperò",
+      "maybe": "Forse",
+      "accepted": "Hai accettato",
+      "declined": "Hai rifiutato",
+      "maybeResponse": "Hai risposto 'Forse'",
+      "pending": "In attesa di risposta"
+    },
+    "guests": {
+      "label": "Numero di ospiti (incluso/a te)",
+      "placeholder": "es. 2"
+    },
+    "message": {
+      "label": "Messaggio per l'organizzatore (opzionale)",
+      "placeholder": "Fai sapere all'organizzatore se hai domande..."
+    },
+    "dietary": {
+      "label": "Restrizioni alimentari (opzionale)",
+      "placeholder": "es. Vegetariano, senza glutine..."
+    },
+    "specialRequests": {
+      "label": "Richieste speciali (opzionale)",
+      "placeholder": "es. Accesso per sedia a rotelle..."
+    },
+    "submitButton": {
+      "submit": "Invia RSVP",
+      "update": "Aggiorna Risposta"
+    },
+    "alerts": {
+      "selectResponse": "Per favore seleziona una risposta",
+      "submitError": "Errore nell'invio della risposta: {{error}}",
+      "genericSubmitError": "Errore nell'invio della risposta"
+    }
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "title": "Email",
+  "subtitle": "Manage your emails with folders, labels, and conversations",
+  "compose": "Compose",
+  "folders": {
+    "inbox": "Inbox",
+    "starred": "Starred",
+    "sent": "Sent",
+    "drafts": "Drafts",
+    "spam": "Spam",
+    "trash": "Trash"
+  },
+  "labels": {
+    "title": "Labels",
+    "clients": "Clients",
+    "important": "Important",
+    "personal": "Personal",
+    "projects": "Projects"
+  },
+  "emailFolders": {
+    "title": "Folders",
+    "invoices": "Invoices",
+    "receipts": "Receipts",
+    "archives": "Archives"
+  },
+  "actions": {
+    "archive": "Archive",
+    "delete": "Delete",
+    "star": "Star",
+    "reply": "Reply",
+    "forward": "Forward",
+    "flag": "Flag",
+    "more": "More actions"
+  },
+  "emailContent": {
+    "reply": "Reply",
+    "replyPlaceholder": "Click here to compose a reply...",
+    "send": "Send",
+    "attachments": "Attachments",
+    "noEmailSelected": "No email selected",
+    "selectEmailPrompt": "Select an email from the list to view its contents"
+  },
+  "emailList": {
+    "selectAll": "Select all",
+    "noEmails": "No emails found",
+    "loadMore": "Load more emails"
+  },
+  "search": {
+    "placeholder": "Search emails...",
+    "noResults": "No emails match your search"
+  },
+  "alerts": {
+    "emailSent": "Email sent successfully!",
+    "emailDeleted": "Email deleted",
+    "emailArchived": "Email archived",
+    "error": "An error occurred. Please try again."
+  }
+}

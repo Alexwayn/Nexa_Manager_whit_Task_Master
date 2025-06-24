@@ -1,0 +1,268 @@
+{
+  "title": "Report e Analisi",
+  "user": "Utente: {{email}}",
+  "export": {
+    "revenue": "Export Ricavi PDF",
+    "invoices": "Export Fatture PDF",
+    "clients": "Export Clienti PDF",
+    "aging": "Export Aging PDF",
+    "tax": "Export Fiscale PDF"
+  },
+  "error": {
+    "close": "Chiudi"
+  },
+  "tabs": {
+    "financials": "Report Finanziari",
+    "invoices": "Report Fatture",
+    "clients": "Report Clienti",
+    "quotes": "Preventivi",
+    "analytics": "Analisi",
+    "custom": "Report Personalizzati",
+    "clientsAdvanced": "Report Avanzati Clienti"
+  },
+  "categories": {
+    "invoices": {
+      "name": "Fatture",
+      "description": "Analizza le fatture emesse e i pagamenti ricevuti"
+    },
+    "quotes": {
+      "name": "Preventivi",
+      "description": "Monitora i preventivi emessi, accettati e rifiutati"
+    },
+    "clients": {
+      "name": "Clienti",
+      "description": "Visualizza statistiche e analisi sui tuoi clienti"
+    },
+    "analytics": {
+      "name": "Analisi Avanzate",
+      "description": "Approfondisci con analisi dettagliate e previsioni"
+    }
+  },
+  "selectReportCategory": "Seleziona una categoria di report",
+  "backToCategorySelection": "Torna alla selezione categoria",
+  "cards": {
+    "financial-summary": {
+      "title": "Riepilogo Finanziario",
+      "description": "Panoramica di ricavi, spese e profitti"
+    },
+    "revenue-analysis": {
+      "title": "Analisi Ricavi",
+      "description": "Flussi di ricavi dettagliati e tendenze"
+    },
+    "expense-tracking": {
+      "title": "Tracciamento Spese",
+      "description": "Monitora e categorizza le spese aziendali"
+    },
+    "profit-margins": {
+      "title": "Margini di Profitto",
+      "description": "Analizza i margini di profitto per servizio/prodotto"
+    },
+    "cash-flow": {
+      "title": "Flusso di Cassa",
+      "description": "Traccia i flussi di cassa in entrata e in uscita"
+    },
+    "tax-reports": {
+      "title": "Report Fiscali",
+      "description": "Genera report finanziari pronti per le tasse"
+    },
+    "budget-variance": {
+      "title": "Varianza Budget",
+      "description": "Confronta importi effettivi vs preventivati"
+    },
+    "financial-forecast": {
+      "title": "Previsioni Finanziarie",
+      "description": "Prevedi le performance finanziarie future"
+    },
+    "client-performance": {
+      "title": "Performance Clienti",
+      "description": "Clienti più performanti e contributo ai ricavi"
+    },
+    "client-retention": {
+      "title": "Retention Clienti",
+      "description": "Tassi di retention e analisi del churn"
+    },
+    "client-satisfaction": {
+      "title": "Soddisfazione Clienti",
+      "description": "Punteggi di feedback e metriche di soddisfazione"
+    },
+    "client-growth": {
+      "title": "Crescita Clienti",
+      "description": "Acquisizione nuovi clienti e tendenze di crescita"
+    },
+    "client-activity": {
+      "title": "Attività Clienti",
+      "description": "Metriche di engagement e interazione clienti"
+    },
+    "client-profitability": {
+      "title": "Redditività Clienti",
+      "description": "Analisi ricavi e profitti per cliente"
+    },
+    "payment-history": {
+      "title": "Storico Pagamenti",
+      "description": "Pattern di pagamento e storico clienti"
+    },
+    "client-demographics": {
+      "title": "Demografia Clienti",
+      "description": "Analisi geografica e demografica"
+    },
+    "custom-dashboard": {
+      "title": "Dashboard Personalizzata",
+      "description": "Crea i tuoi report e metriche personalizzati"
+    },
+    "data-export": {
+      "title": "Export Dati",
+      "description": "Esporta dati in vari formati per l'analisi"
+    },
+    "scheduled-reports": {
+      "title": "Report Programmati",
+      "description": "Generazione e consegna automatica dei report"
+    },
+    "advanced-analytics": {
+      "title": "Analisi Avanzate",
+      "description": "Analisi approfondite con filtri personalizzati"
+    },
+    "report-builder": {
+      "title": "Costruttore Report",
+      "description": "Crea report personalizzati con drag & drop"
+    },
+    "api-integration": {
+      "title": "Integrazione API",
+      "description": "Connetti fonti dati esterne"
+    },
+    "invoice-status": {
+      "title": "Stato Fatture",
+      "description": "Fatture in sospeso, pagate e scadute"
+    },
+    "payment-tracking": {
+      "title": "Tracciamento Pagamenti",
+      "description": "Traccia stato e storico pagamenti"
+    },
+    "overdue-analysis": {
+      "title": "Analisi Scaduti",
+      "description": "Analizza fatture scadute e pattern"
+    },
+    "invoice-aging": {
+      "title": "Aging Fatture",
+      "description": "Analisi dell'età delle fatture in sospeso"
+    },
+    "collection-reports": {
+      "title": "Report Incassi",
+      "description": "Traccia sforzi di incasso e tassi di successo"
+    },
+    "invoice-templates": {
+      "title": "Template Fatture",
+      "description": "Gestisci e personalizza i template delle fatture"
+    },
+    "generateReport": "Genera Report"
+  },
+  "financials": {
+    "loading": "Caricamento dati finanziari...",
+    "error": {
+      "message": "Errore nel caricamento dei dati finanziari",
+      "retry": "Riprova"
+    },
+    "title": "Report Finanziari",
+    "subtitle": "Periodo: {{startDate}} - {{endDate}}",
+    "tabs": {
+      "overview": "Panoramica",
+      "income": "Entrate",
+      "expenses": "Spese",
+      "categories": "Categorie",
+      "vendors": "Fornitori",
+      "tax": "Fiscale"
+    },
+    "metrics": {
+      "totalIncome": "Entrate Totali",
+      "totalExpenses": "Spese Totali",
+      "netProfit": "Profitto Netto",
+      "profitMargin": "Margine di Profitto"
+    },
+    "health": {
+      "title": "Salute Finanziaria"
+    },
+    "distribution": {
+      "title": "Distribuzione"
+    }
+  },
+  "invoices": {
+    "loading": "Caricamento dati fatture...",
+    "error": {
+      "message": "Errore nel caricamento dei dati fatture"
+    },
+    "title": "Report Fatture",
+    "subtitle": "Periodo: {{startDate}} - {{endDate}}",
+    "charts": {
+      "monthlyRevenueLabel": "Fatturato Mensile"
+    }
+  },
+  "quotes": {
+    "loading": "Caricamento dati preventivi...",
+    "title": "Report Preventivi",
+    "subtitle": "Periodo: {{startDate}} - {{endDate}}"
+  },
+  "clients": {
+    "loading": "Caricamento dati clienti...",
+    "title": "Report Clienti",
+    "subtitle": "Periodo: {{startDate}} - {{endDate}}"
+  },
+  "analytics": {
+    "loading": "Caricamento analisi...",
+    "title": "Analisi Avanzate",
+    "subtitle": "Periodo: {{startDate}} - {{endDate}}"
+  },
+  "financialForecast": {
+    "title": "Previsioni Finanziarie",
+    "chart": "Grafico Previsioni",
+    "data": "Dati",
+    "configuration": "Configurazione",
+    "summary": "Riepilogo",
+    "totalProjectedIncome": "Entrate Previste Totali",
+    "totalProjectedExpenses": "Spese Previste Totali",
+    "totalProjectedProfit": "Profitto Previsto Totale",
+    "avgMonthlyProfit": "Profitto Mensile Medio",
+    "projectedIncome": "Entrate Previste",
+    "projectedExpenses": "Spese Previste",
+    "netProfit": "Profitto Netto",
+    "cumulativeProfit": "Profitto Cumulativo",
+    "forecastMonths": "Mesi di Previsione",
+    "months3": "3 Mesi",
+    "months6": "6 Mesi",
+    "months12": "12 Mesi",
+    "months24": "24 Mesi",
+    "method": "Metodo",
+    "linear": "Lineare",
+    "exponential": "Esponenziale",
+    "logarithmic": "Logaritmico",
+    "confidenceLevel": "Livello di Confidenza",
+    "low": "Basso"
+  },
+  "footer": {
+    "company": {
+      "description": "Piattaforma avanzata di gestione aziendale progettata per ottimizzare le tue operazioni e aumentare la produttività.",
+      "copyright": "© 2024 Nexa Manager. Tutti i diritti riservati.",
+      "securityVerified": "Sicurezza Verificata",
+      "language": "Lingua"
+    },
+    "resources": {
+      "title": "Risorse",
+      "helpCenter": "Centro Assistenza",
+      "documentation": "Documentazione",
+      "apiReference": "Riferimento API",
+      "systemStatus": "Stato Sistema"
+    },
+    "legal": {
+      "title": "Legale",
+      "termsOfService": "Termini di Servizio",
+      "privacyPolicy": "Politica Privacy",
+      "security": "Sicurezza",
+      "compliance": "Conformità"
+    },
+    "contact": {
+      "title": "Contatti",
+      "email": "support@nexamanager.com",
+      "phone": "+39 02 1234 5678",
+      "supportMessage": "Hai bisogno di aiuto? Il nostro team di supporto è disponibile 24/7",
+      "contactSupport": "Contatta il Supporto"
+    }
+  }
+}

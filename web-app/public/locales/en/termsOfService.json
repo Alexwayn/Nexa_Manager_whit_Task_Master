@@ -1,0 +1,104 @@
+{
+  "pageTitle": "Terms of Service",
+  "header": {
+    "title": "Terms of Service",
+    "subtitle": "Terms and conditions for using Nexa Manager services",
+    "effectiveDate": "Effective Date: January 1, 2024",
+    "lastModified": "Last Modified: January 15, 2024",
+    "version": "Version: 2.1"
+  },
+  "introduction": {
+    
+    "p1": "Welcome to Nexa Manager. These Terms of Service ('Terms') govern your use of our software-as-a-service and related features provided by Nexa Manager S.r.l. ('we', 'us', or 'Nexa Manager').",
+    "p2": "By using our services, you are entering into a legally binding agreement with us. Please read these terms carefully before using our services."
+  },
+  "sections": {
+    "acceptance": {
+      
+      "content": "By using Nexa Manager's services, you fully accept these Terms of Service. If you do not agree to these terms, do not use our services. We reserve the right to modify these terms at any time, with notification to users via email or through the platform."
+    },
+    "services": {
+      
+      "content": "Nexa Manager provides a software-as-a-service (SaaS) platform for business management, including but not limited to: client management, invoicing, analytics, document management, and business productivity tools. The services are provided 'as is' and may be modified or discontinued at any time."
+    },
+    "account": {
+      
+      "content": "You are responsible for the security of your account, including passwords and access credentials. You must provide accurate and up-to-date information during registration. You are responsible for all activities that occur under your account. You must notify us immediately of any unauthorized use of your account."
+    },
+    "usage": {
+      
+      "content": "You may not use our services for: illegal activities, violation of third-party rights, distribution of malware or viruses, unauthorized access attempts to our systems, excessive use of resources that compromises performance for other users, or any activity that violates applicable laws."
+    }
+  },
+  "additionalSections": {
+    "ip": {
+      
+      "content": [
+        "All intellectual property rights related to the Nexa Manager services remain our property.",
+        "We grant you a limited, non-exclusive, and revocable license to use the services according to these terms.",
+        "Your data remains your property, but you grant us the necessary rights to provide you with the services.",
+        "You may not copy, modify, distribute, or create derivative works of our services without written permission."
+      ]
+    },
+    "privacy": {
+      
+      "content": [
+        "The collection and use of your data are governed by our Privacy Policy.",
+        "We implement appropriate security measures to protect your data.",
+        "We do not share your data with third parties without your consent, except where required by law.",
+        "You have the right to access, correct, or delete your personal data."
+      ]
+    },
+    "billing": {
+      
+      "content": [
+        "Payments are due according to the chosen subscription plan.",
+        "All prices are in Euro and include applicable taxes.",
+        "Refunds are subject to our separately published refund policy.",
+        "We reserve the right to suspend services for non-payment after adequate notice."
+      ]
+    },
+    "liability": {
+      
+      "content": [
+        "The services are provided 'as is' without warranties of any kind.",
+        "We do not guarantee that the services will be uninterrupted, secure, or error-free.",
+        "Our liability is limited to the amount paid for the services in the last 12 months.",
+        "We are not liable for indirect, incidental, or consequential damages."
+      ]
+    },
+    "disputes": {
+      
+      "content": [
+        "Any dispute will be resolved through binding arbitration.",
+        "Arbitration will be conducted according to the rules of Italian commercial arbitration.",
+        "Disputes will be resolved individually, not as a class action.",
+        "Italian law governs these terms and any dispute."
+      ]
+    },
+    "termination": {
+      
+      "content": [
+        "You can terminate your account at any time through the account settings.",
+        "We may terminate or suspend your account for violation of these terms.",
+        "Upon termination, your access to the services will cease immediately.",
+        "Data may be retained for a limited period after termination for legal purposes."
+      ]
+    }
+  },
+  "contact": {
+    
+    "email": "support@nexamanager.com",
+    "phone": "+39 351 693 692"
+  },
+  "companyInfo": {
+    "name": "Nexa Manager S.r.l.",
+    "address": "Via Roma 123, 20100 Milan, Italy",
+    "vatId": "P.IVA: 12345678901",
+    "registration": "Milan Business Register no. 123456"
+  },
+  "footer": {
+    "pdfNote": "These terms are also available in PDF format.",
+    "downloadPdf": "Download PDF"
+  }
+}

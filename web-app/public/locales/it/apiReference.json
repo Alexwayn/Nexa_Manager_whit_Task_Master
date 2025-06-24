@@ -1,0 +1,57 @@
+{
+  "header": {
+    "title": "API Reference",
+    "subtitle": "Documentazione completa delle API REST di Nexa Manager"
+  },
+  "apiInfo": {
+    "baseUrl": "Base URL: https://api.nexamanager.com/v1",
+    "apiKey": "Richiede Chiave API"
+  },
+  "search": {
+    "placeholder": "Cerca endpoint..."
+  },
+  "sidebar": {
+    "endpoints": "Endpoint"
+  },
+  "content": {
+    "parameters": "Parametri",
+    "name": "Nome",
+    "type": "Tipo",
+    "required": "Obbligatorio",
+    "description": "Descrizione",
+    "exampleRequest": "Esempio Richiesta",
+    "exampleResponse": "Esempio Risposta",
+    "copy": "Copia",
+    "copied": "Copiato!"
+  },
+  "methods": {
+    "GET": "GET",
+    "POST": "POST",
+    "PUT": "PUT",
+    "DELETE": "DELETE"
+  },
+  "endpointsList": {
+    "auth": "Autenticazione",
+    "clients": "Clienti",
+    "invoices": "Fatture",
+    "payments": "Pagamenti",
+    "reports": "Report"
+  },
+  "api": {
+    
+    "invoices": {
+      
+      "endpoints": {
+        "getInvoices": {
+          
+          "parameters": {
+            "status": "Filtra per stato (draft, sent, paid)",
+            "client_id": "Filtra per cliente",
+            "date_from": "Data inizio (YYYY-MM-DD)",
+            "date_to": "Data fine (YYYY-MM-DD)"
+          }
+        }
+      }
+    }
+  }
+}

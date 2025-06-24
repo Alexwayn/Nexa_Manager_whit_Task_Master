@@ -1,0 +1,328 @@
+{
+  "tabs": {
+    "profile": "Profile",
+    "security": "Security",
+    "notifications": "Notifications",
+    "company": "Company",
+    "billing": "Billing"
+  },
+  "title": "Settings",
+  "subtitle": "Manage your profile and account preferences",
+  "profile": {
+    "title": "Your profile",
+    "description": "Update your personal information and profile settings",
+    "avatar": {
+      "title": "Profile photo",
+      "change": "Change photo",
+      "help": "JPG, PNG or GIF. Maximum size 2MB."
+    },
+    "firstName": {
+      "label": "First Name"
+    },
+    "lastName": {
+      "label": "Last Name"
+    },
+    "email": {
+      "label": "Email",
+      "help": "Email is linked to your account and cannot be modified here."
+    },
+    "phone": {
+      "label": "Phone",
+      "placeholder": "Enter your phone number"
+    },
+    "company": {
+      "label": "Company name",
+      "placeholder": "Enter your company name"
+    },
+    "position": {
+      "label": "Position",
+      "placeholder": "Enter your position"
+    },
+    "address": {
+      "label": "Address",
+      "placeholder": "Enter your address"
+    },
+    "bio": {
+      "label": "Bio",
+      "placeholder": "Enter a brief description of yourself or your company",
+      "help": "Brief description for your profile. URLs and mentions are highlighted automatically."
+    },
+    "username": {
+      "label": "Username"
+    },
+    "alerts": {
+      "updateSuccess": "Profile updated successfully!",
+      "avatarUpdateSuccess": "Avatar updated successfully!",
+      "avatarRemoveSuccess": "Avatar removed successfully!"
+    }
+  },
+  "security": {
+    "title": "Account security",
+    "password": {
+      "title": "Update password",
+      "current": "Current password",
+      "new": "New password",
+      "confirm": "Confirm password",
+      "minLength": "Minimum 8 characters",
+      "button": "Update password"
+    },
+    "sessions": {
+      "title": "Connected devices",
+      "description": "These are the devices that are currently logged into your account. Remove any sessions that you do not recognize.",
+      "current": "Current session",
+      "lastActive": "Last active",
+      "revoke": "Disconnect",
+      "loading": "Loading sessions...",
+      "none": "No other connected devices found.",
+      "currentNote": "The current device is not shown in the list.",
+      "table": {
+        "device": "Device",
+        "browser": "Browser",
+        "lastAccess": "Last access",
+        "actions": "Actions"
+      },
+      "revokeConfirmation": "Are you sure you want to revoke this session?"
+    },
+    "website": {
+      "label": "Website",
+      "placeholder": "www.windsurfitalia.it"
+    },
+    "businessType": {
+      "label": "Business type",
+      "selectPlaceholder": "Select a type",
+      "options": {
+        "freelance": "Freelance",
+        "small_business": "Small Business",
+        "medium_business": "Medium Business",
+        "large_business": "Large Business"
+      }
+    },
+    "updating": "Updating...",
+    "alerts": {
+      "passwordUpdateSuccess": "Password updated successfully!",
+      "sessionRevokeSuccess": "Session revoked successfully"
+    }
+  },
+  "notifications": {
+    "title": "Notification settings",
+    "email": {
+      "title": "Email notifications",
+      "description": "Receive updates and important alerts via email."
+    },
+    "promotional": {
+      "title": "Promotional emails",
+      "description": "Receive offers, tips and advice about the service."
+    },
+    "weekly": {
+      "title": "Weekly digest",
+      "description": "Receive a weekly summary of your activities and metrics."
+    },
+    "monthly": {
+      "title": "Monthly report",
+      "description": "Receive detailed reports on your business performance."
+    },
+    "devices": {
+      "title": "Device notifications"
+    },
+    "sms": {
+      "title": "SMS notifications",
+      "description": "Receive important notifications via SMS on your phone."
+    },
+    "security": {
+      "title": "Security alerts",
+      "description": "Receive immediate notifications for suspicious activity or logins from new devices."
+    },
+    "button": {
+      "restore": "Restore defaults",
+      "save": "Save preferences"
+    },
+    "alerts": {
+      "saveSuccess": "Notification preferences saved successfully!",
+      "resetConfirmation": "Are you sure you want to restore default settings?"
+    },
+    "remove": "Remove",
+    "uploading": "Uploading...",
+    "updating": "Updating...",
+    "altText": "Preview",
+    "change": "Change",
+    "progress": "{{progress}}% complete",
+    "info": "{{formats}}. Max {{size}}."
+  },
+  "company": {
+    "title": "Company information",
+    "logo": {
+      "title": "Company logo",
+      "change": "Change logo",
+      "remove": "Remove",
+      "help": "SVG, PNG or JPG. Max 2MB."
+    },
+    "name": {
+      "label": "Company name"
+    },
+    "vatNumber": {
+      "label": "VAT Number",
+      "placeholder": "IT12345678901"
+    },
+    "taxCode": {
+      "label": "Tax Code",
+      "placeholder": "RSSMRC80A01H501U"
+    },
+    "legalAddress": {
+      "label": "Legal address",
+      "placeholder": "Via Roma 123, 00100 Roma, Italia"
+    },
+    "businessPhone": {
+      "label": "Business phone",
+      "placeholder": "+39 06 12345678"
+    },
+    "businessEmail": {
+      "label": "Business email",
+      "placeholder": "info@windsurfitalia.it"
+    },
+    "website": {
+      "label": "Website",
+      "placeholder": "www.windsurfitalia.it"
+    },
+    "address": {
+      "label": "Address"
+    },
+    "city": {
+      "label": "City"
+    },
+    "country": {
+      "label": "Country"
+    },
+    "phone": {
+      "label": "Phone"
+    },
+    "email": {
+      "label": "Email"
+    },
+    "favicon": {
+      "title": "Company Favicon"
+    },
+    "alerts": {
+      "userNotAuthenticated": "User not authenticated.",
+      "updateSuccess": "Company information updated successfully!",
+      "updateError": "Error updating company information:",
+      "updateFailure": "Failed to update company information.",
+      "genericError": "Error: ",
+      "logoUpdateSuccess": "Logo updated successfully!",
+      "logoUpdateError": "Error uploading logo:",
+      "logoUpdateFailure": "Failed to upload logo.",
+      "faviconUpdateSuccess": "Favicon updated successfully!",
+      "faviconUpdateError": "Error uploading favicon:",
+      "faviconUpdateFailure": "Failed to upload favicon."
+    },
+    "buttons": {
+      "save": "Save Company Details"
+    }
+  },
+  "billing": {
+    "title": "Subscription",
+    "description": "Manage your subscription plan and billing",
+    "proPlan": "Pro Plan",
+    "price": "€29.99/month",
+    "billedAnnually": "billed annually",
+    "nextRenewal": "Next renewal",
+    "nextRenewalDate": "January 15, 2024",
+    "changePlan": "Change plan",
+    "paymentMethodsTitle": "Payment methods",
+    "paymentMethodsDescription": "Manage your payment methods",
+    "addPaymentMethod": "Add",
+    "visa": "Visa",
+    "mastercard": "Mastercard",
+    "expiry": "Expiry: ",
+    "default": "Default",
+    "edit": "Edit",
+    "invoicesTitle": "Invoices",
+    "invoicesDescription": "View and download your invoices",
+    "invoiceNumber": "Number",
+    "date": "Date",
+    "amount": "Amount",
+    "status": "Status",
+    "paid": "Paid",
+    "download": "Download",
+    "noInvoices": "No invoices available",
+    "changePlanInfo": "Change plan functionality not yet implemented",
+    "addPaymentMethodInfo": "Add payment method functionality not yet implemented",
+    "editPaymentMethodInfo": "Edit payment method {{methodId}} not yet implemented"
+  },
+  "buttons": {
+    "save": "Save changes",
+    "saving": "Saving...",
+    "cancel": "Cancel",
+    "upload": "Upload new photo",
+    "remove": "Remove",
+    "uploading": "Uploading...",
+    "updating": "Updating..."
+  },
+  "success": {
+    "profilePhoto": "Profile photo updated successfully!",
+    "companyLogo": "Company logo updated successfully!",
+    "companyLogoRemoved": "Company logo removed successfully!",
+    "profile": "Profile updated successfully!",
+    "avatar": "Profile image updated!",
+    "profilePartial": "Profile updated successfully (some notification settings may not have been saved).",
+    "deviceDisconnected": "Device disconnected successfully!",
+    "passwordUpdated": "Password updated successfully!",
+    "companyFavicon": "Company favicon updated successfully!"
+  },
+  "errors": {
+    "profileSave": "Error saving profile.",
+    "profileReference": "Reference error with user profile. You may need to log in again.",
+    "permissionDenied": "Permission denied. You do not have authorization to modify this profile.",
+    "notificationSettings": "Error with notification settings. Please try again later.",
+    "retryNotifications": "Error with notification_settings, trying to save without this field",
+    "deviceDisconnect": "Error disconnecting device.",
+    "passwordMismatch": "Passwords do not match",
+    "passwordLength": "Password must be at least 8 characters.",
+    "passwordUpdate": "Error updating password: ",
+    "imageUpload": "Error uploading image: ",
+    "avatar": "Error during image upload.",
+    "logoUpload": "Error uploading logo: ",
+    "logoRemove": "Error removing logo. Please try again later.",
+    "sessionsFetch": "Error fetching sessions",
+    "checkConsole": "Check the console for details"
+  },
+  "logs": {
+    "hideAfterSeconds": "Hide after 5 seconds",
+    "fetchingProfile": "Fetching profile for user ID:",
+    "profileNotFound": "Profile not found, creating basic profile...",
+    "profileCreated": "Basic profile created successfully",
+    "profileCreateError": "Error creating basic profile:",
+    "profileFetched": "Profile fetched:",
+    "savingProfile": "Saving profile for user ID:",
+    "updatingProfile": "Updating existing profile",
+    "creatingProfile": "Creating new profile",
+    "notificationConverted": "notification_settings converted from string to object",
+    "notificationParseError": "Error parsing notification_settings:",
+    "dataToSave": "Data to save:",
+    "checkingExistingProfile": "Error checking existing profile:",
+    "errorDuringOperation": "Error during {{operation}} profile:",
+    "updateOperation": "update",
+    "operationInsert": "insert",
+    "uploadingFile": "Uploading file:",
+    "publicImageUrl": "Public image URL:",
+    "uploadingLogo": "Uploading logo:",
+    "publicLogoUrl": "Public logo URL:",
+    "addTimestampToUrl": "Add timestamp to URL to avoid caching",
+    "saveOriginalUrl": "Save original URL without timestamp",
+    "addCompanyFields": "Add company fields",
+    "addNotificationSettings": "Add notification_settings only if it is a valid object",
+    "loadSessionsSecurityTab": "Load sessions when Security tab is activated"
+  },
+  "nav": {
+    "sidebar": "Settings navigation"
+  },
+  "a11y": {
+    "close": "Close",
+    "actions": "Actions"
+  },
+  "theme": "Theme",
+  "language": "Language",
+  "table": {
+    "emptyMessage": "No data available",
+    "noRenderFunction": "Render function not provided"
+  }
+} 

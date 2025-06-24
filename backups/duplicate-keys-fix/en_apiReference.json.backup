@@ -1,0 +1,99 @@
+{
+  "header": {
+    "title": "API Reference",
+    "subtitle": "Complete documentation of the Nexa Manager REST APIs"
+  },
+  "apiInfo": {
+    "baseUrl": "Base URL: https://api.nexamanager.com/v1",
+    "apiKey": "Requires API Key"
+  },
+  "search": {
+    "placeholder": "Search endpoints..."
+  },
+  "sidebar": {
+    "endpoints": "Endpoints"
+  },
+  "content": {
+    "parameters": "Parameters",
+    "name": "Name",
+    "type": "Type",
+    "required": "Required",
+    "description": "Description",
+    "exampleRequest": "Example Request",
+    "exampleResponse": "Example Response",
+    "copy": "Copy",
+    "copied": "Copied!"
+  },
+  "methods": {
+    "GET": "GET",
+    "POST": "POST",
+    "PUT": "PUT",
+    "DELETE": "DELETE"
+  },
+  "endpointsList": {
+    "auth": "Authentication",
+    "clients": "Clients",
+    "invoices": "Invoices",
+    "payments": "Payments",
+    "reports": "Reports"
+  },
+  "api": {
+    "auth": {
+      "title": "Authentication",
+      "description": "Manage authentication and access tokens",
+      "endpoints": {
+        "login": {
+          "description": "Log in and get an access token",
+          "parameters": {
+            "email": "User's email",
+            "password": "User's password"
+          }
+        },
+        "refresh": {
+          "description": "Renew the access token",
+          "parameters": {
+            "refresh_token": "Refresh token"
+          }
+        }
+      }
+    },
+    "clients": {
+      "title": "Client Management",
+      "description": "CRUD operations for client management",
+      "endpoints": {
+        "getClients": {
+          "description": "Get the list of all clients",
+          "parameters": {
+            "page": "Page number (default: 1)",
+            "limit": "Items per page (default: 20)",
+            "search": "Search term"
+          }
+        },
+        "createClient": {
+          "description": "Create a new client",
+          "parameters": {
+            "name": "Client's name",
+            "email": "Client's email",
+            "phone": "Client's phone",
+            "address": "Client's address"
+          }
+        }
+      }
+    },
+    "invoices": {
+      "title": "Invoicing System",
+      "description": "Manage invoices, quotes, and fiscal documents",
+      "endpoints": {
+        "getInvoices": {
+          "description": "Get the list of invoices",
+          "parameters": {
+            "status": "Filter by status (draft, sent, paid)",
+            "client_id": "Filter by client",
+            "date_from": "Start date (YYYY-MM-DD)",
+            "date_to": "End date (YYYY-MM-DD)"
+          }
+        }
+      }
+    }
+  }
+}

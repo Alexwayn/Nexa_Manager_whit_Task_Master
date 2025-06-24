@@ -1,0 +1,45 @@
+{
+  "tabs": {
+    "profile": "Profile",
+    "security": "Security",
+    "notifications": "Notifications",
+    "company": "Company",
+    "billing": "Billing"
+  },
+  "title": "Settings",
+  "subtitle": "Manage your profile and account preferences",
+  "logs": {
+    "hideAfterSeconds": "Hide after 5 seconds",
+    "fetchingProfile": "Fetching profile for user ID:",
+    "profileNotFound": "Profile not found, creating basic profile...",
+    "profileCreated": "Basic profile created successfully",
+    "profileCreateError": "Error creating basic profile:",
+    "profileFetched": "Profile fetched:",
+    "savingProfile": "Saving profile for user ID:",
+    "updatingProfile": "Updating existing profile",
+    "creatingProfile": "Creating new profile",
+    "notificationConverted": "notification_settings converted from string to object",
+    "notificationParseError": "Error parsing notification_settings:",
+    "dataToSave": "Data to save:",
+    "checkingExistingProfile": "Error checking existing profile:",
+    "errorDuringOperation": "Error during {{operation}} profile:",
+    "updateOperation": "update",
+    "operationInsert": "insert",
+    "uploadingFile": "Uploading file:",
+    "publicImageUrl": "Public image URL:",
+    "uploadingLogo": "Uploading logo:",
+    "publicLogoUrl": "Public logo URL:",
+    "addTimestampToUrl": "Add timestamp to URL to avoid caching",
+    "saveOriginalUrl": "Save original URL without timestamp",
+    "addCompanyFields": "Add company fields",
+    "addNotificationSettings": "Add notification_settings only if it is a valid object",
+    "loadSessionsSecurityTab": "Load sessions when Security tab is activated"
+  },
+  "nav": {
+    "sidebar": "Settings navigation"
+  },
+  "a11y": {
+    "close": "Close",
+    "noRenderFunction": "Render function not provided"
+  }
+}

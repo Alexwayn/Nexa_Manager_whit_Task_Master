@@ -1,0 +1,42 @@
+{
+  "header": {
+    "title": "Scan and Manage Receipts",
+    "subtitle": "Upload your receipts to track expenses and manage accounting"
+  },
+  "quickActions": {
+    "upload": {
+      "title": "Upload Receipts",
+      "subtitle": "Upload photos or PDFs of your receipts"
+    },
+    "scan": {
+      "title": "Scan with Camera",
+      "subtitle": "Use the camera to scan (Coming Soon)"
+    },
+    "ocr": {
+      "title": "Automatic OCR",
+      "subtitle": "Automatic data extraction (Coming Soon)"
+    }
+  },
+  "recentUploads": {
+    "title": "Recently Uploaded Receipts",
+    "success": "Uploaded successfully",
+    "view": "View receipt"
+  },
+  "emptyState": {
+    "title": "No receipts uploaded",
+    "subtitle": "Start by uploading your first receipts to track expenses",
+    "button": "Upload First Receipt"
+  },
+  "stats": {
+    "total": "Total Receipts",
+    "today": "Uploaded Today",
+    "toProcess": "To Process"
+  },
+  "uploadModal": {
+    "title": "Upload Receipts",
+    "description": "Select images or PDFs of your receipts. We support JPG, PNG, GIF, and PDF up to 10MB per file."
+  },
+  "notifications": {
+    "uploadSuccess": "{{count}} receipts uploaded successfully!"
+  }
+}

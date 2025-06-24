@@ -1,0 +1,26 @@
+{
+  "header": {
+    "title": "Documentation",
+    "subtitle": "Complete guides, tutorials, and references for using Nexa Manager"
+  },
+  "search": {
+    "placeholder": "Search in the documentation..."
+  },
+  "sidebar": {
+    "categories": "Categories",
+    "quickLinks": "Quick Links",
+    "apiReference": "API Reference",
+    "downloadSDK": "Download SDK",
+    "contactSupport": "Contact Support"
+  },
+  "content": {
+    "readingTime": "Reading time: {{time}}",
+    "inThisArticle": "In this article:"
+  },
+  "docs": {
+    
+    "tutorial": "Tutorial",
+    "reference": "Reference",
+    "code": "Code"
+  }
+}

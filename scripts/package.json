@@ -1,0 +1,25 @@
+{
+  "name": "nexa-manager-i18n-audit",
+  "version": "1.0.0",
+  "description": "Comprehensive i18n translation audit tool for Nexa Manager",
+  "main": "i18n-audit.js",
+  "scripts": {
+    "audit": "node i18n-audit.js",
+    "audit:en": "node i18n-audit.js en",
+    "audit:custom": "node i18n-audit.js en ../web-app/public/locales ../reports/i18n-audit-report.json",
+    "install-deps": "npm install glob yaml"
+  },
+  "dependencies": {
+    "glob": "^10.4.5",
+    "yaml": "^2.8.0"
+  },
+  "keywords": [
+    "i18n",
+    "internationalization",
+    "translation",
+    "audit",
+    "localization"
+  ],
+  "author": "Nexa Manager Team",
+  "license": "MIT"
+}

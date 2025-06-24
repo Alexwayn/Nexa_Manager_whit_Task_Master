@@ -1,0 +1,287 @@
+{
+  "title": "Report e Analisi",
+  "user": "Utente: {{email}}",
+  "export": {
+    "revenue": "Export Ricavi PDF",
+    "invoices": "Export Fatture PDF",
+    "clients": "Export Clienti PDF",
+    "aging": "Export Aging PDF",
+    "tax": "Export Fiscale PDF"
+  },
+  "error": {
+    "title": "Errore",
+    "export": "Errore nell'esportazione: {{message}}",
+    "close": "Chiudi"
+  },
+  "tabs": {
+    "financials": "Entrate e Spese",
+    "invoices": "Fatture",
+    "quotes": "Preventivi",
+    "clients": "Clienti",
+    "analytics": "Analisi",
+    "clientsAdvanced": "Report Avanzati Clienti"
+  },
+  "categories": {
+    "incomeExpenses": {
+      "name": "Entrate e Spese",
+      "description": "Visualizza report e grafici sulle entrate e le spese del tuo business"
+    },
+    "invoices": {
+      "name": "Fatture",
+      "description": "Analizza le fatture emesse e i pagamenti ricevuti"
+    },
+    "quotes": {
+      "name": "Preventivi",
+      "description": "Monitora i preventivi emessi, accettati e rifiutati"
+    },
+    "clients": {
+      "name": "Clienti",
+      "description": "Visualizza statistiche e analisi sui tuoi clienti"
+    },
+    "analytics": {
+      "name": "Analisi Avanzate",
+      "description": "Approfondisci con analisi dettagliate e previsioni"
+    }
+  },
+  "financials": {
+    "title": "Report Finanziari Completi",
+    "subtitle": "Analisi dettagliata delle tue finanze dal {{startDate}} al {{endDate}}",
+    "loading": "Caricamento dati finanziari...",
+    "error": {
+      "title": "Errore nel caricamento",
+      "retry": "Riprova",
+      "message": "Errore nel caricamento dei dati finanziari"
+    },
+    "tabs": {
+      "overview": "Panoramica",
+      "income": "Conto Economico",
+      "expenses": "Report Spese",
+      "categories": "Analisi Categorie",
+      "vendors": "Fornitori",
+      "tax": "Riepilogo Fiscale"
+    },
+    "metrics": {
+      "totalIncome": "Entrate Totali",
+      "totalExpenses": "Spese Totali",
+      "netProfit": "Utile Netto",
+      "profitMargin": "Margine di Profitto",
+      "transactions": "{{count}} transazioni",
+      "entries": "{{count}} voci",
+      "deductible": "Detraibili",
+      "savings": "Risparmi: {{amount}}",
+      "margin": "Margine: {{percentage}}",
+      "estimatedTaxSavings": "Risparmio Fiscale Stimato",
+      "onDeductible": "Su {{amount}} deducibili",
+      "avgMonthlyIncome": "Media Entrate Mensili",
+      "avgMonthlyExpenses": "Media Spese Mensili",
+      "totalTransactions": "Transazioni Totali",
+      "deductibleExpensePercentage": "Percentuale Spese Deducibili"
+    },
+    "health": {
+      "title": "Indicatori di Salute Finanziaria",
+      "incomeExpenseRatio": "Rapporto Entrate/Spese",
+      "deductiblePercentage": "Percentuale Spese Deducibili",
+      "avgExpenseTransaction": "Media Spesa per Transazione",
+      "avgIncomeTransaction": "Media Entrata per Transazione",
+      "liquidity": "Liquidità (Entrate - Spese)",
+      "taxEfficiency": "Efficienza Fiscale"
+    },
+    "distribution": {
+      "title": "Distribuzione Finanziaria",
+      "income": "Entrate",
+      "expenses": "Spese",
+      "profit": "Profitto"
+    }
+  },
+  "common": {
+    "loading": "Caricamento...",
+    "error": "Errore nel caricamento dei dati",
+    "retry": "Riprova",
+    "noData": "Nessun dato disponibile per il periodo selezionato",
+    "unexpectedError": "Si è verificato un errore imprevisto"
+  },
+  "date": {
+    "from": "dal",
+    "to": "al"
+  },
+  "invoices": {
+    "title": "Report Fatture Dettagliato",
+    "subtitle": "Analisi completa delle fatture dal {{startDate}} al {{endDate}}",
+    "loading": "Caricamento dati fatture...",
+    "error": {
+      "message": "Errore nel caricamento dei dati delle fatture"
+    },
+    "metrics": {
+      "issued": "Fatture Emesse",
+      "paid": "Fatture Pagate",
+      "pending": "Fatture In Attesa",
+      "overdue": "Fatture Scadute",
+      "selectedPeriod": "Nel periodo selezionato",
+      "ofTotal": "{{percentage}} del totale",
+      "awaitingPayment": "In attesa di pagamento",
+      "toRecover": "Da recuperare"
+    },
+    "charts": {
+      "monthlyRevenue": "Fatturato Mensile",
+      "monthlyRevenueLabel": "Fatturato Mensile (€)"
+    },
+    "aging": {
+      "title": "Fatture per Scadenza",
+      "period": "Periodo",
+      "invoiceCount": "Numero Fatture",
+      "totalAmount": "Importo Totale",
+      "percentage": "Percentuale"
+    },
+    "performance": {
+      "title": "Metriche di Performance",
+      "avgPaymentTime": "Tempo Medio di Pagamento",
+      "collectionRate": "Tasso di Riscossione",
+      "overdueRate": "Fatture in Ritardo",
+      "days": "giorni"
+    },
+    "summary": {
+      "title": "Riepilogo Finanziario",
+      "totalRevenue": "Fatturato Totale",
+      "totalVAT": "IVA Raccolta",
+      "avgInvoiceValue": "Valore Medio Fattura"
+    }
+  },
+  "quotes": {
+    "title": "Report Preventivi Completo",
+    "subtitle": "Analisi dettagliata dei preventivi dal {{startDate}} al {{endDate}}",
+    "loading": "Caricamento dati preventivi...",
+    "error": {
+      "message": "Errore nel caricamento dei dati dei preventivi"
+    },
+    "charts": {
+      "trend": "Andamento Preventivi",
+      "trendPlaceholder": "Grafico andamento preventivi",
+      "byCategory": "Preventivi per Categoria",
+      "byCategoryPlaceholder": "Grafico preventivi per categoria"
+    },
+    "metrics": {
+      "sent": "Preventivi Inviati",
+      "sentChange": "+{{count}} rispetto al mese precedente",
+      "conversionRate": "Tasso di Conversione",
+      "conversionChange": "+{{percentage}} rispetto al mese precedente",
+      "avgValue": "Valore Medio",
+      "avgValueChange": "+{{amount}} rispetto al mese precedente",
+      "totalValue": "Valore Totale",
+      "totalValueChange": "+{{amount}} rispetto al mese precedente"
+    },
+    "status": {
+      "draft": "Bozza",
+      "sent": "Inviato",
+      "accepted": "Accettato",
+      "rejected": "Rifiutato",
+      "expired": "Scaduto",
+      "pending": "In Attesa"
+    },
+    "tables": {
+      "topQuotes": "Top Preventivi",
+      "quoteNumber": "Numero Preventivo",
+      "client": "Cliente",
+      "value": "Valore",
+      "status": "Stato"
+    }
+  },
+  "clients": {
+    "title": "Report Clienti Completo",
+    "subtitle": "Analisi dettagliata dei clienti dal {{startDate}} al {{endDate}}",
+    "loading": "Caricamento dati clienti...",
+    "error": {
+      "message": "Errore nel caricamento dei dati dei clienti"
+    },
+    "metrics": {
+      "total": "Clienti Totali",
+      "totalClients": "Clienti Totali",
+      "totalClientsChange": "+{{count}} rispetto al mese precedente",
+      "active": "Clienti Attivi",
+      "activeClients": "Clienti Attivi",
+      "activePercentage": "{{percentage}} del totale",
+      "newClients": "Nuovi Clienti",
+      "avgRevenue": "Fatturato Medio per Cliente",
+      "avgValue": "Valore Medio per Cliente",
+      "avgValueChange": "+{{amount}} rispetto al mese precedente"
+    },
+    "charts": {
+      "growth": "Crescita Clienti",
+      "revenue": "Entrate per Cliente",
+      "revenuePlaceholder": "Grafico delle entrate per cliente",
+      "distribution": "Distribuzione Clienti",
+      "geographic": "Distribuzione Geografica",
+      "geographicPlaceholder": "Grafico distribuzione geografica clienti",
+      "acquisition": "Canali di Acquisizione",
+      "acquisitionPlaceholder": "Grafico canali di acquisizione clienti"
+    },
+    "tables": {
+      "topClients": "Top Clienti",
+      "client": "Cliente",
+      "totalValue": "Valore Totale",
+      "lastPurchase": "Ultimo Acquisto"
+    }
+  },
+  "analytics": {
+    "title": "Analisi Avanzate",
+    "subtitle": "Analisi approfondite dal {{startDate}} al {{endDate}}",
+    "loading": "Caricamento analisi avanzate...",
+    "error": {
+      "message": "Errore nel caricamento delle analisi avanzate"
+    }
+  },
+  "backToCategorySelection": "Torna alla selezione Categorie",
+  "selectReportCategory": "Seleziona una categoria di report",
+  "financialForecast": {
+    "projectedIncome": "Entrate Previste",
+    "projectedExpenses": "Spese Previste",
+    "netProfit": "Profitto Netto",
+    "cumulativeProfit": "Profitto Cumulativo",
+    "title": "Previsione Finanziaria",
+    "chart": "Grafico",
+    "data": "Dati",
+    "configuration": "Configurazione",
+    "monthsToForecast": "Mesi da Prevedere",
+    "forecastMethod": "Metodo di Previsione",
+    "linear": "Lineare",
+    "exponential": "Esponenziale",
+    "logarithmic": "Logaritmico",
+    "updateForecast": "Aggiorna Previsione",
+    "detailedForecast": "Previsioni Dettagliate",
+    "month": "Mese",
+    "income": "Entrate",
+    "expenses": "Spese",
+    "profit": "Profitto",
+    "cumulative": "Cumulativo",
+    "noData": "Dati non disponibili.",
+    "summaryTitle": "Riepilogo Previsione",
+    "totalProjectedIncome": "Entrate Totali Previste",
+    "totalProjectedExpenses": "Spese Totali Previste",
+    "totalProjectedProfit": "Profitto Netto Totale Previsto",
+    "avgMonthlyProfit": "Profitto Mensile Medio Previsto",
+    "methodology": "Metodologia",
+    "confidence": "Affidabilità",
+    "low": "Bassa",
+    "medium": "Media",
+    "high": "Alta",
+    "projectedCumulativeProfit": "Profitto Cumulativo Previsto"
+  },
+  "generateReport": "Genera Report",
+  "generating": "Generazione...",
+  "header": {
+    "dateRange": "dal {{startDate}} al {{endDate}}"
+  },
+  "dateFilter": {
+    "startDate": "Data Inizio",
+    "endDate": "Data Fine",
+    "presets": "Periodi Predefiniti",
+    "options": {
+      "last7days": "Ultimi 7 giorni",
+      "last30days": "Ultimi 30 giorni",
+      "last3months": "Ultimi 3 mesi",
+      "last6months": "Ultimi 6 mesi",
+      "thisMonth": "Questo mese",
+      "thisYear": "Quest'anno",
+      "lastYear": "Anno scorso"
+    }
+  }
+}

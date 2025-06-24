@@ -1,0 +1,105 @@
+{
+  "pageTitle": "Termini di Servizio",
+  "header": {
+    "title": "Termini di Servizio",
+    "subtitle": "Termini e condizioni per l'utilizzo dei servizi Nexa Manager",
+    "effectiveDate": "Data di entrata in vigore: 1 Gennaio 2024",
+    "lastModified": "Ultima modifica: 15 Gennaio 2024",
+    "version": "Versione: 2.1"
+  },
+  "introduction": {
+    "title": "Introduzione",
+    "p1": "Benvenuto in Nexa Manager. Questi Termini di Servizio ('Termini') regolano l'uso dei nostri servizi software-as-a-service e delle relative funzionalità fornite da Nexa Manager S.r.l. ('noi', 'nostro' o 'Nexa Manager').",
+    "p2": "Utilizzando i nostri servizi, entri in un accordo legalmente vincolante con noi. Ti preghiamo di leggere attentamente questi termini prima di utilizzare i nostri servizi."
+  },
+  "sections": {
+    "acceptance": {
+      "title": "1. Accettazione dei Termini",
+      "content": "Utilizzando i servizi di Nexa Manager, accetti integralmente questi Termini di Servizio. Se non accetti questi termini, non utilizzare i nostri servizi. Ci riserviamo il diritto di modificare questi termini in qualsiasi momento, con notifica agli utenti tramite email o attraverso la piattaforma."
+    },
+    "services": {
+      "title": "2. Descrizione dei Servizi",
+      "content": "Nexa Manager fornisce una piattaforma software-as-a-service (SaaS) per la gestione aziendale, inclusi ma non limitati a: gestione clienti, fatturazione, analytics, gestione documenti, e strumenti di produttività aziendale. I servizi sono forniti 'così come sono' e possono essere modificati o interrotti in qualsiasi momento."
+    },
+    "account": {
+      "title": "3. Account Utente e Responsabilità",
+      "content": "Sei responsabile per la sicurezza del tuo account, incluse password e credenziali di accesso. Devi fornire informazioni accurate e aggiornate durante la registrazione. Sei responsabile per tutte le attività che avvengono sotto il tuo account. Devi notificarci immediatamente di qualsiasi uso non autorizzato del tuo account."
+    },
+    "usage": {
+      "title": "4. Uso Accettabile",
+      "content": "Non puoi utilizzare i nostri servizi per: attività illegali, violazione di diritti di terzi, distribuzione di malware o virus, tentativi di accesso non autorizzato ai nostri sistemi, uso eccessivo delle risorse che compromette le prestazioni per altri utenti, o qualsiasi attività che violi le leggi applicabili."
+    }
+  },
+  "additionalSections": {
+    "ip": {
+      "title": "5. Proprietà Intellettuale",
+      "content": [
+        "Tutti i diritti di proprietà intellettuale relativi ai servizi Nexa Manager rimangono di nostra proprietà.",
+        "Ti concediamo una licenza limitata, non esclusiva e revocabile per utilizzare i servizi secondo questi termini.",
+        "I tuoi dati rimangono di tua proprietà, ma ci concedi i diritti necessari per fornirti i servizi.",
+        "Non puoi copiare, modificare, distribuire o creare opere derivate dei nostri servizi senza autorizzazione scritta."
+      ]
+    },
+    "privacy": {
+      "title": "6. Privacy e Protezione dei Dati",
+      "content": [
+        "La raccolta e l'uso dei tuoi dati sono regolati dalla nostra Privacy Policy.",
+        "Implementiamo misure di sicurezza appropriate per proteggere i tuoi dati.",
+        "Non condividiamo i tuoi dati con terzi senza il tuo consenso, eccetto dove richiesto dalla legge.",
+        "Hai il diritto di accedere, correggere o eliminare i tuoi dati personali."
+      ]
+    },
+    "billing": {
+      "title": "7. Pagamenti e Fatturazione",
+      "content": [
+        "I pagamenti sono dovuti secondo il piano di abbonamento scelto.",
+        "Tutti i prezzi sono espressi in Euro e includono le tasse applicabili.",
+        "I rimborsi sono soggetti alla nostra politica di rimborso pubblicata separatamente.",
+        "Ci riserviamo il diritto di sospendere i servizi per mancato pagamento dopo adeguato preavviso."
+      ]
+    },
+    "liability": {
+      "title": "8. Limitazione di Responsabilità",
+      "content": [
+        "I servizi sono forniti 'così come sono' senza garanzie di alcun tipo.",
+        "Non garantiamo che i servizi saranno ininterrotti, sicuri o privi di errori.",
+        "La nostra responsabilità è limitata all'importo pagato per i servizi negli ultimi 12 mesi.",
+        "Non siamo responsabili per danni indiretti, incidentali o consequenziali."
+      ]
+    },
+    "disputes": {
+      "title": "9. Risoluzione delle Controversie",
+      "content": [
+        "Qualsiasi controversia sarà risolta attraverso arbitrato vincolante.",
+        "L'arbitrato si svolgerà secondo le regole dell'arbitrato commerciale italiano.",
+        "Le controversie saranno risolte individualmente, non come azione collettiva.",
+        "La legge italiana governa questi termini e qualsiasi controversia."
+      ]
+    },
+    "termination": {
+      "title": "10. Terminazione",
+      "content": [
+        "Puoi terminare il tuo account in qualsiasi momento attraverso le impostazioni dell'account.",
+        "Possiamo terminare o sospendere il tuo account per violazione di questi termini.",
+        "Alla terminazione, il tuo accesso ai servizi cesserà immediatamente.",
+        "I dati possono essere conservati per un periodo limitato dopo la terminazione per scopi legali."
+      ]
+    }
+  },
+  "contact": {
+    "title": "Domande sui Termini di Servizio?",
+    "subtitle": "Se hai domande o dubbi riguardo questi termini, non esitare a contattarci",
+    "email": "support@nexamanager.com",
+    "phone": "+39 351 693 692"
+  },
+  "companyInfo": {
+    "name": "Nexa Manager S.r.l.",
+    "address": "Via Roma 123, 20100 Milano, Italia",
+    "vatId": "P.IVA: 12345678901",
+    "registration": "Registro Imprese di Milano n. 123456"
+  },
+  "footer": {
+    "pdfNote": "Questi termini sono anche disponibili in formato PDF.",
+    "downloadPdf": "Scarica PDF"
+  }
+} 

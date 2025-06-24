@@ -1,0 +1,22 @@
+{
+  "demo": {
+    "title": "Demo Componente ReceiptUpload",
+    "description": "Esempio di utilizzo del componente per il caricamento delle ricevute",
+    "uploadButton": "Carica Ricevute",
+    "clearButton": "Pulisci Lista",
+    "uploadedCount": "Ricevute Caricate",
+    "uploadsCompleted": "Upload Completati",
+    "views": "Visualizzazioni",
+    "uploadedReceiptsTitle": "Ricevute Caricate ({{count}})",
+    "uploadSuccess": "Caricata con successo",
+    "viewReceiptTitle": "Visualizza ricevuta",
+    "noReceipts": "Nessuna ricevuta caricata",
+    "noReceiptsDescription": "Clicca il pulsante sopra per caricare le tue prime ricevute",
+    "uploadFirstReceipt": "Carica Prima Ricevuta",
+    "exampleCode": "Codice di esempio",
+    "modalTitle": "Demo - Carica Ricevute",
+    "modalDescription": "Questo è un esempio del componente ReceiptUpload. Carica le tue ricevute per vedere come funziona!",
+    "uploadSuccessNotification": "{{count}} ricevute caricate con successo!",
+    "listClearedNotification": "Lista ricevute pulita"
+  }
+}
