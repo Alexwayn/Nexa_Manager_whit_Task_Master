@@ -10,7 +10,7 @@ const t = (key, params) => {
 
   let translation = translations[key] || key;
   if (params) {
-    Object.keys(params).forEach((param) => {
+    Object.keys(params).forEach(param => {
       translation = translation.replace(`{{${param}}}`, params[param]);
     });
   }
@@ -26,7 +26,7 @@ const ThemeActionsContext = createContext();
 
 /**
  * Optimized ThemeProvider Component
- * 
+ *
  * Performance Optimizations:
  * 1. Context Splitting: Separates theme state from theme actions
  * 2. Memoized Values: Prevents unnecessary re-renders
@@ -38,9 +38,9 @@ export const OptimizedThemeProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   // Memoized theme application function
-  const applyTheme = useCallback((newTheme) => {
+  const applyTheme = useCallback(newTheme => {
     const root = document.documentElement;
-    
+
     // Batch DOM updates
     if (newTheme === 'dark') {
       root.classList.add('dark');
@@ -61,7 +61,7 @@ export const OptimizedThemeProvider = ({ children }) => {
         : 'light';
 
       const initialTheme = savedTheme || systemTheme;
-      
+
       // Apply theme immediately to prevent flash
       applyTheme(initialTheme);
       setTheme(initialTheme);
@@ -80,7 +80,7 @@ export const OptimizedThemeProvider = ({ children }) => {
 
   // Memoized theme action functions
   const toggleTheme = useCallback(() => {
-    setTheme((prevTheme) => (prevTheme === 'light' ? 'dark' : 'light'));
+    setTheme(prevTheme => (prevTheme === 'light' ? 'dark' : 'light'));
   }, []);
 
   const setLightTheme = useCallback(() => {
@@ -103,7 +103,7 @@ export const OptimizedThemeProvider = ({ children }) => {
   useEffect(() => {
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
 
-    const handleSystemThemeChange = (e) => {
+    const handleSystemThemeChange = e => {
       // Only update if user hasn't set a preference
       if (!localStorage.getItem('nexa-theme')) {
         setTheme(e.matches ? 'dark' : 'light');
@@ -115,21 +115,27 @@ export const OptimizedThemeProvider = ({ children }) => {
   }, []);
 
   // Memoized theme state value
-  const themeStateValue = useMemo(() => ({
-    theme,
-    isDark: theme === 'dark',
-    isLight: theme === 'light',
-    isLoading,
-  }), [theme, isLoading]);
+  const themeStateValue = useMemo(
+    () => ({
+      theme,
+      isDark: theme === 'dark',
+      isLight: theme === 'light',
+      isLoading,
+    }),
+    [theme, isLoading],
+  );
 
   // Memoized theme actions value (never changes)
-  const themeActionsValue = useMemo(() => ({
-    toggleTheme,
-    setLightTheme,
-    setDarkTheme,
-    setAutoTheme,
-    setTheme,
-  }), [toggleTheme, setLightTheme, setDarkTheme, setAutoTheme]);
+  const themeActionsValue = useMemo(
+    () => ({
+      toggleTheme,
+      setLightTheme,
+      setDarkTheme,
+      setAutoTheme,
+      setTheme,
+    }),
+    [toggleTheme, setLightTheme, setDarkTheme, setAutoTheme],
+  );
 
   return (
     <ThemeStateContext.Provider value={themeStateValue}>
@@ -162,10 +168,13 @@ export const useOptimizedTheme = () => {
   const themeState = useThemeState();
   const themeActions = useThemeActions();
 
-  return useMemo(() => ({
-    ...themeState,
-    ...themeActions,
-  }), [themeState, themeActions]);
+  return useMemo(
+    () => ({
+      ...themeState,
+      ...themeActions,
+    }),
+    [themeState, themeActions],
+  );
 };
 
 // Lightweight hooks for common use cases
@@ -212,26 +221,36 @@ export const themes = {
   },
 };
 
-export const getThemeColors = (theme) => {
+export const getThemeColors = theme => {
   return themes[theme]?.colors || themes.light.colors;
 };
 
-// Performance monitoring wrapper (development only)
-export const withThemePerformanceMonitoring = (Component) => {
-  if (process.env.NODE_ENV !== 'development') {
-    return Component;
-  }
+// Performance monitoring HOC for theme components
+export const withThemePerformanceMonitoring = Component => {
+  return React.memo(props => {
+    const themeState = useThemeState();
 
-  return React.memo((props) => {
-    const renderCount = React.useRef(0);
-    renderCount.current += 1;
-    
+    // Monitor theme change performance
     React.useEffect(() => {
-      console.log(`🎨 Theme Context Consumer "${Component.name || 'Anonymous'}" rendered ${renderCount.current} times`);
-    });
+      const startTime = performance.now();
+
+      return () => {
+        const endTime = performance.now();
+        const duration = endTime - startTime;
+
+        if (duration > 16) {
+          // More than one frame
+          console.warn(`Theme change took ${duration}ms - consider optimization`);
+        }
+      };
+    }, [themeState.theme]);
 
     return <Component {...props} />;
   });
 };
 
-export default OptimizedThemeProvider; 
+// Backward compatibility exports
+export const useTheme = useOptimizedTheme;
+export const ThemeProvider = OptimizedThemeProvider;
+
+export default OptimizedThemeProvider;

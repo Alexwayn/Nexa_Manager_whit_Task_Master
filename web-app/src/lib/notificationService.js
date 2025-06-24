@@ -1,4 +1,4 @@
-import { supabase } from '@lib/supabaseClient.js';
+import { supabase } from '@lib/supabaseClient';
 import Logger from '@utils/Logger';
 
 /**
@@ -82,7 +82,7 @@ export const getUserNotificationPreferences = async (userId = null) => {
  * @param {Object} preferences - Updated preferences
  * @returns {Promise<Object>} Updated preferences
  */
-export const updateUserNotificationPreferences = async (preferences) => {
+export const updateUserNotificationPreferences = async preferences => {
   try {
     const { data, error } = await supabase
       .from('user_notification_preferences')
@@ -320,7 +320,7 @@ export const generateNotificationContent = (event, reminder) => {
  * @param {number} minutes - Minutes before event
  * @returns {string} Human-readable text
  */
-const getReminderText = (minutes) => {
+const getReminderText = minutes => {
   if (minutes < 60) {
     return `${minutes} minutes`;
   } else if (minutes < 1440) {
@@ -411,7 +411,7 @@ export const processPendingNotifications = async (limit = 50) => {
  * @param {Object} notification - Notification object
  * @returns {Promise<boolean>} Success status
  */
-const sendNotification = async (notification) => {
+const sendNotification = async notification => {
   switch (notification.notification_type) {
     case NOTIFICATION_TYPES.EMAIL:
       return await sendEmailNotification(notification);
@@ -432,7 +432,7 @@ const sendNotification = async (notification) => {
  * @param {Object} notification - Notification object
  * @returns {Promise<boolean>} Success status
  */
-const sendEmailNotification = async (notification) => {
+const sendEmailNotification = async notification => {
   try {
     // In a real implementation, this would integrate with an email service
     // like SendGrid, AWS SES, or Supabase's built-in email functionality
@@ -458,7 +458,7 @@ const sendEmailNotification = async (notification) => {
  * @param {Object} notification - Notification object
  * @returns {Promise<boolean>} Success status
  */
-const sendSMSNotification = async (notification) => {
+const sendSMSNotification = async notification => {
   try {
     // In a real implementation, this would integrate with an SMS service
     // like Twilio, AWS SNS, or similar
@@ -483,7 +483,7 @@ const sendSMSNotification = async (notification) => {
  * @param {Object} notification - Notification object
  * @returns {Promise<boolean>} Success status
  */
-const sendPushNotification = async (notification) => {
+const sendPushNotification = async notification => {
   try {
     // In a real implementation, this would integrate with a push service
     // like Firebase Cloud Messaging, Apple Push Notification service, etc.
@@ -509,7 +509,7 @@ const sendPushNotification = async (notification) => {
  * @param {Object} notification - Notification object
  * @returns {Promise<boolean>} Success status
  */
-const sendInAppNotification = async (notification) => {
+const sendInAppNotification = async notification => {
   try {
     // For in-app notifications, we'll store them in a separate table
     // that the frontend can query for displaying notifications
@@ -611,7 +611,7 @@ const handleNotificationFailure = async (notification, errorMessage = null) => {
  * @param {string} eventId - Event ID
  * @returns {Promise<number>} Number of cancelled notifications
  */
-export const cancelEventNotifications = async (eventId) => {
+export const cancelEventNotifications = async eventId => {
   try {
     const { data, error } = await supabase
       .from('notification_queue')
@@ -657,11 +657,11 @@ export const getNotificationStatistics = async (userId = null) => {
       byStatus: {},
       byType: {},
       recent: data.filter(
-        (n) => new Date(n.created_at) > new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
+        n => new Date(n.created_at) > new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
       ).length,
     };
 
-    data.forEach((notification) => {
+    data.forEach(notification => {
       stats.byStatus[notification.status] = (stats.byStatus[notification.status] || 0) + 1;
       stats.byType[notification.notification_type] =
         (stats.byType[notification.notification_type] || 0) + 1;

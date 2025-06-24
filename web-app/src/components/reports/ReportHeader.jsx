@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import ExportButtons from '@components/ExportButtons';
+import ExportButtons from '@components/documents/ExportButtons';
 
 const ReportHeader = ({
   title,
@@ -18,12 +18,12 @@ const ReportHeader = ({
     <div
       className={`bg-gradient-to-r from-${gradientFrom} to-${gradientTo} rounded-lg p-6 text-white ${className}`}
     >
-      <div className="flex justify-between items-start">
+      <div className='flex justify-between items-start'>
         <div>
-          <h2 className="text-2xl font-bold mb-2">{title}</h2>
-          {subtitle && <p className="text-blue-100 opacity-90">{subtitle}</p>}
+          <h2 className='text-2xl font-bold mb-2'>{title}</h2>
+          {subtitle && <p className='text-blue-100 opacity-90'>{subtitle}</p>}
           {dateRange && (
-            <p className="text-blue-100 opacity-90">
+            <p className='text-blue-100 opacity-90'>
               {typeof subtitle === 'string'
                 ? subtitle
                 : t('header.dateRange', {
@@ -34,14 +34,14 @@ const ReportHeader = ({
           )}
         </div>
         {showExport && exportData && (
-          <div className="flex-shrink-0 ml-4">
+          <div className='flex-shrink-0 ml-4'>
             <ExportButtons
               data={exportData}
               type={exportType}
               filename={`${exportType}-${dateRange?.startDate || 'report'}-${dateRange?.endDate || new Date().toISOString().split('T')[0]}`}
               period={dateRange}
               showReportOptions={true}
-              className="flex-shrink-0"
+              className='flex-shrink-0'
             />
           </div>
         )}

@@ -31,7 +31,63 @@ export default defineConfig({
     },
   },
   build: {
-    target: 'es2020',
+    target: 'esnext',
+    minify: 'terser',
     sourcemap: true,
+    chunkSizeWarningLimit: 500,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'react-vendor': ['react', 'react-dom'],
+          'router': ['react-router-dom'],
+          'ui-vendor': ['@heroicons/react'],
+          'charts': ['chart.js', 'react-chartjs-2'],
+          'pdf-canvas': ['html2canvas', 'jspdf'],
+          'supabase': ['@supabase/supabase-js'],
+          'i18n': ['react-i18next', 'i18next'],
+          'date-utils': ['date-fns'],
+          'analytics': [
+            './src/components/analytics/AnalyticsDashboard.jsx',
+            './src/components/analytics/AdvancedFinancialAnalytics.jsx',
+            './src/components/analytics/AdvancedTimePeriodSelector.jsx',
+            './src/components/analytics/EnhancedKPICard.jsx'
+          ],
+          'financial': [
+            './src/components/financial/TaxCalculator.jsx',
+            './src/components/financial/FinancialForecast.jsx',
+            './src/components/financial/PaymentDashboard.jsx',
+            './src/components/financial/PaymentModal.jsx'
+          ],
+          'reports': [
+            './src/components/reports/FinancialOverview.jsx',
+            './src/components/reports/ReportHeader.jsx',
+            './src/components/reports/TabNavigation.jsx'
+          ]
+        },
+        chunkFileNames: (chunkInfo) => {
+          const facadeModuleId = chunkInfo.facadeModuleId
+            ? chunkInfo.facadeModuleId.split('/').pop().replace('.jsx', '').replace('.tsx', '')
+            : 'chunk';
+          return `assets/${facadeModuleId}-[hash].js`;
+        }
+      }
+    },
+    // Terser options for better minification
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true,
+        pure_funcs: ['console.log', 'console.info', 'console.debug']
+      }
+    }
   },
+  define: {
+    __DEV__: JSON.stringify(false)
+  },
+  ...(process.env.NODE_ENV === 'development' && {
+    server: {
+      port: 3000,
+      open: true
+    }
+  })
 })

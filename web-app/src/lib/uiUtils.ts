@@ -52,7 +52,7 @@ const t = (key: string, params?: Record<string, unknown>): string => {
   let translation = translations[key] || key;
 
   if (params) {
-    Object.keys(params).forEach((param) => {
+    Object.keys(params).forEach(param => {
       translation = translation.replace(`{{${param}}}`, String(params[param]));
     });
   }
@@ -160,7 +160,13 @@ export const notify = {
             ? messages.error(err)
             : messages.error ||
               t('ui.toast.operationFailed', {
-                message: (err && typeof err === 'object' && 'message' in err && typeof (err as any).message === 'string') ? (err as any).message : t('ui.toast.unexpectedError'),
+                message:
+                  err &&
+                  typeof err === 'object' &&
+                  'message' in err &&
+                  typeof (err as any).message === 'string'
+                    ? (err as any).message
+                    : t('ui.toast.unexpectedError'),
               }),
       },
       {
@@ -292,7 +298,7 @@ export const validation = {
   validateForm: (formData: Record<string, unknown>, rules: ValidationRules): ValidationResult => {
     const errors: Record<string, string> = {};
 
-    Object.keys(rules).forEach((field) => {
+    Object.keys(rules).forEach(field => {
       const value = formData[field];
       const fieldRules = rules[field];
 

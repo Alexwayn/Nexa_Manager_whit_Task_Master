@@ -18,7 +18,7 @@ const ReportLoadingSpinner = ({
   return (
     <div className={`${containerClasses} ${className}`}>
       <div className={`animate-spin rounded-full ${size} border-b-2 border-blue-600`}></div>
-      <span className="ml-3 text-gray-600 dark:text-gray-300">{loadingMessage}</span>
+      <span className='ml-3 text-gray-600 dark:text-gray-300'>{loadingMessage}</span>
     </div>
   );
 };

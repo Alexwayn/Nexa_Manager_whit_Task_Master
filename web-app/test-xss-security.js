@@ -9,7 +9,7 @@
  * Usage: node test-xss-security.js
  */
 
-import xssDemo from './src/utils/xss-security-demo.js';
+import xssDemo from './src/utils/xss-security-demo';
 
 console.log('🔐 NEXA MANAGER - XSS SECURITY VERIFICATION');
 console.log('==========================================');

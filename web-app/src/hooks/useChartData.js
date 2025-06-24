@@ -49,8 +49,8 @@ const useChartData = (rawData, type = 'line', options = {}) => {
       }));
     }
 
-    const labels = processedData.map((item) => item[labelKey]);
-    const values = processedData.map((item) => item[valueKey] || 0);
+    const labels = processedData.map(item => item[labelKey]);
+    const values = processedData.map(item => item[valueKey] || 0);
 
     // Create datasets based on chart type
     let datasets = [];
@@ -77,7 +77,7 @@ const useChartData = (rawData, type = 'line', options = {}) => {
             label: options.label || 'Valore',
             data: values,
             backgroundColor: colors.slice(0, values.length),
-            borderColor: colors.map((color) => color.replace('0.8', '1')).slice(0, values.length),
+            borderColor: colors.map(color => color.replace('0.8', '1')).slice(0, values.length),
             borderWidth: 1,
             borderRadius: 4,
           },
@@ -89,7 +89,7 @@ const useChartData = (rawData, type = 'line', options = {}) => {
           {
             data: values,
             backgroundColor: colors.slice(0, values.length),
-            borderColor: colors.map((color) => color.replace('0.8', '1')).slice(0, values.length),
+            borderColor: colors.map(color => color.replace('0.8', '1')).slice(0, values.length),
             borderWidth: 2,
           },
         ];
@@ -100,7 +100,7 @@ const useChartData = (rawData, type = 'line', options = {}) => {
         const series = options.seriesKeys || [];
         datasets = series.map((seriesKey, index) => ({
           label: seriesKey,
-          data: processedData.map((item) => item[seriesKey] || 0),
+          data: processedData.map(item => item[seriesKey] || 0),
           borderColor: colors[index % colors.length].replace('0.8', '1'),
           backgroundColor: colors[index % colors.length],
           fill: false,

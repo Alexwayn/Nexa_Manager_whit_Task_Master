@@ -29,7 +29,7 @@ export class MockLogger {
     this.logs = [];
     this.transports = options.transports || [];
     this.silent = options.silent || false;
-    
+
     // Bind methods to preserve context
     this.error = this.error.bind(this);
     this.warn = this.warn.bind(this);
@@ -38,64 +38,64 @@ export class MockLogger {
     this.trace = this.trace.bind(this);
     this.log = this.log.bind(this);
   }
-  
+
   // Core logging method
   log(level, message, meta = {}) {
     if (this.silent || level > this.level) {
       return;
     }
-    
+
     const logEntry = createLogEntry(level, message, {
       context: this.context,
       ...meta,
     });
-    
+
     this.logs.push(logEntry);
-    
+
     // Simulate transport behavior
     this.transports.forEach(transport => {
       if (transport.log) {
         transport.log(logEntry);
       }
     });
-    
+
     return logEntry;
   }
-  
+
   // Level-specific methods
   error(message, meta = {}) {
     return this.log(LOG_LEVELS.ERROR, message, meta);
   }
-  
+
   warn(message, meta = {}) {
     return this.log(LOG_LEVELS.WARN, message, meta);
   }
-  
+
   info(message, meta = {}) {
     return this.log(LOG_LEVELS.INFO, message, meta);
   }
-  
+
   debug(message, meta = {}) {
     return this.log(LOG_LEVELS.DEBUG, message, meta);
   }
-  
+
   trace(message, meta = {}) {
     return this.log(LOG_LEVELS.TRACE, message, meta);
   }
-  
+
   // Utility methods
   setLevel(level) {
     this.level = level;
   }
-  
+
   setContext(context) {
     this.context = context;
   }
-  
+
   setSilent(silent) {
     this.silent = silent;
   }
-  
+
   // Child logger creation
   child(options = {}) {
     return new MockLogger({
@@ -106,12 +106,12 @@ export class MockLogger {
       ...options,
     });
   }
-  
+
   // Performance logging
   time(label) {
     const startTime = Date.now();
     this.debug(`Timer started: ${label}`);
-    
+
     return {
       end: () => {
         const duration = Date.now() - startTime;
@@ -120,22 +120,24 @@ export class MockLogger {
       },
     };
   }
-  
+
   // Profiling
   profile(label) {
     const startTime = process.hrtime ? process.hrtime() : [0, Date.now() * 1000000];
     this.debug(`Profile started: ${label}`);
-    
+
     return {
       done: () => {
-        const diff = process.hrtime ? process.hrtime(startTime) : [0, (Date.now() * 1000000) - startTime[1]];
+        const diff = process.hrtime
+          ? process.hrtime(startTime)
+          : [0, Date.now() * 1000000 - startTime[1]];
         const duration = diff[0] * 1000 + diff[1] * 1e-6;
         this.debug(`Profile completed: ${label}`, { duration });
         return duration;
       },
     };
   }
-  
+
   // Query methods for testing
   getLogs(level = null) {
     if (level === null) {
@@ -143,49 +145,45 @@ export class MockLogger {
     }
     return this.logs.filter(log => log.level === level);
   }
-  
+
   getErrorLogs() {
     return this.getLogs(LOG_LEVELS.ERROR);
   }
-  
+
   getWarnLogs() {
     return this.getLogs(LOG_LEVELS.WARN);
   }
-  
+
   getInfoLogs() {
     return this.getLogs(LOG_LEVELS.INFO);
   }
-  
+
   getDebugLogs() {
     return this.getLogs(LOG_LEVELS.DEBUG);
   }
-  
+
   getTraceLogs() {
     return this.getLogs(LOG_LEVELS.TRACE);
   }
-  
+
   // Search methods
   findLogs(predicate) {
     return this.logs.filter(predicate);
   }
-  
+
   findLogsByMessage(message) {
-    return this.logs.filter(log => 
-      log.message.includes(message)
-    );
+    return this.logs.filter(log => log.message.includes(message));
   }
-  
+
   findLogsByContext(context) {
-    return this.logs.filter(log => 
-      log.meta.context === context
-    );
+    return this.logs.filter(log => log.meta.context === context);
   }
-  
+
   // Statistics
   getLogCount(level = null) {
     return this.getLogs(level).length;
   }
-  
+
   getLogStats() {
     return {
       total: this.logs.length,
@@ -196,67 +194,67 @@ export class MockLogger {
       trace: this.getLogCount(LOG_LEVELS.TRACE),
     };
   }
-  
+
   // Test utilities
   clear() {
     this.logs = [];
   }
-  
+
   hasLogs(level = null) {
     return this.getLogCount(level) > 0;
   }
-  
+
   hasErrorLogs() {
     return this.hasLogs(LOG_LEVELS.ERROR);
   }
-  
+
   hasWarnLogs() {
     return this.hasLogs(LOG_LEVELS.WARN);
   }
-  
+
   getLastLog(level = null) {
     const logs = this.getLogs(level);
     return logs.length > 0 ? logs[logs.length - 1] : null;
   }
-  
+
   getFirstLog(level = null) {
     const logs = this.getLogs(level);
     return logs.length > 0 ? logs[0] : null;
   }
-  
+
   // Assertion helpers
   expectLog(level, message, meta = {}) {
     const logs = this.getLogs(level);
     const matchingLog = logs.find(log => {
       if (log.message !== message) return false;
-      
+
       // Check meta properties
       for (const [key, value] of Object.entries(meta)) {
         if (log.meta[key] !== value) return false;
       }
-      
+
       return true;
     });
-    
+
     return {
       found: !!matchingLog,
       log: matchingLog,
       allLogs: logs,
     };
   }
-  
+
   expectError(message, meta = {}) {
     return this.expectLog(LOG_LEVELS.ERROR, message, meta);
   }
-  
+
   expectWarn(message, meta = {}) {
     return this.expectLog(LOG_LEVELS.WARN, message, meta);
   }
-  
+
   expectInfo(message, meta = {}) {
     return this.expectLog(LOG_LEVELS.INFO, message, meta);
   }
-  
+
   expectDebug(message, meta = {}) {
     return this.expectLog(LOG_LEVELS.DEBUG, message, meta);
   }
@@ -269,26 +267,26 @@ export class MockConsoleTransport {
     this.colorize = options.colorize || false;
     this.logs = [];
   }
-  
+
   log(logEntry) {
     if (logEntry.level <= this.level) {
       this.logs.push(logEntry);
-      
+
       // Simulate console output
       const levelName = Object.keys(LOG_LEVELS)[logEntry.level];
-      const message = this.colorize 
+      const message = this.colorize
         ? `\x1b[36m[${levelName}]\x1b[0m ${logEntry.message}`
         : `[${levelName}] ${logEntry.message}`;
-      
+
       // Don't actually log to console in tests
       // console.log(message);
     }
   }
-  
+
   getLogs() {
     return [...this.logs];
   }
-  
+
   clear() {
     this.logs = [];
   }
@@ -302,39 +300,39 @@ export class MockFileTransport {
     this.logs = [];
     this.files = new Map(); // Simulate file system
   }
-  
+
   log(logEntry) {
     if (logEntry.level <= this.level) {
       this.logs.push(logEntry);
-      
+
       // Simulate writing to file
       const logLine = `${logEntry.timestamp} [${Object.keys(LOG_LEVELS)[logEntry.level]}] ${logEntry.message}\n`;
-      
+
       if (!this.files.has(this.filename)) {
         this.files.set(this.filename, '');
       }
-      
+
       let currentContent = this.files.get(this.filename);
-      
+
       // Check file size limit
       if (currentContent.length + logLine.length > this.maxSize) {
         // Rotate file
         this.files.set(`${this.filename}.old`, currentContent);
         currentContent = '';
       }
-      
+
       this.files.set(this.filename, currentContent + logLine);
     }
   }
-  
+
   getLogs() {
     return [...this.logs];
   }
-  
+
   getFileContent(filename = null) {
     return this.files.get(filename || this.filename) || '';
   }
-  
+
   clear() {
     this.logs = [];
     this.files.clear();
@@ -367,7 +365,7 @@ export const getGlobalMockLogger = () => {
   return globalMockLogger;
 };
 
-export const setGlobalMockLogger = (logger) => {
+export const setGlobalMockLogger = logger => {
   globalMockLogger = logger;
 };
 
@@ -397,7 +395,7 @@ export default createMockLogger();
 // Helper function to create logger mock with spies
 export const createLoggerWithSpies = (options = {}) => {
   const logger = createMockLogger(options);
-  
+
   // Add Jest spies to all methods
   jest.spyOn(logger, 'error');
   jest.spyOn(logger, 'warn');
@@ -408,7 +406,7 @@ export const createLoggerWithSpies = (options = {}) => {
   jest.spyOn(logger, 'child');
   jest.spyOn(logger, 'time');
   jest.spyOn(logger, 'profile');
-  
+
   return logger;
 };
 
@@ -422,7 +420,7 @@ export const loggerTestUtils = {
       ...options,
     });
   },
-  
+
   // Create a silent logger for performance tests
   createSilentLogger: (options = {}) => {
     return createMockLogger({
@@ -430,7 +428,7 @@ export const loggerTestUtils = {
       ...options,
     });
   },
-  
+
   // Create a logger with specific transports
   createLoggerWithTransports: (transports = [], options = {}) => {
     return createMockLogger({
@@ -438,33 +436,33 @@ export const loggerTestUtils = {
       ...options,
     });
   },
-  
+
   // Assertion helpers
   expectLoggerToHaveBeenCalledWith: (logger, level, message, meta = {}) => {
     const result = logger.expectLog(level, message, meta);
     return result.found;
   },
-  
-  expectLoggerToHaveErrors: (logger) => {
+
+  expectLoggerToHaveErrors: logger => {
     return logger.hasErrorLogs();
   },
-  
-  expectLoggerToHaveWarnings: (logger) => {
+
+  expectLoggerToHaveWarnings: logger => {
     return logger.hasWarnLogs();
   },
-  
+
   // Performance testing
   measureLoggingPerformance: (logger, iterations = 1000) => {
     const startTime = Date.now();
-    
+
     for (let i = 0; i < iterations; i++) {
       logger.info(`Test message ${i}`, { iteration: i });
     }
-    
+
     const endTime = Date.now();
     const duration = endTime - startTime;
     const logsPerSecond = (iterations / duration) * 1000;
-    
+
     return {
       duration,
       iterations,

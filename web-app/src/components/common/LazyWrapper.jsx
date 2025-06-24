@@ -21,7 +21,7 @@ const LoadingFallback = ({ message, size = 'medium' }) => {
       <div
         className={`animate-spin rounded-full border-b-2 border-blue-600 ${sizeClasses[size]}`}
       ></div>
-      <p className="mt-2 text-sm text-gray-500">{message || t('lazyWrapper.loading')}</p>
+      <p className='mt-2 text-sm text-gray-500'>{message || t('lazyWrapper.loading')}</p>
     </div>
   );
 };

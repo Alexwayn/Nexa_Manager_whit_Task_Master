@@ -64,7 +64,7 @@ const t = (key, params) => {
   let translation = translations[key] || key;
 
   if (params) {
-    Object.keys(params).forEach((param) => {
+    Object.keys(params).forEach(param => {
       translation = translation.replace(`{{${param}}}`, params[param]);
     });
   }

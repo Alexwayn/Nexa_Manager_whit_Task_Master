@@ -306,7 +306,7 @@ class ReceiptUploadService {
       }
 
       // Delete all files from storage
-      const filePaths = receipts.map((receipt) => receipt.file_path);
+      const filePaths = receipts.map(receipt => receipt.file_path);
       const { error: storageError } = await supabase.storage
         .from(this.bucketName)
         .remove(filePaths);
@@ -402,7 +402,7 @@ class ReceiptUploadService {
       };
 
       // Group by file type
-      data.forEach((receipt) => {
+      data.forEach(receipt => {
         const type = receipt.file_type;
         if (!stats.fileTypes[type]) {
           stats.fileTypes[type] = { count: 0, size: 0 };
@@ -412,7 +412,7 @@ class ReceiptUploadService {
       });
 
       // Group by upload month
-      data.forEach((receipt) => {
+      data.forEach(receipt => {
         const month = new Date(receipt.upload_date).toISOString().slice(0, 7);
         if (!stats.uploadsByMonth[month]) {
           stats.uploadsByMonth[month] = 0;
@@ -438,7 +438,7 @@ class ReceiptUploadService {
 
       if (listError) throw listError;
 
-      const bucketExists = buckets.some((bucket) => bucket.name === this.bucketName);
+      const bucketExists = buckets.some(bucket => bucket.name === this.bucketName);
 
       if (!bucketExists) {
         // Create bucket
@@ -490,7 +490,7 @@ class ReceiptUploadService {
 
         // Convert to blob
         canvas.toBlob(
-          (blob) => {
+          blob => {
             const compressedFile = new File([blob], file.name, {
               type: file.type,
               lastModified: Date.now(),

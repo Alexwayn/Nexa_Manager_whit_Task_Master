@@ -1,6 +1,8 @@
 # Error Boundaries and Performance Optimizations
 
-This document outlines the error boundaries and performance optimizations implemented as part of Task 56.5 - the final step in the monolithic component refactoring project.
+This document outlines the error boundaries and performance optimizations
+implemented as part of Task 56.5 - the final step in the monolithic component
+refactoring project.
 
 ## 🛡️ Error Boundaries
 
@@ -8,7 +10,8 @@ This document outlines the error boundaries and performance optimizations implem
 
 #### 1. ErrorBoundary.jsx
 
-**Purpose**: Main error boundary component with comprehensive error handling and recovery options.
+**Purpose**: Main error boundary component with comprehensive error handling and
+recovery options.
 
 **Features**:
 
@@ -25,7 +28,7 @@ This document outlines the error boundaries and performance optimizations implem
 import ErrorBoundary from '@components/common/ErrorBoundary';
 
 <ErrorBoundary
-  title="Errore personalizzato"
+  title='Errore personalizzato'
   message="Descrizione dell'errore"
   showReload={true}
   onError={(error, errorInfo) => console.log('Error logged:', error)}
@@ -36,7 +39,8 @@ import ErrorBoundary from '@components/common/ErrorBoundary';
 
 #### 2. ComponentErrorBoundary.jsx
 
-**Purpose**: Lightweight error boundary for individual components with minimal fallback UI.
+**Purpose**: Lightweight error boundary for individual components with minimal
+fallback UI.
 
 **Features**:
 
@@ -50,14 +54,15 @@ import ErrorBoundary from '@components/common/ErrorBoundary';
 ```jsx
 import ComponentErrorBoundary from '@components/common/ComponentErrorBoundary';
 
-<ComponentErrorBoundary componentName="ClientCard">
+<ComponentErrorBoundary componentName='ClientCard'>
   <ClientCard {...props} />
 </ComponentErrorBoundary>;
 ```
 
 #### 3. ReportErrorBoundary.jsx
 
-**Purpose**: Specialized error boundary for reports with report-specific error handling.
+**Purpose**: Specialized error boundary for reports with report-specific error
+handling.
 
 **Features**:
 
@@ -69,7 +74,8 @@ import ComponentErrorBoundary from '@components/common/ComponentErrorBoundary';
 
 Error boundaries have been integrated into:
 
-- **ClientsRefactored.jsx**: Main error boundary + component-specific boundaries for:
+- **ClientsRefactored.jsx**: Main error boundary + component-specific boundaries
+  for:
 
   - Header section
   - Statistics cards
@@ -78,7 +84,8 @@ Error boundaries have been integrated into:
   - Pagination
   - Modals
 
-- **SettingsRefactored.jsx**: Main error boundary + component-specific boundaries for:
+- **SettingsRefactored.jsx**: Main error boundary + component-specific
+  boundaries for:
 
   - Header section
   - Main content area
@@ -107,14 +114,15 @@ Error boundaries have been integrated into:
 ```jsx
 import PerformanceWrapper from '@components/common/PerformanceWrapper';
 
-<PerformanceWrapper componentName="ExpensiveComponent">
+<PerformanceWrapper componentName='ExpensiveComponent'>
   <ExpensiveComponent />
 </PerformanceWrapper>;
 ```
 
 #### 2. LazyWrapper.jsx
 
-**Purpose**: Wrapper for lazy-loaded components with error boundaries and loading states.
+**Purpose**: Wrapper for lazy-loaded components with error boundaries and
+loading states.
 
 **Features**:
 
@@ -128,7 +136,7 @@ import PerformanceWrapper from '@components/common/PerformanceWrapper';
 ```jsx
 import LazyWrapper from '@components/common/LazyWrapper';
 
-<LazyWrapper loadingMessage="Caricamento componente..." loadingSize="medium">
+<LazyWrapper loadingMessage='Caricamento componente...' loadingSize='medium'>
   <LazyComponent />
 </LazyWrapper>;
 ```
@@ -175,13 +183,21 @@ import LazyWrapper from '@components/common/LazyWrapper';
 
 ```jsx
 // In ClientsRefactored.jsx
-const ClientSearchFilter = lazy(() => import('../components/ClientSearchFilter'));
+const ClientSearchFilter = lazy(
+  () => import('../components/ClientSearchFilter'),
+);
 const ClientHistoryView = lazy(() => import('../components/ClientHistoryView'));
-const ClientImportExport = lazy(() => import('../components/ClientImportExport'));
+const ClientImportExport = lazy(
+  () => import('../components/ClientImportExport'),
+);
 
 // In SettingsRefactored.jsx
-const ProfileSection = lazy(() => import('../components/settings/ProfileSection'));
-const SecuritySection = lazy(() => import('../components/settings/SecuritySection'));
+const ProfileSection = lazy(
+  () => import('../components/settings/ProfileSection'),
+);
+const SecuritySection = lazy(
+  () => import('../components/settings/SecuritySection'),
+);
 // ... other sections
 ```
 
@@ -315,7 +331,7 @@ Performance monitoring automatically logs:
 
 ---
 
-**Implementation Status**: ✅ Complete
-**Task**: 56.5 - Implement Error Boundaries and Performance Optimizations
-**Date**: 2025-01-20
-**Impact**: Comprehensive error handling and performance optimization across all refactored components
+**Implementation Status**: ✅ Complete **Task**: 56.5 - Implement Error
+Boundaries and Performance Optimizations **Date**: 2025-01-20 **Impact**:
+Comprehensive error handling and performance optimization across all refactored
+components

@@ -13,7 +13,7 @@ export function useClients() {
   const generateId = () => Math.floor(100000 + Math.random() * 900000);
 
   // Función para obtener el nombre a mostrar
-  const getDisplayName = (client) => {
+  const getDisplayName = client => {
     return client.full_name || client.name || 'Cliente';
   };
 
@@ -40,7 +40,7 @@ export function useClients() {
       }
 
       // Adapta los datos para compatibilidad frontend
-      const adaptedData = (data || []).map((client) => ({
+      const adaptedData = (data || []).map(client => ({
         ...client,
         name: client.full_name || client.name || 'Cliente',
       }));
@@ -56,7 +56,7 @@ export function useClients() {
   };
 
   // Función para crear un cliente
-  const createClient = async (clientData) => {
+  const createClient = async clientData => {
     if (!user) return { success: false, error: 'Usuario no autenticado' };
 
     try {
@@ -80,7 +80,7 @@ export function useClients() {
         name: data.full_name || data.name || 'Cliente',
       };
 
-      setClients((prev) => [...prev, adaptedClient]);
+      setClients(prev => [...prev, adaptedClient]);
 
       return { success: true, data: adaptedClient };
     } catch (err) {
@@ -118,7 +118,7 @@ export function useClients() {
         name: data.full_name || data.name || 'Cliente',
       };
 
-      setClients((prev) => prev.map((client) => (client.id === clientId ? adaptedClient : client)));
+      setClients(prev => prev.map(client => (client.id === clientId ? adaptedClient : client)));
 
       return { success: true, data: adaptedClient };
     } catch (err) {
@@ -128,7 +128,7 @@ export function useClients() {
   };
 
   // Función para eliminar un cliente
-  const deleteClient = async (clientId) => {
+  const deleteClient = async clientId => {
     if (!user) return { success: false, error: 'Usuario no autenticado' };
 
     try {
@@ -144,7 +144,7 @@ export function useClients() {
       }
 
       // Actualiza la lista removiendo el cliente
-      setClients((prev) => prev.filter((client) => client.id !== clientId));
+      setClients(prev => prev.filter(client => client.id !== clientId));
 
       return { success: true };
     } catch (err) {

@@ -32,7 +32,7 @@ const SANITIZATION_CONFIG = {
  * @param {string} html - HTML content to sanitize
  * @returns {string} - Sanitized HTML content
  */
-export const sanitizeHtml = (html) => {
+export const sanitizeHtml = html => {
   if (!html) return '';
   return DOMPurifyInstance.sanitize(html, SANITIZATION_CONFIG);
 };
@@ -115,7 +115,7 @@ export const runXSSTests = () => {
     Logger.error(`   Note:   ${testCase.expectedBehavior}`);
   });
 
-  const allTestsPass = results.every((result) => result.isSecure);
+  const allTestsPass = results.every(result => result.isSecure);
 
   Logger.error('\n==================================================');
   Logger.error(`Overall Result: ${allTestsPass ? '✅ ALL TESTS PASS' : '❌ SOME TESTS FAILED'}`);

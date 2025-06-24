@@ -114,11 +114,11 @@ export const useFileUpload = () => {
   };
 
   // Upload avatar
-  const uploadAvatar = async (file) => {
+  const uploadAvatar = async file => {
     return uploadFile(file, {
       bucket: 'avatars',
       folder: 'profile',
-      onSuccess: async (result) => {
+      onSuccess: async result => {
         // Update profile with new avatar URL
         const { error: updateError } = await supabase
           .from('profiles')
@@ -141,11 +141,11 @@ export const useFileUpload = () => {
   };
 
   // Upload company logo
-  const uploadCompanyLogo = async (file) => {
+  const uploadCompanyLogo = async file => {
     return uploadFile(file, {
       bucket: 'company-logos',
       folder: 'logos',
-      onSuccess: async (result) => {
+      onSuccess: async result => {
         // Update profile with new company logo URL
         const { error: updateError } = await supabase
           .from('profiles')

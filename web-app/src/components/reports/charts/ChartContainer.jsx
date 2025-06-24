@@ -26,7 +26,7 @@ const ChartContainer = ({
           </h3>
         )}
         <div className={height}>
-          <ReportLoadingSpinner message="Caricamento grafico..." fullHeight={false} />
+          <ReportLoadingSpinner message='Caricamento grafico...' fullHeight={false} />
         </div>
       </div>
     );
@@ -48,7 +48,7 @@ const ChartContainer = ({
           <ReportErrorBoundary
             error={error}
             onRetry={onRetry}
-            title="Errore nel caricamento del grafico"
+            title='Errore nel caricamento del grafico'
           />
         </div>
       </div>
@@ -69,7 +69,7 @@ const ChartContainer = ({
           <div
             className={`${height} bg-gray-100 dark:bg-gray-700 rounded flex items-center justify-center`}
           >
-            <span className="text-gray-500 dark:text-gray-400">Nessun dato disponibile</span>
+            <span className='text-gray-500 dark:text-gray-400'>Nessun dato disponibile</span>
           </div>
         )}
       </div>

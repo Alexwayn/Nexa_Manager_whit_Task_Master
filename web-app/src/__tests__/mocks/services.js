@@ -7,13 +7,13 @@ import { jest } from '@jest/globals';
 export const createMockEmailService = () => {
   const mockEmailService = {
     // Email validation
-    validateEmail: jest.fn((email) => {
+    validateEmail: jest.fn(email => {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       return emailRegex.test(email);
     }),
-    
+
     // Template operations
-    getTemplate: jest.fn((templateName) => {
+    getTemplate: jest.fn(templateName => {
       const templates = {
         quote: {
           subject: 'Preventivo #{quoteNumber}',
@@ -33,7 +33,7 @@ export const createMockEmailService = () => {
       };
       return Promise.resolve(templates[templateName] || null);
     }),
-    
+
     replaceTemplateVariables: jest.fn((template, variables) => {
       let result = template;
       Object.entries(variables).forEach(([key, value]) => {
@@ -42,20 +42,20 @@ export const createMockEmailService = () => {
       });
       return result;
     }),
-    
+
     // Email sending
-    sendEmail: jest.fn((emailData) => {
+    sendEmail: jest.fn(emailData => {
       const { to, subject, body, attachments = [] } = emailData;
-      
+
       // Simulate validation
       if (!to || !mockEmailService.validateEmail(to)) {
         return Promise.reject(new Error('Invalid email address'));
       }
-      
+
       if (!subject || !body) {
         return Promise.reject(new Error('Subject and body are required'));
       }
-      
+
       // Simulate sending
       return Promise.resolve({
         messageId: `mock-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
@@ -65,7 +65,7 @@ export const createMockEmailService = () => {
         sentAt: new Date().toISOString(),
       });
     }),
-    
+
     sendQuoteEmail: jest.fn((quoteData, clientEmail) => {
       return mockEmailService.sendEmail({
         to: clientEmail,
@@ -74,7 +74,7 @@ export const createMockEmailService = () => {
         attachments: [`quote-${quoteData.number}.pdf`],
       });
     }),
-    
+
     sendInvoiceEmail: jest.fn((invoiceData, clientEmail) => {
       return mockEmailService.sendEmail({
         to: clientEmail,
@@ -83,7 +83,7 @@ export const createMockEmailService = () => {
         attachments: [`invoice-${invoiceData.number}.pdf`],
       });
     }),
-    
+
     // Configuration
     getConfiguration: jest.fn(() => {
       return Promise.resolve({
@@ -94,11 +94,11 @@ export const createMockEmailService = () => {
         fromName: 'Nexa Manager',
       });
     }),
-    
+
     testConfiguration: jest.fn(() => {
       return Promise.resolve({ success: true, message: 'Configuration is valid' });
     }),
-    
+
     // Utility methods
     formatCurrency: jest.fn((amount, currency = 'EUR') => {
       return new Intl.NumberFormat('it-IT', {
@@ -107,7 +107,7 @@ export const createMockEmailService = () => {
       }).format(amount);
     }),
   };
-  
+
   return mockEmailService;
 };
 
@@ -121,27 +121,27 @@ export const createMockFinancialService = () => {
         currency,
       }).format(amount);
     }),
-    
+
     formatPercentage: jest.fn((value, decimals = 2) => {
       return `${(value * 100).toFixed(decimals)}%`;
     }),
-    
+
     // Financial calculations
-    calculateTotal: jest.fn((items) => {
+    calculateTotal: jest.fn(items => {
       return items.reduce((total, item) => {
         const itemTotal = (item.quantity || 1) * (item.price || 0);
         return total + itemTotal;
       }, 0);
     }),
-    
+
     calculateTax: jest.fn((amount, taxRate = 0.22) => {
       return amount * taxRate;
     }),
-    
+
     calculateGrandTotal: jest.fn((subtotal, tax = 0, discount = 0) => {
       return subtotal + tax - discount;
     }),
-    
+
     // Financial overview
     getFinancialOverview: jest.fn((period = 'month') => {
       const mockData = {
@@ -170,10 +170,10 @@ export const createMockFinancialService = () => {
           pendingQuotes: 15000,
         },
       };
-      
+
       return Promise.resolve(mockData[period] || mockData.month);
     }),
-    
+
     // Cash flow
     getCashFlow: jest.fn((startDate, endDate) => {
       const mockCashFlow = [
@@ -181,10 +181,10 @@ export const createMockFinancialService = () => {
         { date: '2024-01-02', income: 3000, expenses: 1500, balance: 4500 },
         { date: '2024-01-03', income: 7000, expenses: 2500, balance: 9000 },
       ];
-      
+
       return Promise.resolve(mockCashFlow);
     }),
-    
+
     // Profit and loss
     getProfitAndLoss: jest.fn((startDate, endDate) => {
       return Promise.resolve({
@@ -207,9 +207,9 @@ export const createMockFinancialService = () => {
         profitMargin: 0.378,
       });
     }),
-    
+
     // Budget analysis
-    getBudgetAnalysis: jest.fn((year) => {
+    getBudgetAnalysis: jest.fn(year => {
       return Promise.resolve({
         budgeted: {
           income: 200000,
@@ -234,7 +234,7 @@ export const createMockFinancialService = () => {
       });
     }),
   };
-  
+
   return mockFinancialService;
 };
 
@@ -242,22 +242,22 @@ export const createMockFinancialService = () => {
 export const createMockTaxCalculationService = () => {
   const mockTaxService = {
     // IVA calculations
-    calculateStandardIVA: jest.fn((amount) => {
+    calculateStandardIVA: jest.fn(amount => {
       return amount * 0.22; // 22% standard rate
     }),
-    
-    calculateReducedIVA: jest.fn((amount) => {
-      return amount * 0.10; // 10% reduced rate
+
+    calculateReducedIVA: jest.fn(amount => {
+      return amount * 0.1; // 10% reduced rate
     }),
-    
-    calculateSuperReducedIVA: jest.fn((amount) => {
+
+    calculateSuperReducedIVA: jest.fn(amount => {
       return amount * 0.04; // 4% super reduced rate
     }),
-    
-    calculateWithholdingIVA: jest.fn((amount) => {
-      return amount * 0.20; // 20% withholding tax
+
+    calculateWithholdingIVA: jest.fn(amount => {
+      return amount * 0.2; // 20% withholding tax
     }),
-    
+
     // Tax exemptions
     isExemptTransaction: jest.fn((transactionType, clientType) => {
       const exemptCombinations = [
@@ -265,47 +265,47 @@ export const createMockTaxCalculationService = () => {
         { transaction: 'intra-eu', client: 'eu-business' },
         { transaction: 'medical', client: 'any' },
       ];
-      
-      return exemptCombinations.some(combo => 
-        combo.transaction === transactionType && 
-        (combo.client === 'any' || combo.client === clientType)
+
+      return exemptCombinations.some(
+        combo =>
+          combo.transaction === transactionType &&
+          (combo.client === 'any' || combo.client === clientType),
       );
     }),
-    
+
     // Reverse charge
     isReverseCharge: jest.fn((clientCountry, serviceType) => {
       const euCountries = ['IT', 'DE', 'FR', 'ES', 'NL', 'BE', 'AT', 'PT', 'IE', 'GR'];
       const reverseChargeServices = ['consulting', 'digital', 'professional'];
-      
-      return euCountries.includes(clientCountry) && 
-             reverseChargeServices.includes(serviceType);
+
+      return euCountries.includes(clientCountry) && reverseChargeServices.includes(serviceType);
     }),
-    
+
     // Tax calculation with rules
     calculateTax: jest.fn((amount, taxType, clientInfo = {}) => {
       const { country = 'IT', type = 'individual', vatNumber = null } = clientInfo;
-      
+
       // Check for exemptions
       if (mockTaxService.isExemptTransaction(taxType, type)) {
         return { amount: 0, rate: 0, exempt: true, reason: 'Exempt transaction' };
       }
-      
+
       // Check for reverse charge
       if (mockTaxService.isReverseCharge(country, taxType)) {
         return { amount: 0, rate: 0, reverseCharge: true, reason: 'EU B2B reverse charge' };
       }
-      
+
       // Standard calculations
       const rates = {
         standard: 0.22,
-        reduced: 0.10,
+        reduced: 0.1,
         super_reduced: 0.04,
-        withholding: 0.20,
+        withholding: 0.2,
       };
-      
+
       const rate = rates[taxType] || rates.standard;
       const taxAmount = amount * rate;
-      
+
       return {
         amount: taxAmount,
         rate,
@@ -313,9 +313,9 @@ export const createMockTaxCalculationService = () => {
         totalAmount: amount + taxAmount,
       };
     }),
-    
+
     // Tax summary
-    getTaxSummary: jest.fn((transactions) => {
+    getTaxSummary: jest.fn(transactions => {
       const summary = {
         totalBase: 0,
         totalTax: 0,
@@ -323,14 +323,14 @@ export const createMockTaxCalculationService = () => {
         exemptAmount: 0,
         reverseChargeAmount: 0,
       };
-      
+
       transactions.forEach(transaction => {
         const taxCalc = mockTaxService.calculateTax(
           transaction.amount,
           transaction.taxType,
-          transaction.clientInfo
+          transaction.clientInfo,
         );
-        
+
         if (taxCalc.exempt) {
           summary.exemptAmount += transaction.amount;
         } else if (taxCalc.reverseCharge) {
@@ -338,7 +338,7 @@ export const createMockTaxCalculationService = () => {
         } else {
           summary.totalBase += transaction.amount;
           summary.totalTax += taxCalc.amount;
-          
+
           const rateKey = `${(taxCalc.rate * 100).toFixed(0)}%`;
           if (!summary.byRate[rateKey]) {
             summary.byRate[rateKey] = { base: 0, tax: 0 };
@@ -347,10 +347,10 @@ export const createMockTaxCalculationService = () => {
           summary.byRate[rateKey].tax += taxCalc.amount;
         }
       });
-      
+
       return Promise.resolve(summary);
     }),
-    
+
     // Tax reporting
     generateTaxReport: jest.fn((period, year) => {
       return Promise.resolve({
@@ -367,7 +367,7 @@ export const createMockTaxCalculationService = () => {
       });
     }),
   };
-  
+
   return mockTaxService;
 };
 
@@ -398,9 +398,9 @@ export const createMockIncomeService = () => {
           status: 'pending',
         },
       ];
-      
+
       let filteredIncomes = mockIncomes;
-      
+
       if (filters.startDate || filters.endDate) {
         filteredIncomes = filteredIncomes.filter(income => {
           const incomeDate = new Date(income.date);
@@ -409,19 +409,19 @@ export const createMockIncomeService = () => {
           return true;
         });
       }
-      
+
       if (filters.category) {
         filteredIncomes = filteredIncomes.filter(income => income.category === filters.category);
       }
-      
+
       if (filters.status) {
         filteredIncomes = filteredIncomes.filter(income => income.status === filters.status);
       }
-      
+
       return Promise.resolve(filteredIncomes);
     }),
-    
-    getIncome: jest.fn((id) => {
+
+    getIncome: jest.fn(id => {
       const mockIncome = {
         id,
         description: 'Consulting Services',
@@ -433,21 +433,21 @@ export const createMockIncomeService = () => {
         status: 'paid',
         notes: 'Monthly consulting retainer',
       };
-      
+
       return Promise.resolve(mockIncome);
     }),
-    
-    createIncome: jest.fn((incomeData) => {
+
+    createIncome: jest.fn(incomeData => {
       const newIncome = {
         id: Date.now(),
         ...incomeData,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
       };
-      
+
       return Promise.resolve(newIncome);
     }),
-    
+
     updateIncome: jest.fn((id, updates) => {
       const updatedIncome = {
         id,
@@ -461,14 +461,14 @@ export const createMockIncomeService = () => {
         ...updates,
         updatedAt: new Date().toISOString(),
       };
-      
+
       return Promise.resolve(updatedIncome);
     }),
-    
-    deleteIncome: jest.fn((id) => {
+
+    deleteIncome: jest.fn(id => {
       return Promise.resolve({ success: true, deletedId: id });
     }),
-    
+
     // Analytics
     getIncomeStats: jest.fn((period = 'month') => {
       const stats = {
@@ -491,10 +491,10 @@ export const createMockIncomeService = () => {
           growth: 15.2,
         },
       };
-      
+
       return Promise.resolve(stats[period] || stats.month);
     }),
-    
+
     getIncomeByCategory: jest.fn(() => {
       return Promise.resolve([
         { category: 'services', amount: 120000, percentage: 66.7 },
@@ -503,7 +503,7 @@ export const createMockIncomeService = () => {
       ]);
     }),
   };
-  
+
   return mockIncomeService;
 };
 
@@ -534,9 +534,9 @@ export const createMockExpenseService = () => {
           status: 'pending',
         },
       ];
-      
+
       let filteredExpenses = mockExpenses;
-      
+
       if (filters.startDate || filters.endDate) {
         filteredExpenses = filteredExpenses.filter(expense => {
           const expenseDate = new Date(expense.date);
@@ -545,19 +545,21 @@ export const createMockExpenseService = () => {
           return true;
         });
       }
-      
+
       if (filters.category) {
-        filteredExpenses = filteredExpenses.filter(expense => expense.category === filters.category);
+        filteredExpenses = filteredExpenses.filter(
+          expense => expense.category === filters.category,
+        );
       }
-      
+
       if (filters.status) {
         filteredExpenses = filteredExpenses.filter(expense => expense.status === filters.status);
       }
-      
+
       return Promise.resolve(filteredExpenses);
     }),
-    
-    getExpense: jest.fn((id) => {
+
+    getExpense: jest.fn(id => {
       const mockExpense = {
         id,
         description: 'Office Supplies',
@@ -569,21 +571,21 @@ export const createMockExpenseService = () => {
         status: 'approved',
         notes: 'Monthly office supplies order',
       };
-      
+
       return Promise.resolve(mockExpense);
     }),
-    
-    createExpense: jest.fn((expenseData) => {
+
+    createExpense: jest.fn(expenseData => {
       const newExpense = {
         id: Date.now(),
         ...expenseData,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
       };
-      
+
       return Promise.resolve(newExpense);
     }),
-    
+
     updateExpense: jest.fn((id, updates) => {
       const updatedExpense = {
         id,
@@ -597,14 +599,14 @@ export const createMockExpenseService = () => {
         ...updates,
         updatedAt: new Date().toISOString(),
       };
-      
+
       return Promise.resolve(updatedExpense);
     }),
-    
-    deleteExpense: jest.fn((id) => {
+
+    deleteExpense: jest.fn(id => {
       return Promise.resolve({ success: true, deletedId: id });
     }),
-    
+
     // Analytics
     getExpenseStats: jest.fn((period = 'month') => {
       const stats = {
@@ -627,10 +629,10 @@ export const createMockExpenseService = () => {
           growth: 3.8,
         },
       };
-      
+
       return Promise.resolve(stats[period] || stats.month);
     }),
-    
+
     getExpenseByCategory: jest.fn(() => {
       return Promise.resolve([
         { category: 'office', amount: 30000, percentage: 31.25 },
@@ -641,7 +643,7 @@ export const createMockExpenseService = () => {
       ]);
     }),
   };
-  
+
   return mockExpenseService;
 };
 

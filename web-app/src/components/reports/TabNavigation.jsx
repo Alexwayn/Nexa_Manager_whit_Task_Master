@@ -15,7 +15,7 @@ const TabNavigation = ({
   const navClasses =
     variant === 'pills' ? 'flex space-x-1' : '-mb-px flex space-x-8 overflow-x-auto';
 
-  const getTabClasses = (tab) => {
+  const getTabClasses = tab => {
     const isActive = activeTab === tab.id;
 
     if (variant === 'pills') {
@@ -36,7 +36,7 @@ const TabNavigation = ({
   return (
     <div className={`${baseClasses} ${className}`}>
       <nav className={navClasses}>
-        {tabs.map((tab) => {
+        {tabs.map(tab => {
           const Icon = tab.icon;
           return (
             <button
@@ -45,10 +45,10 @@ const TabNavigation = ({
               className={getTabClasses(tab)}
               disabled={tab.disabled}
             >
-              {Icon && <Icon className="h-4 w-4 flex-shrink-0" />}
+              {Icon && <Icon className='h-4 w-4 flex-shrink-0' />}
               <span>{tab.name}</span>
               {tab.badge && (
-                <span className="ml-2 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 px-2 py-0.5 rounded-full text-xs">
+                <span className='ml-2 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 px-2 py-0.5 rounded-full text-xs'>
                   {tab.badge}
                 </span>
               )}

@@ -456,7 +456,7 @@ export class PDFGenerationService {
 
     // Prepare table data
     const tableHeaders = ['Description', 'Qty', 'Unit Price', 'VAT', 'Total'];
-    const tableData = items.map((item) => {
+    const tableData = items.map(item => {
       const quantity = parseFloat(item.quantity || 1);
       const unitPrice = parseFloat(item.unit_price || 0);
       const total = quantity * unitPrice;

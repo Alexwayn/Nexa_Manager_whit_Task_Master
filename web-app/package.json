@@ -25,7 +25,13 @@
     "test:utils": "jest --testPathPattern=utils",
     "test:coverage-threshold": "jest --coverage --coverageThreshold='{}'",
     "test:update-snapshots": "jest --updateSnapshot",
-    "test:clear-cache": "jest --clearCache"
+    "test:clear-cache": "jest --clearCache",
+    "test:a11y": "jest --testPathPattern=accessibility",
+    "monitor:performance": "node scripts/performance-check.js",
+    "monitor:errors": "node scripts/error-check.js",
+    "monitor:accessibility": "node scripts/accessibility-check.js",
+    "audit:full": "npm run type-check && npm run lint && npm run test:coverage && npm run test:a11y",
+    "prepare": "husky"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.2",
@@ -55,10 +61,13 @@
     "uuid": "^11.1.0"
   },
   "devDependencies": {
+    "@axe-core/react": "^4.10.2",
     "@babel/core": "^7.27.4",
     "@babel/preset-env": "^7.27.2",
     "@babel/preset-react": "^7.27.1",
     "@babel/preset-typescript": "^7.27.1",
+    "@commitlint/cli": "^19.8.1",
+    "@commitlint/config-conventional": "^19.8.1",
     "@eslint/js": "^9.22.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.3.0",
@@ -72,6 +81,7 @@
     "@typescript-eslint/parser": "^8.34.1",
     "@vitejs/plugin-react": "^4.3.4",
     "autoprefixer": "^10.4.21",
+    "axe-core": "^4.10.3",
     "babel-jest": "^30.0.2",
     "dotenv": "^16.5.0",
     "eslint": "^9.22.0",
@@ -81,14 +91,30 @@
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.19",
     "globals": "^16.0.0",
+    "husky": "^9.1.7",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^30.0.2",
+    "jest-axe": "^10.0.0",
     "jest-environment-jsdom": "^30.0.2",
     "jsdom": "^26.1.0",
+    "lint-staged": "^15.5.2",
     "postcss": "^8.5.3",
     "prettier": "^3.5.3",
     "tailwindcss": "^3.0.0",
+    "terser": "^5.43.1",
     "typescript": "^5.8.3",
     "vite": "^6.3.1"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,css,md}": [
+      "prettier --write"
+    ],
+    "*.{ts,tsx}": [
+      "tsc --noEmit"
+    ]
   }
 }

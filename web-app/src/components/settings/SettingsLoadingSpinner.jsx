@@ -31,7 +31,7 @@ const SettingsLoadingSpinner = ({
         className={`animate-spin rounded-full border-b-2 border-blue-600 ${sizeClasses[size]}`}
       ></div>
       {showMessage && loadingMessage && (
-        <p className="mt-2 text-sm text-gray-500">{loadingMessage}</p>
+        <p className='mt-2 text-sm text-gray-500'>{loadingMessage}</p>
       )}
     </div>
   );

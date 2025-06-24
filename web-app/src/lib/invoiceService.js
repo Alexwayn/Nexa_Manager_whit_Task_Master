@@ -1,6 +1,6 @@
-import { supabase } from '@lib/supabaseClient.js';
-import TaxCalculationService from '@lib/taxCalculationService.js';
-import PDFGenerationService from '@lib/pdfGenerationService.js';
+import { supabase } from '@lib/supabaseClient';
+import TaxCalculationService from '@lib/taxCalculationService';
+import PDFGenerationService from '@lib/pdfGenerationService';
 import Logger from '@utils/Logger';
 
 /**
@@ -245,7 +245,7 @@ export class InvoiceService {
       }
 
       return {
-        invoices: data.map((invoice) => this.formatInvoiceResponse(invoice)),
+        invoices: data.map(invoice => this.formatInvoiceResponse(invoice)),
         pagination: {
           page,
           limit,
@@ -625,7 +625,7 @@ export class InvoiceService {
    */
   static async createInvoiceItems(invoiceId, items) {
     try {
-      const dbItems = items.map((item) => ({
+      const dbItems = items.map(item => ({
         invoice_id: invoiceId,
         description: item.description,
         quantity: parseFloat(item.quantity || 1),
@@ -939,13 +939,13 @@ export class InvoiceService {
       };
 
       // Status breakdown
-      invoices.forEach((invoice) => {
+      invoices.forEach(invoice => {
         const status = invoice.status || 'draft';
         analytics.statusBreakdown[status] = (analytics.statusBreakdown[status] || 0) + 1;
       });
 
       // Monthly breakdown
-      invoices.forEach((invoice) => {
+      invoices.forEach(invoice => {
         if (invoice.issue_date) {
           const month = invoice.issue_date.substring(0, 7); // YYYY-MM
           if (!analytics.monthlyBreakdown[month]) {
@@ -1164,7 +1164,7 @@ export class InvoiceService {
       return {
         success: true,
         totalProcessed: invoiceIds.length,
-        successful: results.filter((r) => r.success).length,
+        successful: results.filter(r => r.success).length,
         failed: errors.length,
         results,
         errors,

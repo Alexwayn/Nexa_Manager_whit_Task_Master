@@ -85,13 +85,13 @@ class FinancialService {
   calculateCashFlow(incomeTrend, expenseTrend) {
     const cashFlow = [];
     const allDates = new Set([
-      ...incomeTrend.map((item) => item.date),
-      ...expenseTrend.map((item) => item.date),
+      ...incomeTrend.map(item => item.date),
+      ...expenseTrend.map(item => item.date),
     ]);
 
-    allDates.forEach((date) => {
-      const incomeAmount = incomeTrend.find((item) => item.date === date)?.amount || 0;
-      const expenseAmount = expenseTrend.find((item) => item.date === date)?.amount || 0;
+    allDates.forEach(date => {
+      const incomeAmount = incomeTrend.find(item => item.date === date)?.amount || 0;
+      const expenseAmount = expenseTrend.find(item => item.date === date)?.amount || 0;
 
       cashFlow.push({
         date,
@@ -353,7 +353,7 @@ class FinancialService {
   calculateVariability(trend) {
     if (trend.length < 2) return 0.5;
 
-    const amounts = trend.map((t) => t.amount);
+    const amounts = trend.map(t => t.amount);
     const mean = amounts.reduce((sum, val) => sum + val, 0) / amounts.length;
     const variance =
       amounts.reduce((sum, val) => sum + Math.pow(val - mean, 2), 0) / amounts.length;

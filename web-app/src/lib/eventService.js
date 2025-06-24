@@ -1,4 +1,4 @@
-import { supabase } from '@lib/supabaseClient.js';
+import { supabase } from '@lib/supabaseClient';
 import Logger from '@utils/Logger';
 
 /**
@@ -175,7 +175,7 @@ export const getEventsForDateRange = async (startDate, endDate) => {
  * @param {string} id - Event ID
  * @returns {Promise<Object>} Event data
  */
-export const getEvent = async (id) => {
+export const getEvent = async id => {
   try {
     const { data, error } = await supabase
       .from('events')
@@ -214,7 +214,7 @@ export const getEvent = async (id) => {
  * @param {Object} eventData - Event data
  * @returns {Promise<Object>} Created event
  */
-export const createEvent = async (eventData) => {
+export const createEvent = async eventData => {
   try {
     // Validate required fields
     const requiredFields = ['title', 'type', 'date'];
@@ -328,7 +328,7 @@ export const updateEvent = async (id, updates) => {
  * @param {string} id - Event ID
  * @returns {Promise<boolean>} Success status
  */
-export const deleteEvent = async (id) => {
+export const deleteEvent = async id => {
   try {
     const { error } = await supabase.from('events').delete().eq('id', id);
 
@@ -478,7 +478,7 @@ export const getEventStatistics = async (options = {}) => {
     const byType = {};
     const byPriority = {};
 
-    data.forEach((event) => {
+    data.forEach(event => {
       // Count by type
       byType[event.type] = (byType[event.type] || 0) + 1;
 
@@ -674,7 +674,7 @@ export const getUpcomingReminders = async (hoursAhead = 24) => {
  * @param {string} type - Event type
  * @returns {string} Hex color code
  */
-export const getDefaultColorForType = (type) => {
+export const getDefaultColorForType = type => {
   const colorMap = {
     [EVENT_TYPES.APPOINTMENT]: '#3B82F6', // Blue
     [EVENT_TYPES.QUOTE]: '#F59E0B', // Amber
@@ -760,7 +760,7 @@ const timeRangesOverlap = (start1, end1, start2, end2) => {
  * @param {Object} event - Event object
  * @returns {Object} Formatted event
  */
-export const formatEventForDisplay = (event) => {
+export const formatEventForDisplay = event => {
   const typeLabels = {
     [EVENT_TYPES.APPOINTMENT]: 'Appointment',
     [EVENT_TYPES.QUOTE]: 'Quote',

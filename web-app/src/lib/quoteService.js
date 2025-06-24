@@ -185,7 +185,7 @@ export class QuoteService {
 
       // Create quote items if provided
       if (quoteData.items && quoteData.items.length > 0) {
-        const quoteItems = quoteData.items.map((item) => ({
+        const quoteItems = quoteData.items.map(item => ({
           quote_id: quote.id,
           description: item.description,
           quantity: item.quantity,
@@ -262,7 +262,7 @@ export class QuoteService {
 
         // Insert new items
         if (quoteData.items.length > 0) {
-          const quoteItems = quoteData.items.map((item) => ({
+          const quoteItems = quoteData.items.map(item => ({
             quote_id: quoteId,
             description: item.description,
             quantity: item.quantity,
@@ -375,7 +375,7 @@ export class QuoteService {
         taxAmount: originalQuote.tax_amount,
         totalAmount: originalQuote.total_amount,
         notes: originalQuote.notes,
-        items: originalQuote.quote_items.map((item) => ({
+        items: originalQuote.quote_items.map(item => ({
           description: item.description,
           quantity: item.quantity,
           unitPrice: item.unit_price,
@@ -441,7 +441,7 @@ export class QuoteService {
 
       // Create invoice items from quote items
       if (quote.quote_items && quote.quote_items.length > 0) {
-        const invoiceItems = quote.quote_items.map((item) => ({
+        const invoiceItems = quote.quote_items.map(item => ({
           invoice_id: invoice.id,
           description: item.description,
           quantity: item.quantity,
@@ -572,19 +572,19 @@ export class QuoteService {
       // Calculate comprehensive statistics
       const stats = {
         total: data.length,
-        draft: data.filter((q) => q.status === 'draft').length,
-        sent: data.filter((q) => q.status === 'sent').length,
-        accepted: data.filter((q) => q.status === 'accepted').length,
-        rejected: data.filter((q) => q.status === 'rejected').length,
-        converted: data.filter((q) => q.status === 'converted').length,
-        expired: data.filter((q) => q.status === 'expired').length,
+        draft: data.filter(q => q.status === 'draft').length,
+        sent: data.filter(q => q.status === 'sent').length,
+        accepted: data.filter(q => q.status === 'accepted').length,
+        rejected: data.filter(q => q.status === 'rejected').length,
+        converted: data.filter(q => q.status === 'converted').length,
+        expired: data.filter(q => q.status === 'expired').length,
         totalValue: data.reduce((sum, q) => sum + (q.total_amount || 0), 0),
         acceptedValue: data
-          .filter((q) => q.status === 'accepted')
+          .filter(q => q.status === 'accepted')
           .reduce((sum, q) => sum + (q.total_amount || 0), 0),
         conversionRate:
           data.length > 0
-            ? (data.filter((q) => ['accepted', 'converted'].includes(q.status)).length /
+            ? (data.filter(q => ['accepted', 'converted'].includes(q.status)).length /
                 data.length) *
               100
             : 0,
@@ -693,7 +693,7 @@ export class QuoteService {
     let subtotal = 0;
     let taxAmount = 0;
 
-    items.forEach((item) => {
+    items.forEach(item => {
       const itemAmount = item.quantity * item.unitPrice;
       const itemTax = itemAmount * (item.taxRate / 100);
 

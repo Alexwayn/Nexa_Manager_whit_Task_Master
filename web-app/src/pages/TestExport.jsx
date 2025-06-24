@@ -1,5 +1,5 @@
 import React from 'react';
-import ExportButtons from '@components/ExportButtons';
+import ExportButtons from '@components/documents/ExportButtons';
 
 const TestExport = () => {
   // Dati di test per le transazioni
@@ -171,42 +171,42 @@ const TestExport = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className='min-h-screen bg-gray-50 py-8'>
+      <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+        <div className='mb-8'>
+          <h1 className='text-3xl font-bold text-gray-900 mb-2'>
             Test Funzionalità di Esportazione
           </h1>
-          <p className="text-gray-600">Testa i pulsanti di esportazione per diversi tipi di dati</p>
+          <p className='text-gray-600'>Testa i pulsanti di esportazione per diversi tipi di dati</p>
         </div>
 
         {/* Test Cards */}
-        <div className="space-y-8">
+        <div className='space-y-8'>
           {/* Test Esportazione Transazioni */}
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-            <div className="flex justify-between items-center mb-4">
+          <div className='bg-white rounded-xl shadow-sm border border-gray-200 p-6'>
+            <div className='flex justify-between items-center mb-4'>
               <div>
-                <h2 className="text-xl font-semibold text-gray-900">Esportazione Transazioni</h2>
-                <p className="text-gray-600">Test esportazione lista transazioni in CSV e PDF</p>
+                <h2 className='text-xl font-semibold text-gray-900'>Esportazione Transazioni</h2>
+                <p className='text-gray-600'>Test esportazione lista transazioni in CSV e PDF</p>
               </div>
               <ExportButtons
                 data={testTransactions}
-                type="transactions"
-                filename="test-transazioni"
+                type='transactions'
+                filename='test-transazioni'
                 period={dateRange}
-                className="flex-shrink-0"
+                className='flex-shrink-0'
               />
             </div>
 
             {/* Preview dei dati */}
-            <div className="bg-gray-50 rounded-lg p-4">
-              <h3 className="font-medium text-gray-900 mb-2">
+            <div className='bg-gray-50 rounded-lg p-4'>
+              <h3 className='font-medium text-gray-900 mb-2'>
                 Anteprima dati ({testTransactions.length} transazioni):
               </h3>
-              <div className="text-sm text-gray-600 space-y-1">
+              <div className='text-sm text-gray-600 space-y-1'>
                 {testTransactions.slice(0, 3).map((t, index) => (
-                  <div key={index} className="flex justify-between">
+                  <div key={index} className='flex justify-between'>
                     <span>
                       {t.date} - {t.description}
                     </span>
@@ -216,7 +216,7 @@ const TestExport = () => {
                   </div>
                 ))}
                 {testTransactions.length > 3 && (
-                  <div className="text-gray-500 italic">
+                  <div className='text-gray-500 italic'>
                     ... e altre {testTransactions.length - 3} transazioni
                   </div>
                 )}
@@ -225,30 +225,30 @@ const TestExport = () => {
           </div>
 
           {/* Test Esportazione Categorie */}
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-            <div className="flex justify-between items-center mb-4">
+          <div className='bg-white rounded-xl shadow-sm border border-gray-200 p-6'>
+            <div className='flex justify-between items-center mb-4'>
               <div>
-                <h2 className="text-xl font-semibold text-gray-900">
+                <h2 className='text-xl font-semibold text-gray-900'>
                   Esportazione Analisi Categorie
                 </h2>
-                <p className="text-gray-600">Test esportazione dati categorizzati in CSV</p>
+                <p className='text-gray-600'>Test esportazione dati categorizzati in CSV</p>
               </div>
               <ExportButtons
                 data={testCategories}
-                type="categories"
-                filename="test-categorie"
-                className="flex-shrink-0"
+                type='categories'
+                filename='test-categorie'
+                className='flex-shrink-0'
               />
             </div>
 
             {/* Preview dei dati */}
-            <div className="bg-gray-50 rounded-lg p-4">
-              <h3 className="font-medium text-gray-900 mb-2">
+            <div className='bg-gray-50 rounded-lg p-4'>
+              <h3 className='font-medium text-gray-900 mb-2'>
                 Anteprima dati ({testCategories.length} categorie):
               </h3>
-              <div className="text-sm text-gray-600 space-y-1">
+              <div className='text-sm text-gray-600 space-y-1'>
                 {testCategories.map((cat, index) => (
-                  <div key={index} className="flex justify-between">
+                  <div key={index} className='flex justify-between'>
                     <span>
                       {cat.category} ({cat.type})
                     </span>
@@ -262,28 +262,28 @@ const TestExport = () => {
           </div>
 
           {/* Test Esportazione Fornitori */}
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-            <div className="flex justify-between items-center mb-4">
+          <div className='bg-white rounded-xl shadow-sm border border-gray-200 p-6'>
+            <div className='flex justify-between items-center mb-4'>
               <div>
-                <h2 className="text-xl font-semibold text-gray-900">Esportazione Fornitori</h2>
-                <p className="text-gray-600">Test esportazione statistiche fornitori in CSV</p>
+                <h2 className='text-xl font-semibold text-gray-900'>Esportazione Fornitori</h2>
+                <p className='text-gray-600'>Test esportazione statistiche fornitori in CSV</p>
               </div>
               <ExportButtons
                 data={testVendors}
-                type="vendors"
-                filename="test-fornitori"
-                className="flex-shrink-0"
+                type='vendors'
+                filename='test-fornitori'
+                className='flex-shrink-0'
               />
             </div>
 
             {/* Preview dei dati */}
-            <div className="bg-gray-50 rounded-lg p-4">
-              <h3 className="font-medium text-gray-900 mb-2">
+            <div className='bg-gray-50 rounded-lg p-4'>
+              <h3 className='font-medium text-gray-900 mb-2'>
                 Anteprima dati ({testVendors.length} fornitori):
               </h3>
-              <div className="text-sm text-gray-600 space-y-1">
+              <div className='text-sm text-gray-600 space-y-1'>
                 {testVendors.map((vendor, index) => (
-                  <div key={index} className="flex justify-between">
+                  <div key={index} className='flex justify-between'>
                     <span>{vendor.vendor}</span>
                     <span>
                       €{vendor.total_amount} ({vendor.transaction_count} transazioni)
@@ -295,45 +295,45 @@ const TestExport = () => {
           </div>
 
           {/* Test Esportazione Report Completo */}
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-            <div className="flex justify-between items-center mb-4">
+          <div className='bg-white rounded-xl shadow-sm border border-gray-200 p-6'>
+            <div className='flex justify-between items-center mb-4'>
               <div>
-                <h2 className="text-xl font-semibold text-gray-900">
+                <h2 className='text-xl font-semibold text-gray-900'>
                   Esportazione Report Completo
                 </h2>
-                <p className="text-gray-600">
+                <p className='text-gray-600'>
                   Test esportazione report finanziario completo in PDF
                 </p>
               </div>
               <ExportButtons
                 data={testReportData}
-                type="report"
-                filename="test-report-completo"
+                type='report'
+                filename='test-report-completo'
                 period={dateRange}
                 showReportOptions={true}
-                className="flex-shrink-0"
+                className='flex-shrink-0'
               />
             </div>
 
             {/* Preview dei dati */}
-            <div className="bg-gray-50 rounded-lg p-4">
-              <h3 className="font-medium text-gray-900 mb-2">Anteprima report finanziario:</h3>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+            <div className='bg-gray-50 rounded-lg p-4'>
+              <h3 className='font-medium text-gray-900 mb-2'>Anteprima report finanziario:</h3>
+              <div className='grid grid-cols-2 md:grid-cols-4 gap-4 text-sm'>
                 <div>
-                  <span className="text-gray-600">Entrate Totali:</span>
-                  <div className="font-semibold text-green-600">€{testReportData.totalIncome}</div>
+                  <span className='text-gray-600'>Entrate Totali:</span>
+                  <div className='font-semibold text-green-600'>€{testReportData.totalIncome}</div>
                 </div>
                 <div>
-                  <span className="text-gray-600">Spese Totali:</span>
-                  <div className="font-semibold text-red-600">€{testReportData.totalExpenses}</div>
+                  <span className='text-gray-600'>Spese Totali:</span>
+                  <div className='font-semibold text-red-600'>€{testReportData.totalExpenses}</div>
                 </div>
                 <div>
-                  <span className="text-gray-600">Profitto Netto:</span>
-                  <div className="font-semibold text-blue-600">€{testReportData.netProfit}</div>
+                  <span className='text-gray-600'>Profitto Netto:</span>
+                  <div className='font-semibold text-blue-600'>€{testReportData.netProfit}</div>
                 </div>
                 <div>
-                  <span className="text-gray-600">Margine:</span>
-                  <div className="font-semibold text-purple-600">
+                  <span className='text-gray-600'>Margine:</span>
+                  <div className='font-semibold text-purple-600'>
                     {testReportData.profitMargin}%
                   </div>
                 </div>
@@ -342,9 +342,9 @@ const TestExport = () => {
           </div>
 
           {/* Istruzioni */}
-          <div className="bg-blue-50 border border-blue-200 rounded-xl p-6">
-            <h2 className="text-lg font-semibold text-blue-900 mb-3">📋 Istruzioni per il Test</h2>
-            <div className="text-blue-800 space-y-2 text-sm">
+          <div className='bg-blue-50 border border-blue-200 rounded-xl p-6'>
+            <h2 className='text-lg font-semibold text-blue-900 mb-3'>📋 Istruzioni per il Test</h2>
+            <div className='text-blue-800 space-y-2 text-sm'>
               <p>
                 <strong>1. Test CSV:</strong> Clicca sui pulsanti &quot;CSV&quot; per scaricare i
                 file in formato CSV. Verifica che i dati siano formattati correttamente.

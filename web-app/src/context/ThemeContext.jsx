@@ -15,7 +15,7 @@ const t = (key, params) => {
   let translation = translations[key] || key;
 
   if (params) {
-    Object.keys(params).forEach((param) => {
+    Object.keys(params).forEach(param => {
       translation = translation.replace(`{{${param}}}`, params[param]);
     });
   }
@@ -61,7 +61,7 @@ export const ThemeProvider = ({ children }) => {
 
   // Toggle theme
   const toggleTheme = () => {
-    setTheme((prevTheme) => (prevTheme === 'light' ? 'dark' : 'light'));
+    setTheme(prevTheme => (prevTheme === 'light' ? 'dark' : 'light'));
   };
 
   // Set specific theme
@@ -81,7 +81,7 @@ export const ThemeProvider = ({ children }) => {
   useEffect(() => {
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
 
-    const handleChange = (e) => {
+    const handleChange = e => {
       if (!localStorage.getItem('nexa-theme')) {
         setTheme(e.matches ? 'dark' : 'light');
       }
@@ -145,7 +145,7 @@ export const themes = {
 };
 
 // Theme utility functions
-export const getThemeColors = (theme) => {
+export const getThemeColors = theme => {
   return themes[theme]?.colors || themes.light.colors;
 };
 

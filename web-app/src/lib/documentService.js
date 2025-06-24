@@ -535,7 +535,7 @@ class DocumentService {
         totalDocuments: data.length,
         totalSize: data.reduce((sum, doc) => sum + (doc.file_size || 0), 0),
         byType: {},
-        recentDocuments: data.filter((doc) => {
+        recentDocuments: data.filter(doc => {
           const docDate = new Date(doc.created_at);
           const weekAgo = new Date();
           weekAgo.setDate(weekAgo.getDate() - 7);
@@ -544,7 +544,7 @@ class DocumentService {
       };
 
       // Group by type
-      data.forEach((doc) => {
+      data.forEach(doc => {
         if (!stats.byType[doc.type]) {
           stats.byType[doc.type] = {
             count: 0,

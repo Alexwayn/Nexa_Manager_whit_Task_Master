@@ -1,10 +1,12 @@
 # ReceiptUpload Component
 
-Un componente React per gestire l'upload delle ricevute con funzionalità avanzate di drag & drop, anteprima e validazione.
+Un componente React per gestire l'upload delle ricevute con funzionalità
+avanzate di drag & drop, anteprima e validazione.
 
 ## Caratteristiche
 
-- ✅ **Drag & Drop**: Trascina e rilascia i file direttamente nell'area di upload
+- ✅ **Drag & Drop**: Trascina e rilascia i file direttamente nell'area di
+  upload
 - ✅ **Multi-file**: Supporta il caricamento di più file contemporaneamente
 - ✅ **Anteprima**: Mostra l'anteprima delle immagini prima del caricamento
 - ✅ **Validazione**: Controlla tipo di file, dimensione e duplicati
@@ -26,7 +28,7 @@ import ReceiptUpload from '@components/ReceiptUpload';
 function MyComponent() {
   const [showUpload, setShowUpload] = useState(false);
 
-  const handleUploadComplete = (uploadedFiles) => {
+  const handleUploadComplete = uploadedFiles => {
     console.log('File caricati:', uploadedFiles);
     // Gestisci i file caricati
   };
@@ -88,8 +90,8 @@ Il componente utilizza automaticamente il `StorageService` esistente per:
 
 ```jsx
 <ReceiptUpload
-  title="Carica Documenti"
-  description="Carica i tuoi documenti aziendali"
+  title='Carica Documenti'
+  description='Carica i tuoi documenti aziendali'
   allowedTypes={['application/pdf', 'image/jpeg', 'image/png']}
   maxFiles={3}
   maxFileSize={5242880} // 5MB
@@ -100,7 +102,7 @@ Il componente utilizza automaticamente il `StorageService` esistente per:
 
 ```jsx
 <ReceiptUpload
-  title="Carica Foto"
+  title='Carica Foto'
   allowedTypes={['image/jpeg', 'image/png', 'image/gif']}
   maxFiles={10}
 />

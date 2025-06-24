@@ -225,10 +225,10 @@ class ExpenseService {
             ? data.reduce((sum, expense) => sum + parseFloat(expense.amount), 0) / data.length
             : 0,
         taxDeductibleAmount: data
-          .filter((e) => e.tax_deductible)
+          .filter(e => e.tax_deductible)
           .reduce((sum, expense) => sum + parseFloat(expense.amount), 0),
         nonTaxDeductibleAmount: data
-          .filter((e) => !e.tax_deductible)
+          .filter(e => !e.tax_deductible)
           .reduce((sum, expense) => sum + parseFloat(expense.amount), 0),
         byCategory: {},
         byVendor: {},
@@ -239,7 +239,7 @@ class ExpenseService {
       };
 
       // Raggruppa per categoria
-      data.forEach((expense) => {
+      data.forEach(expense => {
         if (!stats.byCategory[expense.category]) {
           stats.byCategory[expense.category] = {
             amount: 0,
@@ -259,7 +259,7 @@ class ExpenseService {
       });
 
       // Raggruppa per fornitore
-      data.forEach((expense) => {
+      data.forEach(expense => {
         const vendor = expense.vendor || 'Non specificato';
         if (!stats.byVendor[vendor]) {
           stats.byVendor[vendor] = { amount: 0, count: 0 };
@@ -270,7 +270,7 @@ class ExpenseService {
 
       // Trend giornaliero
       const dailyData = {};
-      data.forEach((expense) => {
+      data.forEach(expense => {
         const date = new Date(expense.date).toISOString().split('T')[0];
         if (!dailyData[date]) {
           dailyData[date] = 0;
@@ -388,10 +388,10 @@ class ExpenseService {
       const stats = {
         totalExpenses: data.reduce((sum, expense) => sum + parseFloat(expense.amount), 0),
         taxDeductibleExpenses: data
-          .filter((e) => e.tax_deductible)
+          .filter(e => e.tax_deductible)
           .reduce((sum, expense) => sum + parseFloat(expense.amount), 0),
         nonTaxDeductibleExpenses: data
-          .filter((e) => !e.tax_deductible)
+          .filter(e => !e.tax_deductible)
           .reduce((sum, expense) => sum + parseFloat(expense.amount), 0),
         taxDeductiblePercentage: 0,
         byCategory: {},
@@ -401,7 +401,7 @@ class ExpenseService {
         stats.totalExpenses > 0 ? (stats.taxDeductibleExpenses / stats.totalExpenses) * 100 : 0;
 
       // Group by category
-      data.forEach((expense) => {
+      data.forEach(expense => {
         if (!stats.byCategory[expense.category]) {
           stats.byCategory[expense.category] = {
             total: 0,
@@ -544,7 +544,7 @@ class ExpenseService {
       if (error) throw error;
 
       // Remove duplicates and sort
-      const uniqueVendors = [...new Set(data.map((item) => item.vendor))].sort();
+      const uniqueVendors = [...new Set(data.map(item => item.vendor))].sort();
 
       return { success: true, data: uniqueVendors };
     } catch (error) {
@@ -575,7 +575,7 @@ class ExpenseService {
       if (error) throw error;
 
       const stats = {};
-      data.forEach((expense) => {
+      data.forEach(expense => {
         const vendor = expense.vendor || 'Not specified';
         if (!stats[vendor]) {
           stats[vendor] = { amount: 0, count: 0, lastExpense: null };
@@ -726,10 +726,10 @@ class ExpenseService {
 
     try {
       const results = await Promise.all(
-        defaultCategories.map((category) => this.createExpenseCategory(category)),
+        defaultCategories.map(category => this.createExpenseCategory(category)),
       );
 
-      const successful = results.filter((result) => result.success).length;
+      const successful = results.filter(result => result.success).length;
       return {
         success: true,
         message: `Created ${successful} default expense categories`,

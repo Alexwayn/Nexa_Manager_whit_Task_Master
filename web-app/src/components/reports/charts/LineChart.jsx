@@ -72,7 +72,7 @@ const LineChart = ({
   const defaultData = {
     labels: data?.labels || [],
     datasets:
-      data?.datasets?.map((dataset) => ({
+      data?.datasets?.map(dataset => ({
         borderColor: 'rgb(59, 130, 246)',
         backgroundColor: 'rgba(59, 130, 246, 0.1)',
         fill: true,

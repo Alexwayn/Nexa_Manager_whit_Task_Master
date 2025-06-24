@@ -58,15 +58,15 @@ export default function ProfileForm() {
     fetchProfile();
   }, [user]);
 
-  const handleChange = (e) => {
+  const handleChange = e => {
     const { name, value } = e.target;
-    setProfileData((prev) => ({
+    setProfileData(prev => ({
       ...prev,
       [name]: value,
     }));
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault();
     setLoading(true);
     setMessage({ type: '', text: '' });
@@ -97,7 +97,7 @@ export default function ProfileForm() {
     }
   };
 
-  const handleAvatarUpload = async (e) => {
+  const handleAvatarUpload = async e => {
     if (!e.target.files || e.target.files.length === 0) return;
 
     setLoading(true);
@@ -118,7 +118,7 @@ export default function ProfileForm() {
       } = supabase.storage.from('avatars').getPublicUrl(filePath);
 
       // Update profileData with the new avatar URL
-      setProfileData((prev) => ({
+      setProfileData(prev => ({
         ...prev,
         avatar_url: publicUrl,
       }));
@@ -139,8 +139,8 @@ export default function ProfileForm() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto bg-white shadow rounded-lg p-6">
-      <h2 className="text-2xl font-semibold text-gray-800 mb-6">{t('profile.title')}</h2>
+    <div className='max-w-4xl mx-auto bg-white shadow rounded-lg p-6'>
+      <h2 className='text-2xl font-semibold text-gray-800 mb-6'>{t('profile.title')}</h2>
 
       {message.text && (
         <div
@@ -152,109 +152,109 @@ export default function ProfileForm() {
 
       <form onSubmit={handleSubmit}>
         {/* Avatar upload section */}
-        <div className="mb-6">
-          <div className="flex items-center gap-4">
-            <div className="relative">
+        <div className='mb-6'>
+          <div className='flex items-center gap-4'>
+            <div className='relative'>
               <img
                 src={profileData.avatar_url || 'https://via.placeholder.com/150'}
-                alt="Profile"
-                className="w-24 h-24 rounded-full object-cover border-2 border-gray-200"
+                alt='Profile'
+                className='w-24 h-24 rounded-full object-cover border-2 border-gray-200'
               />
               {loading && (
-                <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40 rounded-full">
-                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>
+                <div className='absolute inset-0 flex items-center justify-center bg-black bg-opacity-40 rounded-full'>
+                  <div className='animate-spin rounded-full h-8 w-8 border-b-2 border-white'></div>
                 </div>
               )}
             </div>
             <div>
               <label
-                htmlFor="avatar-upload"
-                className="bg-white py-2 px-3 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none cursor-pointer"
+                htmlFor='avatar-upload'
+                className='bg-white py-2 px-3 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none cursor-pointer'
               >
                 {t('profile.avatar.change')}
               </label>
               <input
-                id="avatar-upload"
-                name="avatar-upload"
-                type="file"
-                accept="image/*"
+                id='avatar-upload'
+                name='avatar-upload'
+                type='file'
+                accept='image/*'
                 onChange={handleAvatarUpload}
-                className="sr-only"
+                className='sr-only'
               />
-              <p className="mt-1 text-xs text-gray-500">{t('profile.avatar.help')}</p>
+              <p className='mt-1 text-xs text-gray-500'>{t('profile.avatar.help')}</p>
             </div>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
           {/* Username field */}
           <div>
-            <label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor='username' className='block text-sm font-medium text-gray-700 mb-1'>
               {t('profile.username.label')}
             </label>
             <input
-              type="text"
-              id="username"
-              name="username"
+              type='text'
+              id='username'
+              name='username'
               value={profileData.username}
               onChange={handleChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              className='w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500'
               required
             />
           </div>
 
           {/* Full name field */}
           <div>
-            <label htmlFor="full_name" className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor='full_name' className='block text-sm font-medium text-gray-700 mb-1'>
               {t('profile.fullName.label', 'Full Name')}
             </label>
             <input
-              type="text"
-              id="full_name"
-              name="full_name"
+              type='text'
+              id='full_name'
+              name='full_name'
               value={profileData.full_name}
               onChange={handleChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              className='w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500'
               required
             />
           </div>
 
           {/* Phone field */}
           <div>
-            <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor='phone' className='block text-sm font-medium text-gray-700 mb-1'>
               {t('profile.phone.label')}
             </label>
             <input
-              type="tel"
-              id="phone"
-              name="phone"
+              type='tel'
+              id='phone'
+              name='phone'
               value={profileData.phone}
               onChange={handleChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              className='w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500'
             />
           </div>
 
           {/* Business type field */}
           <div>
-            <label htmlFor="business_type" className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor='business_type' className='block text-sm font-medium text-gray-700 mb-1'>
               {t('company.businessType.label')}
             </label>
             <select
-              id="business_type"
-              name="business_type"
+              id='business_type'
+              name='business_type'
               value={profileData.business_type}
               onChange={handleChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              className='w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500'
             >
-              <option value="">{t('company.businessType.selectPlaceholder')}</option>
-              <option value="freelance">{t('company.businessType.options.freelance')}</option>
-              <option value="small_business">
+              <option value=''>{t('company.businessType.selectPlaceholder')}</option>
+              <option value='freelance'>{t('company.businessType.options.freelance')}</option>
+              <option value='small_business'>
                 {t('company.businessType.options.small_business')}
               </option>
-              <option value="medium_business">
+              <option value='medium_business'>
                 {t('company.businessType.options.medium_business')}
               </option>
-              <option value="large_business">
+              <option value='large_business'>
                 {t('company.businessType.options.large_business')}
               </option>
             </select>
@@ -262,71 +262,71 @@ export default function ProfileForm() {
 
           {/* VAT number field */}
           <div>
-            <label htmlFor="vat_number" className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor='vat_number' className='block text-sm font-medium text-gray-700 mb-1'>
               {t('company.vatNumber.label')}
             </label>
             <input
-              type="text"
-              id="vat_number"
-              name="vat_number"
+              type='text'
+              id='vat_number'
+              name='vat_number'
               value={profileData.vat_number}
               onChange={handleChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              className='w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500'
             />
           </div>
 
           {/* Company name field */}
-          <div className="md:col-span-2">
-            <label htmlFor="company_name" className="block text-sm font-medium text-gray-700 mb-1">
+          <div className='md:col-span-2'>
+            <label htmlFor='company_name' className='block text-sm font-medium text-gray-700 mb-1'>
               {t('company.name.label')}
             </label>
             <input
-              type="text"
-              id="company_name"
-              name="company_name"
+              type='text'
+              id='company_name'
+              name='company_name'
               value={profileData.company_name}
               onChange={handleChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              className='w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500'
             />
           </div>
 
           {/* Address field */}
-          <div className="md:col-span-2">
-            <label htmlFor="address" className="block text-sm font-medium text-gray-700 mb-1">
+          <div className='md:col-span-2'>
+            <label htmlFor='address' className='block text-sm font-medium text-gray-700 mb-1'>
               {t('profile.address.label')}
             </label>
             <input
-              type="text"
-              id="address"
-              name="address"
+              type='text'
+              id='address'
+              name='address'
               value={profileData.address}
               onChange={handleChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              className='w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500'
             />
           </div>
 
           {/* Bio field */}
-          <div className="md:col-span-2">
-            <label htmlFor="bio" className="block text-sm font-medium text-gray-700 mb-1">
+          <div className='md:col-span-2'>
+            <label htmlFor='bio' className='block text-sm font-medium text-gray-700 mb-1'>
               {t('profile.bio.label')}
             </label>
             <textarea
-              id="bio"
-              name="bio"
-              rows="3"
+              id='bio'
+              name='bio'
+              rows='3'
               value={profileData.bio}
               onChange={handleChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              className='w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500'
             ></textarea>
-            <p className="mt-1 text-xs text-gray-500">{t('profile.bio.help')}</p>
+            <p className='mt-1 text-xs text-gray-500'>{t('profile.bio.help')}</p>
           </div>
         </div>
 
-        <div className="mt-8 flex justify-end">
+        <div className='mt-8 flex justify-end'>
           <button
-            type="submit"
+            type='submit'
             disabled={loading}
-            className="px-6 py-2 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
+            className='px-6 py-2 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50'
           >
             {loading ? t('buttons.saving') : t('buttons.save')}
           </button>

@@ -5,8 +5,12 @@ import Logger from '@utils/Logger';
 // Use these functions to verify that performance optimizations are working correctly
 
 // Safe environment check for browser compatibility
-const isDevelopment = (typeof import.meta !== 'undefined' && import.meta.env?.MODE === 'development') || (typeof process !== 'undefined' && process.env.NODE_ENV === 'development');
-const isProduction = (typeof import.meta !== 'undefined' && import.meta.env?.MODE === 'production') || (typeof process !== 'undefined' && process.env.NODE_ENV === 'production');
+const isDevelopment =
+  (typeof import.meta !== 'undefined' && import.meta.env?.MODE === 'development') ||
+  (typeof process !== 'undefined' && process.env.NODE_ENV === 'development');
+const isProduction =
+  (typeof import.meta !== 'undefined' && import.meta.env?.MODE === 'production') ||
+  (typeof process !== 'undefined' && process.env.NODE_ENV === 'production');
 
 /**
  * Simulate component error for testing error boundaries
@@ -44,7 +48,7 @@ export const ErrorTestComponent = ({
  * Performance measurement utility for components
  * @param {string} componentName - Name of the component being measured
  */
-export const createPerformanceMeasure = (componentName) => {
+export const createPerformanceMeasure = componentName => {
   const startTime = performance.now();
 
   return {
@@ -71,7 +75,7 @@ export const createPerformanceMeasure = (componentName) => {
  * Component render counter for detecting unnecessary re-renders
  * @param {string} componentName - Name of the component
  */
-export const useRenderCounter = (componentName) => {
+export const useRenderCounter = componentName => {
   const renderCount = React.useRef(0);
 
   React.useEffect(() => {
@@ -111,13 +115,13 @@ export const trackMemoryUsage = (label = 'Memory Check') => {
  */
 export const LazyTestComponent = React.lazy(() => {
   // Simulate loading time
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       resolve({
         default: () => (
-          <div className="p-4 bg-green-100 border border-green-400 text-green-700 rounded">
+          <div className='p-4 bg-green-100 border border-green-400 text-green-700 rounded'>
             ✅ Lazy component loaded successfully!
-            <p className="text-sm mt-2">
+            <p className='text-sm mt-2'>
               This component was loaded asynchronously to test code splitting.
             </p>
           </div>
@@ -175,7 +179,7 @@ export const errorBoundaryTests = {
 
   // Test network errors
   testNetworkError: () => {
-    return fetch('/non-existent-endpoint').catch((error) => {
+    return fetch('/non-existent-endpoint').catch(error => {
       simulateComponentError('NetworkTest', `Network error: ${error.message}`);
     });
   },
@@ -197,8 +201,8 @@ export const setupProductionMonitoring = () => {
   if (isProduction) {
     // Monitor long tasks
     if ('PerformanceObserver' in window) {
-      const observer = new PerformanceObserver((list) => {
-        list.getEntries().forEach((entry) => {
+      const observer = new PerformanceObserver(list => {
+        list.getEntries().forEach(entry => {
           if (entry.duration > 50) {
             // Tasks longer than 50ms
             console.warn('Long task detected:', entry);

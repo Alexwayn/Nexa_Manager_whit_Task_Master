@@ -120,7 +120,7 @@ export const useUserSessions = () => {
   };
 
   // Revoke session (placeholder)
-  const revokeSession = async (sessionId) => {
+  const revokeSession = async sessionId => {
     try {
       // In a real implementation, you would revoke the session:
       /*
@@ -136,7 +136,7 @@ export const useUserSessions = () => {
       */
 
       // For now, just remove from local state
-      setSessions((prev) => prev.filter((session) => session.id !== sessionId));
+      setSessions(prev => prev.filter(session => session.id !== sessionId));
 
       Logger.info('Session revoked successfully');
       return true;

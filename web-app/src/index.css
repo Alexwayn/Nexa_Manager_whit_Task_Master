@@ -45,8 +45,8 @@
       'calt' 1;
     margin: 0;
     font-family:
-      -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell',
-      'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+      -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans',
+      'Droid Sans', 'Helvetica Neue', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
@@ -194,11 +194,7 @@
   }
 
   .gradient-secondary {
-    background: linear-gradient(
-      135deg,
-      theme('colors.secondary.100'),
-      theme('colors.secondary.200')
-    );
+    background: linear-gradient(135deg, theme('colors.secondary.100'), theme('colors.secondary.200'));
   }
 
   /* Glass effect */

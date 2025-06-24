@@ -18,7 +18,9 @@ i18n
     fallbackLng: 'en',
 
     // Debug mode in development
-    debug: (typeof import.meta !== 'undefined' && import.meta.env?.MODE === 'development') || (typeof process !== 'undefined' && process.env.NODE_ENV === 'development'),
+    debug:
+      (typeof import.meta !== 'undefined' && import.meta.env?.MODE === 'development') ||
+      (typeof process !== 'undefined' && process.env.NODE_ENV === 'development'),
 
     // Language detection options
     detection: {
@@ -79,7 +81,7 @@ i18n
   .then(() => {
     console.log('i18next initialized successfully');
   })
-  .catch((error) => {
+  .catch(error => {
     console.error('i18next initialization failed:', error);
   });
 

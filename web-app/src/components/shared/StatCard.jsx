@@ -27,30 +27,30 @@ export default function StatCard({
   };
 
   return (
-    <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm rounded-lg border border-gray-200 dark:border-gray-700">
-      <div className="p-5">
-        <div className="flex items-center">
+    <div className='bg-white dark:bg-gray-800 overflow-hidden shadow-sm rounded-lg border border-gray-200 dark:border-gray-700'>
+      <div className='p-5'>
+        <div className='flex items-center'>
           {Icon && (
             <div className={`flex-shrink-0 p-3 rounded-md ${colorClasses[color]}`}>
-              <Icon className="h-6 w-6" />
+              <Icon className='h-6 w-6' />
             </div>
           )}
           <div className={Icon ? 'ml-5 w-0 flex-1' : 'w-full'}>
             <dl>
-              <dt className="text-sm font-medium text-gray-500 dark:text-gray-400 truncate">
+              <dt className='text-sm font-medium text-gray-500 dark:text-gray-400 truncate'>
                 {title}
               </dt>
-              <dd className="text-lg font-medium text-gray-900 dark:text-white">{value}</dd>
+              <dd className='text-lg font-medium text-gray-900 dark:text-white'>{value}</dd>
             </dl>
           </div>
         </div>
         {progress !== null && (
-          <div className="mt-4">
-            <div className="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
+          <div className='mt-4'>
+            <div className='flex items-center justify-between text-sm text-gray-500 dark:text-gray-400'>
               <span>{t('statCard.progress')}</span>
               <span>{progress}%</span>
             </div>
-            <div className="mt-2 w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+            <div className='mt-2 w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2'>
               <div
                 className={`h-2 rounded-full transition-all duration-300 ${progressColorClasses[color]}`}
                 style={{ width: `${Math.min(Math.max(progress, 0), 100)}%` }}

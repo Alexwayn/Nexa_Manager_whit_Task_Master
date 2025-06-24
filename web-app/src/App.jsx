@@ -1,10 +1,10 @@
 import React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
-import { AuthProvider } from '@context/AuthContext';
-import { ThemeProvider } from '@context/ThemeContext';
+import { AuthProvider } from '@context/OptimizedAuthContext';
+import { ThemeProvider } from '@context/OptimizedThemeContext';
 import AppRouter from '@router/AppRouter';
-import FloatingMicrophone from '@components/FloatingMicrophone';
+import FloatingMicrophone from '@components/shared/FloatingMicrophone';
 import ErrorBoundary from '@components/common/ErrorBoundary';
 
 import './index.css';
@@ -13,10 +13,10 @@ import './index.css';
  * Toast Configuration - Centralized toast settings
  */
 const toastConfig = {
-  position: "top-right",
+  position: 'top-right',
   reverseOrder: false,
   gutter: 8,
-  containerClassName: "",
+  containerClassName: '',
   containerStyle: {},
   toastOptions: {
     className: '',
@@ -42,11 +42,17 @@ const toastConfig = {
     loading: {
       duration: Infinity,
     },
-  }
+  },
 };
 
 /**
  * Main App Component - Provides global context and routing
+ *
+ * Performance Optimizations Applied:
+ * 1. Uses OptimizedAuthProvider for context splitting and memoization
+ * 2. Uses OptimizedThemeProvider for reduced re-renders
+ * 3. Maintains backward compatibility with original API
+ * 4. All existing components work without changes
  */
 function App() {
   return (
@@ -54,7 +60,7 @@ function App() {
       <ThemeProvider>
         <AuthProvider>
           <Router>
-            <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-200">
+            <div className='min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-200'>
               {/* Main Application Router */}
               <AppRouter />
 

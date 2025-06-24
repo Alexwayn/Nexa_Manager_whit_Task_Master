@@ -242,7 +242,7 @@ const ApiReference = () => {
     setTimeout(() => setCopiedCode(''), 2000);
   };
 
-  const getMethodColor = (method) => {
+  const getMethodColor = method => {
     switch (method) {
       case 'GET':
         return 'bg-green-100 text-green-800';
@@ -258,49 +258,49 @@ const ApiReference = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className='min-h-screen bg-gray-50'>
       {/* Header */}
-      <div className="bg-white border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="text-center">
-            <h1 className="text-4xl font-bold text-gray-900 mb-4">{t('header.title')}</h1>
-            <p className="text-xl text-gray-600 mb-8">{t('header.subtitle')}</p>
+      <div className='bg-white border-b border-gray-200'>
+        <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8'>
+          <div className='text-center'>
+            <h1 className='text-4xl font-bold text-gray-900 mb-4'>{t('header.title')}</h1>
+            <p className='text-xl text-gray-600 mb-8'>{t('header.subtitle')}</p>
 
             {/* API Info */}
-            <div className="flex justify-center items-center space-x-8 mb-8">
-              <div className="flex items-center space-x-2">
-                <Globe className="h-5 w-5 text-blue-600" />
-                <span className="text-sm text-gray-600">{t('apiInfo.baseUrl')}</span>
+            <div className='flex justify-center items-center space-x-8 mb-8'>
+              <div className='flex items-center space-x-2'>
+                <Globe className='h-5 w-5 text-blue-600' />
+                <span className='text-sm text-gray-600'>{t('apiInfo.baseUrl')}</span>
               </div>
-              <div className="flex items-center space-x-2">
-                <Key className="h-5 w-5 text-purple-600" />
-                <span className="text-sm text-gray-600">{t('apiInfo.apiKey')}</span>
+              <div className='flex items-center space-x-2'>
+                <Key className='h-5 w-5 text-purple-600' />
+                <span className='text-sm text-gray-600'>{t('apiInfo.apiKey')}</span>
               </div>
             </div>
 
             {/* Search Bar */}
-            <div className="max-w-2xl mx-auto relative">
-              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
+            <div className='max-w-2xl mx-auto relative'>
+              <Search className='absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5' />
               <input
-                type="text"
+                type='text'
                 placeholder={t('search.placeholder')}
                 value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                onChange={e => setSearchTerm(e.target.value)}
+                className='w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent'
               />
             </div>
           </div>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid lg:grid-cols-4 gap-8">
+      <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12'>
+        <div className='grid lg:grid-cols-4 gap-8'>
           {/* Sidebar */}
-          <div className="lg:col-span-1">
-            <nav className="bg-white rounded-lg shadow-sm p-6 sticky top-8">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">{t('sidebar.endpoints')}</h3>
-              <div className="space-y-2">
-                {endpoints.map((endpoint) => (
+          <div className='lg:col-span-1'>
+            <nav className='bg-white rounded-lg shadow-sm p-6 sticky top-8'>
+              <h3 className='text-lg font-semibold text-gray-900 mb-4'>{t('sidebar.endpoints')}</h3>
+              <div className='space-y-2'>
+                {endpoints.map(endpoint => (
                   <button
                     key={endpoint.id}
                     onClick={() => setSelectedEndpoint(endpoint.id)}
@@ -310,35 +310,35 @@ const ApiReference = () => {
                         : 'text-gray-700 hover:bg-gray-100'
                     }`}
                   >
-                    <span className="text-lg">{endpoint.icon}</span>
-                    <span className="font-medium">{endpoint.name}</span>
+                    <span className='text-lg'>{endpoint.icon}</span>
+                    <span className='font-medium'>{endpoint.name}</span>
                   </button>
                 ))}
               </div>
 
               {/* Quick Links */}
-              <div className="mt-8 pt-6 border-t border-gray-200">
-                <h4 className="text-sm font-semibold text-gray-900 mb-3">Risorse</h4>
-                <div className="space-y-2">
+              <div className='mt-8 pt-6 border-t border-gray-200'>
+                <h4 className='text-sm font-semibold text-gray-900 mb-3'>Risorse</h4>
+                <div className='space-y-2'>
                   <a
-                    href="#"
-                    className="flex items-center text-sm text-gray-600 hover:text-blue-600"
+                    href='#'
+                    className='flex items-center text-sm text-gray-600 hover:text-blue-600'
                   >
-                    <Code className="h-4 w-4 mr-2" />
+                    <Code className='h-4 w-4 mr-2' />
                     Postman Collection
                   </a>
                   <a
-                    href="#"
-                    className="flex items-center text-sm text-gray-600 hover:text-blue-600"
+                    href='#'
+                    className='flex items-center text-sm text-gray-600 hover:text-blue-600'
                   >
-                    <Play className="h-4 w-4 mr-2" />
+                    <Play className='h-4 w-4 mr-2' />
                     API Playground
                   </a>
                   <a
-                    href="mailto:support@nexamanager.com"
-                    className="flex items-center text-sm text-gray-600 hover:text-blue-600"
+                    href='mailto:support@nexamanager.com'
+                    className='flex items-center text-sm text-gray-600 hover:text-blue-600'
                   >
-                    <AlertCircle className="h-4 w-4 mr-2" />
+                    <AlertCircle className='h-4 w-4 mr-2' />
                     Supporto API
                   </a>
                 </div>
@@ -347,25 +347,25 @@ const ApiReference = () => {
           </div>
 
           {/* Content */}
-          <div className="lg:col-span-3">
+          <div className='lg:col-span-3'>
             {apiData[selectedEndpoint] && (
               <div>
-                <div className="mb-8">
-                  <h2 className="text-2xl font-bold text-gray-900 mb-2">
+                <div className='mb-8'>
+                  <h2 className='text-2xl font-bold text-gray-900 mb-2'>
                     {apiData[selectedEndpoint].title}
                   </h2>
-                  <p className="text-gray-600">{apiData[selectedEndpoint].description}</p>
+                  <p className='text-gray-600'>{apiData[selectedEndpoint].description}</p>
                 </div>
 
-                <div className="space-y-12">
+                <div className='space-y-12'>
                   {apiData[selectedEndpoint].endpoints
-                    .filter((endpoint) =>
+                    .filter(endpoint =>
                       endpoint.path.toLowerCase().includes(searchTerm.toLowerCase()),
                     )
                     .map((endpoint, index) => (
-                      <div key={index} className="bg-white rounded-lg shadow-sm">
-                        <div className="p-6 border-b border-gray-200">
-                          <div className="flex items-center space-x-4">
+                      <div key={index} className='bg-white rounded-lg shadow-sm'>
+                        <div className='p-6 border-b border-gray-200'>
+                          <div className='flex items-center space-x-4'>
                             <span
                               className={`px-3 py-1 text-sm font-semibold rounded-full ${getMethodColor(
                                 endpoint.method,
@@ -373,63 +373,63 @@ const ApiReference = () => {
                             >
                               {t(`methods.${endpoint.method}`)}
                             </span>
-                            <h3 className="text-lg font-mono font-semibold text-gray-900">
+                            <h3 className='text-lg font-mono font-semibold text-gray-900'>
                               {endpoint.path}
                             </h3>
                           </div>
-                          <p className="mt-2 text-gray-600">{endpoint.description}</p>
+                          <p className='mt-2 text-gray-600'>{endpoint.description}</p>
                         </div>
 
-                        <div className="p-6">
-                          <h4 className="text-md font-semibold text-gray-900 mb-4">
+                        <div className='p-6'>
+                          <h4 className='text-md font-semibold text-gray-900 mb-4'>
                             {t('content.parameters')}
                           </h4>
-                          <table className="w-full text-left text-sm">
+                          <table className='w-full text-left text-sm'>
                             <thead>
-                              <tr className="border-b border-gray-200 text-gray-600">
-                                <th className="py-2">{t('content.name')}</th>
-                                <th className="py-2">{t('content.type')}</th>
-                                <th className="py-2">{t('content.required')}</th>
-                                <th className="py-2">{t('content.description')}</th>
+                              <tr className='border-b border-gray-200 text-gray-600'>
+                                <th className='py-2'>{t('content.name')}</th>
+                                <th className='py-2'>{t('content.type')}</th>
+                                <th className='py-2'>{t('content.required')}</th>
+                                <th className='py-2'>{t('content.description')}</th>
                               </tr>
                             </thead>
                             <tbody>
                               {endpoint.parameters?.map((param, pIndex) => (
-                                <tr key={pIndex} className="border-b border-gray-100">
-                                  <td className="py-2 font-mono text-gray-800">{param.name}</td>
-                                  <td className="py-2 font-mono text-purple-600">{param.type}</td>
-                                  <td className="py-2">
+                                <tr key={pIndex} className='border-b border-gray-100'>
+                                  <td className='py-2 font-mono text-gray-800'>{param.name}</td>
+                                  <td className='py-2 font-mono text-purple-600'>{param.type}</td>
+                                  <td className='py-2'>
                                     {param.required ? (
-                                      <span className="text-red-600">{t('content.required')}</span>
+                                      <span className='text-red-600'>{t('content.required')}</span>
                                     ) : (
-                                      <span className="text-gray-500">No</span>
+                                      <span className='text-gray-500'>No</span>
                                     )}
                                   </td>
-                                  <td className="py-2 text-gray-600">{param.description}</td>
+                                  <td className='py-2 text-gray-600'>{param.description}</td>
                                 </tr>
                               ))}
                             </tbody>
                           </table>
 
-                          <div className="grid md:grid-cols-2 gap-6 mt-8">
+                          <div className='grid md:grid-cols-2 gap-6 mt-8'>
                             <div>
-                              <h4 className="text-md font-semibold text-gray-900 mb-4">
+                              <h4 className='text-md font-semibold text-gray-900 mb-4'>
                                 {t('content.exampleRequest')}
                               </h4>
-                              <div className="bg-gray-800 rounded-lg p-4 relative text-sm font-mono text-white">
+                              <div className='bg-gray-800 rounded-lg p-4 relative text-sm font-mono text-white'>
                                 <button
                                   onClick={() => copyToClipboard(endpoint.example, `req-${index}`)}
-                                  className="absolute top-2 right-2 p-1 bg-gray-600 hover:bg-gray-500 rounded-md"
+                                  className='absolute top-2 right-2 p-1 bg-gray-600 hover:bg-gray-500 rounded-md'
                                 >
                                   {copiedCode === `req-${index}` ? (
                                     <>
-                                      <CheckCircle className="h-4 w-4 text-green-400" />
-                                      <span className="sr-only">{t('content.copied')}</span>
+                                      <CheckCircle className='h-4 w-4 text-green-400' />
+                                      <span className='sr-only'>{t('content.copied')}</span>
                                     </>
                                   ) : (
                                     <>
-                                      <Copy className="h-4 w-4" />
-                                      <span className="sr-only">{t('content.copy')}</span>
+                                      <Copy className='h-4 w-4' />
+                                      <span className='sr-only'>{t('content.copy')}</span>
                                     </>
                                   )}
                                 </button>
@@ -439,23 +439,23 @@ const ApiReference = () => {
                               </div>
                             </div>
                             <div>
-                              <h4 className="text-md font-semibold text-gray-900 mb-4">
+                              <h4 className='text-md font-semibold text-gray-900 mb-4'>
                                 {t('content.exampleResponse')}
                               </h4>
-                              <div className="bg-gray-800 rounded-lg p-4 relative text-sm font-mono text-white">
+                              <div className='bg-gray-800 rounded-lg p-4 relative text-sm font-mono text-white'>
                                 <button
                                   onClick={() => copyToClipboard(endpoint.response, `res-${index}`)}
-                                  className="absolute top-2 right-2 p-1 bg-gray-600 hover:bg-gray-500 rounded-md"
+                                  className='absolute top-2 right-2 p-1 bg-gray-600 hover:bg-gray-500 rounded-md'
                                 >
                                   {copiedCode === `res-${index}` ? (
                                     <>
-                                      <CheckCircle className="h-4 w-4 text-green-400" />
-                                      <span className="sr-only">{t('content.copied')}</span>
+                                      <CheckCircle className='h-4 w-4 text-green-400' />
+                                      <span className='sr-only'>{t('content.copied')}</span>
                                     </>
                                   ) : (
                                     <>
-                                      <Copy className="h-4 w-4" />
-                                      <span className="sr-only">{t('content.copy')}</span>
+                                      <Copy className='h-4 w-4' />
+                                      <span className='sr-only'>{t('content.copy')}</span>
                                     </>
                                   )}
                                 </button>
@@ -473,24 +473,24 @@ const ApiReference = () => {
             )}
 
             {/* Support Section */}
-            <div className="mt-12 bg-gradient-to-r from-purple-50 to-blue-50 rounded-2xl p-8">
-              <div className="text-center">
-                <h3 className="text-xl font-bold text-gray-900 mb-2">
+            <div className='mt-12 bg-gradient-to-r from-purple-50 to-blue-50 rounded-2xl p-8'>
+              <div className='text-center'>
+                <h3 className='text-xl font-bold text-gray-900 mb-2'>
                   Hai bisogno di supporto per le API?
                 </h3>
-                <p className="text-gray-600 mb-6">
+                <p className='text-gray-600 mb-6'>
                   Il nostro team tecnico è disponibile per assistenza e consulenza
                 </p>
-                <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <div className='flex flex-col sm:flex-row gap-4 justify-center'>
                   <a
-                    href="mailto:support@nexamanager.com"
-                    className="inline-flex items-center px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                    href='mailto:support@nexamanager.com'
+                    className='inline-flex items-center px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors'
                   >
                     Contatta il Team API
                   </a>
                   <a
-                    href="tel:+39351693692"
-                    className="inline-flex items-center px-6 py-3 bg-white text-blue-600 border border-blue-600 rounded-lg hover:bg-blue-50 transition-colors"
+                    href='tel:+39351693692'
+                    className='inline-flex items-center px-6 py-3 bg-white text-blue-600 border border-blue-600 rounded-lg hover:bg-blue-50 transition-colors'
                   >
                     Chiama +39 351 693 692
                   </a>

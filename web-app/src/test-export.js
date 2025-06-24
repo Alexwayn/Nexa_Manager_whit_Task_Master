@@ -1,5 +1,5 @@
 // Test per verificare che tutti i formati di export funzionino
-import { exportToCSV, exportToExcel, exportToPDF } from '@lib/exportService.js';
+import { exportToCSV, exportToExcel, exportToPDF } from '@lib/exportService';
 import Logger from 'utils/Logger';
 
 // Dati di test

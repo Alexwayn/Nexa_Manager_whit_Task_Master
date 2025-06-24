@@ -11,7 +11,7 @@
  * - Edge cases and boundary conditions
  */
 
-import { supabase } from '@lib/supabaseClient.js';
+import { supabase } from '@lib/supabaseClient';
 import Logger from '@utils/Logger';
 
 class RLSSecurityTester {
@@ -210,7 +210,7 @@ class RLSSecurityTester {
         this.logResult('Invoice Items Security', false, error.message);
       } else {
         // All invoice items should belong to invoices owned by current user
-        const allValidItems = data.every((item) => item.invoices && item.invoices.user_id !== null);
+        const allValidItems = data.every(item => item.invoices && item.invoices.user_id !== null);
         Logger.info('All items valid:', allValidItems);
 
         this.logResult(
@@ -244,14 +244,14 @@ class RLSSecurityTester {
             table: 'clients',
             // Note: No user_id filter - RLS should handle this
           },
-          (payload) => {
+          payload => {
             subscriptionData.push(payload);
           },
         )
         .subscribe();
 
       // Wait a moment for subscription to establish
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      await new Promise(resolve => setTimeout(resolve, 1000));
 
       // Create a test record that should trigger the subscription
       const { data } = await supabase
@@ -264,11 +264,11 @@ class RLSSecurityTester {
         .single();
 
       // Wait for real-time event
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      await new Promise(resolve => setTimeout(resolve, 2000));
 
       // Check if we received the event
       const receivedEvent = subscriptionData.some(
-        (event) => event.new && event.new.full_name === 'Realtime Test Client',
+        event => event.new && event.new.full_name === 'Realtime Test Client',
       );
 
       this.logResult(
@@ -348,7 +348,7 @@ class RLSSecurityTester {
     Logger.debug('='.repeat(60));
 
     const totalTests = this.testResults.length;
-    const passedTests = this.testResults.filter((r) => r.passed).length;
+    const passedTests = this.testResults.filter(r => r.passed).length;
     const failedTests = totalTests - passedTests;
 
     Logger.error(`Total Tests: ${totalTests}`);
@@ -360,8 +360,8 @@ class RLSSecurityTester {
     if (failedTests > 0) {
       Logger.error('\n❌ FAILED TESTS:');
       this.testResults
-        .filter((r) => !r.passed)
-        .forEach((r) => Logger.debug(`- ${r.testName}: ${r.details}`));
+        .filter(r => !r.passed)
+        .forEach(r => Logger.debug(`- ${r.testName}: ${r.details}`));
     }
 
     Logger.debug('\n🔒 SECURITY RECOMMENDATIONS:');

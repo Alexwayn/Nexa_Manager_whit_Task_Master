@@ -67,121 +67,122 @@ const ClientPagination = ({
   }
 
   return (
-    <div className="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
+    <div className='bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6'>
       {/* Mobile pagination */}
-      <div className="flex-1 flex justify-between sm:hidden">
+      <div className='flex-1 flex justify-between sm:hidden'>
         <button
           onClick={() => onPageChange(currentPage - 1)}
           disabled={currentPage === 1}
-          className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+          className='relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed'
         >
           Precedente
         </button>
         <button
           onClick={() => onPageChange(currentPage + 1)}
           disabled={currentPage === totalPages}
-          className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+          className='ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed'
         >
           Successivo
         </button>
       </div>
 
       {/* Desktop pagination */}
-      <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
-        <div className="flex items-center space-x-4">
+      <div className='hidden sm:flex-1 sm:flex sm:items-center sm:justify-between'>
+        <div className='flex items-center space-x-4'>
           {/* Items per page selector */}
-          <div className="flex items-center space-x-2">
-            <span className="text-sm text-gray-700">Mostra</span>
+          <div className='flex items-center space-x-2'>
+            <span className='text-sm text-gray-700'>Mostra</span>
             <select
               value={itemsPerPage}
-              onChange={(e) => onItemsPerPageChange(Number(e.target.value))}
-              className="border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              onChange={e => onItemsPerPageChange(Number(e.target.value))}
+              className='border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
             >
-              {itemsPerPageOptions.map((option) => (
+              {itemsPerPageOptions.map(option => (
                 <option key={option} value={option}>
                   {option}
                 </option>
               ))}
             </select>
-            <span className="text-sm text-gray-700">per pagina</span>
+            <span className='text-sm text-gray-700'>per pagina</span>
           </div>
 
           {/* Results info */}
-          <div className="text-sm text-gray-700">
-            Mostrando <span className="font-medium">{startItem}</span> -{' '}
-            <span className="font-medium">{endItem}</span> di{' '}
-            <span className="font-medium">{totalItems}</span> risultati
+          <div className='text-sm text-gray-700'>
+            Mostrando <span className='font-medium'>{startItem}</span> -{' '}
+            <span className='font-medium'>{endItem}</span> di{' '}
+            <span className='font-medium'>{totalItems}</span> risultati
           </div>
         </div>
 
         {/* Page navigation */}
-        <div className="flex items-center space-x-1">
+        <div className='flex items-center space-x-1'>
           {/* First page */}
           <button
             onClick={() => onPageChange(1)}
             disabled={currentPage === 1}
-            className="relative inline-flex items-center px-2 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed rounded-l-md"
-            title="Prima pagina"
+            className='relative inline-flex items-center px-2 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed rounded-l-md'
+            title='Prima pagina'
           >
-            <ChevronDoubleLeftIcon className="h-4 w-4" />
+            <ChevronDoubleLeftIcon className='h-4 w-4' />
           </button>
 
           {/* Previous page */}
           <button
             onClick={() => onPageChange(currentPage - 1)}
             disabled={currentPage === 1}
-            className="relative inline-flex items-center px-2 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
-            title="Pagina precedente"
+            className='relative inline-flex items-center px-2 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed'
+            title='Pagina precedente'
           >
-            <ChevronLeftIcon className="h-4 w-4" />
+            <ChevronLeftIcon className='h-4 w-4' />
           </button>
 
           {/* Page numbers */}
-          {totalPages > 1 && getPageNumbers().map((pageNumber, index) => {
-            if (pageNumber === '...') {
-              return (
-                <span
-                  key={`dots-${index}`}
-                  className="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700"
-                >
-                  ...
-                </span>
-              );
-            }
+          {totalPages > 1 &&
+            getPageNumbers().map((pageNumber, index) => {
+              if (pageNumber === '...') {
+                return (
+                  <span
+                    key={`dots-${index}`}
+                    className='relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700'
+                  >
+                    ...
+                  </span>
+                );
+              }
 
-            return (
-              <button
-                key={pageNumber}
-                onClick={() => onPageChange(pageNumber)}
-                className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium ${
-                  currentPage === pageNumber
-                    ? 'z-10 bg-blue-50 border-blue-500 text-blue-600'
-                    : 'bg-white border-gray-300 text-gray-500 hover:bg-gray-50'
-                }`}
-              >
-                {pageNumber}
-              </button>
-            );
-          })}
+              return (
+                <button
+                  key={pageNumber}
+                  onClick={() => onPageChange(pageNumber)}
+                  className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium ${
+                    currentPage === pageNumber
+                      ? 'z-10 bg-blue-50 border-blue-500 text-blue-600'
+                      : 'bg-white border-gray-300 text-gray-500 hover:bg-gray-50'
+                  }`}
+                >
+                  {pageNumber}
+                </button>
+              );
+            })}
 
           {/* Next page */}
           <button
             onClick={() => onPageChange(currentPage + 1)}
             disabled={currentPage === totalPages}
-            className="relative inline-flex items-center px-2 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
-            title="Pagina successiva"
+            className='relative inline-flex items-center px-2 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed'
+            title='Pagina successiva'
           >
-            <ChevronRightIcon className="h-4 w-4" />
+            <ChevronRightIcon className='h-4 w-4' />
           </button>
 
           {/* Last page */}
           <button
             onClick={() => onPageChange(totalPages)}
             disabled={currentPage === totalPages}
-            className="relative inline-flex items-center px-2 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed rounded-r-md"
-            title="Ultima pagina"
+            className='relative inline-flex items-center px-2 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed rounded-r-md'
+            title='Ultima pagina'
           >
-            <ChevronDoubleRightIcon className="h-4 w-4" />
+            <ChevronDoubleRightIcon className='h-4 w-4' />
           </button>
         </div>
       </div>

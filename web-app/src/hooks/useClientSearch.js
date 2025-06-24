@@ -18,7 +18,7 @@ export function useClientSearch(clients = []) {
     if (!searchQuery.trim()) return clients;
 
     const query = searchQuery.toLowerCase();
-    return clients.filter((client) => {
+    return clients.filter(client => {
       const displayName = client.full_name || client.name || 'Cliente';
       return (
         displayName.toLowerCase().includes(query) ||
@@ -40,13 +40,13 @@ export function useClientSearch(clients = []) {
           .slice(0, 10);
       case 'vip':
         // Assuming VIP clients have some criteria - adjust as needed
-        return filteredClients.filter((client) => client.vat_number);
+        return filteredClients.filter(client => client.vat_number);
       case 'inactive':
         // Assuming inactive clients - adjust criteria as needed
         const thirtyDaysAgo = new Date();
         thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
         return filteredClients.filter(
-          (client) => new Date(client.updated_at || client.created_at || 0) < thirtyDaysAgo,
+          client => new Date(client.updated_at || client.created_at || 0) < thirtyDaysAgo,
         );
       default:
         return filteredClients;
@@ -59,7 +59,7 @@ export function useClientSearch(clients = []) {
 
     // Apply status filter if needed
     if (statusFilter !== 'all') {
-      result = result.filter((client) => {
+      result = result.filter(client => {
         // Implement status filtering logic based on your requirements
         return true; // Placeholder
       });
@@ -67,7 +67,7 @@ export function useClientSearch(clients = []) {
 
     // Apply revenue filter if needed
     if (revenueFilter !== 'all') {
-      result = result.filter((client) => {
+      result = result.filter(client => {
         // Implement revenue filtering logic based on your requirements
         return true; // Placeholder
       });
@@ -124,9 +124,9 @@ export function useClientSearch(clients = []) {
   // Client statistics
   const clientStats = useMemo(() => {
     const total = clients.length;
-    const withEmail = clients.filter((client) => client.email).length;
-    const withPhone = clients.filter((client) => client.phone).length;
-    const withVat = clients.filter((client) => client.vat_number).length;
+    const withEmail = clients.filter(client => client.email).length;
+    const withPhone = clients.filter(client => client.phone).length;
+    const withVat = clients.filter(client => client.vat_number).length;
 
     return {
       total,

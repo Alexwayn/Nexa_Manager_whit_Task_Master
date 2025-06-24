@@ -87,7 +87,7 @@ global.FileReader = class MockFileReader {
     this.onerror = null;
     this.onabort = null;
   }
-  
+
   readAsText(file) {
     setTimeout(() => {
       this.readyState = 2;
@@ -95,7 +95,7 @@ global.FileReader = class MockFileReader {
       if (this.onload) this.onload({ target: this });
     }, 0);
   }
-  
+
   readAsDataURL(file) {
     setTimeout(() => {
       this.readyState = 2;
@@ -114,8 +114,8 @@ beforeAll(() => {
     if (
       typeof args[0] === 'string' &&
       (args[0].includes('Warning: ReactDOM.render is deprecated') ||
-       args[0].includes('Warning: componentWillReceiveProps') ||
-       args[0].includes('Warning: componentWillMount'))
+        args[0].includes('Warning: componentWillReceiveProps') ||
+        args[0].includes('Warning: componentWillMount'))
     ) {
       return;
     }
@@ -126,7 +126,7 @@ beforeAll(() => {
     if (
       typeof args[0] === 'string' &&
       (args[0].includes('componentWillReceiveProps has been renamed') ||
-       args[0].includes('componentWillMount has been renamed'))
+        args[0].includes('componentWillMount has been renamed'))
     ) {
       return;
     }
@@ -178,14 +178,14 @@ Object.defineProperty(navigator, 'clipboard', {
 Object.defineProperty(navigator, 'geolocation', {
   writable: true,
   value: {
-    getCurrentPosition: jest.fn((success) => 
+    getCurrentPosition: jest.fn(success =>
       success({
         coords: {
           latitude: 40.7128,
-          longitude: -74.0060,
+          longitude: -74.006,
           accuracy: 10,
         },
-      })
+      }),
     ),
     watchPosition: jest.fn(),
     clearWatch: jest.fn(),
@@ -213,7 +213,7 @@ expect.extend({
   toBeValidEmail(received) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const pass = emailRegex.test(received);
-    
+
     if (pass) {
       return {
         message: () => `expected ${received} not to be a valid email`,
@@ -226,11 +226,11 @@ expect.extend({
       };
     }
   },
-  
+
   toBeValidCurrency(received) {
     const currencyRegex = /^\d+(\.\d{2})?$/;
     const pass = currencyRegex.test(received.toString());
-    
+
     if (pass) {
       return {
         message: () => `expected ${received} not to be a valid currency format`,
@@ -243,11 +243,11 @@ expect.extend({
       };
     }
   },
-  
+
   toBeValidItalianVAT(received) {
     const vatRegex = /^IT\d{11}$/;
     const pass = vatRegex.test(received);
-    
+
     if (pass) {
       return {
         message: () => `expected ${received} not to be a valid Italian VAT number`,
@@ -266,15 +266,15 @@ expect.extend({
 afterEach(() => {
   // Clear all mocks after each test
   jest.clearAllMocks();
-  
+
   // Reset DOM
   document.body.innerHTML = '';
-  
+
   // Clear local storage
   if (window.localStorage) {
     window.localStorage.clear();
   }
-  
+
   // Clear session storage
   if (window.sessionStorage) {
     window.sessionStorage.clear();

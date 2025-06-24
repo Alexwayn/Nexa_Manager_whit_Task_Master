@@ -46,7 +46,7 @@ export class RealtimeService {
           table,
           ...(filter && { filter }),
         },
-        (payload) => {
+        payload => {
           try {
             callback(payload);
           } catch (callbackError) {
@@ -56,7 +56,7 @@ export class RealtimeService {
       );
 
       // Subscribe to the channel with status monitoring
-      channel.subscribe((status) => {
+      channel.subscribe(status => {
         Logger.info(`Subscription status for ${table}: ${status}`);
         if (status === 'SUBSCRIBED') {
           Logger.info(`Successfully subscribed to ${table} changes`);
@@ -144,11 +144,11 @@ export class RealtimeService {
       return userSubscriptions;
     }
 
-    tables.forEach((table) => {
+    tables.forEach(table => {
       try {
         const subscription = this.subscribe(
           table,
-          (payload) => {
+          payload => {
             // Only process changes for the current user
             if (payload.new?.user_id === userId || payload.old?.user_id === userId) {
               callback({
@@ -192,7 +192,7 @@ export class RealtimeService {
 
     return this.subscribe(
       table,
-      (payload) => {
+      payload => {
         if (payload.new?.id === recordId || payload.old?.id === recordId) {
           callback({
             event: payload.eventType,
@@ -292,7 +292,7 @@ export class RealtimeService {
     try {
       const incomeSubscription = this.subscribe(
         'incomes',
-        (payload) => callback({ ...payload, table: 'incomes' }),
+        payload => callback({ ...payload, table: 'incomes' }),
         {
           filter: `user_id=eq.${userId}`,
         },
@@ -300,7 +300,7 @@ export class RealtimeService {
 
       const expenseSubscription = this.subscribe(
         'expenses',
-        (payload) => callback({ ...payload, table: 'expenses' }),
+        payload => callback({ ...payload, table: 'expenses' }),
         {
           filter: `user_id=eq.${userId}`,
         },

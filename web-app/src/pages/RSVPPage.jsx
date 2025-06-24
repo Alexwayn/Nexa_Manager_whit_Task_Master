@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
-import { EventInvitationService } from '@lib/eventInvitationService.js';
+import { EventInvitationService } from '@lib/eventInvitationService';
 import { useTranslation } from 'react-i18next';
 
 /**
@@ -57,7 +57,7 @@ const RSVPPage = () => {
     }
   };
 
-  const handleSubmitRSVP = async (e) => {
+  const handleSubmitRSVP = async e => {
     e.preventDefault();
 
     if (rsvpResponse === 'pending') {
@@ -91,7 +91,7 @@ const RSVPPage = () => {
     }
   };
 
-  const formatEventDate = (dateString) => {
+  const formatEventDate = dateString => {
     return new Date(dateString).toLocaleDateString(i18n.language, {
       weekday: 'long',
       year: 'numeric',
@@ -100,7 +100,7 @@ const RSVPPage = () => {
     });
   };
 
-  const formatEventTime = (event) => {
+  const formatEventTime = event => {
     if (event.all_day) return t('form.details.allDay');
 
     const startTime = event.start_time || '09:00';
@@ -108,7 +108,7 @@ const RSVPPage = () => {
     return `${startTime} - ${endTime}`;
   };
 
-  const getResponseStatusText = (status) => {
+  const getResponseStatusText = status => {
     const statusMap = {
       accepted: { text: t('form.yourResponse.accepted'), color: 'text-green-600', icon: '✓' },
       declined: { text: t('form.yourResponse.declined'), color: 'text-red-600', icon: '✗' },
@@ -120,10 +120,10 @@ const RSVPPage = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">{t('loader.loading')}</p>
+      <div className='min-h-screen bg-gray-50 flex items-center justify-center'>
+        <div className='text-center'>
+          <div className='animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto'></div>
+          <p className='mt-4 text-gray-600'>{t('loader.loading')}</p>
         </div>
       </div>
     );
@@ -131,12 +131,12 @@ const RSVPPage = () => {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="max-w-md mx-auto bg-white rounded-lg shadow-lg p-8 text-center">
-          <div className="text-red-500 text-6xl mb-4">⚠️</div>
-          <h1 className="text-2xl font-bold text-gray-900 mb-4">{t('error.title')}</h1>
-          <p className="text-gray-600 mb-6">{error}</p>
-          <p className="text-sm text-gray-500">{t('error.description')}</p>
+      <div className='min-h-screen bg-gray-50 flex items-center justify-center'>
+        <div className='max-w-md mx-auto bg-white rounded-lg shadow-lg p-8 text-center'>
+          <div className='text-red-500 text-6xl mb-4'>⚠️</div>
+          <h1 className='text-2xl font-bold text-gray-900 mb-4'>{t('error.title')}</h1>
+          <p className='text-gray-600 mb-6'>{error}</p>
+          <p className='text-sm text-gray-500'>{t('error.description')}</p>
         </div>
       </div>
     );
@@ -146,20 +146,20 @@ const RSVPPage = () => {
     const statusInfo = getResponseStatusText(rsvpResponse);
 
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="max-w-md mx-auto bg-white rounded-lg shadow-lg p-8 text-center">
+      <div className='min-h-screen bg-gray-50 flex items-center justify-center'>
+        <div className='max-w-md mx-auto bg-white rounded-lg shadow-lg p-8 text-center'>
           <div className={`text-6xl mb-4 ${statusInfo.color}`}>{statusInfo.icon}</div>
-          <h1 className="text-2xl font-bold text-gray-900 mb-4">{t('submitted.title')}</h1>
+          <h1 className='text-2xl font-bold text-gray-900 mb-4'>{t('submitted.title')}</h1>
           <p className={`text-lg font-semibold mb-4 ${statusInfo.color}`}>{statusInfo.text}</p>
-          <div className="bg-gray-50 rounded-lg p-4 mb-6">
-            <h3 className="font-semibold text-gray-900 mb-2">{invitation.events.title}</h3>
-            <p className="text-gray-600">{formatEventDate(invitation.events.start_date)}</p>
-            <p className="text-gray-600">{formatEventTime(invitation.events)}</p>
+          <div className='bg-gray-50 rounded-lg p-4 mb-6'>
+            <h3 className='font-semibold text-gray-900 mb-2'>{invitation.events.title}</h3>
+            <p className='text-gray-600'>{formatEventDate(invitation.events.start_date)}</p>
+            <p className='text-gray-600'>{formatEventTime(invitation.events)}</p>
           </div>
-          <p className="text-gray-600 text-sm">{t('submitted.organizerNotified')}</p>
+          <p className='text-gray-600 text-sm'>{t('submitted.organizerNotified')}</p>
           {rsvpResponse === 'accepted' && (
-            <div className="mt-4 p-4 bg-green-50 rounded-lg">
-              <p className="text-green-800 text-sm">{t('submitted.seeYou')}</p>
+            <div className='mt-4 p-4 bg-green-50 rounded-lg'>
+              <p className='text-green-800 text-sm'>{t('submitted.seeYou')}</p>
             </div>
           )}
         </div>
@@ -171,48 +171,48 @@ const RSVPPage = () => {
   const currentStatus = getResponseStatusText(invitation.rsvp_status);
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
-      <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className='min-h-screen bg-gray-50 py-8'>
+      <div className='max-w-2xl mx-auto px-4 sm:px-6 lg:px-8'>
         {/* Header */}
-        <div className="bg-white rounded-lg shadow-lg overflow-hidden mb-8">
-          <div className="bg-blue-600 text-white p-6 text-center">
-            <h1 className="text-3xl font-bold">{t('form.header.title')}</h1>
-            <p className="mt-2 opacity-90">{t('form.header.subtitle')}</p>
+        <div className='bg-white rounded-lg shadow-lg overflow-hidden mb-8'>
+          <div className='bg-blue-600 text-white p-6 text-center'>
+            <h1 className='text-3xl font-bold'>{t('form.header.title')}</h1>
+            <p className='mt-2 opacity-90'>{t('form.header.subtitle')}</p>
           </div>
 
           {/* Event Details */}
-          <div className="p-6">
-            <div className="text-center mb-6">
-              <h2 className="text-2xl font-bold text-gray-900 mb-4">{event.title}</h2>
+          <div className='p-6'>
+            <div className='text-center mb-6'>
+              <h2 className='text-2xl font-bold text-gray-900 mb-4'>{event.title}</h2>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-left">
-                <div className="bg-gray-50 rounded-lg p-4">
-                  <div className="flex items-center mb-2">
-                    <span className="text-2xl mr-3">📅</span>
+              <div className='grid grid-cols-1 md:grid-cols-2 gap-4 text-left'>
+                <div className='bg-gray-50 rounded-lg p-4'>
+                  <div className='flex items-center mb-2'>
+                    <span className='text-2xl mr-3'>📅</span>
                     <div>
-                      <p className="font-semibold text-gray-900">{t('form.details.date')}</p>
-                      <p className="text-gray-600">{formatEventDate(event.start_date)}</p>
+                      <p className='font-semibold text-gray-900'>{t('form.details.date')}</p>
+                      <p className='text-gray-600'>{formatEventDate(event.start_date)}</p>
                     </div>
                   </div>
                 </div>
 
-                <div className="bg-gray-50 rounded-lg p-4">
-                  <div className="flex items-center mb-2">
-                    <span className="text-2xl mr-3">🕐</span>
+                <div className='bg-gray-50 rounded-lg p-4'>
+                  <div className='flex items-center mb-2'>
+                    <span className='text-2xl mr-3'>🕐</span>
                     <div>
-                      <p className="font-semibold text-gray-900">{t('form.details.time')}</p>
-                      <p className="text-gray-600">{formatEventTime(event)}</p>
+                      <p className='font-semibold text-gray-900'>{t('form.details.time')}</p>
+                      <p className='text-gray-600'>{formatEventTime(event)}</p>
                     </div>
                   </div>
                 </div>
 
                 {event.location && (
-                  <div className="bg-gray-50 rounded-lg p-4 md:col-span-2">
-                    <div className="flex items-center mb-2">
-                      <span className="text-2xl mr-3">📍</span>
+                  <div className='bg-gray-50 rounded-lg p-4 md:col-span-2'>
+                    <div className='flex items-center mb-2'>
+                      <span className='text-2xl mr-3'>📍</span>
                       <div>
-                        <p className="font-semibold text-gray-900">{t('form.details.location')}</p>
-                        <p className="text-gray-600">{event.location}</p>
+                        <p className='font-semibold text-gray-900'>{t('form.details.location')}</p>
+                        <p className='text-gray-600'>{event.location}</p>
                       </div>
                     </div>
                   </div>
@@ -220,33 +220,33 @@ const RSVPPage = () => {
               </div>
 
               {event.description && (
-                <div className="mt-6 p-4 bg-gray-50 rounded-lg text-left">
-                  <p className="font-semibold text-gray-900 mb-2">
+                <div className='mt-6 p-4 bg-gray-50 rounded-lg text-left'>
+                  <p className='font-semibold text-gray-900 mb-2'>
                     {t('form.details.description')}
                   </p>
-                  <p className="text-gray-600">{event.description}</p>
+                  <p className='text-gray-600'>{event.description}</p>
                 </div>
               )}
 
               {invitation.invitation_message && (
-                <div className="mt-6 p-4 bg-blue-50 rounded-lg text-left">
-                  <p className="font-semibold text-gray-900 mb-2">
+                <div className='mt-6 p-4 bg-blue-50 rounded-lg text-left'>
+                  <p className='font-semibold text-gray-900 mb-2'>
                     {t('form.details.personalMessage')}
                   </p>
-                  <p className="text-gray-700">{invitation.invitation_message}</p>
+                  <p className='text-gray-700'>{invitation.invitation_message}</p>
                 </div>
               )}
             </div>
 
             {/* Current Status */}
             {invitation.rsvp_status !== 'pending' && (
-              <div className="mb-6 p-4 bg-gray-50 rounded-lg text-center">
-                <p className="text-gray-600 mb-2">{t('form.status.current')}</p>
+              <div className='mb-6 p-4 bg-gray-50 rounded-lg text-center'>
+                <p className='text-gray-600 mb-2'>{t('form.status.current')}</p>
                 <p className={`text-lg font-semibold ${currentStatus.color}`}>
                   {currentStatus.icon} {currentStatus.text}
                 </p>
                 {invitation.rsvp_responded_at && (
-                  <p className="text-sm text-gray-500 mt-2">
+                  <p className='text-sm text-gray-500 mt-2'>
                     {t('form.status.respondedOn', {
                       date: new Date(invitation.rsvp_responded_at).toLocaleDateString(
                         i18n.language,
@@ -260,22 +260,22 @@ const RSVPPage = () => {
         </div>
 
         {/* RSVP Form */}
-        <div className="bg-white rounded-lg shadow-lg p-6">
-          <h3 className="text-xl font-bold text-gray-900 mb-6 text-center">
+        <div className='bg-white rounded-lg shadow-lg p-6'>
+          <h3 className='text-xl font-bold text-gray-900 mb-6 text-center'>
             {invitation.rsvp_status === 'pending'
               ? t('form.yourResponse.title')
               : t('form.yourResponse.updateTitle')}
           </h3>
 
-          <form onSubmit={handleSubmitRSVP} className="space-y-6">
+          <form onSubmit={handleSubmitRSVP} className='space-y-6'>
             {/* RSVP Response */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-3">
+              <label className='block text-sm font-medium text-gray-700 mb-3'>
                 {t('form.yourResponse.label')}
               </label>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <div className='grid grid-cols-1 sm:grid-cols-3 gap-3'>
                 <button
-                  type="button"
+                  type='button'
                   onClick={() => setRsvpResponse('accepted')}
                   className={`p-4 rounded-lg border-2 text-center transition-all ${
                     rsvpResponse === 'accepted'
@@ -283,12 +283,12 @@ const RSVPPage = () => {
                       : 'border-gray-200 hover:border-green-300'
                   }`}
                 >
-                  <div className="text-2xl mb-2">✓</div>
-                  <div className="font-semibold">{t('form.yourResponse.accept')}</div>
+                  <div className='text-2xl mb-2'>✓</div>
+                  <div className='font-semibold'>{t('form.yourResponse.accept')}</div>
                 </button>
 
                 <button
-                  type="button"
+                  type='button'
                   onClick={() => setRsvpResponse('maybe')}
                   className={`p-4 rounded-lg border-2 text-center transition-all ${
                     rsvpResponse === 'maybe'
@@ -296,12 +296,12 @@ const RSVPPage = () => {
                       : 'border-gray-200 hover:border-yellow-300'
                   }`}
                 >
-                  <div className="text-2xl mb-2">?</div>
-                  <div className="font-semibold">{t('form.yourResponse.maybe')}</div>
+                  <div className='text-2xl mb-2'>?</div>
+                  <div className='font-semibold'>{t('form.yourResponse.maybe')}</div>
                 </button>
 
                 <button
-                  type="button"
+                  type='button'
                   onClick={() => setRsvpResponse('declined')}
                   className={`p-4 rounded-lg border-2 text-center transition-all ${
                     rsvpResponse === 'declined'
@@ -309,8 +309,8 @@ const RSVPPage = () => {
                       : 'border-gray-200 hover:border-red-300'
                   }`}
                 >
-                  <div className="text-2xl mb-2">✗</div>
-                  <div className="font-semibold">{t('form.yourResponse.decline')}</div>
+                  <div className='text-2xl mb-2'>✗</div>
+                  <div className='font-semibold'>{t('form.yourResponse.decline')}</div>
                 </button>
               </div>
             </div>
@@ -319,18 +319,18 @@ const RSVPPage = () => {
             {rsvpResponse === 'accepted' && (
               <div>
                 <label
-                  htmlFor="guestCount"
-                  className="block text-sm font-medium text-gray-700 mb-2"
+                  htmlFor='guestCount'
+                  className='block text-sm font-medium text-gray-700 mb-2'
                 >
                   {t('form.guests.label')}
                 </label>
                 <select
-                  id="guestCount"
+                  id='guestCount'
                   value={guestCount}
-                  onChange={(e) => setGuestCount(e.target.value)}
-                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  onChange={e => setGuestCount(e.target.value)}
+                  className='w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent'
                 >
-                  {[1, 2, 3, 4, 5, 6, 7, 8].map((num) => (
+                  {[1, 2, 3, 4, 5, 6, 7, 8].map(num => (
                     <option key={num} value={num}>
                       {num} {num === 1 ? 'persona' : 'persone'}
                     </option>
@@ -342,17 +342,17 @@ const RSVPPage = () => {
             {/* Response Message */}
             <div>
               <label
-                htmlFor="responseMessage"
-                className="block text-sm font-medium text-gray-700 mb-2"
+                htmlFor='responseMessage'
+                className='block text-sm font-medium text-gray-700 mb-2'
               >
                 {t('form.message.label')}
               </label>
               <textarea
-                id="responseMessage"
+                id='responseMessage'
                 value={responseMessage}
-                onChange={(e) => setResponseMessage(e.target.value)}
+                onChange={e => setResponseMessage(e.target.value)}
                 rows={3}
-                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className='w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent'
                 placeholder={t('form.message.placeholder')}
               />
             </div>
@@ -362,34 +362,34 @@ const RSVPPage = () => {
               <>
                 <div>
                   <label
-                    htmlFor="dietaryRestrictions"
-                    className="block text-sm font-medium text-gray-700 mb-2"
+                    htmlFor='dietaryRestrictions'
+                    className='block text-sm font-medium text-gray-700 mb-2'
                   >
                     {t('form.dietary.label')}
                   </label>
                   <input
-                    type="text"
-                    id="dietaryRestrictions"
+                    type='text'
+                    id='dietaryRestrictions'
                     value={dietaryRestrictions}
-                    onChange={(e) => setDietaryRestrictions(e.target.value)}
-                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    onChange={e => setDietaryRestrictions(e.target.value)}
+                    className='w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent'
                     placeholder={t('form.dietary.placeholder')}
                   />
                 </div>
 
                 <div>
                   <label
-                    htmlFor="specialRequests"
-                    className="block text-sm font-medium text-gray-700 mb-2"
+                    htmlFor='specialRequests'
+                    className='block text-sm font-medium text-gray-700 mb-2'
                   >
                     {t('form.specialRequests.label')}
                   </label>
                   <input
-                    type="text"
-                    id="specialRequests"
+                    type='text'
+                    id='specialRequests'
                     value={specialRequests}
-                    onChange={(e) => setSpecialRequests(e.target.value)}
-                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    onChange={e => setSpecialRequests(e.target.value)}
+                    className='w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent'
                     placeholder={t('form.specialRequests.placeholder')}
                   />
                 </div>
@@ -397,9 +397,9 @@ const RSVPPage = () => {
             )}
 
             {/* Submit Button */}
-            <div className="text-center">
+            <div className='text-center'>
               <button
-                type="submit"
+                type='submit'
                 disabled={submitting || rsvpResponse === 'pending'}
                 className={`px-8 py-3 rounded-lg font-semibold text-white transition-all ${
                   submitting || rsvpResponse === 'pending'
@@ -418,7 +418,7 @@ const RSVPPage = () => {
         </div>
 
         {/* Footer */}
-        <div className="text-center mt-8 text-gray-500 text-sm">
+        <div className='text-center mt-8 text-gray-500 text-sm'>
           <p>{t('form.footer.text')}</p>
         </div>
       </div>

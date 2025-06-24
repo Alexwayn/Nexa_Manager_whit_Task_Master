@@ -17,7 +17,7 @@ const t = (key: string, params?: Record<string, unknown>): string => {
   let translation = translations[key] || key;
 
   if (params) {
-    Object.keys(params).forEach((param) => {
+    Object.keys(params).forEach(param => {
       translation = translation.replace(`{{${param}}}`, String(params[param]));
     });
   }

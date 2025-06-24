@@ -414,7 +414,7 @@ class ReportingService {
 
     // Revenue by Period Table
     if (reportData.data.revenueByPeriod.length > 0) {
-      const periodData = reportData.data.revenueByPeriod.map((period) => [
+      const periodData = reportData.data.revenueByPeriod.map(period => [
         period.period,
         period.invoiceCount.toString(),
         `€ ${period.revenue.toFixed(2)}`,
@@ -490,7 +490,7 @@ class ReportingService {
     if (reportData.data.revenueByPeriod.length > 0) {
       csvData.push(['Revenue by Period']);
       csvData.push(['Period', 'Invoice Count', 'Revenue', 'VAT', 'Net']);
-      reportData.data.revenueByPeriod.forEach((period) => {
+      reportData.data.revenueByPeriod.forEach(period => {
         csvData.push([
           period.period,
           period.invoiceCount,
@@ -501,7 +501,7 @@ class ReportingService {
       });
     }
 
-    const csvContent = csvData.map((row) => row.join(',')).join('\n');
+    const csvContent = csvData.map(row => row.join(',')).join('\n');
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
 
     return {
@@ -538,7 +538,7 @@ class ReportingService {
         'Avg Payment Time',
         'Payment Rate',
       ]);
-      reportData.data.topClients.forEach((client) => {
+      reportData.data.topClients.forEach(client => {
         csvData.push([
           client.rank,
           client.client.name,
@@ -550,7 +550,7 @@ class ReportingService {
       });
     }
 
-    const csvContent = csvData.map((row) => row.join(',')).join('\n');
+    const csvContent = csvData.map(row => row.join(',')).join('\n');
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
 
     return {
@@ -595,7 +595,7 @@ class ReportingService {
       });
     }
 
-    const csvContent = csvData.map((row) => row.join(',')).join('\n');
+    const csvContent = csvData.map(row => row.join(',')).join('\n');
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
 
     return {
@@ -633,7 +633,7 @@ class ReportingService {
           'Amount',
         ]);
 
-        bucket.invoices.forEach((invoice) => {
+        bucket.invoices.forEach(invoice => {
           csvData.push([
             invoice.invoice_number,
             invoice.clients.name,
@@ -647,7 +647,7 @@ class ReportingService {
       }
     });
 
-    const csvContent = csvData.map((row) => row.join(',')).join('\n');
+    const csvContent = csvData.map(row => row.join(',')).join('\n');
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
 
     return {
@@ -688,7 +688,7 @@ class ReportingService {
     if (statementData.invoices.length > 0) {
       csvData.push(['Invoices']);
       csvData.push(['Invoice Number', 'Issue Date', 'Due Date', 'Status', 'Amount']);
-      statementData.invoices.forEach((invoice) => {
+      statementData.invoices.forEach(invoice => {
         csvData.push([
           invoice.invoice_number,
           new Date(invoice.issue_date).toLocaleDateString('en-US'),
@@ -704,7 +704,7 @@ class ReportingService {
     if (statementData.payments.length > 0) {
       csvData.push(['Payments']);
       csvData.push(['Payment Date', 'Method', 'Reference', 'Amount']);
-      statementData.payments.forEach((payment) => {
+      statementData.payments.forEach(payment => {
         csvData.push([
           new Date(payment.payment_date).toLocaleDateString('en-US'),
           payment.payment_method || 'Not specified',
@@ -714,7 +714,7 @@ class ReportingService {
       });
     }
 
-    const csvContent = csvData.map((row) => row.join(',')).join('\n');
+    const csvContent = csvData.map(row => row.join(',')).join('\n');
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
 
     return {

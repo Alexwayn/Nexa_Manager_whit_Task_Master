@@ -9,7 +9,7 @@ const SettingsFormSection = ({
   headerClassName = '',
   contentClassName = '',
 }) => {
-  const handleSubmit = (e) => {
+  const handleSubmit = e => {
     if (onSubmit) {
       e.preventDefault();
       onSubmit(e);
@@ -20,8 +20,8 @@ const SettingsFormSection = ({
     <div className={`p-6 ${contentClassName}`}>
       {title && (
         <div className={`mb-6 ${headerClassName}`}>
-          <h2 className="text-lg font-medium text-gray-900">{title}</h2>
-          {description && <p className="mt-1 text-sm text-gray-500">{description}</p>}
+          <h2 className='text-lg font-medium text-gray-900'>{title}</h2>
+          {description && <p className='mt-1 text-sm text-gray-500'>{description}</p>}
         </div>
       )}
       {children}

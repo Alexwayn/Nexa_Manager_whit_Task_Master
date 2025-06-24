@@ -15,7 +15,7 @@ export const useClientModals = () => {
 
   // Close dropdowns when clicking outside
   useEffect(() => {
-    const handleClickOutside = (event) => {
+    const handleClickOutside = event => {
       // Find the closest dropdown element
       const statusDropdown = event.target.closest('[data-dropdown="status"]');
       const revenueDropdown = event.target.closest('[data-dropdown="revenue"]');

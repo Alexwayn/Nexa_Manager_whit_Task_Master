@@ -22,7 +22,7 @@ const useReportData = (fetchFunction, dependencies = [], options = {}) => {
         return await fn();
       } catch (err) {
         if (attempts < retryCount) {
-          await new Promise((resolve) => setTimeout(resolve, retryDelay * (attempts + 1)));
+          await new Promise(resolve => setTimeout(resolve, retryDelay * (attempts + 1)));
           return executeWithRetry(fn, attempts + 1);
         }
         throw err;

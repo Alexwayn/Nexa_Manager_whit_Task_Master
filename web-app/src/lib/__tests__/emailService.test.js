@@ -28,7 +28,7 @@ jest.mock('../supabaseClient', () => ({
 
 // Simple mock for emailService to avoid complex imports
 const mockEmailService = {
-  isValidEmail: (email) => {
+  isValidEmail: email => {
     if (!email || typeof email !== 'string') return false;
     // More strict email validation to match test expectations
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -49,7 +49,7 @@ const mockEmailService = {
     return result;
   },
 
-  formatCurrency: (amount) => {
+  formatCurrency: amount => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
       currency: 'EUR',
@@ -73,7 +73,7 @@ const mockEmailService = {
     );
   },
 
-  simulateEmailSending: async (payload) => {
+  simulateEmailSending: async payload => {
     if (!payload?.to) {
       throw new Error('Invalid email payload');
     }
@@ -86,7 +86,7 @@ const mockEmailService = {
     };
   },
 
-  testEmailConfiguration: async (email) => {
+  testEmailConfiguration: async email => {
     if (!email) {
       return { success: false, error: 'Email address required' };
     }
@@ -121,7 +121,7 @@ const mockEmailService = {
     };
   },
 
-  configureEmailProvider: async (config) => {
+  configureEmailProvider: async config => {
     if (!config) {
       return { success: false, error: 'Configuration required' };
     }
@@ -132,9 +132,9 @@ const mockEmailService = {
     };
   },
 
-  blobToBase64: async (blob) => {
+  blobToBase64: async blob => {
     // Simple base64 conversion without data URL prefix
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       const reader = new FileReader();
       reader.onload = () => {
         const base64 = reader.result.split(',')[1]; // Remove data URL prefix
@@ -144,12 +144,12 @@ const mockEmailService = {
     });
   },
 
-  scheduleReminders: (quote) => {
+  scheduleReminders: quote => {
     Logger.log(`Scheduling reminders for quote ${quote.id}`);
     return true;
   },
 
-  _logEmailActivity: async (activityData) => {
+  _logEmailActivity: async activityData => {
     const { supabase } = await import('../supabaseClient');
     const mockInsert = jest.fn().mockResolvedValue({ data: null, error: null });
     supabase.from.mockReturnValue({ insert: mockInsert });
@@ -171,7 +171,7 @@ describe('EmailService', () => {
         'firstname.lastname@company.com',
       ];
 
-      validEmails.forEach((email) => {
+      validEmails.forEach(email => {
         expect(mockEmailService.isValidEmail(email)).toBe(true);
       });
     });
@@ -188,7 +188,7 @@ describe('EmailService', () => {
         undefined,
       ];
 
-      invalidEmails.forEach((email) => {
+      invalidEmails.forEach(email => {
         expect(mockEmailService.isValidEmail(email)).toBe(false);
       });
     });

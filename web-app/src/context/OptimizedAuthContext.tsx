@@ -1,4 +1,12 @@
-import { createContext, useContext, useEffect, useState, ReactNode, useMemo, useCallback } from 'react';
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  ReactNode,
+  useMemo,
+  useCallback,
+} from 'react';
 import { User, AuthError } from '@supabase/supabase-js';
 import { supabase } from '@lib/supabaseClient';
 import Logger from '@utils/Logger';
@@ -22,7 +30,7 @@ const t = (key: string, params?: Record<string, any>): string => {
 
   let translation = translations[key] || key;
   if (params) {
-    Object.keys(params).forEach((param) => {
+    Object.keys(params).forEach(param => {
       translation = translation.replace(`{{${param}}}`, params[param]);
     });
   }
@@ -64,7 +72,7 @@ const AuthActionsContext = createContext<AuthActionsContextType | undefined>(und
 
 /**
  * Optimized AuthProvider Component
- * 
+ *
  * Performance Optimizations:
  * 1. Context Splitting: Separates user data, auth state, and actions
  * 2. Memoized Values: Prevents unnecessary re-renders
@@ -79,36 +87,39 @@ export function OptimizedAuthProvider({ children }: AuthProviderProps) {
   const [userAvatar, setUserAvatar] = useState<string | null>(null);
 
   // Memoized user avatar update function with useCallback
-  const updateUserAvatar = useCallback(async (forceRefresh: boolean = false): Promise<string | null> => {
-    if (!user?.id) return null;
+  const updateUserAvatar = useCallback(
+    async (forceRefresh: boolean = false): Promise<string | null> => {
+      if (!user?.id) return null;
 
-    try {
-      const { data, error } = await supabase
-        .from('profiles')
-        .select('avatar_url')
-        .eq('id', user.id)
-        .single();
+      try {
+        const { data, error } = await supabase
+          .from('profiles')
+          .select('avatar_url')
+          .eq('id', user.id)
+          .single();
 
-      if (error) {
-        Logger.error(t('auth.error.fetchingAvatar'), error);
+        if (error) {
+          Logger.error(t('auth.error.fetchingAvatar'), error);
+          return null;
+        }
+
+        if (data && data.avatar_url) {
+          const avatarUrl = forceRefresh
+            ? `${data.avatar_url}?t=${new Date().getTime()}`
+            : data.avatar_url;
+
+          setUserAvatar(avatarUrl);
+          return avatarUrl;
+        }
+
+        return null;
+      } catch (err) {
+        Logger.error(t('auth.error.avatarException'), err);
         return null;
       }
-
-      if (data && data.avatar_url) {
-        const avatarUrl = forceRefresh
-          ? `${data.avatar_url}?t=${new Date().getTime()}`
-          : data.avatar_url;
-
-        setUserAvatar(avatarUrl);
-        return avatarUrl;
-      }
-
-      return null;
-    } catch (err) {
-      Logger.error(t('auth.error.avatarException'), err);
-      return null;
-    }
-  }, [user?.id]);
+    },
+    [user?.id],
+  );
 
   // Memoized logout function
   const logout = useCallback(async (): Promise<void> => {
@@ -187,7 +198,7 @@ export function OptimizedAuthProvider({ children }: AuthProviderProps) {
     // Listen for auth changes
     const { data: listener } = supabase.auth.onAuthStateChange(async (event, session) => {
       Logger.info(t('auth.log.authStateChanged'), event);
-      
+
       // Batch state updates to prevent multiple re-renders
       setUser(session?.user ?? null);
 
@@ -210,22 +221,31 @@ export function OptimizedAuthProvider({ children }: AuthProviderProps) {
   }, [updateUserAvatar]);
 
   // Memoized context values to prevent unnecessary re-renders
-  const userContextValue = useMemo<UserContextType>(() => ({
-    user,
-    userAvatar,
-  }), [user, userAvatar]);
+  const userContextValue = useMemo<UserContextType>(
+    () => ({
+      user,
+      userAvatar,
+    }),
+    [user, userAvatar],
+  );
 
-  const authStateContextValue = useMemo<AuthStateContextType>(() => ({
-    loading,
-    authError,
-  }), [loading, authError]);
+  const authStateContextValue = useMemo<AuthStateContextType>(
+    () => ({
+      loading,
+      authError,
+    }),
+    [loading, authError],
+  );
 
-  const authActionsContextValue = useMemo<AuthActionsContextType>(() => ({
-    setUser,
-    logout,
-    recoverSession,
-    updateUserAvatar,
-  }), [logout, recoverSession, updateUserAvatar]);
+  const authActionsContextValue = useMemo<AuthActionsContextType>(
+    () => ({
+      setUser,
+      logout,
+      recoverSession,
+      updateUserAvatar,
+    }),
+    [logout, recoverSession, updateUserAvatar],
+  );
 
   return (
     <UserContext.Provider value={userContextValue}>
@@ -265,15 +285,22 @@ export function useAuthActions(): AuthActionsContextType {
 
 // Combined hook for backward compatibility
 export function useOptimizedAuth(): AuthContextType {
-  const user = useUser();
+  const userContext = useUser();
   const authState = useAuthState();
   const authActions = useAuthActions();
 
-  return useMemo(() => ({
-    ...user,
-    ...authState,
-    ...authActions,
-  }), [user, authState, authActions]);
+  return useMemo(
+    () => ({
+      ...userContext,
+      ...authState,
+      ...authActions,
+    }),
+    [userContext, authState, authActions],
+  );
 }
 
-export default OptimizedAuthProvider; 
+// Backward compatibility export - this is the key addition
+export const useAuth = useOptimizedAuth;
+
+// Export the provider as AuthProvider for backward compatibility
+export const AuthProvider = OptimizedAuthProvider;

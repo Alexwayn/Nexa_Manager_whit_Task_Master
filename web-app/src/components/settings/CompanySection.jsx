@@ -32,12 +32,12 @@ const CompanySection = ({ user, company, onCompanyUpdate, onImageUpload }) => {
     setLocalCompany(company || {});
   }, [company]);
 
-  const handleInputChange = (e) => {
+  const handleInputChange = e => {
     const { name, value } = e.target;
-    setLocalCompany((prev) => ({ ...prev, [name]: value }));
+    setLocalCompany(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleFormSubmit = async (e) => {
+  const handleFormSubmit = async e => {
     e.preventDefault();
     setLoading(true);
     setError(null);
@@ -72,7 +72,7 @@ const CompanySection = ({ user, company, onCompanyUpdate, onImageUpload }) => {
     }
   };
 
-  const handleLogoUpload = async (file) => {
+  const handleLogoUpload = async file => {
     if (!file) return;
     setLoading(true);
     try {
@@ -92,7 +92,7 @@ const CompanySection = ({ user, company, onCompanyUpdate, onImageUpload }) => {
     }
   };
 
-  const handleFaviconUpload = async (file) => {
+  const handleFaviconUpload = async file => {
     if (!file) return;
     setLoading(true);
     try {
@@ -172,8 +172,8 @@ const CompanySection = ({ user, company, onCompanyUpdate, onImageUpload }) => {
   ];
 
   return (
-    <div id="company" className="bg-white p-4 rounded-lg shadow-md dark:bg-gray-800">
-      <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">
+    <div id='company' className='bg-white p-4 rounded-lg shadow-md dark:bg-gray-800'>
+      <h3 className='text-lg font-semibold mb-4 text-gray-900 dark:text-white'>
         {t('company.title')}
       </h3>
       <SettingsFormSection
@@ -185,29 +185,29 @@ const CompanySection = ({ user, company, onCompanyUpdate, onImageUpload }) => {
         submitButtonText={t('company.buttons.save')}
       />
 
-      {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
+      {error && <p className='text-red-500 text-sm mt-2'>{error}</p>}
 
-      <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className='mt-6 grid grid-cols-1 md:grid-cols-2 gap-6'>
         <FileUploadField
           label={t('company.logo.title')}
           onFileUpload={handleLogoUpload}
           currentImageUrl={localCompany.logo_url}
-          storagePath="company_logos"
+          storagePath='company_logos'
           disabled={loading}
         />
         <FileUploadField
           label={t('company.favicon.title')}
           onFileUpload={handleFaviconUpload}
           currentImageUrl={localCompany.favicon_url}
-          storagePath="company_favicons"
+          storagePath='company_favicons'
           disabled={loading}
         />
       </div>
 
       {/* Error Display */}
       {(profileError || uploadError) && (
-        <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-md">
-          <p className="text-sm text-red-600">{profileError || uploadError}</p>
+        <div className='mb-6 p-4 bg-red-50 border border-red-200 rounded-md'>
+          <p className='text-sm text-red-600'>{profileError || uploadError}</p>
         </div>
       )}
     </div>

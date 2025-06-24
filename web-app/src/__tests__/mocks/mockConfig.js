@@ -2,12 +2,12 @@
 // This file provides centralized mock management and configuration
 
 import { jest } from '@jest/globals';
-import { setupGlobalMocks, cleanupMocks } from './index.js';
-import { mockSupabase, createMockSupabaseClient } from './supabase.js';
-import { mockLogger, createLoggerWithSpies } from './logger.js';
-import { mockReactRouter, routerTestUtils } from './reactRouter.js';
-import { mockServices } from './services.js';
-import { externalLibraryMocks } from './externalLibraries.js';
+import { setupGlobalMocks, cleanupMocks } from './index';
+import { mockSupabase, createMockSupabaseClient } from './supabase';
+import { mockLogger, createLoggerWithSpies } from './logger';
+import { mockReactRouter, routerTestUtils } from './reactRouter';
+import { mockServices } from './services';
+import { externalLibraryMocks } from './externalLibraries';
 
 // Mock configuration options
 export const MOCK_CONFIG = {
@@ -33,7 +33,7 @@ export const MOCK_CONFIG = {
       token_type: 'bearer',
     },
   },
-  
+
   // Logger configuration
   logger: {
     autoMock: true,
@@ -42,7 +42,7 @@ export const MOCK_CONFIG = {
     enableFile: false,
     captureAll: true,
   },
-  
+
   // React Router configuration
   router: {
     autoMock: true,
@@ -54,7 +54,7 @@ export const MOCK_CONFIG = {
     },
     enableHistory: true,
   },
-  
+
   // Services configuration
   services: {
     autoMock: true,
@@ -64,7 +64,7 @@ export const MOCK_CONFIG = {
     mockIncome: true,
     mockExpense: true,
   },
-  
+
   // External libraries configuration
   externalLibs: {
     autoMock: true,
@@ -76,7 +76,7 @@ export const MOCK_CONFIG = {
     mockToast: true,
     mockFile: true,
   },
-  
+
   // Global configuration
   global: {
     mockTimers: false,
@@ -95,83 +95,83 @@ class MockStateManager {
     this.config = { ...MOCK_CONFIG };
     this.isSetup = false;
   }
-  
+
   // Configuration methods
   setConfig(newConfig) {
     this.config = { ...this.config, ...newConfig };
     return this;
   }
-  
+
   getConfig(key) {
     return key ? this.config[key] : this.config;
   }
-  
+
   // Mock registration
   registerMock(name, mockInstance) {
     this.mocks.set(name, mockInstance);
     return this;
   }
-  
+
   getMock(name) {
     return this.mocks.get(name);
   }
-  
+
   getAllMocks() {
     return Object.fromEntries(this.mocks);
   }
-  
+
   // Setup methods
   async setupMocks(customConfig = {}) {
     if (this.isSetup) {
       console.warn('Mocks are already setup. Call cleanup() first.');
       return this;
     }
-    
+
     // Merge custom configuration
     this.setConfig(customConfig);
-    
+
     try {
       // Setup global mocks first
       if (this.config.global.mockTimers) {
         jest.useFakeTimers();
       }
-      
+
       // Setup Supabase mocks
       if (this.config.supabase.autoMock) {
         const supabaseClient = createMockSupabaseClient(this.config.supabase);
         this.registerMock('supabase', supabaseClient);
-        
+
         // Mock the Supabase module
         jest.doMock('@supabase/supabase-js', () => ({
           createClient: jest.fn(() => supabaseClient),
         }));
       }
-      
+
       // Setup Logger mocks
       if (this.config.logger.autoMock) {
         const logger = createLoggerWithSpies(this.config.logger);
         this.registerMock('logger', logger);
-        
+
         // Mock the Logger module
         jest.doMock('../../services/Logger', () => ({
           default: logger,
           Logger: logger,
         }));
       }
-      
+
       // Setup React Router mocks
       if (this.config.router.autoMock) {
         this.registerMock('router', mockReactRouter);
-        
+
         // Mock React Router modules
         jest.doMock('react-router-dom', () => mockReactRouter);
         jest.doMock('react-router', () => mockReactRouter);
       }
-      
+
       // Setup Service mocks
       if (this.config.services.autoMock) {
         this.registerMock('services', mockServices);
-        
+
         // Mock individual service modules
         if (this.config.services.mockEmail) {
           jest.doMock('../../services/EmailService', () => mockServices.EmailService);
@@ -180,7 +180,10 @@ class MockStateManager {
           jest.doMock('../../services/FinancialService', () => mockServices.FinancialService);
         }
         if (this.config.services.mockTax) {
-          jest.doMock('../../services/TaxCalculationService', () => mockServices.TaxCalculationService);
+          jest.doMock(
+            '../../services/TaxCalculationService',
+            () => mockServices.TaxCalculationService,
+          );
         }
         if (this.config.services.mockIncome) {
           jest.doMock('../../services/IncomeService', () => mockServices.IncomeService);
@@ -189,11 +192,11 @@ class MockStateManager {
           jest.doMock('../../services/ExpenseService', () => mockServices.ExpenseService);
         }
       }
-      
+
       // Setup External Library mocks
       if (this.config.externalLibs.autoMock) {
         this.registerMock('externalLibs', externalLibraryMocks);
-        
+
         // Mock external library modules
         if (this.config.externalLibs.mockPDF) {
           jest.doMock('jspdf', () => ({
@@ -201,7 +204,7 @@ class MockStateManager {
             jsPDF: jest.fn(() => externalLibraryMocks.pdf),
           }));
         }
-        
+
         if (this.config.externalLibs.mockChart) {
           jest.doMock('chart.js', () => ({
             Chart: jest.fn(() => externalLibraryMocks.chart),
@@ -214,19 +217,19 @@ class MockStateManager {
             Doughnut: jest.fn(({ data, options }) => null),
           }));
         }
-        
+
         if (this.config.externalLibs.mockDate) {
           jest.doMock('date-fns', () => externalLibraryMocks.date);
           jest.doMock('moment', () => jest.fn(() => externalLibraryMocks.date));
           jest.doMock('dayjs', () => jest.fn(() => externalLibraryMocks.date));
         }
-        
+
         if (this.config.externalLibs.mockValidation) {
           jest.doMock('yup', () => externalLibraryMocks.validation);
           jest.doMock('joi', () => externalLibraryMocks.validation);
           jest.doMock('zod', () => externalLibraryMocks.validation);
         }
-        
+
         if (this.config.externalLibs.mockToast) {
           jest.doMock('react-hot-toast', () => ({
             default: externalLibraryMocks.toast,
@@ -237,41 +240,40 @@ class MockStateManager {
           }));
         }
       }
-      
+
       // Setup global mocks
       setupGlobalMocks();
-      
+
       this.isSetup = true;
       console.log('✅ All mocks setup successfully');
-      
     } catch (error) {
       console.error('❌ Error setting up mocks:', error);
       throw error;
     }
-    
+
     return this;
   }
-  
+
   // Cleanup methods
   async cleanupMocks() {
     if (!this.isSetup) {
       return this;
     }
-    
+
     try {
       // Cleanup global mocks
       cleanupMocks();
-      
+
       // Restore timers
       if (this.config.global.mockTimers) {
         jest.useRealTimers();
       }
-      
+
       // Clear all Jest mocks
       jest.clearAllMocks();
       jest.resetAllMocks();
       jest.restoreAllMocks();
-      
+
       // Clear module mocks
       jest.dontMock('@supabase/supabase-js');
       jest.dontMock('../../services/Logger');
@@ -293,31 +295,30 @@ class MockStateManager {
       jest.dontMock('zod');
       jest.dontMock('react-hot-toast');
       jest.dontMock('react-toastify');
-      
+
       // Clear registered mocks
       this.mocks.clear();
-      
+
       this.isSetup = false;
       console.log('✅ All mocks cleaned up successfully');
-      
     } catch (error) {
       console.error('❌ Error cleaning up mocks:', error);
       throw error;
     }
-    
+
     return this;
   }
-  
+
   // Utility methods
   resetMocks() {
-    this.mocks.forEach((mock) => {
+    this.mocks.forEach(mock => {
       if (mock && typeof mock.reset === 'function') {
         mock.reset();
       }
     });
     return this;
   }
-  
+
   getMockStats() {
     const stats = {
       totalMocks: this.mocks.size,
@@ -325,7 +326,7 @@ class MockStateManager {
       config: this.config,
       mocks: {},
     };
-    
+
     this.mocks.forEach((mock, name) => {
       stats.mocks[name] = {
         type: typeof mock,
@@ -333,7 +334,7 @@ class MockStateManager {
         hasClear: typeof mock.clear === 'function',
       };
     });
-    
+
     return stats;
   }
 }
@@ -342,7 +343,7 @@ class MockStateManager {
 export const mockStateManager = new MockStateManager();
 
 // Convenience functions
-export const setupAllMocks = (config) => mockStateManager.setupMocks(config);
+export const setupAllMocks = config => mockStateManager.setupMocks(config);
 export const cleanupAllMocks = () => mockStateManager.cleanupMocks();
 export const resetAllMocks = () => mockStateManager.resetMocks();
 export const getMockStats = () => mockStateManager.getMockStats();
@@ -350,7 +351,7 @@ export const getMockStats = () => mockStateManager.getMockStats();
 // Test environment setup helpers
 export const createTestEnvironment = async (config = {}) => {
   await setupAllMocks(config);
-  
+
   return {
     mocks: mockStateManager.getAllMocks(),
     cleanup: cleanupAllMocks,
@@ -370,7 +371,7 @@ export const PRESET_CONFIGS = {
     externalLibs: { autoMock: false },
     global: { mockTimers: false, mockConsole: true },
   },
-  
+
   // Unit testing - all mocks enabled
   unit: {
     supabase: { autoMock: true },
@@ -380,7 +381,7 @@ export const PRESET_CONFIGS = {
     externalLibs: { autoMock: true },
     global: { mockTimers: false, mockConsole: true },
   },
-  
+
   // Integration testing - selective mocking
   integration: {
     supabase: { autoMock: true },
@@ -390,7 +391,7 @@ export const PRESET_CONFIGS = {
     externalLibs: { autoMock: true },
     global: { mockTimers: false, mockConsole: false },
   },
-  
+
   // E2E testing - minimal mocking
   e2e: {
     supabase: { autoMock: false },

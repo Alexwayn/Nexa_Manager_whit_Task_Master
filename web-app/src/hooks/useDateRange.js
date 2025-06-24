@@ -14,7 +14,7 @@ const useDateRange = (initialRange = null) => {
   const [dateRange, setDateRange] = useState(initialRange || defaultRange);
   const [errors, setErrors] = useState({});
 
-  const validateDateRange = useCallback((range) => {
+  const validateDateRange = useCallback(range => {
     const newErrors = {};
     const startDate = new Date(range.startDate);
     const endDate = new Date(range.endDate);
@@ -58,7 +58,7 @@ const useDateRange = (initialRange = null) => {
   );
 
   const setPreset = useCallback(
-    (preset) => {
+    preset => {
       const endDate = new Date().toISOString().split('T')[0];
       let startDate;
 

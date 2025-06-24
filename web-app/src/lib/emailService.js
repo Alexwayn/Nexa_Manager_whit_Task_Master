@@ -537,7 +537,7 @@ ${data.companyName}
         const base64String = reader.result.split(',')[1];
         resolve(base64String);
       };
-      reader.onerror = (error) => reject(error);
+      reader.onerror = error => reject(error);
       reader.readAsDataURL(blob);
     });
   }
@@ -914,7 +914,7 @@ ${data.companyName}
   _replaceTemplateVariables(template, data) {
     let result = template;
 
-    Object.keys(data).forEach((key) => {
+    Object.keys(data).forEach(key => {
       const placeholder = `{${key}}`;
       const value = data[key] || '';
       result = result.replace(new RegExp(placeholder, 'g'), value);
@@ -931,7 +931,7 @@ ${data.companyName}
    * @returns {Promise<void>} A promise that resolves after the specified delay.
    */
   _delay(ms) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
+    return new Promise(resolve => setTimeout(resolve, ms));
   }
 
   /**

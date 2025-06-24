@@ -36,8 +36,8 @@ export default function ViewModeToggle({ viewMode, onViewModeChange, className =
             `}
             title={t('viewMode.viewAs', { mode: mode.label.toLowerCase() })}
           >
-            <Icon className="h-4 w-4" />
-            <span className="ml-2 hidden sm:block">{mode.label}</span>
+            <Icon className='h-4 w-4' />
+            <span className='ml-2 hidden sm:block'>{mode.label}</span>
           </button>
         );
       })}

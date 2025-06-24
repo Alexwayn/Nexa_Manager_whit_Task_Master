@@ -1,6 +1,8 @@
 # Mocking Infrastructure Documentation
 
-This directory contains a comprehensive mocking infrastructure for testing the Nexa Manager application. The mocking system provides detailed mocks for all external dependencies, services, and third-party libraries.
+This directory contains a comprehensive mocking infrastructure for testing the
+Nexa Manager application. The mocking system provides detailed mocks for all
+external dependencies, services, and third-party libraries.
 
 ## 📁 File Structure
 
@@ -36,10 +38,10 @@ afterAll(async () => {
 ### Using Preset Configurations
 
 ```javascript
-import { 
-  setupUnitTestMocks, 
+import {
+  setupUnitTestMocks,
   setupIntegrationTestMocks,
-  setupE2ETestMocks 
+  setupE2ETestMocks,
 } from '../mocks/mockConfig';
 
 // For unit tests
@@ -67,23 +69,24 @@ const client = createMockSupabaseClient();
 // Mock authentication
 client.auth.signIn.mockResolvedValue({
   data: { user: mockUser, session: mockSession },
-  error: null
+  error: null,
 });
 
 // Mock database queries
 client.from('clients').select.mockReturnValue({
   data: [mockClient],
-  error: null
+  error: null,
 });
 
 // Mock storage operations
 client.storage.from('avatars').upload.mockResolvedValue({
   data: { path: 'avatars/test.jpg' },
-  error: null
+  error: null,
 });
 ```
 
 **Features:**
+
 - Authentication (sign in/out, user management)
 - Database operations (CRUD, queries, filters)
 - Storage (upload, download, delete)
@@ -114,6 +117,7 @@ mockLogger.endTimer('operation');
 ```
 
 **Features:**
+
 - All log levels (debug, info, warn, error)
 - Performance timing
 - Log querying and assertions
@@ -137,17 +141,18 @@ expect(navigate).toHaveBeenCalledWith('/dashboard');
 
 // Router wrapper for testing
 const RouterWrapper = routerTestUtils.createRouterWrapper({
-  initialEntries: ['/clients']
+  initialEntries: ['/clients'],
 });
 
 render(
   <RouterWrapper>
     <YourComponent />
-  </RouterWrapper>
+  </RouterWrapper>,
 );
 ```
 
 **Features:**
+
 - All React Router hooks
 - Router components (BrowserRouter, MemoryRouter, etc.)
 - Navigation components (Link, NavLink, etc.)
@@ -168,17 +173,18 @@ mockServices.EmailService.validateEmail.mockReturnValue(true);
 
 // Financial service
 mockServices.FinancialService.formatCurrency.mockReturnValue('€1,234.56');
-mockServices.FinancialService.calculateTax.mockReturnValue(220.00);
+mockServices.FinancialService.calculateTax.mockReturnValue(220.0);
 
 // Tax calculation
 mockServices.TaxCalculationService.calculateIVA.mockReturnValue({
   net: 1000,
   tax: 220,
-  gross: 1220
+  gross: 1220,
 });
 ```
 
 **Features:**
+
 - EmailService (validation, templates, sending)
 - FinancialService (formatting, calculations)
 - TaxCalculationService (IVA, exemptions)
@@ -215,6 +221,7 @@ externalLibraryMocks.toast.success('Operation completed!');
 ```
 
 **Features:**
+
 - PDF generation (jsPDF, PDFKit)
 - Charts (Chart.js, React Chart.js 2)
 - Date/time utilities (date-fns, moment, dayjs)
@@ -238,13 +245,13 @@ const customConfig = {
     autoMock: true,
     defaultUser: {
       id: 'custom-user-id',
-      email: 'custom@example.com'
-    }
+      email: 'custom@example.com',
+    },
   },
   logger: {
     level: 'error', // Only log errors
-    enableConsole: true
-  }
+    enableConsole: true,
+  },
 };
 
 await mockStateManager.setupMocks(customConfig);
@@ -255,11 +262,11 @@ await mockStateManager.setupMocks(customConfig);
 ```javascript
 // Available presets
 PRESET_CONFIGS = {
-  minimal,      // Only essential mocks
-  unit,         // All mocks for unit testing
-  integration,  // Selective mocking for integration tests
-  e2e          // Minimal mocking for E2E tests
-}
+  minimal, // Only essential mocks
+  unit, // All mocks for unit testing
+  integration, // Selective mocking for integration tests
+  e2e, // Minimal mocking for E2E tests
+};
 ```
 
 ## 🧪 Testing Patterns
@@ -275,18 +282,18 @@ import ClientList from '../../components/ClientList';
 describe('ClientList', () => {
   beforeAll(() => setupUnitTestMocks());
   afterAll(() => cleanupAllMocks());
-  
+
   beforeEach(() => {
     // Setup test-specific mocks
     mockSupabase.from('clients').select.mockResolvedValue({
       data: [{ id: 1, name: 'Test Client' }],
-      error: null
+      error: null,
     });
   });
-  
+
   it('should render client list', async () => {
     render(<ClientList />);
-    
+
     expect(await screen.findByText('Test Client')).toBeInTheDocument();
     expect(mockSupabase.from).toHaveBeenCalledWith('clients');
   });
@@ -302,21 +309,21 @@ import { mockServices } from '../mocks/services';
 
 describe('Invoice Creation Flow', () => {
   beforeAll(() => setupIntegrationTestMocks());
-  
+
   it('should create invoice with tax calculation', async () => {
     // Mock only external dependencies
     mockServices.TaxCalculationService.calculateIVA.mockReturnValue({
       net: 1000,
       tax: 220,
-      gross: 1220
+      gross: 1220,
     });
-    
+
     const { user } = renderWithProviders(<InvoiceForm />);
-    
+
     // Test the full flow
     await user.type(screen.getByLabelText('Amount'), '1000');
     await user.click(screen.getByText('Calculate Tax'));
-    
+
     expect(screen.getByText('€1,220.00')).toBeInTheDocument();
   });
 });
@@ -331,11 +338,11 @@ it('should handle database errors', async () => {
   // Mock error response
   mockSupabase.from('clients').select.mockResolvedValue({
     data: null,
-    error: { message: 'Database connection failed' }
+    error: { message: 'Database connection failed' },
   });
-  
+
   render(<ClientList />);
-  
+
   expect(await screen.findByText('Error loading clients')).toBeInTheDocument();
 });
 ```
@@ -347,7 +354,7 @@ import { mockLogger } from '../mocks/logger';
 
 it('should log performance metrics', async () => {
   render(<ExpensiveComponent />);
-  
+
   // Check if performance was logged
   expect(mockLogger.hasLogs('info')).toBe(true);
   const perfLogs = mockLogger.findLogs('info', 'performance');
@@ -365,7 +372,7 @@ import { createMockSupabaseClient } from '../mocks/supabase';
 // Create custom Supabase client with specific behavior
 const customClient = createMockSupabaseClient({
   defaultUser: { id: 'admin-user', role: 'admin' },
-  enableRealtime: false
+  enableRealtime: false,
 });
 
 // Register custom mock
@@ -386,7 +393,7 @@ triggerError();
 // Verify error was logged
 expect(errorSpy).toHaveBeenCalledWith(
   expect.stringContaining('Error occurred'),
-  expect.objectContaining({ context: 'test' })
+  expect.objectContaining({ context: 'test' }),
 );
 ```
 
@@ -402,7 +409,7 @@ const invoice = generateMockInvoice({ clientId: client.id });
 // Use in tests
 mockSupabase.from('invoices').insert.mockResolvedValue({
   data: [invoice],
-  error: null
+  error: null,
 });
 ```
 
@@ -477,7 +484,7 @@ mockSupabase.from('clients').select.mockResolvedValue({ data: [] });
 ```javascript
 // In mockConfig.js
 jest.doMock('@supabase/supabase-js', () => ({
-  createClient: jest.fn(() => mockClient)
+  createClient: jest.fn(() => mockClient),
 }));
 ```
 
@@ -485,7 +492,8 @@ jest.doMock('@supabase/supabase-js', () => ({
 
 1. **Always clean up mocks** after tests to prevent pollution
 2. **Use preset configurations** for consistent test environments
-3. **Mock at the right level** - unit tests mock everything, integration tests mock selectively
+3. **Mock at the right level** - unit tests mock everything, integration tests
+   mock selectively
 4. **Verify mock calls** to ensure your code is calling dependencies correctly
 5. **Use descriptive mock data** that makes test failures easier to understand
 6. **Test error scenarios** by mocking error responses
@@ -516,4 +524,5 @@ When adding new mocks:
 
 **Happy Testing! 🎉**
 
-For questions or issues with the mocking infrastructure, please refer to the test files for examples or create an issue in the project repository.
+For questions or issues with the mocking infrastructure, please refer to the
+test files for examples or create an issue in the project repository.

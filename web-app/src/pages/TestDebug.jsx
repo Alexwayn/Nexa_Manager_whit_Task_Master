@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { supabase, testSupabaseConnection } from '@lib/supabaseClient';
 import { useAuth } from '@context/AuthContext';
+import ErrorBoundary from '../components/common/ErrorBoundary';
 
 export default function TestDebug() {
   const { user, loading: authLoading } = useAuth();
@@ -10,7 +11,7 @@ export default function TestDebug() {
 
   // Add to console log
   const addLog = (message, type = 'info') => {
-    setConsoleLog((prev) => [...prev, { message, type, timestamp: new Date() }]);
+    setConsoleLog(prev => [...prev, { message, type, timestamp: new Date() }]);
   };
 
   // Test Supabase connection
@@ -101,129 +102,131 @@ export default function TestDebug() {
   }, [user, authLoading]);
 
   return (
-    <div className="p-6 max-w-4xl mx-auto">
-      <h1 className="text-2xl font-bold text-blue-600 mb-4">React App Debug Page</h1>
+    <ErrorBoundary>
+      <div className='p-6 max-w-4xl mx-auto'>
+        <h1 className='text-2xl font-bold text-blue-600 mb-4'>React App Debug Page</h1>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Supabase Test */}
-        <div className="bg-white p-4 rounded-xl shadow-md">
-          <h2 className="text-xl font-semibold mb-3">Supabase Connection</h2>
-          <button
-            onClick={handleTestSupabase}
-            disabled={supabaseStatus.testing}
-            className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md mr-2 disabled:opacity-50"
-          >
-            {supabaseStatus.testing ? 'Testing...' : 'Test Connection'}
-          </button>
-
-          {supabaseStatus.result && (
-            <div
-              className={`mt-3 p-3 rounded-md ${supabaseStatus.result.success ? 'bg-green-50 text-green-800' : 'bg-red-50 text-red-800'}`}
-            >
-              <p className="font-semibold">
-                {supabaseStatus.result.success ? 'Success' : 'Failed'}
-              </p>
-              <p>{supabaseStatus.result.message}</p>
-            </div>
-          )}
-        </div>
-
-        {/* Session Test */}
-        <div className="bg-white p-4 rounded-xl shadow-md">
-          <h2 className="text-xl font-semibold mb-3">Authentication Status</h2>
-          <div className="flex">
+        <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
+          {/* Supabase Test */}
+          <div className='bg-white p-4 rounded-xl shadow-md'>
+            <h2 className='text-xl font-semibold mb-3'>Supabase Connection</h2>
             <button
-              onClick={handleTestSession}
-              disabled={sessionStatus.testing}
-              className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md mr-2 disabled:opacity-50"
+              onClick={handleTestSupabase}
+              disabled={supabaseStatus.testing}
+              className='bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md mr-2 disabled:opacity-50'
             >
-              {sessionStatus.testing ? 'Checking...' : 'Check Session'}
+              {supabaseStatus.testing ? 'Testing...' : 'Test Connection'}
             </button>
 
+            {supabaseStatus.result && (
+              <div
+                className={`mt-3 p-3 rounded-md ${supabaseStatus.result.success ? 'bg-green-50 text-green-800' : 'bg-red-50 text-red-800'}`}
+              >
+                <p className='font-semibold'>
+                  {supabaseStatus.result.success ? 'Success' : 'Failed'}
+                </p>
+                <p>{supabaseStatus.result.message}</p>
+              </div>
+            )}
+          </div>
+
+          {/* Session Test */}
+          <div className='bg-white p-4 rounded-xl shadow-md'>
+            <h2 className='text-xl font-semibold mb-3'>Authentication Status</h2>
+            <div className='flex'>
+              <button
+                onClick={handleTestSession}
+                disabled={sessionStatus.testing}
+                className='bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md mr-2 disabled:opacity-50'
+              >
+                {sessionStatus.testing ? 'Checking...' : 'Check Session'}
+              </button>
+
+              <button
+                onClick={handleClearSession}
+                className='bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md disabled:opacity-50'
+              >
+                Sign Out
+              </button>
+            </div>
+
+            {sessionStatus.result && !sessionStatus.result.error && sessionStatus.result.data && (
+              <div className='mt-3 p-3 rounded-md bg-gray-50'>
+                <p className='font-semibold'>Session Info:</p>
+                <p>
+                  {sessionStatus.result.data.session
+                    ? `User: ${sessionStatus.result.data.session.user.email}`
+                    : 'No active session'}
+                </p>
+              </div>
+            )}
+
+            {sessionStatus.result && sessionStatus.result.error && (
+              <div className='mt-3 p-3 rounded-md bg-red-50 text-red-800'>
+                <p className='font-semibold'>Error:</p>
+                <p>{sessionStatus.result.error.message}</p>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Console Log */}
+        <div className='mt-6 bg-gray-800 text-white p-4 rounded-xl shadow-md'>
+          <div className='flex justify-between items-center mb-2'>
+            <h2 className='text-xl font-semibold'>Debug Console</h2>
             <button
-              onClick={handleClearSession}
-              className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md disabled:opacity-50"
+              onClick={handleClearConsole}
+              className='bg-gray-600 hover:bg-gray-700 text-white px-3 py-1 rounded-md text-sm'
             >
-              Sign Out
+              Clear
             </button>
           </div>
 
-          {sessionStatus.result && !sessionStatus.result.error && sessionStatus.result.data && (
-            <div className="mt-3 p-3 rounded-md bg-gray-50">
-              <p className="font-semibold">Session Info:</p>
-              <p>
-                {sessionStatus.result.data.session
-                  ? `User: ${sessionStatus.result.data.session.user.email}`
-                  : 'No active session'}
-              </p>
-            </div>
-          )}
+          <div className='h-64 overflow-y-auto bg-gray-900 p-3 rounded-md font-mono text-sm'>
+            {consoleLog.length === 0 ? (
+              <p className='text-gray-400'>Console is empty. Run a test to see output.</p>
+            ) : (
+              consoleLog.map((entry, index) => (
+                <div
+                  key={index}
+                  className={`mb-1 ${
+                    entry.type === 'error'
+                      ? 'text-red-400'
+                      : entry.type === 'success'
+                        ? 'text-green-400'
+                        : entry.type === 'warn'
+                          ? 'text-yellow-400'
+                          : 'text-blue-300'
+                  }`}
+                >
+                  [{entry.timestamp.toLocaleTimeString()}] {entry.message}
+                </div>
+              ))
+            )}
+          </div>
+        </div>
 
-          {sessionStatus.result && sessionStatus.result.error && (
-            <div className="mt-3 p-3 rounded-md bg-red-50 text-red-800">
-              <p className="font-semibold">Error:</p>
-              <p>{sessionStatus.result.error.message}</p>
-            </div>
-          )}
+        {/* Environment Info */}
+        <div className='mt-6 bg-white p-4 rounded-xl shadow-md'>
+          <h2 className='text-xl font-semibold mb-3'>Environment Info</h2>
+          <div className='bg-gray-50 p-3 rounded-md'>
+            <p>
+              <strong>React:</strong> {React.version}
+            </p>
+            <p>
+              <strong>Auth State:</strong>{' '}
+              {authLoading ? 'Loading' : user ? 'Authenticated' : 'Not Authenticated'}
+            </p>
+            <p>
+              <strong>Supabase URL:</strong>{' '}
+              {supabase.supabaseUrl ? supabase.supabaseUrl : 'Not available'}
+            </p>
+            <p>
+              <strong>Environment:</strong> {import.meta.env.MODE}
+            </p>
+          </div>
         </div>
       </div>
-
-      {/* Console Log */}
-      <div className="mt-6 bg-gray-800 text-white p-4 rounded-xl shadow-md">
-        <div className="flex justify-between items-center mb-2">
-          <h2 className="text-xl font-semibold">Debug Console</h2>
-          <button
-            onClick={handleClearConsole}
-            className="bg-gray-600 hover:bg-gray-700 text-white px-3 py-1 rounded-md text-sm"
-          >
-            Clear
-          </button>
-        </div>
-
-        <div className="h-64 overflow-y-auto bg-gray-900 p-3 rounded-md font-mono text-sm">
-          {consoleLog.length === 0 ? (
-            <p className="text-gray-400">Console is empty. Run a test to see output.</p>
-          ) : (
-            consoleLog.map((entry, index) => (
-              <div
-                key={index}
-                className={`mb-1 ${
-                  entry.type === 'error'
-                    ? 'text-red-400'
-                    : entry.type === 'success'
-                      ? 'text-green-400'
-                      : entry.type === 'warn'
-                        ? 'text-yellow-400'
-                        : 'text-blue-300'
-                }`}
-              >
-                [{entry.timestamp.toLocaleTimeString()}] {entry.message}
-              </div>
-            ))
-          )}
-        </div>
-      </div>
-
-      {/* Environment Info */}
-      <div className="mt-6 bg-white p-4 rounded-xl shadow-md">
-        <h2 className="text-xl font-semibold mb-3">Environment Info</h2>
-        <div className="bg-gray-50 p-3 rounded-md">
-          <p>
-            <strong>React:</strong> {React.version}
-          </p>
-          <p>
-            <strong>Auth State:</strong>{' '}
-            {authLoading ? 'Loading' : user ? 'Authenticated' : 'Not Authenticated'}
-          </p>
-          <p>
-            <strong>Supabase URL:</strong>{' '}
-            {supabase.supabaseUrl ? supabase.supabaseUrl : 'Not available'}
-          </p>
-          <p>
-            <strong>Environment:</strong> {import.meta.env.MODE}
-          </p>
-        </div>
-      </div>
-    </div>
+    </ErrorBoundary>
   );
 }

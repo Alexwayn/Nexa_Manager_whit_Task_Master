@@ -28,7 +28,8 @@ class InvoiceAnalyticsService {
     try {
       const { data: invoices, error } = await supabase
         .from('invoices')
-        .select(`
+        .select(
+          `
           id,
           invoice_number,
           total_amount,
@@ -39,7 +40,8 @@ class InvoiceAnalyticsService {
           due_date,
           paid_date,
           client_id
-        `)
+        `,
+        )
         .gte('issue_date', startDate)
         .lte('issue_date', endDate)
         .order('issue_date', { ascending: true });
@@ -81,7 +83,8 @@ class InvoiceAnalyticsService {
     try {
       const { data: invoices, error } = await supabase
         .from('invoices')
-        .select(`
+        .select(
+          `
           id,
           total_amount,
           vat_amount,
@@ -90,7 +93,8 @@ class InvoiceAnalyticsService {
           due_date,
           paid_date,
           client_id
-        `)
+        `,
+        )
         .gte('issue_date', startDate)
         .lte('issue_date', endDate);
 
@@ -254,7 +258,7 @@ class InvoiceAnalyticsService {
         days90: { label: 'Over 90 days', invoices: [], total: 0 },
       };
 
-      invoices.forEach((invoice) => {
+      invoices.forEach(invoice => {
         const daysOverdue = Math.floor(
           (today - new Date(invoice.due_date)) / (1000 * 60 * 60 * 24),
         );
@@ -343,7 +347,7 @@ class InvoiceAnalyticsService {
   _groupByTimePeriod(invoices, groupBy) {
     const groups = {};
 
-    invoices.forEach((invoice) => {
+    invoices.forEach(invoice => {
       const date = new Date(invoice.issue_date);
       let key;
 
@@ -468,7 +472,7 @@ class InvoiceAnalyticsService {
   _calculateClientMetrics(invoices) {
     const clientMetrics = {};
 
-    invoices.forEach((invoice) => {
+    invoices.forEach(invoice => {
       const clientId = invoice.client_id;
       const client = invoice.clients;
 
@@ -510,7 +514,7 @@ class InvoiceAnalyticsService {
     });
 
     // Calculate average payment time for each client
-    Object.values(clientMetrics).forEach((metrics) => {
+    Object.values(clientMetrics).forEach(metrics => {
       if (metrics.paidInvoices > 0) {
         metrics.averagePaymentTime = Math.round(metrics.totalPaymentTime / metrics.paidInvoices);
       }
@@ -534,10 +538,10 @@ class InvoiceAnalyticsService {
     };
 
     const paidInvoices = invoices.filter(
-      (inv) => inv.status === 'paid' && inv.paid_date && inv.due_date,
+      inv => inv.status === 'paid' && inv.paid_date && inv.due_date,
     );
 
-    paidInvoices.forEach((invoice) => {
+    paidInvoices.forEach(invoice => {
       const daysLate = Math.floor(
         (new Date(invoice.paid_date) - new Date(invoice.due_date)) / (1000 * 60 * 60 * 24),
       );
@@ -549,13 +553,13 @@ class InvoiceAnalyticsService {
     });
 
     // Add overdue invoices to poor category
-    const overdueCount = invoices.filter((inv) => inv.status === 'overdue').length;
+    const overdueCount = invoices.filter(inv => inv.status === 'overdue').length;
     behavior.poor.count += overdueCount;
 
     const totalInvoices = paidInvoices.length + overdueCount;
 
     if (totalInvoices > 0) {
-      Object.keys(behavior).forEach((key) => {
+      Object.keys(behavior).forEach(key => {
         behavior[key].percentage = Math.round((behavior[key].count / totalInvoices) * 100);
       });
     }
@@ -588,7 +592,7 @@ class InvoiceAnalyticsService {
    */
   _calculateAveragePaymentTime(invoices) {
     const paidInvoices = invoices.filter(
-      (inv) => inv.status === 'paid' && inv.paid_date && inv.issue_date,
+      inv => inv.status === 'paid' && inv.paid_date && inv.issue_date,
     );
 
     if (paidInvoices.length === 0) return 0;
@@ -610,7 +614,7 @@ class InvoiceAnalyticsService {
    * @returns {Object} Overdue analysis with age bracket breakdown
    */
   _analyzeOverdueInvoices(invoices) {
-    const overdueInvoices = invoices.filter((inv) => inv.status === 'overdue');
+    const overdueInvoices = invoices.filter(inv => inv.status === 'overdue');
     const today = new Date();
 
     const analysis = {
@@ -664,7 +668,7 @@ class InvoiceAnalyticsService {
   _calculateStatusDistribution(invoices) {
     const distribution = {};
 
-    invoices.forEach((invoice) => {
+    invoices.forEach(invoice => {
       const status = invoice.status || 'draft';
       if (!distribution[status]) {
         distribution[status] = { count: 0, amount: 0 };
@@ -689,9 +693,9 @@ class InvoiceAnalyticsService {
       byPaymentMethod: {},
     };
 
-    const paidInvoices = invoices.filter((inv) => inv.status === 'paid' && inv.paid_date);
+    const paidInvoices = invoices.filter(inv => inv.status === 'paid' && inv.paid_date);
 
-    paidInvoices.forEach((invoice) => {
+    paidInvoices.forEach(invoice => {
       const paidDate = new Date(invoice.paid_date);
       const dayOfWeek = paidDate.toLocaleDateString('en-US', { weekday: 'long' });
       const month = paidDate.toLocaleDateString('en-US', { month: 'long' });
@@ -716,8 +720,8 @@ class InvoiceAnalyticsService {
    */
   _calculateCollectionEfficiency(invoices) {
     const totalInvoices = invoices.length;
-    const paidInvoices = invoices.filter((inv) => inv.status === 'paid').length;
-    const overdueInvoices = invoices.filter((inv) => inv.status === 'overdue').length;
+    const paidInvoices = invoices.filter(inv => inv.status === 'paid').length;
+    const overdueInvoices = invoices.filter(inv => inv.status === 'overdue').length;
 
     const efficiency = {
       collectionRate: totalInvoices > 0 ? Math.round((paidInvoices / totalInvoices) * 100) : 0,
@@ -744,7 +748,7 @@ class InvoiceAnalyticsService {
       '0%': { count: 0, taxableBase: 0, vatAmount: 0 },
     };
 
-    invoices.forEach((invoice) => {
+    invoices.forEach(invoice => {
       const vatRate = invoice.vat_rate || 22;
       const key = `${vatRate}%`;
       const vatAmount = parseFloat(invoice.vat_amount || 0);
@@ -773,7 +777,7 @@ class InvoiceAnalyticsService {
       byRate: {},
     };
 
-    invoices.forEach((invoice) => {
+    invoices.forEach(invoice => {
       const withholdingTax = parseFloat(invoice.withholding_tax || 0);
       if (withholdingTax > 0) {
         summary.totalWithheld += withholdingTax;
@@ -799,7 +803,7 @@ class InvoiceAnalyticsService {
    * @returns {Object} Reverse charge analysis
    */
   _analyzeReverseCharge(invoices) {
-    const reverseChargeInvoices = invoices.filter((inv) => inv.reverse_charge === true);
+    const reverseChargeInvoices = invoices.filter(inv => inv.reverse_charge === true);
 
     return {
       count: reverseChargeInvoices.length,
@@ -823,7 +827,7 @@ class InvoiceAnalyticsService {
   _calculateTaxableBaseByRate(invoices) {
     const baseByRate = {};
 
-    invoices.forEach((invoice) => {
+    invoices.forEach(invoice => {
       const vatRate = invoice.vat_rate || 22;
       const key = `${vatRate}%`;
       const taxableBase = parseFloat(invoice.subtotal || 0);
@@ -844,7 +848,7 @@ class InvoiceAnalyticsService {
   _calculateMonthlyTaxSummary(invoices) {
     const monthlySummary = {};
 
-    invoices.forEach((invoice) => {
+    invoices.forEach(invoice => {
       const date = new Date(invoice.issue_date);
       const monthKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
 
@@ -900,7 +904,7 @@ class InvoiceAnalyticsService {
       };
 
       // Calculate expected income from unpaid invoices due this month
-      unpaidInvoices.forEach((invoice) => {
+      unpaidInvoices.forEach(invoice => {
         const dueDate = new Date(invoice.due_date);
         if (
           dueDate.getFullYear() === forecastDate.getFullYear() &&
@@ -944,7 +948,7 @@ class InvoiceAnalyticsService {
     let late = 0;
     let veryLate = 0;
 
-    historicalInvoices.forEach((invoice) => {
+    historicalInvoices.forEach(invoice => {
       if (!invoice.paid_date || !invoice.due_date) return;
 
       const daysLate = Math.floor(

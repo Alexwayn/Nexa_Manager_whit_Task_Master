@@ -5,7 +5,7 @@ import { useState, useEffect, useMemo } from 'react';
  * @param {Array} clients - Array of client objects
  * @returns {Object} Filtered clients and filter controls
  */
-export const useClientFilters = (clients) => {
+export const useClientFilters = clients => {
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
   const [revenueFilter, setRevenueFilter] = useState('all');
@@ -27,18 +27,18 @@ export const useClientFilters = (clients) => {
     if (searchQuery.trim()) {
       const query = searchQuery.toLowerCase().trim();
       filtered = filtered.filter(
-        (client) =>
+        client =>
           client.name?.toLowerCase().includes(query) ||
           client.full_name?.toLowerCase().includes(query) ||
           client.email?.toLowerCase().includes(query) ||
           client.phone?.toLowerCase().includes(query) ||
-          client.address?.toLowerCase().includes(query)
+          client.address?.toLowerCase().includes(query),
       );
     }
 
     // Apply status filter
     if (statusFilter !== 'all') {
-      filtered = filtered.filter((client) => {
+      filtered = filtered.filter(client => {
         switch (statusFilter) {
           case 'active':
             return client.status === 'active' || !client.status;
@@ -54,7 +54,7 @@ export const useClientFilters = (clients) => {
 
     // Apply revenue filter
     if (revenueFilter !== 'all') {
-      filtered = filtered.filter((client) => {
+      filtered = filtered.filter(client => {
         const revenue = parseFloat(client.total_revenue || 0);
         switch (revenueFilter) {
           case 'high':
@@ -123,7 +123,7 @@ export const useClientFilters = (clients) => {
   const endItem = Math.min(currentPage * itemsPerPage, totalItems);
 
   // Handle sort change
-  const handleSort = (field) => {
+  const handleSort = field => {
     if (sortBy === field) {
       setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
     } else {
@@ -146,14 +146,14 @@ export const useClientFilters = (clients) => {
     // Filtered data
     filteredClients: paginatedClients,
     totalFilteredClients: filteredAndSortedClients,
-    
+
     // Filter states
     searchQuery,
     statusFilter,
     revenueFilter,
     sortBy,
     sortOrder,
-    
+
     // Pagination states
     currentPage,
     itemsPerPage,
@@ -161,7 +161,7 @@ export const useClientFilters = (clients) => {
     totalItems,
     startItem,
     endItem,
-    
+
     // Filter setters
     setSearchQuery,
     setStatusFilter,
@@ -170,7 +170,7 @@ export const useClientFilters = (clients) => {
     setSortOrder,
     setCurrentPage,
     setItemsPerPage,
-    
+
     // Helper functions
     handleSort,
     clearFilters,

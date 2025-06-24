@@ -1,309 +1,299 @@
-// Import all page components
-import Dashboard from '@pages/Dashboard';
-import Clients from '@pages/Clients';
-import Calendar from '@pages/Calendar';
-import Inventory from '@pages/Inventory';
-import Invoices from '@pages/Invoices';
-import Transactions from '@pages/Transactions';
-import Analytics from '@pages/Analytics';
-import Reports from '@pages/Reports';
-import Settings from '@pages/Settings';
-import Quotes from '@pages/Quotes';
-import Test from '@pages/Test';
-import Email from '@pages/Email';
-import Documents from '@pages/Documents';
-import CalendarPage from '@pages/CalendarPage';
-import HelpCenter from '@pages/HelpCenter';
-import Documentation from '@pages/Documentation';
-import ApiReference from '@pages/ApiReference';
-import SystemStatus from '@pages/SystemStatus';
-import Security from '@pages/Security';
-import Compliance from '@pages/Compliance';
-import TermsOfService from '@pages/TermsOfService';
-import LegalNotice from '@pages/LegalNotice';
-import ProfileForm from '@pages/ProfileForm';
-import Scan from '@pages/Scan';
-import Voice from '@pages/Voice';
+import { lazy } from 'react';
 
-// Testing components
-import TestRoute from '@components/TestRoute';
-import TestDebug from '@pages/TestDebug';
-import TestAnalytics from '@pages/TestAnalytics';
-import TestExport from '@pages/TestExport';
-import TaxAndPDFTest from '@pages/TaxAndPDFTest';
+// Lazy load page components for automatic code splitting
+// Main application pages
+const Dashboard = lazy(() => import('@pages/Dashboard'));
+const Clients = lazy(() => import('@pages/Clients'));
+const Calendar = lazy(() => import('@pages/Calendar'));
+const Inventory = lazy(() => import('@pages/Inventory'));
+const Invoices = lazy(() => import('@pages/Invoices'));
+const Transactions = lazy(() => import('@pages/Transactions'));
+const Analytics = lazy(() => import('@pages/Analytics'));
+const Reports = lazy(() => import('@pages/Reports'));
+const Settings = lazy(() => import('@pages/Settings'));
+const Quotes = lazy(() => import('@pages/Quotes'));
+const Test = lazy(() => import('@pages/Test'));
+const Email = lazy(() => import('@pages/Email'));
+const Documents = lazy(() => import('@pages/Documents'));
+const CalendarPage = lazy(() => import('@pages/CalendarPage'));
+const HelpCenter = lazy(() => import('@pages/HelpCenter'));
+const Documentation = lazy(() => import('@pages/Documentation'));
+const ApiReference = lazy(() => import('@pages/ApiReference'));
+const SystemStatus = lazy(() => import('@pages/SystemStatus'));
+const Security = lazy(() => import('@pages/Security'));
+const Compliance = lazy(() => import('@pages/Compliance'));
+const TermsOfService = lazy(() => import('@pages/TermsOfService'));
+const LegalNotice = lazy(() => import('@pages/LegalNotice'));
+const ProfileForm = lazy(() => import('@pages/ProfileForm'));
+const Scan = lazy(() => import('@pages/Scan'));
+const Voice = lazy(() => import('@pages/Voice'));
 
-// Auth components
+// Testing components - also lazy loaded for better performance
+const TestRoute = lazy(() => import('@components/shared/TestRoute'));
+const TestDebug = lazy(() => import('@pages/TestDebug'));
+const TestAnalytics = lazy(() => import('@pages/TestAnalytics'));
+const TestExport = lazy(() => import('@pages/TestExport'));
+const TaxAndPDFTest = lazy(() => import('@pages/TaxAndPDFTest'));
+
+// Auth components - keep these immediately loaded as they're critical for app initialization
 import Login from '@pages/Login';
 import ResetPassword from '@pages/ResetPassword';
 import RSVPPage from '@pages/RSVPPage';
 
 /**
  * Public routes - accessible without authentication
+ * Auth routes are not lazy loaded for better UX on initial load
  */
 export const publicRoutes = [
   {
     path: '/login',
     element: Login,
-    name: 'Login'
+    name: 'Login',
   },
   {
-    path: '/reset-password', 
+    path: '/reset-password',
     element: ResetPassword,
-    name: 'Reset Password'
+    name: 'Reset Password',
   },
   {
     path: '/rsvp/:token',
     element: RSVPPage,
-    name: 'RSVP'
-  }
+    name: 'RSVP',
+  },
 ];
 
 /**
  * Test routes - for debugging and development
+ * Lazy loaded to reduce main bundle size
  */
 export const testRoutes = [
   {
     path: '/test-route',
     element: TestRoute,
-    name: 'Test Route'
+    name: 'Test Route',
   },
   {
     path: '/test-debug',
     element: TestDebug,
-    name: 'Test Debug'
+    name: 'Test Debug',
   },
   {
     path: '/test-analytics',
     element: TestAnalytics,
-    name: 'Test Analytics'
+    name: 'Test Analytics',
   },
   {
     path: '/test-export',
     element: TestExport,
-    name: 'Test Export'
-  }
+    name: 'Test Export',
+  },
+  {
+    path: '/tax-pdf-test',
+    element: TaxAndPDFTest,
+    name: 'Tax PDF Test',
+  },
 ];
 
 /**
  * Main application routes - require authentication and use Layout
+ * All lazy loaded for optimal performance
  */
 export const mainRoutes = [
   {
     path: '/dashboard',
     element: Dashboard,
     name: 'Dashboard',
-    category: 'main'
+    category: 'main',
   },
   {
     path: '/clients',
     element: Clients,
     name: 'Clients',
-    category: 'main'
+    category: 'main',
   },
   {
     path: '/invoices',
     element: Invoices,
     name: 'Invoices',
-    category: 'financial'
+    category: 'financial',
   },
   {
     path: '/quotes',
     element: Quotes,
     name: 'Quotes',
-    category: 'financial'
+    category: 'financial',
   },
   {
     path: '/transactions',
     element: Transactions,
     name: 'Transactions',
-    category: 'financial'
+    category: 'financial',
   },
   {
     path: '/inventory',
     element: Inventory,
     name: 'Inventory',
-    category: 'business'
+    category: 'business',
   },
   {
     path: '/analytics',
     element: Analytics,
     name: 'Analytics',
-    category: 'reports'
+    category: 'reports',
   },
   {
     path: '/reports',
     element: Reports,
     name: 'Reports',
-    category: 'reports'
+    category: 'reports',
   },
   {
     path: '/documents',
     element: Documents,
     name: 'Documents',
-    category: 'business'
+    category: 'business',
   },
   {
     path: '/email',
     element: Email,
     name: 'Email',
-    category: 'communication'
+    category: 'communication',
   },
   {
     path: '/scan',
     element: Scan,
     name: 'Scan',
-    category: 'tools'
+    category: 'tools',
   },
   {
     path: '/voice',
     element: Voice,
     name: 'Voice',
-    category: 'tools'
+    category: 'tools',
   },
   {
     path: '/calendar',
     element: Calendar,
     name: 'Calendar',
-    category: 'scheduling'
+    category: 'scheduling',
   },
   {
     path: '/calendar-page',
     element: CalendarPage,
     name: 'Calendar Page',
-    category: 'scheduling'
+    category: 'scheduling',
   },
   {
     path: '/settings',
     element: Settings,
     name: 'Settings',
-    category: 'account'
+    category: 'account',
   },
   {
     path: '/profile',
     element: ProfileForm,
     name: 'Profile',
-    category: 'account'
+    category: 'account',
   },
   {
     path: '/test',
     element: Test,
     name: 'Test',
-    category: 'development'
-  }
+    category: 'development',
+  },
 ];
 
 /**
  * Support and documentation routes
+ * Lazy loaded as they're accessed less frequently
  */
 export const supportRoutes = [
   {
     path: '/help',
     element: HelpCenter,
     name: 'Help Center',
-    category: 'support'
+    category: 'support',
   },
   {
     path: '/documentation',
     element: Documentation,
     name: 'Documentation',
-    category: 'support'
+    category: 'support',
   },
   {
     path: '/api-reference',
     element: ApiReference,
     name: 'API Reference',
-    category: 'support'
+    category: 'support',
   },
   {
     path: '/system-status',
     element: SystemStatus,
     name: 'System Status',
-    category: 'support'
+    category: 'support',
   },
   {
     path: '/security',
     element: Security,
     name: 'Security',
-    category: 'legal'
+    category: 'legal',
   },
   {
     path: '/compliance',
     element: Compliance,
     name: 'Compliance',
-    category: 'legal'
+    category: 'legal',
   },
   {
     path: '/terms',
     element: TermsOfService,
     name: 'Terms of Service',
-    category: 'legal'
+    category: 'legal',
   },
   {
-    path: '/privacy',
+    path: '/legal',
     element: LegalNotice,
-    name: 'Privacy Policy',
-    category: 'legal'
-  }
+    name: 'Legal Notice',
+    category: 'legal',
+  },
 ];
 
 /**
- * Development and testing routes for protected area
+ * All protected routes combined
  */
-export const developmentRoutes = [
-  {
-    path: '/test-analytics',
-    element: TestAnalytics,
-    name: 'Test Analytics',
-    category: 'development'
-  },
-  {
-    path: '/test-export',
-    element: TestExport,
-    name: 'Test Export',
-    category: 'development'
-  },
-  {
-    path: '/test-debug',
-    element: TestDebug,
-    name: 'Test Debug',
-    category: 'development'
-  },
-  {
-    path: '/tax-pdf-test',
-    element: TaxAndPDFTest,
-    name: 'Tax PDF Test',
-    category: 'development'
-  }
-];
+export const protectedRoutes = [...mainRoutes, ...supportRoutes];
 
 /**
- * All protected routes (require authentication and Layout)
- */
-export const protectedRoutes = [
-  ...mainRoutes,
-  ...supportRoutes,
-  ...developmentRoutes
-];
-
-/**
- * Default routes and redirects
+ * Default routes for the application
  */
 export const defaultRoutes = {
   index: Dashboard,
-  fallback: Dashboard
+  fallback: Dashboard,
 };
 
 /**
- * Get routes by category
+ * Utility functions for route management
  */
-export const getRoutesByCategory = (category) => {
+
+/**
+ * Get all routes by category
+ */
+export const getRoutesByCategory = category => {
   return protectedRoutes.filter(route => route.category === category);
 };
 
 /**
- * Get route by path
+ * Find route by path
  */
-export const getRouteByPath = (path) => {
+export const getRouteByPath = path => {
   const allRoutes = [...publicRoutes, ...testRoutes, ...protectedRoutes];
   return allRoutes.find(route => route.path === path);
-}; 
+};
+
+/**
+ * Get all available categories
+ */
+export const getCategories = () => {
+  const categories = new Set(protectedRoutes.map(route => route.category));
+  return Array.from(categories);
+};

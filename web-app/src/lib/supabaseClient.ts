@@ -25,7 +25,7 @@ const t = (key: string, params?: Record<string, unknown>): string => {
   let translation = translations[key] || key;
 
   if (params) {
-    Object.keys(params).forEach((param) => {
+    Object.keys(params).forEach(param => {
       translation = translation.replace(`{{${param}}}`, String(params[param]));
     });
   }
@@ -53,7 +53,10 @@ if (!supabaseAnonKey) {
 }
 
 // Only log in development
-if ((typeof import.meta !== 'undefined' && import.meta.env?.DEV) || (typeof process !== 'undefined' && process.env.NODE_ENV === 'development')) {
+if (
+  (typeof import.meta !== 'undefined' && import.meta.env?.DEV) ||
+  (typeof process !== 'undefined' && process.env.NODE_ENV === 'development')
+) {
   Logger.info(t('supabase.debug.urlLog'), supabaseUrl);
   Logger.info(
     t('supabase.debug.anonKeyLog'),
@@ -67,7 +70,9 @@ export const supabase: SupabaseClient = createClient(supabaseUrl, supabaseAnonKe
     persistSession: true,
     storage: localStorage,
     autoRefreshToken: true,
-    debug: (typeof import.meta !== 'undefined' && import.meta.env?.DEV) || (typeof process !== 'undefined' && process.env.NODE_ENV === 'development'), // Only enable debug in development
+    debug:
+      (typeof import.meta !== 'undefined' && import.meta.env?.DEV) ||
+      (typeof process !== 'undefined' && process.env.NODE_ENV === 'development'), // Only enable debug in development
   },
   realtime: {
     timeout: 60000,
@@ -119,7 +124,10 @@ export const testSupabaseConnection = async (): Promise<ConnectionTestResult> =>
 };
 
 // Development helpers
-if ((typeof import.meta !== 'undefined' && import.meta.env?.DEV) || (typeof process !== 'undefined' && process.env.NODE_ENV === 'development')) {
+if (
+  (typeof import.meta !== 'undefined' && import.meta.env?.DEV) ||
+  (typeof process !== 'undefined' && process.env.NODE_ENV === 'development')
+) {
   (window as any).supabase = supabase;
   (window as any).testSupabaseConnection = testSupabaseConnection;
   Logger.info(t('supabase.debug.clientAvailable'));

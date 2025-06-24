@@ -27,7 +27,7 @@ export const createMockSupabaseClient = (customResponses = {}) => {
     update: jest.fn(() => Promise.resolve(responses.update)),
     delete: jest.fn(() => Promise.resolve(responses.delete)),
     upsert: jest.fn(() => Promise.resolve(responses.upsert)),
-    
+
     // Filter methods
     eq: jest.fn(() => mockClient),
     neq: jest.fn(() => mockClient),
@@ -52,7 +52,7 @@ export const createMockSupabaseClient = (customResponses = {}) => {
     not: jest.fn(() => mockClient),
     or: jest.fn(() => mockClient),
     filter: jest.fn(() => mockClient),
-    
+
     // Modifier methods
     order: jest.fn(() => mockClient),
     limit: jest.fn(() => mockClient),
@@ -65,15 +65,17 @@ export const createMockSupabaseClient = (customResponses = {}) => {
     explain: jest.fn(() => mockClient),
     rollback: jest.fn(() => mockClient),
     returns: jest.fn(() => mockClient),
-    
+
     // RPC methods
     rpc: jest.fn(() => Promise.resolve({ data: null, error: null })),
-    
+
     // Auth methods
     auth: {
       getUser: jest.fn(() => Promise.resolve({ data: { user: null }, error: null })),
       getSession: jest.fn(() => Promise.resolve({ data: { session: null }, error: null })),
-      signInWithPassword: jest.fn(() => Promise.resolve({ data: { user: null, session: null }, error: null })),
+      signInWithPassword: jest.fn(() =>
+        Promise.resolve({ data: { user: null, session: null }, error: null }),
+      ),
       signUp: jest.fn(() => Promise.resolve({ data: { user: null, session: null }, error: null })),
       signOut: jest.fn(() => Promise.resolve({ error: null })),
       resetPasswordForEmail: jest.fn(() => Promise.resolve({ error: null })),
@@ -84,7 +86,7 @@ export const createMockSupabaseClient = (customResponses = {}) => {
         data: { subscription: { unsubscribe: jest.fn() } },
       })),
     },
-    
+
     // Storage methods
     storage: {
       from: jest.fn(() => ({
@@ -93,13 +95,15 @@ export const createMockSupabaseClient = (customResponses = {}) => {
         remove: jest.fn(() => Promise.resolve({ data: null, error: null })),
         list: jest.fn(() => Promise.resolve({ data: [], error: null })),
         getPublicUrl: jest.fn(() => ({ data: { publicUrl: 'https://example.com/file.pdf' } })),
-        createSignedUrl: jest.fn(() => Promise.resolve({ data: { signedUrl: 'https://example.com/signed' }, error: null })),
+        createSignedUrl: jest.fn(() =>
+          Promise.resolve({ data: { signedUrl: 'https://example.com/signed' }, error: null }),
+        ),
         createSignedUrls: jest.fn(() => Promise.resolve({ data: [], error: null })),
         move: jest.fn(() => Promise.resolve({ data: null, error: null })),
         copy: jest.fn(() => Promise.resolve({ data: null, error: null })),
       })),
     },
-    
+
     // Realtime methods
     channel: jest.fn(() => ({
       on: jest.fn(() => mockClient),
@@ -147,8 +151,8 @@ export const createMockRouter = (initialLocation = '/') => ({
   useMatches: () => [],
   useOutlet: () => null,
   useOutletContext: () => ({}),
-  useResolvedPath: (to) => ({ pathname: to, search: '', hash: '' }),
-  useHref: (to) => to,
+  useResolvedPath: to => ({ pathname: to, search: '', hash: '' }),
+  useHref: to => to,
   useInRouterContext: () => true,
   useNavigationType: () => 'POP',
 });
@@ -172,7 +176,7 @@ export const createMockI18n = () => ({
   language: 'en',
   languages: ['en', 'it'],
   exists: jest.fn(() => true),
-  getFixedT: jest.fn(() => jest.fn((key) => key)),
+  getFixedT: jest.fn(() => jest.fn(key => key)),
   hasResourceBundle: jest.fn(() => true),
   loadNamespaces: jest.fn(() => Promise.resolve()),
   loadLanguages: jest.fn(() => Promise.resolve()),
@@ -210,9 +214,15 @@ export const createMockToast = () => ({
 // =============================================================================
 
 export const createMockPDFGenerator = () => ({
-  generateQuotePDF: jest.fn(() => Promise.resolve(new Blob(['PDF content'], { type: 'application/pdf' }))),
-  generateInvoicePDF: jest.fn(() => Promise.resolve(new Blob(['PDF content'], { type: 'application/pdf' }))),
-  generateReportPDF: jest.fn(() => Promise.resolve(new Blob(['PDF content'], { type: 'application/pdf' }))),
+  generateQuotePDF: jest.fn(() =>
+    Promise.resolve(new Blob(['PDF content'], { type: 'application/pdf' })),
+  ),
+  generateInvoicePDF: jest.fn(() =>
+    Promise.resolve(new Blob(['PDF content'], { type: 'application/pdf' })),
+  ),
+  generateReportPDF: jest.fn(() =>
+    Promise.resolve(new Blob(['PDF content'], { type: 'application/pdf' })),
+  ),
 });
 
 // =============================================================================
@@ -224,7 +234,7 @@ export const createMockEmailService = () => ({
   sendQuoteEmail: jest.fn(() => Promise.resolve({ success: true })),
   sendInvoiceEmail: jest.fn(() => Promise.resolve({ success: true })),
   sendReminderEmail: jest.fn(() => Promise.resolve({ success: true })),
-  validateEmail: jest.fn((email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)),
+  validateEmail: jest.fn(email => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)),
   getEmailTemplate: jest.fn(() => Promise.resolve('<html>Template</html>')),
   replaceTemplateVariables: jest.fn((template, variables) => {
     let result = template;
@@ -264,8 +274,8 @@ export const createMockDateLibrary = () => ({
     const d = new Date(date);
     return d.toISOString().split('T')[0]; // Simple YYYY-MM-DD format
   }),
-  parse: jest.fn((dateStr) => new Date(dateStr)),
-  isValid: jest.fn((date) => date instanceof Date && !isNaN(date)),
+  parse: jest.fn(dateStr => new Date(dateStr)),
+  isValid: jest.fn(date => date instanceof Date && !isNaN(date)),
   addDays: jest.fn((date, days) => {
     const result = new Date(date);
     result.setDate(result.getDate() + days);
@@ -276,12 +286,12 @@ export const createMockDateLibrary = () => ({
     result.setDate(result.getDate() - days);
     return result;
   }),
-  startOfMonth: jest.fn((date) => {
+  startOfMonth: jest.fn(date => {
     const result = new Date(date);
     result.setDate(1);
     return result;
   }),
-  endOfMonth: jest.fn((date) => {
+  endOfMonth: jest.fn(date => {
     const result = new Date(date);
     result.setMonth(result.getMonth() + 1, 0);
     return result;
@@ -320,7 +330,7 @@ export const createMockValidationLibrary = () => ({
 
 export const createMockCrypto = () => ({
   randomUUID: jest.fn(() => '123e4567-e89b-12d3-a456-426614174000'),
-  getRandomValues: jest.fn((array) => {
+  getRandomValues: jest.fn(array => {
     for (let i = 0; i < array.length; i++) {
       array[i] = Math.floor(Math.random() * 256);
     }
@@ -343,22 +353,28 @@ export const createMockCrypto = () => ({
 // =============================================================================
 
 export const createMockPaymentProcessor = () => ({
-  processPayment: jest.fn(() => Promise.resolve({
-    success: true,
-    transactionId: 'txn_123456789',
-    amount: 1000,
-    currency: 'EUR',
-  })),
-  refundPayment: jest.fn(() => Promise.resolve({
-    success: true,
-    refundId: 'ref_123456789',
-    amount: 1000,
-  })),
+  processPayment: jest.fn(() =>
+    Promise.resolve({
+      success: true,
+      transactionId: 'txn_123456789',
+      amount: 1000,
+      currency: 'EUR',
+    }),
+  ),
+  refundPayment: jest.fn(() =>
+    Promise.resolve({
+      success: true,
+      refundId: 'ref_123456789',
+      amount: 1000,
+    }),
+  ),
   validateCard: jest.fn(() => ({ isValid: true, type: 'visa' })),
-  createPaymentIntent: jest.fn(() => Promise.resolve({
-    id: 'pi_123456789',
-    client_secret: 'pi_123456789_secret_123',
-  })),
+  createPaymentIntent: jest.fn(() =>
+    Promise.resolve({
+      id: 'pi_123456789',
+      client_secret: 'pi_123456789_secret_123',
+    }),
+  ),
 });
 
 // =============================================================================
@@ -386,12 +402,12 @@ export const setupGlobalMocks = () => {
   global.mockSupabaseClient = createMockSupabaseClient();
   global.mockLogger = createMockLogger();
   global.mockToast = createMockToast();
-  
+
   // Mock crypto if not available
   if (!global.crypto) {
     global.crypto = createMockCrypto();
   }
-  
+
   // Mock performance if not available
   if (!global.performance) {
     global.performance = {

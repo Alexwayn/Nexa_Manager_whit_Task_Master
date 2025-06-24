@@ -12,8 +12,6 @@ import { useLocation, useNavigate } from 'react-router-dom';
 // Extracted components
 import { useAuth } from '@context/AuthContext';
 
-
-
 import ReportHeader from '@components/reports/ReportHeader';
 import ReportLoadingSpinner from '@components/reports/ReportLoadingSpinner';
 import ReportErrorBoundary from '@components/reports/ReportErrorBoundary';
@@ -158,7 +156,7 @@ export default function ReportsRefactored() {
     }
   };
 
-  const formatCurrency = (amount) => {
+  const formatCurrency = amount => {
     return new Intl.NumberFormat('it-IT', {
       style: 'currency',
       currency: 'EUR',
@@ -166,11 +164,11 @@ export default function ReportsRefactored() {
     }).format(amount || 0);
   };
 
-  const formatNumber = (number) => {
+  const formatNumber = number => {
     return new Intl.NumberFormat('it-IT').format(number || 0);
   };
 
-  const formatPercentage = (value) => {
+  const formatPercentage = value => {
     return `${(value || 0).toFixed(1)}%`;
   };
 
@@ -223,20 +221,20 @@ export default function ReportsRefactored() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+    <div className='min-h-screen bg-gray-50 dark:bg-gray-900'>
+      <div className='max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8'>
         {/* Header */}
         <ReportHeader
-          title="Dashboard Report Completo"
+          title='Dashboard Report Completo'
           subtitle={`Analisi dettagliata ${formattedRange.display}`}
           dateRange={dateRange}
           exportData={exportData}
-          exportType="dashboard"
+          exportType='dashboard'
           showExport={true}
         />
 
         {/* Date Range Filter */}
-        <div className="mt-6">
+        <div className='mt-6'>
           <DateRangeFilter
             dateRange={dateRange}
             onDateRangeChange={updateDateRange}
@@ -246,22 +244,22 @@ export default function ReportsRefactored() {
 
         {/* Error Display */}
         {error && (
-          <div className="mt-6">
+          <div className='mt-6'>
             <ReportErrorBoundary
               error={error}
               onRetry={() => setError(null)}
-              title="Errore nei Report"
+              title='Errore nei Report'
             />
           </div>
         )}
 
         {/* Tab Navigation */}
-        <div className="mt-6">
+        <div className='mt-6'>
           <TabNavigation tabs={reportTabs} activeTab={activeTab} onTabChange={setActiveTab} />
         </div>
 
         {/* Report Content */}
-        <div className="mt-6 min-h-96">
+        <div className='mt-6 min-h-96'>
           {activeTab === 'financials' && (
             <FinancialsReportRefactored
               dateRange={dateRange}
@@ -279,31 +277,31 @@ export default function ReportsRefactored() {
             />
           )}
           {activeTab === 'quotes' && (
-            <div className="bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-700">
-              <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">
+            <div className='bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-700'>
+              <h3 className='text-lg font-medium text-gray-900 dark:text-white mb-4'>
                 Report Preventivi
               </h3>
-              <p className="text-gray-500 dark:text-gray-400">
+              <p className='text-gray-500 dark:text-gray-400'>
                 Sezione in sviluppo - Component refactoring coming soon...
               </p>
             </div>
           )}
           {activeTab === 'clients' && (
-            <div className="bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-700">
-              <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">
+            <div className='bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-700'>
+              <h3 className='text-lg font-medium text-gray-900 dark:text-white mb-4'>
                 Report Clienti
               </h3>
-              <p className="text-gray-500 dark:text-gray-400">
+              <p className='text-gray-500 dark:text-gray-400'>
                 Sezione in sviluppo - Component refactoring coming soon...
               </p>
             </div>
           )}
           {activeTab === 'analytics' && (
-            <div className="bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-700">
-              <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">
+            <div className='bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-700'>
+              <h3 className='text-lg font-medium text-gray-900 dark:text-white mb-4'>
                 Analisi Avanzate
               </h3>
-              <p className="text-gray-500 dark:text-gray-400">
+              <p className='text-gray-500 dark:text-gray-400'>
                 Sezione in sviluppo - Component refactoring coming soon...
               </p>
             </div>
@@ -379,7 +377,7 @@ function FinancialsReportRefactored({ dateRange, formatCurrency, formatNumber, f
   });
 
   if (loading) {
-    return <ReportLoadingSpinner message="Caricamento dati finanziari..." />;
+    return <ReportLoadingSpinner message='Caricamento dati finanziari...' />;
   }
 
   if (error) {
@@ -387,13 +385,13 @@ function FinancialsReportRefactored({ dateRange, formatCurrency, formatNumber, f
       <ReportErrorBoundary
         error={error}
         onRetry={refetch}
-        title="Errore nel caricamento dei dati finanziari"
+        title='Errore nel caricamento dei dati finanziari'
       />
     );
   }
 
   return (
-    <div className="space-y-6">
+    <div className='space-y-6'>
       {/* Financial Overview with extracted component */}
       <FinancialOverview
         data={data}
@@ -403,16 +401,16 @@ function FinancialsReportRefactored({ dateRange, formatCurrency, formatNumber, f
       />
 
       {/* Charts Section */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <ChartContainer title="Distribuzione Entrate per Categoria" loading={false} error={null}>
+      <div className='grid grid-cols-1 lg:grid-cols-2 gap-6'>
+        <ChartContainer title='Distribuzione Entrate per Categoria' loading={false} error={null}>
           <DoughnutChart data={incomeChartData} formatCurrency={formatCurrency} showLegend={true} />
         </ChartContainer>
 
-        <ChartContainer title="Spese per Categoria" loading={false} error={null}>
+        <ChartContainer title='Spese per Categoria' loading={false} error={null}>
           <BarChart
             data={expenseChartData}
             formatCurrency={formatCurrency}
-            orientation="vertical"
+            orientation='vertical'
           />
         </ChartContainer>
       </div>
@@ -450,7 +448,7 @@ function InvoicesReportRefactored({ dateRange, formatCurrency, formatNumber, for
   // Transform revenue data for line chart
   const revenueData = data?.revenue?.revenueByPeriod || {};
   const periods = Object.keys(revenueData).sort();
-  const revenues = periods.map((period) => revenueData[period]?.totalRevenue || 0);
+  const revenues = periods.map(period => revenueData[period]?.totalRevenue || 0);
 
   const { chartData: revenueChartData } = useChartData(
     periods.map((period, index) => ({ label: period, value: revenues[index] })),
@@ -462,7 +460,7 @@ function InvoicesReportRefactored({ dateRange, formatCurrency, formatNumber, for
   );
 
   if (loading) {
-    return <ReportLoadingSpinner message="Caricamento dati fatture..." />;
+    return <ReportLoadingSpinner message='Caricamento dati fatture...' />;
   }
 
   if (error) {
@@ -470,7 +468,7 @@ function InvoicesReportRefactored({ dateRange, formatCurrency, formatNumber, for
       <ReportErrorBoundary
         error={error}
         onRetry={refetch}
-        title="Errore nel caricamento dei dati fatture"
+        title='Errore nel caricamento dei dati fatture'
       />
     );
   }
@@ -483,48 +481,48 @@ function InvoicesReportRefactored({ dateRange, formatCurrency, formatNumber, for
   const paidPercentage = totalInvoices > 0 ? (paidCount / totalInvoices) * 100 : 0;
 
   return (
-    <div className="space-y-6">
+    <div className='space-y-6'>
       {/* Invoice Status Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg border border-blue-100 dark:border-blue-800">
-          <h3 className="text-sm font-medium text-blue-800 dark:text-blue-200">Fatture Emesse</h3>
-          <p className="text-2xl font-bold text-blue-600 dark:text-blue-400">
+      <div className='grid grid-cols-1 md:grid-cols-4 gap-4'>
+        <div className='bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg border border-blue-100 dark:border-blue-800'>
+          <h3 className='text-sm font-medium text-blue-800 dark:text-blue-200'>Fatture Emesse</h3>
+          <p className='text-2xl font-bold text-blue-600 dark:text-blue-400'>
             {formatNumber(totalInvoices)}
           </p>
-          <p className="text-xs text-blue-700 dark:text-blue-300">Nel periodo selezionato</p>
+          <p className='text-xs text-blue-700 dark:text-blue-300'>Nel periodo selezionato</p>
         </div>
 
-        <div className="bg-green-50 dark:bg-green-900/20 p-4 rounded-lg border border-green-100 dark:border-green-800">
-          <h3 className="text-sm font-medium text-green-800 dark:text-green-200">Fatture Pagate</h3>
-          <p className="text-2xl font-bold text-green-600 dark:text-green-400">
+        <div className='bg-green-50 dark:bg-green-900/20 p-4 rounded-lg border border-green-100 dark:border-green-800'>
+          <h3 className='text-sm font-medium text-green-800 dark:text-green-200'>Fatture Pagate</h3>
+          <p className='text-2xl font-bold text-green-600 dark:text-green-400'>
             {formatNumber(paidCount)}
           </p>
-          <p className="text-xs text-green-700 dark:text-green-300">
+          <p className='text-xs text-green-700 dark:text-green-300'>
             {formatPercentage(paidPercentage)} del totale
           </p>
         </div>
 
-        <div className="bg-amber-50 dark:bg-amber-900/20 p-4 rounded-lg border border-amber-100 dark:border-amber-800">
-          <h3 className="text-sm font-medium text-amber-800 dark:text-amber-200">
+        <div className='bg-amber-50 dark:bg-amber-900/20 p-4 rounded-lg border border-amber-100 dark:border-amber-800'>
+          <h3 className='text-sm font-medium text-amber-800 dark:text-amber-200'>
             Fatture In Attesa
           </h3>
-          <p className="text-2xl font-bold text-amber-600 dark:text-amber-400">
+          <p className='text-2xl font-bold text-amber-600 dark:text-amber-400'>
             {formatNumber(sentCount)}
           </p>
-          <p className="text-xs text-amber-700 dark:text-amber-300">In attesa di pagamento</p>
+          <p className='text-xs text-amber-700 dark:text-amber-300'>In attesa di pagamento</p>
         </div>
 
-        <div className="bg-red-50 dark:bg-red-900/20 p-4 rounded-lg border border-red-100 dark:border-red-800">
-          <h3 className="text-sm font-medium text-red-800 dark:text-red-200">Fatture Scadute</h3>
-          <p className="text-2xl font-bold text-red-600 dark:text-red-400">
+        <div className='bg-red-50 dark:bg-red-900/20 p-4 rounded-lg border border-red-100 dark:border-red-800'>
+          <h3 className='text-sm font-medium text-red-800 dark:text-red-200'>Fatture Scadute</h3>
+          <p className='text-2xl font-bold text-red-600 dark:text-red-400'>
             {formatNumber(overdueCount)}
           </p>
-          <p className="text-xs text-red-700 dark:text-red-300">Da recuperare</p>
+          <p className='text-xs text-red-700 dark:text-red-300'>Da recuperare</p>
         </div>
       </div>
 
       {/* Revenue Chart */}
-      <ChartContainer title="Fatturato Mensile" loading={false} error={null}>
+      <ChartContainer title='Fatturato Mensile' loading={false} error={null}>
         <LineChart data={revenueChartData} formatCurrency={formatCurrency} />
       </ChartContainer>
     </div>

@@ -105,7 +105,7 @@ const FinancialOverview = ({
   return (
     <div className={`space-y-6 ${className}`}>
       {/* Key Financial Metrics */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6'>
         {metrics.map((metric, index) => (
           <StatCard
             key={index}
@@ -120,33 +120,33 @@ const FinancialOverview = ({
       </div>
 
       {/* Additional Metrics Summary */}
-      <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
-        <div className="flex items-center mb-4">
-          <ChartBarIcon className="h-5 w-5 text-gray-400 mr-2" />
-          <h3 className="text-lg font-medium text-gray-900 dark:text-white">
+      <div className='bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6'>
+        <div className='flex items-center mb-4'>
+          <ChartBarIcon className='h-5 w-5 text-gray-400 mr-2' />
+          <h3 className='text-lg font-medium text-gray-900 dark:text-white'>
             {t('financials.metrics.additionalMetrics')}
           </h3>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6'>
           {additionalMetrics.map((metric, index) => (
-            <div key={index} className="text-center">
-              <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">{metric.label}</p>
-              <p className="text-xl font-semibold text-gray-900 dark:text-white">{metric.value}</p>
+            <div key={index} className='text-center'>
+              <p className='text-sm text-gray-500 dark:text-gray-400 mb-1'>{metric.label}</p>
+              <p className='text-xl font-semibold text-gray-900 dark:text-white'>{metric.value}</p>
             </div>
           ))}
         </div>
       </div>
 
       {/* Financial Health Indicators */}
-      <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
-        <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">
+      <div className='bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6'>
+        <h3 className='text-lg font-medium text-gray-900 dark:text-white mb-4'>
           {t('financials.health.title')}
         </h3>
 
-        <div className="space-y-4">
-          <div className="flex items-center justify-between">
-            <span className="text-sm text-gray-600 dark:text-gray-400">
+        <div className='space-y-4'>
+          <div className='flex items-center justify-between'>
+            <span className='text-sm text-gray-600 dark:text-gray-400'>
               {t('financials.health.liquidity')}
             </span>
             <span
@@ -160,8 +160,8 @@ const FinancialOverview = ({
             </span>
           </div>
 
-          <div className="flex items-center justify-between">
-            <span className="text-sm text-gray-600 dark:text-gray-400">
+          <div className='flex items-center justify-between'>
+            <span className='text-sm text-gray-600 dark:text-gray-400'>
               {t('financials.metrics.profitMargin')}
             </span>
             <span
@@ -177,11 +177,11 @@ const FinancialOverview = ({
             </span>
           </div>
 
-          <div className="flex items-center justify-between">
-            <span className="text-sm text-gray-600 dark:text-gray-400">
+          <div className='flex items-center justify-between'>
+            <span className='text-sm text-gray-600 dark:text-gray-400'>
               {t('financials.health.taxEfficiency')}
             </span>
-            <span className="font-medium text-purple-600 dark:text-purple-400">
+            <span className='font-medium text-purple-600 dark:text-purple-400'>
               {formatCurrency(estimatedTaxSavings)}
             </span>
           </div>

@@ -1,6 +1,6 @@
-import { supabase } from '@lib/supabaseClient.js';
-import { InvoiceService, INVOICE_STATUS } from '@lib/invoiceService.js';
-import emailService from '@lib/emailService.js';
+import { supabase } from '@lib/supabaseClient';
+import { InvoiceService, INVOICE_STATUS } from '@lib/invoiceService';
+import emailService from '@lib/emailService';
 import Logger from '@utils/Logger';
 
 /**

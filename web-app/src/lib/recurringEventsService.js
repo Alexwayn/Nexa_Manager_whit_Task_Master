@@ -1,10 +1,10 @@
-import { supabase } from '@lib/supabaseClient.js';
-import { createEvent } from '@lib/eventService.js';
+import { supabase } from '@lib/supabaseClient';
+import { createEvent } from '@lib/eventService';
 import {
   sendEventNotification,
   sendEventReminder,
-  sendEventCancellation
-} from '@lib/notificationService.js';
+  sendEventCancellation,
+} from '@lib/notificationService';
 import Logger from '@utils/Logger';
 
 /**
@@ -50,7 +50,7 @@ export const WEEKDAYS = {
  * @param {Object} ruleData - Recurrence rule configuration
  * @returns {Promise<Object>} Created recurrence rule
  */
-export const createRecurrenceRule = async (ruleData) => {
+export const createRecurrenceRule = async ruleData => {
   try {
     const {
       frequency,
@@ -314,7 +314,7 @@ const calculateWeeklyRecurrence = (date, interval, byDay) => {
     SA: 6,
   };
 
-  const targetDays = byDay.map((day) => dayMapping[day]).sort((a, b) => a - b);
+  const targetDays = byDay.map(day => dayMapping[day]).sort((a, b) => a - b);
   const currentDayOfWeek = date.getDay();
 
   // Find next occurrence within current week
@@ -657,7 +657,7 @@ export const getRecurringInstances = async (parentEventId, startDate, endDate) =
  * @param {string} parentEventId - Parent event ID
  * @returns {Promise<Object>} Complete recurring event data
  */
-export const getRecurringSeries = async (parentEventId) => {
+export const getRecurringSeries = async parentEventId => {
   try {
     // Get parent event with recurrence rule
     const { data: parentEvent, error: parentError } = await supabase

@@ -210,7 +210,7 @@ class IncomeService {
       };
 
       // Group by category
-      data.forEach((income) => {
+      data.forEach(income => {
         if (!stats.byCategory[income.category]) {
           stats.byCategory[income.category] = { amount: 0, count: 0 };
         }
@@ -220,7 +220,7 @@ class IncomeService {
 
       // Daily trend
       const dailyData = {};
-      data.forEach((income) => {
+      data.forEach(income => {
         const date = new Date(income.date).toISOString().split('T')[0];
         if (!dailyData[date]) {
           dailyData[date] = 0;
@@ -437,7 +437,7 @@ class IncomeService {
       if (error) throw error;
 
       const stats = {};
-      data.forEach((income) => {
+      data.forEach(income => {
         const method = income.payment_method || 'Not specified';
         if (!stats[method]) {
           stats[method] = { amount: 0, count: 0 };
@@ -550,10 +550,10 @@ class IncomeService {
 
     try {
       const results = await Promise.all(
-        defaultCategories.map((category) => this.createIncomeCategory(category)),
+        defaultCategories.map(category => this.createIncomeCategory(category)),
       );
 
-      const successful = results.filter((result) => result.success).length;
+      const successful = results.filter(result => result.success).length;
       return {
         success: true,
         message: `Created ${successful} default income categories`,

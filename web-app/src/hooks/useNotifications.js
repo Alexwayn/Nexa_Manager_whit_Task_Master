@@ -90,9 +90,9 @@ export const useNotifications = () => {
   };
 
   // Handle notification change
-  const handleNotificationChange = (e) => {
+  const handleNotificationChange = e => {
     const { name, checked } = e.target;
-    setNotifications((prev) => ({
+    setNotifications(prev => ({
       ...prev,
       [name]: checked,
     }));

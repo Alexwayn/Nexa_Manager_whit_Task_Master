@@ -1,5 +1,5 @@
-import { supabase } from '@lib/supabaseClient.js';
-import emailService from '@lib/emailService.js';
+import { supabase } from '@lib/supabaseClient';
+import emailService from '@lib/emailService';
 import Logger from '@utils/Logger';
 
 /**
@@ -560,7 +560,7 @@ ${invitation.special_requests ? `SPECIAL REQUESTS: ${invitation.special_requests
         no_response: [],
       };
 
-      invitations.forEach((invitation) => {
+      invitations.forEach(invitation => {
         grouped[invitation.rsvp_status].push(invitation);
       });
 

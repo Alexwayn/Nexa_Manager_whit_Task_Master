@@ -14,11 +14,11 @@ export const withMemoization = (Component, customCompare) => {
  * HOC for deep comparison memoization
  * Useful for components that receive complex objects as props
  */
-export const withDeepMemo = (Component) => {
+export const withDeepMemo = Component => {
   const deepCompare = (prevProps, nextProps) => {
     return JSON.stringify(prevProps) === JSON.stringify(nextProps);
   };
-  
+
   return withMemoization(Component, deepCompare);
 };
 
@@ -26,24 +26,24 @@ export const withDeepMemo = (Component) => {
  * HOC for shallow comparison memoization
  * More performant than deep comparison for simple props
  */
-export const withShallowMemo = (Component) => {
+export const withShallowMemo = Component => {
   const shallowCompare = (prevProps, nextProps) => {
     const prevKeys = Object.keys(prevProps);
     const nextKeys = Object.keys(nextProps);
-    
+
     if (prevKeys.length !== nextKeys.length) {
       return false;
     }
-    
+
     for (let key of prevKeys) {
       if (prevProps[key] !== nextProps[key]) {
         return false;
       }
     }
-    
+
     return true;
   };
-  
+
   return withMemoization(Component, shallowCompare);
 };
 
@@ -51,17 +51,17 @@ export const withShallowMemo = (Component) => {
  * HOC for render counting (development only)
  * Helps identify components that re-render frequently
  */
-export const withRenderCount = (Component) => {
+export const withRenderCount = Component => {
   if (process.env.NODE_ENV !== 'development') {
     return Component;
   }
 
-  const RenderCountComponent = (props) => {
+  const RenderCountComponent = props => {
     const renderCount = useRef(0);
     const componentName = Component.displayName || Component.name || 'Anonymous';
-    
+
     renderCount.current += 1;
-    
+
     useEffect(() => {
       console.log(`🔄 ${componentName} rendered ${renderCount.current} times`);
     });
@@ -77,15 +77,15 @@ export const withRenderCount = (Component) => {
  * HOC for performance profiling (development only)
  * Measures and logs render performance
  */
-export const withPerformanceProfiler = (Component) => {
+export const withPerformanceProfiler = Component => {
   if (process.env.NODE_ENV !== 'development') {
     return Component;
   }
 
-  const ProfiledComponent = (props) => {
+  const ProfiledComponent = props => {
     const componentName = Component.displayName || Component.name || 'Anonymous';
     const startTime = useRef();
-    
+
     useEffect(() => {
       startTime.current = performance.now();
     });
@@ -94,8 +94,9 @@ export const withPerformanceProfiler = (Component) => {
       if (startTime.current) {
         const endTime = performance.now();
         const renderTime = endTime - startTime.current;
-        
-        if (renderTime > 16) { // More than one frame (16ms at 60fps)
+
+        if (renderTime > 16) {
+          // More than one frame (16ms at 60fps)
           console.warn(`⚠️ ${componentName} took ${renderTime.toFixed(2)}ms to render`);
         } else {
           console.log(`✅ ${componentName} rendered in ${renderTime.toFixed(2)}ms`);
@@ -130,7 +131,7 @@ export const useOptimizedMemo = (factory, deps) => {
  * Custom hook for stable object references
  * Prevents unnecessary re-renders when passing objects as props
  */
-export const useStableObject = (obj) => {
+export const useStableObject = obj => {
   return useMemo(() => obj, [JSON.stringify(obj)]);
 };
 
@@ -161,12 +162,15 @@ export const useDebouncedValue = (value, delay) => {
 export const useThrottledCallback = (callback, delay) => {
   const lastRun = useRef(Date.now());
 
-  return useCallback((...args) => {
-    if (Date.now() - lastRun.current >= delay) {
-      callback(...args);
-      lastRun.current = Date.now();
-    }
-  }, [callback, delay]);
+  return useCallback(
+    (...args) => {
+      if (Date.now() - lastRun.current >= delay) {
+        callback(...args);
+        lastRun.current = Date.now();
+      }
+    },
+    [callback, delay],
+  );
 };
 
 /**
@@ -176,7 +180,7 @@ export const useThrottledCallback = (callback, delay) => {
 export const withLazyLoading = (importFunc, fallback = <div>Loading...</div>) => {
   const LazyComponent = React.lazy(importFunc);
 
-  const LazyLoadedComponent = (props) => (
+  const LazyLoadedComponent = props => (
     <React.Suspense fallback={fallback}>
       <LazyComponent {...props} />
     </React.Suspense>
@@ -205,7 +209,7 @@ export const useOptimizedWindowSize = (threshold = 50) => {
       timeoutId = setTimeout(() => {
         const newWidth = window.innerWidth;
         const newHeight = window.innerHeight;
-        
+
         // Only update if change is significant
         if (
           Math.abs(newWidth - windowSize.width) > threshold ||
@@ -231,10 +235,10 @@ export const useOptimizedWindowSize = (threshold = 50) => {
  */
 export const ContextPerformanceMonitor = ({ children, contextName = 'Unknown' }) => {
   const renderCount = useRef(0);
-  
+
   if (process.env.NODE_ENV === 'development') {
     renderCount.current += 1;
-    
+
     useEffect(() => {
       console.log(`🏪 ${contextName} Context Provider rendered ${renderCount.current} times`);
     });
@@ -251,19 +255,11 @@ export const OptimizedList = memo(({ items, renderItem, keyExtractor, className 
   const memoizedItems = useMemo(() => {
     return items.map((item, index) => {
       const key = keyExtractor ? keyExtractor(item, index) : index;
-      return (
-        <div key={key}>
-          {renderItem(item, index)}
-        </div>
-      );
+      return <div key={key}>{renderItem(item, index)}</div>;
     });
   }, [items, renderItem, keyExtractor]);
 
-  return (
-    <div className={className}>
-      {memoizedItems}
-    </div>
-  );
+  return <div className={className}>{memoizedItems}</div>;
 });
 
 OptimizedList.displayName = 'OptimizedList';
@@ -283,7 +279,7 @@ export const PerformanceUtils = {
     const startTime = performance.now();
     const result = renderFunction();
     const endTime = performance.now();
-    
+
     console.log(`📊 ${componentName} render time: ${(endTime - startTime).toFixed(2)}ms`);
     return result;
   },
@@ -296,12 +292,12 @@ export const PerformanceUtils = {
 
     const changedProps = {};
     const allKeys = new Set([...Object.keys(prevProps), ...Object.keys(nextProps)]);
-    
+
     allKeys.forEach(key => {
       if (prevProps[key] !== nextProps[key]) {
         changedProps[key] = {
           from: prevProps[key],
-          to: nextProps[key]
+          to: nextProps[key],
         };
       }
     });
@@ -321,9 +317,9 @@ export const PerformanceUtils = {
     console.log(`💾 ${label}:`, {
       used: `${(usedJSHeapSize / 1024 / 1024).toFixed(2)} MB`,
       total: `${(totalJSHeapSize / 1024 / 1024).toFixed(2)} MB`,
-      limit: `${(jsHeapSizeLimit / 1024 / 1024).toFixed(2)} MB`
+      limit: `${(jsHeapSizeLimit / 1024 / 1024).toFixed(2)} MB`,
     });
-  }
+  },
 };
 
 export default {
@@ -341,5 +337,5 @@ export default {
   useOptimizedWindowSize,
   ContextPerformanceMonitor,
   OptimizedList,
-  PerformanceUtils
-}; 
+  PerformanceUtils,
+};

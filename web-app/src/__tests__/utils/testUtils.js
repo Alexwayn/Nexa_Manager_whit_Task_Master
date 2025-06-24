@@ -6,17 +6,12 @@ import i18n from '@i18n/i18n';
 
 // Custom render function with providers
 export function renderWithProviders(ui, options = {}) {
-  const {
-    initialEntries = ['/'],
-    ...renderOptions
-  } = options;
+  const { initialEntries = ['/'], ...renderOptions } = options;
 
   function Wrapper({ children }) {
     return (
       <BrowserRouter>
-        <I18nextProvider i18n={i18n}>
-          {children}
-        </I18nextProvider>
+        <I18nextProvider i18n={i18n}>{children}</I18nextProvider>
       </BrowserRouter>
     );
   }
@@ -41,16 +36,16 @@ export const mockData = {
     updated_at: '2024-01-01T00:00:00Z',
     ...overrides,
   }),
-  
+
   quote: (overrides = {}) => ({
     id: '1',
     quote_number: 'Q-2024-001',
     client_id: '1',
     client_name: 'Test Client',
     client_email: 'test@example.com',
-    subtotal: 820.00,
-    iva_amount: 180.40,
-    total_amount: 1000.40,
+    subtotal: 820.0,
+    iva_amount: 180.4,
+    total_amount: 1000.4,
     issue_date: '2024-01-01',
     expiry_date: '2024-02-01',
     status: 'draft',
@@ -60,24 +55,24 @@ export const mockData = {
         id: '1',
         description: 'Test Service',
         quantity: 1,
-        unit_price: 820.00,
-        total: 820.00,
-        iva_rate: 22
-      }
+        unit_price: 820.0,
+        total: 820.0,
+        iva_rate: 22,
+      },
     ],
     created_at: '2024-01-01T00:00:00Z',
     ...overrides,
   }),
-  
+
   invoice: (overrides = {}) => ({
     id: '1',
     invoice_number: 'INV-2024-001',
     client_id: '1',
     client_name: 'Test Client',
     client_email: 'test@example.com',
-    subtotal: 820.00,
-    iva_amount: 180.40,
-    total_amount: 1000.40,
+    subtotal: 820.0,
+    iva_amount: 180.4,
+    total_amount: 1000.4,
     issue_date: '2024-01-01',
     due_date: '2024-01-31',
     status: 'pending',
@@ -88,19 +83,19 @@ export const mockData = {
         id: '1',
         description: 'Test Service',
         quantity: 1,
-        unit_price: 820.00,
-        total: 820.00,
-        iva_rate: 22
-      }
+        unit_price: 820.0,
+        total: 820.0,
+        iva_rate: 22,
+      },
     ],
     created_at: '2024-01-01T00:00:00Z',
     ...overrides,
   }),
-  
+
   expense: (overrides = {}) => ({
     id: '1',
     description: 'Test Expense',
-    amount: 100.00,
+    amount: 100.0,
     category: 'office_supplies',
     date: '2024-01-01',
     receipt_url: null,
@@ -108,11 +103,11 @@ export const mockData = {
     created_at: '2024-01-01T00:00:00Z',
     ...overrides,
   }),
-  
+
   income: (overrides = {}) => ({
     id: '1',
     description: 'Test Income',
-    amount: 1000.00,
+    amount: 1000.0,
     category: 'consulting',
     date: '2024-01-01',
     source: 'client_payment',
@@ -120,7 +115,7 @@ export const mockData = {
     created_at: '2024-01-01T00:00:00Z',
     ...overrides,
   }),
-  
+
   event: (overrides = {}) => ({
     id: '1',
     title: 'Test Event',
@@ -133,7 +128,7 @@ export const mockData = {
     created_at: '2024-01-01T00:00:00Z',
     ...overrides,
   }),
-  
+
   user: (overrides = {}) => ({
     id: '1',
     email: 'user@example.com',
@@ -182,14 +177,14 @@ export const createMockSupabaseClient = (responses = {}) => {
     single: jest.fn(() => mockClient),
     maybeSingle: jest.fn(() => mockClient),
   };
-  
+
   // Configure responses
   Object.keys(responses).forEach(method => {
     if (mockClient[method]) {
       mockClient[method].mockResolvedValue(responses[method]);
     }
   });
-  
+
   return mockClient;
 };
 
@@ -254,16 +249,16 @@ export const createMockStorageClient = () => ({
 // Performance testing utilities
 export const measurePerformance = async (fn, iterations = 100) => {
   const times = [];
-  
+
   for (let i = 0; i < iterations; i++) {
     const start = performance.now();
     await fn();
     const end = performance.now();
     times.push(end - start);
   }
-  
+
   const sorted = times.sort((a, b) => a - b);
-  
+
   return {
     average: times.reduce((a, b) => a + b, 0) / times.length,
     min: Math.min(...times),
@@ -276,14 +271,14 @@ export const measurePerformance = async (fn, iterations = 100) => {
 };
 
 // Memory usage testing
-export const measureMemoryUsage = (fn) => {
+export const measureMemoryUsage = fn => {
   const initialMemory = performance.memory ? performance.memory.usedJSHeapSize : 0;
-  
+
   const result = fn();
-  
+
   const finalMemory = performance.memory ? performance.memory.usedJSHeapSize : 0;
   const memoryDelta = finalMemory - initialMemory;
-  
+
   return {
     result,
     memoryUsed: memoryDelta,
@@ -298,32 +293,34 @@ export class TestErrorBoundary extends React.Component {
     super(props);
     this.state = { hasError: false, error: null, errorInfo: null };
   }
-  
+
   static getDerivedStateFromError(error) {
     return { hasError: true, error };
   }
-  
+
   componentDidCatch(error, errorInfo) {
     this.setState({ errorInfo });
     if (this.props.onError) {
       this.props.onError(error, errorInfo);
     }
   }
-  
+
   render() {
     if (this.state.hasError) {
-      return this.props.fallback || (
-        <div data-testid="error-boundary">
-          <h2>Something went wrong</h2>
-          <details>
-            <summary>Error details</summary>
-            <pre>{this.state.error?.toString()}</pre>
-            <pre>{this.state.errorInfo?.componentStack}</pre>
-          </details>
-        </div>
+      return (
+        this.props.fallback || (
+          <div data-testid='error-boundary'>
+            <h2>Something went wrong</h2>
+            <details>
+              <summary>Error details</summary>
+              <pre>{this.state.error?.toString()}</pre>
+              <pre>{this.state.errorInfo?.componentStack}</pre>
+            </details>
+          </div>
+        )
       );
     }
-    
+
     return this.props.children;
   }
 }
@@ -331,7 +328,7 @@ export class TestErrorBoundary extends React.Component {
 // Form testing utilities
 export const fillForm = async (form, data) => {
   const { fireEvent } = await import('@testing-library/react');
-  
+
   Object.keys(data).forEach(fieldName => {
     const field = form.querySelector(`[name="${fieldName}"]`);
     if (field) {
@@ -340,10 +337,11 @@ export const fillForm = async (form, data) => {
   });
 };
 
-export const submitForm = async (form) => {
+export const submitForm = async form => {
   const { fireEvent } = await import('@testing-library/react');
-  const submitButton = form.querySelector('[type="submit"]') || form.querySelector('button[type="submit"]');
-  
+  const submitButton =
+    form.querySelector('[type="submit"]') || form.querySelector('button[type="submit"]');
+
   if (submitButton) {
     fireEvent.click(submitButton);
   } else {
@@ -354,35 +352,35 @@ export const submitForm = async (form) => {
 // Async testing utilities
 export const waitForLoadingToFinish = async () => {
   const { waitForElementToBeRemoved, screen } = await import('@testing-library/react');
-  
+
   try {
     await waitForElementToBeRemoved(
       () => screen.queryByTestId('loading') || screen.queryByText(/loading/i),
-      { timeout: 5000 }
+      { timeout: 5000 },
     );
   } catch (error) {
     // Loading element might not exist, which is fine
   }
 };
 
-export const waitForErrorToAppear = async (errorMessage) => {
+export const waitForErrorToAppear = async errorMessage => {
   const { waitFor, screen } = await import('@testing-library/react');
-  
+
   await waitFor(() => {
     expect(screen.getByText(errorMessage)).toBeInTheDocument();
   });
 };
 
 // Date testing utilities
-export const mockDate = (dateString) => {
+export const mockDate = dateString => {
   const mockDate = new Date(dateString);
   const originalDate = Date;
-  
+
   global.Date = jest.fn(() => mockDate);
   global.Date.now = jest.fn(() => mockDate.getTime());
   global.Date.UTC = originalDate.UTC;
   global.Date.parse = originalDate.parse;
-  
+
   return () => {
     global.Date = originalDate;
   };
@@ -391,13 +389,13 @@ export const mockDate = (dateString) => {
 // Local storage testing utilities
 export const mockLocalStorage = () => {
   const store = {};
-  
+
   const mockStorage = {
-    getItem: jest.fn((key) => store[key] || null),
+    getItem: jest.fn(key => store[key] || null),
     setItem: jest.fn((key, value) => {
       store[key] = value.toString();
     }),
-    removeItem: jest.fn((key) => {
+    removeItem: jest.fn(key => {
       delete store[key];
     }),
     clear: jest.fn(() => {
@@ -406,34 +404,34 @@ export const mockLocalStorage = () => {
     get length() {
       return Object.keys(store).length;
     },
-    key: jest.fn((index) => Object.keys(store)[index] || null),
+    key: jest.fn(index => Object.keys(store)[index] || null),
   };
-  
+
   Object.defineProperty(window, 'localStorage', {
     value: mockStorage,
     writable: true,
   });
-  
+
   return mockStorage;
 };
 
 // Network testing utilities
 export const mockFetch = (responses = {}) => {
   const mockFetch = jest.fn();
-  
+
   Object.keys(responses).forEach(url => {
-    mockFetch.mockImplementationOnce(() => 
+    mockFetch.mockImplementationOnce(() =>
       Promise.resolve({
         ok: true,
         status: 200,
         json: () => Promise.resolve(responses[url]),
         text: () => Promise.resolve(JSON.stringify(responses[url])),
-      })
+      }),
     );
   });
-  
+
   global.fetch = mockFetch;
-  
+
   return mockFetch;
 };
 
@@ -443,21 +441,21 @@ export const createMockFile = (name, content, type = 'text/plain') => {
   return file;
 };
 
-export const createMockFileList = (files) => {
+export const createMockFileList = files => {
   const fileList = {
     length: files.length,
-    item: (index) => files[index] || null,
+    item: index => files[index] || null,
     [Symbol.iterator]: function* () {
       for (let i = 0; i < files.length; i++) {
         yield files[i];
       }
     },
   };
-  
+
   files.forEach((file, index) => {
     fileList[index] = file;
   });
-  
+
   return fileList;
 };
 

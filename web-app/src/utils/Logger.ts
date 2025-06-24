@@ -23,7 +23,7 @@ class Logger {
     // In development, show more logs
     // Handle both Vite (import.meta.env) and Jest (process.env) environments
     let isDevelopment = false;
-    
+
     // Check if we're in a test environment first
     if (typeof process !== 'undefined' && process.env.NODE_ENV) {
       isDevelopment = process.env.NODE_ENV === 'development';
@@ -38,7 +38,7 @@ class Logger {
         isDevelopment = false;
       }
     }
-    
+
     if (isDevelopment) {
       this.level = LOG_LEVELS.DEBUG;
     }

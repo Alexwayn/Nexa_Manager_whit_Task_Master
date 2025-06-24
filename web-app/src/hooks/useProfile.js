@@ -94,7 +94,7 @@ export const useProfile = () => {
         throw insertError;
       } else {
         Logger.info('Profilo base creato con successo');
-        setProfileData((prev) => ({
+        setProfileData(prev => ({
           ...prev,
           email: user.email || '',
         }));
@@ -106,7 +106,7 @@ export const useProfile = () => {
   };
 
   // Update profile data from database response
-  const updateProfileData = (data) => {
+  const updateProfileData = data => {
     setProfileData({
       firstName: data.first_name || '',
       lastName: data.last_name || '',
@@ -225,14 +225,14 @@ export const useProfile = () => {
 
   // Update profile field
   const updateProfileField = (field, value) => {
-    setProfileData((prev) => ({
+    setProfileData(prev => ({
       ...prev,
       [field]: value,
     }));
   };
 
   // Handle form change
-  const handleProfileChange = (e) => {
+  const handleProfileChange = e => {
     const { name, value } = e.target;
     updateProfileField(name, value);
   };

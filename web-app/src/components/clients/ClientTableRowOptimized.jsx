@@ -61,44 +61,44 @@ const ClientTableRowOptimized = memo(
     }, [client.company, t]);
 
     return (
-      <ComponentErrorBoundary componentName="ClientTableRow">
-        <tr className="hover:bg-gray-50 transition-colors duration-150">
+      <ComponentErrorBoundary componentName='ClientTableRow'>
+        <tr className='hover:bg-gray-50 transition-colors duration-150'>
           {/* Client Info */}
-          <td className="px-6 py-4 whitespace-nowrap">
-            <div className="flex items-center">
-              <div className="flex-shrink-0 h-10 w-10">
+          <td className='px-6 py-4 whitespace-nowrap'>
+            <div className='flex items-center'>
+              <div className='flex-shrink-0 h-10 w-10'>
                 <img
-                  className="h-10 w-10 rounded-full object-cover"
+                  className='h-10 w-10 rounded-full object-cover'
                   src={client.avatar || '/assets/profile.jpg'}
                   alt={`${client.firstName} ${client.lastName}`}
-                  loading="lazy"
+                  loading='lazy'
                 />
               </div>
-              <div className="ml-4">
-                <div className="text-sm font-medium text-gray-900">
+              <div className='ml-4'>
+                <div className='text-sm font-medium text-gray-900'>
                   {client.firstName} {client.lastName}
                 </div>
-                <div className="text-sm text-gray-500">{formattedCompany}</div>
+                <div className='text-sm text-gray-500'>{formattedCompany}</div>
               </div>
             </div>
           </td>
 
           {/* Contact Info */}
-          <td className="px-6 py-4 whitespace-nowrap">
-            <div className="space-y-1">
-              <div className="flex items-center text-sm text-gray-900">
-                <PhoneIcon className="h-4 w-4 mr-2 text-gray-400" />
+          <td className='px-6 py-4 whitespace-nowrap'>
+            <div className='space-y-1'>
+              <div className='flex items-center text-sm text-gray-900'>
+                <PhoneIcon className='h-4 w-4 mr-2 text-gray-400' />
                 {formattedPhone}
               </div>
-              <div className="flex items-center text-sm text-gray-500">
-                <EnvelopeIcon className="h-4 w-4 mr-2 text-gray-400" />
+              <div className='flex items-center text-sm text-gray-500'>
+                <EnvelopeIcon className='h-4 w-4 mr-2 text-gray-400' />
                 {formattedEmail}
               </div>
             </div>
           </td>
 
           {/* Status */}
-          <td className="px-6 py-4 whitespace-nowrap">
+          <td className='px-6 py-4 whitespace-nowrap'>
             <span
               className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${statusConfig.bg} ${statusConfig.text}`}
             >
@@ -107,53 +107,53 @@ const ClientTableRowOptimized = memo(
           </td>
 
           {/* Actions */}
-          <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-            <div className="flex items-center justify-end space-x-2">
+          <td className='px-6 py-4 whitespace-nowrap text-right text-sm font-medium'>
+            <div className='flex items-center justify-end space-x-2'>
               {/* Quick Actions */}
               <button
                 onClick={handleView}
-                className="text-blue-600 hover:text-blue-900 p-1 rounded-md hover:bg-blue-50 transition-colors duration-150"
+                className='text-blue-600 hover:text-blue-900 p-1 rounded-md hover:bg-blue-50 transition-colors duration-150'
                 title={t('tableRow.viewClient')}
               >
-                <EyeIcon className="h-4 w-4" />
+                <EyeIcon className='h-4 w-4' />
               </button>
 
               <button
                 onClick={handleEdit}
-                className="text-gray-600 hover:text-gray-900 p-1 rounded-md hover:bg-gray-50 transition-colors duration-150"
+                className='text-gray-600 hover:text-gray-900 p-1 rounded-md hover:bg-gray-50 transition-colors duration-150'
                 title={t('tableRow.editClient')}
               >
-                <PencilIcon className="h-4 w-4" />
+                <PencilIcon className='h-4 w-4' />
               </button>
 
               <button
                 onClick={handleCreateInvoice}
-                className="text-green-600 hover:text-green-900 p-1 rounded-md hover:bg-green-50 transition-colors duration-150"
+                className='text-green-600 hover:text-green-900 p-1 rounded-md hover:bg-green-50 transition-colors duration-150'
                 title={t('tableRow.createInvoice')}
               >
-                <DocumentTextIcon className="h-4 w-4" />
+                <DocumentTextIcon className='h-4 w-4' />
               </button>
 
               <button
                 onClick={handleCreateQuote}
-                className="text-purple-600 hover:text-purple-900 p-1 rounded-md hover:bg-purple-50 transition-colors duration-150"
+                className='text-purple-600 hover:text-purple-900 p-1 rounded-md hover:bg-purple-50 transition-colors duration-150'
                 title={t('tableRow.createQuote')}
               >
-                <CurrencyEuroIcon className="h-4 w-4" />
+                <CurrencyEuroIcon className='h-4 w-4' />
               </button>
 
               <button
                 onClick={handleDelete}
-                className="text-red-600 hover:text-red-900 p-1 rounded-md hover:bg-red-50 transition-colors duration-150"
+                className='text-red-600 hover:text-red-900 p-1 rounded-md hover:bg-red-50 transition-colors duration-150'
                 title={t('tableRow.deleteClient')}
               >
-                <TrashIcon className="h-4 w-4" />
+                <TrashIcon className='h-4 w-4' />
               </button>
 
               {/* More Actions Dropdown */}
-              <div className="relative">
-                <button className="text-gray-400 hover:text-gray-600 p-1 rounded-md hover:bg-gray-50 transition-colors duration-150">
-                  <EllipsisVerticalIcon className="h-4 w-4" />
+              <div className='relative'>
+                <button className='text-gray-400 hover:text-gray-600 p-1 rounded-md hover:bg-gray-50 transition-colors duration-150'>
+                  <EllipsisVerticalIcon className='h-4 w-4' />
                 </button>
               </div>
             </div>

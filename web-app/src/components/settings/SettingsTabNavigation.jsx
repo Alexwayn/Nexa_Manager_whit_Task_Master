@@ -20,9 +20,9 @@ const SettingsTabNavigation = ({ activeTab, onTabChange }) => {
   ];
 
   return (
-    <div className="lg:w-1/4">
-      <div className="bg-white rounded-lg shadow p-4 sticky top-6">
-        <nav className="space-y-1">
+    <div className='lg:w-1/4'>
+      <div className='bg-white rounded-lg shadow p-4 sticky top-6'>
+        <nav className='space-y-1'>
           {tabs.map((tab, index) => (
             <button
               key={tab.name}

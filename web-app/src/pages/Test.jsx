@@ -127,60 +127,60 @@ export default function Test() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-6">
-      <h1 className="text-2xl font-bold mb-6">Test Connessione Supabase</h1>
+    <div className='max-w-4xl mx-auto p-6'>
+      <h1 className='text-2xl font-bold mb-6'>Test Connessione Supabase</h1>
 
-      <div className="space-y-8">
-        <div className="bg-white p-6 rounded-lg shadow-md">
-          <h2 className="text-xl font-semibold mb-4">
+      <div className='space-y-8'>
+        <div className='bg-white p-6 rounded-lg shadow-md'>
+          <h2 className='text-xl font-semibold mb-4'>
             Test 1: Client Originale (testSupabaseConnection)
           </h2>
           <button
             onClick={handleTestOriginal}
             disabled={loading1}
-            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:bg-blue-300 mb-4"
+            className='px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:bg-blue-300 mb-4'
           >
             {loading1 ? 'Test in corso...' : 'Esegui Test'}
           </button>
 
           {error1 && (
-            <div className="bg-red-50 text-red-700 p-4 rounded mb-4">
-              <h3 className="font-semibold">Errore:</h3>
+            <div className='bg-red-50 text-red-700 p-4 rounded mb-4'>
+              <h3 className='font-semibold'>Errore:</h3>
               <p>{error1}</p>
             </div>
           )}
 
           {result1 && (
-            <div className="bg-gray-50 p-4 rounded">
-              <h3 className="font-semibold">Risultato:</h3>
-              <pre className="text-sm mt-2 bg-gray-100 p-2 rounded overflow-x-auto">
+            <div className='bg-gray-50 p-4 rounded'>
+              <h3 className='font-semibold'>Risultato:</h3>
+              <pre className='text-sm mt-2 bg-gray-100 p-2 rounded overflow-x-auto'>
                 {JSON.stringify(result1, null, 2)}
               </pre>
             </div>
           )}
         </div>
 
-        <div className="bg-white p-6 rounded-lg shadow-md">
-          <h2 className="text-xl font-semibold mb-4">Test 2: Query Diretta al Client Originale</h2>
+        <div className='bg-white p-6 rounded-lg shadow-md'>
+          <h2 className='text-xl font-semibold mb-4'>Test 2: Query Diretta al Client Originale</h2>
           <button
             onClick={handleTestOriginalDirect}
             disabled={loading2}
-            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:bg-blue-300 mb-4"
+            className='px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:bg-blue-300 mb-4'
           >
             {loading2 ? 'Test in corso...' : 'Esegui Test'}
           </button>
 
           {error2 && (
-            <div className="bg-red-50 text-red-700 p-4 rounded mb-4">
-              <h3 className="font-semibold">Errore:</h3>
+            <div className='bg-red-50 text-red-700 p-4 rounded mb-4'>
+              <h3 className='font-semibold'>Errore:</h3>
               <p>{error2}</p>
             </div>
           )}
 
           {result2 && (
-            <div className="bg-gray-50 p-4 rounded">
-              <h3 className="font-semibold">Risultato:</h3>
-              <pre className="text-sm mt-2 bg-gray-100 p-2 rounded overflow-x-auto">
+            <div className='bg-gray-50 p-4 rounded'>
+              <h3 className='font-semibold'>Risultato:</h3>
+              <pre className='text-sm mt-2 bg-gray-100 p-2 rounded overflow-x-auto'>
                 {JSON.stringify(result2, null, 2)}
               </pre>
             </div>

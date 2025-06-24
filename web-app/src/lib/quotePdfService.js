@@ -122,7 +122,7 @@ export class QuotePdfService {
     ];
 
     let yPos = 40;
-    companyDetails.forEach((detail) => {
+    companyDetails.forEach(detail => {
       if (detail) {
         doc.text(detail, pageWidth - 20, yPos, { align: 'right' });
         yPos += 5;
@@ -209,7 +209,7 @@ export class QuotePdfService {
     ].filter(Boolean);
 
     let yPos = 155;
-    clientDetails.forEach((detail) => {
+    clientDetails.forEach(detail => {
       if (detail && yPos < 200) {
         doc.text(detail, 20, yPos);
         yPos += 6;

@@ -51,9 +51,9 @@ class ExportService {
         // Header
         csvHeaders.join(','),
         // Data
-        ...data.map((row) =>
+        ...data.map(row =>
           csvHeaders
-            .map((header) => {
+            .map(header => {
               let value = row[header] || '';
               // Handle values with commas or quotes
               if (typeof value === 'string' && (value.includes(',') || value.includes('"'))) {
@@ -103,7 +103,7 @@ class ExportService {
       'Notes',
     ];
 
-    const formattedData = transactions.map((transaction) => ({
+    const formattedData = transactions.map(transaction => ({
       Date: this.formatDate(transaction.date),
       Type: transaction.type === 'income' ? 'Income' : 'Expense',
       Description: transaction.description || '',
@@ -185,7 +185,7 @@ class ExportService {
         doc.text('Income by Category', margin, yPosition);
         yPosition += 5;
 
-        const incomeData = reportData.incomeByCategory.map((item) => [
+        const incomeData = reportData.incomeByCategory.map(item => [
           item.category,
           this.formatCurrency(item.amount),
           `${item.percentage?.toFixed(1) || 0}%`,
@@ -215,7 +215,7 @@ class ExportService {
         doc.text('Expenses by Category', margin, yPosition);
         yPosition += 5;
 
-        const expenseData = reportData.expensesByCategory.map((item) => [
+        const expenseData = reportData.expensesByCategory.map(item => [
           item.category,
           this.formatCurrency(item.amount),
           `${item.percentage?.toFixed(1) || 0}%`,
@@ -248,7 +248,7 @@ class ExportService {
 
         const vendorData = reportData.topVendors
           .slice(0, 10)
-          .map((vendor) => [
+          .map(vendor => [
             vendor.vendor,
             this.formatCurrency(vendor.total_amount),
             vendor.transaction_count.toString(),
@@ -314,7 +314,7 @@ class ExportService {
       }
 
       // Prepare data for table
-      const tableData = transactions.map((transaction) => [
+      const tableData = transactions.map(transaction => [
         this.formatDate(transaction.date),
         transaction.type === 'income' ? 'Income' : 'Expense',
         transaction.description || '',
@@ -338,11 +338,11 @@ class ExportService {
       // Totals if requested
       if (options.showTotals) {
         const totalIncome = transactions
-          .filter((t) => t.type === 'income')
+          .filter(t => t.type === 'income')
           .reduce((sum, t) => sum + (t.amount || 0), 0);
 
         const totalExpenses = transactions
-          .filter((t) => t.type === 'expense')
+          .filter(t => t.type === 'expense')
           .reduce((sum, t) => sum + (t.amount || 0), 0);
 
         const netAmount = totalIncome - totalExpenses;
@@ -402,7 +402,7 @@ class ExportService {
       'Tax Deductible',
     ];
 
-    const formattedData = categoryData.map((category) => ({
+    const formattedData = categoryData.map(category => ({
       Category: category.category || '',
       Type: category.type === 'income' ? 'Income' : 'Expense',
       'Total Amount': this.formatCurrency(category.amount),
@@ -433,7 +433,7 @@ class ExportService {
       'Last Transaction',
     ];
 
-    const formattedData = vendorData.map((vendor) => ({
+    const formattedData = vendorData.map(vendor => ({
       Vendor: vendor.vendor || '',
       'Total Amount': this.formatCurrency(vendor.total_amount),
       'Transaction Count': vendor.transaction_count || 0,

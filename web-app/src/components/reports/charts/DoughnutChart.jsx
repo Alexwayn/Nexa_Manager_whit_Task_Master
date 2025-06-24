@@ -71,10 +71,10 @@ const DoughnutChart = ({
   const defaultData = {
     labels: data?.labels || [],
     datasets:
-      data?.datasets?.map((dataset) => ({
+      data?.datasets?.map(dataset => ({
         backgroundColor: dataset.backgroundColor || defaultColors,
         borderColor:
-          dataset.backgroundColor || defaultColors.map((color) => color.replace('0.8', '1')),
+          dataset.backgroundColor || defaultColors.map(color => color.replace('0.8', '1')),
         borderWidth: 2,
         ...dataset,
       })) || [],

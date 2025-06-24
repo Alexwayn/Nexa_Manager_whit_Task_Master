@@ -78,7 +78,7 @@ class ClientService {
       }
 
       // Adapt data for frontend compatibility
-      const adaptedData = (data || []).map((client) => ({
+      const adaptedData = (data || []).map(client => ({
         ...client,
         name: client.full_name || client.name || 'Client',
         displayName: this.getDisplayName(client),
@@ -392,7 +392,7 @@ class ClientService {
       }
 
       // Adapt data for frontend compatibility
-      const adaptedData = (data || []).map((client) => ({
+      const adaptedData = (data || []).map(client => ({
         ...client,
         name: client.full_name || client.name || 'Client',
         displayName: this.getDisplayName(client),
@@ -730,7 +730,7 @@ class ClientService {
 
     const csvContent = [
       headers.join(','),
-      ...clients.map((client) =>
+      ...clients.map(client =>
         [
           `"${client.full_name || ''}"`,
           `"${client.email || ''}"`,
@@ -766,7 +766,7 @@ class ClientService {
       }
 
       const lines = csvContent.split('\n');
-      const headers = lines[0].split(',').map((h) => h.replace(/"/g, '').trim());
+      const headers = lines[0].split(',').map(h => h.replace(/"/g, '').trim());
 
       const imported = [];
       const errors = [];
@@ -775,7 +775,7 @@ class ClientService {
         if (!lines[i].trim()) continue;
 
         try {
-          const values = lines[i].split(',').map((v) => v.replace(/"/g, '').trim());
+          const values = lines[i].split(',').map(v => v.replace(/"/g, '').trim());
 
           const clientData = {
             name: values[0] || '',

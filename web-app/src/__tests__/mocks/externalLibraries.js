@@ -8,29 +8,29 @@ export const createMockPDFGenerator = () => {
   const mockPDF = {
     // Document creation
     create: jest.fn(() => mockPDF),
-    
+
     // Page management
     addPage: jest.fn(() => mockPDF),
-    setPage: jest.fn((pageNumber) => mockPDF),
+    setPage: jest.fn(pageNumber => mockPDF),
     getNumberOfPages: jest.fn(() => 1),
-    
+
     // Text operations
     text: jest.fn((text, x, y, options = {}) => mockPDF),
     setFont: jest.fn((fontName, style = 'normal') => mockPDF),
-    setFontSize: jest.fn((size) => mockPDF),
-    setTextColor: jest.fn((color) => mockPDF),
-    
+    setFontSize: jest.fn(size => mockPDF),
+    setTextColor: jest.fn(color => mockPDF),
+
     // Drawing operations
     line: jest.fn((x1, y1, x2, y2) => mockPDF),
     rect: jest.fn((x, y, width, height, style = 'S') => mockPDF),
     circle: jest.fn((x, y, radius, style = 'S') => mockPDF),
-    
+
     // Images
     addImage: jest.fn((imageData, format, x, y, width, height) => mockPDF),
-    
+
     // Tables
-    autoTable: jest.fn((options) => mockPDF),
-    
+    autoTable: jest.fn(options => mockPDF),
+
     // Output
     output: jest.fn((type = 'blob') => {
       if (type === 'blob') {
@@ -44,24 +44,24 @@ export const createMockPDFGenerator = () => {
       }
       return 'mock pdf content';
     }),
-    
+
     save: jest.fn((filename = 'document.pdf') => {
       // Simulate file download
       return Promise.resolve({ filename, size: 1024 });
     }),
-    
+
     // Properties
     internal: {
       pageSize: { width: 210, height: 297 }, // A4
       scaleFactor: 1.33,
     },
-    
+
     // Helper methods for testing
     _getTextCalls: () => mockPDF.text.mock.calls,
     _getImageCalls: () => mockPDF.addImage.mock.calls,
     _getTableCalls: () => mockPDF.autoTable.mock.calls,
   };
-  
+
   return mockPDF;
 };
 
@@ -71,7 +71,7 @@ export const createMockChart = () => {
     // Chart instance
     data: { datasets: [], labels: [] },
     options: {},
-    
+
     // Methods
     update: jest.fn((mode = 'default') => Promise.resolve()),
     render: jest.fn(() => Promise.resolve()),
@@ -80,20 +80,20 @@ export const createMockChart = () => {
     stop: jest.fn(),
     resize: jest.fn((width, height) => mockChart),
     reset: jest.fn(),
-    
+
     // Data manipulation
-    getDatasetMeta: jest.fn((index) => ({
+    getDatasetMeta: jest.fn(index => ({
       data: [],
       dataset: {},
       controller: {},
     })),
-    
-    isDatasetVisible: jest.fn((datasetIndex) => true),
+
+    isDatasetVisible: jest.fn(datasetIndex => true),
     setDatasetVisibility: jest.fn((datasetIndex, visible) => {}),
-    
+
     // Events
     getElementsAtEventForMode: jest.fn((event, mode, options, useFinalPosition) => []),
-    
+
     // Canvas
     canvas: {
       getContext: jest.fn(() => ({
@@ -133,23 +133,23 @@ export const createMockChart = () => {
         strokeText: jest.fn(),
       })),
       toDataURL: jest.fn(() => 'data:image/png;base64,mock-image-data'),
-      toBlob: jest.fn((callback) => {
+      toBlob: jest.fn(callback => {
         callback(new Blob(['mock image'], { type: 'image/png' }));
       }),
     },
-    
+
     // Helper methods for testing
     _simulateClick: (x, y) => {
       const event = { x, y, type: 'click' };
       return mockChart.getElementsAtEventForMode(event, 'nearest', {}, false);
     },
-    
-    _updateData: (newData) => {
+
+    _updateData: newData => {
       mockChart.data = { ...mockChart.data, ...newData };
       return mockChart.update();
     },
   };
-  
+
   return mockChart;
 };
 
@@ -167,101 +167,103 @@ export const createMockDateLibrary = () => {
       };
       return formats[formatString] || d.toString();
     }),
-    
+
     // Parsing
     parse: jest.fn((dateString, formatString, referenceDate) => {
       return new Date(dateString);
     }),
-    
-    parseISO: jest.fn((dateString) => new Date(dateString)),
-    
+
+    parseISO: jest.fn(dateString => new Date(dateString)),
+
     // Manipulation
     addDays: jest.fn((date, amount) => {
       const result = new Date(date);
       result.setDate(result.getDate() + amount);
       return result;
     }),
-    
+
     addMonths: jest.fn((date, amount) => {
       const result = new Date(date);
       result.setMonth(result.getMonth() + amount);
       return result;
     }),
-    
+
     addYears: jest.fn((date, amount) => {
       const result = new Date(date);
       result.setFullYear(result.getFullYear() + amount);
       return result;
     }),
-    
+
     subDays: jest.fn((date, amount) => mockDateLib.addDays(date, -amount)),
     subMonths: jest.fn((date, amount) => mockDateLib.addMonths(date, -amount)),
     subYears: jest.fn((date, amount) => mockDateLib.addYears(date, -amount)),
-    
+
     // Comparison
     isAfter: jest.fn((date, dateToCompare) => new Date(date) > new Date(dateToCompare)),
     isBefore: jest.fn((date, dateToCompare) => new Date(date) < new Date(dateToCompare)),
-    isEqual: jest.fn((date, dateToCompare) => new Date(date).getTime() === new Date(dateToCompare).getTime()),
+    isEqual: jest.fn(
+      (date, dateToCompare) => new Date(date).getTime() === new Date(dateToCompare).getTime(),
+    ),
     isSameDay: jest.fn((date, dateToCompare) => {
       const d1 = new Date(date);
       const d2 = new Date(dateToCompare);
       return d1.toDateString() === d2.toDateString();
     }),
-    
+
     // Utilities
-    startOfDay: jest.fn((date) => {
+    startOfDay: jest.fn(date => {
       const result = new Date(date);
       result.setHours(0, 0, 0, 0);
       return result;
     }),
-    
-    endOfDay: jest.fn((date) => {
+
+    endOfDay: jest.fn(date => {
       const result = new Date(date);
       result.setHours(23, 59, 59, 999);
       return result;
     }),
-    
-    startOfMonth: jest.fn((date) => {
+
+    startOfMonth: jest.fn(date => {
       const result = new Date(date);
       result.setDate(1);
       result.setHours(0, 0, 0, 0);
       return result;
     }),
-    
-    endOfMonth: jest.fn((date) => {
+
+    endOfMonth: jest.fn(date => {
       const result = new Date(date);
       result.setMonth(result.getMonth() + 1, 0);
       result.setHours(23, 59, 59, 999);
       return result;
     }),
-    
+
     // Difference
     differenceInDays: jest.fn((dateLeft, dateRight) => {
       const diffTime = new Date(dateLeft) - new Date(dateRight);
       return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     }),
-    
+
     differenceInMonths: jest.fn((dateLeft, dateRight) => {
       const d1 = new Date(dateLeft);
       const d2 = new Date(dateRight);
       return (d1.getFullYear() - d2.getFullYear()) * 12 + (d1.getMonth() - d2.getMonth());
     }),
-    
+
     // Validation
-    isValid: jest.fn((date) => {
+    isValid: jest.fn(date => {
       return date instanceof Date && !isNaN(date.getTime());
     }),
   };
-  
+
   return mockDateLib;
 };
 
 // Mock Validation library (Yup, Joi, Zod)
 export const createMockValidationLibrary = () => {
-  const createMockSchema = (type) => {
+  const createMockSchema = type => {
     const schema = {
       // Validation
-      validate: jest.fn((value) => {
+      validate: jest.fn(value => {
         // Simple validation logic
         if (type === 'string' && typeof value !== 'string') {
           return Promise.reject(new Error('Must be a string'));
@@ -274,8 +276,8 @@ export const createMockValidationLibrary = () => {
         }
         return Promise.resolve(value);
       }),
-      
-      validateSync: jest.fn((value) => {
+
+      validateSync: jest.fn(value => {
         // Synchronous validation
         if (type === 'string' && typeof value !== 'string') {
           throw new Error('Must be a string');
@@ -288,47 +290,49 @@ export const createMockValidationLibrary = () => {
         }
         return value;
       }),
-      
+
       // Modifiers
       required: jest.fn(() => schema),
       optional: jest.fn(() => schema),
       nullable: jest.fn(() => schema),
-      default: jest.fn((defaultValue) => schema),
-      
+      default: jest.fn(defaultValue => schema),
+
       // String specific
-      min: jest.fn((min) => schema),
-      max: jest.fn((max) => schema),
-      length: jest.fn((length) => schema),
-      matches: jest.fn((regex) => schema),
+      min: jest.fn(min => schema),
+      max: jest.fn(max => schema),
+      length: jest.fn(length => schema),
+      matches: jest.fn(regex => schema),
       email: jest.fn(() => createMockSchema('email')),
       url: jest.fn(() => schema),
-      
+
       // Number specific
       positive: jest.fn(() => schema),
       negative: jest.fn(() => schema),
       integer: jest.fn(() => schema),
-      
+
       // Object specific
-      shape: jest.fn((shape) => schema),
-      
+      shape: jest.fn(shape => schema),
+
       // Array specific
-      of: jest.fn((itemSchema) => schema),
-      
+      of: jest.fn(itemSchema => schema),
+
       // Testing helpers
-      _setValidationResult: (result) => {
+      _setValidationResult: result => {
         if (result instanceof Error) {
           schema.validate.mockRejectedValue(result);
-          schema.validateSync.mockImplementation(() => { throw result; });
+          schema.validateSync.mockImplementation(() => {
+            throw result;
+          });
         } else {
           schema.validate.mockResolvedValue(result);
           schema.validateSync.mockReturnValue(result);
         }
       },
     };
-    
+
     return schema;
   };
-  
+
   const mockValidation = {
     string: jest.fn(() => createMockSchema('string')),
     number: jest.fn(() => createMockSchema('number')),
@@ -337,7 +341,7 @@ export const createMockValidationLibrary = () => {
     array: jest.fn(() => createMockSchema('array')),
     object: jest.fn(() => createMockSchema('object')),
     mixed: jest.fn(() => createMockSchema('mixed')),
-    
+
     // Validation errors
     ValidationError: class ValidationError extends Error {
       constructor(message, value, path) {
@@ -349,7 +353,7 @@ export const createMockValidationLibrary = () => {
       }
     },
   };
-  
+
   return mockValidation;
 };
 
@@ -366,48 +370,48 @@ export const createMockCryptoLibrary = () => {
       };
       return mockHashes[algorithm] || 'mock-hash';
     }),
-    
+
     // Encryption/Decryption
     encrypt: jest.fn((algorithm, data, key) => {
       return `encrypted-${data}-with-${algorithm}`;
     }),
-    
+
     decrypt: jest.fn((algorithm, encryptedData, key) => {
       return encryptedData.replace(`encrypted-`, '').replace(`-with-${algorithm}`, '');
     }),
-    
+
     // Random generation
-    randomBytes: jest.fn((size) => {
+    randomBytes: jest.fn(size => {
       const bytes = new Uint8Array(size);
       for (let i = 0; i < size; i++) {
         bytes[i] = Math.floor(Math.random() * 256);
       }
       return bytes;
     }),
-    
+
     randomUUID: jest.fn(() => {
-      return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
-        const r = Math.random() * 16 | 0;
-        const v = c === 'x' ? r : (r & 0x3 | 0x8);
+      return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
+        const r = (Math.random() * 16) | 0;
+        const v = c === 'x' ? r : (r & 0x3) | 0x8;
         return v.toString(16);
       });
     }),
-    
+
     // Base64
-    base64Encode: jest.fn((data) => {
+    base64Encode: jest.fn(data => {
       if (typeof btoa !== 'undefined') {
         return btoa(data);
       }
       return Buffer.from(data).toString('base64');
     }),
-    
-    base64Decode: jest.fn((encodedData) => {
+
+    base64Decode: jest.fn(encodedData => {
       if (typeof atob !== 'undefined') {
         return atob(encodedData);
       }
       return Buffer.from(encodedData, 'base64').toString();
     }),
-    
+
     // JWT (simplified)
     createJWT: jest.fn((payload, secret, options = {}) => {
       const header = { alg: 'HS256', typ: 'JWT' };
@@ -416,13 +420,13 @@ export const createMockCryptoLibrary = () => {
       const signature = 'mock-signature';
       return `${encodedHeader}.${encodedPayload}.${signature}`;
     }),
-    
+
     verifyJWT: jest.fn((token, secret) => {
       const parts = token.split('.');
       if (parts.length !== 3) {
         throw new Error('Invalid JWT format');
       }
-      
+
       try {
         const payload = JSON.parse(mockCrypto.base64Decode(parts[1]));
         return { valid: true, payload };
@@ -431,14 +435,14 @@ export const createMockCryptoLibrary = () => {
       }
     }),
   };
-  
+
   return mockCrypto;
 };
 
 // Mock Toast/Notification libraries
 export const createMockToastLibrary = () => {
   const toasts = [];
-  
+
   const mockToast = {
     // Basic notifications
     success: jest.fn((message, options = {}) => {
@@ -452,7 +456,7 @@ export const createMockToastLibrary = () => {
       toasts.push(toast);
       return toast.id;
     }),
-    
+
     error: jest.fn((message, options = {}) => {
       const toast = {
         id: Date.now() + Math.random(),
@@ -464,7 +468,7 @@ export const createMockToastLibrary = () => {
       toasts.push(toast);
       return toast.id;
     }),
-    
+
     warning: jest.fn((message, options = {}) => {
       const toast = {
         id: Date.now() + Math.random(),
@@ -476,7 +480,7 @@ export const createMockToastLibrary = () => {
       toasts.push(toast);
       return toast.id;
     }),
-    
+
     info: jest.fn((message, options = {}) => {
       const toast = {
         id: Date.now() + Math.random(),
@@ -488,19 +492,19 @@ export const createMockToastLibrary = () => {
       toasts.push(toast);
       return toast.id;
     }),
-    
+
     // Management
-    dismiss: jest.fn((toastId) => {
+    dismiss: jest.fn(toastId => {
       const index = toasts.findIndex(toast => toast.id === toastId);
       if (index > -1) {
         toasts.splice(index, 1);
       }
     }),
-    
+
     dismissAll: jest.fn(() => {
       toasts.length = 0;
     }),
-    
+
     // Custom
     custom: jest.fn((component, options = {}) => {
       const toast = {
@@ -513,31 +517,33 @@ export const createMockToastLibrary = () => {
       toasts.push(toast);
       return toast.id;
     }),
-    
+
     // Promise handling
     promise: jest.fn((promise, messages) => {
       const toastId = mockToast.info(messages.loading || 'Loading...');
-      
+
       return promise
-        .then((result) => {
+        .then(result => {
           mockToast.dismiss(toastId);
           mockToast.success(messages.success || 'Success!');
           return result;
         })
-        .catch((error) => {
+        .catch(error => {
           mockToast.dismiss(toastId);
           mockToast.error(messages.error || 'Error occurred');
           throw error;
         });
     }),
-    
+
     // Testing helpers
     _getToasts: () => [...toasts],
-    _getToastsByType: (type) => toasts.filter(toast => toast.type === type),
+    _getToastsByType: type => toasts.filter(toast => toast.type === type),
     _getLastToast: () => toasts[toasts.length - 1] || null,
-    _clear: () => { toasts.length = 0; },
+    _clear: () => {
+      toasts.length = 0;
+    },
   };
-  
+
   return mockToast;
 };
 
@@ -545,36 +551,36 @@ export const createMockToastLibrary = () => {
 export const createMockFileLibrary = () => {
   const mockFileLib = {
     // File reading
-    readAsText: jest.fn((file) => {
+    readAsText: jest.fn(file => {
       return Promise.resolve('mock file content');
     }),
-    
-    readAsDataURL: jest.fn((file) => {
+
+    readAsDataURL: jest.fn(file => {
       return Promise.resolve('data:text/plain;base64,bW9jayBmaWxlIGNvbnRlbnQ=');
     }),
-    
-    readAsArrayBuffer: jest.fn((file) => {
+
+    readAsArrayBuffer: jest.fn(file => {
       return Promise.resolve(new ArrayBuffer(8));
     }),
-    
+
     // File validation
     validateFile: jest.fn((file, options = {}) => {
       const { maxSize = 10 * 1024 * 1024, allowedTypes = [] } = options;
-      
+
       if (file.size > maxSize) {
         return { valid: false, error: 'File too large' };
       }
-      
+
       if (allowedTypes.length > 0 && !allowedTypes.includes(file.type)) {
         return { valid: false, error: 'File type not allowed' };
       }
-      
+
       return { valid: true };
     }),
-    
+
     // File upload simulation
     upload: jest.fn((file, options = {}) => {
-      return new Promise((resolve) => {
+      return new Promise(resolve => {
         setTimeout(() => {
           resolve({
             url: `https://mock-storage.com/files/${file.name}`,
@@ -585,7 +591,7 @@ export const createMockFileLibrary = () => {
         }, 100);
       });
     }),
-    
+
     // File download simulation
     download: jest.fn((url, filename) => {
       return Promise.resolve({
@@ -593,19 +599,19 @@ export const createMockFileLibrary = () => {
         filename: filename || 'download.txt',
       });
     }),
-    
+
     // Image processing
     resizeImage: jest.fn((file, options = {}) => {
       const { width = 800, height = 600, quality = 0.8 } = options;
       return Promise.resolve(new File(['resized image'], file.name, { type: file.type }));
     }),
-    
+
     // File utilities
-    getFileExtension: jest.fn((filename) => {
+    getFileExtension: jest.fn(filename => {
       return filename.split('.').pop()?.toLowerCase() || '';
     }),
-    
-    formatFileSize: jest.fn((bytes) => {
+
+    formatFileSize: jest.fn(bytes => {
       if (bytes === 0) return '0 Bytes';
       const k = 1024;
       const sizes = ['Bytes', 'KB', 'MB', 'GB'];
@@ -613,7 +619,7 @@ export const createMockFileLibrary = () => {
       return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
     }),
   };
-  
+
   return mockFileLib;
 };
 

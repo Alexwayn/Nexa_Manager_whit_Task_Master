@@ -30,10 +30,11 @@ export const createMockHistory = (initialLocation = createMockLocation()) => {
 
     // Navigation methods
     push: jest.fn((to, state) => {
-      const newLocation = typeof to === 'string' 
-        ? { ...createMockLocation(), pathname: to, state }
-        : { ...createMockLocation(), ...to, state };
-      
+      const newLocation =
+        typeof to === 'string'
+          ? { ...createMockLocation(), pathname: to, state }
+          : { ...createMockLocation(), ...to, state };
+
       index++;
       entries.splice(index, entries.length - index, newLocation);
       currentLocation = newLocation;
@@ -41,7 +42,7 @@ export const createMockHistory = (initialLocation = createMockLocation()) => {
       history.action = 'PUSH';
       history.length = entries.length;
       history.index = index;
-      
+
       // Notify listeners
       listeners.forEach(listener => {
         listener({ location: currentLocation, action: 'PUSH' });
@@ -49,22 +50,23 @@ export const createMockHistory = (initialLocation = createMockLocation()) => {
     }),
 
     replace: jest.fn((to, state) => {
-      const newLocation = typeof to === 'string'
-        ? { ...createMockLocation(), pathname: to, state }
-        : { ...createMockLocation(), ...to, state };
-      
+      const newLocation =
+        typeof to === 'string'
+          ? { ...createMockLocation(), pathname: to, state }
+          : { ...createMockLocation(), ...to, state };
+
       entries[index] = newLocation;
       currentLocation = newLocation;
       history.location = currentLocation;
       history.action = 'REPLACE';
-      
+
       // Notify listeners
       listeners.forEach(listener => {
         listener({ location: currentLocation, action: 'REPLACE' });
       });
     }),
 
-    go: jest.fn((delta) => {
+    go: jest.fn(delta => {
       const newIndex = Math.max(0, Math.min(entries.length - 1, index + delta));
       if (newIndex !== index) {
         index = newIndex;
@@ -72,7 +74,7 @@ export const createMockHistory = (initialLocation = createMockLocation()) => {
         history.location = currentLocation;
         history.action = 'POP';
         history.index = index;
-        
+
         // Notify listeners
         listeners.forEach(listener => {
           listener({ location: currentLocation, action: 'POP' });
@@ -84,7 +86,7 @@ export const createMockHistory = (initialLocation = createMockLocation()) => {
     goForward: jest.fn(() => history.go(1)),
 
     // Listener management
-    listen: jest.fn((listener) => {
+    listen: jest.fn(listener => {
       listeners.push(listener);
       return () => {
         const index = listeners.indexOf(listener);
@@ -95,18 +97,18 @@ export const createMockHistory = (initialLocation = createMockLocation()) => {
     }),
 
     // Blocking (for React Router v5)
-    block: jest.fn((prompt) => {
+    block: jest.fn(prompt => {
       return () => {}; // Return unblock function
     }),
 
     // Create href
-    createHref: jest.fn((location) => {
+    createHref: jest.fn(location => {
       const { pathname = '/', search = '', hash = '' } = location;
       return pathname + search + hash;
     }),
 
     // Helper methods for testing
-    _setLocation: (location) => {
+    _setLocation: location => {
       currentLocation = { ...createMockLocation(), ...location };
       history.location = currentLocation;
       entries[index] = currentLocation;
@@ -149,13 +151,13 @@ export const createMockNavigate = () => {
       // navigate(-1) or navigate(1)
       return;
     }
-    
+
     const { replace = false, state = null } = options;
     // In real implementation, this would update the location
   });
 
   // Add helper methods for testing
-  navigate._getCallsTo = (path) => {
+  navigate._getCallsTo = path => {
     return navigate.mock.calls.filter(call => call[0] === path);
   };
 
@@ -168,11 +170,9 @@ export const createMockNavigate = () => {
     return navigate.mock.calls.some(call => {
       if (call[0] !== path) return false;
       if (Object.keys(options).length === 0) return true;
-      
+
       const callOptions = call[1] || {};
-      return Object.entries(options).every(([key, value]) => 
-        callOptions[key] === value
-      );
+      return Object.entries(options).every(([key, value]) => callOptions[key] === value);
     });
   };
 
@@ -211,10 +211,14 @@ export const MockBrowserRouter = ({ children }) => {
 };
 
 export const MockMemoryRouter = ({ children, initialEntries = ['/'] }) => {
-  return React.createElement('div', { 
-    'data-testid': 'mock-memory-router',
-    'data-initial-entries': JSON.stringify(initialEntries)
-  }, children);
+  return React.createElement(
+    'div',
+    {
+      'data-testid': 'mock-memory-router',
+      'data-initial-entries': JSON.stringify(initialEntries),
+    },
+    children,
+  );
 };
 
 export const MockHashRouter = ({ children }) => {
@@ -224,7 +228,7 @@ export const MockHashRouter = ({ children }) => {
 // Mock Route component
 export const MockRoute = ({ children, component: Component, render, path, exact, ...props }) => {
   const routeProps = createMockRouteProps();
-  
+
   let content;
   if (Component) {
     content = React.createElement(Component, routeProps);
@@ -235,13 +239,17 @@ export const MockRoute = ({ children, component: Component, render, path, exact,
   } else {
     content = children;
   }
-  
-  return React.createElement('div', {
-    'data-testid': 'mock-route',
-    'data-path': path,
-    'data-exact': exact,
-    ...props
-  }, content);
+
+  return React.createElement(
+    'div',
+    {
+      'data-testid': 'mock-route',
+      'data-path': path,
+      'data-exact': exact,
+      ...props,
+    },
+    content,
+  );
 };
 
 // Mock Routes component (React Router v6)
@@ -256,35 +264,43 @@ export const MockSwitch = ({ children }) => {
 
 // Mock Link component
 export const MockLink = ({ to, children, replace, state, ...props }) => {
-  const handleClick = jest.fn((e) => {
+  const handleClick = jest.fn(e => {
     e.preventDefault();
     // In real implementation, this would navigate
   });
-  
-  return React.createElement('a', {
-    href: typeof to === 'string' ? to : to.pathname || '/',
-    onClick: handleClick,
-    'data-testid': 'mock-link',
-    'data-to': typeof to === 'string' ? to : JSON.stringify(to),
-    'data-replace': replace,
-    'data-state': state ? JSON.stringify(state) : undefined,
-    ...props
-  }, children);
+
+  return React.createElement(
+    'a',
+    {
+      href: typeof to === 'string' ? to : to.pathname || '/',
+      onClick: handleClick,
+      'data-testid': 'mock-link',
+      'data-to': typeof to === 'string' ? to : JSON.stringify(to),
+      'data-replace': replace,
+      'data-state': state ? JSON.stringify(state) : undefined,
+      ...props,
+    },
+    children,
+  );
 };
 
 // Mock NavLink component
 export const MockNavLink = ({ to, children, activeClassName, exact, ...props }) => {
   const isActive = false; // In real implementation, this would check current location
-  
-  return React.createElement('a', {
-    href: typeof to === 'string' ? to : to.pathname || '/',
-    className: isActive ? activeClassName : '',
-    'data-testid': 'mock-nav-link',
-    'data-to': typeof to === 'string' ? to : JSON.stringify(to),
-    'data-active': isActive,
-    'data-exact': exact,
-    ...props
-  }, children);
+
+  return React.createElement(
+    'a',
+    {
+      href: typeof to === 'string' ? to : to.pathname || '/',
+      className: isActive ? activeClassName : '',
+      'data-testid': 'mock-nav-link',
+      'data-to': typeof to === 'string' ? to : JSON.stringify(to),
+      'data-active': isActive,
+      'data-exact': exact,
+      ...props,
+    },
+    children,
+  );
 };
 
 // Mock Redirect component
@@ -295,7 +311,7 @@ export const MockRedirect = ({ to, from, push, exact, ...props }) => {
     'data-from': from,
     'data-push': push,
     'data-exact': exact,
-    ...props
+    ...props,
   });
 };
 
@@ -306,7 +322,7 @@ export const MockNavigate = ({ to, replace, state, ...props }) => {
     'data-to': typeof to === 'string' ? to : JSON.stringify(to),
     'data-replace': replace,
     'data-state': state ? JSON.stringify(state) : undefined,
-    ...props
+    ...props,
   });
 };
 
@@ -315,17 +331,17 @@ export const MockOutlet = ({ context, ...props }) => {
   return React.createElement('div', {
     'data-testid': 'mock-outlet',
     'data-context': context ? JSON.stringify(context) : undefined,
-    ...props
+    ...props,
   });
 };
 
 // Mock withRouter HOC (React Router v5)
-export const mockWithRouter = (Component) => {
-  const WrappedComponent = (props) => {
+export const mockWithRouter = Component => {
+  const WrappedComponent = props => {
     const routeProps = createMockRouteProps();
     return React.createElement(Component, { ...props, ...routeProps });
   };
-  
+
   WrappedComponent.displayName = `withRouter(${Component.displayName || Component.name})`;
   return WrappedComponent;
 };
@@ -336,7 +352,7 @@ export const MockPrompt = ({ when, message, ...props }) => {
     'data-testid': 'mock-prompt',
     'data-when': when,
     'data-message': message,
-    ...props
+    ...props,
   });
 };
 
@@ -344,20 +360,21 @@ export const MockPrompt = ({ when, message, ...props }) => {
 export const routerTestUtils = {
   // Create a router wrapper for testing
   createRouterWrapper: (history = createMockHistory(), routerType = 'memory') => {
-    const RouterComponent = {
-      memory: MockMemoryRouter,
-      browser: MockBrowserRouter,
-      hash: MockHashRouter,
-    }[routerType] || MockMemoryRouter;
-    
+    const RouterComponent =
+      {
+        memory: MockMemoryRouter,
+        browser: MockBrowserRouter,
+        hash: MockHashRouter,
+      }[routerType] || MockMemoryRouter;
+
     return ({ children }) => {
       return React.createElement(RouterComponent, { history }, children);
     };
   },
-  
+
   // Create route props for component testing
   createRouteProps: createMockRouteProps,
-  
+
   // Simulate navigation
   simulateNavigation: (history, to, method = 'push') => {
     if (method === 'push') {
@@ -366,17 +383,17 @@ export const routerTestUtils = {
       history.replace(to);
     }
   },
-  
+
   // Wait for navigation to complete
   waitForNavigation: async (history, expectedPath) => {
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       const unlisten = history.listen(({ location }) => {
         if (location.pathname === expectedPath) {
           unlisten();
           resolve(location);
         }
       });
-      
+
       // Timeout after 1 second
       setTimeout(() => {
         unlisten();
@@ -384,18 +401,18 @@ export const routerTestUtils = {
       }, 1000);
     });
   },
-  
+
   // Assert navigation calls
   expectNavigationTo: (navigate, path, options = {}) => {
     return navigate._wasCalledWith(path, options);
   },
-  
+
   expectNavigationCount: (navigate, count) => {
     return navigate.mock.calls.length === count;
   },
-  
+
   // Get navigation history
-  getNavigationHistory: (navigate) => {
+  getNavigationHistory: navigate => {
     return navigate.mock.calls.map(call => ({
       to: call[0],
       options: call[1] || {},
@@ -408,7 +425,7 @@ let globalMockHistory = null;
 let globalMockLocation = null;
 let globalMockNavigate = null;
 
-export const setGlobalMockHistory = (history) => {
+export const setGlobalMockHistory = history => {
   globalMockHistory = history;
 };
 
@@ -419,7 +436,7 @@ export const getGlobalMockHistory = () => {
   return globalMockHistory;
 };
 
-export const setGlobalMockLocation = (location) => {
+export const setGlobalMockLocation = location => {
   globalMockLocation = location;
 };
 
@@ -430,7 +447,7 @@ export const getGlobalMockLocation = () => {
   return globalMockLocation;
 };
 
-export const setGlobalMockNavigate = (navigate) => {
+export const setGlobalMockNavigate = navigate => {
   globalMockNavigate = navigate;
 };
 

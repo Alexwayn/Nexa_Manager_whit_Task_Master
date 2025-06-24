@@ -91,15 +91,15 @@ export default function Calendar() {
   });
 
   // Toggle filter function
-  const toggleFilter = (filterKey) => {
-    setFilters((prev) => ({
+  const toggleFilter = filterKey => {
+    setFilters(prev => ({
       ...prev,
       [filterKey]: !prev[filterKey],
     }));
   };
 
   // Check if event is visible based on filters
-  const isEventVisible = (event) => {
+  const isEventVisible = event => {
     return filters[event.type] || false;
   };
 
@@ -202,22 +202,22 @@ export default function Calendar() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col">
+    <div className='min-h-screen bg-gray-50 flex flex-col'>
       {/* Breadcrumb */}
-      <div className="bg-blue-50 border-b border-blue-100 px-6 py-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-2 text-sm">
-            <span className="text-blue-600 font-medium">{t('calendar:title')}</span>
-            <ChevronRight className="h-4 w-4 text-gray-400" />
-            <span className="text-gray-600">{t('calendar:events')}</span>
+      <div className='bg-blue-50 border-b border-blue-100 px-6 py-4'>
+        <div className='flex items-center justify-between'>
+          <div className='flex items-center space-x-2 text-sm'>
+            <span className='text-blue-600 font-medium'>{t('calendar:title')}</span>
+            <ChevronRight className='h-4 w-4 text-gray-400' />
+            <span className='text-gray-600'>{t('calendar:events')}</span>
           </div>
-          <div className="flex items-center space-x-4">
-            <div className="relative">
-              <Search className="h-4 w-4 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2" />
+          <div className='flex items-center space-x-4'>
+            <div className='relative'>
+              <Search className='h-4 w-4 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2' />
               <input
-                type="text"
+                type='text'
                 placeholder={t('calendar:searchPlaceholder')}
-                className="pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className='pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent'
               />
             </div>
           </div>
@@ -225,31 +225,29 @@ export default function Calendar() {
       </div>
 
       {/* Main Content */}
-      <div className="flex flex-1 bg-gray-50">
+      <div className='flex flex-1 bg-gray-50'>
         {/* Left Sidebar */}
-        <div className="w-80 bg-white border-r border-gray-200 p-6 overflow-y-auto">
+        <div className='w-80 bg-white border-r border-gray-200 p-6 overflow-y-auto'>
           {/* Mini Calendar */}
-          <div className="mb-6">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-gray-900">
+          <div className='mb-6'>
+            <div className='flex items-center justify-between mb-4'>
+              <h3 className='text-lg font-semibold text-gray-900'>
                 {format(currentDate, 'MMMM yyyy')}
               </h3>
-              <div className="flex space-x-1">
-                <button onClick={goToPreviousMonth} className="p-1 hover:bg-gray-100 rounded">
-                  <ChevronLeft className="h-4 w-4 text-gray-600" />
+              <div className='flex space-x-1'>
+                <button onClick={goToPreviousMonth} className='p-1 hover:bg-gray-100 rounded'>
+                  <ChevronLeft className='h-4 w-4 text-gray-600' />
                 </button>
-                <button onClick={goToNextMonth} className="p-1 hover:bg-gray-100 rounded">
-                  <ChevronRight className="h-4 w-4 text-gray-600" />
+                <button onClick={goToNextMonth} className='p-1 hover:bg-gray-100 rounded'>
+                  <ChevronRight className='h-4 w-4 text-gray-600' />
                 </button>
               </div>
             </div>
 
             {/* Mini Calendar Grid */}
-            <div className="grid grid-cols-7 gap-1 text-center text-xs">
-              {[
-                'S', 'M', 'T', 'W', 'T', 'F', 'S'
-              ].map((day, index) => (
-                <div key={index} className="p-2 text-gray-500 font-medium">
+            <div className='grid grid-cols-7 gap-1 text-center text-xs'>
+              {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map((day, index) => (
+                <div key={index} className='p-2 text-gray-500 font-medium'>
                   {day}
                 </div>
               ))}
@@ -272,9 +270,9 @@ export default function Calendar() {
           </div>
 
           {/* Filters */}
-          <div className="mb-6">
-            <h3 className="text-sm font-semibold text-gray-900 mb-3">{t('calendar:filters')}</h3>
-            <div className="space-y-2">
+          <div className='mb-6'>
+            <h3 className='text-sm font-semibold text-gray-900 mb-3'>{t('calendar:filters')}</h3>
+            <div className='space-y-2'>
               {[
                 { key: 'meetings', label: t('calendar:categories.meetings'), color: 'bg-blue-500' },
                 {
@@ -289,56 +287,56 @@ export default function Calendar() {
                 },
                 { key: 'calls', label: t('calendar:categories.calls'), color: 'bg-orange-500' },
                 { key: 'reviews', label: t('calendar:categories.reviews'), color: 'bg-red-500' },
-              ].map((filter) => (
-                <label key={filter.key} className="flex items-center space-x-3 cursor-pointer">
+              ].map(filter => (
+                <label key={filter.key} className='flex items-center space-x-3 cursor-pointer'>
                   <input
-                    type="checkbox"
+                    type='checkbox'
                     checked={filters[filter.key]}
                     onChange={() => toggleFilter(filter.key)}
-                    className="rounded border-gray-300"
+                    className='rounded border-gray-300'
                   />
                   <div className={`w-3 h-3 rounded-full ${filter.color}`}></div>
-                  <span className="text-sm text-gray-700">{filter.label}</span>
+                  <span className='text-sm text-gray-700'>{filter.label}</span>
                 </label>
               ))}
             </div>
           </div>
 
           {/* My Calendars */}
-          <div className="mb-6">
-            <h3 className="text-sm font-semibold text-gray-900 mb-3">
+          <div className='mb-6'>
+            <h3 className='text-sm font-semibold text-gray-900 mb-3'>
               {t('calendar:myCalendars')}
             </h3>
-            <div className="space-y-2">
-              <label className="flex items-center space-x-3 cursor-pointer">
-                <input type="checkbox" defaultChecked className="rounded border-gray-300" />
-                <span className="text-sm text-gray-700">{t('calendar:personal')}</span>
+            <div className='space-y-2'>
+              <label className='flex items-center space-x-3 cursor-pointer'>
+                <input type='checkbox' defaultChecked className='rounded border-gray-300' />
+                <span className='text-sm text-gray-700'>{t('calendar:personal')}</span>
               </label>
-              <label className="flex items-center space-x-3 cursor-pointer">
-                <input type="checkbox" defaultChecked className="rounded border-gray-300" />
-                <span className="text-sm text-gray-700">{t('calendar:work')}</span>
+              <label className='flex items-center space-x-3 cursor-pointer'>
+                <input type='checkbox' defaultChecked className='rounded border-gray-300' />
+                <span className='text-sm text-gray-700'>{t('calendar:work')}</span>
               </label>
-              <label className="flex items-center space-x-3 cursor-pointer">
-                <input type="checkbox" className="rounded border-gray-300" />
-                <span className="text-sm text-gray-700">{t('calendar:family')}</span>
+              <label className='flex items-center space-x-3 cursor-pointer'>
+                <input type='checkbox' className='rounded border-gray-300' />
+                <span className='text-sm text-gray-700'>{t('calendar:family')}</span>
               </label>
             </div>
           </div>
 
           {/* Event Types */}
-          <div className="mb-6">
-            <h3 className="text-sm font-semibold text-gray-900 mb-3">{t('calendar:eventTypes')}</h3>
-            <div className="space-y-2">
-              <div className="flex items-center space-x-2 text-sm text-gray-600">
-                <Users className="h-4 w-4" />
+          <div className='mb-6'>
+            <h3 className='text-sm font-semibold text-gray-900 mb-3'>{t('calendar:eventTypes')}</h3>
+            <div className='space-y-2'>
+              <div className='flex items-center space-x-2 text-sm text-gray-600'>
+                <Users className='h-4 w-4' />
                 <span>{t('calendar:categories.meetings')}</span>
               </div>
-              <div className="flex items-center space-x-2 text-sm text-gray-600">
-                <FileText className="h-4 w-4" />
+              <div className='flex items-center space-x-2 text-sm text-gray-600'>
+                <FileText className='h-4 w-4' />
                 <span>{t('calendar:categories.presentations')}</span>
               </div>
-              <div className="flex items-center space-x-2 text-sm text-gray-600">
-                <Phone className="h-4 w-4" />
+              <div className='flex items-center space-x-2 text-sm text-gray-600'>
+                <Phone className='h-4 w-4' />
                 <span>{t('calendar:categories.calls')}</span>
               </div>
             </div>
@@ -346,21 +344,21 @@ export default function Calendar() {
 
           {/* Team Members */}
           <div>
-            <h3 className="text-sm font-semibold text-gray-900 mb-3">
+            <h3 className='text-sm font-semibold text-gray-900 mb-3'>
               {t('calendar:teamMembers')}
             </h3>
-            <div className="space-y-2">
-              {['John Doe', 'Jane Smith', 'Mike Johnson', 'Sarah Wilson'].map((member) => (
-                <div key={member} className="flex items-center space-x-3">
-                  <div className="w-6 h-6 bg-gray-300 rounded-full flex items-center justify-center">
-                    <span className="text-xs text-gray-600">
+            <div className='space-y-2'>
+              {['John Doe', 'Jane Smith', 'Mike Johnson', 'Sarah Wilson'].map(member => (
+                <div key={member} className='flex items-center space-x-3'>
+                  <div className='w-6 h-6 bg-gray-300 rounded-full flex items-center justify-center'>
+                    <span className='text-xs text-gray-600'>
                       {member
                         .split(' ')
-                        .map((n) => n[0])
+                        .map(n => n[0])
                         .join('')}
                     </span>
                   </div>
-                  <span className="text-sm text-gray-700">{member}</span>
+                  <span className='text-sm text-gray-700'>{member}</span>
                 </div>
               ))}
             </div>
@@ -368,33 +366,33 @@ export default function Calendar() {
         </div>
 
         {/* Main Calendar Area */}
-        <div className="flex-1">
+        <div className='flex-1'>
           {/* Calendar Header */}
-          <div className="bg-white border-b border-gray-200 px-6 py-4">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-6">
-                <h1 className="text-2xl font-bold text-gray-900">
+          <div className='bg-white border-b border-gray-200 px-6 py-4'>
+            <div className='flex items-center justify-between'>
+              <div className='flex items-center space-x-6'>
+                <h1 className='text-2xl font-bold text-gray-900'>
                   {format(selectedDate, 'MMMM yyyy')}
                 </h1>
-                <div className="flex items-center space-x-1">
-                  <button onClick={handlePrev} className="p-2 hover:bg-gray-100 rounded-lg">
-                    <ChevronLeft className="h-5 w-5 text-gray-600" />
+                <div className='flex items-center space-x-1'>
+                  <button onClick={handlePrev} className='p-2 hover:bg-gray-100 rounded-lg'>
+                    <ChevronLeft className='h-5 w-5 text-gray-600' />
                   </button>
-                  <button onClick={handleNext} className="p-2 hover:bg-gray-100 rounded-lg">
-                    <ChevronRight className="h-5 w-5 text-gray-600" />
+                  <button onClick={handleNext} className='p-2 hover:bg-gray-100 rounded-lg'>
+                    <ChevronRight className='h-5 w-5 text-gray-600' />
                   </button>
                 </div>
               </div>
 
-              <div className="flex items-center space-x-4">
+              <div className='flex items-center space-x-4'>
                 {/* View Toggle */}
-                <div className="flex bg-gray-100 rounded-lg p-1">
+                <div className='flex bg-gray-100 rounded-lg p-1'>
                   {[
                     { key: 'Month', label: t('calendar:views.month') },
                     { key: 'Week', label: t('calendar:views.week') },
                     { key: 'Day', label: t('calendar:views.day') },
                     { key: 'List', label: t('calendar:views.list') },
-                  ].map((viewType) => (
+                  ].map(viewType => (
                     <button
                       key={viewType.key}
                       onClick={() => setView(viewType.key)}
@@ -411,9 +409,9 @@ export default function Calendar() {
 
                 <button
                   onClick={() => setShowEventModal(true)}
-                  className="flex items-center space-x-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+                  className='flex items-center space-x-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700'
                 >
-                  <Plus className="h-4 w-4" />
+                  <Plus className='h-4 w-4' />
                   <span>{t('calendar:newEvent')}</span>
                 </button>
               </div>
@@ -421,25 +419,31 @@ export default function Calendar() {
           </div>
 
           {/* Calendar Grid */}
-          <div className="bg-white">
+          <div className='bg-white'>
             {view === 'Month' && (
-              <div className="p-6">
+              <div className='p-6'>
                 {/* Days Header */}
-                <div className="grid grid-cols-7 gap-px mb-4">
+                <div className='grid grid-cols-7 gap-px mb-4'>
                   {[
-                    'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'
+                    'Sunday',
+                    'Monday',
+                    'Tuesday',
+                    'Wednesday',
+                    'Thursday',
+                    'Friday',
+                    'Saturday',
                   ].map((day, index) => (
-                    <div key={index} className="bg-gray-50 p-3 text-center">
-                      <span className="text-sm font-medium text-gray-700">{day}</span>
+                    <div key={index} className='bg-gray-50 p-3 text-center'>
+                      <span className='text-sm font-medium text-gray-700'>{day}</span>
                     </div>
                   ))}
                 </div>
 
                 {/* Calendar Grid */}
-                <div className="grid grid-cols-7 gap-px bg-gray-200 rounded-lg overflow-hidden">
+                <div className='grid grid-cols-7 gap-px bg-gray-200 rounded-lg overflow-hidden'>
                   {monthDays.map((day, index) => {
                     const dayEvents = events.filter(
-                      (event) => isSameDay(new Date(event.date), day) && isEventVisible(event),
+                      event => isSameDay(new Date(event.date), day) && isEventVisible(event),
                     );
 
                     return (
@@ -457,8 +461,8 @@ export default function Calendar() {
                           {format(day, 'd')}
                         </div>
 
-                        <div className="space-y-1">
-                          {dayEvents.slice(0, 3).map((event) => (
+                        <div className='space-y-1'>
+                          {dayEvents.slice(0, 3).map(event => (
                             <div
                               key={event.id}
                               onClick={() => setSelectedEvent(event)}
@@ -468,7 +472,7 @@ export default function Calendar() {
                             </div>
                           ))}
                           {dayEvents.length > 3 && (
-                            <div className="text-xs text-gray-500">
+                            <div className='text-xs text-gray-500'>
                               +{dayEvents.length - 3} more
                             </div>
                           )}
@@ -483,70 +487,70 @@ export default function Calendar() {
 
           {/* Event Details Section (below calendar) */}
           {selectedEvent && (
-            <div className="bg-white border-t border-gray-200 p-6 mb-8">
-              <div className="bg-white rounded-lg border border-gray-200 shadow-sm">
+            <div className='bg-white border-t border-gray-200 p-6 mb-8'>
+              <div className='bg-white rounded-lg border border-gray-200 shadow-sm'>
                 {/* Header */}
-                <div className="bg-blue-50 flex justify-between items-center px-6 py-4 border-b border-gray-200">
-                  <h3 className="text-lg font-semibold text-gray-900">
+                <div className='bg-blue-50 flex justify-between items-center px-6 py-4 border-b border-gray-200'>
+                  <h3 className='text-lg font-semibold text-gray-900'>
                     {t('calendar:eventDetails')}
                   </h3>
                   <button
                     onClick={() => setSelectedEvent(null)}
-                    className="text-gray-400 hover:text-gray-600"
+                    className='text-gray-400 hover:text-gray-600'
                   >
                     <X size={20} />
                   </button>
                 </div>
 
-                <div className="p-6">
-                  <div className="grid grid-cols-2 gap-8">
+                <div className='p-6'>
+                  <div className='grid grid-cols-2 gap-8'>
                     {/* Left Column */}
-                    <div className="space-y-6">
+                    <div className='space-y-6'>
                       {/* Event Title and Type */}
                       <div>
-                        <h4 className="text-xl font-semibold text-gray-900 mb-2">
+                        <h4 className='text-xl font-semibold text-gray-900 mb-2'>
                           {selectedEvent.title}
                         </h4>
-                        <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-yellow-100 text-yellow-800">
+                        <span className='inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-yellow-100 text-yellow-800'>
                           {t('calendar:categories.reviews')} {t('calendar:meetings')}
                         </span>
                       </div>
 
                       {/* Date and Time */}
-                      <div className="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-r-lg">
-                        <div className="flex items-center space-x-3">
-                          <CalendarIcon className="h-5 w-5 text-blue-600" />
+                      <div className='bg-blue-50 border-l-4 border-blue-500 p-4 rounded-r-lg'>
+                        <div className='flex items-center space-x-3'>
+                          <CalendarIcon className='h-5 w-5 text-blue-600' />
                           <div>
-                            <p className="font-medium text-gray-900">{selectedEvent.date}</p>
-                            <p className="text-sm text-gray-600">{selectedEvent.time}</p>
+                            <p className='font-medium text-gray-900'>{selectedEvent.date}</p>
+                            <p className='text-sm text-gray-600'>{selectedEvent.time}</p>
                           </div>
                         </div>
                       </div>
 
                       {/* Location */}
-                      <div className="flex items-center space-x-3">
-                        <MapPin className="h-5 w-5 text-gray-400" />
-                        <span className="text-gray-700">{selectedEvent.location}</span>
+                      <div className='flex items-center space-x-3'>
+                        <MapPin className='h-5 w-5 text-gray-400' />
+                        <span className='text-gray-700'>{selectedEvent.location}</span>
                       </div>
 
                       {/* Organizer */}
-                      <div className="flex items-center space-x-3">
-                        <User className="h-5 w-5 text-gray-400" />
+                      <div className='flex items-center space-x-3'>
+                        <User className='h-5 w-5 text-gray-400' />
                         <div>
-                          <p className="text-sm text-gray-600">{t('calendar:organizer')}</p>
-                          <p className="font-medium text-gray-900">John Doe</p>
+                          <p className='text-sm text-gray-600'>{t('calendar:organizer')}</p>
+                          <p className='font-medium text-gray-900'>John Doe</p>
                         </div>
                       </div>
                     </div>
 
                     {/* Right Column */}
-                    <div className="space-y-6">
+                    <div className='space-y-6'>
                       {/* Attendees */}
                       <div>
-                        <h5 className="font-medium text-gray-900 mb-3">
+                        <h5 className='font-medium text-gray-900 mb-3'>
                           {t('calendar:attendees')}
                         </h5>
-                        <div className="flex space-x-2">
+                        <div className='flex space-x-2'>
                           {['JD', 'JS', 'MJ', 'SW'].map((initials, index) => (
                             <div
                               key={index}
@@ -564,27 +568,27 @@ export default function Calendar() {
 
                       {/* Description */}
                       <div>
-                        <h5 className="font-medium text-gray-900 mb-3">
+                        <h5 className='font-medium text-gray-900 mb-3'>
                           {t('calendar:description')}
                         </h5>
-                        <div className="bg-gray-50 p-4 rounded-lg">
-                          <p className="text-gray-700 text-sm leading-relaxed">
+                        <div className='bg-gray-50 p-4 rounded-lg'>
+                          <p className='text-gray-700 text-sm leading-relaxed'>
                             {selectedEvent.description}
                           </p>
                         </div>
                       </div>
 
                       {/* Action Buttons */}
-                      <div className="flex space-x-3">
-                        <button className="flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                      <div className='flex space-x-3'>
+                        <button className='flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700'>
                           <Edit3 size={16} />
                           <span>{t('calendar:edit')}</span>
                         </button>
-                        <button className="flex items-center space-x-2 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">
+                        <button className='flex items-center space-x-2 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700'>
                           <Trash2 size={16} />
                           <span>{t('calendar:delete')}</span>
                         </button>
-                        <button className="flex items-center space-x-2 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50">
+                        <button className='flex items-center space-x-2 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50'>
                           <Share2 size={16} />
                           <span>{t('calendar:share')}</span>
                         </button>
@@ -598,85 +602,85 @@ export default function Calendar() {
         </div>
 
         {/* Right Sidebar */}
-        <div className="w-80 bg-white border-l border-gray-200 p-6 overflow-y-auto">
+        <div className='w-80 bg-white border-l border-gray-200 p-6 overflow-y-auto'>
           {/* Quick Actions */}
-          <div className="mb-6">
-            <h3 className="font-semibold text-gray-900 mb-4">{t('calendar:quickActions')}</h3>
-            <div className="grid grid-cols-2 gap-3">
-              <button className="flex flex-col items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50">
-                <Plus className="h-6 w-6 text-blue-600 mb-2" />
-                <span className="text-sm text-gray-700">{t('calendar:newEvent')}</span>
+          <div className='mb-6'>
+            <h3 className='font-semibold text-gray-900 mb-4'>{t('calendar:quickActions')}</h3>
+            <div className='grid grid-cols-2 gap-3'>
+              <button className='flex flex-col items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50'>
+                <Plus className='h-6 w-6 text-blue-600 mb-2' />
+                <span className='text-sm text-gray-700'>{t('calendar:newEvent')}</span>
               </button>
-              <button className="flex flex-col items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50">
-                <Clock className="h-6 w-6 text-green-600 mb-2" />
-                <span className="text-sm text-gray-700">{t('calendar:schedule')}</span>
+              <button className='flex flex-col items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50'>
+                <Clock className='h-6 w-6 text-green-600 mb-2' />
+                <span className='text-sm text-gray-700'>{t('calendar:schedule')}</span>
               </button>
-              <button className="flex flex-col items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50">
-                <CheckSquare className="h-6 w-6 text-purple-600 mb-2" />
-                <span className="text-sm text-gray-700">{t('calendar:tasks')}</span>
+              <button className='flex flex-col items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50'>
+                <CheckSquare className='h-6 w-6 text-purple-600 mb-2' />
+                <span className='text-sm text-gray-700'>{t('calendar:tasks')}</span>
               </button>
-              <button className="flex flex-col items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50">
-                <Users className="h-6 w-6 text-orange-600 mb-2" />
-                <span className="text-sm text-gray-700">{t('calendar:meetings')}</span>
+              <button className='flex flex-col items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50'>
+                <Users className='h-6 w-6 text-orange-600 mb-2' />
+                <span className='text-sm text-gray-700'>{t('calendar:meetings')}</span>
               </button>
             </div>
           </div>
 
           {/* Upcoming Events */}
-          <div className="bg-white rounded-lg shadow-sm p-4">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="font-semibold text-gray-900">{t('calendar:upcoming')}</h3>
-              <button className="text-sm text-blue-600 hover:text-blue-700">
+          <div className='bg-white rounded-lg shadow-sm p-4'>
+            <div className='flex items-center justify-between mb-4'>
+              <h3 className='font-semibold text-gray-900'>{t('calendar:upcoming')}</h3>
+              <button className='text-sm text-blue-600 hover:text-blue-700'>
                 {t('calendar:viewAll')}
               </button>
             </div>
-            <div className="space-y-4">
+            <div className='space-y-4'>
               {/* Client Meeting */}
-              <div className="border-l-4 border-blue-500 bg-blue-50 p-3 rounded-r-lg">
-                <div className="flex justify-between items-start">
-                  <div className="flex-1">
-                    <h4 className="font-medium text-gray-900">
+              <div className='border-l-4 border-blue-500 bg-blue-50 p-3 rounded-r-lg'>
+                <div className='flex justify-between items-start'>
+                  <div className='flex-1'>
+                    <h4 className='font-medium text-gray-900'>
                       Client {t('calendar:categories.meetings').slice(0, -1)}
                     </h4>
-                    <p className="text-sm text-gray-600">Acme Corporation • Virtual</p>
-                    <div className="flex items-center space-x-1 mt-1">
-                      <Clock className="h-3 w-3 text-gray-400" />
-                      <span className="text-xs text-gray-500">1 {t('calendar:hour')}</span>
+                    <p className='text-sm text-gray-600'>Acme Corporation • Virtual</p>
+                    <div className='flex items-center space-x-1 mt-1'>
+                      <Clock className='h-3 w-3 text-gray-400' />
+                      <span className='text-xs text-gray-500'>1 {t('calendar:hour')}</span>
                     </div>
                   </div>
-                  <span className="text-sm font-medium text-gray-900">10:00 AM</span>
+                  <span className='text-sm font-medium text-gray-900'>10:00 AM</span>
                 </div>
               </div>
 
               {/* Team Standup */}
-              <div className="border-l-4 border-purple-500 bg-purple-50 p-3 rounded-r-lg">
-                <div className="flex justify-between items-start">
-                  <div className="flex-1">
-                    <h4 className="font-medium text-gray-900">Team Standup</h4>
-                    <p className="text-sm text-gray-600">Development Team • Conference Room</p>
-                    <div className="flex items-center space-x-1 mt-1">
-                      <Clock className="h-3 w-3 text-gray-400" />
-                      <span className="text-xs text-gray-500">30 {t('calendar:minutes')}</span>
+              <div className='border-l-4 border-purple-500 bg-purple-50 p-3 rounded-r-lg'>
+                <div className='flex justify-between items-start'>
+                  <div className='flex-1'>
+                    <h4 className='font-medium text-gray-900'>Team Standup</h4>
+                    <p className='text-sm text-gray-600'>Development Team • Conference Room</p>
+                    <div className='flex items-center space-x-1 mt-1'>
+                      <Clock className='h-3 w-3 text-gray-400' />
+                      <span className='text-xs text-gray-500'>30 {t('calendar:minutes')}</span>
                     </div>
                   </div>
-                  <span className="text-sm font-medium text-gray-900">2:00 PM</span>
+                  <span className='text-sm font-medium text-gray-900'>2:00 PM</span>
                 </div>
               </div>
 
               {/* Budget Review */}
-              <div className="border-l-4 border-red-500 bg-red-50 p-3 rounded-r-lg">
-                <div className="flex justify-between items-start">
-                  <div className="flex-1">
-                    <h4 className="font-medium text-gray-900">
+              <div className='border-l-4 border-red-500 bg-red-50 p-3 rounded-r-lg'>
+                <div className='flex justify-between items-start'>
+                  <div className='flex-1'>
+                    <h4 className='font-medium text-gray-900'>
                       Budget {t('calendar:categories.reviews').slice(0, -1)}
                     </h4>
-                    <p className="text-sm text-gray-600">Finance Team • Office 204</p>
-                    <div className="flex items-center space-x-1 mt-1">
-                      <Clock className="h-3 w-3 text-gray-400" />
-                      <span className="text-xs text-gray-500">45 {t('calendar:minutes')}</span>
+                    <p className='text-sm text-gray-600'>Finance Team • Office 204</p>
+                    <div className='flex items-center space-x-1 mt-1'>
+                      <Clock className='h-3 w-3 text-gray-400' />
+                      <span className='text-xs text-gray-500'>45 {t('calendar:minutes')}</span>
                     </div>
                   </div>
-                  <span className="text-sm font-medium text-gray-900">4:30 PM</span>
+                  <span className='text-sm font-medium text-gray-900'>4:30 PM</span>
                 </div>
               </div>
             </div>
@@ -686,84 +690,84 @@ export default function Calendar() {
 
       {/* New Event Modal */}
       {showEventModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-xl shadow-2xl max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
-            <div className="flex items-center justify-between p-6 border-b border-gray-100">
-              <h2 className="text-xl font-semibold text-gray-900">{t('calendar:createEvent')}</h2>
+        <div className='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50'>
+          <div className='bg-white rounded-xl shadow-2xl max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto'>
+            <div className='flex items-center justify-between p-6 border-b border-gray-100'>
+              <h2 className='text-xl font-semibold text-gray-900'>{t('calendar:createEvent')}</h2>
               <button
                 onClick={() => setShowEventModal(false)}
-                className="p-2 hover:bg-gray-100 rounded-lg"
+                className='p-2 hover:bg-gray-100 rounded-lg'
               >
-                <X className="h-4 w-4 text-gray-600" />
+                <X className='h-4 w-4 text-gray-600' />
               </button>
             </div>
 
-            <div className="p-6">
-              <form className="space-y-6">
+            <div className='p-6'>
+              <form className='space-y-6'>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className='block text-sm font-medium text-gray-700 mb-2'>
                     {t('calendar:eventTitle')}
                   </label>
                   <input
-                    type="text"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    type='text'
+                    className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent'
                     placeholder={t('calendar:eventTitlePlaceholder')}
                   />
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
+                <div className='grid grid-cols-2 gap-4'>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className='block text-sm font-medium text-gray-700 mb-2'>
                       {t('calendar:date')}
                     </label>
                     <input
-                      type="date"
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      type='date'
+                      className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent'
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className='block text-sm font-medium text-gray-700 mb-2'>
                       {t('calendar:time')}
                     </label>
                     <input
-                      type="time"
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      type='time'
+                      className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent'
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className='block text-sm font-medium text-gray-700 mb-2'>
                     {t('calendar:location')}
                   </label>
                   <input
-                    type="text"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    type='text'
+                    className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent'
                     placeholder={t('calendar:locationPlaceholder')}
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className='block text-sm font-medium text-gray-700 mb-2'>
                     {t('calendar:description')}
                   </label>
                   <textarea
                     rows={4}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent'
                     placeholder={t('calendar:descriptionPlaceholder')}
                   />
                 </div>
               </form>
             </div>
 
-            <div className="bg-gray-50 px-6 py-4 flex justify-end space-x-3">
+            <div className='bg-gray-50 px-6 py-4 flex justify-end space-x-3'>
               <button
                 onClick={() => setShowEventModal(false)}
-                className="px-4 py-2 text-gray-700 hover:text-gray-900"
+                className='px-4 py-2 text-gray-700 hover:text-gray-900'
               >
                 {t('calendar:cancel')}
               </button>
-              <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+              <button className='px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700'>
                 {t('calendar:createEvent')}
               </button>
             </div>
