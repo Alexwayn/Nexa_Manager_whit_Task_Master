@@ -19,6 +19,7 @@ export default defineConfig({
       '@i18n': path.resolve(__dirname, './src/i18n'),
       '@types': path.resolve(__dirname, './src/types'),
       '@router': path.resolve(__dirname, './src/router'),
+      '@hoc': path.resolve(__dirname, './src/components/hoc'),
     },
   },
   esbuild: {
