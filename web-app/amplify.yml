@@ -1,52 +1,50 @@
 version: 1
-applications:
-  - frontend:
-      phases:
-        preBuild:
-          commands:
-            - echo "Installing dependencies..."
-            - cd web-app
-            - npm ci
-            - echo "Running pre-build checks..."
-            - npm run type-check
-            - npm run lint
-        build:
-          commands:
-            - echo "Building Nexa Manager application..."
-            - cd web-app
-            - npm run build
-            - echo "Build completed successfully!"
-        postBuild:
-          commands:
-            - echo "Running post-build optimizations..."
-            - echo "Build artifacts ready for deployment"
-      artifacts:
-        baseDirectory: web-app/dist
-        files:
-          - '**/*'
-      cache:
-        paths:
-          - web-app/node_modules/**/*
-      customHeaders:
-        - pattern: '**/*'
-          headers:
-            - key: 'Strict-Transport-Security'
-              value: 'max-age=31536000; includeSubDomains'
-            - key: 'X-Content-Type-Options'
-              value: 'nosniff'
-            - key: 'X-Frame-Options'
-              value: 'DENY'
-            - key: 'X-XSS-Protection'
-              value: '1; mode=block'
-        - pattern: '**/*.js'
-          headers:
-            - key: 'Cache-Control'
-              value: 'public, max-age=31536000, immutable'
-        - pattern: '**/*.css'
-          headers:
-            - key: 'Cache-Control'
-              value: 'public, max-age=31536000, immutable'
-        - pattern: '**/*.html'
-          headers:
-            - key: 'Cache-Control'
-              value: 'public, max-age=3600' 
+frontend:
+  phases:
+    preBuild:
+      commands:
+        - echo "Installing dependencies in web-app directory..."
+        - cd web-app && npm ci
+        - echo "Running pre-build checks..."
+        - cd web-app && npm run type-check
+        - cd web-app && npm run lint
+    build:
+      commands:
+        - echo "Building Nexa Manager application..."
+        - cd web-app && npm run build
+        - echo "Build completed successfully!"
+        - ls -la web-app/dist/
+    postBuild:
+      commands:
+        - echo "Running post-build optimizations..."
+        - echo "Build artifacts ready for deployment"
+  artifacts:
+    baseDirectory: web-app/dist
+    files:
+      - '**/*'
+  cache:
+    paths:
+      - web-app/node_modules/**/*
+  customHeaders:
+    - pattern: '**/*'
+      headers:
+        - key: 'Strict-Transport-Security'
+          value: 'max-age=31536000; includeSubDomains'
+        - key: 'X-Content-Type-Options'
+          value: 'nosniff'
+        - key: 'X-Frame-Options'
+          value: 'DENY'
+        - key: 'X-XSS-Protection'
+          value: '1; mode=block'
+    - pattern: '**/*.js'
+      headers:
+        - key: 'Cache-Control'
+          value: 'public, max-age=31536000, immutable'
+    - pattern: '**/*.css'
+      headers:
+        - key: 'Cache-Control'
+          value: 'public, max-age=31536000, immutable'
+    - pattern: '**/*.html'
+      headers:
+        - key: 'Cache-Control'
+          value: 'public, max-age=3600' 
