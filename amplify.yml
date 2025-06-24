@@ -3,12 +3,15 @@ frontend:
   phases:
     preBuild:
       commands:
-        - echo "Installing dependencies in web-app directory..." && cd web-app && npm ci
+        - echo "Installing dependencies..."
+        - npm ci --prefix web-app
         - echo "Pre-build setup completed successfully!"
     build:
       commands:
-        - echo "Building Nexa Manager application..." && cd web-app && npm run build
-        - echo "Build completed successfully!" && ls -la web-app/dist/
+        - echo "Building Nexa Manager application..."
+        - npm run build --prefix web-app
+        - echo "Build completed successfully!"
+        - ls -la web-app/dist/
     postBuild:
       commands:
         - echo "Running post-build optimizations..."
