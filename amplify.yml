@@ -3,13 +3,13 @@ frontend:
   phases:
     preBuild:
       commands:
-        - echo "Installing dependencies..."
-        - npm ci --prefix web-app
+        - echo "Installing dependencies for monorepo..."
+        - npm ci
         - echo "Pre-build setup completed successfully!"
     build:
       commands:
         - echo "Building Nexa Manager application..."
-        - npm run build --prefix web-app
+        - npm run build
         - echo "Build completed successfully!"
         - ls -la web-app/dist/
     postBuild:
@@ -22,6 +22,7 @@ frontend:
       - '**/*'
   cache:
     paths:
+      - node_modules/**/*
       - web-app/node_modules/**/*
   customHeaders:
     - pattern: '**/*'
