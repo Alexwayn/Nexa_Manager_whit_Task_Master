@@ -1,6 +1,17 @@
 import { useState, useEffect } from 'react';
-import { supabase, testSupabaseConnection } from '@lib/supabaseClient';
+import { supabase } from '@lib/supabaseClient';
 import Logger from '@utils/Logger';
+
+// Simple test function to replace the missing testSupabaseConnection
+const testSupabaseConnection = async () => {
+  try {
+    const { data, error } = await supabase.from('clients').select('count').limit(1);
+    if (error) throw error;
+    return { success: true, message: 'Connection successful', data };
+  } catch (error) {
+    return { success: false, message: error.message, error };
+  }
+};
 
 export default function Test() {
   const [loading1, setLoading1] = useState(false);
