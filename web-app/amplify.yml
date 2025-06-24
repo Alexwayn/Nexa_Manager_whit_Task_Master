@@ -19,12 +19,13 @@ applications:
             - echo "Running post-build optimizations..."
             - echo "Build artifacts ready for deployment"
       artifacts:
-        baseDirectory: dist
+        baseDirectory: web-app/dist
         files:
           - '**/*'
       cache:
         paths:
           - node_modules/**/*
+          - web-app/node_modules/**/*
       customHeaders:
         - pattern: '**/*'
           headers:
