@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import Footer from '@components/shared/Footer';
-import { useAuth } from '@context/AuthContext';
+import { useAuth, useUser } from '@clerk/clerk-react';
 import invoiceAnalyticsService from '@lib/invoiceAnalyticsService';
 import Logger from '@utils/Logger';
 import ErrorBoundary from '@components/common/ErrorBoundary';
@@ -22,7 +22,8 @@ import nexaLogo from '@assets/logo_nexa.png';
 
 const Analytics = () => {
   const { t } = useTranslation();
-  const { user } = useAuth();
+  const { isSignedIn } = useAuth();
+  const { user } = useUser();
   const [analytics, setAnalytics] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);

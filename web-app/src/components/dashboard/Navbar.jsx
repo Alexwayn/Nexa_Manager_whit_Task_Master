@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment } from 'react';
 import { Menu, Transition } from '@headlessui/react';
 import {
   BellIcon,
@@ -10,8 +10,8 @@ import {
   ComputerDesktopIcon,
 } from '@heroicons/react/24/outline';
 import { ChevronDownIcon } from '@heroicons/react/24/solid';
-import { useAuth } from '@context/AuthContext';
-import { useTheme } from '@context/ThemeContext';
+import { useAuth, useUser } from '@clerk/clerk-react';
+import { useTheme } from '@context/OptimizedThemeContext';
 import { useNavigate } from 'react-router-dom';
 import Logger from '@utils/Logger';
 import { useTranslation } from 'react-i18next';
@@ -21,75 +21,15 @@ function classNames(...classes) {
 }
 
 export default function Navbar({ onOpenSidebar }) {
-  const { user, logout, authError, recoverSession, userAvatar, updateUserAvatar } = useAuth();
+  const { signOut } = useAuth();
+  const { user } = useUser();
   const { setLightTheme, setDarkTheme, setAutoTheme, isDark } = useTheme();
   const navigate = useNavigate();
   const { t, ready } = useTranslation('navigation');
-  const [profilePicture, setProfilePicture] = useState('/assets/profile.jpg');
-
-  // Use avatar from context and update local state
-  useEffect(() => {
-    if (userAvatar) {
-      setProfilePicture(userAvatar);
-    } else if (user?.id) {
-      // If there's no userAvatar but user is authenticated, try to fetch it
-      updateUserAvatar(true);
-    }
-  }, [userAvatar, user, updateUserAvatar]);
-
-  // Handle auth errors by attempting to recover the session
-  useEffect(() => {
-    if (authError && authError.message && authError.message.includes('Invalid Refresh Token')) {
-      Logger.warn(safeT('log.sessionRecoveryAttempt', 'Attempting session recovery'));
-      const attemptRecovery = async () => {
-        const recovered = await recoverSession();
-        if (!recovered) {
-          Logger.warn(safeT('log.sessionRecoveryFailed', 'Session recovery failed'));
-          navigate('/login');
-        } else {
-          Logger.info(safeT('log.sessionRecovered', 'Session recovered'));
-        }
-      };
-
-      attemptRecovery();
-    }
-  }, [authError, recoverSession, navigate, ready]);
-
-  // Force avatar update when window becomes visible (e.g. after tab change)
-  useEffect(() => {
-    const handleVisibilityChange = () => {
-      if (document.visibilityState === 'visible' && user?.id) {
-        // Force avatar update when page becomes visible
-        updateUserAvatar(true);
-      }
-    };
-
-    // Add event listener
-    document.addEventListener('visibilitychange', handleVisibilityChange);
-
-    // Cleanup
-    return () => {
-      document.removeEventListener('visibilitychange', handleVisibilityChange);
-    };
-  }, [user, updateUserAvatar]);
-
-  // Update avatar every 5 minutes
-  useEffect(() => {
-    const intervalId = setInterval(
-      () => {
-        if (user?.id) {
-          updateUserAvatar(true);
-        }
-      },
-      5 * 60 * 1000,
-    ); // 5 minutes
-
-    return () => clearInterval(intervalId);
-  }, [user, updateUserAvatar]);
 
   const handleLogout = async () => {
     try {
-      await logout();
+      await signOut();
       navigate('/login');
     } catch (error) {
       Logger.error(safeT('log.logoutError', 'Logout error'), error.message);
@@ -158,24 +98,34 @@ export default function Navbar({ onOpenSidebar }) {
                   <SunIcon className='h-6 w-6' aria-hidden='true' />
                 )}
               </Menu.Button>
-              <Menu.Items className='absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white dark:bg-gray-800 py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none'>
-                {themeOptions.map(option => (
-                  <Menu.Item key={option.value}>
-                    {({ active }) => (
-                      <button
-                        onClick={option.onClick}
-                        className={classNames(
-                          active ? 'bg-gray-100 dark:bg-gray-700' : '',
-                          'flex w-full items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300',
-                        )}
-                      >
-                        <option.icon className='mr-3 h-5 w-5' aria-hidden='true' />
-                        {option.name}
-                      </button>
-                    )}
-                  </Menu.Item>
-                ))}
-              </Menu.Items>
+              <Transition
+                as={Fragment}
+                enter='transition ease-out duration-100'
+                enterFrom='transform opacity-0 scale-95'
+                enterTo='transform opacity-100 scale-100'
+                leave='transition ease-in duration-75'
+                leaveFrom='transform opacity-100 scale-100'
+                leaveTo='transform opacity-0 scale-95'
+              >
+                <Menu.Items className='absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white dark:bg-gray-800 py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none'>
+                  {themeOptions.map(option => (
+                    <Menu.Item key={option.value}>
+                      {({ active }) => (
+                        <button
+                          onClick={option.onClick}
+                          className={classNames(
+                            active ? 'bg-gray-100 dark:bg-gray-700' : '',
+                            'flex w-full items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300',
+                          )}
+                        >
+                          <option.icon className='mr-3 h-5 w-5' aria-hidden='true' />
+                          {option.name}
+                        </button>
+                      )}
+                    </Menu.Item>
+                  ))}
+                </Menu.Items>
+              </Transition>
             </Menu>
 
             {/* Help button */}
@@ -217,9 +167,9 @@ export default function Navbar({ onOpenSidebar }) {
               <Menu.Button className='-m-1.5 flex items-center p-1.5'>
                 <span className='sr-only'>{safeT('openUserMenu', 'Open user menu')}</span>
                 <span className='inline-block h-8 w-8 overflow-hidden rounded-full bg-gray-100 dark:bg-gray-700'>
-                  {profilePicture ? (
+                  {user?.profileImageUrl ? (
                     <img
-                      src={profilePicture}
+                      src={user.profileImageUrl}
                       alt='Profile'
                       className='h-full w-full object-cover'
                     />
@@ -238,7 +188,7 @@ export default function Navbar({ onOpenSidebar }) {
                     className='ml-4 text-sm font-semibold leading-6 text-gray-900 dark:text-gray-100'
                     aria-hidden='true'
                   >
-                    {user?.email || safeT('defaultUser', 'User')}
+                    {user?.primaryEmailAddress?.emailAddress || user?.fullName || safeT('defaultUser', 'User')}
                   </span>
                   <ChevronDownIcon
                     className='ml-2 h-5 w-5 text-gray-400 dark:text-gray-500'
@@ -246,40 +196,50 @@ export default function Navbar({ onOpenSidebar }) {
                   />
                 </span>
               </Menu.Button>
-              <Menu.Items className='absolute right-0 z-10 mt-2.5 w-32 origin-top-right rounded-md bg-white dark:bg-gray-800 py-2 shadow-lg ring-1 ring-gray-900/5 dark:ring-gray-700/5 focus:outline-none'>
-                {userNavigation.map(item => (
-                  <Menu.Item key={item.name}>
+              <Transition
+                as={Fragment}
+                enter='transition ease-out duration-100'
+                enterFrom='transform opacity-0 scale-95'
+                enterTo='transform opacity-100 scale-100'
+                leave='transition ease-in duration-75'
+                leaveFrom='transform opacity-100 scale-100'
+                leaveTo='transform opacity-0 scale-95'
+              >
+                <Menu.Items className='absolute right-0 z-10 mt-2.5 w-32 origin-top-right rounded-md bg-white dark:bg-gray-800 py-2 shadow-lg ring-1 ring-gray-900/5 dark:ring-gray-700/5 focus:outline-none'>
+                  {userNavigation.map(item => (
+                    <Menu.Item key={item.name}>
+                      {({ active }) => (
+                        <a
+                          href={item.href}
+                          onClick={e => {
+                            e.preventDefault();
+                            item.onClick();
+                          }}
+                          className={classNames(
+                            active ? 'bg-gray-50 dark:bg-gray-700' : '',
+                            'block px-3 py-1 text-sm leading-6 text-gray-900 dark:text-gray-100',
+                          )}
+                        >
+                          {item.name}
+                        </a>
+                      )}
+                    </Menu.Item>
+                  ))}
+                  <Menu.Item>
                     {({ active }) => (
-                      <a
-                        href={item.href}
-                        onClick={e => {
-                          e.preventDefault();
-                          item.onClick();
-                        }}
+                      <button
+                        onClick={handleLogout}
                         className={classNames(
-                          active ? 'bg-gray-50 dark:bg-gray-700' : '',
-                          'block px-3 py-1 text-sm leading-6 text-gray-900 dark:text-gray-100',
+                          active ? 'bg-red-50 dark:bg-red-900/20' : '',
+                          'block w-full text-left px-3 py-1 text-sm leading-6 text-red-700 dark:text-red-400',
                         )}
                       >
-                        {item.name}
-                      </a>
+                        {safeT('logout', 'Logout')}
+                      </button>
                     )}
                   </Menu.Item>
-                ))}
-                <Menu.Item>
-                  {({ active }) => (
-                    <button
-                      onClick={handleLogout}
-                      className={classNames(
-                        active ? 'bg-red-50 dark:bg-red-900/20' : '',
-                        'block w-full text-left px-3 py-1 text-sm leading-6 text-red-700 dark:text-red-400',
-                      )}
-                    >
-                      {safeT('logout', 'Logout')}
-                    </button>
-                  )}
-                </Menu.Item>
-              </Menu.Items>
+                </Menu.Items>
+              </Transition>
             </Menu>
           </div>
         </div>

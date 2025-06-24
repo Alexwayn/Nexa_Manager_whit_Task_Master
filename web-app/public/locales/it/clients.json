@@ -35,6 +35,16 @@
     "call": "Chiama",
     "map": "Mappa"
   },
+  "table": {
+    "client": "Cliente",
+    "contact": "Contatto",
+    "status": "Stato",
+    "actions": "Azioni"
+  },
+  "empty": {
+    "noClients": "Nessun cliente trovato",
+    "createFirst": "Crea il tuo primo cliente"
+  },
   "sort": {
     "by": "Ordina per:",
     "company": "Nome Azienda",

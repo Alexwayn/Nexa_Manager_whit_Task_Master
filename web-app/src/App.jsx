@@ -1,13 +1,20 @@
 import React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
-import { AuthProvider } from '@context/OptimizedAuthContext';
+import { ClerkProvider } from '@clerk/clerk-react';
 import { ThemeProvider } from '@context/OptimizedThemeContext';
 import AppRouter from '@router/AppRouter';
 import FloatingMicrophone from '@components/shared/FloatingMicrophone';
 import ErrorBoundary from '@components/common/ErrorBoundary';
 
 import './index.css';
+
+// Get the Clerk publishable key from environment variables
+const clerkPublishableKey = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
+
+if (!clerkPublishableKey) {
+  throw new Error('Missing Clerk Publishable Key. Please add VITE_CLERK_PUBLISHABLE_KEY to your environment variables.');
+}
 
 /**
  * Toast Configuration - Centralized toast settings
@@ -48,17 +55,17 @@ const toastConfig = {
 /**
  * Main App Component - Provides global context and routing
  *
- * Performance Optimizations Applied:
- * 1. Uses OptimizedAuthProvider for context splitting and memoization
- * 2. Uses OptimizedThemeProvider for reduced re-renders
- * 3. Maintains backward compatibility with original API
- * 4. All existing components work without changes
+ * Migration to Clerk Authentication:
+ * 1. Replaced AuthProvider with ClerkProvider for enterprise-grade auth
+ * 2. ClerkProvider handles all authentication state and user management
+ * 3. Maintains backward compatibility with existing routing structure
+ * 4. Enhanced security with Clerk's built-in protections
  */
 function App() {
   return (
     <ErrorBoundary>
-      <ThemeProvider>
-        <AuthProvider>
+      <ClerkProvider publishableKey={clerkPublishableKey}>
+        <ThemeProvider>
           <Router>
             <div className='min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-200'>
               {/* Main Application Router */}
@@ -71,8 +78,8 @@ function App() {
               <FloatingMicrophone />
             </div>
           </Router>
-        </AuthProvider>
-      </ThemeProvider>
+        </ThemeProvider>
+      </ClerkProvider>
     </ErrorBoundary>
   );
 }

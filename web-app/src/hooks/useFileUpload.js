@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { supabase } from '@lib/supabaseClient';
-import { useAuth } from '@context/AuthContext';
-import Logger from '@utils/Logger';
+import { useAuth, useUser } from '@clerk/clerk-react';
+// import Logger from '@utils/Logger';
 
 export const useFileUpload = () => {
-  const { user, updateUserAvatar } = useAuth();
+  const { isSignedIn, isLoaded } = useAuth();
+  const { user } = useUser();
   const [isUploading, setIsUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [error, setError] = useState(null);
@@ -60,7 +61,7 @@ export const useFileUpload = () => {
       const fileName = `${user.id}_${Date.now()}.${fileExt}`;
       const filePath = folder ? `${folder}/${fileName}` : fileName;
 
-      Logger.info(`Uploading file to ${bucket}/${filePath}`);
+      // Logger.info(`Uploading file to ${bucket}/${filePath}`);
 
       // Upload file to Supabase Storage
       const { data: uploadData, error: uploadError } = await supabase.storage
@@ -71,18 +72,18 @@ export const useFileUpload = () => {
         });
 
       if (uploadError) {
-        Logger.error('Upload error:', uploadError);
+        // Logger.error('Upload error:', uploadError);
         throw uploadError;
       }
 
-      Logger.info('File uploaded successfully:', uploadData);
+      // Logger.info('File uploaded successfully:', uploadData);
 
       // Get public URL
       const {
         data: { publicUrl },
       } = supabase.storage.from(bucket).getPublicUrl(filePath);
 
-      Logger.info('Public URL:', publicUrl);
+      // Logger.info('Public URL:', publicUrl);
 
       const result = {
         path: filePath,
@@ -99,7 +100,7 @@ export const useFileUpload = () => {
       setUploadProgress(100);
       return result;
     } catch (error) {
-      Logger.error('Error uploading file:', error);
+      // Logger.error('Error uploading file:', error);
       const errorMsg =
         'Errore durante il caricamento del file: ' +
         (error.message || error.error_description || 'Controlla la console per dettagli');
@@ -126,16 +127,13 @@ export const useFileUpload = () => {
           .eq('id', user.id);
 
         if (updateError) {
-          Logger.error('Error updating avatar in profile:', updateError);
+          // Logger.error('Error updating avatar in profile:', updateError);
           throw updateError;
         }
 
-        // Update auth context
-        if (updateUserAvatar) {
-          updateUserAvatar(result.publicUrl);
-        }
+        // Note: Clerk handles user data differently - avatar updates would go through Clerk API
 
-        Logger.info('Avatar updated successfully');
+        // Logger.info('Avatar updated successfully');
       },
     });
   };
@@ -153,11 +151,11 @@ export const useFileUpload = () => {
           .eq('id', user.id);
 
         if (updateError) {
-          Logger.error('Error updating company logo in profile:', updateError);
+          // Logger.error('Error updating company logo in profile:', updateError);
           throw updateError;
         }
 
-        Logger.info('Company logo updated successfully');
+        // Logger.info('Company logo updated successfully');
       },
     });
   };
@@ -170,13 +168,13 @@ export const useFileUpload = () => {
       const { error } = await supabase.storage.from(bucket).remove([path]);
 
       if (error) {
-        Logger.error('Error removing file:', error);
+        // Logger.error('Error removing file:', error);
         throw error;
       }
 
       return true;
     } catch (error) {
-      Logger.error('Error in removeFile:', error);
+      // Logger.error('Error in removeFile:', error);
       setError('Errore durante la rimozione del file');
       return false;
     }

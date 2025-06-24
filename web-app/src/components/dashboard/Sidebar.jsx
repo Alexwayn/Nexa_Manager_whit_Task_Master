@@ -24,7 +24,7 @@ import {
   FolderIcon,
   CameraIcon,
 } from '@heroicons/react/24/outline';
-import { useTheme } from '@context/ThemeContext';
+import { useTheme } from '@context/OptimizedThemeContext';
 import nexaLogo from '@assets/logo_nexa.png'; // Assuming logo is needed here too
 
 // Remove the separate SidebarContent function to avoid hooks order issues

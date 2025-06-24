@@ -17,7 +17,7 @@ import {
   XCircleIcon,
   XMarkIcon,
 } from '@heroicons/react/24/outline';
-import { useAuth } from '@context/AuthContext';
+import { useAuth, useUser } from '@clerk/clerk-react';
 import { supabase } from '@lib/supabaseClient';
 import Logger from '@utils/Logger';
 import { useTranslation } from 'react-i18next';
@@ -25,7 +25,8 @@ import Footer from '@components/shared/Footer';
 
 export default function Settings() {
   const { t } = useTranslation('settings');
-  const { user, updateUserAvatar } = useAuth();
+  const { isSignedIn } = useAuth();
+  const { user } = useUser();
   const [activeTab, setActiveTab] = useState(0);
   const [isUploading, setIsUploading] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
@@ -85,17 +86,17 @@ export default function Settings() {
 
   // Fetch user profile on component mount
   useEffect(() => {
-    if (user) {
+    if (isSignedIn && user) {
       fetchUserProfile();
     } else {
       setIsLoading(false);
     }
-  }, [user]);
+  }, [isSignedIn, user]);
 
   // Load sessions when Security tab is activated
   useEffect(() => {
     if (activeTab === 1 && sessions.length === 0) {
-      Logger.log(t('logs.loadSessionsSecurityTab'));
+      // Logger.log(t('logs.loadSessionsSecurityTab'));
       fetchUserSessions();
     }
   }, [activeTab]);
@@ -103,13 +104,13 @@ export default function Settings() {
   const showNotification = (message, type = 'success') => {
     setNotification({ show: true, message, type });
     setTimeout(() => setNotification({ show: false, message: '', type: 'success' }), 5000);
-    Logger.log(`${message} - ${t('logs.hideAfterSeconds')}`);
+    // Logger.log(`${message} - ${t('logs.hideAfterSeconds')}`);
   };
 
   async function fetchUserProfile() {
     try {
       setIsLoading(true);
-      Logger.log(`${t('logs.fetchingProfile')} ${user.id}`);
+      // Logger.log(`${t('logs.fetchingProfile')} ${user.id}`);
       const { data, error } = await supabase
         .from('profiles')
         .select('*')
@@ -118,14 +119,14 @@ export default function Settings() {
 
       if (error && error.code === 'PGRST116') {
         // Profile not found
-        Logger.log(t('logs.profileNotFound'));
+        // Logger.log(t('logs.profileNotFound'));
         const { data: newProfile, error: createError } = await supabase
           .from('profiles')
-          .insert([{ id: user.id, username: user.email.split('@')[0], email: user.email }])
+          .insert([{ id: user.id, username: user.primaryEmailAddress?.emailAddress.split('@')[0], email: user.primaryEmailAddress?.emailAddress }])
           .select()
           .single();
         if (createError) throw createError;
-        Logger.log(t('logs.profileCreated'), newProfile);
+        // Logger.log(t('logs.profileCreated'), newProfile);
         setProfileData({
           ...profileData,
           firstName: newProfile.full_name || '',
@@ -135,11 +136,11 @@ export default function Settings() {
       } else if (error) {
         throw error;
       } else {
-        Logger.log(t('logs.profileFetched'), data);
+        // Logger.log(t('logs.profileFetched'), data);
         setProfileData({
           firstName: data.full_name?.split(' ')[0] || '',
           lastName: data.full_name?.split(' ').slice(1).join(' ') || '',
-          email: data.email || user.email,
+          email: data.email || user.primaryEmailAddress?.emailAddress,
           phone: data.phone || '',
           companyName: data.company_name || '',
           position: data.position || '',
@@ -160,9 +161,9 @@ export default function Settings() {
             try {
               const parsedSettings = JSON.parse(data.notification_settings);
               setNotificationSettings(parsedSettings);
-              Logger.log(t('logs.notificationConverted'));
+              // Logger.log(t('logs.notificationConverted'));
             } catch (e) {
-              Logger.error(t('logs.notificationParseError'), e);
+              // Logger.error(t('logs.notificationParseError'), e);
             }
           } else {
             setNotificationSettings(data.notification_settings);
@@ -171,7 +172,7 @@ export default function Settings() {
       }
     } catch (error) {
       showNotification(`${t('errors.profileSave')} ${error.message}`, 'error');
-      Logger.error(`${t('errors.profileSave')}`, error);
+      // Logger.error(`${t('errors.profileSave')}`, error);
     } finally {
       setIsLoading(false);
     }
@@ -179,30 +180,34 @@ export default function Settings() {
 
   const fetchUserSessions = async () => {
     setLoadingSessions(true);
-    const { data, error } = await supabase.auth.admin.listUserSessions(user.id);
-    if (error) {
-      Logger.error(t('errors.sessionsFetch'), error);
+    try {
+      // Note: Clerk handles session management differently
+      // For now, we'll show a placeholder message
+      // Logger.log('Session management is handled by Clerk');
+      setSessions([]);
+      showNotification('Session management is handled by Clerk', 'info');
+    } catch (error) {
+      // Logger.error(t('errors.sessionsFetch'), error);
       showNotification(`${t('errors.sessionsFetch')}: ${error.message}`, 'error');
-    } else {
-      setSessions(data.sessions || []);
     }
     setLoadingSessions(false);
   };
 
   const revokeSession = async sessionId => {
-    const { error } = await supabase.auth.admin.revokeUserSessions(user.id, sessionId);
-    if (error) {
+    try {
+      // Note: Clerk handles session management differently
+      // Users can manage sessions through Clerk's user profile component
+      // Logger.log('Session revocation is handled by Clerk');
+      showNotification('Session revocation is handled by Clerk', 'info');
+    } catch (error) {
       showNotification(`${t('errors.deviceDisconnect')} ${error.message}`, 'error');
-    } else {
-      showNotification(t('success.deviceDisconnected'), 'success');
-      fetchUserSessions(); // Refresh the list
     }
   };
 
   const handleProfileSave = async e => {
     e.preventDefault();
     setIsSaving(true);
-    Logger.log(`${t('logs.savingProfile')} ${user.id}`);
+    // Logger.log(`${t('logs.savingProfile')} ${user.id}`);
 
     try {
       const updates = {
@@ -224,7 +229,7 @@ export default function Settings() {
         notification_settings: notificationSettings,
       };
 
-      Logger.log(t('logs.dataToSave'), updates);
+      // Logger.log(t('logs.dataToSave'), updates);
 
       const { error } = await supabase.from('profiles').upsert(updates);
 
@@ -234,7 +239,7 @@ export default function Settings() {
 
       showNotification(t('success.profile'), 'success');
     } catch (error) {
-      Logger.error(t('errors.profileSave'), error);
+      // Logger.error(t('errors.profileSave'), error);
       showNotification(
         `${t('errors.profileSave')} ${error.message || t('errors.checkConsole')}`,
         'error',
@@ -256,21 +261,14 @@ export default function Settings() {
     }
     setIsUpdatingPassword(true);
 
-    // Supabase does not provide a direct way to verify the current password.
-    // The recommended approach is to re-authenticate the user.
-    const { error: reauthError } = await supabase.auth.reauthenticate();
-    if (reauthError) {
-      showNotification(`${t('errors.passwordUpdate')} ${reauthError.message}`, 'error');
-      setIsUpdatingPassword(false);
-      return;
-    }
-
-    const { error } = await supabase.auth.updateUser({ password: passwordData.newPassword });
-    if (error) {
-      showNotification(`${t('errors.passwordUpdate')} ${error.message}`, 'error');
-    } else {
-      showNotification(t('success.passwordUpdated'), 'success');
+    try {
+      // Note: Clerk handles password changes through their user profile component
+      // For security reasons, password changes should be done through Clerk's UI
+      // Logger.log('Password changes are handled by Clerk');
+      showNotification('Password changes are handled by Clerk. Please use the account settings.', 'info');
       setPasswordData({ currentPassword: '', newPassword: '', confirmPassword: '' });
+    } catch (error) {
+      showNotification(`${t('errors.passwordUpdate')} ${error.message}`, 'error');
     }
     setIsUpdatingPassword(false);
   };
@@ -291,10 +289,10 @@ export default function Settings() {
       const bucket = isCompanyLogo ? 'company_logos' : 'avatars';
       const filePath = `${fileName}`;
 
-      Logger.log(`${isCompanyLogo ? t('logs.uploadingLogo') : t('logs.uploadingFile')}`, {
-        bucket,
-        filePath,
-      });
+      // Logger.log(`${isCompanyLogo ? t('logs.uploadingLogo') : t('logs.uploadingFile')}`, {
+      //   bucket,
+      //   filePath,
+      // });
 
       let { error: uploadError } = await supabase.storage.from(bucket).upload(filePath, file);
 
@@ -306,18 +304,18 @@ export default function Settings() {
         data: { publicUrl },
       } = supabase.storage.from(bucket).getPublicUrl(filePath);
 
-      Logger.log(
-        `${isCompanyLogo ? t('logs.publicLogoUrl') : t('logs.publicImageUrl')}`,
-        publicUrl,
-      );
+      // Logger.log(
+      //   `${isCompanyLogo ? t('logs.publicLogoUrl') : t('logs.publicImageUrl')}`,
+      //   publicUrl,
+      // );
 
       // Add timestamp to URL to force refresh
       const urlWithTimestamp = `${publicUrl}?t=${new Date().getTime()}`;
-      Logger.log(t('logs.addTimestampToUrl'));
+              // Logger.log(t('logs.addTimestampToUrl'));
 
       // Save original URL (without timestamp) to DB
       const dbUrl = publicUrl;
-      Logger.log(t('logs.saveOriginalUrl'));
+              // Logger.log(t('logs.saveOriginalUrl'));
 
       if (isCompanyLogo) {
         setProfileData({ ...profileData, companyLogoUrl: urlWithTimestamp });
@@ -334,13 +332,14 @@ export default function Settings() {
           .update({ avatar_url: dbUrl })
           .eq('id', user.id);
         if (dbError) throw dbError;
-        updateUserAvatar(urlWithTimestamp);
+        // Note: Avatar is updated in local state and database only
+        // Clerk handles its own avatar management
         showNotification(t('success.profilePhoto'), 'success');
       }
     } catch (error) {
       const errorMessage = isCompanyLogo ? t('errors.logoUpload') : t('errors.imageUpload');
       showNotification(`${errorMessage} ${error.message}`, 'error');
-      Logger.error(errorMessage, error);
+              // Logger.error(errorMessage, error);
     } finally {
       if (isCompanyLogo) {
         setIsUploadingCompanyLogo(false);
@@ -362,7 +361,7 @@ export default function Settings() {
       setProfileData({ ...profileData, companyLogoUrl: '' });
       showNotification(t('success.companyLogoRemoved'), 'success');
     } catch (error) {
-      Logger.error(t('errors.logoRemove'), error);
+      // Logger.error(t('errors.logoRemove'), error);
       showNotification(t('errors.logoRemove'), 'error');
     }
   };
@@ -389,42 +388,41 @@ export default function Settings() {
     }));
   };
 
-  // Renders the list of tabs with icons for navigation
-  const renderTabs = () => (
-    <div className='w-full max-w-xs px-2 py-8 sm:px-0'>
-      <Tab.Group vertical selectedIndex={activeTab} onChange={setActiveTab}>
-        <Tab.List className='flex flex-col space-y-1 rounded-xl bg-white p-1'>
-          {[
-            { name: t('tabs.profile'), icon: UserCircleIcon },
-            { name: t('tabs.security'), icon: KeyIcon },
-            { name: t('tabs.notifications'), icon: BellIcon },
-            { name: t('tabs.company'), icon: BuildingOfficeIcon },
-            { name: t('tabs.billing'), icon: CreditCardIcon },
-          ].map((tab, idx) => (
-            <Tab
-              key={tab.name}
-              className={({ selected }) =>
-                `w-full rounded-lg py-2.5 px-3 text-sm font-medium leading-5 text-gray-700 ring-white ring-opacity-60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2 flex items-center
-                ${
-                  selected
-                    ? 'bg-blue-100 text-blue-700 shadow'
-                    : 'text-gray-500 hover:bg-gray-100 hover:text-gray-900'
-                }`
-              }
-            >
-              <tab.icon className='w-5 h-5 mr-2' />
-              {tab.name}
-            </Tab>
-          ))}
-        </Tab.List>
-      </Tab.Group>
-    </div>
-  );
+  // Renders the complete tabs structure with navigation and content
+  const renderTabsWithContent = () => (
+    <div className='flex w-full'>
+      <div className='w-full max-w-xs px-2 py-8 sm:px-0'>
+        <Tab.Group vertical selectedIndex={activeTab} onChange={setActiveTab}>
+          <Tab.List className='flex flex-col space-y-1 rounded-xl bg-white p-1'>
+            {[
+              { name: t('tabs.profile'), icon: UserCircleIcon },
+              { name: t('tabs.security'), icon: KeyIcon },
+              { name: t('tabs.notifications'), icon: BellIcon },
+              { name: t('tabs.company'), icon: BuildingOfficeIcon },
+              { name: t('tabs.billing'), icon: CreditCardIcon },
+            ].map((tab, idx) => (
+              <Tab
+                key={tab.name}
+                className={({ selected }) =>
+                  `w-full rounded-lg py-2.5 px-3 text-sm font-medium leading-5 text-gray-700 ring-white ring-opacity-60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2 flex items-center
+                  ${
+                    selected
+                      ? 'bg-blue-100 text-blue-700 shadow'
+                      : 'text-gray-500 hover:bg-gray-100 hover:text-gray-900'
+                  }`
+                }
+              >
+                <tab.icon className='w-5 h-5 mr-2' />
+                {tab.name}
+              </Tab>
+            ))}
+          </Tab.List>
+          
+          {/* Tab Panels inside the same Tab.Group */}
+          <div className='mt-8 flex-1'>
+            <Tab.Panels as={Fragment}>
 
-  // Main form content based on selected tab
-  const renderTabContent = () => (
-    <div className='mt-8 flex-1'>
-      <Tab.Panels as={Fragment}>
+  // Note: renderTabContent is now integrated into renderTabsWithContent above
         {/* Profile Panel */}
         <Tab.Panel className='rounded-xl bg-white p-3 ring-white ring-opacity-60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2'>
           <form onSubmit={handleProfileSave} className='space-y-8 divide-y divide-gray-200'>
@@ -872,7 +870,7 @@ export default function Settings() {
                 </button>
                 <button
                   type='button'
-                  onClick={handleSubmit}
+                  onClick={handleProfileSave}
                   className='inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500'
                 >
                   {t('settings.notifications.button.save')}
@@ -887,7 +885,7 @@ export default function Settings() {
           <div className='p-6'>
             <h2 className='text-lg font-medium text-gray-900 mb-6'>{t('company.logo.title')}</h2>
 
-            <form onSubmit={handleSubmit} className='space-y-6'>
+            <form onSubmit={handleProfileSave} className='space-y-6'>
               <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
                 <div className='md:col-span-2'>
                   <label
@@ -942,7 +940,7 @@ export default function Settings() {
                           type='file'
                           className='sr-only'
                           accept='image/*'
-                          onChange={handleCompanyLogoUpload}
+                          onChange={(e) => handleFileUpload(e, true)}
                         />
                         <button
                           type='button'
@@ -968,7 +966,7 @@ export default function Settings() {
                     name='companyName'
                     id='companyName'
                     value={profileData.companyName}
-                    onChange={handleProfileChange}
+                    onChange={handleInputChange}
                     className='shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full border-gray-300 rounded-md'
                   />
                 </div>
@@ -982,7 +980,7 @@ export default function Settings() {
                     name='vatNumber'
                     id='vatNumber'
                     value={profileData.vatNumber}
-                    onChange={handleProfileChange}
+                    onChange={handleInputChange}
                     className='shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full border-gray-300 rounded-md'
                     placeholder={t('settings.company.vatNumber.placeholder')}
                   />
@@ -997,7 +995,7 @@ export default function Settings() {
                     name='taxCode'
                     id='taxCode'
                     value={profileData.taxCode}
-                    onChange={handleProfileChange}
+                    onChange={handleInputChange}
                     className='shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full border-gray-300 rounded-md'
                     placeholder={t('settings.company.taxCode.placeholder')}
                   />
@@ -1012,7 +1010,7 @@ export default function Settings() {
                     name='legalAddress'
                     id='legalAddress'
                     value={profileData.legalAddress}
-                    onChange={handleProfileChange}
+                    onChange={handleInputChange}
                     className='shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full border-gray-300 rounded-md'
                     placeholder={t('settings.company.legalAddress.placeholder')}
                   />
@@ -1030,7 +1028,7 @@ export default function Settings() {
                     name='businessPhone'
                     id='businessPhone'
                     value={profileData.businessPhone}
-                    onChange={handleProfileChange}
+                    onChange={handleInputChange}
                     className='shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full border-gray-300 rounded-md'
                     placeholder={t('settings.company.businessPhone.placeholder')}
                   />
@@ -1048,7 +1046,7 @@ export default function Settings() {
                     name='businessEmail'
                     id='businessEmail'
                     value={profileData.businessEmail}
-                    onChange={handleProfileChange}
+                    onChange={handleInputChange}
                     className='shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full border-gray-300 rounded-md'
                     placeholder={t('settings.company.businessEmail.placeholder')}
                   />
@@ -1067,7 +1065,7 @@ export default function Settings() {
                       name='website'
                       id='website'
                       value={profileData.website}
-                      onChange={handleProfileChange}
+                      onChange={handleInputChange}
                       className='flex-1 min-w-0 block w-full px-3 rounded-none rounded-r-md focus:ring-blue-500 focus:border-blue-500 border-gray-300'
                       placeholder={t('settings.company.website.placeholder')}
                     />
@@ -1290,6 +1288,9 @@ export default function Settings() {
         </Tab.Panel>
       </Tab.Panels>
     </div>
+        </Tab.Group>
+      </div>
+    </div>
   );
 
   return (
@@ -1299,8 +1300,7 @@ export default function Settings() {
           <div className='bg-white shadow rounded-lg'>
             <div className='px-4 py-5 sm:p-6'>
               <div className='flex'>
-                {renderTabs()}
-                {renderTabContent()}
+                {renderTabsWithContent()}
               </div>
             </div>
           </div>

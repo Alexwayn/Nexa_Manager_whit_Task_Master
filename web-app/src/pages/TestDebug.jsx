@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { supabase, testSupabaseConnection } from '@lib/supabaseClient';
-import { useAuth } from '@context/AuthContext';
+import { useAuth, useUser } from '@clerk/clerk-react';
 import ErrorBoundary from '../components/common/ErrorBoundary';
 
 export default function TestDebug() {

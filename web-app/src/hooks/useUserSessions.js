@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@lib/supabaseClient';
-import { useAuth } from '@context/AuthContext';
-import Logger from '@utils/Logger';
+import { useAuth, useUser } from '@clerk/clerk-react';
+// import Logger from '@utils/Logger';
 
 export const useUserSessions = () => {
-  const { user } = useAuth();
+  const { isSignedIn, isLoaded } = useAuth();
+  const { user } = useUser();
   const [sessions, setSessions] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isUpdatingPassword, setIsUpdatingPassword] = useState(false);
@@ -12,7 +13,7 @@ export const useUserSessions = () => {
 
   // Fetch user sessions
   const fetchSessions = async () => {
-    if (!user?.id) return;
+    if (!user?.id || !isLoaded) return;
 
     setIsLoading(true);
     setError(null);
@@ -58,7 +59,7 @@ export const useUserSessions = () => {
       setSessions(data || []);
       */
     } catch (error) {
-      Logger.error('Error fetching sessions:', error);
+      // Logger.error('Error fetching sessions:', error);
       setError('Errore nel caricamento delle sessioni');
     } finally {
       setIsLoading(false);
@@ -92,14 +93,14 @@ export const useUserSessions = () => {
       });
 
       if (error) {
-        Logger.error('Error updating password:', error);
+        // Logger.error('Error updating password:', error);
         throw error;
       }
 
-      Logger.info('Password updated successfully');
+      // Logger.info('Password updated successfully');
       return true;
     } catch (error) {
-      Logger.error('Error in updatePassword:', error);
+      // Logger.error('Error in updatePassword:', error);
 
       let errorMessage = "Errore durante l'aggiornamento della password.";
       if (error.message) {
@@ -138,10 +139,10 @@ export const useUserSessions = () => {
       // For now, just remove from local state
       setSessions(prev => prev.filter(session => session.id !== sessionId));
 
-      Logger.info('Session revoked successfully');
+      // Logger.info('Session revoked successfully');
       return true;
     } catch (error) {
-      Logger.error('Error revoking session:', error);
+      // Logger.error('Error revoking session:', error);
       setError('Errore durante la revoca della sessione');
       return false;
     }
@@ -154,10 +155,10 @@ export const useUserSessions = () => {
 
   // Load sessions when component mounts or user changes
   useEffect(() => {
-    if (user?.id) {
+    if (user?.id && isLoaded) {
       fetchSessions();
     }
-  }, [user]);
+  }, [user?.id, isLoaded]);
 
   return {
     sessions,

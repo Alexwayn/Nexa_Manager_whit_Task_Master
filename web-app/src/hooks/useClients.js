@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
-import { useAuth } from '@context/AuthContext';
-import { supabase } from '@lib/supabaseClient';
-import Logger from '@utils/Logger';
+import { useAuth, useUser } from '@clerk/clerk-react';
+import { supabase, withUserContext } from '@lib/supabaseClient';
+// import Logger from '@utils/Logger';
 
 export function useClients() {
-  const { user } = useAuth();
+  const { isSignedIn, isLoaded } = useAuth();
+  const { user } = useUser();
   const [clients, setClients] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -19,36 +20,37 @@ export function useClients() {
 
   // Función para recargar los clientes
   const refreshClients = async () => {
-    if (!user) return;
+    if (!user?.id || !isLoaded) return;
 
     setLoading(true);
     setError(null);
 
     try {
-      Logger.info('Refreshing clients for user ID:', user.id);
+      // Logger.info('Refreshing clients for user ID:', user.id);
 
-      const { data, error } = await supabase
-        .from('clients')
-        .select('*')
-        .eq('user_id', user.id)
-        .order('full_name', { ascending: true });
+      const result = await withUserContext(user.id, async () => {
+        return await supabase
+          .from('clients')
+          .select('*')
+          .order('full_name', { ascending: true });
+      });
 
-      if (error) {
-        Logger.error('Error refreshing clients:', error);
+      if (result.error) {
+        // Logger.error('Error refreshing clients:', result.error);
         setError('Error al cargar los clientes');
         return;
       }
 
       // Adapta los datos para compatibilidad frontend
-      const adaptedData = (data || []).map(client => ({
+      const adaptedData = (result.data || []).map(client => ({
         ...client,
         name: client.full_name || client.name || 'Cliente',
       }));
 
       setClients(adaptedData);
-      Logger.info('Clients refreshed successfully');
+      // Logger.info('Clients refreshed successfully');
     } catch (err) {
-      Logger.error('Exception refreshing clients:', err);
+      // Logger.error('Exception refreshing clients:', err);
       setError('Error de conexión');
     } finally {
       setLoading(false);
@@ -57,7 +59,7 @@ export function useClients() {
 
   // Función para crear un cliente
   const createClient = async clientData => {
-    if (!user) return { success: false, error: 'Usuario no autenticado' };
+    if (!user?.id || !isLoaded) return { success: false, error: 'Usuario no autenticado' };
 
     try {
       const newClient = {
@@ -67,31 +69,33 @@ export function useClients() {
         updated_at: new Date().toISOString(),
       };
 
-      const { data, error } = await supabase.from('clients').insert([newClient]).select().single();
+      const result = await withUserContext(user.id, async () => {
+        return await supabase.from('clients').insert([newClient]).select().single();
+      });
 
-      if (error) {
-        Logger.error('Error creating client:', error);
+      if (result.error) {
+        // Logger.error('Error creating client:', result.error);
         return { success: false, error: 'Error al crear el cliente' };
       }
 
       // Adapta los datos y actualiza la lista
       const adaptedClient = {
-        ...data,
-        name: data.full_name || data.name || 'Cliente',
+        ...result.data,
+        name: result.data.full_name || result.data.name || 'Cliente',
       };
 
       setClients(prev => [...prev, adaptedClient]);
 
       return { success: true, data: adaptedClient };
     } catch (err) {
-      Logger.error('Exception creating client:', err);
+      // Logger.error('Exception creating client:', err);
       return { success: false, error: 'Error de conexión' };
     }
   };
 
   // Función para actualizar un cliente
   const updateClient = async (clientId, updates) => {
-    if (!user) return { success: false, error: 'Usuario no autenticado' };
+    if (!user?.id || !isLoaded) return { success: false, error: 'Usuario no autenticado' };
 
     try {
       const updatedData = {
@@ -99,47 +103,49 @@ export function useClients() {
         updated_at: new Date().toISOString(),
       };
 
-      const { data, error } = await supabase
-        .from('clients')
-        .update(updatedData)
-        .eq('id', clientId)
-        .eq('user_id', user.id)
-        .select()
-        .single();
+      const result = await withUserContext(user.id, async () => {
+        return await supabase
+          .from('clients')
+          .update(updatedData)
+          .eq('id', clientId)
+          .select()
+          .single();
+      });
 
-      if (error) {
-        Logger.error('Error updating client:', error);
+      if (result.error) {
+        // Logger.error('Error updating client:', result.error);
         return { success: false, error: 'Error al actualizar el cliente' };
       }
 
       // Adapta los datos y actualiza la lista
       const adaptedClient = {
-        ...data,
-        name: data.full_name || data.name || 'Cliente',
+        ...result.data,
+        name: result.data.full_name || result.data.name || 'Cliente',
       };
 
       setClients(prev => prev.map(client => (client.id === clientId ? adaptedClient : client)));
 
       return { success: true, data: adaptedClient };
     } catch (err) {
-      Logger.error('Exception updating client:', err);
+      // Logger.error('Exception updating client:', err);
       return { success: false, error: 'Error de conexión' };
     }
   };
 
   // Función para eliminar un cliente
   const deleteClient = async clientId => {
-    if (!user) return { success: false, error: 'Usuario no autenticado' };
+    if (!user?.id || !isLoaded) return { success: false, error: 'Usuario no autenticado' };
 
     try {
-      const { error } = await supabase
-        .from('clients')
-        .delete()
-        .eq('id', clientId)
-        .eq('user_id', user.id);
+      const result = await withUserContext(user.id, async () => {
+        return await supabase
+          .from('clients')
+          .delete()
+          .eq('id', clientId);
+      });
 
-      if (error) {
-        Logger.error('Error deleting client:', error);
+      if (result.error) {
+        // Logger.error('Error deleting client:', result.error);
         return { success: false, error: 'Error al eliminar el cliente' };
       }
 
@@ -148,17 +154,17 @@ export function useClients() {
 
       return { success: true };
     } catch (err) {
-      Logger.error('Exception deleting client:', err);
+      // Logger.error('Exception deleting client:', err);
       return { success: false, error: 'Error de conexión' };
     }
   };
 
   // Cargar clientes al inicializar
   useEffect(() => {
-    if (user) {
+    if (user?.id && isLoaded) {
       refreshClients();
     }
-  }, [user]);
+  }, [user?.id, isLoaded]);
 
   return {
     clients,

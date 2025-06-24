@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@lib/supabaseClient';
-import { useAuth } from '@context/AuthContext';
-import Logger from '@utils/Logger';
+import { useAuth, useUser } from '@clerk/clerk-react';
+// import Logger from '@utils/Logger';
 
 export const useNotifications = () => {
-  const { user } = useAuth();
+  const { isSignedIn, isLoaded } = useAuth();
+  const { user } = useUser();
   const [notifications, setNotifications] = useState({
     emailNotifications: true,
     smsNotifications: false,
@@ -19,7 +20,7 @@ export const useNotifications = () => {
 
   // Load notification settings from profile
   const loadNotifications = async () => {
-    if (!user?.id) return;
+    if (!user?.id || !isLoaded) return;
 
     setIsLoading(true);
     setError(null);
@@ -32,7 +33,7 @@ export const useNotifications = () => {
         .single();
 
       if (error) {
-        Logger.error('Error loading notifications:', error);
+        // Logger.error('Error loading notifications:', error);
         if (error.code !== 'PGRST116') {
           throw error;
         }
@@ -46,12 +47,12 @@ export const useNotifications = () => {
             setNotifications(data.notification_settings);
           }
         } catch (parseError) {
-          Logger.error('Error parsing notification settings:', parseError);
+          // Logger.error('Error parsing notification settings:', parseError);
           // Keep default settings on parse error
         }
       }
     } catch (error) {
-      Logger.error('Error in loadNotifications:', error);
+      // Logger.error('Error in loadNotifications:', error);
       setError('Errore nel caricamento delle impostazioni di notifica');
     } finally {
       setIsLoading(false);
@@ -60,7 +61,7 @@ export const useNotifications = () => {
 
   // Save notification settings
   const saveNotifications = async () => {
-    if (!user?.id) return false;
+    if (!user?.id || !isLoaded) return false;
 
     setIsSaving(true);
     setError(null);
@@ -75,13 +76,13 @@ export const useNotifications = () => {
         .eq('id', user.id);
 
       if (error) {
-        Logger.error('Error saving notifications:', error);
+        // Logger.error('Error saving notifications:', error);
         throw error;
       }
 
       return true;
     } catch (error) {
-      Logger.error('Error in saveNotifications:', error);
+      // Logger.error('Error in saveNotifications:', error);
       setError('Errore durante il salvataggio delle impostazioni di notifica');
       return false;
     } finally {
@@ -112,8 +113,10 @@ export const useNotifications = () => {
 
   // Load notifications on mount and user change
   useEffect(() => {
-    loadNotifications();
-  }, [user]);
+    if (user?.id && isLoaded) {
+      loadNotifications();
+    }
+  }, [user?.id, isLoaded]);
 
   return {
     notifications,

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useAuth } from '@context/AuthContext';
+import { useAuth, useUser } from '@clerk/clerk-react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import ErrorBoundary from '@components/common/ErrorBoundary';
@@ -34,7 +34,8 @@ import nexaFooterLogo from '@assets/logo_nexa_footer.png';
 import nexaLogo from '@assets/logo_nexa.png';
 
 const Dashboard = () => {
-  const { user } = useAuth();
+  const { isSignedIn } = useAuth();
+  const { user } = useUser();
   const navigate = useNavigate();
   const { t } = useTranslation('dashboard');
   const [notifications, setNotifications] = useState([

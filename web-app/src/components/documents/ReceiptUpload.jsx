@@ -12,7 +12,7 @@ import {
   TrashIcon,
   PlusIcon,
 } from '@heroicons/react/24/outline';
-import { useAuth } from '@context/AuthContext';
+import { useAuth, useUser } from '@clerk/clerk-react';
 import { uploadReceipt, validateFile } from '@lib/storageService';
 import { notify } from '@lib/uiUtils';
 import Logger from '@utils/Logger';
@@ -31,7 +31,8 @@ export default function ReceiptUpload({
   title = 'Carica Ricevute',
   description = 'Carica le tue ricevute per tenere traccia delle spese',
 }) {
-  const { user } = useAuth();
+  const { isSignedIn } = useAuth();
+  const { user } = useUser();
   const [files, setFiles] = useState([]);
   const [uploading, setUploading] = useState(false);
   const [uploadResults, setUploadResults] = useState(null);

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import Sidebar from '@components/dashboard/Sidebar';
 import Navbar from '@components/dashboard/Navbar';
-import { useTheme } from '@context/ThemeContext';
+import { useTheme } from '@context/OptimizedThemeContext';
 
 export default function Layout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);

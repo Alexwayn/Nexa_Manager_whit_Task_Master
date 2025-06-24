@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useAuth } from '@context/AuthContext';
+import { useAuth, useUser } from '@clerk/clerk-react';
 import { supabase } from '@lib/supabaseClient';
 import Logger from '@utils/Logger';
 
 export default function ProfileForm() {
   const { t } = useTranslation('settings');
-  const { user } = useAuth();
+  const { isSignedIn } = useAuth();
+  const { user } = useUser();
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState({ type: '', text: '' });
   const [profileData, setProfileData] = useState({

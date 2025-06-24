@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useAuth } from '@context/AuthContext';
+import { useAuth, useUser } from '@clerk/clerk-react';
 import Footer from '@components/shared/Footer';
 import nexaLogo from '@assets/logo_nexa.png';
 import ErrorBoundary from '@components/common/ErrorBoundary';
