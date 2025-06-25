@@ -15,7 +15,7 @@ import {
   RefreshCw
 } from 'lucide-react';
 import { QuoteService } from '@lib/quoteService';
-import { ClientService } from '@lib/clientService';
+import clientService from '@lib/clientService';
 import { useUser } from '@clerk/clerk-react';
 import Logger from '@utils/Logger';
 
