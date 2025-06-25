@@ -3,6 +3,11 @@ import { createRoot } from 'react-dom/client';
 import './index.css';
 import './styles/forms.css';
 import './i18n'; // Initialize i18n
+
+// Initialize Sentry as early as possible
+import { initSentry } from '@lib/sentry';
+initSentry();
+
 import App from '@/App.jsx';
 
 const rootElement = document.getElementById('root');

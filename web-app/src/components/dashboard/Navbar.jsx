@@ -15,6 +15,7 @@ import { useTheme } from '@context/OptimizedThemeContext';
 import { useNavigate } from 'react-router-dom';
 import Logger from '@utils/Logger';
 import { useTranslation } from 'react-i18next';
+import OrganizationSwitcher from '@components/common/OrganizationSwitcher';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
@@ -74,8 +75,9 @@ export default function Navbar({ onOpenSidebar }) {
     <div className='sticky top-0 z-40 bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700'>
       <div className='px-4 sm:px-6 lg:px-8 h-16'>
         <div className='flex items-center justify-between h-full'>
-          {/* Mobile menu button */}
-          <div className='flex items-center'>
+          {/* Left side - Mobile menu button and Organization Switcher */}
+          <div className='flex items-center space-x-4'>
+            {/* Mobile menu button */}
             <button
               type='button'
               className='lg:hidden -m-2.5 p-2.5 text-gray-700 dark:text-gray-300'
@@ -84,6 +86,9 @@ export default function Navbar({ onOpenSidebar }) {
               <span className='sr-only'>{safeT('openSidebar', 'Open sidebar')}</span>
               <Bars3Icon className='h-6 w-6' aria-hidden='true' />
             </button>
+
+            {/* Organization Switcher */}
+            <OrganizationSwitcher />
           </div>
 
           {/* Right side buttons */}

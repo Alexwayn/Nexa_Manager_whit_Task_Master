@@ -10,7 +10,7 @@ const Invoices = lazy(() => import('@pages/Invoices'));
 const Transactions = lazy(() => import('@pages/Transactions'));
 const Analytics = lazy(() => import('@pages/Analytics'));
 const Reports = lazy(() => import('@pages/Reports'));
-const Settings = lazy(() => import('@pages/Settings'));
+const SettingsLayout = lazy(() => import('@components/settings/SettingsLayout'));
 const Quotes = lazy(() => import('@pages/Quotes'));
 const Test = lazy(() => import('@pages/Test'));
 const Email = lazy(() => import('@pages/Email'));
@@ -27,6 +27,7 @@ const LegalNotice = lazy(() => import('@pages/LegalNotice'));
 const ProfileForm = lazy(() => import('@pages/ProfileForm'));
 const Scan = lazy(() => import('@pages/Scan'));
 const Voice = lazy(() => import('@pages/Voice'));
+const OrganizationManagement = lazy(() => import('@pages/OrganizationManagement'));
 
 // Testing components - also lazy loaded for better performance
 const TestRoute = lazy(() => import('@components/shared/TestRoute'));
@@ -153,12 +154,20 @@ export const mainRoutes = [
     element: Analytics,
     name: 'Analytics',
     category: 'reports',
+    authConfig: {
+      organizationRequired: true,
+      requiredPermissions: ['view_analytics']
+    }
   },
   {
     path: '/reports',
     element: Reports,
     name: 'Reports',
     category: 'reports',
+    authConfig: {
+      organizationRequired: true,
+      requiredPermissions: ['view_analytics', 'access_reports']
+    }
   },
   {
     path: '/documents',
@@ -198,9 +207,19 @@ export const mainRoutes = [
   },
   {
     path: '/settings',
-    element: Settings,
+    element: SettingsLayout,
     name: 'Settings',
     category: 'account',
+  },
+  {
+    path: '/organization',
+    element: OrganizationManagement,
+    name: 'Organization',
+    category: 'account',
+    authConfig: {
+      adminOnly: true,
+      organizationRequired: true
+    }
   },
   {
     path: '/profile',

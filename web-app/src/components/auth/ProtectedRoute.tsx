@@ -33,7 +33,7 @@ export default function ProtectedRoute({ children }: ProtectedRouteProps) {
   }
 
   // Check if user has completed onboarding (except when already on onboarding page)
-  const hasCompletedOnboarding = user.publicMetadata?.onboardingComplete === true;
+  const hasCompletedOnboarding = user.unsafeMetadata?.onboardingComplete === true;
   const isOnOnboardingPage = location.pathname === '/onboarding';
   
   // If user hasn't completed onboarding and is not on onboarding page, redirect to onboarding

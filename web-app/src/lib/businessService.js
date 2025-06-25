@@ -27,7 +27,8 @@ class BusinessService {
       // Check if business profile already exists for this user
       const existingProfile = await this.getBusinessProfileByUserId(businessData.user_id);
       if (existingProfile.data) {
-        throw new Error('Business profile already exists for this user');
+        // If profile exists, update it instead
+        return await this.updateBusinessProfileByUserId(businessData.user_id, businessData);
       }
 
       // Prepare data for database

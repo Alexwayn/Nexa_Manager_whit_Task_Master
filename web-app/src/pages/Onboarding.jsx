@@ -57,7 +57,7 @@ export default function Onboarding() {
 
   // Check if user has already completed onboarding
   useEffect(() => {
-    if (user?.publicMetadata?.onboardingComplete) {
+    if (user?.unsafeMetadata?.onboardingComplete) {
       navigate('/dashboard', { replace: true });
     }
   }, [user, navigate]);
@@ -87,25 +87,48 @@ export default function Onboarding() {
         address: data.address,
         employee_count: data.employeeCount,
         description: data.description,
+        onboarding_complete: true,
       };
 
-      await businessService.createBusinessProfile(businessData);
+      const result = await businessService.createBusinessProfile(businessData);
+      
+      if (result.error) {
+        throw new Error(`Failed to create business profile: ${result.error.message}`);
+      }
 
-      // Update Clerk user metadata to mark onboarding as complete
-      await user.update({
-        publicMetadata: {
-          ...user.publicMetadata,
-          onboardingComplete: true,
-          companyName: data.companyName,
-          businessType: data.businessType,
-        },
-      });
+      // Update Clerk user metadata using the correct method
+      try {
+        await user.update({
+          unsafeMetadata: {
+            ...user.unsafeMetadata,
+            onboardingComplete: true,
+            companyName: data.companyName,
+            businessType: data.businessType,
+          },
+        });
+      } catch (clerkError) {
+        console.warn('Clerk metadata update failed, but business profile was saved:', clerkError);
+        // Continue anyway since the business profile was saved successfully
+      }
 
       // Redirect to dashboard
       navigate('/dashboard', { replace: true });
     } catch (error) {
       console.error('Error completing onboarding:', error);
-      alert('There was an error saving your business information. Please try again.');
+      
+      // Show more specific error messages
+      let errorMessage = 'There was an error saving your business information. Please try again.';
+      
+      if (error.message?.includes('business profile already exists')) {
+        errorMessage = 'A business profile already exists for your account. Redirecting to dashboard...';
+        setTimeout(() => navigate('/dashboard', { replace: true }), 2000);
+      } else if (error.message?.includes('duplicate key')) {
+        errorMessage = 'A business profile with this information already exists.';
+      } else if (error.message?.includes('network')) {
+        errorMessage = 'Network error. Please check your connection and try again.';
+      }
+      
+      alert(errorMessage);
     } finally {
       setIsSubmitting(false);
     }

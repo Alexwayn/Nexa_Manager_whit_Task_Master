@@ -37,5 +37,16 @@
   "sidebar.voiceCommand": "Comando Vocale",
   "sidebar.logoAlt": "Nexa Manager",
   "sidebar.tools": "Strumenti",
-  "user.profile": "Profilo Utente"
+  "user.profile": "Profilo Utente",
+  "organization.create": "Crea Organizzazione",
+  "organization.selectRequired": "Seleziona Organizzazione",
+  "organization.personal": "Area di Lavoro Personale",
+  "organization.current": "Organizzazione Attuale",
+  "organization.members": "membri",
+  "organization.manage": "Gestisci Organizzazione",
+  "organization.createNew": "Crea Nuova Organizzazione",
+  "organization.switch": "Cambia Organizzazione",
+  "organization.settings": "Impostazioni Organizzazione",
+  "organization.inviteMembers": "Invita Membri",
+  "organization.viewMembers": "Visualizza Membri"
 }

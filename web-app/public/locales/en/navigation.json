@@ -37,5 +37,16 @@
   "sidebar.voiceCommand": "Voice Command",
   "sidebar.logoAlt": "Nexa Manager",
   "sidebar.tools": "Tools",
-  "user.profile": "User Profile"
+  "user.profile": "User Profile",
+  "organization.create": "Create Organization",
+  "organization.selectRequired": "Select Organization",
+  "organization.personal": "Personal Workspace",
+  "organization.current": "Current Organization",
+  "organization.members": "members",
+  "organization.manage": "Manage Organization",
+  "organization.createNew": "Create New Organization",
+  "organization.switch": "Switch Organization",
+  "organization.settings": "Organization Settings",
+  "organization.inviteMembers": "Invite Members",
+  "organization.viewMembers": "View Members"
 }

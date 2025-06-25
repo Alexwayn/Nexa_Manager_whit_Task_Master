@@ -4,10 +4,23 @@
     "security": "Sicurezza",
     "notifications": "Notifiche",
     "company": "Azienda",
-    "billing": "Fatturazione"
+    "billing": "Fatturazione",
+    "email": "Email",
+    "integrations": "Integrazioni",
+    "backup": "Backup"
   },
   "title": "Impostazioni",
   "subtitle": "Gestisci il tuo profilo e le preferenze dell'account",
+  "tabDescriptions": {
+    "profile": "Gestisci le tue informazioni personali e preferenze",
+    "security": "Configura sicurezza account e controlli di accesso",
+    "notifications": "Imposta le tue preferenze di notifica",
+    "company": "Gestisci informazioni aziendali e branding",
+    "billing": "Configura fatturazione e impostazioni fatture",
+    "email": "Gestisci modelli email e impostazioni",
+    "integrations": "Connetti e gestisci servizi di terze parti",
+    "backup": "Backup e ripristino dei tuoi dati"
+  },
   "profile": {
     "title": "Il tuo profilo",
     "avatar": {
@@ -52,6 +65,7 @@
   },
   "security": {
     "title": "Sicurezza account",
+    "description": "Gestisci le impostazioni di sicurezza del tuo account inclusi password, autenticazione a due fattori e sessioni attive.",
     "password": {
       "title": "Aggiorna password",
       "current": "Password attuale",
@@ -60,9 +74,23 @@
       "minLength": "Minimo 8 caratteri",
       "button": "Aggiorna password"
     },
+    "twoFactor": {
+      "title": "Autenticazione a Due Fattori",
+      "description": "Aggiungi un livello extra di sicurezza al tuo account",
+      "enable": "Abilita 2FA",
+      "enabled": "2FA Abilitata",
+      "setup": "Configura 2FA",
+      "setupDescription": "Scansiona questo codice QR con la tua app di autenticazione",
+      "verifyCode": "Inserisci il codice di verifica",
+      "verify": "Verifica",
+      "cancel": "Annulla",
+      "success": "2FA configurata con successo!",
+      "disable": "Disabilita 2FA",
+      "disableConfirm": "Sei sicuro di voler disabilitare l'autenticazione a due fattori?"
+    },
     "sessions": {
-      "title": "Dispositivi connessi",
-      "description": "Questi sono i dispositivi attualmente collegati al tuo account. Rimuovi le sessioni che non riconosci.",
+      "title": "Sessioni Attive",
+      "description": "Dispositivi che sono attualmente collegati al tuo account",
       "current": "Sessione corrente",
       "lastActive": "Ultima attività",
       "revoke": "Disconnetti",
@@ -76,6 +104,37 @@
         "actions": "Azioni"
       }
     },
+    "audit": {
+      "title": "Log di Audit della Sicurezza",
+      "description": "Attività recenti relative alla sicurezza del tuo account",
+      "viewAll": "Visualizza Tutta l'Attività",
+      "events": {
+        "login": "Accesso effettuato",
+        "logout": "Disconnessione",
+        "passwordChange": "Password modificata",
+        "twoFactorEnabled": "2FA abilitata",
+        "twoFactorDisabled": "2FA disabilitata",
+        "profileUpdate": "Profilo aggiornato"
+      }
+    },
+    "password": {
+      "title": "Sicurezza Password",
+      "description": "Gestisci la tua password e l'accesso all'account",
+      "change": "Cambia Password",
+      "current": "Password attuale",
+      "new": "Nuova password",
+      "confirm": "Conferma password",
+      "minLength": "Minimo 8 caratteri",
+      "button": "Aggiorna password",
+      "requirements": {
+        "minLength": "Almeno 8 caratteri",
+        "uppercase": "Una lettera maiuscola",
+        "lowercase": "Una lettera minuscola",
+        "number": "Un numero",
+        "special": "Un carattere speciale"
+      }
+    },
+    "signOut": "Disconnetti da Tutti i Dispositivi",
     "website": {
       "label": "Sito web",
       "placeholder": "www.windsurfitalia.it"
@@ -124,6 +183,14 @@
     "button": {
       "restore": "Ripristina predefiniti",
       "save": "Salva preferenze"
+    },
+    "settings": {
+      "notifications": {
+        "button": {
+          "restore": "Ripristina predefiniti",
+          "save": "Salva preferenze"
+        }
+      }
     },
     "alerts": {
       "saveSuccess": "Preferenze di notifica salvate con successo!",
@@ -209,15 +276,116 @@
     "info": "{{formats}}. Max {{size}}."
   },
   "billing": {
-    "title": "Abbonamento",
-    "description": "Gestisci il tuo piano di abbonamento e fatturazione",
+    "title": "Fatturazione e Impostazioni Fatture",
+    "description": "Gestisci il tuo piano di abbonamento, metodi di pagamento e personalizzazione fatture",
+    "tabs": {
+      "subscription": "Abbonamento",
+      "payment": "Metodi di Pagamento",
+      "invoices": "Storico Fatture",
+      "customization": "Personalizzazione Fatture"
+    },
+    "loadingSettings": "Caricamento impostazioni...",
+    "saveSettings": "Salva Impostazioni Fatture",
+    "subscription": {
+      "title": "Il Tuo Abbonamento",
+      "current": "Piano Attuale",
+      "renewal": "Prossimo Rinnovo",
+      "price": "Prezzo",
+      "upgrade": "Aggiorna Piano",
+      "manage": "Gestisci Abbonamento"
+    },
+    "payment": {
+      "methods": "Metodi di Pagamento",
+      "add": "Aggiungi Metodo di Pagamento",
+      "edit": "Modifica",
+      "delete": "Elimina",
+      "defaultCard": "Predefinito",
+      "expiryShort": "Scad. ",
+      "expires": "Scadenza"
+    },
+    "invoicesTitle": "Storico Fatture",
+    "invoicesDescription": "Visualizza e scarica le tue fatture",
+    "invoiceNumber": "Numero Fattura",
+    "date": "Data",
+    "amount": "Importo",
+    "status": "Stato",
+    "paid": "Pagata",
+    "pending": "In Attesa",
+    "failed": "Fallita",
+    "download": "Scarica",
+    "noInvoices": "Nessuna fattura disponibile",
+    "templates": {
+      "title": "Modelli Fattura",
+      "description": "Scegli un modello che corrisponda al tuo brand e stile aziendale",
+      "professional": "Professionale",
+      "minimal": "Minimale", 
+      "creative": "Creativo",
+      "classic": "Classico",
+      "detailed": "Dettagliato"
+    },
+    "numbering": {
+      "title": "Numerazione Fatture",
+      "format": "Formato Numerazione",
+      "sequential": "Sequenziale (FAT-001, FAT-002, ...)",
+      "dateBased": "Basata su Data (FAT-2024-001, FAT-2024-002, ...)",
+      "yearlyReset": "Reset Annuale (FAT-001 riparte ogni anno)",
+      "custom": "Formato Personalizzato",
+      "prefix": "Prefisso Fattura",
+      "nextNumber": "Prossimo Numero Fattura",
+      "preview": "Anteprima"
+    },
+    "branding": {
+      "title": "Layout e Branding",
+      "logoPosition": "Posizione Logo",
+      "left": "Sinistra",
+      "center": "Centro", 
+      "right": "Destra",
+      "brandColor": "Colore Brand"
+    },
+    "business": {
+      "title": "Impostazioni Aziendali",
+      "paymentTerms": "Termini di Pagamento",
+      "days": "giorni",
+      "taxRate": "Aliquota IVA (%)",
+      "currency": "Valuta",
+      "dateFormat": "Formato Data",
+      "footerText": "Testo Piè di Pagina"
+    },
+    "options": {
+      "title": "Opzioni e Preferenze",
+      "autoReminders": "Abilita promemoria automatici di pagamento",
+      "includeTaxBreakdown": "Includi dettaglio IVA nelle fatture",
+      "includeNotes": "Includi sezione note nelle fatture",
+      "reminderDays": "Giorni Promemoria (separati da virgola)",
+      "reminderDaysHelp": "Giorni prima e dopo la scadenza per inviare promemoria (es. 7,14,30)"
+    },
+    "preview": {
+      "title": "Anteprima Live",
+      "show": "Mostra Anteprima",
+      "hide": "Nascondi Anteprima",
+      "number": "Numero Fattura",
+      "template": "Modello",
+      "currency": "Valuta",
+      "terms": "Termini di Pagamento",
+      "taxRate": "Aliquota IVA"
+    },
+    "alerts": {
+      "loadError": "Errore nel caricamento delle impostazioni fattura",
+      "templateError": "Errore nella selezione del modello",
+      "settingsSaved": "Impostazioni fattura salvate con successo!",
+      "saveError": "Errore nel salvataggio delle impostazioni fattura",
+      "changePlanInfo": "Funzionalità cambio piano disponibile a breve",
+      "addPaymentMethodInfo": "Funzionalità aggiungi metodo di pagamento disponibile a breve",
+      "editPaymentMethodInfo": "Funzionalità modifica metodo di pagamento disponibile a breve",
+      "downloadStarted": "Download fattura iniziato"
+    },
     "proPlan": "Piano Pro",
-    "price": "€29,99/mese",
+    "price": "€29.99/mese",
     "billedAnnually": "fatturato annualmente",
-    "nextRenewal": "Prossimo rinnovo",
-    "nextRenewalDate": "15 Gennaio 2024",
-    "changePlan": "Cambia piano",
-    "paymentMethodsTitle": "Metodi di pagamento",
+    "nextRenewal": "Prossimo Rinnovo",
+    "nextRenewalDate": "15 Gennaio, 2024",
+    "changePlan": "Cambia Piano",
+    "paymentMethodsTitle": "Metodi di Pagamento",
     "paymentMethodsDescription": "Gestisci i tuoi metodi di pagamento",
     "addPaymentMethod": "Aggiungi",
     "visa": "Visa",
@@ -225,18 +393,13 @@
     "expiry": "Scadenza: ",
     "default": "Predefinito",
     "edit": "Modifica",
-    "invoicesTitle": "Fatture",
-    "invoicesDescription": "Visualizza e scarica le tue fatture",
-    "invoiceNumber": "Numero",
-    "date": "Data",
-    "amount": "Importo",
-    "status": "Stato",
-    "paid": "Pagata",
-    "download": "Scarica",
-    "noInvoices": "Nessuna fattura disponibile",
-    "changePlanInfo": "Funzionalità di cambio piano non ancora implementata",
-    "addPaymentMethodInfo": "Funzionalità di aggiunta metodo di pagamento non ancora implementata",
-    "editPaymentMethodInfo": "Modifica metodo di pagamento {{methodId}} non ancora implementata"
+    "plan": {
+      "title": "Piano di Abbonamento",
+      "current": "Piano Attuale",
+      "price": "Prezzo",
+      "nextRenewal": "Prossimo Rinnovo",
+      "change": "Cambia Piano"
+    }
   },
   "buttons": {
     "save": "Salva modifiche",
@@ -312,5 +475,467 @@
   "table": {
     "emptyMessage": "Nessun dato disponibile",
     "noRenderFunction": "Funzione di rendering non fornita"
+  },
+  "general": {
+    "title": "Impostazioni Generali",
+    "description": "Gestisci le informazioni della tua azienda e le preferenze di base.",
+    "company": {
+      "title": "Informazioni Azienda",
+      "name": "Nome Azienda",
+      "email": "Email Aziendale",
+      "phone": "Numero di Telefono",
+      "address": "Indirizzo",
+      "website": "Sito Web",
+      "taxId": "Codice Fiscale",
+      "vatNumber": "Partita IVA",
+      "logo": "Logo Aziendale",
+      "uploadLogo": "Carica Logo",
+      "removeLogo": "Rimuovi Logo"
+    },
+    "preferences": {
+      "title": "Preferenze",
+      "language": "Lingua",
+      "timezone": "Fuso Orario",
+      "dateFormat": "Formato Data",
+      "currency": "Valuta",
+      "currencySymbol": "Simbolo Valuta",
+      "currencyPosition": "Posizione Valuta",
+      "thousandSeparator": "Separatore Migliaia",
+      "decimalSeparator": "Separatore Decimali",
+      "decimalPlaces": "Decimali"
+    },
+    "save": "Salva Impostazioni Generali",
+    "saved": "Impostazioni generali salvate con successo",
+    "error": "Errore nel salvare le impostazioni generali"
+  },
+  "account": {
+    "title": "Impostazioni Account",
+    "description": "Gestisci il tuo account utente e le impostazioni di sicurezza.",
+    "profile": {
+      "title": "Informazioni Profilo",
+      "firstName": "Nome",
+      "lastName": "Cognome",
+      "email": "Indirizzo Email",
+      "phone": "Numero di Telefono",
+      "avatar": "Immagine Profilo",
+      "uploadAvatar": "Carica Avatar",
+      "removeAvatar": "Rimuovi Avatar"
+    },
+    "security": {
+      "title": "Impostazioni Sicurezza",
+      "currentPassword": "Password Attuale",
+      "newPassword": "Nuova Password",
+      "confirmPassword": "Conferma Nuova Password",
+      "changePassword": "Cambia Password",
+      "twoFactorAuth": "Autenticazione a Due Fattori",
+      "enableTwoFactor": "Abilita Autenticazione a Due Fattori",
+      "disableTwoFactor": "Disabilita Autenticazione a Due Fattori",
+      "loginSessions": "Sessioni Attive",
+      "terminateSession": "Termina Sessione",
+      "terminateAllSessions": "Termina Tutte le Altre Sessioni"
+    },
+    "save": "Salva Impostazioni Account",
+    "saved": "Impostazioni account salvate con successo",
+    "error": "Errore nel salvare le impostazioni account"
+  },
+  "billing": {
+    "title": "Fatturazione e Contabilità",
+    "description": "Configura le impostazioni di fatturazione e personalizzazione fatture.",
+    "tabs": {
+      "subscription": "Abbonamento",
+      "payment": "Metodi di Pagamento",
+      "invoices": "Impostazioni Fatture",
+      "customization": "Personalizzazione"
+    },
+    "subscription": {
+      "title": "Abbonamento Attuale",
+      "plan": "Piano Attuale",
+      "status": "Stato",
+      "nextBilling": "Prossima Fatturazione",
+      "billingCycle": "Ciclo di Fatturazione",
+      "usage": "Utilizzo Questo Mese",
+      "upgrade": "Aggiorna Piano",
+      "downgrade": "Retrograda Piano",
+      "cancel": "Cancella Abbonamento",
+      "reactivate": "Riattiva Abbonamento"
+    },
+    "payment": {
+      "title": "Metodi di Pagamento",
+      "addPaymentMethod": "Aggiungi Metodo di Pagamento",
+      "defaultPaymentMethod": "Metodo di Pagamento Predefinito",
+      "removePaymentMethod": "Rimuovi Metodo di Pagamento",
+      "updatePaymentMethod": "Aggiorna Metodo di Pagamento",
+      "cardEnding": "Carta che termina con",
+      "expires": "Scade",
+      "setAsDefault": "Imposta come Predefinito"
+    },
+    "invoiceSettings": {
+      "title": "Impostazioni Fatture",
+      "invoicePrefix": "Prefisso Fattura",
+      "nextInvoiceNumber": "Prossimo Numero Fattura",
+      "paymentTerms": "Termini di Pagamento",
+      "lateFee": "Penale Ritardo",
+      "automaticReminders": "Promemoria Automatici",
+      "reminderDays": "Invia Promemoria Dopo (Giorni)",
+      "includeAttachments": "Includi Allegati",
+      "emailInvoices": "Invia Fatture via Email Automaticamente"
+    },
+    "templates": {
+      "title": "Modelli Fattura",
+      "professional": "Professionale",
+      "minimal": "Minimale",
+      "creative": "Creativo",
+      "classic": "Classico",
+      "detailed": "Dettagliato",
+      "preview": "Anteprima Modello",
+      "customize": "Personalizza Modello"
+    },
+    "numbering": {
+      "title": "Numerazione Fatture",
+      "format": "Formato Numerazione",
+      "sequential": "Sequenziale (FAT-001, FAT-002, ...)",
+      "dateBased": "Basato su Data (FAT-2024-001, FAT-2024-002, ...)",
+      "yearlyReset": "Reset Annuale (FAT-2024-001, FAT-2025-001, ...)",
+      "custom": "Formato Personalizzato",
+      "prefix": "Prefisso",
+      "nextNumber": "Prossimo Numero",
+      "example": "Esempio"
+    },
+    "branding": {
+      "title": "Marchio e Layout",
+      "logoPosition": "Posizione Logo",
+      "left": "Sinistra",
+      "center": "Centro",
+      "right": "Destra",
+      "brandColor": "Colore del Marchio",
+      "fontFamily": "Famiglia Font",
+      "fontSize": "Dimensione Font"
+    },
+    "business": {
+      "title": "Impostazioni Business",
+      "paymentTerms": "Termini di Pagamento Predefiniti",
+      "taxRate": "Aliquota IVA Predefinita",
+      "currency": "Valuta Predefinita",
+      "dateFormat": "Formato Data",
+      "includeNotes": "Includi Sezione Note",
+      "showPaymentInstructions": "Mostra Istruzioni Pagamento"
+    },
+    "options": {
+      "title": "Opzioni e Preferenze",
+      "autoReminders": "Promemoria Pagamento Automatici",
+      "showTaxBreakdown": "Mostra Dettaglio IVA",
+      "includeCompanyNotes": "Includi Note Aziendali",
+      "allowOnlinePayments": "Consenti Pagamenti Online",
+      "sendCopyToSender": "Invia Copia al Mittente",
+      "attachPDF": "Allega Copia PDF"
+    },
+    "preview": {
+      "title": "Anteprima Modello",
+      "generate": "Genera Anteprima",
+      "regenerate": "Rigenera Anteprima",
+      "downloading": "Generando anteprima...",
+      "error": "Errore nella generazione anteprima"
+    },
+    "save": "Salva Impostazioni Fatturazione",
+    "saved": "Impostazioni fatturazione salvate con successo",
+    "error": "Errore nel salvare le impostazioni fatturazione"
+  },
+  "email": {
+    "title": "Impostazioni Email",
+    "description": "Gestisci il tuo provider email, notifiche e modelli.",
+    "providers": {
+      "title": "Configurazione Provider Email",
+      "description": "Configura il tuo provider di servizi email per l'invio delle email.",
+      "smtp": {
+        "title": "Configurazione SMTP",
+        "host": "Host SMTP",
+        "port": "Porta SMTP",
+        "username": "Nome Utente",
+        "password": "Password",
+        "encryption": "Crittografia",
+        "encryptionOptions": {
+          "tls": "TLS",
+          "ssl": "SSL",
+          "none": "Nessuna"
+        }
+      },
+      "fromAddress": {
+        "title": "Indirizzo Mittente",
+        "email": "Email Mittente",
+        "name": "Nome Mittente"
+      },
+      "test": {
+        "title": "Test Configurazione",
+        "send": "Invia Test",
+        "testing": "Test in corso...",
+        "success": "Email di test inviata con successo! Controlla la tua casella di posta.",
+        "error": "Email di test fallita"
+      }
+    },
+    "notifications": {
+      "title": "Notifiche Email",
+      "description": "Scegli quali notifiche email vuoi ricevere.",
+      "invoice": {
+        "title": "Notifiche Fatture",
+        "sent": "Fattura Inviata",
+        "sentDesc": "Quando una fattura viene inviata a un cliente",
+        "viewed": "Fattura Visualizzata",
+        "viewedDesc": "Quando un cliente visualizza una fattura",
+        "paid": "Fattura Pagata",
+        "paidDesc": "Quando una fattura viene contrassegnata come pagata",
+        "overdue": "Fattura Scaduta",
+        "overdueDesc": "Quando una fattura diventa scaduta",
+        "cancelled": "Fattura Annullata",
+        "cancelledDesc": "Quando una fattura viene annullata"
+      },
+      "payment": {
+        "title": "Notifiche Pagamenti",
+        "received": "Pagamento Ricevuto",
+        "receivedDesc": "Quando un pagamento viene ricevuto",
+        "failed": "Pagamento Fallito",
+        "failedDesc": "Quando un tentativo di pagamento fallisce",
+        "refunded": "Pagamento Rimborsato",
+        "refundedDesc": "Quando un pagamento viene rimborsato",
+        "reminderSent": "Promemoria Inviato",
+        "reminderSentDesc": "Quando i promemoria di pagamento vengono inviati"
+      },
+      "quote": {
+        "title": "Notifiche Preventivi",
+        "sent": "Preventivo Inviato",
+        "sentDesc": "Quando un preventivo viene inviato a un cliente",
+        "accepted": "Preventivo Accettato",
+        "acceptedDesc": "Quando un cliente accetta un preventivo",
+        "declined": "Preventivo Rifiutato",
+        "declinedDesc": "Quando un cliente rifiuta un preventivo",
+        "expired": "Preventivo Scaduto",
+        "expiredDesc": "Quando un preventivo scade"
+      },
+      "system": {
+        "title": "Notifiche Sistema",
+        "backup": "Backup Sistema",
+        "backupDesc": "Notifiche completamento backup",
+        "maintenance": "Manutenzione",
+        "maintenanceDesc": "Aggiornamenti manutenzione sistema",
+        "security": "Avvisi Sicurezza",
+        "securityDesc": "Notifiche relative alla sicurezza",
+        "updates": "Aggiornamenti Funzioni",
+        "updatesDesc": "Annunci nuove funzionalità"
+      }
+    },
+    "templates": {
+      "title": "Modelli Email",
+      "description": "Personalizza i tuoi modelli email per diversi tipi di comunicazioni.",
+      "new": "Nuovo Modello",
+      "categories": {
+        "all": "Tutte le Categorie",
+        "invoice": "Fattura",
+        "payment": "Pagamento",
+        "quote": "Preventivo",
+        "client": "Cliente",
+        "system": "Sistema"
+      },
+      "fields": {
+        "name": "Nome Modello",
+        "subject": "Oggetto Email",
+        "body": "Corpo Email",
+        "category": "Categoria",
+        "description": "Descrizione",
+        "variables": "Variabili Disponibili"
+      },
+      "actions": {
+        "preview": "Anteprima",
+        "edit": "Modifica",
+        "delete": "Elimina",
+        "test": "Invia Test",
+        "save": "Salva Modello",
+        "cancel": "Annulla"
+      },
+      "testModal": {
+        "title": "Invia Email di Test",
+        "emailAddress": "Indirizzo Email Test",
+        "send": "Invia Test",
+        "sending": "Invio in corso...",
+        "success": "Email di test inviata con successo!",
+        "error": "Errore nell'invio email di test"
+      },
+      "previewModal": {
+        "title": "Anteprima Modello",
+        "subject": "Oggetto",
+        "body": "Corpo Email"
+      }
+    },
+    "activity": {
+      "title": "Attività Email e Statistiche",
+      "description": "Visualizza cronologia consegne email e statistiche performance.",
+      "stats": {
+        "total": "Email Totali",
+        "sent": "Inviate con Successo",
+        "failed": "Fallite",
+        "successRate": "Tasso di Successo"
+      },
+      "history": {
+        "title": "Attività Email Recente",
+        "recipient": "Destinatario",
+        "subject": "Oggetto",
+        "template": "Modello",
+        "status": "Stato",
+        "sent": "Inviata",
+        "statuses": {
+          "sent": "Inviata",
+          "failed": "Fallita",
+          "pending": "In Attesa"
+        }
+      }
+    },
+    "save": "Salva Impostazioni Email",
+    "saved": "Impostazioni email salvate con successo",
+    "error": "Errore nel salvare le impostazioni email"
+  },
+  "integrations": {
+    "title": "Integrazioni",
+    "description": "Connetti con servizi di terze parti e gestisci l'accesso API.",
+    "accounting": {
+      "title": "Software Contabilità",
+      "quickbooks": "QuickBooks",
+      "xero": "Xero",
+      "sage": "Sage",
+      "connect": "Connetti",
+      "disconnect": "Disconnetti",
+      "syncNow": "Sincronizza Ora",
+      "lastSync": "Ultima Sincronizzazione",
+      "autoSync": "Sincronizzazione Automatica"
+    },
+    "payment": {
+      "title": "Gateway Pagamento",
+      "stripe": "Stripe",
+      "paypal": "PayPal",
+      "square": "Square",
+      "authorize": "Authorize.Net",
+      "testMode": "Modalità Test",
+      "liveMode": "Modalità Live",
+      "webhooks": "Webhooks"
+    },
+    "storage": {
+      "title": "Cloud Storage",
+      "googledrive": "Google Drive",
+      "dropbox": "Dropbox",
+      "onedrive": "OneDrive",
+      "aws": "Amazon S3",
+      "autoBackup": "Backup Automatico",
+      "backupFrequency": "Frequenza Backup"
+    },
+    "api": {
+      "title": "Accesso API",
+      "generateKey": "Genera Chiave API",
+      "revokeKey": "Revoca Chiave",
+      "documentation": "Documentazione API",
+      "rateLimit": "Limite Rate",
+      "lastUsed": "Ultimo Utilizzo"
+    },
+    "save": "Salva Integrazioni",
+    "saved": "Impostazioni integrazione salvate con successo",
+    "error": "Errore nel salvare le impostazioni integrazione"
+  },
+  "security": {
+    "title": "Impostazioni Sicurezza",
+    "description": "Gestisci le politiche di sicurezza e i controlli di accesso.",
+    "authentication": {
+      "title": "Autenticazione",
+      "requireTwoFactor": "Richiedi Autenticazione a Due Fattori",
+      "sessionTimeout": "Timeout Sessione",
+      "maxLoginAttempts": "Massimi Tentativi di Login",
+      "lockoutDuration": "Durata Blocco Account",
+      "passwordPolicy": "Politica Password"
+    },
+    "access": {
+      "title": "Controllo Accesso",
+      "allowedIPs": "Indirizzi IP Consentiti",
+      "restrictedIPs": "Indirizzi IP Limitati",
+      "apiAccess": "Controllo Accesso API",
+      "dataRetention": "Politica Conservazione Dati"
+    },
+    "audit": {
+      "title": "Audit Logging",
+      "enableAuditLog": "Abilita Audit Logging",
+      "logRetention": "Periodo Conservazione Log",
+      "exportLogs": "Esporta Log Audit",
+      "clearLogs": "Cancella Log Audit"
+    },
+    "backup": {
+      "title": "Backup Dati",
+      "automaticBackup": "Backup Automatico",
+      "backupFrequency": "Frequenza Backup",
+      "retentionPeriod": "Periodo Conservazione",
+      "encryptBackups": "Cripta Backup",
+      "backupNow": "Backup Ora",
+      "restoreBackup": "Ripristina Backup"
+    },
+    "save": "Salva Impostazioni Sicurezza",
+    "saved": "Impostazioni sicurezza salvate con successo",
+    "error": "Errore nel salvare le impostazioni sicurezza"
+  },
+  "backup": {
+    "title": "Backup e Ripristino",
+    "description": "Gestisci backup dei tuoi dati e ripristini del sistema",
+    "lastBackup": "Ultimo Backup",
+    "manualActions": "Azioni Manuali",
+    "createBackup": "Crea Backup",
+    "importData": "Importa Dati",
+    "dataExport": "Esportazione Dati",
+    "exportComplete": "Esportazione Completa",
+    "exportClients": "Esporta Clienti",
+    "exportFinancial": "Esporta Dati Finanziari",
+    "automaticSettings": "Impostazioni Automatiche",
+    "enableAutoBackup": "Abilita Backup Automatico",
+    "enableAutoBackupDesc": "Esegui backup automatici dei tuoi dati",
+    "frequency": "Frequenza",
+    "frequencyDaily": "Giornaliero",
+    "frequencyWeekly": "Settimanale",
+    "frequencyMonthly": "Mensile",
+    "retention": "Periodo di Conservazione",
+    "retention30": "30 giorni",
+    "retention90": "90 giorni",
+    "retention180": "180 giorni",
+    "retention365": "1 anno",
+    "includeAttachments": "Includi Allegati",
+    "encryptBackups": "Cripta Backup",
+    "notifyOnComplete": "Notifica al Completamento",
+    "history": "Cronologia Backup",
+    "historyDate": "Data",
+    "historyType": "Tipo",
+    "historyStatus": "Stato",
+    "historySize": "Dimensione",
+    "historyDuration": "Durata",
+    "typeAutomatic": "Automatico",
+    "typeManual": "Manuale",
+    "statusCompleted": "Completato",
+    "statusFailed": "Fallito",
+    "statusInProgress": "In Corso"
+  },
+  "common": {
+    "save": "Salva",
+    "cancel": "Annulla",
+    "edit": "Modifica",
+    "delete": "Elimina",
+    "preview": "Anteprima",
+    "upload": "Carica",
+    "download": "Scarica",
+    "loading": "Caricamento...",
+    "saving": "Salvataggio...",
+    "saved": "Impostazioni salvate con successo",
+    "error": "Si è verificato un errore",
+    "confirm": "Sei sicuro?",
+    "yes": "Sì",
+    "no": "No",
+    "enabled": "Abilitato",
+    "disabled": "Disabilitato",
+    "active": "Attivo",
+    "inactive": "Inattivo",
+    "required": "Richiesto",
+    "optional": "Opzionale"
+  },
+  "buttons": {
+    "cancel": "Annulla",
+    "save": "Salva modifiche"
   }
 } 

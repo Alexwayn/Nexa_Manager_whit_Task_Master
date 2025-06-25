@@ -56,14 +56,6 @@
       "noCard": "No card required"
     }
   },
-  "passwordRecoveryModal": {
-    "titleStep1": "Password Recovery",
-    "step1Instruction": "Enter your email address and we'll send you a link to reset your password",
-    "emailLabel": "Email Address",
-    "emailPlaceholder": "Enter your email address",
-    "cancel": "Cancel",
-    "sendLink": "Send Recovery Link"
-  },
   "marketing": {
     "badge": "New",
     "logoAlt": "Nexa Manager Logo",

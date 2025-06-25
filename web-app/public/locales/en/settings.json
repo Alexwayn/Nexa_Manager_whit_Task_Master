@@ -4,10 +4,440 @@
     "security": "Security",
     "notifications": "Notifications",
     "company": "Company",
-    "billing": "Billing"
+    "billing": "Billing",
+    "email": "Email",
+    "integrations": "Integrations",
+    "backup": "Backup"
   },
   "title": "Settings",
   "subtitle": "Manage your profile and account preferences",
+  "tabDescriptions": {
+    "profile": "Manage your personal information and preferences",
+    "security": "Configure account security and access controls",
+    "notifications": "Set up your notification preferences",
+    "company": "Manage company information and branding",
+    "billing": "Configure billing and invoice settings",
+    "email": "Manage email templates and settings",
+    "integrations": "Connect and manage third-party services",
+    "backup": "Backup and restore your data"
+  },
+  "profile": {
+    "title": "Your Profile",
+    "avatar": {
+      "title": "Profile Photo",
+      "change": "Change photo",
+      "help": "JPG, PNG or GIF. Max size 2MB."
+    },
+    "firstName": {
+      "label": "First Name"
+    },
+    "lastName": {
+      "label": "Last Name"
+    },
+    "email": {
+      "label": "Email",
+      "help": "Email is linked to your account and cannot be changed here."
+    },
+    "phone": {
+      "label": "Phone",
+      "placeholder": "Enter your phone number"
+    },
+    "company": {
+      "label": "Company Name",
+      "placeholder": "Enter your company name"
+    },
+    "position": {
+      "label": "Position",
+      "placeholder": "Enter your position"
+    },
+    "address": {
+      "label": "Address",
+      "placeholder": "Enter your address"
+    },
+    "bio": {
+      "label": "Bio",
+      "placeholder": "Enter a brief description about yourself or your company",
+      "help": "Brief description for your profile. URLs and mentions are automatically highlighted."
+    },
+    "username": {
+      "label": "Username"
+    }
+  },
+  "security": {
+    "title": "Account Security",
+    "description": "Manage your account security settings including password, multi-factor authentication, and active sessions.",
+    "password": {
+      "title": "Update Password",
+      "current": "Current Password",
+      "new": "New Password",
+      "confirm": "Confirm Password",
+      "minLength": "Minimum 8 characters",
+      "button": "Update Password"
+    },
+    "twoFactor": {
+      "title": "Two-Factor Authentication",
+      "description": "Add an extra layer of security to your account",
+      "enable": "Enable 2FA",
+      "enabled": "2FA Enabled",
+      "setup": "Setup 2FA",
+      "setupDescription": "Scan this QR code with your authenticator app",
+      "verifyCode": "Enter verification code",
+      "verify": "Verify",
+      "cancel": "Cancel",
+      "success": "2FA setup successfully!",
+      "disable": "Disable 2FA",
+      "disableConfirm": "Are you sure you want to disable two-factor authentication?"
+    },
+    "sessions": {
+      "title": "Active Sessions",
+      "description": "Devices currently connected to your account",
+      "current": "Current Session",
+      "lastActive": "Last Active",
+      "revoke": "Sign Out",
+      "loading": "Loading sessions...",
+      "none": "No other connected devices found.",
+      "currentNote": "Current device is not shown in the list.",
+      "table": {
+        "device": "Device",
+        "browser": "Browser",
+        "lastAccess": "Last Access",
+        "actions": "Actions"
+      }
+    },
+    "audit": {
+      "title": "Security Audit Log",
+      "description": "Recent security-related activity on your account",
+      "viewAll": "View All Activity",
+      "events": {
+        "login": "User signed in",
+        "logout": "User signed out",
+        "passwordChange": "Password changed",
+        "twoFactorEnabled": "2FA enabled",
+        "twoFactorDisabled": "2FA disabled",
+        "profileUpdate": "Profile updated"
+      }
+    },
+    "password": {
+      "title": "Password Security",
+      "description": "Manage your password and account access",
+      "change": "Change Password",
+      "current": "Current password",
+      "new": "New password",
+      "confirm": "Confirm password",
+      "minLength": "Minimum 8 characters",
+      "button": "Update password",
+      "requirements": {
+        "minLength": "At least 8 characters",
+        "uppercase": "One uppercase letter",
+        "lowercase": "One lowercase letter",
+        "number": "One number",
+        "special": "One special character"
+      }
+    },
+    "signOut": "Sign Out All Devices",
+    "website": {
+      "label": "Website",
+      "placeholder": "www.example.com"
+    },
+    "businessType": {
+      "label": "Business Type",
+      "selectPlaceholder": "Select a type",
+      "options": {
+        "freelance": "Freelance",
+        "small_business": "Small Business",
+        "medium_business": "Medium Business",
+        "large_business": "Large Business"
+      }
+    }
+  },
+  "notifications": {
+    "title": "Notification Settings",
+    "email": {
+      "title": "Email Notifications",
+      "description": "Receive important updates and alerts via email.",
+      "save": "Save Preferences"
+    },
+    "promotional": {
+      "title": "Promotional Emails",
+      "description": "Receive offers, tips, and suggestions about the service."
+    },
+    "weekly": {
+      "title": "Weekly Summary",
+      "description": "Receive a weekly summary of your activities and metrics."
+    },
+    "monthly": {
+      "title": "Monthly Report",
+      "description": "Receive detailed reports on your business performance."
+    },
+    "devices": {
+      "title": "Device Notifications"
+    },
+    "sms": {
+      "title": "SMS Notifications",
+      "description": "Receive important notifications via SMS on your phone."
+    },
+    "security": {
+      "title": "Security Alerts",
+      "description": "Receive immediate notifications for suspicious activity or new device access."
+    },
+    "button": {
+      "restore": "Restore Defaults",
+      "save": "Save Preferences"
+    },
+    "settings": {
+      "notifications": {
+        "button": {
+          "restore": "Restore Defaults",
+          "save": "Save Preferences"
+        }
+      }
+    },
+    "alerts": {
+      "saveSuccess": "Notification preferences saved successfully!",
+      "resetConfirmation": "Are you sure you want to restore default settings?"
+    }
+  },
+  "company": {
+    "title": "Company Information",
+    "logo": {
+      "title": "Company Logo",
+      "change": "Change logo",
+      "remove": "Remove",
+      "help": "SVG, PNG or JPG. Max 2MB."
+    },
+    "name": {
+      "label": "Company Name"
+    },
+    "vatNumber": {
+      "label": "VAT Number",
+      "placeholder": "US123456789"
+    },
+    "taxCode": {
+      "label": "Tax Code",
+      "placeholder": "123-45-6789"
+    },
+    "legalAddress": {
+      "label": "Legal Address",
+      "placeholder": "123 Main St, City, State, 12345"
+    },
+    "businessPhone": {
+      "label": "Business Phone",
+      "placeholder": "+1 (555) 123-4567"
+    },
+    "businessEmail": {
+      "label": "Business Email",
+      "placeholder": "info@company.com"
+    },
+    "website": {
+      "label": "Website",
+      "placeholder": "www.company.com"
+    },
+    "address": {
+      "label": "Address"
+    },
+    "city": {
+      "label": "City"
+    },
+    "country": {
+      "label": "Country"
+    },
+    "phone": {
+      "label": "Phone"
+    },
+    "email": {
+      "label": "Email"
+    },
+    "favicon": {
+      "title": "Company Favicon"
+    },
+    "alerts": {
+      "userNotAuthenticated": "User not authenticated.",
+      "updateSuccess": "Company information updated successfully!",
+      "updateError": "Error updating company information:",
+      "updateFailure": "Unable to update company information.",
+      "genericError": "Error: ",
+      "logoUpdateSuccess": "Logo updated successfully!",
+      "logoUpdateError": "Error uploading logo:",
+      "logoUpdateFailure": "Unable to upload logo.",
+      "faviconUpdateSuccess": "Favicon updated successfully!",
+      "faviconUpdateError": "Error uploading favicon:",
+      "faviconUpdateFailure": "Unable to upload favicon."
+    },
+    "buttons": {
+      "save": "Save Company Details"
+    }
+  },
+  "fileUpload": {
+    "altText": "Preview",
+    "uploading": "Uploading...",
+    "change": "Change",
+    "remove": "Remove",
+    "progress": "{{progress}}% complete",
+    "info": "{{formats}}. Max {{size}}."
+  },
+  "billing": {
+    "title": "Billing & Invoice Settings",
+    "description": "Manage your subscription plan, payment methods, and invoice customization",
+    "tabs": {
+      "subscription": "Subscription",
+      "payment": "Payment Methods",
+      "invoices": "Invoice History",
+      "customization": "Invoice Customization"
+    },
+    "loadingSettings": "Loading settings...",
+    "saveSettings": "Save Invoice Settings",
+    "subscription": {
+      "title": "Your Subscription",
+      "current": "Current Plan",
+      "renewal": "Next Renewal",
+      "price": "Price",
+      "upgrade": "Upgrade Plan",
+      "manage": "Manage Subscription"
+    },
+    "payment": {
+      "methods": "Payment Methods",
+      "add": "Add Payment Method",
+      "edit": "Edit",
+      "delete": "Delete",
+      "defaultCard": "Default",
+      "expiryShort": "Exp. ",
+      "expires": "Expires"
+    },
+    "invoicesTitle": "Invoice History",
+    "invoicesDescription": "View and download your invoices",
+    "invoiceNumber": "Invoice Number",
+    "date": "Date",
+    "amount": "Amount",
+    "status": "Status",
+    "paid": "Paid",
+    "pending": "Pending",
+    "failed": "Failed",
+    "download": "Download",
+    "noInvoices": "No invoices available",
+    "templates": {
+      "title": "Invoice Templates",
+      "description": "Choose a template that matches your brand and business style",
+      "professional": "Professional",
+      "minimal": "Minimal", 
+      "creative": "Creative",
+      "classic": "Classic",
+      "detailed": "Detailed"
+    },
+    "numbering": {
+      "title": "Invoice Numbering",
+      "format": "Numbering Format",
+      "sequential": "Sequential (INV-001, INV-002, ...)",
+      "dateBased": "Date-based (INV-2024-001, INV-2024-002, ...)",
+      "yearlyReset": "Yearly Reset (INV-001 resets each year)",
+      "custom": "Custom Format",
+      "prefix": "Invoice Prefix",
+      "nextNumber": "Next Invoice Number",
+      "preview": "Preview"
+    },
+    "branding": {
+      "title": "Layout & Branding",
+      "logoPosition": "Logo Position",
+      "left": "Left",
+      "center": "Center", 
+      "right": "Right",
+      "brandColor": "Brand Color"
+    },
+    "business": {
+      "title": "Business Settings",
+      "paymentTerms": "Payment Terms",
+      "days": "days",
+      "taxRate": "Tax Rate (%)",
+      "currency": "Currency",
+      "dateFormat": "Date Format",
+      "footerText": "Footer Text"
+    },
+    "options": {
+      "title": "Options & Preferences",
+      "autoReminders": "Enable automatic payment reminders",
+      "includeTaxBreakdown": "Include tax breakdown on invoices",
+      "includeNotes": "Include notes section on invoices",
+      "reminderDays": "Reminder Days (comma-separated)",
+      "reminderDaysHelp": "Days before and after due date to send reminders (e.g., 7,14,30)"
+    },
+    "preview": {
+      "title": "Live Preview",
+      "show": "Show Preview",
+      "hide": "Hide Preview",
+      "number": "Invoice Number",
+      "template": "Template",
+      "currency": "Currency",
+      "terms": "Payment Terms",
+      "taxRate": "Tax Rate"
+    },
+    "alerts": {
+      "loadError": "Error loading invoice settings",
+      "templateError": "Error selecting template",
+      "settingsSaved": "Invoice settings saved successfully!",
+      "saveError": "Error saving invoice settings",
+      "changePlanInfo": "Change plan functionality coming soon",
+      "addPaymentMethodInfo": "Add payment method functionality coming soon",
+      "editPaymentMethodInfo": "Edit payment method functionality coming soon",
+      "downloadStarted": "Invoice download started"
+    },
+    "proPlan": "Pro Plan",
+    "price": "$29.99/month",
+    "billedAnnually": "billed annually",
+    "nextRenewal": "Next Renewal",
+    "nextRenewalDate": "January 15, 2024",
+    "changePlan": "Change Plan",
+    "paymentMethodsTitle": "Payment Methods",
+    "paymentMethodsDescription": "Manage your payment methods",
+    "addPaymentMethod": "Add",
+    "visa": "Visa",
+    "mastercard": "Mastercard",
+    "expiry": "Expires: ",
+    "default": "Default",
+    "edit": "Edit",
+    "plan": {
+      "title": "Subscription Plan",
+      "current": "Current Plan",
+      "price": "Price",
+      "nextRenewal": "Next Renewal",
+      "change": "Change Plan"
+    }
+  },
+  "buttons": {
+    "save": "Save Changes",
+    "saving": "Saving...",
+    "cancel": "Cancel",
+    "upload": "Upload New Photo",
+    "remove": "Remove",
+    "uploading": "Uploading...",
+    "updating": "Updating..."
+  },
+  "success": {
+    "profilePhoto": "Profile photo updated successfully!",
+    "companyLogo": "Company logo updated successfully!",
+    "companyLogoRemoved": "Company logo removed successfully!",
+    "profile": "Profile updated successfully!",
+    "avatar": "Profile image updated!",
+    "profilePartial": "Profile updated successfully (some notification settings may not have been saved).",
+    "deviceDisconnected": "Device disconnected successfully!",
+    "passwordUpdated": "Password updated successfully!",
+    "companyFavicon": "Company favicon updated successfully!"
+  },
+  "errors": {
+    "profileSave": "Error saving profile.",
+    "profileReference": "Reference error with user profile. You may need to sign in again.",
+    "permissionDenied": "Permission denied. You don't have authorization to modify this profile.",
+    "notificationSettings": "Error with notification settings. Please try again later.",
+    "retryNotifications": "Error with notification_settings, attempting to save without this field",
+    "deviceDisconnect": "Error disconnecting device.",
+    "passwordMismatch": "Passwords do not match",
+    "passwordLength": "Password must be at least 8 characters long.",
+    "passwordUpdate": "Error updating password: ",
+    "imageUpload": "Error uploading image: ",
+    "avatar": "Error uploading image.",
+    "logoUpload": "Error uploading logo: ",
+    "logoRemove": "Error removing logo. Please try again later.",
+    "sessionsFetch": "Error fetching sessions",
+    "checkConsole": "Check console for details"
+  },
   "logs": {
     "hideAfterSeconds": "Hide after 5 seconds",
     "fetchingProfile": "Fetching profile for user ID:",
@@ -40,6 +470,370 @@
   },
   "a11y": {
     "close": "Close",
+    "actions": "Actions"
+  },
+  "table": {
+    "emptyMessage": "No data available",
     "noRenderFunction": "Render function not provided"
+  },
+  "general": {
+    "title": "General Settings",
+    "description": "Manage your company information and basic preferences.",
+    "company": {
+      "title": "Company Information",
+      "name": "Company Name",
+      "email": "Company Email",
+      "phone": "Phone Number",
+      "address": "Address",
+      "website": "Website",
+      "taxId": "Tax ID",
+      "vatNumber": "VAT Number",
+      "logo": "Company Logo",
+      "uploadLogo": "Upload Logo",
+      "removeLogo": "Remove Logo"
+    },
+    "preferences": {
+      "title": "Preferences",
+      "language": "Language",
+      "timezone": "Timezone",
+      "dateFormat": "Date Format",
+      "currency": "Currency",
+      "currencySymbol": "Currency Symbol",
+      "currencyPosition": "Currency Position",
+      "thousandSeparator": "Thousand Separator",
+      "decimalSeparator": "Decimal Separator",
+      "decimalPlaces": "Decimal Places"
+    },
+    "save": "Save General Settings",
+    "saved": "General settings saved successfully",
+    "error": "Error saving general settings"
+  },
+  "account": {
+    "title": "Account Settings",
+    "description": "Manage your user account and security settings.",
+    "profile": {
+      "title": "Profile Information",
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "email": "Email Address",
+      "phone": "Phone Number",
+      "avatar": "Profile Picture",
+      "uploadAvatar": "Upload Avatar",
+      "removeAvatar": "Remove Avatar"
+    },
+    "security": {
+      "title": "Security Settings",
+      "currentPassword": "Current Password",
+      "newPassword": "New Password",
+      "confirmPassword": "Confirm New Password",
+      "changePassword": "Change Password",
+      "twoFactorAuth": "Two-Factor Authentication",
+      "enableTwoFactor": "Enable Two-Factor Authentication",
+      "disableTwoFactor": "Disable Two-Factor Authentication",
+      "loginSessions": "Active Sessions",
+      "terminateSession": "Terminate Session",
+      "terminateAllSessions": "Terminate All Other Sessions"
+    },
+    "save": "Save Account Settings",
+    "saved": "Account settings saved successfully",
+    "error": "Error saving account settings"
+  },
+  "email": {
+    "title": "Email Settings",
+    "description": "Manage your email provider, notifications, and templates.",
+    "providers": {
+      "title": "Email Provider Configuration",
+      "description": "Configure your email service provider for sending emails.",
+      "smtp": {
+        "title": "SMTP Configuration",
+        "host": "SMTP Host",
+        "port": "SMTP Port",
+        "username": "Username",
+        "password": "Password",
+        "encryption": "Encryption",
+        "encryptionOptions": {
+          "tls": "TLS",
+          "ssl": "SSL", 
+          "none": "None"
+        }
+      },
+      "fromAddress": {
+        "title": "From Address",
+        "email": "From Email",
+        "name": "From Name"
+      },
+      "test": {
+        "title": "Test Configuration",
+        "send": "Send Test",
+        "testing": "Testing...",
+        "success": "Test email sent successfully! Check your inbox.",
+        "error": "Test email failed"
+      }
+    },
+    "notifications": {
+      "title": "Email Notifications",
+      "description": "Choose which email notifications you want to receive.",
+      "invoice": {
+        "title": "Invoice Notifications",
+        "sent": "Invoice Sent",
+        "sentDesc": "When an invoice is sent to a client",
+        "viewed": "Invoice Viewed", 
+        "viewedDesc": "When a client views an invoice",
+        "paid": "Invoice Paid",
+        "paidDesc": "When an invoice is marked as paid",
+        "overdue": "Invoice Overdue",
+        "overdueDesc": "When an invoice becomes overdue",
+        "cancelled": "Invoice Cancelled",
+        "cancelledDesc": "When an invoice is cancelled"
+      },
+      "payment": {
+        "title": "Payment Notifications",
+        "received": "Payment Received",
+        "receivedDesc": "When a payment is received",
+        "failed": "Payment Failed",
+        "failedDesc": "When a payment attempt fails",
+        "refunded": "Payment Refunded",
+        "refundedDesc": "When a payment is refunded",
+        "reminderSent": "Reminder Sent",
+        "reminderSentDesc": "When payment reminders are sent"
+      },
+      "quote": {
+        "title": "Quote Notifications",
+        "sent": "Quote Sent",
+        "sentDesc": "When a quote is sent to a client",
+        "accepted": "Quote Accepted",
+        "acceptedDesc": "When a client accepts a quote",
+        "declined": "Quote Declined",
+        "declinedDesc": "When a client declines a quote",
+        "expired": "Quote Expired",
+        "expiredDesc": "When a quote expires"
+      },
+      "system": {
+        "title": "System Notifications",
+        "backup": "System Backup",
+        "backupDesc": "Backup completion notifications",
+        "maintenance": "Maintenance",
+        "maintenanceDesc": "System maintenance updates",
+        "security": "Security Alerts",
+        "securityDesc": "Security-related notifications",
+        "updates": "Feature Updates",
+        "updatesDesc": "New feature announcements"
+      }
+    },
+    "templates": {
+      "title": "Email Templates",
+      "description": "Customize your email templates for different types of communications.",
+      "new": "New Template",
+      "categories": {
+        "all": "All Categories",
+        "invoice": "Invoice",
+        "payment": "Payment", 
+        "quote": "Quote",
+        "client": "Client",
+        "system": "System"
+      },
+      "fields": {
+        "name": "Template Name",
+        "subject": "Email Subject",
+        "body": "Email Body",
+        "category": "Category",
+        "description": "Description",
+        "variables": "Available Variables"
+      },
+      "actions": {
+        "preview": "Preview",
+        "edit": "Edit",
+        "delete": "Delete",
+        "test": "Send Test",
+        "save": "Save Template",
+        "cancel": "Cancel"
+      },
+      "testModal": {
+        "title": "Send Test Email",
+        "emailAddress": "Test Email Address",
+        "send": "Send Test",
+        "sending": "Sending...",
+        "success": "Test email sent successfully!",
+        "error": "Error sending test email"
+      },
+      "previewModal": {
+        "title": "Template Preview",
+        "subject": "Subject",
+        "body": "Email Body"
+      }
+    },
+    "activity": {
+      "title": "Email Activity & Statistics",
+      "description": "View email delivery history and performance statistics.",
+      "stats": {
+        "total": "Total Emails",
+        "sent": "Sent Successfully", 
+        "failed": "Failed",
+        "successRate": "Success Rate"
+      },
+      "history": {
+        "title": "Recent Email Activity",
+        "recipient": "Recipient",
+        "subject": "Subject",
+        "template": "Template",
+        "status": "Status",
+        "sent": "Sent",
+        "statuses": {
+          "sent": "Sent",
+          "failed": "Failed",
+          "pending": "Pending"
+        }
+      }
+    },
+    "save": "Save Email Settings",
+    "saved": "Email settings saved successfully",
+    "error": "Error saving email settings"
+  },
+  "integrations": {
+    "title": "Integrations",
+    "description": "Connect with third-party services and manage API access.",
+    "accounting": {
+      "title": "Accounting Software",
+      "quickbooks": "QuickBooks",
+      "xero": "Xero",
+      "sage": "Sage",
+      "connect": "Connect",
+      "disconnect": "Disconnect",
+      "syncNow": "Sync Now",
+      "lastSync": "Last Sync",
+      "autoSync": "Automatic Sync"
+    },
+    "payment": {
+      "title": "Payment Gateways",
+      "stripe": "Stripe",
+      "paypal": "PayPal",
+      "square": "Square",
+      "authorize": "Authorize.Net",
+      "testMode": "Test Mode",
+      "liveMode": "Live Mode",
+      "webhooks": "Webhooks"
+    },
+    "storage": {
+      "title": "Cloud Storage",
+      "googledrive": "Google Drive",
+      "dropbox": "Dropbox",
+      "onedrive": "OneDrive",
+      "aws": "Amazon S3",
+      "autoBackup": "Automatic Backup",
+      "backupFrequency": "Backup Frequency"
+    },
+    "api": {
+      "title": "API Access",
+      "generateKey": "Generate API Key",
+      "revokeKey": "Revoke Key",
+      "documentation": "API Documentation",
+      "rateLimit": "Rate Limit",
+      "lastUsed": "Last Used"
+    },
+    "save": "Save Integrations",
+    "saved": "Integration settings saved successfully",
+    "error": "Error saving integration settings"
+  },
+  "security": {
+    "title": "Security Settings", 
+    "description": "Manage security policies and access controls.",
+    "authentication": {
+      "title": "Authentication",
+      "requireTwoFactor": "Require Two-Factor Authentication",
+      "sessionTimeout": "Session Timeout",
+      "maxLoginAttempts": "Maximum Login Attempts",
+      "lockoutDuration": "Account Lockout Duration",
+      "passwordPolicy": "Password Policy"
+    },
+    "access": {
+      "title": "Access Control",
+      "allowedIPs": "Allowed IP Addresses",
+      "restrictedIPs": "Restricted IP Addresses",
+      "apiAccess": "API Access Control",
+      "dataRetention": "Data Retention Policy"
+    },
+    "audit": {
+      "title": "Audit Logging",
+      "enableAuditLog": "Enable Audit Logging",
+      "logRetention": "Log Retention Period",
+      "exportLogs": "Export Audit Logs",
+      "clearLogs": "Clear Audit Logs"
+    },
+    "backup": {
+      "title": "Data Backup",
+      "automaticBackup": "Automatic Backup",
+      "backupFrequency": "Backup Frequency",
+      "retentionPeriod": "Retention Period",
+      "encryptBackups": "Encrypt Backups",
+      "backupNow": "Backup Now",
+      "restoreBackup": "Restore Backup"
+    },
+    "save": "Save Security Settings",
+    "saved": "Security settings saved successfully", 
+    "error": "Error saving security settings"
+  },
+  "backup": {
+    "title": "Backup & Restore",
+    "description": "Manage your data backups and system restores",
+    "lastBackup": "Last Backup",
+    "manualActions": "Manual Actions",
+    "createBackup": "Create Backup",
+    "importData": "Import Data",
+    "dataExport": "Data Export", 
+    "exportComplete": "Complete Export",
+    "exportClients": "Export Clients",
+    "exportFinancial": "Export Financial Data",
+    "automaticSettings": "Automatic Settings",
+    "enableAutoBackup": "Enable Automatic Backup",
+    "enableAutoBackupDesc": "Automatically backup your data",
+    "frequency": "Frequency",
+    "frequencyDaily": "Daily",
+    "frequencyWeekly": "Weekly",
+    "frequencyMonthly": "Monthly",
+    "retention": "Retention Period",
+    "retention30": "30 days",
+    "retention90": "90 days", 
+    "retention180": "180 days",
+    "retention365": "1 year",
+    "includeAttachments": "Include Attachments",
+    "encryptBackups": "Encrypt Backups",
+    "notifyOnComplete": "Notify on Completion",
+    "history": "Backup History",
+    "historyDate": "Date",
+    "historyType": "Type",
+    "historyStatus": "Status",
+    "historySize": "Size",
+    "historyDuration": "Duration",
+    "typeAutomatic": "Automatic",
+    "typeManual": "Manual",
+    "statusCompleted": "Completed",
+    "statusFailed": "Failed",
+    "statusInProgress": "In Progress"
+  },
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "edit": "Edit",
+    "delete": "Delete",
+    "preview": "Preview",
+    "upload": "Upload",
+    "download": "Download",
+    "loading": "Loading...",
+    "saving": "Saving...",
+    "saved": "Settings saved successfully",
+    "error": "An error occurred",
+    "confirm": "Are you sure?",
+    "yes": "Yes",
+    "no": "No",
+    "enabled": "Enabled",
+    "disabled": "Disabled",
+    "active": "Active",
+    "inactive": "Inactive",
+    "required": "Required",
+    "optional": "Optional"
+  },
+  "buttons": {
+    "cancel": "Cancel",
+    "save": "Save Changes"
   }
 }

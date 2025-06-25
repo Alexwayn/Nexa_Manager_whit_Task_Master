@@ -56,14 +56,6 @@
       "noCard": "Nessuna carta richiesta"
     }
   },
-  "passwordRecoveryModal": {
-    "titleStep1": "Recupera Password",
-    "step1Instruction": "Inserisci il tuo indirizzo email e ti invieremo un link per reimpostare la password",
-    "emailLabel": "Indirizzo Email",
-    "emailPlaceholder": "Inserisci il tuo indirizzo email",
-    "cancel": "Annulla",
-    "sendLink": "Invia Link di Recupero"
-  },
   "marketing": {
     "badge": "Nuovo",
     "logoAlt": "Nexa Manager Logo",

@@ -1,10 +1,33 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import { sentryVitePlugin } from '@sentry/vite-plugin'
 import path from 'path'
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react()],
+  plugins: [
+    react(),
+    // Sentry plugin for source maps and release tracking
+    ...(process.env.NODE_ENV === 'production' && process.env.VITE_SENTRY_DSN ? [
+      sentryVitePlugin({
+        org: process.env.SENTRY_ORG,
+        project: process.env.SENTRY_PROJECT,
+        authToken: process.env.SENTRY_AUTH_TOKEN,
+        sourcemaps: {
+          assets: './dist/assets/**',
+          ignore: ['node_modules'],
+          deleteAfterUpload: true,
+        },
+        release: {
+          name: process.env.VITE_APP_VERSION || '1.0.0',
+          finalize: true,
+          setCommits: {
+            auto: true,
+          },
+        },
+      })
+    ] : [])
+  ],
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
@@ -33,7 +56,7 @@ export default defineConfig({
   build: {
     target: 'esnext',
     minify: 'terser',
-    sourcemap: true,
+    sourcemap: true, // Essential for Sentry error tracking
     chunkSizeWarningLimit: 500,
     rollupOptions: {
       output: {
@@ -46,6 +69,7 @@ export default defineConfig({
           'supabase': ['@supabase/supabase-js'],
           'i18n': ['react-i18next', 'i18next'],
           'date-utils': ['date-fns'],
+          'sentry': ['@sentry/react', '@sentry/tracing'], // Separate chunk for Sentry
           'analytics': [
             './src/components/analytics/AnalyticsDashboard.jsx',
             './src/components/analytics/AdvancedFinancialAnalytics.jsx',
@@ -72,17 +96,21 @@ export default defineConfig({
         }
       }
     },
-    // Terser options for better minification
+    // Terser options for better minification while preserving Sentry integration
     terserOptions: {
       compress: {
-        drop_console: true,
+        drop_console: process.env.NODE_ENV === 'production', // Keep console in dev for Sentry
         drop_debugger: true,
-        pure_funcs: ['console.log', 'console.info', 'console.debug']
+        pure_funcs: process.env.NODE_ENV === 'production' 
+          ? ['console.log', 'console.info', 'console.debug'] 
+          : [] // Don't drop console methods in development for Sentry
       }
     }
   },
   define: {
-    __DEV__: JSON.stringify(false)
+    __DEV__: JSON.stringify(process.env.NODE_ENV === 'development'),
+    __SENTRY_DEBUG__: JSON.stringify(process.env.NODE_ENV === 'development'),
+    __SENTRY_TRACING__: JSON.stringify(true),
   },
   ...(process.env.NODE_ENV === 'development' && {
     server: {

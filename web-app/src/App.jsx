@@ -3,6 +3,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { ClerkProvider } from '@clerk/clerk-react';
 import { ThemeProvider } from '@context/OptimizedThemeContext';
+import { OrganizationProvider } from '@context/OrganizationContext';
 import AppRouter from '@router/AppRouter';
 import FloatingMicrophone from '@components/shared/FloatingMicrophone';
 import ErrorBoundary from '@components/common/ErrorBoundary';
@@ -65,20 +66,22 @@ function App() {
   return (
     <ErrorBoundary>
       <ClerkProvider publishableKey={clerkPublishableKey}>
-        <ThemeProvider>
-          <Router>
-            <div className='min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-200'>
-              {/* Main Application Router */}
-              <AppRouter />
+        <OrganizationProvider>
+          <ThemeProvider>
+            <Router>
+              <div className='min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-200'>
+                {/* Main Application Router */}
+                <AppRouter />
 
-              {/* Global Toast Notifications */}
-              <Toaster {...toastConfig} />
+                {/* Global Toast Notifications */}
+                <Toaster {...toastConfig} />
 
-              {/* Global Floating Microphone - Available on all pages */}
-              <FloatingMicrophone />
-            </div>
-          </Router>
-        </ThemeProvider>
+                {/* Global Floating Microphone - Available on all pages */}
+                <FloatingMicrophone />
+              </div>
+            </Router>
+          </ThemeProvider>
+        </OrganizationProvider>
       </ClerkProvider>
     </ErrorBoundary>
   );
