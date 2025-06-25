@@ -1,254 +1,234 @@
-import React, { Fragment } from 'react';
-import { Menu, Transition } from '@headlessui/react';
-import {
-  BellIcon,
-  QuestionMarkCircleIcon,
-  Cog6ToothIcon,
-  Bars3Icon,
-  SunIcon,
-  MoonIcon,
-  ComputerDesktopIcon,
-} from '@heroicons/react/24/outline';
-import { ChevronDownIcon } from '@heroicons/react/24/solid';
-import { useAuth, useUser } from '@clerk/clerk-react';
-import { useTheme } from '@context/OptimizedThemeContext';
-import { useNavigate } from 'react-router-dom';
-import Logger from '@utils/Logger';
+import React, { useState, useRef, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useClerk, useUser } from '@clerk/clerk-react';
 import { useTranslation } from 'react-i18next';
-import OrganizationSwitcher from '@components/common/OrganizationSwitcher';
-
-function classNames(...classes) {
-  return classes.filter(Boolean).join(' ');
-}
+import { 
+  Bars3Icon, 
+  BellIcon, 
+  UserCircleIcon,
+  Cog6ToothIcon,
+  ArrowRightOnRectangleIcon
+} from '@heroicons/react/24/outline';
+import { useTheme } from '@context/OptimizedThemeContext';
+import LanguageSwitcher from '@components/common/LanguageSwitcher';
 
 export default function Navbar({ onOpenSidebar }) {
-  const { signOut } = useAuth();
+  const { t } = useTranslation('navigation');
+  const { signOut } = useClerk();
   const { user } = useUser();
-  const { setLightTheme, setDarkTheme, setAutoTheme, isDark } = useTheme();
   const navigate = useNavigate();
-  const { t, ready } = useTranslation('navigation');
+  const { theme, toggleTheme } = useTheme();
+  
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const [notificationsOpen, setNotificationsOpen] = useState(false);
+  const userMenuRef = useRef(null);
+  const notificationsRef = useRef(null);
 
-  const handleLogout = async () => {
+  // Close dropdowns when clicking outside
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (userMenuRef.current && !userMenuRef.current.contains(event.target)) {
+        setUserMenuOpen(false);
+      }
+      if (notificationsRef.current && !notificationsRef.current.contains(event.target)) {
+        setNotificationsOpen(false);
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  // Handle keyboard navigation for dropdowns
+  const handleDropdownKeyDown = (event, isOpen, setOpen) => {
+    if (event.key === 'Escape') {
+      setOpen(false);
+    } else if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      setOpen(!isOpen);
+    }
+  };
+
+  const handleSignOut = async () => {
     try {
       await signOut();
       navigate('/login');
     } catch (error) {
-      Logger.error(safeT('log.logoutError', 'Logout error'), error.message);
+      console.error('Error signing out:', error);
     }
   };
 
-  const navigateToSettings = () => {
-    navigate('/settings');
-  };
-
-  // Safe translation function that handles loading state
-  const safeT = (key, fallback = key) => {
-    if (!ready) return fallback;
-    return t(key);
-  };
-
-  const userNavigation = [
-    {
-      name: safeT('user.profile', 'Profile'),
-      href: '/settings',
-      onClick: () => navigate('/settings'),
-    },
-    {
-      name: safeT('user.settings', 'Settings'),
-      href: '/settings',
-      onClick: () => navigate('/settings'),
-    },
-  ];
-
-  const themeOptions = [
-    { name: safeT('theme.light', 'Light'), value: 'light', icon: SunIcon, onClick: setLightTheme },
-    { name: safeT('theme.dark', 'Dark'), value: 'dark', icon: MoonIcon, onClick: setDarkTheme },
-    {
-      name: safeT('theme.auto', 'Auto'),
-      value: 'auto',
-      icon: ComputerDesktopIcon,
-      onClick: setAutoTheme,
-    },
-  ];
-
   return (
-    <div className='sticky top-0 z-40 bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700'>
-      <div className='px-4 sm:px-6 lg:px-8 h-16'>
-        <div className='flex items-center justify-between h-full'>
-          {/* Left side - Mobile menu button and Organization Switcher */}
-          <div className='flex items-center space-x-4'>
+    <nav 
+      role="navigation" 
+      aria-label="Main navigation"
+      className="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700 w-full"
+    >
+      <div className="mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between h-16">
+          {/* Left section */}
+          <div className="flex items-center">
             {/* Mobile menu button */}
             <button
-              type='button'
-              className='lg:hidden -m-2.5 p-2.5 text-gray-700 dark:text-gray-300'
               onClick={onOpenSidebar}
+              className="lg:hidden inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500"
+              aria-label={t('openSidebar')}
+              aria-expanded="false"
+              aria-controls="sidebar"
             >
-              <span className='sr-only'>{safeT('openSidebar', 'Open sidebar')}</span>
-              <Bars3Icon className='h-6 w-6' aria-hidden='true' />
+              <Bars3Icon className="h-6 w-6" aria-hidden="true" />
             </button>
-
-            {/* Organization Switcher */}
-            <OrganizationSwitcher />
+            
+            {/* Logo */}
+            <Link 
+              to="/dashboard" 
+              className="flex-shrink-0 flex items-center ml-4 lg:ml-0"
+              aria-label={t('goToHome')}
+            >
+              <img
+                className="h-8 w-auto"
+                src="/logo_nexa.png"
+                alt={t('logoAlt')}
+              />
+              <span className="sr-only">{t('companyName')}</span>
+            </Link>
           </div>
 
-          {/* Right side buttons */}
-          <div className='flex items-center space-x-4'>
+          {/* Right section */}
+          <div className="flex items-center space-x-4">
+            {/* Language Switcher */}
+            <div className="hidden sm:block">
+              <LanguageSwitcher />
+            </div>
+
             {/* Theme toggle */}
-            <Menu as='div' className='relative'>
-              <Menu.Button className='-m-2.5 p-2.5 text-gray-400 dark:text-gray-500 hover:text-gray-500 dark:hover:text-gray-400'>
-                <span className='sr-only'>{safeT('changeTheme', 'Change theme')}</span>
-                {isDark ? (
-                  <MoonIcon className='h-6 w-6' aria-hidden='true' />
-                ) : (
-                  <SunIcon className='h-6 w-6' aria-hidden='true' />
-                )}
-              </Menu.Button>
-              <Transition
-                as={Fragment}
-                enter='transition ease-out duration-100'
-                enterFrom='transform opacity-0 scale-95'
-                enterTo='transform opacity-100 scale-100'
-                leave='transition ease-in duration-75'
-                leaveFrom='transform opacity-100 scale-100'
-                leaveTo='transform opacity-0 scale-95'
+            <button
+              onClick={toggleTheme}
+              className="p-2 text-gray-400 hover:text-gray-500 dark:text-gray-300 dark:hover:text-gray-200 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
+              aria-label={theme === 'dark' ? t('switchToLight') : t('switchToDark')}
+            >
+              {theme === 'dark' ? (
+                <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                </svg>
+              ) : (
+                <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                </svg>
+              )}
+            </button>
+
+            {/* Notifications */}
+            <div className="relative" ref={notificationsRef}>
+              <button
+                onClick={() => setNotificationsOpen(!notificationsOpen)}
+                onKeyDown={(e) => handleDropdownKeyDown(e, notificationsOpen, setNotificationsOpen)}
+                className="p-2 text-gray-400 hover:text-gray-500 dark:text-gray-300 dark:hover:text-gray-200 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
+                aria-label={t('notifications')}
+                aria-expanded={notificationsOpen}
+                aria-haspopup="true"
+                aria-controls="notifications-dropdown"
               >
-                <Menu.Items className='absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white dark:bg-gray-800 py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none'>
-                  {themeOptions.map(option => (
-                    <Menu.Item key={option.value}>
-                      {({ active }) => (
-                        <button
-                          onClick={option.onClick}
-                          className={classNames(
-                            active ? 'bg-gray-100 dark:bg-gray-700' : '',
-                            'flex w-full items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300',
-                          )}
-                        >
-                          <option.icon className='mr-3 h-5 w-5' aria-hidden='true' />
-                          {option.name}
-                        </button>
-                      )}
-                    </Menu.Item>
-                  ))}
-                </Menu.Items>
-              </Transition>
-            </Menu>
-
-            {/* Help button */}
-            <button
-              type='button'
-              className='-m-2.5 p-2.5 text-gray-400 dark:text-gray-500 hover:text-gray-500 dark:hover:text-gray-400'
-            >
-              <span className='sr-only'>{safeT('help', 'Help')}</span>
-              <QuestionMarkCircleIcon className='h-6 w-6' aria-hidden='true' />
-            </button>
-
-            {/* Settings button */}
-            <button
-              type='button'
-              className='-m-2.5 p-2.5 text-gray-400 dark:text-gray-500 hover:text-gray-500 dark:hover:text-gray-400'
-              onClick={navigateToSettings}
-            >
-              <span className='sr-only'>{safeT('settings', 'Settings')}</span>
-              <Cog6ToothIcon className='h-6 w-6' aria-hidden='true' />
-            </button>
-
-            {/* Notifications button */}
-            <button
-              type='button'
-              className='-m-2.5 p-2.5 text-gray-400 dark:text-gray-500 hover:text-gray-500 dark:hover:text-gray-400'
-            >
-              <span className='sr-only'>{safeT('notifications', 'Notifications')}</span>
-              <BellIcon className='h-6 w-6' aria-hidden='true' />
-            </button>
-
-            {/* Separator */}
-            <div
-              className='hidden lg:block lg:h-6 lg:w-px lg:bg-gray-200 dark:lg:bg-gray-700'
-              aria-hidden='true'
-            />
-
-            {/* Profile dropdown */}
-            <Menu as='div' className='relative'>
-              <Menu.Button className='-m-1.5 flex items-center p-1.5'>
-                <span className='sr-only'>{safeT('openUserMenu', 'Open user menu')}</span>
-                <span className='inline-block h-8 w-8 overflow-hidden rounded-full bg-gray-100 dark:bg-gray-700'>
-                  {user?.profileImageUrl ? (
-                    <img
-                      src={user.profileImageUrl}
-                      alt='Profile'
-                      className='h-full w-full object-cover'
-                    />
-                  ) : (
-                    <svg
-                      className='h-full w-full text-gray-300 dark:text-gray-600'
-                      fill='currentColor'
-                      viewBox='0 0 24 24'
-                    >
-                      <path d='M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z' />
-                    </svg>
-                  )}
+                <BellIcon className="h-6 w-6" aria-hidden="true" />
+                {/* Notification badge */}
+                <span className="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 transform translate-x-1/2 -translate-y-1/2 bg-red-600 rounded-full sr-only">
+                  {t('newNotifications')}
                 </span>
-                <span className='hidden lg:flex lg:items-center'>
-                  <span
-                    className='ml-4 text-sm font-semibold leading-6 text-gray-900 dark:text-gray-100'
-                    aria-hidden='true'
-                  >
-                    {user?.primaryEmailAddress?.emailAddress || user?.fullName || safeT('defaultUser', 'User')}
-                  </span>
-                  <ChevronDownIcon
-                    className='ml-2 h-5 w-5 text-gray-400 dark:text-gray-500'
-                    aria-hidden='true'
+              </button>
+
+              {/* Notifications dropdown */}
+              {notificationsOpen && (
+                <div 
+                  id="notifications-dropdown"
+                  role="menu"
+                  aria-labelledby="notifications-button"
+                  className="origin-top-right absolute right-0 mt-2 w-80 rounded-md shadow-lg bg-white dark:bg-gray-800 ring-1 ring-black ring-opacity-5 focus:outline-none z-50"
+                >
+                  <div className="py-1" role="none">
+                    <div className="px-4 py-2 text-sm text-gray-700 dark:text-gray-300 border-b border-gray-200 dark:border-gray-600">
+                      <h3 className="font-medium">{t('notifications')}</h3>
+                    </div>
+                    <div className="px-4 py-3 text-sm text-gray-500 dark:text-gray-400">
+                      {t('noNotifications')}
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* User menu */}
+            <div className="relative" ref={userMenuRef}>
+              <button
+                onClick={() => setUserMenuOpen(!userMenuOpen)}
+                onKeyDown={(e) => handleDropdownKeyDown(e, userMenuOpen, setUserMenuOpen)}
+                className="flex items-center text-sm rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 p-2"
+                aria-label={t('userMenu')}
+                aria-expanded={userMenuOpen}
+                aria-haspopup="true"
+                aria-controls="user-menu-dropdown"
+              >
+                {user?.imageUrl ? (
+                  <img
+                    className="h-8 w-8 rounded-full"
+                    src={user.imageUrl}
+                    alt={t('userAvatar', { name: user.firstName || 'User' })}
                   />
+                ) : (
+                  <UserCircleIcon className="h-8 w-8 text-gray-400" aria-hidden="true" />
+                )}
+                <span className="hidden sm:ml-2 sm:block text-sm font-medium text-gray-700 dark:text-gray-200">
+                  {user?.firstName || t('user')}
                 </span>
-              </Menu.Button>
-              <Transition
-                as={Fragment}
-                enter='transition ease-out duration-100'
-                enterFrom='transform opacity-0 scale-95'
-                enterTo='transform opacity-100 scale-100'
-                leave='transition ease-in duration-75'
-                leaveFrom='transform opacity-100 scale-100'
-                leaveTo='transform opacity-0 scale-95'
-              >
-                <Menu.Items className='absolute right-0 z-10 mt-2.5 w-32 origin-top-right rounded-md bg-white dark:bg-gray-800 py-2 shadow-lg ring-1 ring-gray-900/5 dark:ring-gray-700/5 focus:outline-none'>
-                  {userNavigation.map(item => (
-                    <Menu.Item key={item.name}>
-                      {({ active }) => (
-                        <a
-                          href={item.href}
-                          onClick={e => {
-                            e.preventDefault();
-                            item.onClick();
-                          }}
-                          className={classNames(
-                            active ? 'bg-gray-50 dark:bg-gray-700' : '',
-                            'block px-3 py-1 text-sm leading-6 text-gray-900 dark:text-gray-100',
-                          )}
-                        >
-                          {item.name}
-                        </a>
-                      )}
-                    </Menu.Item>
-                  ))}
-                  <Menu.Item>
-                    {({ active }) => (
-                      <button
-                        onClick={handleLogout}
-                        className={classNames(
-                          active ? 'bg-red-50 dark:bg-red-900/20' : '',
-                          'block w-full text-left px-3 py-1 text-sm leading-6 text-red-700 dark:text-red-400',
-                        )}
-                      >
-                        {safeT('logout', 'Logout')}
-                      </button>
-                    )}
-                  </Menu.Item>
-                </Menu.Items>
-              </Transition>
-            </Menu>
+              </button>
+
+              {/* User dropdown menu */}
+              {userMenuOpen && (
+                <div 
+                  id="user-menu-dropdown"
+                  role="menu"
+                  aria-labelledby="user-menu-button"
+                  className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white dark:bg-gray-800 ring-1 ring-black ring-opacity-5 focus:outline-none z-50"
+                >
+                  <div className="py-1" role="none">
+                    {/* User info */}
+                    <div className="px-4 py-2 text-sm text-gray-700 dark:text-gray-300 border-b border-gray-200 dark:border-gray-600">
+                      <p className="font-medium">{user?.firstName} {user?.lastName}</p>
+                      <p className="text-gray-500 dark:text-gray-400 truncate">
+                        {user?.emailAddresses?.[0]?.emailAddress}
+                      </p>
+                    </div>
+                    
+                    {/* Menu items */}
+                    <Link
+                      to="/settings"
+                      className="group flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                      role="menuitem"
+                      onClick={() => setUserMenuOpen(false)}
+                    >
+                      <Cog6ToothIcon className="mr-3 h-5 w-5 text-gray-400 group-hover:text-gray-500" aria-hidden="true" />
+                      {t('settings')}
+                    </Link>
+                    
+                    <button
+                      onClick={() => {
+                        setUserMenuOpen(false);
+                        handleSignOut();
+                      }}
+                      className="group flex w-full items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                      role="menuitem"
+                    >
+                      <ArrowRightOnRectangleIcon className="mr-3 h-5 w-5 text-gray-400 group-hover:text-gray-500" aria-hidden="true" />
+                      {t('logout')}
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </nav>
   );
 }

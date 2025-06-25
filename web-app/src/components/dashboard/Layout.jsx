@@ -1,48 +1,74 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import Sidebar from '@components/dashboard/Sidebar';
 import Navbar from '@components/dashboard/Navbar';
 import { useTheme } from '@context/OptimizedThemeContext';
 
 export default function Layout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const { t } = useTranslation('navigation');
   useTheme(); // Keep theme context active
 
-  return (
-    <div className='h-screen flex overflow-hidden bg-gray-100 dark:bg-gray-900'>
-      {/* Mobile sidebar overlay */}
-      {sidebarOpen && (
-        <div
-          className='fixed inset-0 z-40 bg-gray-600 bg-opacity-75 transition-opacity lg:hidden'
-          onClick={() => setSidebarOpen(false)}
-        />
-      )}
+  // Skip links functionality - TEMPORARILY DISABLED
+  useEffect(() => {
+    // SKIP LINKS - Temporarily commented out (can be re-enabled later)
+    /*
+    const addSkipLinks = () => {
+      if (document.querySelector('.skip-links')) return;
+      
+      const skipLinks = document.createElement('div');
+      skipLinks.className = 'skip-links';
+      skipLinks.innerHTML = `
+        <a href="#main-content" class="skip-link">${t('skipToMain')}</a>
+        <a href="#sidebar-navigation" class="skip-link">${t('skipToNavigation')}</a>
+        <a href="#sidebar" class="skip-link">${t('skipToSidebar')}</a>
+      `;
+      document.body.insertBefore(skipLinks, document.body.firstChild);
+    };
 
-      {/* Sidebar */}
-      <div
-        className={`
-        fixed inset-y-0 left-0 z-50 w-64 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700
-        transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0
-        ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}
-      `}
-      >
-        <Sidebar onCloseSidebar={() => setSidebarOpen(false)} />
+    addSkipLinks();
+    */
+  }, [t]);
+
+  return (
+    <div className="h-screen flex bg-gray-50 dark:bg-gray-900 w-full">
+      {/* Desktop Sidebar */}
+      <div className="hidden lg:fixed lg:inset-y-0 lg:flex lg:w-72 lg:flex-col">
+        <Sidebar />
       </div>
 
-      {/* Main content area */}
-      <div className='flex-1 flex flex-col overflow-hidden'>
-        {/* Navbar */}
-        <Navbar onOpenSidebar={() => setSidebarOpen(true)} />
-
-        {/* Main content */}
-        <main className='flex-1 relative overflow-y-auto focus:outline-none'>
-          <div className='pb-6'>
-            <div className='w-full px-2'>
-              {/* Content area with fade-in animation */}
-              <div className='animate-fade-in'>
-                <Outlet />
+      {/* Mobile Sidebar Overlay */}
+      {sidebarOpen && (
+        <div className="relative z-50 lg:hidden" role="dialog" aria-modal="true">
+          <div className="fixed inset-0 bg-gray-900/80" aria-hidden="true" onClick={() => setSidebarOpen(false)}></div>
+          <div className="fixed inset-0 flex">
+            <div className="relative mr-16 flex w-full max-w-xs flex-1">
+              <div className="absolute left-full top-0 flex w-16 justify-center pt-5">
+                <button type="button" className="-m-2.5 p-2.5" onClick={() => setSidebarOpen(false)}>
+                  <span className="sr-only">{t('closeSidebar')}</span>
+                  <svg className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
               </div>
+              <Sidebar onCloseSidebar={() => setSidebarOpen(false)} />
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Main Content Area */}
+      <div className="flex flex-1 flex-col lg:pl-72 w-full">
+        {/* Top Navigation */}
+        <div className="sticky top-0 z-40 bg-white dark:bg-gray-800">
+          <Navbar setSidebarOpen={setSidebarOpen} />
+        </div>
+        
+        {/* Main Content */}
+        <main className="flex-1" id="main-content" role="main" aria-label={t('mainContent')}>
+          <div className="h-full w-full">
+            <Outlet />
           </div>
         </main>
       </div>

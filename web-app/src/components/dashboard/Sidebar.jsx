@@ -75,7 +75,7 @@ export default function Sidebar({ onCloseSidebar }) {
   return (
     <div className='flex grow flex-col gap-y-5 overflow-y-auto bg-white dark:bg-gray-800 px-6 pb-4 border-r border-gray-200 dark:border-gray-700 w-64'>
       {/* Header with logo and close button */}
-      <div className='flex h-16 shrink-0 items-center justify-between'>
+      <div className='flex h-16 shrink-0 items-center justify-between border-b border-gray-200 dark:border-gray-700 -mx-6 px-6'>
         <div className='flex items-center'>
           <img className='h-10 w-auto' src={nexaLogo} alt={t('sidebar.logoAlt', 'Nexa Manager')} />
           {/* Optional: Add text logo next to image if needed */}
