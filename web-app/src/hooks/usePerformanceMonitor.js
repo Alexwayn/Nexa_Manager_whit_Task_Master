@@ -20,12 +20,12 @@ export const usePerformanceMonitor = (componentName = 'Unknown') => {
     const mountTime = Date.now() - renderStartTime.current;
     performanceData.current.mountTime = mountTime;
 
-    if (process.env.NODE_ENV === 'development') {
+    if (import.meta.env.MODE === 'development') {
       Logger.info(`🚀 Component mounted: ${componentName} (${mountTime}ms)`);
     }
 
     return () => {
-      if (process.env.NODE_ENV === 'development') {
+      if (import.meta.env.MODE === 'development') {
         Logger.info(`🔄 Component unmounted: ${componentName}`);
         // Send performance data to analytics (in production)
         logPerformanceData(performanceData.current);
@@ -45,7 +45,7 @@ export const usePerformanceMonitor = (componentName = 'Unknown') => {
     }
 
     // Log slow renders in development
-    if (process.env.NODE_ENV === 'development' && renderTime > 100) {
+    if (import.meta.env.MODE === 'development' && renderTime > 100) {
       Logger.warn(`⚠️ Slow render detected: ${componentName} (${renderTime}ms)`);
     }
 
@@ -63,7 +63,7 @@ export const usePerformanceMonitor = (componentName = 'Unknown') => {
             const endTime = performance.now();
             const duration = endTime - startTime;
 
-            if (process.env.NODE_ENV === 'development') {
+            if (import.meta.env.MODE === 'development') {
               Logger.info(
                 `⚡ Operation "${operationName}" in ${componentName}: ${duration.toFixed(2)}ms`,
               );
@@ -115,7 +115,7 @@ export const usePerformanceMonitor = (componentName = 'Unknown') => {
 const logPerformanceData = data => {
   try {
     // In production, send to analytics service
-    if (process.env.NODE_ENV === 'production' && window.gtag) {
+    if (import.meta.env.MODE === 'production' && window.gtag) {
       window.gtag('event', 'performance_metrics', {
         component_name: data.componentName,
         mount_time: data.mountTime,

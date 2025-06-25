@@ -34,14 +34,8 @@ const t = (key: string, params?: Record<string, unknown>): string => {
 };
 
 // Get environment variables - NO HARDCODED FALLBACKS for security
-const supabaseUrl: string =
-  (typeof import.meta !== 'undefined' && import.meta.env?.VITE_SUPABASE_URL) ||
-  (typeof process !== 'undefined' && process.env?.VITE_SUPABASE_URL) ||
-  '';
-const supabaseAnonKey: string =
-  (typeof import.meta !== 'undefined' && import.meta.env?.VITE_SUPABASE_ANON_KEY) ||
-  (typeof process !== 'undefined' && process.env?.VITE_SUPABASE_ANON_KEY) ||
-  '';
+const supabaseUrl: string = import.meta.env.VITE_SUPABASE_URL || '';
+const supabaseAnonKey: string = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
 
 // Validate that required environment variables are set
 if (!supabaseUrl) {
@@ -53,10 +47,7 @@ if (!supabaseAnonKey) {
 }
 
 // Only log in development
-if (
-  (typeof import.meta !== 'undefined' && import.meta.env?.DEV) ||
-  (typeof process !== 'undefined' && process.env.NODE_ENV === 'development')
-) {
+if (import.meta.env.MODE === 'development') {
   Logger.info(t('supabase.debug.urlLog'), supabaseUrl);
   Logger.info(
     t('supabase.debug.anonKeyLog'),
@@ -70,9 +61,7 @@ export const supabase: SupabaseClient = createClient(supabaseUrl, supabaseAnonKe
     persistSession: true,
     storage: localStorage,
     autoRefreshToken: true,
-    debug:
-      (typeof import.meta !== 'undefined' && import.meta.env?.DEV) ||
-      (typeof process !== 'undefined' && process.env.NODE_ENV === 'development'), // Only enable debug in development
+    debug: import.meta.env.MODE === 'development', // Only enable debug in development
   },
   realtime: {
     timeout: 60000,
@@ -124,10 +113,7 @@ export const testSupabaseConnection = async (): Promise<ConnectionTestResult> =>
 };
 
 // Development helpers
-if (
-  (typeof import.meta !== 'undefined' && import.meta.env?.DEV) ||
-  (typeof process !== 'undefined' && process.env.NODE_ENV === 'development')
-) {
+if (import.meta.env.MODE === 'development') {
   (window as any).supabase = supabase;
   (window as any).testSupabaseConnection = testSupabaseConnection;
   Logger.info(t('supabase.debug.clientAvailable'));

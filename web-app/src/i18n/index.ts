@@ -18,9 +18,7 @@ i18n
     fallbackLng: 'en',
 
     // Debug mode in development
-    debug:
-      (typeof import.meta !== 'undefined' && import.meta.env?.MODE === 'development') ||
-      (typeof process !== 'undefined' && process.env.NODE_ENV === 'development'),
+    debug: import.meta.env.MODE === 'development',
 
     // Language detection options
     detection: {
@@ -29,7 +27,7 @@ i18n
       lookupLocalStorage: 'nexa-language',
       lookupFromPathIndex: 0,
       lookupFromSubdomainIndex: 0,
-      checkWhitelist: true,
+      // checkAllowlist: true, // Deprecated in newer versions
     },
 
     // Backend options for loading translations

@@ -469,7 +469,7 @@ export function useAccessibilityTest(
 
   React.useEffect(() => {
     // Auto-run test on mount in development
-    if (process.env.NODE_ENV === 'development') {
+    if (import.meta.env.MODE === 'development') {
       runTest();
     }
   }, [runTest]);
@@ -511,7 +511,7 @@ export interface AccessibilityTestResult {
   score: number;
 }
 
-export interface AccessibilityReport {
+export interface PageAccessibilityReport {
   overallScore: number;
   totalElements: number;
   totalIssues: number;
@@ -602,7 +602,7 @@ export function testInteractiveElement(element: HTMLElement): AccessibilityTestR
 /**
  * Performs a comprehensive accessibility audit of the page
  */
-export function auditPageAccessibility(): AccessibilityReport {
+export function auditPageAccessibility(): PageAccessibilityReport {
   const interactiveElements = document.querySelectorAll(
     'button, input, select, textarea, a[href], [tabindex], [role="button"], [role="link"], [role="tab"], [role="menuitem"]'
   ) as NodeListOf<HTMLElement>;
@@ -802,10 +802,10 @@ export function announceToScreenReader(message: string, politeness: 'polite' | '
 /**
  * Checks color contrast ratio
  */
-export function checkColorContrast(element: HTMLElement): { ratio: number; passes: boolean; level: string } {
-  const styles = getComputedStyle(element);
-  const textColor = styles.color;
-  const backgroundColor = styles.backgroundColor;
+export function checkColorContrast(_element: HTMLElement): { ratio: number; passes: boolean; level: string } {
+  // Note: This is a simplified implementation
+  // In a real implementation, we would parse colors from getComputedStyle(element)
+  // const styles = getComputedStyle(element);
   
   // Simple contrast calculation (would need more sophisticated implementation)
   // This is a placeholder - real implementation would parse RGB values and calculate luminance

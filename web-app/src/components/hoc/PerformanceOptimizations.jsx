@@ -52,7 +52,7 @@ export const withShallowMemo = Component => {
  * Helps identify components that re-render frequently
  */
 export const withRenderCount = Component => {
-  if (process.env.NODE_ENV !== 'development') {
+  if (import.meta.env.MODE !== 'development') {
     return Component;
   }
 
@@ -78,7 +78,7 @@ export const withRenderCount = Component => {
  * Measures and logs render performance
  */
 export const withPerformanceProfiler = Component => {
-  if (process.env.NODE_ENV !== 'development') {
+  if (import.meta.env.MODE !== 'development') {
     return Component;
   }
 
@@ -236,7 +236,7 @@ export const useOptimizedWindowSize = (threshold = 50) => {
 export const ContextPerformanceMonitor = ({ children, contextName = 'Unknown' }) => {
   const renderCount = useRef(0);
 
-  if (process.env.NODE_ENV === 'development') {
+  if (import.meta.env.MODE === 'development') {
     renderCount.current += 1;
 
     useEffect(() => {
@@ -272,7 +272,7 @@ export const PerformanceUtils = {
    * Measure component render time
    */
   measureRenderTime: (componentName, renderFunction) => {
-    if (process.env.NODE_ENV !== 'development') {
+    if (import.meta.env.MODE !== 'development') {
       return renderFunction();
     }
 
@@ -288,7 +288,7 @@ export const PerformanceUtils = {
    * Log component props changes
    */
   logPropsChanges: (componentName, prevProps, nextProps) => {
-    if (process.env.NODE_ENV !== 'development') return;
+    if (import.meta.env.MODE !== 'development') return;
 
     const changedProps = {};
     const allKeys = new Set([...Object.keys(prevProps), ...Object.keys(nextProps)]);
@@ -311,7 +311,7 @@ export const PerformanceUtils = {
    * Memory usage profiler
    */
   logMemoryUsage: (label = 'Memory Usage') => {
-    if (process.env.NODE_ENV !== 'development' || !performance.memory) return;
+    if (import.meta.env.MODE !== 'development' || !performance.memory) return;
 
     const { usedJSHeapSize, totalJSHeapSize, jsHeapSizeLimit } = performance.memory;
     console.log(`💾 ${label}:`, {

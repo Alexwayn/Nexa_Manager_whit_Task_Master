@@ -20,23 +20,15 @@ class Logger {
     // Default to INFO level, can be configured via environment variable
     this.level = LOG_LEVELS.INFO;
 
-    // In development, show more logs
-    // Handle both Vite (import.meta.env) and Jest (process.env) environments
+    // Environment detection - simplified for browser use
     let isDevelopment = false;
-
-    // Check if we're in a test environment first
-    if (typeof process !== 'undefined' && process.env.NODE_ENV) {
-      isDevelopment = process.env.NODE_ENV === 'development';
-    } else {
-      // Try to use import.meta for Vite environments
-      try {
-        // Use eval to avoid syntax errors in Jest
-        const importMeta = eval('import.meta');
-        isDevelopment = importMeta?.env?.MODE === 'development';
-      } catch (e) {
-        // Fallback to false if import.meta is not available
-        isDevelopment = false;
-      }
+    
+    // Use Vite's import.meta.env for browser environment
+    try {
+      isDevelopment = import.meta.env.MODE === 'development';
+    } catch (error) {
+      // Fallback to false for production builds
+      isDevelopment = false;
     }
 
     if (isDevelopment) {

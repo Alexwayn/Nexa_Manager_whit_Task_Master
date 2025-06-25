@@ -7,8 +7,14 @@ import {
   ClockIcon as Clock,
   CheckCircleIcon as CheckCircle,
   ExclamationTriangleIcon as AlertTriangle,
+  SparklesIcon,
+  UserGroupIcon,
+  ChartBarIcon
 } from '@heroicons/react/24/outline';
 import emailService from '@lib/emailService';
+import EmailCampaignManager from './EmailCampaignManager';
+import EmailProviderSettings from './EmailProviderSettings';
+import EmailSignatureManager from './EmailSignatureManager';
 import { supabase } from '@lib/supabaseClient';
 import Logger from '@utils/Logger';
 import { useTranslation } from 'react-i18next';
@@ -200,8 +206,12 @@ const EmailManager = () => {
           <nav className='flex space-x-8 px-6'>
             {[
               { id: 'send', label: t('tabs.send'), icon: Send },
+              { id: 'campaigns', label: 'Campaigns', icon: UserGroupIcon },
+              { id: 'templates', label: 'Templates', icon: SparklesIcon },
+              { id: 'signatures', label: 'Signatures', icon: SparklesIcon },
               { id: 'activity', label: t('tabs.activity'), icon: Clock },
-              { id: 'templates', label: t('tabs.templates'), icon: FileText },
+              { id: 'analytics', label: 'Analytics', icon: ChartBarIcon },
+              { id: 'providers', label: 'Providers', icon: Settings },
               { id: 'settings', label: t('tabs.settings'), icon: Settings },
             ].map(tab => (
               <button
@@ -413,93 +423,155 @@ const EmailManager = () => {
             </div>
           )}
 
-          {/* Templates Tab */}
+          {/* Campaigns Tab */}
+          {activeTab === 'campaigns' && (
+            <EmailCampaignManager />
+          )}
+
+          {/* Advanced Templates Tab */}
           {activeTab === 'templates' && (
             <div className='space-y-6'>
-              <h3 className='text-lg font-medium'>{t('templates.title')}</h3>
-              <div>
-                <label
-                  htmlFor='template-select'
-                  className='block text-sm font-medium text-gray-700'
-                >
-                  {t('templates.selectTemplate')}
-                </label>
-                <select
-                  id='template-select'
-                  value={selectedTemplate}
-                  onChange={e => setSelectedTemplate(e.target.value)}
-                  className='mt-1 block w-full border-gray-300 rounded-md shadow-sm'
-                >
-                  {Object.keys(templates).map(key => (
-                    <option key={key} value={key}>
-                      {key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
-                    </option>
-                  ))}
-                </select>
+              <div className='flex items-center justify-between'>
+                <h3 className='text-lg font-medium'>Advanced Email Templates</h3>
+                <p className='text-sm text-gray-600'>Create and manage professional email templates with WYSIWYG editor</p>
               </div>
-              {selectedTemplate && (
-                <div className='border rounded-lg p-6 space-y-4'>
-                  <div>
-                    <label
-                      htmlFor='template-subject'
-                      className='block text-sm font-medium text-gray-700'
-                    >
-                      {t('templates.subject')}
-                    </label>
-                    <input
-                      type='text'
-                      id='template-subject'
-                      value={templates[selectedTemplate]?.subject || ''}
-                      readOnly
-                      className='mt-1 block w-full border-gray-300 rounded-md shadow-sm bg-gray-50'
-                    />
-                  </div>
-                  <div>
-                    <label
-                      htmlFor='template-body'
-                      className='block text-sm font-medium text-gray-700'
-                    >
-                      {t('templates.body')}
-                    </label>
-                    <textarea
-                      id='template-body'
-                      value={templates[selectedTemplate]?.body || ''}
-                      readOnly
-                      rows='12'
-                      className='mt-1 block w-full border-gray-300 rounded-md shadow-sm bg-gray-50'
-                    ></textarea>
-                  </div>
-                  <button
-                    onClick={() => {
-                      /* Logic to save template */
-                    }}
-                    className='bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700'
-                  >
-                    {t('templates.saveButton')}
-                  </button>
+              <div className='bg-blue-50 border border-blue-200 rounded-lg p-4'>
+                <div className='flex items-center'>
+                  <SparklesIcon className='h-5 w-5 text-blue-600 mr-2' />
+                  <p className='text-blue-800 font-medium'>Advanced Template Management</p>
                 </div>
-              )}
-              <div>
-                <h4 className='font-medium text-gray-800'>{t('templates.placeholders')}</h4>
-                <div className='flex flex-wrap gap-2 mt-2'>
-                  {[
-                    '{client_name}',
-                    '{company_name}',
-                    '{invoice_number}',
-                    '{total_amount}',
-                    '{issue_date}',
-                    '{due_date}',
-                  ].map((placeholder, index) => (
-                    <span
-                      key={index}
-                      className='px-2 py-1 bg-gray-100 text-gray-800 rounded text-xs'
-                    >
-                      {placeholder}
-                    </span>
-                  ))}
+                <p className='text-blue-700 text-sm mt-1'>
+                  Switch to the "Campaigns" tab to access the full template editor with WYSIWYG editing, 
+                  variable management, and email client compatibility testing.
+                </p>
+              </div>
+              
+              {/* Legacy Templates View */}
+              <div className='border-t pt-6'>
+                <h4 className='text-md font-medium mb-4'>Legacy Templates (Read-Only)</h4>
+                <div>
+                  <label
+                    htmlFor='template-select'
+                    className='block text-sm font-medium text-gray-700'
+                  >
+                    {t('templates.selectTemplate')}
+                  </label>
+                  <select
+                    id='template-select'
+                    value={selectedTemplate}
+                    onChange={e => setSelectedTemplate(e.target.value)}
+                    className='mt-1 block w-full border-gray-300 rounded-md shadow-sm'
+                  >
+                    {Object.keys(templates).map(key => (
+                      <option key={key} value={key}>
+                        {key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                {selectedTemplate && (
+                  <div className='border rounded-lg p-6 space-y-4 mt-4'>
+                    <div>
+                      <label
+                        htmlFor='template-subject'
+                        className='block text-sm font-medium text-gray-700'
+                      >
+                        {t('templates.subject')}
+                      </label>
+                      <input
+                        type='text'
+                        id='template-subject'
+                        value={templates[selectedTemplate]?.subject || ''}
+                        readOnly
+                        className='mt-1 block w-full border-gray-300 rounded-md shadow-sm bg-gray-50'
+                      />
+                    </div>
+                    <div>
+                      <label
+                        htmlFor='template-body'
+                        className='block text-sm font-medium text-gray-700'
+                      >
+                        {t('templates.body')}
+                      </label>
+                      <textarea
+                        id='template-body'
+                        value={templates[selectedTemplate]?.body || ''}
+                        readOnly
+                        rows='12'
+                        className='mt-1 block w-full border-gray-300 rounded-md shadow-sm bg-gray-50'
+                      ></textarea>
+                    </div>
+                  </div>
+                )}
+                <div className='mt-4'>
+                  <h4 className='font-medium text-gray-800'>{t('templates.placeholders')}</h4>
+                  <div className='flex flex-wrap gap-2 mt-2'>
+                    {[
+                      '{client_name}',
+                      '{company_name}',
+                      '{invoice_number}',
+                      '{total_amount}',
+                      '{issue_date}',
+                      '{due_date}',
+                    ].map((placeholder, index) => (
+                      <span
+                        key={index}
+                        className='px-2 py-1 bg-gray-100 text-gray-800 rounded text-xs'
+                      >
+                        {placeholder}
+                      </span>
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>
+          )}
+
+          {/* Signatures Tab */}
+          {activeTab === 'signatures' && (
+            <EmailSignatureManager />
+          )}
+
+          {/* Analytics Tab */}
+          {activeTab === 'analytics' && (
+            <div className='space-y-6'>
+              <h3 className='text-lg font-medium'>Email Analytics</h3>
+              <div className='bg-purple-50 border border-purple-200 rounded-lg p-4'>
+                <div className='flex items-center'>
+                  <ChartBarIcon className='h-5 w-5 text-purple-600 mr-2' />
+                  <p className='text-purple-800 font-medium'>Advanced Analytics</p>
+                </div>
+                <p className='text-purple-700 text-sm mt-1'>
+                  Detailed campaign analytics, open rates, click tracking, and performance metrics 
+                  are available in the "Campaigns" tab.
+                </p>
+              </div>
+              
+              {/* Basic Stats */}
+              <div className='grid grid-cols-1 md:grid-cols-3 gap-4'>
+                <div className='bg-white border rounded-lg p-4'>
+                  <div className='text-2xl font-bold text-blue-600'>{emailActivity.length}</div>
+                  <div className='text-sm text-gray-600'>Total Emails</div>
+                </div>
+                <div className='bg-white border rounded-lg p-4'>
+                  <div className='text-2xl font-bold text-green-600'>
+                    {emailActivity.filter(a => a.status === 'sent').length}
+                  </div>
+                  <div className='text-sm text-gray-600'>Successfully Sent</div>
+                </div>
+                <div className='bg-white border rounded-lg p-4'>
+                  <div className='text-2xl font-bold text-red-600'>
+                    {emailActivity.filter(a => a.status === 'failed').length}
+                  </div>
+                  <div className='text-sm text-gray-600'>Failed</div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Providers Tab */}
+          {activeTab === 'providers' && (
+            <EmailProviderSettings />
           )}
 
           {/* Settings Tab */}

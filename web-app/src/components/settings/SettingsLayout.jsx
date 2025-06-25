@@ -11,6 +11,7 @@ import {
   EnvelopeIcon,
   CogIcon,
   DocumentArrowDownIcon,
+  EyeIcon,
 } from '@heroicons/react/24/outline';
 import { useTranslation } from 'react-i18next';
 import Footer from '@components/shared/Footer';
@@ -25,6 +26,7 @@ import BillingSettings from './BillingSettings';
 import EmailSettings from './EmailSettings';
 import IntegrationsSettings from './IntegrationsSettings';
 import BackupSettings from './BackupSettings';
+import AccessibilitySettings from './AccessibilitySettings';
 
 export default function SettingsLayout() {
   const { t } = useTranslation('settings');
@@ -75,6 +77,12 @@ export default function SettingsLayout() {
       icon: CogIcon, 
       component: IntegrationsSettings,
       description: t('tabDescriptions.integrations', 'Connect and manage third-party services')
+    },
+    { 
+      name: t('tabs.accessibility'), 
+      icon: EyeIcon, 
+      component: AccessibilitySettings,
+      description: t('tabDescriptions.accessibility', 'Monitor and improve accessibility compliance')
     },
     { 
       name: t('tabs.backup'), 

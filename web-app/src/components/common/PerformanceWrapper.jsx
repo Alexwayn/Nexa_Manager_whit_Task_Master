@@ -14,10 +14,7 @@ const usePerformanceMonitor = componentName => {
     const timeSinceLastRender = now - lastRenderTime.current;
     lastRenderTime.current = now;
 
-    if (
-      (typeof import.meta !== 'undefined' && import.meta.env?.MODE === 'development') ||
-      (typeof process !== 'undefined' && process.env.NODE_ENV === 'development')
-    ) {
+    if (import.meta.env?.MODE === 'development') {
       Logger.info(
         `[Performance] ${componentName} rendered ${renderCount.current} times, ${timeSinceLastRender}ms since last render`,
       );
@@ -37,11 +34,7 @@ const onRenderCallback = (
   commitTime,
   interactions,
 ) => {
-  if (
-    ((typeof import.meta !== 'undefined' && import.meta.env?.MODE === 'development') ||
-      (typeof process !== 'undefined' && process.env.NODE_ENV === 'development')) &&
-    actualDuration > 16
-  ) {
+  if (import.meta.env?.MODE === 'development' && actualDuration > 16) {
     // Log slow renders (>16ms)
     Logger.warn(`[Performance Warning] ${id} took ${actualDuration}ms to render (${phase} phase)`);
     Logger.info({
@@ -60,12 +53,8 @@ const PerformanceWrapper = memo(
   ({
     children,
     componentName = 'UnnamedComponent',
-    enableProfiling = (typeof import.meta !== 'undefined' &&
-      import.meta.env?.MODE === 'development') ||
-      (typeof process !== 'undefined' && process.env.NODE_ENV === 'development'),
-    enableMonitoring = (typeof import.meta !== 'undefined' &&
-      import.meta.env?.MODE === 'development') ||
-      (typeof process !== 'undefined' && process.env.NODE_ENV === 'development'),
+    enableProfiling = import.meta.env?.MODE === 'development',
+    enableMonitoring = import.meta.env?.MODE === 'development',
     warnThreshold = 16, // milliseconds
   }) => {
     const { renderCount } = usePerformanceMonitor(enableMonitoring ? componentName : null);

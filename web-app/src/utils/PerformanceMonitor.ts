@@ -346,7 +346,7 @@ class PerformanceMonitor {
    * Set up periodic reporting to console (development only)
    */
   private setupPeriodicReporting(): void {
-    if (process.env.NODE_ENV === 'development') {
+    if (import.meta.env.MODE === 'development') {
       setInterval(() => {
         const summary = this.getPerformanceSummary();
         if (summary.totalMetrics > 0) {

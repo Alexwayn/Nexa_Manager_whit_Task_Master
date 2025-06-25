@@ -4,13 +4,15 @@ import Logger from '@utils/Logger';
 // Performance testing and validation utilities
 // Use these functions to verify that performance optimizations are working correctly
 
-// Safe environment check for browser compatibility
-const isDevelopment =
-  (typeof import.meta !== 'undefined' && import.meta.env?.MODE === 'development') ||
-  (typeof process !== 'undefined' && process.env.NODE_ENV === 'development');
-const isProduction =
-  (typeof import.meta !== 'undefined' && import.meta.env?.MODE === 'production') ||
-  (typeof process !== 'undefined' && process.env.NODE_ENV === 'production');
+// Environment helpers for performance testing
+export const isDevelopment = () => 
+  import.meta.env.MODE === 'development';
+
+export const isProduction = () => 
+  import.meta.env.MODE === 'production';
+
+export const isTest = () => 
+  import.meta.env.MODE === 'test';
 
 /**
  * Simulate component error for testing error boundaries
@@ -21,7 +23,7 @@ export const simulateComponentError = (
   componentName = 'TestComponent',
   errorMessage = 'Simulated error for testing',
 ) => {
-  if (isDevelopment) {
+  if (isDevelopment()) {
     console.warn(`🔥 Simulating error in ${componentName}: ${errorMessage}`);
     throw new Error(`[${componentName}] ${errorMessage}`);
   }
@@ -53,7 +55,7 @@ export const createPerformanceMeasure = componentName => {
 
   return {
     measureRender: () => {
-      if (isDevelopment) {
+      if (isDevelopment()) {
         const endTime = performance.now();
         const renderTime = endTime - startTime;
         Logger.info(`⚡ ${componentName} render time: ${renderTime.toFixed(2)}ms`);
@@ -79,7 +81,7 @@ export const useRenderCounter = componentName => {
   const renderCount = React.useRef(0);
 
   React.useEffect(() => {
-    if (isDevelopment) {
+    if (isDevelopment()) {
       renderCount.current += 1;
       Logger.info(`🔄 ${componentName} rendered ${renderCount.current} times`);
 
@@ -91,7 +93,7 @@ export const useRenderCounter = componentName => {
     }
   });
 
-  return isDevelopment ? renderCount.current : 0;
+  return isDevelopment() ? renderCount.current : 0;
 };
 
 /**
@@ -99,7 +101,7 @@ export const useRenderCounter = componentName => {
  * @param {string} label - Label for the measurement
  */
 export const trackMemoryUsage = (label = 'Memory Check') => {
-  if (isDevelopment && performance.memory) {
+  if (isDevelopment() && performance.memory) {
     const memory = performance.memory;
     Logger.info(`📊 ${label}:`, {
       used: `${Math.round(memory.usedJSHeapSize / 1024 / 1024)} MB`,
@@ -135,7 +137,7 @@ export const LazyTestComponent = React.lazy(() => {
  * Performance optimization validation checklist
  */
 export const validatePerformanceOptimizations = () => {
-  if (isDevelopment) {
+  if (isDevelopment()) {
     Logger.info('🚀 Performance Optimization Validation');
 
     // Check for React DevTools
@@ -198,7 +200,7 @@ export const errorBoundaryTests = {
  * Performance monitoring setup for production
  */
 export const setupProductionMonitoring = () => {
-  if (isProduction) {
+  if (isProduction()) {
     // Monitor long tasks
     if ('PerformanceObserver' in window) {
       const observer = new PerformanceObserver(list => {

@@ -1,6 +1,7 @@
 import { QuotePdfService } from '@lib/quotePdfService';
 import { supabase } from '@lib/supabaseClient';
 import Logger from '@utils/Logger';
+import emailProviderService from '@lib/emailProviderService';
 
 /**
  * EmailService - Professional email management with templates and tracking
@@ -959,24 +960,124 @@ ${data.companyName}
   }
 
   /**
-   * Tests the email configuration by sending a test email.
+   * Tests the email configuration by sending a test email - Enhanced with multiple providers
    * @param {string} testEmail - The email address to send the test email to.
+   * @param {string} [provider] - Optional specific provider to test
    * @returns {Promise<Object>} A promise that resolves with the test result.
    */
-  async testEmailConfiguration(testEmail) {
+  async testEmailConfiguration(testEmail, provider = null) {
     try {
-      const result = await this._sendEmail({
-        to: testEmail,
-        subject: 'Email Configuration Test - Nexa Manager',
-        body: 'This is a test message to verify the email configuration.\n\nIf you receive this message, the configuration is correct.',
-        test: true,
-      });
+      // Use the new provider service for testing
+      const result = await emailProviderService.testConfiguration(testEmail, provider);
+      
+      // Log the test in our activity
+      if (result.success) {
+        await this._logEmailActivity({
+          recipient: testEmail,
+          subject: 'Test Email - Nexa Manager Configuration',
+          status: 'sent',
+          provider: result.provider || 'unknown',
+          type: 'test_email'
+        });
+      }
 
       return result;
     } catch (error) {
       Logger.error('Error testing email configuration:', error);
-      return { success: false, error: error.message };
+      return {
+        success: false,
+        error: error.message
+      };
     }
+  }
+
+  /**
+   * Send email with enhanced provider support
+   * @param {Object} emailData - Email data object
+   * @param {string} [provider] - Optional specific provider to use
+   * @returns {Promise<Object>} Result of the send operation
+   */
+  async sendEmailWithProvider(emailData, provider = null) {
+    try {
+      // Use the enhanced provider service
+      const result = await emailProviderService.sendEmail({
+        ...emailData,
+        provider
+      });
+
+      // Log the activity
+      await this._logEmailActivity({
+        recipient: emailData.to,
+        subject: emailData.subject,
+        status: result.success ? 'sent' : 'failed',
+        provider: result.provider || 'unknown',
+        message_id: result.messageId,
+        error: result.error,
+        type: emailData.type || 'general'
+      });
+
+      return result;
+    } catch (error) {
+      Logger.error('Error sending email with provider:', error);
+      
+      // Log failed attempt
+      await this._logEmailActivity({
+        recipient: emailData.to,
+        subject: emailData.subject,
+        status: 'failed',
+        error: error.message,
+        type: emailData.type || 'general'
+      });
+
+      return {
+        success: false,
+        error: error.message
+      };
+    }
+  }
+
+  /**
+   * Get email provider information
+   * @param {string} [provider] - Optional provider to get info for
+   * @returns {Object} Provider information
+   */
+  getProviderInfo(provider = null) {
+    return emailProviderService.getProviderInfo(provider);
+  }
+
+  /**
+   * Get all available providers
+   * @returns {Array} List of all available providers with their status
+   */
+  getAllProviders() {
+    return emailProviderService.getAllProviders();
+  }
+
+  /**
+   * Switch email provider
+   * @param {string} provider - Provider to switch to
+   * @returns {boolean} Success status
+   */
+  setActiveProvider(provider) {
+    return emailProviderService.setActiveProvider(provider);
+  }
+
+  /**
+   * Check if provider is configured
+   * @param {string} provider - Provider to check
+   * @returns {boolean} Configuration status
+   */
+  isProviderConfigured(provider) {
+    return emailProviderService.isProviderConfigured(provider);
+  }
+
+  /**
+   * Get estimated delivery time for provider
+   * @param {string} [provider] - Optional provider to check
+   * @returns {string} Estimated delivery time
+   */
+  getEstimatedDeliveryTime(provider = null) {
+    return emailProviderService.getEstimatedDeliveryTime(provider);
   }
 }
 

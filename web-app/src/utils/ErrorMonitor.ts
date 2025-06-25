@@ -172,7 +172,7 @@ class ErrorMonitor {
     }
 
     // Log to console in development
-    if (process.env.NODE_ENV === 'development') {
+    if (import.meta.env.MODE === 'development') {
       this.logErrorToConsole(errorReport);
     }
 
