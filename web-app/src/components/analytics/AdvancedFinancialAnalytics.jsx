@@ -24,6 +24,7 @@ import {
   ChartPieIcon,
 } from '@heroicons/react/24/outline';
 import EnhancedKPICard from '@components/analytics/EnhancedKPICard';
+import InteractiveFinancialCharts from '@components/analytics/InteractiveFinancialCharts';
 
 // Register Chart.js components
 ChartJS.register(
@@ -42,6 +43,7 @@ ChartJS.register(
 const AdvancedFinancialAnalytics = ({ data }) => {
   const { t, i18n } = useTranslation('analytics');
   const [period, setPeriod] = useState('month');
+  const [activeTab, setActiveTab] = useState('overview');
 
   const formatCurrency = amount => {
     return new Intl.NumberFormat(i18n.language, {
@@ -233,6 +235,24 @@ const AdvancedFinancialAnalytics = ({ data }) => {
     },
   ];
 
+  const tabs = [
+    {
+      id: 'overview',
+      name: t('tabs.overview.name'),
+      description: t('tabs.overview.description'),
+    },
+    {
+      id: 'interactive',
+      name: t('charts.interactiveAnalytics'),
+      description: t('charts.interactiveDesc'),
+    },
+    {
+      id: 'detailed',
+      name: t('tabs.detailed.name'),
+      description: t('tabs.detailed.description'),
+    },
+  ];
+
   return (
     <div className='bg-gray-50 dark:bg-gray-900 p-4 sm:p-6 lg:p-8 rounded-lg shadow-inner'>
       <div className='flex flex-col md:flex-row md:items-center md:justify-between mb-6'>
@@ -262,41 +282,79 @@ const AdvancedFinancialAnalytics = ({ data }) => {
         </div>
       </div>
 
-      <div className='mb-6'>
-        <h3 className='text-xl font-semibold text-gray-800 dark:text-white mb-4'>
-          {t('advanced.kpiOverview')}
-        </h3>
-        <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6'>
-          {kpiCards.map((kpi, i) => (
-            <EnhancedKPICard
-              key={i}
-              title={kpi.title}
-              value={kpi.value}
-              icon={kpi.icon}
-              color={kpi.color}
-              trend={kpi.trend}
-              positive={kpi.positive}
-            />
-          ))}
+      {/* Tab Navigation */}
+      <div className="mb-6">
+        <div className="border-b border-gray-200 dark:border-gray-700">
+          <nav className="-mb-px flex space-x-8">
+            {tabs.map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`py-2 px-1 border-b-2 font-medium text-sm ${
+                  activeTab === tab.id
+                    ? 'border-blue-500 text-blue-600 dark:text-blue-400'
+                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300'
+                }`}
+              >
+                <div>
+                  <div className="font-medium">{tab.name}</div>
+                  <div className="text-xs text-gray-500 dark:text-gray-400">{tab.description}</div>
+                </div>
+              </button>
+            ))}
+          </nav>
         </div>
       </div>
 
-      <div>
-        <h3 className='text-xl font-semibold text-gray-800 dark:text-white mb-4'>
-          {t('advanced.financialCharts')}
-        </h3>
-        <div className='grid grid-cols-1 lg:grid-cols-2 gap-8'>
-          <div className='bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md h-96'>
-            <CashFlowChart />
-          </div>
-          <div className='bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md h-96'>
-            <CategoryDistributionChart type='income' />
-          </div>
-          <div className='bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md h-96'>
-            <CategoryDistributionChart type='expense' />
+      {/* Tab Content */}
+      {activeTab === 'overview' && (
+        <div className='mb-6'>
+          <h3 className='text-xl font-semibold text-gray-800 dark:text-white mb-4'>
+            {t('advanced.kpiOverview')}
+          </h3>
+          <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6'>
+            {kpiCards.map((kpi, i) => (
+              <EnhancedKPICard
+                key={i}
+                title={kpi.title}
+                value={kpi.value}
+                icon={kpi.icon}
+                color={kpi.color}
+                trend={kpi.trend}
+                positive={kpi.positive}
+              />
+            ))}
           </div>
         </div>
-      </div>
+      )}
+
+      {activeTab === 'interactive' && (
+        <InteractiveFinancialCharts 
+          data={data}
+          period={period}
+          onPeriodChange={setPeriod}
+          className="mb-6"
+        />
+      )}
+
+      {activeTab === 'detailed' && (
+        <div>
+          <h3 className='text-xl font-semibold text-gray-800 dark:text-white mb-4'>
+            {t('advanced.financialCharts')}
+          </h3>
+          <div className='grid grid-cols-1 lg:grid-cols-2 gap-8'>
+            <div className='bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md h-96'>
+              <CashFlowChart />
+            </div>
+            <div className='bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md h-96'>
+              <CategoryDistributionChart type='income' />
+            </div>
+            <div className='bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md h-96'>
+              <CategoryDistributionChart type='expense' />
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

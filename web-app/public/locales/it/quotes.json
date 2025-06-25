@@ -49,7 +49,16 @@
     "priority": "Priorità",
     "paymentTerms": "Termini di Pagamento",
     "cancel": "Annulla",
-    "saveAsDraft": "Salva come Bozza"
+    "saveAsDraft": "Salva come Bozza",
+    "createQuote": "Crea Preventivo",
+    "updateQuote": "Aggiorna Preventivo",
+    "pdfSettings": "Impostazioni PDF",
+    "pdfTemplate": "Template PDF",
+    "pdfActions": "Azioni PDF",
+    "preview": "Anteprima",
+    "download": "Scarica",
+    "email": "Email",
+    "pdfActionsNote": "Le azioni PDF richiedono titolo e cliente selezionati"
   },
   "tabs": {
     "details": "Dettagli",

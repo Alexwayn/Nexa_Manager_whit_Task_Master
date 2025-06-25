@@ -1,6 +1,6 @@
 {
-  "title": "Analisi Finanziaria",
-  "subtitle": "Approfondimento sulle performance del tuo business",
+  "title": "Analytics Finanziarie",
+  "subtitle": "Analisi approfondita delle performance aziendali",
   "autoRefresh": "Aggiornamento Automatico",
   "tabs": {
     "overview": {
@@ -36,7 +36,7 @@
     }
   },
   "kpi": {
-    "totalRevenue": "Entrate Totali",
+    "totalRevenue": "Ricavi Totali",
     "yoyGrowth": "Crescita su base annua",
     "avgInvoiceValue": "Valore Medio Fattura",
     "paymentTime": "Tempo Medio Pagamento",
@@ -48,9 +48,32 @@
     "vsPreviousMonth": "vs Mese Precedente"
   },
   "charts": {
-    "revenue": "Entrate",
+    "revenue": "Ricavi",
     "revenueTitle": "Andamento Entrate",
     "invoiceStatusTitle": "Stato Fatture",
+    "interactiveAnalytics": "Analisi Finanziarie Interattive",
+    "interactiveDesc": "Grafici avanzati con zoom, panoramica e filtri",
+    "overview": "Panoramica",
+    "overviewDesc": "Vista completa di entrate, spese e flusso di cassa",
+    "trends": "Tendenze",
+    "trendsDesc": "Medie mobili e analisi delle tendenze",
+    "comparison": "Confronto", 
+    "comparisonDesc": "Confronta entrate vs spese per categoria",
+    "distribution": "Distribuzione",
+    "distributionDesc": "Distribuzione delle spese per categoria",
+    "filters": "Filtri Grafici",
+    "showIncome": "Mostra Entrate",
+    "showExpenses": "Mostra Spese", 
+    "showNetProfit": "Mostra Profitto Netto",
+    "showTrends": "Mostra Tendenze",
+    "resetZoom": "Ripristina Zoom",
+    "incomeMovingAvg": "Entrate (media 7 giorni)",
+    "expenseMovingAvg": "Spese (media 7 giorni)",
+    "interactionTips": "Suggerimenti per l'Interazione",
+    "hoverTooltip": "Passa il mouse sui punti dati per informazioni dettagliate",
+    "scrollZoom": "Scorri per ingrandire/rimpicciolire i grafici",
+    "dragPan": "Trascina per navigare nel grafico",
+    "clickLegend": "Clicca sugli elementi della legenda per mostrare/nascondere le serie",
     "months": {
       "january": "Gennaio",
       "february": "Febbraio",
@@ -63,7 +86,24 @@
       "september": "Settembre",
       "october": "Ottobre",
       "november": "Novembre",
-      "december": "Dicembre"
+             "december": "Dicembre",
+       "jan": "Gen",
+       "feb": "Feb", 
+       "mar": "Mar",
+       "apr": "Apr",
+       "may": "Mag",
+       "jun": "Giu",
+       "jul": "Lug",
+       "aug": "Ago",
+       "sep": "Set",
+       "oct": "Ott",
+       "nov": "Nov",
+       "dec": "Dic"
+     },
+     "revenueBreakdown": {
+       "consulting": "Consulenza",
+       "products": "Prodotti",
+       "services": "Servizi"
     },
     "invoiceStatus": {
       "paid": "Pagato",
@@ -138,7 +178,7 @@
     "loadFailed": "Errore nel caricamento dei dati analytics"
   },
   "kpi": {
-    "totalRevenue": "Entrate Totali",
+    "totalRevenue": "Ricavi Totali",
     "totalInvoices": "Fatture Totali",
     "activeClients": "Clienti Attivi",
     "avgPaymentTime": "Tempo Medio Pagamento"
@@ -243,5 +283,14 @@
       "comparisonOptions": "Opzioni di Confronto",
       "previousYear": "Anno Precedente"
     }
-  }
+  },
+  "totalRevenue": "Ricavi Totali",
+  "totalExpenses": "Spese Totali",
+  "activeClients": "Clienti Attivi",
+  "profitMargin": "Margine di Profitto",
+  "revenue": "Ricavi",
+  "active": "Attivi",
+  "newThisMonth": "Nuovi Questo Mese",
+  "retention": "Retention",
+  "totalClients": "Clienti Totali"
 }

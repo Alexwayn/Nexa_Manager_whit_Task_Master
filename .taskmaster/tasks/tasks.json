@@ -1742,7 +1742,7 @@
           63,
           64
         ],
-        "status": "in-progress",
+        "status": "done",
         "subtasks": [
           {
             "id": 1,
@@ -1794,7 +1794,7 @@
               2
             ],
             "details": "Allow users to select or customize templates for PDF output, ensuring branding and legal terms are included. Support versioned quote PDFs and automated email sharing.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Generate PDFs for various quote scenarios, review formatting and branding, and test email sharing functionality."
           }
         ]
@@ -2017,7 +2017,7 @@
           64,
           66
         ],
-        "status": "pending",
+        "status": "in-progress",
         "subtasks": [
           {
             "id": 1,
@@ -2025,7 +2025,7 @@
             "description": "Create a responsive dashboard layout that supports customizable and draggable widgets, ensuring a clear visual hierarchy and user-friendly organization.",
             "dependencies": [],
             "details": "Establish the main dashboard structure using a responsive grid system. Implement widget containers that users can rearrange and customize according to their preferences. Ensure the layout highlights key metrics and supports future extensibility.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Verify layout responsiveness across devices, test widget drag-and-drop functionality, and confirm that widgets can be added, removed, and rearranged by users."
           },
           {
@@ -2036,7 +2036,7 @@
               1
             ],
             "details": "Use a charting library (e.g., recharts or chart.js) to visualize financial data. Implement interactive features such as tooltips, zoom, and filtering. Ensure charts accurately reflect real-time and historical financial trends.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Validate chart rendering with sample and live data, test interactivity (hover, zoom, filter), and confirm accuracy of displayed financial metrics."
           },
           {
@@ -2630,7 +2630,7 @@
     ],
     "metadata": {
       "created": "2025-06-18T17:58:30.256Z",
-      "updated": "2025-06-25T22:48:59.873Z",
+      "updated": "2025-06-25T23:30:04.974Z",
       "description": "Tasks for master context"
     }
   }

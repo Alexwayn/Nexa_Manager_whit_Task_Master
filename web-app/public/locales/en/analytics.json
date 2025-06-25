@@ -99,7 +99,49 @@
     },
     "forecastProjection": {
       "label": "Forecast Projection"
-    }
+    },
+    "interactiveAnalytics": "Interactive Financial Analytics",
+    "interactiveDesc": "Advanced charts with zoom, pan, and filtering capabilities",
+    "overview": "Overview",
+    "overviewDesc": "Complete view of income, expenses, and cash flow",
+    "trends": "Trends",
+    "trendsDesc": "Moving averages and trend analysis",
+    "comparison": "Comparison", 
+    "comparisonDesc": "Compare income vs expenses by category",
+    "distribution": "Distribution",
+    "distributionDesc": "Expense distribution by category",
+    "filters": "Chart Filters",
+    "showIncome": "Show Income",
+    "showExpenses": "Show Expenses", 
+    "showNetProfit": "Show Net Profit",
+    "showTrends": "Show Trends",
+    "resetZoom": "Reset Zoom",
+    "incomeMovingAvg": "Income (7-day avg)",
+    "expenseMovingAvg": "Expenses (7-day avg)",
+    "interactionTips": "Chart Interaction Tips",
+    "hoverTooltip": "Hover over data points for detailed information",
+    "scrollZoom": "Scroll to zoom in/out on charts",
+    "dragPan": "Drag to pan across the chart",
+         "clickLegend": "Click legend items to show/hide data series",
+     "months": {
+       "jan": "Jan",
+       "feb": "Feb", 
+       "mar": "Mar",
+       "apr": "Apr",
+       "may": "May",
+       "jun": "Jun",
+       "jul": "Jul",
+       "aug": "Aug",
+       "sep": "Sep",
+       "oct": "Oct",
+       "nov": "Nov",
+       "dec": "Dec"
+     },
+     "revenueBreakdown": {
+       "consulting": "Consulting",
+       "products": "Products",
+       "services": "Services"
+     }
   },
   "timeSelector": {
     "last30Days": "Last 30 Days",
@@ -243,5 +285,14 @@
       "comparisonOptions": "Comparison Options",
       "previousYear": "Previous Year"
     }
-  }
+  },
+  "totalRevenue": "Total Revenue",
+  "totalExpenses": "Total Expenses",
+  "activeClients": "Active Clients",
+  "profitMargin": "Profit Margin",
+  "revenue": "Revenue",
+  "active": "Active",
+  "newThisMonth": "New This Month",
+  "retention": "Retention",
+  "totalClients": "Total Clients"
 }

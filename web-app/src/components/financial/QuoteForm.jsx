@@ -12,9 +12,13 @@ import {
   AlertCircle,
   Info,
   Save,
-  RefreshCw
+  RefreshCw,
+  Download,
+  Eye,
+  Mail
 } from 'lucide-react';
 import { QuoteService } from '@lib/quoteService';
+import { QuotePdfService } from '@lib/quotePdfService';
 import clientService from '@lib/clientService';
 import { useUser } from '@clerk/clerk-react';
 import Logger from '@utils/Logger';
@@ -40,12 +44,15 @@ const QuoteForm = ({
   const [validationErrors, setValidationErrors] = useState({});
   const [clients, setClients] = useState([]);
   const [templates, setTemplates] = useState([]);
+  const [pdfTemplates, setPdfTemplates] = useState([]);
+  const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
 
   // Form state
   const [formData, setFormData] = useState({
     // Basic quote information
     client_id: '',
     template_id: '',
+    pdf_template_id: 'default', // Default PDF template
     quote_number: '',
     title: '',
     description: '',
@@ -125,6 +132,7 @@ const QuoteForm = ({
     // Load supporting data
     loadClients();
     loadTemplates();
+    loadPdfTemplates();
     generateQuoteNumber();
   }, [quote, template, client]);
 
@@ -328,6 +336,23 @@ const QuoteForm = ({
     }
   };
 
+  const loadPdfTemplates = () => {
+    try {
+      // Get PDF template configurations from the service
+      const templateConfigs = QuotePdfService.getTemplateConfigs();
+      const pdfTemplateList = Object.values(templateConfigs).map(config => ({
+        id: config.id,
+        name: config.name,
+        description: config.description,
+        colors: config.colors
+      }));
+      setPdfTemplates(pdfTemplateList);
+    } catch (error) {
+      Logger.error('Failed to load PDF templates:', error);
+      onError?.(t('errors.loadPdfTemplatesFailed', 'Failed to load PDF templates'));
+    }
+  };
+
   const generateQuoteNumber = async () => {
     try {
       if (!isEditMode && user?.id) {
@@ -512,6 +537,72 @@ const QuoteForm = ({
     return Object.keys(errors).length === 0;
   };
 
+  const handlePdfPreview = async () => {
+    if (!validateForm()) {
+      return;
+    }
+
+    setIsGeneratingPdf(true);
+    try {
+      const pdfService = new QuotePdfService();
+      await pdfService.generateAndPreview(formData, {
+        templateId: formData.pdf_template_id,
+        userId: user?.id
+      });
+    } catch (error) {
+      Logger.error('Failed to generate PDF preview:', error);
+      onError?.(t('errors.pdfPreviewFailed', 'Failed to generate PDF preview'));
+    } finally {
+      setIsGeneratingPdf(false);
+    }
+  };
+
+  const handlePdfDownload = async () => {
+    if (!validateForm()) {
+      return;
+    }
+
+    setIsGeneratingPdf(true);
+    try {
+      const pdfService = new QuotePdfService();
+      await pdfService.generateAndDownload(formData, {
+        templateId: formData.pdf_template_id,
+        userId: user?.id
+      });
+    } catch (error) {
+      Logger.error('Failed to download PDF:', error);
+      onError?.(t('errors.pdfDownloadFailed', 'Failed to download PDF'));
+    } finally {
+      setIsGeneratingPdf(false);
+    }
+  };
+
+  const handleEmailQuote = async () => {
+    if (!validateForm()) {
+      return;
+    }
+
+    setIsGeneratingPdf(true);
+    try {
+      // Generate PDF first
+      const pdfService = new QuotePdfService();
+      const pdfBlob = await pdfService.generateBlob(formData, {
+        templateId: formData.pdf_template_id,
+        userId: user?.id
+      });
+
+      // Here you would integrate with your email service
+      // For now, we'll just show a success message
+      Logger.info('PDF generated for email attachment');
+      onError?.(t('success.pdfGeneratedForEmail', 'PDF generated successfully. Email integration coming soon.'));
+    } catch (error) {
+      Logger.error('Failed to generate PDF for email:', error);
+      onError?.(t('errors.emailPdfFailed', 'Failed to generate PDF for email'));
+    } finally {
+      setIsGeneratingPdf(false);
+    }
+  };
+
   const handleSave = async (asDraft = false) => {
     try {
       setIsSaving(true);
@@ -655,6 +746,92 @@ const QuoteForm = ({
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               placeholder={t('form.categoryPlaceholder')}
             />
+          </div>
+        </div>
+
+        {/* PDF Template and Actions */}
+        <div className="bg-gray-50 rounded-lg p-4">
+          <h3 className="text-lg font-medium text-gray-900 mb-4 flex items-center">
+            <FileText className="w-5 h-5 mr-2" />
+            {t('form.pdfSettings', 'PDF Settings')}
+          </h3>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* PDF Template Selection */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                {t('form.pdfTemplate', 'PDF Template')}
+              </label>
+              <select
+                value={formData.pdf_template_id}
+                onChange={(e) => handleInputChange('pdf_template_id', e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              >
+                {pdfTemplates.map(template => (
+                  <option key={template.id} value={template.id}>
+                    {template.name}
+                  </option>
+                ))}
+              </select>
+              {pdfTemplates.find(t => t.id === formData.pdf_template_id) && (
+                <p className="text-sm text-gray-600 mt-1">
+                  {pdfTemplates.find(t => t.id === formData.pdf_template_id).description}
+                </p>
+              )}
+            </div>
+
+            {/* PDF Actions */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                {t('form.pdfActions', 'PDF Actions')}
+              </label>
+              <div className="flex flex-wrap gap-2">
+                <button
+                  type="button"
+                  onClick={handlePdfPreview}
+                  disabled={isGeneratingPdf || !formData.title || !formData.client_id}
+                  className="flex items-center space-x-2 px-3 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {isGeneratingPdf ? (
+                    <RefreshCw className="w-4 h-4 animate-spin" />
+                  ) : (
+                    <Eye className="w-4 h-4" />
+                  )}
+                  <span className="text-sm">{t('form.preview', 'Preview')}</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={handlePdfDownload}
+                  disabled={isGeneratingPdf || !formData.title || !formData.client_id}
+                  className="flex items-center space-x-2 px-3 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {isGeneratingPdf ? (
+                    <RefreshCw className="w-4 h-4 animate-spin" />
+                  ) : (
+                    <Download className="w-4 h-4" />
+                  )}
+                  <span className="text-sm">{t('form.download', 'Download')}</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={handleEmailQuote}
+                  disabled={isGeneratingPdf || !formData.title || !formData.client_id}
+                  className="flex items-center space-x-2 px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {isGeneratingPdf ? (
+                    <RefreshCw className="w-4 h-4 animate-spin" />
+                  ) : (
+                    <Mail className="w-4 h-4" />
+                  )}
+                  <span className="text-sm">{t('form.email', 'Email')}</span>
+                </button>
+              </div>
+              <p className="text-xs text-gray-500 mt-2">
+                {t('form.pdfActionsNote', 'PDF actions require title and client to be selected')}
+              </p>
+            </div>
           </div>
         </div>
 

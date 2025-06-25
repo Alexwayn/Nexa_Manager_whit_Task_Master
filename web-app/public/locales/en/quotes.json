@@ -49,7 +49,16 @@
     "priority": "Priority",
     "paymentTerms": "Payment Terms",
     "cancel": "Cancel",
-    "saveAsDraft": "Save as Draft"
+    "saveAsDraft": "Save as Draft",
+    "createQuote": "Create Quote",
+    "updateQuote": "Update Quote",
+    "pdfSettings": "PDF Settings",
+    "pdfTemplate": "PDF Template",
+    "pdfActions": "PDF Actions",
+    "preview": "Preview",
+    "download": "Download",
+    "email": "Email",
+    "pdfActionsNote": "PDF actions require title and client to be selected"
   },
   "tabs": {
     "details": "Details",
@@ -72,7 +81,15 @@
   },
   "errors": {
     "loadClientsFailed": "Failed to load clients",
-    "loadTemplatesFailed": "Failed to load templates"
+    "loadTemplatesFailed": "Failed to load templates",
+    "loadPdfTemplatesFailed": "Failed to load PDF templates",
+    "pdfPreviewFailed": "Failed to generate PDF preview",
+    "pdfDownloadFailed": "Failed to download PDF",
+    "emailPdfFailed": "Failed to generate PDF for email",
+    "saveFailed": "Failed to save quote"
+  },
+  "success": {
+    "pdfGeneratedForEmail": "PDF generated successfully. Email integration coming soon."
   },
   "stats": {
     "totalPending": {
