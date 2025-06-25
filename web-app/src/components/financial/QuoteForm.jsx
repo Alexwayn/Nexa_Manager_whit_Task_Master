@@ -207,40 +207,118 @@ const QuoteForm = ({
 
   const loadTemplates = async () => {
     try {
-      if (!user?.id) {
-        Logger.warn('User not available for loading templates');
+      // Load templates from localStorage (same approach as QuoteTemplateManager)
+      const savedTemplates = localStorage.getItem('quote-templates');
+      if (savedTemplates) {
+        const templates = JSON.parse(savedTemplates);
+        // Transform for QuoteForm usage
+        const transformedTemplates = templates.map(template => ({
+          id: template.id,
+          name: template.name,
+          description: template.description,
+          category: template.category || 'general',
+          is_default: template.isDefault || false,
+          title: template.name,
+          terms_and_conditions: template.terms || '',
+          payment_terms: 'Net 30 days',
+          validity_period: 30,
+          items: template.items || []
+        }));
+        setTemplates(transformedTemplates);
         return;
       }
 
-      // Query quote_templates table using Supabase directly
-      const { supabase } = await import('@lib/supabaseClient');
+      // Initialize default templates if none exist
+      const defaultTemplates = [
+        {
+          id: 1,
+          name: t('lifecycle.templates.systemMaintenance.name', 'System Maintenance'),
+          description: 'Standard system maintenance template',
+          category: 'service',
+          items: [
+            {
+              description: 'Monthly system monitoring',
+              quantity: 1,
+              unit_price: 150,
+              tax_rate: 22,
+            },
+            {
+              description: 'Emergency support',
+              quantity: 12,
+              unit_price: 50,
+              tax_rate: 22,
+            },
+          ],
+          terms: t('lifecycle.templates.systemMaintenance.terms', 'Emergency interventions within 4 hours of ticket opening.'),
+          isDefault: true,
+        },
+        {
+          id: 2,
+          name: t('lifecycle.templates.productSale.name', 'Product Sale'),
+          description: 'Standard product sale template',
+          category: 'product',
+          items: [
+            {
+              description: 'Product item',
+              quantity: 1,
+              unit_price: 250,
+              tax_rate: 22,
+            },
+            {
+              description: 'Installation service',
+              quantity: 1,
+              unit_price: 100,
+              tax_rate: 22,
+            },
+          ],
+          terms: t('lifecycle.templates.productSale.terms', '24-month warranty on products, 12-month warranty on services.'),
+          isDefault: false,
+        },
+        {
+          id: 3,
+          name: t('lifecycle.templates.customProject.name', 'Custom Project'),
+          description: 'Custom project template',
+          category: 'consulting',
+          items: [
+            {
+              description: 'Project analysis',
+              quantity: 1,
+              unit_price: 500,
+              tax_rate: 22,
+            },
+            {
+              description: 'Development work',
+              quantity: 1,
+              unit_price: 1500,
+              tax_rate: 22,
+            },
+            {
+              description: 'Testing & delivery',
+              quantity: 1,
+              unit_price: 300,
+              tax_rate: 22,
+            },
+          ],
+          terms: t('lifecycle.templates.customProject.terms', '50% payment at start, 50% on delivery.'),
+          isDefault: false,
+        },
+      ];
+
+      // Save to localStorage
+      localStorage.setItem('quote-templates', JSON.stringify(defaultTemplates));
       
-      const { data, error } = await supabase
-        .from('quote_templates')
-        .select('*')
-        .eq('user_id', user.id)
-        .order('name', { ascending: true });
-
-      if (error) {
-        Logger.error('Error loading quote templates:', error);
-        onError?.(t('errors.loadTemplatesFailed', 'Failed to load templates'));
-        return;
-      }
-
-      // Transform template data for the form
-      const transformedTemplates = (data || []).map(template => ({
+      // Transform for QuoteForm usage
+      const transformedTemplates = defaultTemplates.map(template => ({
         id: template.id,
         name: template.name,
         description: template.description,
         category: template.category || 'general',
-        is_default: template.is_default,
-        template_data: template.template_data || {},
-        // Extract common template fields
-        title: template.template_data?.title || '',
-        terms_and_conditions: template.template_data?.terms_and_conditions || '',
-        payment_terms: template.template_data?.payment_terms || '',
-        validity_period: template.template_data?.validity_period || 30,
-        items: template.template_data?.items || []
+        is_default: template.isDefault || false,
+        title: template.name,
+        terms_and_conditions: template.terms || '',
+        payment_terms: 'Net 30 days',
+        validity_period: 30,
+        items: template.items || []
       }));
 
       setTemplates(transformedTemplates);
