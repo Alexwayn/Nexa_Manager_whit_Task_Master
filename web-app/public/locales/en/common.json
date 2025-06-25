@@ -83,10 +83,54 @@
     "up": "Up",
     "down": "Down",
     "left": "Left",
-    "right": "Right"
+    "right": "Right",
+    "quotes": {
+      "tabs": {
+        "details": "Details",
+        "actions": "Actions",
+        "history": "History",
+        "signature": "Signature"
+      },
+      "status": {
+        "draft": "Draft",
+        "sent": "Sent",
+        "viewed": "Viewed",
+        "accepted": "Accepted",
+        "rejected": "Rejected",
+        "expired": "Expired",
+        "converted": "Converted",
+        "cancelled": "Cancelled",
+        "revision_requested": "Revision Requested"
+      },
+      "actions": {
+        "send": "Send Quote",
+        "accept": "Mark as Accepted",
+        "reject": "Mark as Rejected",
+        "expire": "Mark as Expired",
+        "convert": "Convert to Invoice",
+        "cancel": "Cancel Quote",
+        "request_revision": "Request Revision",
+        "mark_viewed": "Mark as Viewed"
+      },
+      "confirm": {
+        "send": "Are you sure you want to send this quote to the client?",
+        "accept": "Mark this quote as accepted?",
+        "reject": "Mark this quote as rejected?",
+        "expire": "Mark this quote as expired?",
+        "convert": "Convert this quote to an invoice?",
+        "cancel": "Are you sure you want to cancel this quote?",
+        "request_revision": "Request revision for this quote?",
+        "mark_viewed": "Mark this quote as viewed by client?"
+      },
+      "available_actions": "Available Actions",
+      "draft_info": {
+        "title": "Draft Quote",
+        "description": "This quote is in draft mode. Send it to the client to begin the approval process."
+      }
+    }
   },
   "confirmationModal": {
-    
+    "title": "Confirm deletion",
     "message": "Are you sure you want to proceed?",
     "confirmText": "Delete",
     "cancelText": "Cancel",
@@ -101,16 +145,16 @@
     "progress": "Progress"
   },
   "componentErrorBoundary": {
-    
+    "title": "Component Error",
     "retry": "Retry"
   },
   "errorBoundary": {
-    
+    "title": "Something went wrong",
     "details": "Error details (development only)",
     "componentStack": "Component Stack"
   },
   "lazyWrapper": {
-    
+    "fallback": "Loading...",
     "loadingComponent": "Loading component...",
     "errorTitle": "Error loading component"
   },

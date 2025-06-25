@@ -5,14 +5,81 @@
     "createNew": "Create New Quote",
     "export": "Export"
   },
+  "form": {
+    "createQuote": "Create Quote",
+    "createDescription": "Create a new quote for your clients",
+    "client": "Client",
+    "selectClient": "Select Client",
+    "template": "Template",
+    "selectTemplate": "Select Template",
+    "title": "Title",
+    "titlePlaceholder": "Enter quote title...",
+    "category": "Category",
+    "categoryPlaceholder": "Enter category...",
+    "description": "Description",
+    "descriptionPlaceholder": "Enter description...",
+    "issueDate": "Issue Date",
+    "dueDate": "Due Date",
+    "expiryDate": "Expiry Date",
+    "validityPeriod": "Validity Period",
+    "days": "days",
+    "items": "Items",
+    "addItem": "Add Item",
+    "itemDescription": "Item Description",
+    "itemDescriptionPlaceholder": "Enter item description...",
+    "quantity": "Quantity",
+    "unitPrice": "Unit Price",
+    "discount": "Discount",
+    "amount": "Amount",
+    "optionalItem": "Optional Item",
+    "duplicateItem": "Duplicate Item",
+    "removeItem": "Remove Item",
+    "financialSummary": "Financial Summary",
+    "globalDiscount": "Global Discount",
+    "taxRate": "Tax Rate",
+    "currency": "Currency",
+    "subtotal": "Subtotal",
+    "tax": "Tax",
+    "total": "Total",
+    "notes": "Notes",
+    "notesPlaceholder": "Enter additional notes...",
+    "termsAndConditions": "Terms and Conditions",
+    "termsPlaceholder": "Enter terms and conditions...",
+    "status": "Status",
+    "priority": "Priority",
+    "paymentTerms": "Payment Terms",
+    "cancel": "Cancel",
+    "saveAsDraft": "Save as Draft"
+  },
+  "tabs": {
+    "details": "Details",
+    "actions": "Actions",
+    "history": "History",
+    "signature": "Signature"
+  },
+  "priority": {
+    "low": "Low",
+    "medium": "Medium",
+    "high": "High",
+    "urgent": "Urgent"
+  },
+  "paymentTerms": {
+    "immediate": "Immediate",
+    "15days": "15 days",
+    "30days": "30 days",
+    "45days": "45 days",
+    "60days": "60 days"
+  },
+  "errors": {
+    "loadClientsFailed": "Failed to load clients",
+    "loadTemplatesFailed": "Failed to load templates"
+  },
   "stats": {
     "totalPending": {
-      
       "subtitle": "From {{count}} quotes",
       "trend": "{{percent}}% from last month"
     },
     "acceptedThisMonth": {
-      
       "asc": "Ascending"
     },
     "clientPlaceholder": "Search by client ID or name"
@@ -30,8 +97,37 @@
     "rejected": "Rejected",
     "draft": "Draft",
     "sent": "Sent",
+    "viewed": "Viewed",
     "expired": "Expired",
+    "converted": "Converted",
+    "cancelled": "Cancelled",
+    "revision_requested": "Revision Requested",
     "unknown": "Unknown"
+  },
+  "actions": {
+    "send": "Send Quote",
+    "accept": "Mark as Accepted",
+    "reject": "Mark as Rejected",
+    "expire": "Mark as Expired",
+    "convert": "Convert to Invoice",
+    "cancel": "Cancel Quote",
+    "request_revision": "Request Revision",
+    "mark_viewed": "Mark as Viewed"
+  },
+  "confirm": {
+    "send": "Are you sure you want to send this quote to the client?",
+    "accept": "Mark this quote as accepted?",
+    "reject": "Mark this quote as rejected?",
+    "expire": "Mark this quote as expired?",
+    "convert": "Convert this quote to an invoice?",
+    "cancel": "Are you sure you want to cancel this quote?",
+    "request_revision": "Request revision for this quote?",
+    "mark_viewed": "Mark this quote as viewed by client?"
+  },
+  "available_actions": "Available Actions",
+  "draft_info": {
+    "title": "Draft Quote",
+    "description": "This quote is in draft mode. Send it to the client to begin the approval process."
   },
   "recentActivities": {
     "quoteCreated": "Quote {{quoteNumber}} created for {{clientName}}",
@@ -41,7 +137,6 @@
   },
   "nexaManager": "Nexa Manager",
   "lifecycle": {
-    
     "currentStatus": "Current Status:",
     "status": {
       "bozza": {
@@ -49,52 +144,56 @@
         "description": "Quote in preparation"
       },
       "inviato": {
-        
+        "name": "Sent",
         "description": "Quote sent to the client"
       },
       "accettato": {
-        
+        "name": "Accepted",
         "description": "Quote accepted by the client"
       },
       "rifiutato": {
-        
+        "name": "Rejected",
         "description": "Quote rejected by the client"
       },
       "scaduto": {
-        
+        "name": "Expired",
         "description": "Quote has expired"
       },
       "convertito": {
-        
+        "name": "Converted",
+        "description": "Quote converted to invoice"
+      }
+    },
+    "actions": {
+      "send": {
+        "name": "Send",
         "description": "Send the quote to the client"
       },
       "markAccepted": {
-        
+        "name": "Mark as Accepted",
         "description": "The client has accepted the quote"
       },
       "markRejected": {
-        
+        "name": "Mark as Rejected",
         "description": "The client has rejected the quote"
       },
       "markExpired": {
-        
-        "terms": "Standard consulting terms apply."
-      },
-      "softwareDevelopment": {
-        
-        "terms": "Payment upon milestone completion."
-      },
+        "name": "Mark as Expired",
+        "description": "The quote has expired"
+      }
+    },
+    "templates": {
       "systemMaintenance": {
-        
-        "terms": "Monthly recurring payment."
+        "name": "System Maintenance",
+        "terms": "Emergency interventions within 4 hours of ticket opening."
       },
       "productSale": {
-        
-        "terms": "Product returnable within 14 days."
+        "name": "Product Sale",
+        "terms": "24-month warranty on products, 12-month warranty on services."
       },
       "customProject": {
-        
-        "terms": "Terms to be agreed upon."
+        "name": "Custom Project",
+        "terms": "50% payment at start, 50% on delivery."
       }
     }
   }
