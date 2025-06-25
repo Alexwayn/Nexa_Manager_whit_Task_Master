@@ -5,14 +5,81 @@
     "createNew": "Crea Nuovo Preventivo",
     "export": "Esporta"
   },
+  "form": {
+    "createQuote": "Crea Preventivo",
+    "createDescription": "Crea un nuovo preventivo per i tuoi clienti",
+    "client": "Cliente",
+    "selectClient": "Seleziona Cliente",
+    "template": "Template",
+    "selectTemplate": "Seleziona Template",
+    "title": "Titolo",
+    "titlePlaceholder": "Inserisci titolo preventivo...",
+    "category": "Categoria",
+    "categoryPlaceholder": "Inserisci categoria...",
+    "description": "Descrizione",
+    "descriptionPlaceholder": "Inserisci descrizione...",
+    "issueDate": "Data Emissione",
+    "dueDate": "Data Scadenza",
+    "expiryDate": "Data Scadenza",
+    "validityPeriod": "Periodo di Validità",
+    "days": "giorni",
+    "items": "Articoli",
+    "addItem": "Aggiungi Articolo",
+    "itemDescription": "Descrizione Articolo",
+    "itemDescriptionPlaceholder": "Inserisci descrizione articolo...",
+    "quantity": "Quantità",
+    "unitPrice": "Prezzo Unitario",
+    "discount": "Sconto",
+    "amount": "Importo",
+    "optionalItem": "Articolo Opzionale",
+    "duplicateItem": "Duplica Articolo",
+    "removeItem": "Rimuovi Articolo",
+    "financialSummary": "Riepilogo Finanziario",
+    "globalDiscount": "Sconto Globale",
+    "taxRate": "Aliquota IVA",
+    "currency": "Valuta",
+    "subtotal": "Subtotale",
+    "tax": "IVA",
+    "total": "Totale",
+    "notes": "Note",
+    "notesPlaceholder": "Inserisci note aggiuntive...",
+    "termsAndConditions": "Termini e Condizioni",
+    "termsPlaceholder": "Inserisci termini e condizioni...",
+    "status": "Stato",
+    "priority": "Priorità",
+    "paymentTerms": "Termini di Pagamento",
+    "cancel": "Annulla",
+    "saveAsDraft": "Salva come Bozza"
+  },
+  "tabs": {
+    "details": "Dettagli",
+    "actions": "Azioni",
+    "history": "Cronologia",
+    "signature": "Firma"
+  },
+  "priority": {
+    "low": "Bassa",
+    "medium": "Media",
+    "high": "Alta",
+    "urgent": "Urgente"
+  },
+  "paymentTerms": {
+    "immediate": "Immediato",
+    "15days": "15 giorni",
+    "30days": "30 giorni",
+    "45days": "45 giorni",
+    "60days": "60 giorni"
+  },
+  "errors": {
+    "loadClientsFailed": "Caricamento clienti fallito",
+    "loadTemplatesFailed": "Caricamento template fallito"
+  },
   "stats": {
     "totalPending": {
-      
       "subtitle": "Da {{count}} preventivi",
       "trend": "{{percent}}% dall'ultimo mese"
     },
     "acceptedThisMonth": {
-      
       "asc": "Crescente"
     },
     "clientPlaceholder": "Cerca per ID cliente o nome"
@@ -30,8 +97,37 @@
     "rejected": "Rifiutato",
     "draft": "Bozza",
     "sent": "Inviato",
+    "viewed": "Visto",
     "expired": "Scaduto",
+    "converted": "Convertito",
+    "cancelled": "Annullato",
+    "revision_requested": "Revisione Richiesta",
     "unknown": "Sconosciuto"
+  },
+  "actions": {
+    "send": "Invia Preventivo",
+    "accept": "Segna come Accettato",
+    "reject": "Segna come Rifiutato",
+    "expire": "Segna come Scaduto",
+    "convert": "Converti in Fattura",
+    "cancel": "Annulla Preventivo",
+    "request_revision": "Richiedi Revisione",
+    "mark_viewed": "Segna come Visto"
+  },
+  "confirm": {
+    "send": "Sei sicuro di voler inviare questo preventivo al cliente?",
+    "accept": "Segnare questo preventivo come accettato?",
+    "reject": "Segnare questo preventivo come rifiutato?",
+    "expire": "Segnare questo preventivo come scaduto?",
+    "convert": "Convertire questo preventivo in fattura?",
+    "cancel": "Sei sicuro di voler annullare questo preventivo?",
+    "request_revision": "Richiedere revisione per questo preventivo?",
+    "mark_viewed": "Segnare questo preventivo come visto dal cliente?"
+  },
+  "available_actions": "Azioni Disponibili",
+  "draft_info": {
+    "title": "Preventivo Bozza",
+    "description": "Questo preventivo è in modalità bozza. Invialo al cliente per iniziare il processo di approvazione."
   },
   "recentActivities": {
     "quoteCreated": "Preventivo {{quoteNumber}} creato per {{clientName}}",
@@ -41,7 +137,6 @@
   },
   "nexaManager": "Nexa Manager",
   "lifecycle": {
-    
     "currentStatus": "Stato Corrente:",
     "status": {
       "bozza": {
@@ -49,47 +144,55 @@
         "description": "Preventivo in preparazione"
       },
       "inviato": {
-        
+        "name": "Inviato",
         "description": "Preventivo inviato al cliente"
       },
       "accettato": {
-        
+        "name": "Accettato",
         "description": "Preventivo accettato dal cliente"
       },
       "rifiutato": {
-        
+        "name": "Rifiutato",
         "description": "Preventivo rifiutato dal cliente"
       },
       "scaduto": {
-        
+        "name": "Scaduto",
         "description": "Preventivo scaduto"
       },
       "convertito": {
-        
+        "name": "Convertito",
+        "description": "Preventivo convertito in fattura"
+      }
+    },
+    "actions": {
+      "send": {
+        "name": "Invia",
         "description": "Invia il preventivo al cliente"
       },
       "markAccepted": {
-        
+        "name": "Segna come Accettato",
         "description": "Il cliente ha accettato il preventivo"
       },
       "markRejected": {
-        
+        "name": "Segna come Rifiutato",
         "description": "Il cliente ha rifiutato il preventivo"
       },
       "markExpired": {
-        
+        "name": "Segna come Scaduto",
         "description": "Il preventivo è scaduto"
-      },
+      }
+    },
+    "templates": {
       "systemMaintenance": {
-        
+        "name": "Manutenzione Sistema",
         "terms": "Interventi di emergenza entro 4 ore dall'apertura ticket."
       },
       "productSale": {
-        
+        "name": "Vendita Prodotto",
         "terms": "Garanzia 24 mesi su prodotti, 12 mesi su servizi."
       },
       "customProject": {
-        
+        "name": "Progetto Personalizzato",
         "terms": "Pagamento 50% all'inizio, 50% alla consegna."
       }
     }

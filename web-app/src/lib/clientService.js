@@ -1,14 +1,47 @@
-import { supabase } from '@lib/supabaseClient';
+import { supabase, setCurrentUserId } from '@lib/supabaseClient';
 import Logger from '@utils/Logger';
 import { errorHandler, notify } from '@lib/uiUtils';
 
 /**
  * @class ClientService
- * @description Comprehensive service for managing client operations with Supabase.
+ * @description Comprehensive service for managing client operations with Supabase and Clerk authentication.
  */
 class ClientService {
   constructor() {
     this.tableName = 'clients';
+  }
+
+  /**
+   * Get current user from Clerk context
+   * @returns {Object|null} Current user object from Clerk
+   */
+  getCurrentUser() {
+    // Get user from Clerk context - this should be set by the calling component
+    // For now, we'll use window.clerk if available, but ideally this should be passed as parameter
+    if (typeof window !== 'undefined' && window.clerk?.user) {
+      return {
+        id: window.clerk.user.id,
+        email: window.clerk.user.primaryEmailAddress?.emailAddress,
+      };
+    }
+    return null;
+  }
+
+  /**
+   * Execute query with user context
+   * @param {string} userId - Clerk user ID
+   * @param {Function} queryFn - Function that executes the query
+   * @returns {Promise} Query result
+   */
+  async executeWithUserContext(userId, queryFn) {
+    try {
+      // Set current user ID for RLS policies
+      await setCurrentUserId(userId);
+      return await queryFn();
+    } catch (error) {
+      Logger.error('Error executing query with user context:', error);
+      throw error;
+    }
   }
 
   /**
@@ -20,6 +53,7 @@ class ClientService {
    * @param {number|null} [options.limit=null] - Number of records to return.
    * @param {number} [options.offset=0] - Number of records to skip.
    * @param {Object} [options.filters={}] - Additional key-value filters.
+   * @param {string} [options.userId] - Clerk user ID (optional, will auto-detect if not provided)
    * @returns {Promise<{data: Array<Object>, count: number, error: Object|null}>} An object containing the client data, total count, and a potential error.
    */
   async getClients(options = {}) {
@@ -31,64 +65,66 @@ class ClientService {
         limit = null,
         offset = 0,
         filters = {},
+        userId: providedUserId
       } = options;
 
       // Get current user
-      const {
-        data: { user },
-        error: userError,
-      } = await supabase.auth.getUser();
-      if (userError || !user) {
-        throw new Error('User not authenticated');
+      const user = this.getCurrentUser();
+      const userId = providedUserId || user?.id;
+      
+      if (!userId) {
+        throw new Error('User not authenticated - no Clerk user ID available');
       }
 
-      // Start building the query
-      let query = supabase
-        .from(this.tableName)
-        .select('*', { count: 'exact' })
-        .eq('user_id', user.id);
+      return await this.executeWithUserContext(userId, async () => {
+        // Start building the query
+        let query = supabase
+          .from(this.tableName)
+          .select('*', { count: 'exact' })
+          .eq('user_id', userId);
 
-      // Apply search filter if provided
-      if (searchQuery.trim()) {
-        const searchTerm = `%${searchQuery.toLowerCase()}%`;
-        query = query.or(
-          `full_name.ilike.${searchTerm},email.ilike.${searchTerm},phone.ilike.${searchTerm},address.ilike.${searchTerm},city.ilike.${searchTerm}`,
-        );
-      }
-
-      // Apply additional filters
-      Object.entries(filters).forEach(([key, value]) => {
-        if (value !== null && value !== undefined && value !== '') {
-          query = query.eq(key, value);
+        // Apply search filter if provided
+        if (searchQuery.trim()) {
+          const searchTerm = `%${searchQuery.toLowerCase()}%`;
+          query = query.or(
+            `full_name.ilike.${searchTerm},email.ilike.${searchTerm},phone.ilike.${searchTerm},address.ilike.${searchTerm},city.ilike.${searchTerm}`,
+          );
         }
+
+        // Apply additional filters
+        Object.entries(filters).forEach(([key, value]) => {
+          if (value !== null && value !== undefined && value !== '') {
+            query = query.eq(key, value);
+          }
+        });
+
+        // Apply sorting
+        query = query.order(sortBy, { ascending });
+
+        // Apply pagination if specified
+        if (limit) {
+          query = query.range(offset, offset + limit - 1);
+        }
+
+        const { data, error, count } = await query;
+
+        if (error) {
+          throw error;
+        }
+
+        // Adapt data for frontend compatibility
+        const adaptedData = (data || []).map(client => ({
+          ...client,
+          name: client.full_name || client.name || 'Client',
+          displayName: this.getDisplayName(client),
+        }));
+
+        return {
+          data: adaptedData,
+          count: count || 0,
+          error: null,
+        };
       });
-
-      // Apply sorting
-      query = query.order(sortBy, { ascending });
-
-      // Apply pagination if specified
-      if (limit) {
-        query = query.range(offset, offset + limit - 1);
-      }
-
-      const { data, error, count } = await query;
-
-      if (error) {
-        throw error;
-      }
-
-      // Adapt data for frontend compatibility
-      const adaptedData = (data || []).map(client => ({
-        ...client,
-        name: client.full_name || client.name || 'Client',
-        displayName: this.getDisplayName(client),
-      }));
-
-      return {
-        data: adaptedData,
-        count: count || 0,
-        error: null,
-      };
     } catch (error) {
       Logger.error('Error fetching clients:', error);
       errorHandler.handleSupabaseError(error, 'fetching clients');
@@ -103,42 +139,45 @@ class ClientService {
   /**
    * Retrieves a single client by its ID.
    * @param {string} clientId - The unique identifier of the client.
+   * @param {string} [userId] - Clerk user ID (optional, will auto-detect if not provided)
    * @returns {Promise<{data: Object|null, error: Object|null}>} An object containing the client data or a potential error.
    */
-  async getClientById(clientId) {
+  async getClientById(clientId, userId = null) {
     try {
-      const {
-        data: { user },
-        error: userError,
-      } = await supabase.auth.getUser();
-      if (userError || !user) {
-        throw new Error('User not authenticated');
+      // Get current user
+      const user = this.getCurrentUser();
+      const currentUserId = userId || user?.id;
+      
+      if (!currentUserId) {
+        throw new Error('User not authenticated - no Clerk user ID available');
       }
 
-      const { data, error } = await supabase
-        .from(this.tableName)
-        .select('*')
-        .eq('id', clientId)
-        .eq('user_id', user.id)
-        .single();
+      return await this.executeWithUserContext(currentUserId, async () => {
+        const { data, error } = await supabase
+          .from(this.tableName)
+          .select('*')
+          .eq('id', clientId)
+          .eq('user_id', currentUserId)
+          .single();
 
-      if (error) {
-        throw error;
-      }
+        if (error) {
+          throw error;
+        }
 
-      // Adapt data for frontend
-      const adaptedData = data
-        ? {
-            ...data,
-            name: data.full_name || data.name || 'Client',
-            displayName: this.getDisplayName(data),
-          }
-        : null;
+        // Adapt data for frontend
+        const adaptedData = data
+          ? {
+              ...data,
+              name: data.full_name || data.name || 'Client',
+              displayName: this.getDisplayName(data),
+            }
+          : null;
 
-      return {
-        data: adaptedData,
-        error: null,
-      };
+        return {
+          data: adaptedData,
+          error: null,
+        };
+      });
     } catch (error) {
       Logger.error('Error fetching client:', error);
       errorHandler.handleSupabaseError(error, 'fetching client');
@@ -152,16 +191,17 @@ class ClientService {
   /**
    * Creates a new client.
    * @param {Object} clientData - The data for the new client.
+   * @param {string} [userId] - Clerk user ID (optional, will auto-detect if not provided)
    * @returns {Promise<{data: Object|null, error: Object|null}>} An object containing the newly created client's data or a potential error.
    */
-  async createClient(clientData) {
+  async createClient(clientData, userId = null) {
     try {
-      const {
-        data: { user },
-        error: userError,
-      } = await supabase.auth.getUser();
-      if (userError || !user) {
-        throw new Error('User not authenticated');
+      // Get current user
+      const user = this.getCurrentUser();
+      const currentUserId = userId || user?.id;
+      
+      if (!currentUserId) {
+        throw new Error('User not authenticated - no Clerk user ID available');
       }
 
       // Validate required fields
@@ -171,37 +211,39 @@ class ClientService {
       }
 
       // Check for duplicates
-      const duplicateCheck = await this.checkForDuplicates(clientData, user.id);
+      const duplicateCheck = await this.checkForDuplicates(clientData, currentUserId);
       if (duplicateCheck.isDuplicate) {
         throw new Error(`Client already exists: ${duplicateCheck.reason}`);
       }
 
       // Prepare data for database
-      const dbData = this.prepareClientDataForDB(clientData, user.id);
+      const dbData = this.prepareClientDataForDB(clientData, currentUserId);
 
-      const { data, error } = await supabase
-        .from(this.tableName)
-        .insert([dbData])
-        .select()
-        .single();
+      return await this.executeWithUserContext(currentUserId, async () => {
+        const { data, error } = await supabase
+          .from(this.tableName)
+          .insert([dbData])
+          .select()
+          .single();
 
-      if (error) {
-        throw error;
-      }
+        if (error) {
+          throw error;
+        }
 
-      // Adapt data for frontend
-      const adaptedData = {
-        ...data,
-        name: data.full_name || data.name || 'Client',
-        displayName: this.getDisplayName(data),
-      };
+        // Adapt data for frontend
+        const adaptedData = {
+          ...data,
+          name: data.full_name || data.name || 'Client',
+          displayName: this.getDisplayName(data),
+        };
 
-      notify.success('Client created successfully');
+        notify.success('Client created successfully');
 
-      return {
-        data: adaptedData,
-        error: null,
-      };
+        return {
+          data: adaptedData,
+          error: null,
+        };
+      });
     } catch (error) {
       Logger.error('Error creating client:', error);
       errorHandler.handleSupabaseError(error, 'creating client');
@@ -216,16 +258,17 @@ class ClientService {
    * Updates an existing client.
    * @param {string} clientId - The unique identifier of the client to update.
    * @param {Object} clientData - The new data for the client.
+   * @param {string} [userId] - Clerk user ID (optional, will auto-detect if not provided)
    * @returns {Promise<{data: Object|null, error: Object|null}>} An object containing the updated client's data or a potential error.
    */
-  async updateClient(clientId, clientData) {
+  async updateClient(clientId, clientData, userId = null) {
     try {
-      const {
-        data: { user },
-        error: userError,
-      } = await supabase.auth.getUser();
-      if (userError || !user) {
-        throw new Error('User not authenticated');
+      // Get current user
+      const user = this.getCurrentUser();
+      const currentUserId = userId || user?.id;
+      
+      if (!currentUserId) {
+        throw new Error('User not authenticated - no Clerk user ID available');
       }
 
       // Validate required fields
@@ -235,39 +278,41 @@ class ClientService {
       }
 
       // Check for duplicates, excluding the current client
-      const duplicateCheck = await this.checkForDuplicates(clientData, user.id, clientId);
+      const duplicateCheck = await this.checkForDuplicates(clientData, currentUserId, clientId);
       if (duplicateCheck.isDuplicate) {
         throw new Error(`Client already exists: ${duplicateCheck.reason}`);
       }
 
       // Prepare data for database update
-      const dbData = this.prepareClientDataForDB(clientData, user.id, true);
+      const dbData = this.prepareClientDataForDB(clientData, currentUserId, true);
 
-      const { data, error } = await supabase
-        .from(this.tableName)
-        .update(dbData)
-        .eq('id', clientId)
-        .eq('user_id', user.id)
-        .select()
-        .single();
+      return await this.executeWithUserContext(currentUserId, async () => {
+        const { data, error } = await supabase
+          .from(this.tableName)
+          .update(dbData)
+          .eq('id', clientId)
+          .eq('user_id', currentUserId)
+          .select()
+          .single();
 
-      if (error) {
-        throw error;
-      }
+        if (error) {
+          throw error;
+        }
 
-      // Adapt data for frontend
-      const adaptedData = {
-        ...data,
-        name: data.full_name || data.name || 'Client',
-        displayName: this.getDisplayName(data),
-      };
+        // Adapt data for frontend
+        const adaptedData = {
+          ...data,
+          name: data.full_name || data.name || 'Client',
+          displayName: this.getDisplayName(data),
+        };
 
-      notify.success('Client updated successfully');
+        notify.success('Client updated successfully');
 
-      return {
-        data: adaptedData,
-        error: null,
-      };
+        return {
+          data: adaptedData,
+          error: null,
+        };
+      });
     } catch (error) {
       Logger.error('Error updating client:', error);
       errorHandler.handleSupabaseError(error, 'updating client');
@@ -281,16 +326,17 @@ class ClientService {
   /**
    * Deletes a client by its ID after checking for related data.
    * @param {string} clientId - The unique identifier of the client to delete.
+   * @param {string} [userId] - Clerk user ID (optional, will auto-detect if not provided)
    * @returns {Promise<{success: boolean, error: Object|null}>} An object indicating the success of the operation.
    */
-  async deleteClient(clientId) {
+  async deleteClient(clientId, userId = null) {
     try {
-      const {
-        data: { user },
-        error: userError,
-      } = await supabase.auth.getUser();
-      if (userError || !user) {
-        throw new Error('User not authenticated');
+      // Get current user
+      const user = this.getCurrentUser();
+      const currentUserId = userId || user?.id;
+      
+      if (!currentUserId) {
+        throw new Error('User not authenticated - no Clerk user ID available');
       }
 
       // Check if client has related data (invoices, quotes, etc.)
@@ -304,22 +350,24 @@ class ClientService {
         throw new Error(message);
       }
 
-      const { error } = await supabase
-        .from(this.tableName)
-        .delete()
-        .eq('id', clientId)
-        .eq('user_id', user.id);
+      return await this.executeWithUserContext(currentUserId, async () => {
+        const { error } = await supabase
+          .from(this.tableName)
+          .delete()
+          .eq('id', clientId)
+          .eq('user_id', currentUserId);
 
-      if (error) {
-        throw error;
-      }
+        if (error) {
+          throw error;
+        }
 
-      notify.success('Client deleted successfully');
+        notify.success('Client deleted successfully');
 
-      return {
-        success: true,
-        error: null,
-      };
+        return {
+          success: true,
+          error: null,
+        };
+      });
     } catch (error) {
       Logger.error('Error deleting client:', error);
       errorHandler.handleSupabaseError(error, 'deleting client');
@@ -338,22 +386,24 @@ class ClientService {
    * @param {string} searchParams.email - Email filter.
    * @param {string} searchParams.phone - Phone filter.
    * @param {string} searchParams.city - City filter.
+   * @param {string} [searchParams.userId] - Clerk user ID (optional, will auto-detect if not provided)
    * @returns {Promise<{data: Array<Object>, count: number, error: Object|null}>} An object containing the search results.
    */
   async searchClients(searchParams) {
     try {
-      const {
-        data: { user },
-        error: userError,
-      } = await supabase.auth.getUser();
-      if (userError || !user) {
-        throw new Error('User not authenticated');
+      // Get current user
+      const user = this.getCurrentUser();
+      const userId = searchParams.userId || user?.id;
+      
+      if (!userId) {
+        throw new Error('User not authenticated - no Clerk user ID available');
       }
 
-      let query = supabase
-        .from(this.tableName)
-        .select('*', { count: 'exact' })
-        .eq('user_id', user.id);
+      return await this.executeWithUserContext(userId, async () => {
+        let query = supabase
+          .from(this.tableName)
+          .select('*', { count: 'exact' })
+          .eq('user_id', userId);
 
       // Apply specific field filters
       if (searchParams.name) {
@@ -398,11 +448,12 @@ class ClientService {
         displayName: this.getDisplayName(client),
       }));
 
-      return {
-        data: adaptedData,
-        count: count || 0,
-        error: null,
-      };
+        return {
+          data: adaptedData,
+          count: count || 0,
+          error: null,
+        };
+      });
     } catch (error) {
       Logger.error('Error searching clients:', error);
       errorHandler.handleSupabaseError(error, 'searching clients');
@@ -417,74 +468,77 @@ class ClientService {
   /**
    * Retrieves the history (invoices, quotes, and appointments) for a specific client.
    * @param {string} clientId - The unique identifier of the client.
+   * @param {string} [userId] - Clerk user ID (optional, will auto-detect if not provided)
    * @returns {Promise<{data: Object, error: null|Object}>} An object containing the client's history.
    */
-  async getClientHistory(clientId) {
+  async getClientHistory(clientId, userId = null) {
     try {
-      const {
-        data: { user },
-        error: userError,
-      } = await supabase.auth.getUser();
-      if (userError || !user) {
-        throw new Error('User not authenticated');
+      // Get current user
+      const user = this.getCurrentUser();
+      const currentUserId = userId || user?.id;
+      
+      if (!currentUserId) {
+        throw new Error('User not authenticated - no Clerk user ID available');
       }
 
-      const clientResult = await this.getClientById(clientId);
+      const clientResult = await this.getClientById(clientId, currentUserId);
       if (clientResult.error) {
         throw clientResult.error;
       }
 
-      // Get related invoices
-      const { data: invoices, error: invoicesError } = await supabase
-        .from('invoices')
-        .select('*')
-        .eq('client_id', clientId)
-        .eq('user_id', user.id)
-        .order('created_at', { ascending: false });
+      return await this.executeWithUserContext(currentUserId, async () => {
+        // Get related invoices
+        const { data: invoices, error: invoicesError } = await supabase
+          .from('invoices')
+          .select('*')
+          .eq('client_id', clientId)
+          .eq('user_id', currentUserId)
+          .order('created_at', { ascending: false });
 
-      if (invoicesError) {
-        Logger.warn('Error fetching invoices:', invoicesError);
-      }
+        if (invoicesError) {
+          Logger.warn('Error fetching invoices:', invoicesError);
+        }
 
-      // Get related quotes
-      const { data: quotes, error: quotesError } = await supabase
-        .from('quotes')
-        .select('*')
-        .eq('client_id', clientId)
-        .eq('user_id', user.id)
-        .order('created_at', { ascending: false });
+        // Get related quotes
+        const { data: quotes, error: quotesError } = await supabase
+          .from('quotes')
+          .select('*')
+          .eq('client_id', clientId)
+          .eq('user_id', currentUserId)
+          .order('created_at', { ascending: false });
 
-      if (quotesError) {
-        Logger.warn('Error fetching quotes:', quotesError);
-      }
+        if (quotesError) {
+          Logger.warn('Error fetching quotes:', quotesError);
+        }
 
-      // Get related appointments
-      const { data: appointments, error: appointmentsError } = await supabase
-        .from('appointments')
-        .select('*')
-        .eq('client_id', clientId)
-        .eq('user_id', user.id)
-        .order('created_at', { ascending: false });
+        // Get related appointments
+        const { data: appointments, error: appointmentsError } = await supabase
+          .from('appointments')
+          .select('*')
+          .eq('client_id', clientId)
+          .eq('user_id', currentUserId)
+          .order('created_at', { ascending: false });
 
-      if (appointmentsError) {
-        Logger.warn('Error fetching appointments:', appointmentsError);
-      }
+        if (appointmentsError) {
+          Logger.warn('Error fetching appointments:', appointmentsError);
+        }
 
-      return {
-        data: {
-          client: clientResult.data,
-          invoices: invoices || [],
-          quotes: quotes || [],
-          appointments: appointments || [],
-          totalInvoices: invoices ? invoices.length : 0,
-          totalQuotes: quotes ? quotes.length : 0,
-          totalAppointments: appointments ? appointments.length : 0,
-          totalRevenue: invoices
-            ? invoices.reduce((sum, inv) => sum + (parseFloat(inv.total_amount) || 0), 0)
-            : 0,
-        },
-        error: null,
-      };
+        return {
+          data: {
+            client: clientResult.data,
+            invoices: invoices || [],
+            quotes: quotes || [],
+            appointments: appointments || [],
+            totalInvoices: invoices ? invoices.length : 0,
+            totalQuotes: quotes ? quotes.length : 0,
+            totalAppointments: appointments ? appointments.length : 0,
+            totalRevenue: invoices
+              ? invoices.reduce((sum, inv) => sum + (parseFloat(inv.total_amount) || 0), 0)
+              : 0,
+          },
+          error: null,
+        };
+      });
     } catch (error) {
       Logger.error('Error fetching client history:', error);
       errorHandler.handleSupabaseError(error, 'fetching client history');
@@ -753,16 +807,17 @@ class ClientService {
   /**
    * Imports clients from a CSV formatted string.
    * @param {string} csvContent - The CSV content to import.
+   * @param {string} [userId] - Clerk user ID (optional, will auto-detect if not provided)
    * @returns {Promise<{success: boolean, imported: number, errors: Array<string>}>} The result of the import operation.
    */
-  async importFromCSV(csvContent) {
+  async importFromCSV(csvContent, userId = null) {
     try {
-      const {
-        data: { user },
-        error: userError,
-      } = await supabase.auth.getUser();
-      if (userError || !user) {
-        throw new Error('User not authenticated');
+      // Get current user
+      const user = this.getCurrentUser();
+      const currentUserId = userId || user?.id;
+      
+      if (!currentUserId) {
+        throw new Error('User not authenticated - no Clerk user ID available');
       }
 
       const lines = csvContent.split('\n');
@@ -795,7 +850,7 @@ class ClientService {
             continue;
           }
 
-          const result = await this.createClient(clientData);
+          const result = await this.createClient(clientData, currentUserId);
           if (result.error) {
             errors.push(`Row ${i + 1}: ${result.error.message}`);
           } else {
