@@ -1,6 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import Footer from '@components/shared/Footer';
 import ErrorBoundary from '@components/common/ErrorBoundary';
+import QuoteModal from '@components/financial/QuoteModal';
+import QuoteDetailModal from '@components/financial/QuoteDetailModal';
+import QuoteStatusBadge from '@components/financial/QuoteStatusBadge';
+import QuoteApprovalActions from '@components/financial/QuoteApprovalActions';
+import QuoteToInvoiceConverter from '@components/financial/QuoteToInvoiceConverter';
+import { QuoteService } from '@lib/quoteService';
+import { QuoteApprovalService } from '@lib/quoteApprovalService';
+import { useUser } from '@clerk/clerk-react';
+import Logger from '@utils/Logger';
 import {
   Plus,
   Download,
@@ -34,11 +43,27 @@ import { useTranslation } from 'react-i18next';
 
 const QuotesPage = () => {
   const { t, ready } = useTranslation('quotes');
+  const { user } = useUser();
   const [activeTab, setActiveTab] = useState('quotes');
   const [quotes, setQuotes] = useState([]);
   const [filteredQuotes, setFilteredQuotes] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10);
+  
+  // Quote modal state
+  const [isQuoteModalOpen, setIsQuoteModalOpen] = useState(false);
+  const [selectedQuote, setSelectedQuote] = useState(null);
+  const [selectedClient, setSelectedClient] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  
+  // Quote detail modal state for approval workflow
+  const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
+  const [detailQuote, setDetailQuote] = useState(null);
+  const [refreshTrigger, setRefreshTrigger] = useState(0);
+  
+  // Quote-to-invoice converter state
+  const [isConverterOpen, setIsConverterOpen] = useState(false);
+  const [quoteToConvert, setQuoteToConvert] = useState(null);
 
   // Safe translation function that handles loading state and interpolation
   const safeT = (key, options = {}, fallback = key) => {
@@ -59,8 +84,14 @@ const QuotesPage = () => {
       },
       issue_date: '2024-01-15',
       due_date: '2024-02-15',
+      expiry_date: '2024-02-15',
       amount: 15750.0,
-      status: 'pending',
+      status: 'sent',
+      created_by: user?.id || 'user-123',
+      created_at: '2024-01-15T10:00:00Z',
+      updated_at: '2024-01-16T14:30:00Z',
+      terms: 'Payment due within 30 days',
+      notes: 'Includes implementation and training',
     },
     {
       id: 2,
@@ -73,8 +104,21 @@ const QuotesPage = () => {
       },
       issue_date: '2024-01-18',
       due_date: '2024-02-18',
+      expiry_date: '2024-02-18',
       amount: 8200.0,
       status: 'accepted',
+      created_by: user?.id || 'user-123',
+      created_at: '2024-01-18T09:00:00Z',
+      updated_at: '2024-01-20T16:45:00Z',
+      terms: 'Net 30 payment terms',
+      notes: 'Rush delivery required',
+      digital_signature: {
+        signature: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==',
+        signer_name: 'John Smith',
+        signer_email: 'john@globex.com',
+        signed_at: '2024-01-20T16:45:00Z',
+        ip_address: '192.168.1.1'
+      }
     },
     {
       id: 3,
@@ -87,8 +131,14 @@ const QuotesPage = () => {
       },
       issue_date: '2024-01-20',
       due_date: '2024-02-20',
+      expiry_date: '2024-02-20',
       amount: 12500.0,
       status: 'rejected',
+      created_by: user?.id || 'user-123',
+      created_at: '2024-01-20T11:00:00Z',
+      updated_at: '2024-01-22T09:15:00Z',
+      terms: 'Payment due on delivery',
+      notes: 'Custom packaging requirements',
     },
     {
       id: 4,
@@ -101,10 +151,199 @@ const QuotesPage = () => {
       },
       issue_date: '2024-01-22',
       due_date: '2024-02-22',
+      expiry_date: '2024-02-22',
       amount: 9750.0,
       status: 'draft',
+      created_by: user?.id || 'user-123',
+      created_at: '2024-01-22T08:00:00Z',
+      updated_at: '2024-01-22T08:00:00Z',
+      terms: 'Standard payment terms',
+      notes: 'Initial draft - pending review',
     },
+    {
+      id: 5,
+      quote_number: 'PREV-2024-005',
+      client: {
+        name: 'TechStart Inc',
+        avatar: 'TS',
+        industry: 'Technology',
+        email: 'info@techstart.com',
+      },
+      issue_date: '2024-01-25',
+      due_date: '2024-02-25',
+      expiry_date: '2024-02-25',
+      amount: 18500.0,
+      status: 'viewed',
+      created_by: user?.id || 'user-123',
+      created_at: '2024-01-25T10:00:00Z',
+      updated_at: '2024-01-26T12:30:00Z',
+      terms: 'Net 45 payment terms',
+      notes: 'Multi-phase implementation',
+    },
+    {
+      id: 6,
+      quote_number: 'PREV-2024-006',
+      client: {
+        name: 'Enterprise Corp',
+        avatar: 'EC',
+        industry: 'Finance',
+        email: 'contracts@enterprise.com',
+      },
+      issue_date: '2024-01-10',
+      due_date: '2024-02-10',
+      expiry_date: '2024-02-10',
+      amount: 5500.0,
+      status: 'expired',
+      created_by: user?.id || 'user-123',
+      created_at: '2024-01-10T09:00:00Z',
+      updated_at: '2024-02-11T00:00:00Z',
+      terms: 'Payment upon acceptance',
+      notes: 'Quote expired without response',
+    }
   ];
+
+  // Quote modal handlers
+  const handleCreateQuote = (client = null) => {
+    setSelectedQuote(null);
+    setSelectedClient(client);
+    setIsQuoteModalOpen(true);
+  };
+
+  const handleEditQuote = (quote) => {
+    setSelectedQuote(quote);
+    setSelectedClient(null);
+    setIsQuoteModalOpen(true);
+  };
+
+  const handleCloseQuoteModal = () => {
+    setIsQuoteModalOpen(false);
+    setSelectedQuote(null);
+    setSelectedClient(null);
+  };
+
+  const handleQuoteCreated = async (quoteData) => {
+    try {
+      setIsLoading(true);
+      const result = await QuoteService.createQuote(user.id, quoteData);
+      
+      // Update quotes list
+      const updatedQuotes = [result, ...quotes];
+      setQuotes(updatedQuotes);
+      setFilteredQuotes(updatedQuotes);
+      
+      return result;
+    } catch (error) {
+      Logger.error('Error creating quote:', error);
+      throw error;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleQuoteUpdated = async (quoteData) => {
+    try {
+      setIsLoading(true);
+      const result = await QuoteService.updateQuote(selectedQuote.id, user.id, quoteData);
+      
+      // Update quotes list
+      const updatedQuotes = quotes.map(quote => 
+        quote.id === selectedQuote.id ? result : quote
+      );
+      setQuotes(updatedQuotes);
+      setFilteredQuotes(updatedQuotes);
+      
+      return result;
+    } catch (error) {
+      Logger.error('Error updating quote:', error);
+      throw error;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Quote detail modal handlers for approval workflow
+  const handleViewQuote = (quote) => {
+    setDetailQuote(quote);
+    setIsDetailModalOpen(true);
+  };
+
+  const handleCloseDetailModal = () => {
+    setIsDetailModalOpen(false);
+    setDetailQuote(null);
+  };
+
+  const handleQuoteStatusUpdated = async (updatedQuote) => {
+    try {
+      // Update quotes list with new status
+      const updatedQuotes = quotes.map(quote => 
+        quote.id === updatedQuote.id ? updatedQuote : quote
+      );
+      setQuotes(updatedQuotes);
+      setFilteredQuotes(updatedQuotes);
+      
+      // Update detail modal if it's the same quote
+      if (detailQuote && detailQuote.id === updatedQuote.id) {
+        setDetailQuote(updatedQuote);
+      }
+      
+      // Trigger refresh for components that need it
+      setRefreshTrigger(prev => prev + 1);
+    } catch (error) {
+      Logger.error('Error handling quote status update:', error);
+    }
+  };
+
+  // Quote-to-invoice conversion handlers
+  const handleConvertToInvoice = (quote) => {
+    setQuoteToConvert(quote);
+    setIsConverterOpen(true);
+  };
+
+  const handleCloseConverter = () => {
+    setIsConverterOpen(false);
+    setQuoteToConvert(null);
+  };
+
+  const handleConversionSuccess = (invoice) => {
+    // Update the quote status to converted
+    handleQuoteStatusUpdated({ ...quoteToConvert, status: 'converted' });
+    
+    // Close the converter
+    handleCloseConverter();
+    
+    // Show success message
+    alert(safeT('conversion.success', { invoiceNumber: invoice.invoice_number }, `Quote successfully converted to invoice ${invoice.invoice_number}`));
+  };
+
+  // Utility functions
+  const formatDate = (dateString) => {
+    return new Date(dateString).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
+    });
+  };
+
+  const formatCurrency = (amount) => {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD'
+    }).format(amount);
+  };
+
+
+
+  // Pagination logic
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentQuotes = filteredQuotes.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(filteredQuotes.length / itemsPerPage);
+
+  const handlePageChange = (page) => {
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page);
+    }
+  };
 
   // ALL useEffect hooks must be called before any conditional returns
   useEffect(() => {
@@ -268,49 +507,6 @@ const QuotesPage = () => {
     },
   ];
 
-  const getStatusColor = status => {
-    switch (status) {
-      case 'accepted':
-        return 'bg-green-100 text-green-700 border-green-200';
-      case 'pending':
-        return 'bg-yellow-100 text-yellow-700 border-yellow-200';
-      case 'rejected':
-        return 'bg-red-100 text-red-700 border-red-200';
-      case 'draft':
-        return 'bg-gray-100 text-gray-700 border-gray-200';
-      default:
-        return 'bg-gray-100 text-gray-700 border-gray-200';
-    }
-  };
-
-  const getStatusText = status => {
-    return safeT(`status.${status}`, {}, status.charAt(0).toUpperCase() + status.slice(1));
-  };
-
-  const formatCurrency = amount => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-    }).format(amount);
-  };
-
-  const formatDate = dateString => {
-    return new Date(dateString).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-    });
-  };
-
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentQuotes = filteredQuotes.slice(indexOfFirstItem, indexOfLastItem);
-  const totalPages = Math.ceil(filteredQuotes.length / itemsPerPage);
-
-  const handlePageChange = pageNumber => {
-    setCurrentPage(pageNumber);
-  };
-
   return (
     <ErrorBoundary>
       <div className='min-h-screen bg-[#F9FAFB]'>
@@ -333,7 +529,11 @@ const QuotesPage = () => {
                   <Download className='w-5 h-5' />
                   <span>{safeT('actions.export', {}, 'Export')}</span>
                 </button>
-                <button className='bg-[#357AF3] text-white px-6 py-3 rounded-xl hover:bg-blue-600 transition-colors flex items-center space-x-2 font-medium shadow-sm'>
+                <button 
+                  onClick={() => handleCreateQuote()}
+                  disabled={isLoading}
+                  className='bg-[#357AF3] text-white px-6 py-3 rounded-xl hover:bg-blue-600 transition-colors flex items-center space-x-2 font-medium shadow-sm disabled:opacity-50 disabled:cursor-not-allowed'
+                >
                   <Plus className='w-5 h-5' />
                   <span>{safeT('actions.createNew', {}, 'Create New Quote')}</span>
                 </button>
@@ -430,7 +630,11 @@ const QuotesPage = () => {
                   </div>
                   <h4 className='text-lg font-bold text-center mb-2'>Create Quote</h4>
                   <p className='text-blue-100 text-center text-sm mb-4'>Generate new quote</p>
-                  <button className='w-full bg-white text-[#357AF3] py-2 px-4 rounded-lg hover:bg-gray-50 transition-colors font-semibold text-sm'>
+                  <button 
+                    onClick={() => handleCreateQuote()}
+                    disabled={isLoading}
+                    className='w-full bg-white text-[#357AF3] py-2 px-4 rounded-lg hover:bg-gray-50 transition-colors font-semibold text-sm disabled:opacity-50 disabled:cursor-not-allowed'
+                  >
                     Create Now
                   </button>
                 </div>
@@ -704,7 +908,10 @@ const QuotesPage = () => {
                     {currentQuotes.map(quote => (
                       <tr key={quote.id} className='hover:bg-gray-50 transition-colors'>
                         <td className='px-6 py-4 whitespace-nowrap'>
-                          <button className='text-[#357AF3] hover:text-blue-600 font-medium text-sm'>
+                          <button 
+                            onClick={() => handleViewQuote(quote)}
+                            className='text-[#357AF3] hover:text-blue-600 font-medium text-sm'
+                          >
                             {quote.quote_number}
                           </button>
                         </td>
@@ -731,26 +938,36 @@ const QuotesPage = () => {
                           {formatCurrency(quote.amount)}
                         </td>
                         <td className='px-6 py-4 whitespace-nowrap'>
-                          <span
-                            className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${getStatusColor(quote.status)}`}
-                          >
-                            {getStatusText(quote.status)}
-                          </span>
+                          <QuoteStatusBadge status={quote.status} />
                         </td>
                         <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-500'>
                           <div className='flex items-center space-x-2'>
-                            <button className='p-1 text-gray-400 hover:text-[#357AF3] transition-colors'>
+                            <button 
+                              onClick={() => handleViewQuote(quote)}
+                              className='p-1 text-gray-400 hover:text-[#357AF3] transition-colors'
+                              title='View Details'
+                            >
                               <Eye className='w-4 h-4' />
                             </button>
-                            <button className='p-1 text-gray-400 hover:text-green-600 transition-colors'>
+                            <button 
+                              onClick={() => handleEditQuote(quote)}
+                              className='p-1 text-gray-400 hover:text-green-600 transition-colors'
+                              title='Edit Quote'
+                            >
                               <Edit className='w-4 h-4' />
                             </button>
-                            <button className='p-1 text-gray-400 hover:text-blue-600 transition-colors'>
+                            <button 
+                              className='p-1 text-gray-400 hover:text-blue-600 transition-colors'
+                              title='Download PDF'
+                            >
                               <Download className='w-4 h-4' />
                             </button>
-                            <button className='p-1 text-gray-400 hover:text-red-600 transition-colors'>
-                              <Trash2 className='w-4 h-4' />
-                            </button>
+                            <QuoteApprovalActions 
+                              quote={quote}
+                              onStatusUpdate={handleQuoteStatusUpdated}
+                              onConvertToInvoice={handleConvertToInvoice}
+                              compact={true}
+                            />
                           </div>
                         </td>
                       </tr>
@@ -831,6 +1048,33 @@ const QuotesPage = () => {
           </div>
         </div>
       </div>
+
+      {/* Quote Modal */}
+      <QuoteModal
+        isOpen={isQuoteModalOpen}
+        onClose={handleCloseQuoteModal}
+        quote={selectedQuote}
+        client={selectedClient}
+        onQuoteCreated={handleQuoteCreated}
+        onQuoteUpdated={handleQuoteUpdated}
+      />
+
+      {/* Quote Detail Modal for Approval Workflow */}
+      <QuoteDetailModal
+        isOpen={isDetailModalOpen}
+        onClose={handleCloseDetailModal}
+        quote={detailQuote}
+        onStatusUpdate={handleQuoteStatusUpdated}
+        refreshTrigger={refreshTrigger}
+      />
+
+      {/* Quote to Invoice Converter */}
+      <QuoteToInvoiceConverter
+        isOpen={isConverterOpen}
+        onClose={handleCloseConverter}
+        quote={quoteToConvert}
+        onConversionSuccess={handleConversionSuccess}
+      />
     </ErrorBoundary>
   );
 };

@@ -1742,7 +1742,7 @@
           63,
           64
         ],
-        "status": "pending",
+        "status": "in-progress",
         "subtasks": [
           {
             "id": 1,
@@ -1750,7 +1750,7 @@
             "description": "Create a normalized database schema for quotes, supporting versioning, status tracking, expiry dates, and quote-to-invoice relationships.",
             "dependencies": [],
             "details": "Define tables and relationships for quotes, quote versions, status history, expiry dates, and links to invoices. Ensure the schema supports tracking revisions and automating expiry reminders.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Review schema for normalization, run migration scripts, and validate with sample data for versioning and expiry scenarios."
           },
           {
@@ -1761,7 +1761,7 @@
               1
             ],
             "details": "Implement a form similar to invoice creation, allowing users to select products/services, apply templates, and customize sections. Integrate with the database schema for saving and updating quotes.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Perform UI/UX testing, validate form data persistence, and ensure template customization works as expected."
           },
           {
@@ -1772,7 +1772,7 @@
               2
             ],
             "details": "Enable status transitions (e.g., Draft, Sent, Approved, Expired), track client approvals, and integrate digital signature capture. Update status in the database and trigger notifications as needed.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Test status transitions, simulate client approval, and verify digital signature capture and storage."
           },
           {
@@ -1783,7 +1783,7 @@
               3
             ],
             "details": "Implement logic to generate invoices from quotes, mapping relevant fields and maintaining links between records for traceability.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Convert sample quotes to invoices, verify data integrity, and check for correct linkage between quotes and invoices."
           },
           {
@@ -2630,7 +2630,7 @@
     ],
     "metadata": {
       "created": "2025-06-18T17:58:30.256Z",
-      "updated": "2025-06-25T21:24:09.321Z",
+      "updated": "2025-06-25T22:39:08.643Z",
       "description": "Tasks for master context"
     }
   }
