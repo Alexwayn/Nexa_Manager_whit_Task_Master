@@ -26,7 +26,10 @@ i18n
     detection: {
       order: ['localStorage', 'navigator', 'htmlTag'],
       caches: ['localStorage'],
-      lookupLocalStorage: 'i18nextLng',
+      lookupLocalStorage: 'nexa-language',
+      lookupFromPathIndex: 0,
+      lookupFromSubdomainIndex: 0,
+      checkWhitelist: true,
     },
 
     // Backend options for loading translations

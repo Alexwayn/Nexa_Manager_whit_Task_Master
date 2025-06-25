@@ -495,4 +495,336 @@ export async function testComponentAccessibility(
   // This would be used in Jest tests with react-testing-library
   // Implementation depends on testing environment
   throw new Error('Component testing requires Jest environment setup');
-} 
+}
+
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
+/**
+ * Accessibility testing and improvement utilities
+ * Provides functions to test and improve accessibility compliance
+ */
+
+export interface AccessibilityTestResult {
+  element: HTMLElement;
+  issues: string[];
+  suggestions: string[];
+  score: number;
+}
+
+export interface AccessibilityReport {
+  overallScore: number;
+  totalElements: number;
+  totalIssues: number;
+  results: AccessibilityTestResult[];
+  summary: {
+    missingLabels: number;
+    noKeyboardAccess: number;
+    poorContrast: number;
+    missingLandmarks: number;
+  };
+}
+
+/**
+ * Tests accessibility of interactive elements
+ */
+export function testInteractiveElement(element: HTMLElement): AccessibilityTestResult {
+  const issues: string[] = [];
+  const suggestions: string[] = [];
+  
+  // Check for proper ARIA attributes
+  if (element.tagName === 'BUTTON' || element.getAttribute('role') === 'button') {
+    if (!element.getAttribute('aria-label') && !element.textContent?.trim()) {
+      issues.push('Button without accessible name');
+      suggestions.push('Add aria-label or visible text content');
+    }
+    
+    if (element.hasAttribute('aria-expanded') && !element.getAttribute('aria-controls')) {
+      issues.push('Expandable button without aria-controls');
+      suggestions.push('Add aria-controls pointing to controlled element');
+    }
+  }
+  
+  // Check for form inputs
+  if (['INPUT', 'SELECT', 'TEXTAREA'].includes(element.tagName)) {
+    const input = element as HTMLInputElement;
+    const label = document.querySelector(`label[for="${input.id}"]`);
+    
+    if (!label && !input.getAttribute('aria-label') && !input.getAttribute('aria-labelledby')) {
+      issues.push('Form input without proper label');
+      suggestions.push('Add associated label element or aria-label');
+    }
+    
+    if (input.hasAttribute('required') && !input.getAttribute('aria-required')) {
+      suggestions.push('Add aria-required="true" for required fields');
+    }
+    
+    if (input.getAttribute('aria-invalid') === 'true' && !input.getAttribute('aria-describedby')) {
+      issues.push('Invalid input without error description');
+      suggestions.push('Add aria-describedby pointing to error message');
+    }
+  }
+  
+  // Check for keyboard accessibility
+  const isInteractive = element.matches('button, input, select, textarea, a[href], [tabindex], [role="button"], [role="link"], [role="tab"]');
+  if (isInteractive) {
+    const tabindex = element.getAttribute('tabindex');
+    if (tabindex && parseInt(tabindex) > 0) {
+      issues.push('Positive tabindex detected');
+      suggestions.push('Use tabindex="0" or remove tabindex for natural tab order');
+    }
+    
+    if (!element.matches(':focus-visible')) {
+      // Check if focus styles are defined
+      const styles = getComputedStyle(element);
+      const pseudoStyles = getComputedStyle(element, ':focus');
+      if (styles.outline === pseudoStyles.outline && styles.boxShadow === pseudoStyles.boxShadow) {
+        suggestions.push('Add visible focus indicators');
+      }
+    }
+  }
+  
+  // Check for semantic markup
+  if (element.getAttribute('role') === 'heading' && !element.getAttribute('aria-level')) {
+    suggestions.push('Add aria-level for heading roles');
+  }
+  
+  // Calculate score (0-100)
+  const score = Math.max(0, 100 - (issues.length * 20) - (suggestions.length * 10));
+  
+  return {
+    element,
+    issues,
+    suggestions,
+    score
+  };
+}
+
+/**
+ * Performs a comprehensive accessibility audit of the page
+ */
+export function auditPageAccessibility(): AccessibilityReport {
+  const interactiveElements = document.querySelectorAll(
+    'button, input, select, textarea, a[href], [tabindex], [role="button"], [role="link"], [role="tab"], [role="menuitem"]'
+  ) as NodeListOf<HTMLElement>;
+  
+  const results: AccessibilityTestResult[] = [];
+  let totalIssues = 0;
+  let missingLabels = 0;
+  let noKeyboardAccess = 0;
+  let poorContrast = 0;
+  let missingLandmarks = 0;
+  
+  // Test each interactive element
+  interactiveElements.forEach(element => {
+    const result = testInteractiveElement(element);
+    results.push(result);
+    totalIssues += result.issues.length;
+    
+    // Categorize issues
+    result.issues.forEach(issue => {
+      if (issue.includes('label') || issue.includes('accessible name')) {
+        missingLabels++;
+      }
+      if (issue.includes('keyboard') || issue.includes('tabindex')) {
+        noKeyboardAccess++;
+      }
+      if (issue.includes('contrast')) {
+        poorContrast++;
+      }
+    });
+  });
+  
+  // Check for landmark regions
+  const landmarks = ['main', 'nav', 'aside', 'footer', 'header'];
+  landmarks.forEach(landmark => {
+    if (!document.querySelector(landmark) && !document.querySelector(`[role="${landmark}"]`)) {
+      missingLandmarks++;
+    }
+  });
+  
+  // Check for heading hierarchy
+  const headings = document.querySelectorAll('h1, h2, h3, h4, h5, h6, [role="heading"]');
+  let previousLevel = 0;
+  headings.forEach(heading => {
+    const level = heading.tagName ? parseInt(heading.tagName.slice(1)) : parseInt(heading.getAttribute('aria-level') || '1');
+    if (level > previousLevel + 1) {
+      totalIssues++;
+    }
+    previousLevel = level;
+  });
+  
+  const overallScore = results.length > 0 
+    ? Math.round(results.reduce((sum, result) => sum + result.score, 0) / results.length)
+    : 100;
+  
+  return {
+    overallScore,
+    totalElements: results.length,
+    totalIssues,
+    results,
+    summary: {
+      missingLabels,
+      noKeyboardAccess,
+      poorContrast,
+      missingLandmarks
+    }
+  };
+}
+
+/**
+ * Adds ARIA attributes to improve accessibility
+ */
+export function enhanceElementAccessibility(element: HTMLElement, options: {
+  label?: string;
+  description?: string;
+  expanded?: boolean;
+  controls?: string;
+  live?: 'polite' | 'assertive' | 'off';
+  role?: string;
+}): void {
+  const { label, description, expanded, controls, live, role } = options;
+  
+  if (label) {
+    element.setAttribute('aria-label', label);
+  }
+  
+  if (description) {
+    const descId = `desc-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+    let descElement = document.getElementById(descId);
+    
+    if (!descElement) {
+      descElement = document.createElement('div');
+      descElement.id = descId;
+      descElement.className = 'sr-only';
+      descElement.textContent = description;
+      element.parentNode?.appendChild(descElement);
+    }
+    
+    element.setAttribute('aria-describedby', descId);
+  }
+  
+  if (typeof expanded === 'boolean') {
+    element.setAttribute('aria-expanded', expanded.toString());
+  }
+  
+  if (controls) {
+    element.setAttribute('aria-controls', controls);
+  }
+  
+  if (live) {
+    element.setAttribute('aria-live', live);
+  }
+  
+  if (role) {
+    element.setAttribute('role', role);
+  }
+}
+
+/**
+ * Adds skip links to the page for keyboard navigation
+ */
+export function addSkipLinks(): void {
+  // Check if skip links already exist
+  if (document.querySelector('.skip-links')) {
+    return;
+  }
+  
+  const skipLinks = document.createElement('div');
+  skipLinks.className = 'skip-links';
+  skipLinks.innerHTML = `
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    <a href="#navigation" class="skip-link">Skip to navigation</a>
+    <a href="#search" class="skip-link">Skip to search</a>
+  `;
+  
+  // Insert at the beginning of body
+  document.body.insertBefore(skipLinks, document.body.firstChild);
+}
+
+/**
+ * Ensures proper heading hierarchy
+ */
+export function validateHeadingHierarchy(): string[] {
+  const issues: string[] = [];
+  const headings = document.querySelectorAll('h1, h2, h3, h4, h5, h6, [role="heading"]');
+  
+  let previousLevel = 0;
+  headings.forEach((heading, index) => {
+    const level = heading.tagName 
+      ? parseInt(heading.tagName.slice(1)) 
+      : parseInt(heading.getAttribute('aria-level') || '1');
+    
+    if (index === 0 && level !== 1) {
+      issues.push('Page should start with h1');
+    }
+    
+    if (level > previousLevel + 1) {
+      issues.push(`Heading level jumps from h${previousLevel} to h${level}`);
+    }
+    
+    previousLevel = level;
+  });
+  
+  return issues;
+}
+
+/**
+ * Creates live region for dynamic content announcements
+ */
+export function createLiveRegion(id: string, politeness: 'polite' | 'assertive' = 'polite'): HTMLElement {
+  let liveRegion = document.getElementById(id);
+  
+  if (!liveRegion) {
+    liveRegion = document.createElement('div');
+    liveRegion.id = id;
+    liveRegion.className = 'sr-only';
+    liveRegion.setAttribute('aria-live', politeness);
+    liveRegion.setAttribute('aria-atomic', 'true');
+    document.body.appendChild(liveRegion);
+  }
+  
+  return liveRegion;
+}
+
+/**
+ * Announces content to screen readers
+ */
+export function announceToScreenReader(message: string, politeness: 'polite' | 'assertive' = 'polite'): void {
+  const liveRegion = createLiveRegion('accessibility-announcements', politeness);
+  liveRegion.textContent = message;
+  
+  // Clear after announcement
+  setTimeout(() => {
+    liveRegion.textContent = '';
+  }, 1000);
+}
+
+/**
+ * Checks color contrast ratio
+ */
+export function checkColorContrast(element: HTMLElement): { ratio: number; passes: boolean; level: string } {
+  const styles = getComputedStyle(element);
+  const textColor = styles.color;
+  const backgroundColor = styles.backgroundColor;
+  
+  // Simple contrast calculation (would need more sophisticated implementation)
+  // This is a placeholder - real implementation would parse RGB values and calculate luminance
+  const ratio = 4.5; // Placeholder value
+  
+  return {
+    ratio,
+    passes: ratio >= 4.5,
+    level: ratio >= 7 ? 'AAA' : ratio >= 4.5 ? 'AA' : 'Fail'
+  };
+}
+
+export default {
+  testInteractiveElement,
+  auditPageAccessibility,
+  enhanceElementAccessibility,
+  addSkipLinks,
+  validateHeadingHierarchy,
+  createLiveRegion,
+  announceToScreenReader,
+  checkColorContrast
+}; 

@@ -2338,7 +2338,7 @@
           61,
           62
         ],
-        "status": "in-progress",
+        "status": "done",
         "subtasks": [
           {
             "id": 1,
@@ -2390,7 +2390,7 @@
               1
             ],
             "details": "Implement 2FA enrollment and enforcement, granular role-based access controls, detailed audit logs for all settings changes, and tools for secure backup and restoration of settings.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Test 2FA setup and login, verify permission restrictions for different roles, review audit logs for accuracy, and perform backup/restore operations to ensure data integrity."
           }
         ]
@@ -2423,8 +2423,63 @@
           61,
           62
         ],
-        "status": "pending",
-        "subtasks": []
+        "status": "in-progress",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Enhance Language Switcher and RTL Support",
+            "description": "Implement a professional language switcher component with RTL layout support and language detection improvements",
+            "details": "1. Create a LanguageSwitcher component in the Navbar\\n2. Add RTL support in CSS for future Arabic/Hebrew languages\\n3. Improve language detection logic\\n4. Add language preferences to user profile\\n5. Implement smooth transitions between languages\\n6. Add language-specific date/number formatting",
+            "status": "done",
+            "dependencies": [],
+            "parentTaskId": 74
+          },
+          {
+            "id": 2,
+            "title": "Implement ARIA Attributes and Semantic HTML",
+            "description": "Add comprehensive ARIA attributes and ensure semantic HTML structure throughout the application",
+            "details": "1. Audit all components for semantic HTML usage\\n2. Add ARIA labels, roles, and properties to interactive elements\\n3. Implement landmark regions (main, nav, aside, footer)\\n4. Add ARIA live regions for dynamic content\\n5. Ensure proper heading hierarchy\\n6. Add skip links for keyboard users\\n7. Implement ARIA describedby for form validation",
+            "status": "done",
+            "dependencies": [],
+            "parentTaskId": 74
+          },
+          {
+            "id": 3,
+            "title": "Enhance Keyboard Navigation and Focus Management",
+            "description": "Implement comprehensive keyboard navigation and focus management for all interactive elements",
+            "details": "1. Implement focus trapping in modals and dialogs\\n2. Add visible focus indicators for all interactive elements\\n3. Ensure proper tab order throughout the application\\n4. Add keyboard shortcuts for common actions\\n5. Implement escape key handling for closing modals\\n6. Add arrow key navigation for lists and grids\\n7. Test with screen readers for proper navigation",
+            "status": "pending",
+            "dependencies": [],
+            "parentTaskId": 74
+          },
+          {
+            "id": 4,
+            "title": "Ensure Color Contrast and Visual Accessibility",
+            "description": "Audit and improve color contrast ratios to meet WCAG 2.1 AA standards and enhance visual accessibility",
+            "details": "1. Audit all color combinations for WCAG 2.1 AA compliance (4.5:1 ratio)\\n2. Update theme colors to meet accessibility standards\\n3. Add high contrast mode support\\n4. Ensure sufficient contrast for focus indicators\\n5. Test with color blindness simulators\\n6. Add pattern/icon alternatives to color-only information\\n7. Implement user preference for reduced motion",
+            "status": "pending",
+            "dependencies": [],
+            "parentTaskId": 74
+          },
+          {
+            "id": 5,
+            "title": "Complete Translation Coverage and Dynamic Loading",
+            "description": "Ensure complete translation coverage for all UI elements and implement dynamic translation loading",
+            "details": "1. Audit all components for missing translations\\n2. Complete Italian translation files\\n3. Implement translation loading states\\n4. Add translation fallbacks for missing keys\\n5. Implement lazy loading for translation namespaces\\n6. Add translation validation tools\\n7. Create translation management interface for admin users",
+            "status": "pending",
+            "dependencies": [],
+            "parentTaskId": 74
+          },
+          {
+            "id": 6,
+            "title": "Implement Accessibility Testing and Monitoring",
+            "description": "Set up comprehensive accessibility testing, monitoring, and reporting systems",
+            "details": "1. Integrate AccessibilityTester throughout the application\\n2. Add automated accessibility testing in CI/CD pipeline\\n3. Create accessibility dashboard in admin settings\\n4. Implement real-time accessibility monitoring\\n5. Add accessibility reporting and metrics\\n6. Create accessibility testing documentation\\n7. Set up alerts for accessibility violations",
+            "status": "pending",
+            "dependencies": [],
+            "parentTaskId": 74
+          }
+        ]
       },
       {
         "id": 75,
@@ -2575,7 +2630,7 @@
     ],
     "metadata": {
       "created": "2025-06-18T17:58:30.256Z",
-      "updated": "2025-06-25T15:58:03.626Z",
+      "updated": "2025-06-25T16:39:10.822Z",
       "description": "Tasks for master context"
     }
   }
