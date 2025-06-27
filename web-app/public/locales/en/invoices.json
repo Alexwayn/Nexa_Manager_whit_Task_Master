@@ -261,5 +261,77 @@
       "title": "Recent Activity",
       "viewAll": "View All"
     }
+  },
+  "form": {
+    "createInvoice": "Create Invoice",
+    "editInvoice": "Edit Invoice",
+    "createDescription": "Create a new invoice for your clients",
+    "editDescription": "Update invoice details",
+    "client": "Client",
+    "clientRequired": "Client is required",
+    "selectClient": "Select Client",
+    "template": "Template",
+    "selectTemplate": "Select Template",
+    "title": "Title",
+    "titleRequired": "Title is required",
+    "titlePlaceholder": "Enter invoice title...",
+    "category": "Category",
+    "categoryPlaceholder": "Enter category...",
+    "description": "Description",
+    "descriptionPlaceholder": "Enter description...",
+    "issueDate": "Issue Date",
+    "issueDateRequired": "Issue date is required",
+    "dueDate": "Due Date",
+    "dueDateRequired": "Due date is required",
+    "pdfSettings": "PDF Settings",
+    "pdfTemplate": "PDF Template",
+    "pdfActions": "PDF Actions",
+    "preview": "Preview",
+    "download": "Download",
+    "email": "Email",
+    "pdfActionsRequire": "PDF actions require title and client to be selected",
+    "items": "Items",
+    "addItem": "Add Item",
+    "itemDescription": "Description",
+    "itemDescriptionPlaceholder": "Item description...",
+    "quantity": "Quantity",
+    "unitPrice": "Unit Price",
+    "total": "Total",
+    "subtotal": "Subtotal",
+    "discount": "Discount",
+    "tax": "Tax",
+    "grandTotal": "Total",
+    "cancel": "Cancel",
+    "saveAsDraft": "Save as Draft",
+    "createInvoiceButton": "Create Invoice",
+    "updateInvoice": "Update Invoice",
+    "saving": "Saving...",
+    "itemDescriptionRequired": "Item description is required",
+    "validQuantityRequired": "Valid quantity is required",
+    "validUnitPriceRequired": "Valid unit price is required",
+    "atLeastOneItemRequired": "At least one item is required"
+  },
+  "templates": {
+    "standard": "Standard Invoice",
+    "service": "Service Invoice",
+    "product": "Product Invoice"
+  },
+  "pdfTemplates": {
+    "default": "Default Template",
+    "modern": "Modern Template",
+    "classic": "Classic Template"
+  },
+  "notifications": {
+    "invoiceCreated": "Invoice created successfully!",
+    "invoiceUpdated": "Invoice updated successfully!",
+    "saveFailed": "Failed to save invoice"
+  },
+  "loading": {
+    "creating": "Creating invoice...",
+    "updating": "Updating invoice..."
+  },
+  "errors": {
+    "saveFailed": "Failed to save invoice",
+    "loadFailed": "Failed to load form data"
   }
 }

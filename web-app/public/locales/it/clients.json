@@ -15,6 +15,7 @@
     "clearFilters": "Pulisci Filtri",
     "status": "Stato",
     "revenue": "Fatturato",
+    "industry": "Settore",
     "allStatus": "Tutti gli Stati",
     "allRevenue": "Tutto il Fatturato",
     "high": "Alto (≥€100.000)",
@@ -24,54 +25,83 @@
   "actions": {
     "refresh": "Aggiorna clienti",
     "switchToCard": "Passa a vista a schede",
-    "switchToTable": "Passa a vista a tabella",
-    "view": "Vedi",
+    "switchToTable": "Passa a vista tabella",
     "edit": "Modifica",
     "delete": "Elimina",
-    "createInvoice": "Crea Fattura",
-    "createQuote": "Crea Preventivo",
-    "viewProfile": "Vedi Profilo",
-    "sendEmail": "Invia Email",
+    "deleteClient": "Elimina cliente",
+    "view": "Visualizza",
     "call": "Chiama",
-    "map": "Mappa"
+    "sendEmail": "Invia Email",
+    "createInvoice": "Crea Fattura",
+    "exportData": "Esporta Dati"
   },
   "table": {
-    "client": "Cliente",
-    "contact": "Contatto",
+    "company": "Azienda",
+    "industry": "Settore",
     "status": "Stato",
+    "location": "Posizione",
+    "lastContact": "Ultimo Contatto",
+    "revenue": "Fatturato",
     "actions": "Azioni"
   },
+  "statistics": {
+    "title": "Statistiche Clienti",
+    "totalClients": "Clienti Totali",
+    "activeClients": "Clienti Attivi",
+    "pendingClients": "Clienti in Attesa",
+    "inactiveClients": "Clienti Inattivi",
+    "industryBreakdown": "Ripartizione per Settore",
+    "addNewClient": "Aggiungi Nuovo Cliente",
+    "exportList": "Esporta Lista Clienti",
+    "generateReport": "Genera Report"
+  },
+  "pagination": {
+    "previous": "Precedente",
+    "next": "Successivo",
+    "showing": "Mostrando",
+    "to": "a",
+    "of": "di",
+    "results": "risultati"
+  },
   "empty": {
-    "noClients": "Nessun cliente trovato",
-    "createFirst": "Crea il tuo primo cliente"
+    "title": "Nessun cliente trovato",
+    "description": "Inizia creando un nuovo cliente.",
+    "noClients": "Nessun cliente trovato che corrisponda ai tuoi criteri."
   },
   "sort": {
-    "by": "Ordina per:",
-    "company": "Nome Azienda",
-    "date": "Ultimo Contatto",
-    "location": "SEDE",
-    "lastContact": "ULTIMO CONTATTO",
-    "editClient": "Modifica Cliente",
-    "clientName": "Nome Cliente",
-    "clientEmail": "Email Cliente",
-    "clientPhone": "Telefono Cliente",
-    "clientAddress": "Indirizzo Cliente",
-    "clientNotes": "Note Cliente",
-    "required": "*",
-    "placeholders": {
-      "name": "Inserisci nome cliente",
-      "email": "Inserisci email",
-      "phone": "Inserisci numero di telefono",
-      "address": "Inserisci indirizzo",
-      "notes": "Inserisci note"
-    },
-    "cancel": "Annulla",
-    "save": "Salva",
-    "saving": "Salvataggio...",
-    "validation": {
-      
-      "format": "Formato Esportazione",
-      "selectFormat": "Seleziona formato"
-    }
+    "by": "Ordina per",
+    "company": "Azienda",
+    "date": "Data",
+    "lastContact": "Ultimo Contatto",
+    "revenue": "Fatturato"
+  },
+  "status": {
+    "active": "Attivo",
+    "pending": "In attesa",
+    "inactive": "Inattivo"
+  },
+  "card": {
+    "lastContact": "Ultimo contatto: {{date}}",
+    "revenue": "Fatturato: {{amount}}",
+    "location": "Posizione: {{location}}"
+  },
+  "time": {
+    "today": "Oggi",
+    "yesterday": "Ieri",
+    "daysAgo": "{{count}} giorni fa"
+  },
+  "industry": {
+    "technology": "Tecnologia",
+    "manufacturing": "Produzione",
+    "healthcare": "Sanità",
+    "finance": "Finanza",
+    "retail": "Vendita al dettaglio",
+    "consulting": "Consulenza",
+    "education": "Istruzione",
+    "realestate": "Immobiliare",
+    "software": "Software",
+    "conglomerate": "Conglomerato",
+    "food & beverage": "Alimentare e Bevande",
+    "other": "Altro"
   }
 }

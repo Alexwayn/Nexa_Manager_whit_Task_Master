@@ -1,5 +1,17 @@
 import { supabase } from '@lib/supabaseClient';
+import { createClient } from '@supabase/supabase-js';
 import Logger from '@utils/Logger';
+
+// Create a service role client for bypassing RLS
+const supabaseServiceRole = createClient(
+  import.meta.env.VITE_SUPABASE_URL,
+  import.meta.env.VITE_SUPABASE_SERVICE_ROLE_KEY,
+  {
+    auth: {
+      persistSession: false,
+    },
+  }
+);
 
 /**
  * Invoice Analytics Service - Advanced analytics and reporting for invoice data
@@ -19,14 +31,15 @@ class InvoiceAnalyticsService {
 
   /**
    * Get comprehensive revenue analytics with trend analysis
+   * @param {string} userId - User ID to filter invoices
    * @param {string} startDate - Start date for the analysis period
    * @param {string} endDate - End date for the analysis period
    * @param {string} groupBy - Grouping period (daily, weekly, monthly, quarterly, yearly)
    * @returns {Promise<Object>} Revenue analytics data with trends and totals
    */
-  async getRevenueAnalytics(startDate, endDate, groupBy = 'monthly') {
+  async getRevenueAnalytics(userId, startDate, endDate, groupBy = 'monthly') {
     try {
-      const { data: invoices, error } = await supabase
+      const { data: invoices, error } = await supabaseServiceRole
         .from('invoices')
         .select(
           `
@@ -42,6 +55,7 @@ class InvoiceAnalyticsService {
           client_id
         `,
         )
+        .eq('user_id', userId)
         .gte('issue_date', startDate)
         .lte('issue_date', endDate)
         .order('issue_date', { ascending: true });
@@ -75,13 +89,14 @@ class InvoiceAnalyticsService {
 
   /**
    * Get client analytics and performance metrics
+   * @param {string} userId - User ID to filter invoices
    * @param {string} startDate - Start date for the analysis period
    * @param {string} endDate - End date for the analysis period
    * @returns {Promise<Object>} Client analytics including payment behavior and top clients
    */
-  async getClientAnalytics(startDate, endDate) {
+  async getClientAnalytics(userId, startDate, endDate) {
     try {
-      const { data: invoices, error } = await supabase
+      const { data: invoices, error } = await supabaseServiceRole
         .from('invoices')
         .select(
           `
@@ -95,6 +110,7 @@ class InvoiceAnalyticsService {
           client_id
         `,
         )
+        .eq('user_id', userId)
         .gte('issue_date', startDate)
         .lte('issue_date', endDate);
 
@@ -126,15 +142,17 @@ class InvoiceAnalyticsService {
 
   /**
    * Get invoice performance metrics including payment times and collection efficiency
+   * @param {string} userId - User ID to filter invoices
    * @param {string} startDate - Start date for the analysis period
    * @param {string} endDate - End date for the analysis period
    * @returns {Promise<Object>} Performance metrics and analysis
    */
-  async getInvoicePerformance(startDate, endDate) {
+  async getInvoicePerformance(userId, startDate, endDate) {
     try {
-      const { data: invoices, error } = await supabase
+      const { data: invoices, error } = await supabaseServiceRole
         .from('invoices')
         .select('*')
+        .eq('user_id', userId)
         .gte('issue_date', startDate)
         .lte('issue_date', endDate);
 
@@ -195,19 +213,21 @@ class InvoiceAnalyticsService {
 
   /**
    * Get cash flow forecasting based on unpaid invoices and historical payment patterns
+   * @param {string} userId - User ID to filter invoices
    * @param {number} months - Number of months to forecast (default: 6)
    * @returns {Promise<Object>} Cash flow forecast data
    */
-  async getCashFlowForecast(months = 6) {
+  async getCashFlowForecast(userId, months = 6) {
     try {
       const today = new Date();
       const futureDate = new Date(today);
       futureDate.setMonth(futureDate.getMonth() + months);
 
       // Get unpaid invoices
-      const { data: unpaidInvoices, error: unpaidError } = await supabase
+      const { data: unpaidInvoices, error: unpaidError } = await supabaseServiceRole
         .from('invoices')
         .select('*')
+        .eq('user_id', userId)
         .in('status', ['sent', 'overdue'])
         .lte('due_date', futureDate.toISOString().split('T')[0]);
 
@@ -239,13 +259,15 @@ class InvoiceAnalyticsService {
 
   /**
    * Get aging report for outstanding invoices categorized by days overdue
+   * @param {string} userId - User ID to filter invoices
    * @returns {Promise<Object>} Aging report with invoices grouped by age brackets
    */
-  async getAgingReport() {
+  async getAgingReport(userId) {
     try {
-      const { data: invoices, error } = await supabase
+      const { data: invoices, error } = await supabaseServiceRole
         .from('invoices')
         .select('*')
+        .eq('user_id', userId)
         .in('status', ['sent', 'overdue']);
 
       if (error) throw error;
@@ -291,18 +313,20 @@ class InvoiceAnalyticsService {
 
   /**
    * Get comprehensive invoice analytics for dashboard display
+   * @param {string} userId - User ID to filter invoices
    * @returns {Promise<Object>} Complete invoice analytics for the current year
    */
-  async getInvoiceAnalytics() {
+  async getInvoiceAnalytics(userId) {
     try {
       const today = new Date();
       const startOfYear = new Date(today.getFullYear(), 0, 1);
       const endOfYear = new Date(today.getFullYear(), 11, 31);
 
-      // Get all invoices for this year
-      const { data: invoices, error } = await supabase
+      // Get all invoices for this year for the specific user
+      const { data: invoices, error } = await supabaseServiceRole
         .from('invoices')
         .select('*')
+        .eq('user_id', userId)
         .gte('issue_date', startOfYear.toISOString().split('T')[0])
         .lte('issue_date', endOfYear.toISOString().split('T')[0])
         .order('issue_date', { ascending: true });

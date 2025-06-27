@@ -17,8 +17,8 @@ i18n
     // Fallback language
     fallbackLng: 'en',
 
-    // Debug mode in development
-    debug: import.meta.env.MODE === 'development',
+    // Debug mode - disable to reduce console noise
+    debug: false, // import.meta.env.MODE === 'development',
 
     // Language detection options
     detection: {

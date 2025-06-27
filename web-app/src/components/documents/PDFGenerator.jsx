@@ -12,8 +12,8 @@ const PDFGenerator = () => {
   const [includePaymentSlip, setIncludePaymentSlip] = useState(false);
   const [watermark, setWatermark] = useState('');
 
-  // Sample invoice data for testing
-  const sampleInvoice = {
+  // Generate sample invoice data for preview purposes only
+  const generateSampleInvoice = () => ({
     invoice_number: 'FATT-2025-0001',
     issue_date: '2025-01-19',
     due_date: '2025-02-18',
@@ -90,7 +90,7 @@ const PDFGenerator = () => {
       bic: 'BPMOIT22XXX',
       bank_name: 'Banco BPM',
     },
-  };
+  });
 
   const handleGeneratePDF = async () => {
     setIsGenerating(true);
@@ -106,7 +106,9 @@ const PDFGenerator = () => {
         watermark: watermark || null,
       };
 
-      const result = await PDFGenerationService.generateInvoicePDF(sampleInvoice, options);
+      // Use the provided invoice data or generate sample data for preview
+      const invoiceToProcess = invoiceData || generateSampleInvoice();
+      const result = await PDFGenerationService.generateInvoicePDF(invoiceToProcess, options);
 
       if (result.success) {
         setGeneratedPDF(result);

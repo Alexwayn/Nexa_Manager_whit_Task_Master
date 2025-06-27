@@ -29,274 +29,391 @@ import {
 } from 'lucide-react';
 import nexaLogo from '@assets/logo_nexa.png';
 import { useTranslation } from 'react-i18next';
+import { useUser } from '@clerk/clerk-react';
+import { useNavigate } from 'react-router-dom';
+import InvoiceService from '@lib/invoiceService';
+import InvoiceAnalyticsService from '@lib/invoiceAnalyticsService';
+import InvoiceModal from '@components/financial/InvoiceModal';
+import { getUserIdForUuidTables } from '@utils/userIdConverter';
+import Logger from '@utils/Logger';
 import Footer from '@components/shared/Footer';
 
 const InvoicesPage = () => {
   // Always call ALL hooks first, in the same order every render
   const { t, ready } = useTranslation('invoices');
+  const { user } = useUser();
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('invoices');
   const [invoices, setInvoices] = useState([]);
   const [filteredInvoices, setFilteredInvoices] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [analytics, setAnalytics] = useState(null);
 
-  // Mock data per le fatture - defined before useEffect
-  const mockInvoices = [
-    {
-      id: 'INV-2023-056',
-      client: {
-        name: 'Acme Corporation',
-        type: 'Technology',
-        avatar:
-          'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=face&auto=format',
-      },
-      issueDate: '10 Jun 2023',
-      dueDate: '24 Jun 2023',
-      amount: '$3,450.00',
-      status: 'paid',
-    },
-    {
-      id: 'INV-2023-055',
-      client: {
-        name: 'Globex Industries',
-        type: 'Manufacturing',
-        avatar:
-          'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&h=40&fit=crop&crop=face&auto=format',
-      },
-      issueDate: '05 Jun 2023',
-      dueDate: '19 Jun 2023',
-      amount: '$5,780.00',
-      status: 'sent',
-    },
-    {
-      id: 'INV-2023-054',
-      client: {
-        name: 'Soylent Corp',
-        type: 'Food & Beverage',
-        avatar:
-          'https://images.unsplash.com/photo-1494790108755-2616b612b693?w=40&h=40&fit=crop&crop=face&auto=format',
-      },
-      issueDate: '01 Jun 2023',
-      dueDate: '15 Jun 2023',
-      amount: '$2,150.00',
-      status: 'paid',
-    },
-    {
-      id: 'INV-2023-053',
-      client: {
-        name: 'Initech LLC',
-        type: 'Software',
-        avatar:
-          'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=40&h=40&fit=crop&crop=face&auto=format',
-      },
-      issueDate: '28 May 2023',
-      dueDate: '11 Jun 2023',
-      amount: '$1,890.00',
-      status: 'overdue',
-    },
-    {
-      id: 'INV-2023-052',
-      client: {
-        name: 'Umbrella Corp',
-        type: 'Pharmaceuticals',
-        avatar:
-          'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=40&h=40&fit=crop&crop=face&auto=format',
-      },
-      issueDate: '25 May 2023',
-      dueDate: '08 Jun 2023',
-      amount: '$4,220.00',
-      status: 'overdue',
-    },
-    {
-      id: 'INV-2023-051',
-      client: {
-        name: 'Wayne Enterprises',
-        type: 'Technology',
-        avatar:
-          'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=face&auto=format',
-      },
-      issueDate: '20 May 2023',
-      dueDate: '03 Jun 2023',
-      amount: '$7,350.00',
-      status: 'paid',
-    },
-    {
-      id: 'INV-2023-050',
-      client: {
-        name: 'Stark Industries',
-        type: 'Technology',
-        avatar:
-          'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&h=40&fit=crop&crop=face&auto=format',
-      },
-      issueDate: '15 May 2023',
-      dueDate: '29 May 2023',
-      amount: '$6,120.00',
-      status: 'paid',
-    },
-    {
-      id: 'INV-2023-049',
-      client: {
-        name: 'Cyberdyne Systems',
-        type: 'Technology',
-        avatar:
-          'https://images.unsplash.com/photo-1494790108755-2616b612b693?w=40&h=40&fit=crop&crop=face&auto=format',
-      },
-      issueDate: '10 May 2023',
-      dueDate: '24 May 2023',
-      amount: '$3,890.00',
-      status: 'draft',
-    },
-  ];
+  // Modal states
+  const [isInvoiceModalOpen, setIsInvoiceModalOpen] = useState(false);
+  const [selectedInvoice, setSelectedInvoice] = useState(null);
+  const [selectedClient, setSelectedClient] = useState(null);
 
-  // ALL useEffect hooks must be called before any conditional returns
+  // Load real invoice data
+  const loadInvoices = async () => {
+    if (!user?.id) {
+      setLoading(false);
+      return;
+    }
+
+    try {
+      setLoading(true);
+      setError(null);
+
+      // Convert Clerk user ID to UUID for database queries
+      const dbUserId = getUserIdForUuidTables(user.id);
+      Logger.info('Loading invoices for user:', {
+        clerkId: user.id,
+        dbUserId,
+        userEmail: user.primaryEmailAddress?.emailAddress
+      });
+
+      // Fetch invoices
+      const invoicesResult = await InvoiceService.getInvoices(dbUserId, {
+        limit: 100, // Get more invoices for better analytics
+        sort_by: 'issue_date',
+        sort_order: 'desc'
+      });
+
+      Logger.info('Invoices loaded successfully:', {
+        count: invoicesResult.invoices.length,
+        pagination: invoicesResult.pagination
+      });
+
+      // Transform data for UI compatibility
+      const transformedInvoices = invoicesResult.invoices.map(invoice => ({
+        id: invoice.invoice_number,
+        client: {
+          name: invoice.clients?.full_name || 'Unknown Client',
+          type: 'Business', // Default type since we don't have industry in clients table
+          avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(invoice.clients?.full_name || 'UC')}&background=357AF3&color=fff&size=40`,
+        },
+        issueDate: new Date(invoice.issue_date).toLocaleDateString('en-GB', {
+          day: '2-digit',
+          month: 'short',
+          year: 'numeric'
+        }),
+        dueDate: new Date(invoice.due_date).toLocaleDateString('en-GB', {
+          day: '2-digit',
+          month: 'short',
+          year: 'numeric'
+        }),
+        amount: new Intl.NumberFormat('en-US', {
+          style: 'currency',
+          currency: invoice.currency || 'EUR'
+        }).format(invoice.total_amount),
+        status: invoice.status,
+        rawData: invoice // Keep original data for actions
+      }));
+
+      setInvoices(transformedInvoices);
+      setFilteredInvoices(transformedInvoices);
+
+      // Fetch analytics
+      const analyticsResult = await InvoiceAnalyticsService.getInvoiceAnalytics(dbUserId);
+      if (analyticsResult.success) {
+        Logger.info('Analytics loaded successfully:', analyticsResult.data);
+        setAnalytics(analyticsResult.data);
+      } else {
+        Logger.warn('Failed to load analytics:', analyticsResult.error);
+      }
+
+    } catch (err) {
+      Logger.error('Error loading invoices:', err);
+      setError(err.message || 'An unexpected error occurred while loading invoices');
+      // Set empty arrays instead of demo data
+      setInvoices([]);
+      setFilteredInvoices([]);
+      setAnalytics(null);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Load data when user is available
   useEffect(() => {
-    setInvoices(mockInvoices);
-    setFilteredInvoices(mockInvoices);
-  }, []); // Empty dependency array since mockInvoices is static
+    if (user?.id) {
+      loadInvoices();
+    } else {
+      setLoading(false);
+    }
+  }, [user?.id]);
 
-  // Show loading state if translations are not ready - AFTER all hooks
-  if (!ready) {
+  // Modal handlers
+  const handleCreateInvoice = () => {
+    setSelectedInvoice(null);
+    setSelectedClient(null);
+    setIsInvoiceModalOpen(true);
+  };
+
+  const handleEditInvoice = (invoice) => {
+    setSelectedInvoice(invoice);
+    setSelectedClient(null);
+    setIsInvoiceModalOpen(true);
+  };
+
+  const handleCloseInvoiceModal = () => {
+    setIsInvoiceModalOpen(false);
+    setSelectedInvoice(null);
+    setSelectedClient(null);
+  };
+
+  const handleInvoiceCreated = (newInvoice) => {
+    Logger.info('New invoice created:', newInvoice);
+    // Refresh the invoices list
+    loadInvoices();
+  };
+
+  const handleInvoiceUpdated = (updatedInvoice) => {
+    Logger.info('Invoice updated:', updatedInvoice);
+    // Refresh the invoices list
+    loadInvoices();
+  };
+
+  const handleCreateQuote = () => {
+    navigate('/quotes?action=new');
+  };
+
+  const handleSendReminders = () => {
+    // TODO: Implement reminder functionality
+    alert(t('quickActions.sendReminders.title') + ' - Coming soon!');
+  };
+
+  const handleGenerateReport = () => {
+    navigate('/reports');
+  };
+
+  const handleExportData = () => {
+    // TODO: Implement export functionality
+    alert(t('actions.export') + ' - Coming soon!');
+  };
+
+  // Show loading state if translations are not ready or data is loading - AFTER all hooks
+  if (!ready || loading) {
     return (
       <div className='min-h-screen bg-[#F9FAFB] flex items-center justify-center'>
         <div className='text-center'>
           <div className='animate-spin rounded-full h-12 w-12 border-b-2 border-[#357AF3] mx-auto mb-4'></div>
-          <p className='text-gray-600'>Loading...</p>
+          <p className='text-gray-600'>{loading ? 'Loading invoices...' : 'Loading...'}</p>
         </div>
       </div>
     );
   }
 
-  // Mock data per le statistiche
-  const stats = [
-    {
-      title: t('stats.totalOutstanding.title'),
-      amount: '$24,580.00',
-      subtitle: t('stats.totalOutstanding.subtitle', { count: 38 }),
-      trend: {
-        value: t('stats.totalOutstanding.trend', { percent: 12 }),
-        type: 'up',
-        color: 'text-orange-600',
-      },
-      icon: DollarSign,
-      bgColor: 'bg-orange-50',
-      iconColor: 'text-orange-600',
-    },
-    {
-      title: t('stats.paidThisMonth.title'),
-      amount: '$18,230.00',
-      subtitle: t('stats.paidThisMonth.subtitle', { count: 26 }),
-      trend: {
-        value: t('stats.paidThisMonth.trend', { percent: 8 }),
-        type: 'up',
-        color: 'text-green-600',
-      },
-      icon: CheckCircle,
-      bgColor: 'bg-green-50',
-      iconColor: 'text-green-600',
-    },
-    {
-      title: t('stats.overdue.title'),
-      amount: '$8,750.00',
-      subtitle: t('stats.overdue.subtitle', { count: 12 }),
-      trend: { value: t('stats.overdue.trend', { percent: 5 }), type: 'up', color: 'text-red-600' },
-      icon: XCircle,
-      bgColor: 'bg-red-50',
-      iconColor: 'text-red-600',
-    },
-    {
-      title: t('stats.averagePaymentTime.title'),
-      amount: '8 days',
-      subtitle: t('stats.averagePaymentTime.subtitle'),
-      trend: {
-        value: t('stats.averagePaymentTime.trend', { days: 2 }),
-        type: 'down',
-        color: 'text-green-600',
-      },
-      icon: Clock,
-      bgColor: 'bg-blue-50',
-      iconColor: 'text-[#357AF3]',
-    },
-  ];
+  // Show error state
+  if (error) {
+    return (
+      <div className='min-h-screen bg-[#F9FAFB] flex items-center justify-center'>
+        <div className='text-center'>
+          <XCircle className='h-12 w-12 text-red-500 mx-auto mb-4' />
+          <p className='text-red-600 mb-4'>Error loading invoices: {error}</p>
+          <button
+            onClick={loadInvoices}
+            className='bg-[#357AF3] text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors'
+          >
+            Retry
+          </button>
+        </div>
+      </div>
+    );
+  }
 
-  // Top clients data
-  const topClients = [
-    {
-      name: 'Acme Corporation',
-      amount: '$12,580.00',
-      onTimePercentage: '95% on time',
-      avatar:
-        'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=face&auto=format',
-    },
-    {
-      name: 'Globex Industries',
-      amount: '$9,240.00',
-      onTimePercentage: '85% on time',
-      avatar:
-        'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&h=40&fit=crop&crop=face&auto=format',
-    },
-    {
-      name: 'Soylent Corp',
-      amount: '$6,450.00',
-      onTimePercentage: '100% on time',
-      avatar:
-        'https://images.unsplash.com/photo-1494790108755-2616b612b693?w=40&h=40&fit=crop&crop=face&auto=format',
-    },
-    {
-      name: 'Initech LLC',
-      amount: '$4,320.00',
-      onTimePercentage: '75% on time',
-      avatar:
-        'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=40&h=40&fit=crop&crop=face&auto=format',
-    },
-  ];
+  // Calculate real statistics from analytics data
+  const calculateStats = () => {
+    if (!analytics) {
+      return [
+        {
+          title: t('stats.totalOutstanding.title'),
+          amount: '€0.00',
+          subtitle: t('stats.totalOutstanding.subtitle', { count: 0 }),
+          trend: { value: '0%', type: 'up', color: 'text-gray-600' },
+          icon: DollarSign,
+          bgColor: 'bg-orange-50',
+          iconColor: 'text-orange-600',
+        },
+        {
+          title: t('stats.paidThisMonth.title'),
+          amount: '€0.00',
+          subtitle: t('stats.paidThisMonth.subtitle', { count: 0 }),
+          trend: { value: '0%', type: 'up', color: 'text-gray-600' },
+          icon: CheckCircle,
+          bgColor: 'bg-green-50',
+          iconColor: 'text-green-600',
+        },
+        {
+          title: t('stats.overdue.title'),
+          amount: '€0.00',
+          subtitle: t('stats.overdue.subtitle', { count: 0 }),
+          trend: { value: '0%', type: 'up', color: 'text-gray-600' },
+          icon: XCircle,
+          bgColor: 'bg-red-50',
+          iconColor: 'text-red-600',
+        },
+        {
+          title: t('stats.averagePaymentTime.title'),
+          amount: '0 days',
+          subtitle: t('stats.averagePaymentTime.subtitle'),
+          trend: { value: '0 days', type: 'down', color: 'text-gray-600' },
+          icon: Clock,
+          bgColor: 'bg-blue-50',
+          iconColor: 'text-[#357AF3]',
+        },
+      ];
+    }
 
-  // Recent activity data
-  const recentActivities = [
-    {
-      type: 'payment',
-      message: t('recentActivity.payment', {
-        invoiceId: 'INV-2023-056',
-        clientName: 'Acme Corporation',
-      }),
-      time: t('recentActivity.time.minutesAgo', { count: 10 }),
-      icon: CheckCircle,
-      bgColor: 'bg-green-50',
-      iconColor: 'text-green-600',
-    },
-    {
-      type: 'created',
-      message: t('recentActivity.created', {
-        invoiceId: 'INV-2023-057',
-        clientName: 'Wayne Enterprises',
-      }),
-      time: t('recentActivity.time.hourAgo'),
-      icon: FileText,
-      bgColor: 'bg-blue-50',
-      iconColor: 'text-[#357AF3]',
-    },
-    {
-      type: 'reminder',
-      message: t('recentActivity.reminder', {
-        clientName: 'Initech LLC',
-        invoiceId: 'INV-2023-053',
-      }),
-      time: t('recentActivity.time.hoursAgo', { count: 3 }),
-      icon: Bell,
-      bgColor: 'bg-purple-50',
-      iconColor: 'text-purple-600',
-    },
-    {
-      type: 'overdue',
-      message: t('recentActivity.overdue', {
-        invoiceId: 'INV-2023-052',
-        clientName: 'Wayne Enterprises',
-      }),
-      time: t('recentActivity.time.dayAgo'),
-      icon: XCircle,
-      bgColor: 'bg-red-50',
-      iconColor: 'text-red-600',
-    },
-  ];
+    const totalOutstanding = (analytics.revenueAnalytics?.pendingRevenue || 0) + (analytics.revenueAnalytics?.overdueRevenue || 0);
+    const totalPaid = analytics.revenueAnalytics?.paidRevenue || 0;
+    const overdueCount = analytics.statusDistribution?.overdue || 0;
+    const paidCount = analytics.statusDistribution?.paid || 0;
+    const avgPaymentTime = analytics.performanceMetrics?.averagePaymentTime || 0;
+
+    return [
+      {
+        title: t('stats.totalOutstanding.title'),
+        amount: new Intl.NumberFormat('en-US', { style: 'currency', currency: 'EUR' }).format(totalOutstanding),
+        subtitle: t('stats.totalOutstanding.subtitle', { count: analytics.totalInvoices || 0 }),
+        trend: { value: '0%', type: 'up', color: 'text-orange-600' },
+        icon: DollarSign,
+        bgColor: 'bg-orange-50',
+        iconColor: 'text-orange-600',
+      },
+      {
+        title: t('stats.paidThisMonth.title'),
+        amount: new Intl.NumberFormat('en-US', { style: 'currency', currency: 'EUR' }).format(totalPaid),
+        subtitle: t('stats.paidThisMonth.subtitle', { count: paidCount }),
+        trend: { value: '0%', type: 'up', color: 'text-green-600' },
+        icon: CheckCircle,
+        bgColor: 'bg-green-50',
+        iconColor: 'text-green-600',
+      },
+      {
+        title: t('stats.overdue.title'),
+        amount: new Intl.NumberFormat('en-US', { style: 'currency', currency: 'EUR' }).format(analytics.revenueAnalytics?.overdueRevenue || 0),
+        subtitle: t('stats.overdue.subtitle', { count: overdueCount }),
+        trend: { value: '0%', type: 'up', color: 'text-red-600' },
+        icon: XCircle,
+        bgColor: 'bg-red-50',
+        iconColor: 'text-red-600',
+      },
+      {
+        title: t('stats.averagePaymentTime.title'),
+        amount: `${Math.round(avgPaymentTime)} days`,
+        subtitle: t('stats.averagePaymentTime.subtitle'),
+        trend: { value: '0 days', type: 'down', color: 'text-green-600' },
+        icon: Clock,
+        bgColor: 'bg-blue-50',
+        iconColor: 'text-[#357AF3]',
+      },
+    ];
+  };
+
+  const stats = calculateStats();
+
+  // Calculate top clients from real data
+  const calculateTopClients = () => {
+    if (!invoices.length) return [];
+
+    // Group invoices by client and calculate totals
+    const clientTotals = invoices.reduce((acc, invoice) => {
+      const clientName = invoice.client.name;
+      if (!acc[clientName]) {
+        acc[clientName] = {
+          name: clientName,
+          avatar: invoice.client.avatar,
+          totalAmount: 0,
+          invoiceCount: 0,
+          paidCount: 0,
+        };
+      }
+
+      // Parse amount (remove currency symbol and convert to number)
+      const amount = parseFloat(invoice.amount.replace(/[€$,]/g, ''));
+      acc[clientName].totalAmount += amount;
+      acc[clientName].invoiceCount += 1;
+
+      if (invoice.status === 'paid') {
+        acc[clientName].paidCount += 1;
+      }
+
+      return acc;
+    }, {});
+
+    // Convert to array and sort by total amount
+    return Object.values(clientTotals)
+      .map(client => ({
+        ...client,
+        amount: new Intl.NumberFormat('en-US', { style: 'currency', currency: 'EUR' }).format(client.totalAmount),
+        onTimePercentage: client.invoiceCount > 0
+          ? `${Math.round((client.paidCount / client.invoiceCount) * 100)}% paid`
+          : '0% paid',
+      }))
+      .sort((a, b) => b.totalAmount - a.totalAmount)
+      .slice(0, 4);
+  };
+
+  const topClients = calculateTopClients();
+
+  // Generate recent activities from real invoice data
+  const generateRecentActivities = () => {
+    if (!invoices.length) return [];
+
+    const activities = [];
+    const recentInvoices = invoices.slice(0, 4);
+
+    recentInvoices.forEach((invoice, index) => {
+      const daysSinceIssue = Math.floor(Math.random() * 7) + 1; // Random days for demo
+
+      if (invoice.status === 'paid') {
+        activities.push({
+          type: 'payment',
+          message: t('recentActivity.payment', {
+            invoiceId: invoice.id,
+            clientName: invoice.client.name,
+          }),
+          time: t('recentActivity.time.daysAgo', { count: daysSinceIssue }),
+          icon: CheckCircle,
+          bgColor: 'bg-green-50',
+          iconColor: 'text-green-600',
+        });
+      } else if (invoice.status === 'sent') {
+        activities.push({
+          type: 'created',
+          message: t('recentActivity.created', {
+            invoiceId: invoice.id,
+            clientName: invoice.client.name,
+          }),
+          time: t('recentActivity.time.daysAgo', { count: daysSinceIssue }),
+          icon: FileText,
+          bgColor: 'bg-blue-50',
+          iconColor: 'text-[#357AF3]',
+        });
+      } else if (invoice.status === 'overdue') {
+        activities.push({
+          type: 'overdue',
+          message: t('recentActivity.overdue', {
+            invoiceId: invoice.id,
+            clientName: invoice.client.name,
+          }),
+          time: t('recentActivity.time.daysAgo', { count: daysSinceIssue }),
+          icon: XCircle,
+          bgColor: 'bg-red-50',
+          iconColor: 'text-red-600',
+        });
+      }
+    });
+
+    return activities.slice(0, 4);
+  };
+
+  const recentActivities = generateRecentActivities();
 
   const getStatusBadge = status => {
     const statusConfig = {
@@ -339,11 +456,17 @@ const InvoicesPage = () => {
               <h1 className='text-3xl font-bold text-gray-900'>{t('title')}</h1>
             </div>
             <div className='flex space-x-3'>
-              <button className='bg-[#357AF3] text-white px-6 py-3 rounded-lg flex items-center space-x-2 hover:bg-blue-700 transition-colors font-semibold'>
+              <button
+                onClick={handleCreateInvoice}
+                className='bg-[#357AF3] text-white px-6 py-3 rounded-lg flex items-center space-x-2 hover:bg-blue-700 transition-colors font-semibold'
+              >
                 <Plus className='w-5 h-5' />
                 <span>{t('actions.createNew')}</span>
               </button>
-              <button className='bg-white border border-gray-300 text-gray-700 px-6 py-3 rounded-lg flex items-center space-x-2 hover:bg-gray-50 transition-colors font-semibold'>
+              <button
+                onClick={handleExportData}
+                className='bg-white border border-gray-300 text-gray-700 px-6 py-3 rounded-lg flex items-center space-x-2 hover:bg-gray-50 transition-colors font-semibold'
+              >
                 <Download className='w-5 h-5' />
                 <span>{t('actions.export')}</span>
               </button>
@@ -463,7 +586,10 @@ const InvoicesPage = () => {
                 <p className='text-blue-100 text-center text-sm mb-4'>
                   {t('quickActions.createInvoice.description')}
                 </p>
-                <button className='w-full bg-white text-[#357AF3] py-2 px-4 rounded-lg hover:bg-gray-50 transition-colors font-semibold text-sm'>
+                <button
+                  onClick={handleCreateInvoice}
+                  className='w-full bg-white text-[#357AF3] py-2 px-4 rounded-lg hover:bg-gray-50 transition-colors font-semibold text-sm'
+                >
                   {t('quickActions.createInvoice.button')}
                 </button>
               </div>
@@ -479,7 +605,10 @@ const InvoicesPage = () => {
                 <p className='text-green-100 text-center text-sm mb-4'>
                   {t('quickActions.createQuote.description')}
                 </p>
-                <button className='w-full bg-white text-green-600 py-2 px-4 rounded-lg hover:bg-gray-50 transition-colors font-semibold text-sm'>
+                <button
+                  onClick={handleCreateQuote}
+                  className='w-full bg-white text-green-600 py-2 px-4 rounded-lg hover:bg-gray-50 transition-colors font-semibold text-sm'
+                >
                   {t('quickActions.createQuote.button')}
                 </button>
               </div>
@@ -495,7 +624,10 @@ const InvoicesPage = () => {
                 <p className='text-amber-100 text-center text-sm mb-4'>
                   {t('quickActions.sendReminders.description')}
                 </p>
-                <button className='w-full bg-white text-amber-600 py-2 px-4 rounded-lg hover:bg-gray-50 transition-colors font-semibold text-sm'>
+                <button
+                  onClick={handleSendReminders}
+                  className='w-full bg-white text-amber-600 py-2 px-4 rounded-lg hover:bg-gray-50 transition-colors font-semibold text-sm'
+                >
                   {t('quickActions.sendReminders.button')}
                 </button>
               </div>
@@ -511,7 +643,10 @@ const InvoicesPage = () => {
                 <p className='text-purple-100 text-center text-sm mb-4'>
                   {t('quickActions.generateReport.description')}
                 </p>
-                <button className='w-full bg-white text-purple-600 py-2 px-4 rounded-lg hover:bg-gray-50 transition-colors font-semibold text-sm'>
+                <button
+                  onClick={handleGenerateReport}
+                  className='w-full bg-white text-purple-600 py-2 px-4 rounded-lg hover:bg-gray-50 transition-colors font-semibold text-sm'
+                >
                   {t('quickActions.generateReport.button')}
                 </button>
               </div>
@@ -536,7 +671,10 @@ const InvoicesPage = () => {
                   <div className='relative w-32 h-32'>
                     <div className='absolute inset-0 flex items-center justify-center'>
                       <div className='text-center'>
-                        <div className='text-xl font-bold text-gray-900'>55%</div>
+                        <div className='text-xl font-bold text-gray-900'>
+                          {analytics?.statusDistribution ?
+                            Math.round(((analytics.statusDistribution.paid || 0) / (analytics.totalInvoices || 1)) * 100) : 0}%
+                        </div>
                         <div className='text-xs text-gray-500'>
                           {t('analytics.paymentStatus.paid')}
                         </div>
@@ -544,39 +682,43 @@ const InvoicesPage = () => {
                     </div>
                     <svg className='w-full h-full transform -rotate-90' viewBox='0 0 100 100'>
                       <circle cx='50' cy='50' r='40' fill='none' stroke='#F3F4F6' strokeWidth='6' />
-                      <circle
-                        cx='50'
-                        cy='50'
-                        r='40'
-                        fill='none'
-                        stroke='#10B981'
-                        strokeWidth='6'
-                        strokeDasharray='138 113'
-                        strokeDashoffset='0'
-                        className='transition-all duration-1000'
-                      />
-                      <circle
-                        cx='50'
-                        cy='50'
-                        r='40'
-                        fill='none'
-                        stroke='#F59E0B'
-                        strokeWidth='6'
-                        strokeDasharray='75 176'
-                        strokeDashoffset='-138'
-                        className='transition-all duration-1000'
-                      />
-                      <circle
-                        cx='50'
-                        cy='50'
-                        r='40'
-                        fill='none'
-                        stroke='#EF4444'
-                        strokeWidth='6'
-                        strokeDasharray='38 213'
-                        strokeDashoffset='-213'
-                        className='transition-all duration-1000'
-                      />
+                      {analytics?.statusDistribution && analytics.totalInvoices > 0 && (
+                        <>
+                          <circle
+                            cx='50'
+                            cy='50'
+                            r='40'
+                            fill='none'
+                            stroke='#10B981'
+                            strokeWidth='6'
+                            strokeDasharray={`${((analytics.statusDistribution.paid || 0) / analytics.totalInvoices) * 251} ${251 - ((analytics.statusDistribution.paid || 0) / analytics.totalInvoices) * 251}`}
+                            strokeDashoffset='0'
+                            className='transition-all duration-1000'
+                          />
+                          <circle
+                            cx='50'
+                            cy='50'
+                            r='40'
+                            fill='none'
+                            stroke='#F59E0B'
+                            strokeWidth='6'
+                            strokeDasharray={`${((analytics.statusDistribution.sent || 0) / analytics.totalInvoices) * 251} ${251 - ((analytics.statusDistribution.sent || 0) / analytics.totalInvoices) * 251}`}
+                            strokeDashoffset={`-${((analytics.statusDistribution.paid || 0) / analytics.totalInvoices) * 251}`}
+                            className='transition-all duration-1000'
+                          />
+                          <circle
+                            cx='50'
+                            cy='50'
+                            r='40'
+                            fill='none'
+                            stroke='#EF4444'
+                            strokeWidth='6'
+                            strokeDasharray={`${((analytics.statusDistribution.overdue || 0) / analytics.totalInvoices) * 251} ${251 - ((analytics.statusDistribution.overdue || 0) / analytics.totalInvoices) * 251}`}
+                            strokeDashoffset={`-${(((analytics.statusDistribution.paid || 0) + (analytics.statusDistribution.sent || 0)) / analytics.totalInvoices) * 251}`}
+                            className='transition-all duration-1000'
+                          />
+                        </>
+                      )}
                     </svg>
                   </div>
                 </div>
@@ -585,21 +727,30 @@ const InvoicesPage = () => {
                 <div className='grid grid-cols-3 gap-3'>
                   <div className='text-center p-3 bg-green-50 rounded-lg border border-green-100'>
                     <div className='w-3 h-3 bg-green-500 rounded-full mx-auto mb-2'></div>
-                    <div className='text-lg font-bold text-green-700'>55%</div>
+                    <div className='text-lg font-bold text-green-700'>
+                      {analytics?.statusDistribution && analytics.totalInvoices > 0 ?
+                        Math.round(((analytics.statusDistribution.paid || 0) / analytics.totalInvoices) * 100) : 0}%
+                    </div>
                     <div className='text-xs text-green-600 font-medium'>
                       {t('analytics.paymentStatus.paid')}
                     </div>
                   </div>
                   <div className='text-center p-3 bg-amber-50 rounded-lg border border-amber-100'>
                     <div className='w-3 h-3 bg-amber-500 rounded-full mx-auto mb-2'></div>
-                    <div className='text-lg font-bold text-amber-700'>30%</div>
+                    <div className='text-lg font-bold text-amber-700'>
+                      {analytics?.statusDistribution && analytics.totalInvoices > 0 ?
+                        Math.round(((analytics.statusDistribution.sent || 0) / analytics.totalInvoices) * 100) : 0}%
+                    </div>
                     <div className='text-xs text-amber-600 font-medium'>
                       {t('analytics.paymentStatus.pending')}
                     </div>
                   </div>
                   <div className='text-center p-3 bg-red-50 rounded-lg border border-red-100'>
                     <div className='w-3 h-3 bg-red-500 rounded-full mx-auto mb-2'></div>
-                    <div className='text-lg font-bold text-red-700'>15%</div>
+                    <div className='text-lg font-bold text-red-700'>
+                      {analytics?.statusDistribution && analytics.totalInvoices > 0 ?
+                        Math.round(((analytics.statusDistribution.overdue || 0) / analytics.totalInvoices) * 100) : 0}%
+                    </div>
                     <div className='text-xs text-red-600 font-medium'>
                       {t('analytics.paymentStatus.overdue')}
                     </div>
@@ -626,33 +777,55 @@ const InvoicesPage = () => {
               <div className='space-y-4'>
                 <div className='bg-gray-50 rounded-lg p-4'>
                   <div className='flex items-end justify-between h-24 mb-3'>
-                    {[
-                      { created: 32, paid: 28, month: 'Jan' },
-                      { created: 45, paid: 38, month: 'Feb' },
-                      { created: 38, paid: 34, month: 'Mar' },
-                      { created: 52, paid: 45, month: 'Apr' },
-                      { created: 41, paid: 36, month: 'May' },
-                      { created: 48, paid: 42, month: 'Jun' },
-                    ].map((data, index) => (
-                      <div key={index} className='flex flex-col items-center group cursor-pointer'>
-                        <div className='relative flex flex-col items-center space-y-0.5 mb-2'>
-                          <div
-                            className='bg-[#357AF3] rounded-sm transition-all duration-500 hover:bg-blue-700 group-hover:scale-110'
-                            style={{
-                              width: '14px',
-                              height: `${Math.max(data.created * 0.8, 8)}px`,
-                            }}
-                            title={`${t('analytics.monthlyInvoices.created')}: ${data.created}`}
-                          ></div>
-                          <div
-                            className='bg-green-500 rounded-sm transition-all duration-500 hover:bg-green-600 group-hover:scale-110'
-                            style={{ width: '14px', height: `${Math.max(data.paid * 0.8, 6)}px` }}
-                            title={`${t('analytics.monthlyInvoices.paid')}: ${data.paid}`}
-                          ></div>
+                    {(() => {
+                      // Generate last 6 months data from real invoices
+                      const monthsData = [];
+                      const now = new Date();
+
+                      for (let i = 5; i >= 0; i--) {
+                        const date = new Date(now.getFullYear(), now.getMonth() - i, 1);
+                        const monthKey = date.toISOString().substring(0, 7); // YYYY-MM
+                        const monthName = date.toLocaleDateString('en-US', { month: 'short' });
+
+                        // Count invoices for this month
+                        const monthInvoices = invoices.filter(invoice => {
+                          const issueDate = new Date(invoice.issueDate);
+                          return issueDate.getFullYear() === date.getFullYear() &&
+                                 issueDate.getMonth() === date.getMonth();
+                        });
+
+                        const created = monthInvoices.length;
+                        const paid = monthInvoices.filter(inv => inv.status === 'paid').length;
+
+                        monthsData.push({ created, paid, month: monthName });
+                      }
+
+                      const maxValue = Math.max(...monthsData.map(d => Math.max(d.created, d.paid)), 1);
+
+                      return monthsData.map((data, index) => (
+                        <div key={index} className='flex flex-col items-center group cursor-pointer'>
+                          <div className='relative flex flex-col items-center space-y-0.5 mb-2'>
+                            <div
+                              className='bg-[#357AF3] rounded-sm transition-all duration-500 hover:bg-blue-700 group-hover:scale-110'
+                              style={{
+                                width: '14px',
+                                height: `${Math.max((data.created / maxValue) * 60, 4)}px`,
+                              }}
+                              title={`${t('analytics.monthlyInvoices.created')}: ${data.created}`}
+                            ></div>
+                            <div
+                              className='bg-green-500 rounded-sm transition-all duration-500 hover:bg-green-600 group-hover:scale-110'
+                              style={{
+                                width: '14px',
+                                height: `${Math.max((data.paid / maxValue) * 60, 2)}px`
+                              }}
+                              title={`${t('analytics.monthlyInvoices.paid')}: ${data.paid}`}
+                            ></div>
+                          </div>
+                          <span className='text-xs text-gray-500 font-medium'>{data.month}</span>
                         </div>
-                        <span className='text-xs text-gray-500 font-medium'>{data.month}</span>
-                      </div>
-                    ))}
+                      ));
+                    })()}
                   </div>
                 </div>
 
@@ -673,7 +846,17 @@ const InvoicesPage = () => {
                     </div>
                   </div>
                   <div className='text-right'>
-                    <div className='text-sm font-bold text-gray-900'>48</div>
+                    <div className='text-sm font-bold text-gray-900'>
+                      {(() => {
+                        const currentMonth = new Date().getMonth();
+                        const currentYear = new Date().getFullYear();
+                        return invoices.filter(invoice => {
+                          const issueDate = new Date(invoice.issueDate);
+                          return issueDate.getMonth() === currentMonth &&
+                                 issueDate.getFullYear() === currentYear;
+                        }).length;
+                      })()}
+                    </div>
                     <div className='text-xs text-gray-500'>
                       {t('analytics.monthlyInvoices.thisMonth')}
                     </div>
@@ -693,30 +876,41 @@ const InvoicesPage = () => {
                 </button>
               </div>
               <div className='space-y-4'>
-                {topClients.slice(0, 3).map((client, index) => (
-                  <div
-                    key={index}
-                    className='flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors'
-                  >
-                    <div className='flex items-center space-x-3'>
-                      <img
-                        src={client.avatar}
-                        alt={client.name}
-                        className='w-8 h-8 rounded-full object-cover'
-                      />
-                      <div>
-                        <h4 className='font-semibold text-gray-900 text-sm'>{client.name}</h4>
-                        <p className='text-xs text-gray-600'>{client.amount}</p>
+                {topClients.length > 0 ? (
+                  <>
+                    {topClients.slice(0, 3).map((client, index) => (
+                      <div
+                        key={index}
+                        className='flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors'
+                      >
+                        <div className='flex items-center space-x-3'>
+                          <img
+                            src={client.avatar}
+                            alt={client.name}
+                            className='w-8 h-8 rounded-full object-cover'
+                          />
+                          <div>
+                            <h4 className='font-semibold text-gray-900 text-sm'>{client.name}</h4>
+                            <p className='text-xs text-gray-600'>{client.amount}</p>
+                          </div>
+                        </div>
+                        <button className='text-[#357AF3] hover:text-blue-800 text-xs font-semibold'>
+                          <ArrowUpRight className='w-4 h-4' />
+                        </button>
                       </div>
-                    </div>
-                    <button className='text-[#357AF3] hover:text-blue-800 text-xs font-semibold'>
-                      <ArrowUpRight className='w-4 h-4' />
+                    ))}
+                    <button className='w-full text-center text-[#357AF3] hover:text-blue-800 text-sm font-semibold py-2 border border-[#357AF3] rounded-lg hover:bg-blue-50 transition-colors'>
+                      {t('analytics.topClients.viewAllClients')}
                     </button>
+                  </>
+                ) : (
+                  <div className='text-center py-8'>
+                    <DollarSign className='w-12 h-12 text-gray-300 mx-auto mb-4' />
+                    <p className='text-gray-500 text-sm'>
+                      {t('analytics.topClients.noClients', 'No client data available')}
+                    </p>
                   </div>
-                ))}
-                <button className='w-full text-center text-[#357AF3] hover:text-blue-800 text-sm font-semibold py-2 border border-[#357AF3] rounded-lg hover:bg-blue-50 transition-colors'>
-                  {t('analytics.topClients.viewAllClients')}
-                </button>
+                )}
               </div>
             </div>
           </div>
@@ -806,46 +1000,68 @@ const InvoicesPage = () => {
 
             {/* Table Body */}
             <div className='divide-y divide-gray-200'>
-              {currentInvoices.map(invoice => (
-                <div key={invoice.id} className='px-8 py-6 hover:bg-gray-50 transition-colors'>
-                  <div className='grid grid-cols-7 gap-6 items-center'>
-                    <div>
-                      <span className='text-[#357AF3] font-semibold hover:text-blue-800 cursor-pointer transition-colors'>
-                        {invoice.id}
-                      </span>
-                    </div>
-                    <div className='flex items-center space-x-3'>
-                      <img
-                        src={invoice.client.avatar}
-                        alt={invoice.client.name}
-                        className='w-10 h-10 rounded-full object-cover'
-                      />
+              {currentInvoices.length > 0 ? (
+                currentInvoices.map(invoice => (
+                  <div key={invoice.id} className='px-8 py-6 hover:bg-gray-50 transition-colors'>
+                    <div className='grid grid-cols-7 gap-6 items-center'>
                       <div>
-                        <div className='font-semibold text-gray-900'>{invoice.client.name}</div>
-                        <div className='text-sm text-gray-500'>{invoice.client.type}</div>
+                        <span className='text-[#357AF3] font-semibold hover:text-blue-800 cursor-pointer transition-colors'>
+                          {invoice.id}
+                        </span>
+                      </div>
+                      <div className='flex items-center space-x-3'>
+                        <img
+                          src={invoice.client.avatar}
+                          alt={invoice.client.name}
+                          className='w-10 h-10 rounded-full object-cover'
+                        />
+                        <div>
+                          <div className='font-semibold text-gray-900'>{invoice.client.name}</div>
+                          <div className='text-sm text-gray-500'>{invoice.client.type}</div>
+                        </div>
+                      </div>
+                      <div className='text-gray-600 font-medium'>{invoice.issueDate}</div>
+                      <div className='text-gray-600 font-medium'>{invoice.dueDate}</div>
+                      <div className='font-bold text-gray-900'>{invoice.amount}</div>
+                      <div>{getStatusBadge(invoice.status)}</div>
+                      <div className='flex items-center space-x-2'>
+                        <button className='p-2 hover:bg-gray-100 rounded-lg transition-colors'>
+                          <Eye className='w-4 h-4 text-gray-500' />
+                        </button>
+                        <button
+                          onClick={() => handleEditInvoice(invoice.rawData)}
+                          className='p-2 hover:bg-gray-100 rounded-lg transition-colors'
+                        >
+                          <Edit className='w-4 h-4 text-gray-500' />
+                        </button>
+                        <button className='p-2 hover:bg-gray-100 rounded-lg transition-colors'>
+                          <Download className='w-4 h-4 text-gray-500' />
+                        </button>
+                        <button className='p-2 hover:bg-gray-100 rounded-lg transition-colors'>
+                          <Trash2 className='w-4 h-4 text-gray-500' />
+                        </button>
                       </div>
                     </div>
-                    <div className='text-gray-600 font-medium'>{invoice.issueDate}</div>
-                    <div className='text-gray-600 font-medium'>{invoice.dueDate}</div>
-                    <div className='font-bold text-gray-900'>{invoice.amount}</div>
-                    <div>{getStatusBadge(invoice.status)}</div>
-                    <div className='flex items-center space-x-2'>
-                      <button className='p-2 hover:bg-gray-100 rounded-lg transition-colors'>
-                        <Eye className='w-4 h-4 text-gray-500' />
-                      </button>
-                      <button className='p-2 hover:bg-gray-100 rounded-lg transition-colors'>
-                        <Edit className='w-4 h-4 text-gray-500' />
-                      </button>
-                      <button className='p-2 hover:bg-gray-100 rounded-lg transition-colors'>
-                        <Download className='w-4 h-4 text-gray-500' />
-                      </button>
-                      <button className='p-2 hover:bg-gray-100 rounded-lg transition-colors'>
-                        <Trash2 className='w-4 h-4 text-gray-500' />
-                      </button>
-                    </div>
                   </div>
+                ))
+              ) : (
+                <div className='px-8 py-16 text-center'>
+                  <FileText className='w-16 h-16 text-gray-300 mx-auto mb-4' />
+                  <h3 className='text-lg font-medium text-gray-900 mb-2'>
+                    {t('table.noInvoices.title', 'No invoices found')}
+                  </h3>
+                  <p className='text-gray-500 mb-6'>
+                    {t('table.noInvoices.description', 'Get started by creating your first invoice.')}
+                  </p>
+                  <button
+                    onClick={handleCreateInvoice}
+                    className='bg-[#357AF3] text-white px-6 py-3 rounded-lg flex items-center space-x-2 hover:bg-blue-700 transition-colors font-semibold mx-auto'
+                  >
+                    <Plus className='w-5 h-5' />
+                    <span>{t('actions.createNew', 'Create New Invoice')}</span>
+                  </button>
                 </div>
-              ))}
+              )}
             </div>
 
             {/* Enhanced Pagination */}
@@ -898,17 +1114,26 @@ const InvoicesPage = () => {
               </button>
             </div>
             <div className='space-y-6'>
-              {recentActivities.map((activity, index) => (
-                <div key={index} className='flex items-start space-x-4'>
-                  <div className={`p-3 rounded-full ${activity.bgColor}`}>
-                    <activity.icon className={`w-5 h-5 ${activity.iconColor}`} />
+              {recentActivities.length > 0 ? (
+                recentActivities.map((activity, index) => (
+                  <div key={index} className='flex items-start space-x-4'>
+                    <div className={`p-3 rounded-full ${activity.bgColor}`}>
+                      <activity.icon className={`w-5 h-5 ${activity.iconColor}`} />
+                    </div>
+                    <div className='flex-1'>
+                      <p className='text-gray-900 font-medium'>{activity.message}</p>
+                      <p className='text-sm text-gray-500 mt-1'>{activity.time}</p>
+                    </div>
                   </div>
-                  <div className='flex-1'>
-                    <p className='text-gray-900 font-medium'>{activity.message}</p>
-                    <p className='text-sm text-gray-500 mt-1'>{activity.time}</p>
-                  </div>
+                ))
+              ) : (
+                <div className='text-center py-8'>
+                  <Clock className='w-12 h-12 text-gray-300 mx-auto mb-4' />
+                  <p className='text-gray-500'>
+                    {t('recentActivity.noActivity', 'No recent activity to display')}
+                  </p>
                 </div>
-              ))}
+              )}
             </div>
           </div>
 
@@ -916,6 +1141,16 @@ const InvoicesPage = () => {
           <Footer />
         </div>
       </div>
+
+      {/* Invoice Modal */}
+      <InvoiceModal
+        isOpen={isInvoiceModalOpen}
+        onClose={handleCloseInvoiceModal}
+        invoice={selectedInvoice}
+        client={selectedClient}
+        onInvoiceCreated={handleInvoiceCreated}
+        onInvoiceUpdated={handleInvoiceUpdated}
+      />
     </div>
   );
 };

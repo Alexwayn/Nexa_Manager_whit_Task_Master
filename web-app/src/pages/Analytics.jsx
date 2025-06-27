@@ -4,7 +4,9 @@ import Footer from '@components/shared/Footer';
 import { useAuth, useUser } from '@clerk/clerk-react';
 import invoiceAnalyticsService from '@lib/invoiceAnalyticsService';
 import Logger from '@utils/Logger';
+import { getUserIdForUuidTables } from '@utils/userUtils';
 import ErrorBoundary from '@components/common/ErrorBoundary';
+import ReportsDashboard from '@components/reports/ReportsDashboard'; // Import the new component
 import {
   ChevronDownIcon,
   ArrowRightIcon,
@@ -31,9 +33,23 @@ const Analytics = () => {
 
   useEffect(() => {
     const fetchAnalytics = async () => {
+      if (!user?.id) {
+        setLoading(false);
+        return;
+      }
+
       try {
         setLoading(true);
-        const data = await invoiceAnalyticsService.getInvoiceAnalytics();
+
+        // Convert Clerk user ID to UUID for database queries
+        const dbUserId = getUserIdForUuidTables(user.id);
+        Logger.info('Loading analytics for user:', {
+          clerkId: user.id,
+          dbUserId,
+          userEmail: user.primaryEmailAddress?.emailAddress
+        });
+
+        const data = await invoiceAnalyticsService.getInvoiceAnalytics(dbUserId);
         setAnalytics(data);
         setError(null);
       } catch (err) {
@@ -45,7 +61,7 @@ const Analytics = () => {
     };
 
     fetchAnalytics();
-  }, [t]);
+  }, [user?.id]);
 
   const recentPayments = [
     {
@@ -131,6 +147,16 @@ const Analytics = () => {
                 }`}
               >
                 Financial Forecasting
+              </button>
+              <button
+                onClick={() => setActiveTab('reports-and-insights')}
+                className={`pb-2 text-base font-medium ${
+                  activeTab === 'reports-and-insights'
+                    ? 'text-blue-600 border-b-2 border-blue-600'
+                    : 'text-gray-500 hover:text-gray-700'
+                }`}
+              >
+                Reports & Insights
               </button>
             </div>
           </div>

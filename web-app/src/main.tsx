@@ -9,6 +9,10 @@ import './i18n'; // Initialize i18n
 import { initSentry } from '@lib/sentry';
 initSentry();
 
+// Font loading optimization
+import { initFontLoading } from '@utils/fontLoader';
+initFontLoading();
+
 import App from '@/App.jsx';
 
 const rootElement = document.getElementById('root');

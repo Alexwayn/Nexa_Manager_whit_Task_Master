@@ -13,7 +13,7 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 -- Stores encrypted API keys with permissions and rate limiting
 CREATE TABLE IF NOT EXISTS api_keys (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE,
+    user_id TEXT, -- Clerk user ID
     name VARCHAR(255) NOT NULL,
     key_hash VARCHAR(255) NOT NULL UNIQUE, -- Hashed API key for secure storage
     key_prefix VARCHAR(20) NOT NULL, -- Visible prefix (e.g., "nxa_live_1234...")
@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS api_keys (
 -- Stores configuration for external service integrations
 CREATE TABLE IF NOT EXISTS third_party_integrations (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE,
+    user_id TEXT, -- Clerk user ID
     service_name VARCHAR(100) NOT NULL, -- stripe, paypal, quickbooks, etc.
     service_category VARCHAR(50) NOT NULL, -- payment, accounting, communication, storage
     display_name VARCHAR(255) NOT NULL,
@@ -86,7 +86,7 @@ CREATE TABLE IF NOT EXISTS third_party_integrations (
 -- Logs all integration activities for audit and monitoring
 CREATE TABLE IF NOT EXISTS integration_activity (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE,
+    user_id TEXT, -- Clerk user ID
     integration_id UUID REFERENCES third_party_integrations(id) ON DELETE CASCADE,
     api_key_id UUID REFERENCES api_keys(id) ON DELETE SET NULL,
     
@@ -120,7 +120,7 @@ CREATE TABLE IF NOT EXISTS integration_activity (
 -- Stores webhook endpoint configurations for integrations
 CREATE TABLE IF NOT EXISTS webhook_configurations (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE,
+    user_id TEXT, -- Clerk user ID
     integration_id UUID REFERENCES third_party_integrations(id) ON DELETE CASCADE,
     
     -- Webhook Details
@@ -186,49 +186,49 @@ ALTER TABLE webhook_configurations ENABLE ROW LEVEL SECURITY;
 
 -- API Keys policies
 CREATE POLICY "Users can view their own API keys" ON api_keys
-    FOR SELECT USING (auth.uid() = user_id);
+    FOR SELECT USING (auth.uid()::text = user_id);
 
 CREATE POLICY "Users can create their own API keys" ON api_keys
-    FOR INSERT WITH CHECK (auth.uid() = user_id);
+    FOR INSERT WITH CHECK (auth.uid()::text = user_id);
 
 CREATE POLICY "Users can update their own API keys" ON api_keys
-    FOR UPDATE USING (auth.uid() = user_id);
+    FOR UPDATE USING (auth.uid()::text = user_id);
 
 CREATE POLICY "Users can delete their own API keys" ON api_keys
-    FOR DELETE USING (auth.uid() = user_id);
+    FOR DELETE USING (auth.uid()::text = user_id);
 
 -- Third-party integrations policies
 CREATE POLICY "Users can view their own integrations" ON third_party_integrations
-    FOR SELECT USING (auth.uid() = user_id);
+    FOR SELECT USING (auth.uid()::text = user_id);
 
 CREATE POLICY "Users can create their own integrations" ON third_party_integrations
-    FOR INSERT WITH CHECK (auth.uid() = user_id);
+    FOR INSERT WITH CHECK (auth.uid()::text = user_id);
 
 CREATE POLICY "Users can update their own integrations" ON third_party_integrations
-    FOR UPDATE USING (auth.uid() = user_id);
+    FOR UPDATE USING (auth.uid()::text = user_id);
 
 CREATE POLICY "Users can delete their own integrations" ON third_party_integrations
-    FOR DELETE USING (auth.uid() = user_id);
+    FOR DELETE USING (auth.uid()::text = user_id);
 
 -- Integration activity policies
 CREATE POLICY "Users can view their own activity" ON integration_activity
-    FOR SELECT USING (auth.uid() = user_id);
+    FOR SELECT USING (auth.uid()::text = user_id);
 
 CREATE POLICY "Users can create activity logs" ON integration_activity
-    FOR INSERT WITH CHECK (auth.uid() = user_id);
+    FOR INSERT WITH CHECK (auth.uid()::text = user_id);
 
 -- Webhook configurations policies
 CREATE POLICY "Users can view their own webhooks" ON webhook_configurations
-    FOR SELECT USING (auth.uid() = user_id);
+    FOR SELECT USING (auth.uid()::text = user_id);
 
 CREATE POLICY "Users can create their own webhooks" ON webhook_configurations
-    FOR INSERT WITH CHECK (auth.uid() = user_id);
+    FOR INSERT WITH CHECK (auth.uid()::text = user_id);
 
 CREATE POLICY "Users can update their own webhooks" ON webhook_configurations
-    FOR UPDATE USING (auth.uid() = user_id);
+    FOR UPDATE USING (auth.uid()::text = user_id);
 
 CREATE POLICY "Users can delete their own webhooks" ON webhook_configurations
-    FOR DELETE USING (auth.uid() = user_id);
+    FOR DELETE USING (auth.uid()::text = user_id);
 
 -- =====================================================
 -- TRIGGERS FOR AUTOMATIC TIMESTAMPS
@@ -347,4 +347,4 @@ COMMENT ON COLUMN api_keys.scopes IS 'API scopes: invoices, clients, payments, a
 
 COMMENT ON COLUMN third_party_integrations.client_secret_encrypted IS 'AES encrypted OAuth client secret';
 COMMENT ON COLUMN third_party_integrations.oauth_token_encrypted IS 'AES encrypted OAuth access token';
-COMMENT ON COLUMN third_party_integrations.api_key_encrypted IS 'AES encrypted API key for non-OAuth services'; 
+COMMENT ON COLUMN third_party_integrations.api_key_encrypted IS 'AES encrypted API key for non-OAuth services';

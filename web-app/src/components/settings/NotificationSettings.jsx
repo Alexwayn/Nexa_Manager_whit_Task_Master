@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useUser } from '@clerk/clerk-react';
 import { useClerkAuth } from '../../hooks/useClerkAuth';
@@ -465,4 +465,4 @@ export default function NotificationSettings({ showNotification }) {
       </div>
     </div>
   );
-} 
+}

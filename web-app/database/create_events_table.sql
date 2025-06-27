@@ -1,7 +1,7 @@
 -- Script per la creazione della tabella events per il calendario
 CREATE TABLE IF NOT EXISTS public.events (
     id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-    user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+    user_id TEXT NOT NULL, -- Clerk user ID
     title TEXT NOT NULL,
     type TEXT NOT NULL, -- 'appuntamento', 'preventivo', 'fattura', 'entrata', 'spesa'
     date DATE NOT NULL,
@@ -44,20 +44,20 @@ ALTER TABLE public.events ENABLE ROW LEVEL SECURITY;
 
 CREATE POLICY "Users can view their own events" 
 ON public.events FOR SELECT 
-USING (auth.uid() = user_id);
+USING (auth.uid()::text = user_id);
 
 CREATE POLICY "Users can insert their own events" 
 ON public.events FOR INSERT 
-WITH CHECK (auth.uid() = user_id);
+WITH CHECK (auth.uid()::text = user_id);
 
 CREATE POLICY "Users can update their own events" 
 ON public.events FOR UPDATE 
-USING (auth.uid() = user_id) 
-WITH CHECK (auth.uid() = user_id);
+USING (auth.uid()::text = user_id)
+WITH CHECK (auth.uid()::text = user_id);
 
 CREATE POLICY "Users can delete their own events" 
 ON public.events FOR DELETE 
-USING (auth.uid() = user_id);
+USING (auth.uid()::text = user_id);
 
 -- Trigger per aggiornare l'updated_at automaticamente
 CREATE OR REPLACE FUNCTION trigger_set_timestamp()
@@ -72,4 +72,4 @@ DROP TRIGGER IF EXISTS set_timestamp_events ON public.events;
 CREATE TRIGGER set_timestamp_events
 BEFORE UPDATE ON public.events
 FOR EACH ROW
-EXECUTE FUNCTION trigger_set_timestamp(); 
+EXECUTE FUNCTION trigger_set_timestamp();

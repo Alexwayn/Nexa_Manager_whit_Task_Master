@@ -261,5 +261,77 @@
       "title": "Attività Recente",
       "viewAll": "Visualizza Tutto"
     }
+  },
+  "form": {
+    "createInvoice": "Crea Fattura",
+    "editInvoice": "Modifica Fattura",
+    "createDescription": "Crea una nuova fattura per i tuoi clienti",
+    "editDescription": "Aggiorna i dettagli della fattura",
+    "client": "Cliente",
+    "clientRequired": "Il cliente è obbligatorio",
+    "selectClient": "Seleziona Cliente",
+    "template": "Template",
+    "selectTemplate": "Seleziona Template",
+    "title": "Titolo",
+    "titleRequired": "Il titolo è obbligatorio",
+    "titlePlaceholder": "Inserisci il titolo della fattura...",
+    "category": "Categoria",
+    "categoryPlaceholder": "Inserisci categoria...",
+    "description": "Descrizione",
+    "descriptionPlaceholder": "Inserisci descrizione...",
+    "issueDate": "Data Emissione",
+    "issueDateRequired": "La data di emissione è obbligatoria",
+    "dueDate": "Data Scadenza",
+    "dueDateRequired": "La data di scadenza è obbligatoria",
+    "pdfSettings": "Impostazioni PDF",
+    "pdfTemplate": "Template PDF",
+    "pdfActions": "Azioni PDF",
+    "preview": "Anteprima",
+    "download": "Scarica",
+    "email": "Email",
+    "pdfActionsRequire": "Le azioni PDF richiedono titolo e cliente selezionati",
+    "items": "Articoli",
+    "addItem": "Aggiungi Articolo",
+    "itemDescription": "Descrizione",
+    "itemDescriptionPlaceholder": "Descrizione articolo...",
+    "quantity": "Quantità",
+    "unitPrice": "Prezzo Unitario",
+    "total": "Totale",
+    "subtotal": "Subtotale",
+    "discount": "Sconto",
+    "tax": "IVA",
+    "grandTotal": "Totale",
+    "cancel": "Annulla",
+    "saveAsDraft": "Salva come Bozza",
+    "createInvoiceButton": "Crea Fattura",
+    "updateInvoice": "Aggiorna Fattura",
+    "saving": "Salvataggio...",
+    "itemDescriptionRequired": "La descrizione dell'articolo è obbligatoria",
+    "validQuantityRequired": "È richiesta una quantità valida",
+    "validUnitPriceRequired": "È richiesto un prezzo unitario valido",
+    "atLeastOneItemRequired": "È richiesto almeno un articolo"
+  },
+  "templates": {
+    "standard": "Fattura Standard",
+    "service": "Fattura Servizi",
+    "product": "Fattura Prodotti"
+  },
+  "pdfTemplates": {
+    "default": "Template Predefinito",
+    "modern": "Template Moderno",
+    "classic": "Template Classico"
+  },
+  "notifications": {
+    "invoiceCreated": "Fattura creata con successo!",
+    "invoiceUpdated": "Fattura aggiornata con successo!",
+    "saveFailed": "Errore durante il salvataggio della fattura"
+  },
+  "loading": {
+    "creating": "Creazione fattura...",
+    "updating": "Aggiornamento fattura..."
+  },
+  "errors": {
+    "saveFailed": "Errore durante il salvataggio della fattura",
+    "loadFailed": "Errore durante il caricamento dei dati del form"
   }
 }

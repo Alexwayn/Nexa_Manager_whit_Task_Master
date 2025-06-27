@@ -4,7 +4,7 @@
 -- Create recurrence_rules table for storing recurring patterns
 CREATE TABLE IF NOT EXISTS public.recurrence_rules (
     id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-    user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+    user_id TEXT NOT NULL,
     
     -- Basic recurrence pattern
     frequency TEXT NOT NULL CHECK (frequency IN ('DAILY', 'WEEKLY', 'MONTHLY', 'YEARLY')),
@@ -59,7 +59,7 @@ CREATE TABLE IF NOT EXISTS public.event_reminders (
 -- Create notification_queue table for processing notifications
 CREATE TABLE IF NOT EXISTS public.notification_queue (
     id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-    user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+    user_id TEXT NOT NULL,
     event_id UUID NOT NULL REFERENCES public.events(id) ON DELETE CASCADE,
     reminder_id UUID NOT NULL REFERENCES public.event_reminders(id) ON DELETE CASCADE,
     
@@ -87,7 +87,7 @@ CREATE TABLE IF NOT EXISTS public.notification_queue (
 -- Create user_notification_preferences table for user settings
 CREATE TABLE IF NOT EXISTS public.user_notification_preferences (
     id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-    user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE UNIQUE,
+    user_id TEXT NOT NULL UNIQUE,
     
     -- Default reminder settings
     default_reminder_minutes INTEGER[] DEFAULT '{15, 60}', -- Default reminders: 15 min and 1 hour before
@@ -118,7 +118,7 @@ CREATE TABLE IF NOT EXISTS public.user_notification_preferences (
 -- Create in_app_notifications table for storing in-app notifications
 CREATE TABLE IF NOT EXISTS public.in_app_notifications (
     id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-    user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+    user_id TEXT NOT NULL,
     event_id UUID REFERENCES public.events(id) ON DELETE CASCADE,
     
     -- Notification content
@@ -170,20 +170,20 @@ ALTER TABLE public.in_app_notifications ENABLE ROW LEVEL SECURITY;
 -- RLS policies for recurrence_rules
 CREATE POLICY "Users can view their own recurrence rules" 
 ON public.recurrence_rules FOR SELECT 
-USING (auth.uid() = user_id);
+USING (auth.jwt() ->> 'sub' = user_id);
 
 CREATE POLICY "Users can insert their own recurrence rules" 
 ON public.recurrence_rules FOR INSERT 
-WITH CHECK (auth.uid() = user_id);
+WITH CHECK (auth.jwt() ->> 'sub' = user_id);
 
 CREATE POLICY "Users can update their own recurrence rules" 
 ON public.recurrence_rules FOR UPDATE 
-USING (auth.uid() = user_id) 
-WITH CHECK (auth.uid() = user_id);
+USING (auth.jwt() ->> 'sub' = user_id)
+WITH CHECK (auth.jwt() ->> 'sub' = user_id);
 
 CREATE POLICY "Users can delete their own recurrence rules" 
 ON public.recurrence_rules FOR DELETE 
-USING (auth.uid() = user_id);
+USING (auth.jwt() ->> 'sub' = user_id);
 
 -- RLS policies for event_reminders
 CREATE POLICY "Users can view reminders for their events" 
@@ -191,15 +191,7 @@ ON public.event_reminders FOR SELECT
 USING (EXISTS (
     SELECT 1 FROM public.events 
     WHERE events.id = event_reminders.event_id 
-    AND events.user_id = auth.uid()
-));
-
-CREATE POLICY "Users can insert reminders for their events" 
-ON public.event_reminders FOR INSERT 
-WITH CHECK (EXISTS (
-    SELECT 1 FROM public.events 
-    WHERE events.id = event_reminders.event_id 
-    AND events.user_id = auth.uid()
+    AND events.user_id = auth.jwt() ->> 'sub'
 ));
 
 CREATE POLICY "Users can update reminders for their events" 
@@ -207,7 +199,7 @@ ON public.event_reminders FOR UPDATE
 USING (EXISTS (
     SELECT 1 FROM public.events 
     WHERE events.id = event_reminders.event_id 
-    AND events.user_id = auth.uid()
+    AND events.user_id = auth.jwt() ->> 'sub'
 ));
 
 CREATE POLICY "Users can delete reminders for their events" 
@@ -215,62 +207,67 @@ ON public.event_reminders FOR DELETE
 USING (EXISTS (
     SELECT 1 FROM public.events 
     WHERE events.id = event_reminders.event_id 
-    AND events.user_id = auth.uid()
+    AND events.user_id = auth.jwt() ->> 'sub'
 ));
 
 -- RLS policies for notification_queue
+DROP POLICY IF EXISTS "Users can view their own notifications" ON public.notification_queue;
 CREATE POLICY "Users can view their own notifications" 
 ON public.notification_queue FOR SELECT 
-USING (auth.uid() = user_id);
+USING (auth.jwt() ->> 'sub' = user_id);
 
 CREATE POLICY "Users can insert their own notifications" 
 ON public.notification_queue FOR INSERT 
-WITH CHECK (auth.uid() = user_id);
+WITH CHECK (auth.jwt() ->> 'sub' = user_id);
 
 CREATE POLICY "Users can update their own notifications" 
 ON public.notification_queue FOR UPDATE 
-USING (auth.uid() = user_id) 
-WITH CHECK (auth.uid() = user_id);
+USING (auth.jwt() ->> 'sub' = user_id) 
+WITH CHECK (auth.jwt() ->> 'sub' = user_id);
 
 CREATE POLICY "Users can delete their own notifications" 
 ON public.notification_queue FOR DELETE 
-USING (auth.uid() = user_id);
+USING (auth.jwt() ->> 'sub' = user_id);
 
 -- RLS policies for user_notification_preferences
+DROP POLICY IF EXISTS "Users can view their own notification preferences" ON public.user_notification_preferences;
 CREATE POLICY "Users can view their own notification preferences" 
 ON public.user_notification_preferences FOR SELECT 
-USING (auth.uid() = user_id);
+USING (auth.jwt() ->> 'sub' = user_id);
 
+DROP POLICY IF EXISTS "Users can insert their own notification preferences" ON public.user_notification_preferences;
 CREATE POLICY "Users can insert their own notification preferences" 
 ON public.user_notification_preferences FOR INSERT 
-WITH CHECK (auth.uid() = user_id);
+WITH CHECK (auth.jwt() ->> 'sub' = user_id);
 
+DROP POLICY IF EXISTS "Users can update their own notification preferences" ON public.user_notification_preferences;
 CREATE POLICY "Users can update their own notification preferences" 
 ON public.user_notification_preferences FOR UPDATE 
-USING (auth.uid() = user_id) 
-WITH CHECK (auth.uid() = user_id);
+USING (auth.jwt() ->> 'sub' = user_id)
+WITH CHECK (auth.jwt() ->> 'sub' = user_id);
 
+DROP POLICY IF EXISTS "Users can delete their own notification preferences" ON public.user_notification_preferences;
 CREATE POLICY "Users can delete their own notification preferences" 
 ON public.user_notification_preferences FOR DELETE 
-USING (auth.uid() = user_id);
+USING (auth.jwt() ->> 'sub' = user_id);
 
 -- RLS policies for in_app_notifications
 CREATE POLICY "Users can view their own in-app notifications" 
 ON public.in_app_notifications FOR SELECT 
-USING (auth.uid() = user_id);
+USING (auth.jwt() ->> 'sub' = user_id);
 
 CREATE POLICY "Users can insert their own in-app notifications" 
 ON public.in_app_notifications FOR INSERT 
-WITH CHECK (auth.uid() = user_id);
+WITH CHECK (auth.jwt() ->> 'sub' = user_id);
 
 CREATE POLICY "Users can update their own in-app notifications" 
 ON public.in_app_notifications FOR UPDATE 
-USING (auth.uid() = user_id) 
-WITH CHECK (auth.uid() = user_id);
+USING (auth.jwt() ->> 'sub' = user_id)
+WITH CHECK (auth.jwt() ->> 'sub' = user_id);
 
 CREATE POLICY "Users can delete their own in-app notifications" 
 ON public.in_app_notifications FOR DELETE 
-USING (auth.uid() = user_id);
+USING (auth.jwt() ->> 'sub' = user_id);
 
 -- Triggers for updated_at timestamps
 CREATE OR REPLACE FUNCTION trigger_set_timestamp()
@@ -327,4 +324,4 @@ DROP TRIGGER IF EXISTS create_user_notification_preferences ON auth.users;
 CREATE TRIGGER create_user_notification_preferences
 AFTER INSERT ON auth.users
 FOR EACH ROW
-EXECUTE FUNCTION create_default_notification_preferences(); 
+EXECUTE FUNCTION create_default_notification_preferences();

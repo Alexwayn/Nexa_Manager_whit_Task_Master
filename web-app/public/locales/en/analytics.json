@@ -37,15 +37,17 @@
   },
   "kpi": {
     "totalRevenue": "Total Revenue",
-    "yoyGrowth": "YoY Growth",
-    "avgInvoiceValue": "Avg. Invoice Value",
-    "paymentTime": "Avg. Payment Time",
+    "yoyGrowth": "Year-over-Year Growth",
+    "avgInvoiceValue": "Average Invoice Value",
+    "paymentTime": "Average Payment Time",
     "paidInvoices": "Paid Invoices",
     "overdueInvoices": "Overdue Invoices",
     "activeClients": "Active Clients",
     "newClients": "New Clients",
     "performance": "Performance",
-    "vsPreviousMonth": "vs Previous Month"
+    "vsPreviousMonth": "vs Previous Month",
+    "totalInvoices": "Total Invoices",
+    "avgPaymentTime": "Average Payment Time"
   },
   "charts": {
     "revenue": "Revenue",
@@ -144,6 +146,7 @@
      }
   },
   "timeSelector": {
+    "title": "Time Period Selector",
     "last30Days": "Last 30 Days",
     "last90Days": "Last 90 Days",
     "presets": {
@@ -159,7 +162,10 @@
       "customPeriod": "Custom Period"
     },
     "compare": {
-      "comparePeriod": "Compare Period"
+      "comparePeriod": "Compare Period",
+      "yearOverYear": "Year over Year",
+      "monthOverMonth": "Month over Month",
+      "quarterOverQuarter": "Quarter over Quarter"
     }
   },
   "status": {
@@ -194,6 +200,70 @@
   "lastUpdated": "Last updated",
   "pageTitle": "Financial Analytics",
   "pageSubtitle": "Deep dive into your business performance",
+  "clientAnalytics": {
+    "title": "Client Analytics",
+    "subtitle": "Comprehensive client insights and business metrics",
+    "clientOverview": "Client Overview",
+    "totalClients": "Total Clients",
+    "activeClients": "Active Clients",
+    "newThisMonth": "New This Month",
+    "retention": "Retention Rate",
+    "clientGrowth": "Client Growth",
+    "clientSegmentation": "Client Segmentation",
+    "topClients": "Top Clients",
+    "paymentBehavior": "Payment Behavior",
+    "clientGrowthTrends": "Client Growth Trends",
+    "businessHealthScore": "Business Health Score",
+    "segments": {
+      "champions": "Champions",
+      "loyalCustomers": "Loyal Customers",
+      "potentialLoyalists": "Potential Loyalists",
+      "newCustomers": "New Customers",
+      "atRisk": "At Risk",
+      "cantLoseThem": "Can't Lose Them",
+      "hibernating": "Hibernating",
+      "lost": "Lost"
+    },
+    "paymentCategories": {
+      "excellent": "Excellent (≤15 days)",
+      "good": "Good (16-30 days)",
+      "fair": "Fair (31-60 days)",
+      "poor": "Poor (>60 days)"
+    },
+    "healthLevels": {
+      "excellent": "Excellent",
+      "good": "Good",
+      "fair": "Fair",
+      "needsAttention": "Needs Attention"
+    },
+    "metrics": {
+      "totalRevenue": "Total Revenue",
+      "invoiceCount": "Invoice Count",
+      "avgPaymentTime": "Avg Payment Time",
+      "avgDays": "avg days",
+      "days": "days",
+      "invoices": "invoices",
+      "client": "Client",
+      "basedOnClientMetrics": "Based on client metrics and performance"
+    },
+    "actions": {
+      "viewDetails": "View Details",
+      "viewAll": "View All",
+      "analyze": "Analyze",
+      "drillDown": "Drill Down",
+      "export": "Export Data",
+      "filter": "Filter"
+    },
+    "loading": {
+      "loadingClientAnalytics": "Loading client analytics...",
+      "analyzing": "Analyzing client data..."
+    },
+    "errors": {
+      "errorLoadingData": "Error loading client data",
+      "noClientData": "No client data available",
+      "failedToLoad": "Failed to load client analytics"
+    }
+  },
   "advanced": {
     "totalRevenue": "Total Revenue",
     "profitMargin": "Profit Margin",
@@ -283,7 +353,10 @@
     "compare": {
       "comparePeriod": "Compare Period",
       "comparisonOptions": "Comparison Options",
-      "previousYear": "Previous Year"
+      "previousYear": "Previous Year",
+      "yearOverYear": "Year over Year",
+      "monthOverMonth": "Month over Month",
+      "quarterOverQuarter": "Quarter over Quarter"
     }
   },
   "totalRevenue": "Total Revenue",

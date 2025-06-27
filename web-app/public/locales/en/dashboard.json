@@ -6,10 +6,15 @@
   "loading": "Loading dashboard...",
   "refresh": "Refresh",
   "editLayout": "Edit Layout",
-  "export": "Export",
+  "export": {
+    "csv": "Export to CSV",
+    "pdf": "Export to PDF"
+  },
   "editMode": "Edit Mode",
+  "exitEditMode": "Exit Edit Mode",
   "done": "Done",
   "reset": "Reset Layout",
+  "resetLayout": "Reset Layout",
   "confirmReset": "Are you sure you want to reset the layout to default?",
   "switchToEnhanced": "Switch to Enhanced Dashboard",
   "switchToClassic": "Switch to Classic Dashboard",
@@ -17,9 +22,22 @@
     "kpiOverview": "KPI Overview",
     "revenueChart": "Revenue Chart",
     "expenseBreakdown": "Expense Breakdown",
+    "clientAnalytics": "Client Analytics",
     "clientMetrics": "Client Metrics",
     "recentActivity": "Recent Activity",
-    "financialHealth": "Financial Health"
+    "financialHealth": "Financial Health",
+    "revenue": "Revenue"
+  },
+  "dropdownOptions": {
+    "viewDetails": "View Details",
+    "exportReport": "Export Report",
+    "refreshData": "Refresh Data",
+    "viewAnalytics": "View Analytics",
+    "revenueSettings": "Revenue Settings",
+    "exportData": "Export Data",
+    "viewAllInvoices": "View All Invoices",
+    "createInvoice": "Create Invoice",
+    "invoiceSettings": "Invoice Settings"
   },
   "search.placeholder": "Search...",
   "search.noResults": "No results",
@@ -51,6 +69,18 @@
   "revenueOverview.quarterly": "Quarterly",
   "revenueOverview.yearly": "Yearly",
   "revenueOverview.trendDescription": "Revenue trend showing consistent growth over the past 7 months",
+  "revenueOverview.noDataAvailable": "No data available",
+  "revenueOverview.noDataMessage": "No revenue data available",
+  "revenueOverview.connectDataSource": "Connect a data source to view charts",
+  "revenueOverview.revenue": "Revenue",
+  "revenueOverview.transactions": "Transactions",
+  "invoiceTracker.noDataAvailable": "No data available",
+  "invoiceTracker.connectDataSource": "Connect a data source to view invoices",
+  "invoiceTracker.totalPaid": "Total Paid",
+  "invoiceTracker.totalOutstanding": "Total Outstanding",
+  "revenueStreams.noDataAvailable": "No data available",
+  "revenueStreams.connectDataSource": "Connect a data source to view revenue streams",
+  "revenueStreams.noCategories": "No revenue categories available",
   "revenueOverview.monthlyRevenue": "Monthly Revenue",
   "quickActions.title": "Quick Actions",
   "quickActions.newInvoice": "New Invoice",
@@ -203,5 +233,28 @@
     "may": "May",
     "jun": "Jun",
     "jul": "Jul"
-  }
+  },
+  "lastUpdated": "Last updated",
+  "realtime": {
+    "connected": "Real-time connected",
+    "disconnected": "Real-time disconnected"
+  },
+  "realtimeToggle": "Toggle real-time updates",
+  "kpis": {
+    "totalRevenue": "Total Revenue",
+    "totalExpenses": "Total Expenses",
+    "netProfit": "Net Profit",
+    "activeClients": "Active Clients"
+  },
+  "activity": {
+    "invoiceCreated": "Invoice created",
+    "paymentReceived": "Payment received",
+    "clientAdded": "New client added"
+  },
+  "health": {
+    "excellent": "Excellent",
+    "good": "Good",
+    "needsAttention": "Needs Attention"
+  },
+  "refreshData": "Refresh Data"
 }

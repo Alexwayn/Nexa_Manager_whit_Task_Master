@@ -1,13 +1,17 @@
 {
-  "title": "Dashboard",
+  "title": "Cruscotto",
   "overview": "Panoramica",
-  "enhancedDashboard": "Dashboard Avanzata",
+  "enhancedDashboard": "Cruscotto Avanzato",
   "welcomeBack": "Bentornato, {{name}}!",
-  "loading": "Caricamento dashboard...",
+  "loading": "Caricamento cruscotto...",
   "refresh": "Aggiorna",
   "editLayout": "Modifica Layout",
-  "export": "Esporta",
+  "export": {
+    "csv": "Esporta in CSV",
+    "pdf": "Esporta in PDF"
+  },
   "editMode": "Modalità Modifica",
+  "exitEditMode": "Esci dalla Modalità Modifica",
   "done": "Fatto",
   "reset": "Ripristina Layout",
   "confirmReset": "Sei sicuro di voler ripristinare il layout predefinito?",
@@ -17,9 +21,22 @@
     "kpiOverview": "Panoramica KPI",
     "revenueChart": "Grafico Ricavi",
     "expenseBreakdown": "Ripartizione Spese",
+    "clientAnalytics": "Analisi Clienti",
     "clientMetrics": "Metriche Clienti",
     "recentActivity": "Attività Recenti",
-    "financialHealth": "Salute Finanziaria"
+    "financialHealth": "Salute Finanziaria",
+    "revenue": "Ricavi"
+  },
+  "dropdownOptions": {
+    "viewDetails": "Vedi Dettagli",
+    "exportReport": "Esporta Report",
+    "refreshData": "Aggiorna Dati",
+    "viewAnalytics": "Vedi Analytics",
+    "revenueSettings": "Impostazioni Ricavi",
+    "exportData": "Esporta Dati",
+    "viewAllInvoices": "Vedi Tutte le Fatture",
+    "createInvoice": "Crea Fattura",
+    "invoiceSettings": "Impostazioni Fatture"
   },
   "search.placeholder": "Cerca...",
   "search.noResults": "Nessun risultato",
@@ -51,6 +68,11 @@
   "revenueOverview.quarterly": "Trimestrale",
   "revenueOverview.yearly": "Annuale",
   "revenueOverview.trendDescription": "Trend dei ricavi che mostra una crescita costante negli ultimi 7 mesi",
+  "revenueOverview.noDataAvailable": "Nessun dato disponibile",
+  "revenueOverview.noDataMessage": "Nessun dato sui ricavi disponibile",
+  "revenueOverview.connectDataSource": "Collega una fonte dati per visualizzare i grafici",
+  "revenueOverview.revenue": "Ricavi",
+  "revenueOverview.transactions": "Transazioni",
   "revenueOverview.monthlyRevenue": "Ricavi Mensili",
   "quickActions.title": "Azioni Rapide",
   "quickActions.newInvoice": "Nuova Fattura",
@@ -203,5 +225,54 @@
     "may": "Mag",
     "jun": "Giu",
     "jul": "Lug"
-  }
+  },
+  "lastUpdated": "Ultimo aggiornamento",
+  "realtime": {
+    "connected": "Tempo reale connesso",
+    "disconnected": "Tempo reale disconnesso"
+  },
+  "realtimeToggle": "Attiva/disattiva aggiornamenti in tempo reale",
+  "kpis": {
+    "totalRevenue": "Ricavi Totali",
+    "totalExpenses": "Spese Totali",
+    "netProfit": "Profitto Netto",
+    "activeClients": "Clienti Attivi"
+  },
+  "activity": {
+    "invoiceCreated": "Fattura creata",
+    "paymentReceived": "Pagamento ricevuto",
+    "clientAdded": "Nuovo cliente aggiunto"
+  },
+  "health": {
+    "excellent": "Eccellente",
+    "good": "Buono",
+    "needsAttention": "Necessita Attenzione",
+    "basedOnFinancials": "Basato sui dati finanziari"
+  },
+  "resetLayout": "Ripristina Layout",
+  "refreshData": "Aggiorna Dati",
+  "subtitle": "Benvenuto nella tua dashboard personalizzata",
+  "actions": {
+    "refresh": "Aggiorna",
+    "refreshing": "Aggiornamento...",
+    "editLayout": "Modifica Layout",
+    "exitEdit": "Esci da Modifica"
+  },
+  "emptyStates": {
+    "noRevenueData": "Nessun dato sui ricavi disponibile. Inizia creando le tue prime fatture.",
+    "noExpenseData": "Nessun dato sulle spese disponibile. Inizia registrando le tue prime spese."
+  },
+  "period": {
+    "thisMonth": "Questo Mese"
+  },
+  "editMode": {
+    "toggleWidgets": "Attiva/Disattiva Widget"
+  },
+  "invoiceTracker.noDataAvailable": "Nessun dato disponibile",
+  "invoiceTracker.connectDataSource": "Collega una fonte dati per visualizzare le fatture",
+  "invoiceTracker.totalPaid": "Totale Pagato",
+  "invoiceTracker.totalOutstanding": "Totale In Sospeso",
+  "revenueStreams.noDataAvailable": "Nessun dato disponibile",
+  "revenueStreams.connectDataSource": "Collega una fonte dati per visualizzare i flussi di ricavi",
+  "revenueStreams.noCategories": "Nessuna categoria di ricavi disponibile"
 }

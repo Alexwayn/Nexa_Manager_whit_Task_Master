@@ -35,31 +35,34 @@ export default function BillingSettings({ showNotification }) {
   const [showPreview, setShowPreview] = useState(false);
   const [previewData, setPreviewData] = useState(null);
   
-  // Mock data for demonstration - should be replaced with real API calls
-  const [subscriptionInfo, setSubscriptionInfo] = useState({
-    plan: 'Pro Plan',
-    price: '€359.88',
-    billingCycle: 'Annual',
-    nextRenewal: '15 January, 2025',
-    features: ['Unlimited Invoices', 'Advanced Reports', 'API Access', 'Priority Support']
-  });
+  // Real subscription and billing data - to be connected to actual billing service
+  const [subscriptionInfo, setSubscriptionInfo] = useState(null);
+  const [paymentMethods, setPaymentMethods] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const [paymentMethods, setPaymentMethods] = useState([
-    {
-      id: '1',
-      type: 'Visa',
-      last4: '4242',
-      expiry: '12/2025',
-      isDefault: true,
-    },
-    {
-      id: '2',
-      type: 'Mastercard',
-      last4: '5678',
-      expiry: '08/2024',
-      isDefault: false,
-    },
-  ]);
+  // Load real billing data
+  useEffect(() => {
+    const loadBillingData = async () => {
+      try {
+        setLoading(true);
+        // TODO: Replace with actual billing service calls
+        // const subscription = await BillingService.getSubscription();
+        // const methods = await BillingService.getPaymentMethods();
+        // setSubscriptionInfo(subscription);
+        // setPaymentMethods(methods);
+
+        // For now, set empty state to show no demo data
+        setSubscriptionInfo(null);
+        setPaymentMethods([]);
+      } catch (error) {
+        console.error('Error loading billing data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadBillingData();
+  }, []);
 
   const [invoiceSettings, setInvoiceSettings] = useState({
     prefix: 'INV',
@@ -82,29 +85,7 @@ export default function BillingSettings({ showNotification }) {
     number_format: NUMBER_FORMATS.EUROPEAN,
   });
 
-  const [invoices, setInvoices] = useState([
-    {
-      id: '1',
-      number: 'INV-2024-015',
-      date: '15 January, 2024',
-      amount: '€359.88',
-      status: 'Paid',
-    },
-    {
-      id: '2',
-      number: 'INV-2024-014',
-      date: '15 December, 2023',
-      amount: '€359.88',
-      status: 'Paid',
-    },
-    {
-      id: '3',
-      number: 'INV-2024-013',
-      date: '15 November, 2023',
-      amount: '€359.88',
-      status: 'Pending',
-    },
-  ]);
+  const [invoices, setInvoices] = useState([]);
 
   const tabs = [
     { id: 'subscription', label: t('billing.tabs.subscription'), icon: CreditCardIcon },
@@ -269,6 +250,18 @@ export default function BillingSettings({ showNotification }) {
     );
   }
 
+  // Show loading state
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-500">Loading billing information...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-8">
       {/* Header */}
@@ -309,36 +302,52 @@ export default function BillingSettings({ showNotification }) {
               <CreditCardIcon className="h-5 w-5 mr-2" />
               {t('billing.subscription.title')}
             </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <p className="text-sm text-gray-600 mb-2">{t('billing.subscription.current')}</p>
-                <p className="text-xl font-semibold text-gray-900">{subscriptionInfo.plan}</p>
-                <p className="text-sm text-gray-500">{subscriptionInfo.price} / {subscriptionInfo.billingCycle}</p>
-              </div>
-              <div>
-                <p className="text-sm text-gray-600 mb-2">{t('billing.subscription.renewal')}</p>
-                <p className="text-lg font-medium text-gray-900">{subscriptionInfo.nextRenewal}</p>
-              </div>
-            </div>
-            <div className="mt-6">
-              <h4 className="text-sm font-medium text-gray-900 mb-3">Features Included:</h4>
-              <ul className="space-y-2">
-                {subscriptionInfo.features.map((feature, index) => (
-                  <li key={index} className="flex items-center text-sm text-gray-600">
+            {subscriptionInfo ? (
+              <>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <p className="text-sm text-gray-600 mb-2">{t('billing.subscription.current')}</p>
+                    <p className="text-xl font-semibold text-gray-900">{subscriptionInfo.plan}</p>
+                    <p className="text-sm text-gray-500">{subscriptionInfo.price} / {subscriptionInfo.billingCycle}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-600 mb-2">{t('billing.subscription.renewal')}</p>
+                    <p className="text-lg font-medium text-gray-900">{subscriptionInfo.nextRenewal}</p>
+                  </div>
+                </div>
+                <div className="mt-6">
+                  <h4 className="text-sm font-medium text-gray-900 mb-3">Features Included:</h4>
+                  <ul className="space-y-2">
+                    {subscriptionInfo.features.map((feature, index) => (
+                      <li key={index} className="flex items-center text-sm text-gray-600">
                     <CheckCircleIcon className="h-4 w-4 text-green-500 mr-2" />
                     {feature}
                   </li>
                 ))}
               </ul>
             </div>
-            <div className="mt-6 pt-4 border-t border-gray-200">
-              <button
-                onClick={handleChangePlan}
-                className="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-              >
-                {t('billing.subscription.upgrade')}
-              </button>
-            </div>
+                <div className="mt-6 pt-4 border-t border-gray-200">
+                  <button
+                    onClick={handleChangePlan}
+                    className="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                  >
+                    {t('billing.subscription.upgrade')}
+                  </button>
+                </div>
+              </>
+            ) : (
+              <div className="text-center py-8">
+                <CreditCardIcon className="h-12 w-12 text-gray-300 mx-auto mb-4" />
+                <h3 className="text-lg font-medium text-gray-900 mb-2">No subscription found</h3>
+                <p className="text-gray-500 mb-6">You don't have an active subscription yet.</p>
+                <button
+                  onClick={handleChangePlan}
+                  className="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                >
+                  Choose a Plan
+                </button>
+              </div>
+            )}
           </div>
         )}
 
@@ -359,36 +368,52 @@ export default function BillingSettings({ showNotification }) {
               </button>
             </div>
             <div className="space-y-4">
-              {paymentMethods.map((method) => (
-                <div key={method.id} className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
-                  <div className="flex items-center">
-                    <div className="flex-shrink-0">
-                      <CreditCardIcon className="h-6 w-6 text-gray-600" />
+              {paymentMethods.length > 0 ? (
+                paymentMethods.map((method) => (
+                  <div key={method.id} className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+                    <div className="flex items-center">
+                      <div className="flex-shrink-0">
+                        <CreditCardIcon className="h-6 w-6 text-gray-600" />
+                      </div>
+                      <div className="ml-4">
+                        <p className="text-sm font-medium text-gray-900">
+                          {method.type} •••• {method.last4}
+                        </p>
+                        <p className="text-xs text-gray-500">
+                          {t('billing.payment.expires')} {method.expiry}
+                        </p>
+                      </div>
                     </div>
-                    <div className="ml-4">
-                      <p className="text-sm font-medium text-gray-900">
-                        {method.type} •••• {method.last4}
-                      </p>
-                      <p className="text-xs text-gray-500">
-                        {t('billing.payment.expires')} {method.expiry}
-                      </p>
+                    <div className="flex items-center">
+                      {method.isDefault && (
+                        <span className="mr-4 inline-flex items-center px-2.5 py-0.5 rounded-full bg-green-100 text-green-800 text-xs font-medium">
+                          {t('billing.payment.defaultCard')}
+                        </span>
+                      )}
+                      <button
+                        type="button"
+                        onClick={() => handleEditPaymentMethod(method.id)}
+                        className="text-sm text-gray-500 hover:text-gray-700"
+                      >
+                        {t('billing.payment.edit')}
+                      </button>
                     </div>
                   </div>
-                  <div className="flex items-center">
-                    {method.isDefault && (
-                      <span className="mr-4 inline-flex items-center px-2.5 py-0.5 rounded-full bg-green-100 text-green-800 text-xs font-medium">
-                        {t('billing.payment.defaultCard')}
-                      </span>
-                    )}
-                    <button
-                      type="button"
-                      onClick={() => handleEditPaymentMethod(method.id)}
-                      className="text-sm text-gray-500 hover:text-gray-700"
-                    >
-                      {t('billing.payment.edit')}
-                    </button>
-                  </div>
+                ))
+              ) : (
+                <div className="text-center py-8">
+                  <CreditCardIcon className="h-12 w-12 text-gray-300 mx-auto mb-4" />
+                  <h3 className="text-lg font-medium text-gray-900 mb-2">No payment methods</h3>
+                  <p className="text-gray-500 mb-6">Add a payment method to manage your subscription.</p>
+                  <button
+                    onClick={handleAddPaymentMethod}
+                    className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                  >
+                    <PlusIcon className="h-4 w-4 mr-2" />
+                    Add Payment Method
+                  </button>
                 </div>
+              )}
               ))}
             </div>
           </div>

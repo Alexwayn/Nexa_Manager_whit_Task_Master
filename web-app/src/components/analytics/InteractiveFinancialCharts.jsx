@@ -19,8 +19,8 @@ import 'chartjs-adapter-date-fns';
 import zoomPlugin from 'chartjs-plugin-zoom';
 import annotationPlugin from 'chartjs-plugin-annotation';
 import {
-  TrendingUpIcon,
-  TrendingDownIcon,
+  ArrowTrendingUpIcon,
+  ArrowTrendingDownIcon,
   ArrowsPointingOutIcon,
   FunnelIcon,
   CalendarIcon,
@@ -86,7 +86,7 @@ const InteractiveFinancialCharts = ({
     {
       id: 'trends',
       name: t('analytics:charts.trends'),
-      icon: TrendingUpIcon,
+      icon: ArrowTrendingUpIcon,
       description: t('analytics:charts.trendsDesc'),
     },
     {

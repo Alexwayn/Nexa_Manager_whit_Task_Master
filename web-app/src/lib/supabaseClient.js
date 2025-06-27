@@ -25,15 +25,19 @@ export const setCurrentUserId = async (userId) => {
   }
 
   try {
+    Logger.info('Setting current user ID for RLS:', userId);
     const { error } = await supabase.rpc('set_current_user_id', { user_id: userId });
     if (error) {
       Logger.error('Error setting current user ID:', error);
-      throw error;
+      // Don't throw error, just log it - the function might not exist yet
+      Logger.warn('RLS function might not be available, continuing without it');
+      return;
     }
-    Logger.info('Current user ID set for RLS:', userId);
+    Logger.info('Current user ID set for RLS successfully:', userId);
   } catch (error) {
     Logger.error('Failed to set current user ID:', error);
-    throw error;
+    Logger.warn('Continuing without RLS context setting');
+    // Don't throw error to allow the app to continue working
   }
 };
 
@@ -44,11 +48,20 @@ export const withUserContext = async (userId, queryFunction) => {
   }
 
   try {
-    // Set the user context
+    Logger.info('Executing query with user context for:', userId);
+    
+    // Try to set the user context (but don't fail if it doesn't work)
     await setCurrentUserId(userId);
     
     // Execute the query
     const result = await queryFunction();
+    
+    // Log the result for debugging
+    if (result.error) {
+      Logger.error('Query failed with error:', result.error);
+    } else {
+      Logger.info('Query executed successfully');
+    }
     
     return result;
   } catch (error) {

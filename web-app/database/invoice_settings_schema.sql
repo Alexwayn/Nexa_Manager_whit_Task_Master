@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS invoice_templates (
 -- Create invoice settings table for user-specific configurations
 CREATE TABLE IF NOT EXISTS invoice_settings (
     id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-    user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+    user_id TEXT NOT NULL, -- Clerk user ID
     
     -- Basic Settings
     prefix VARCHAR(10) DEFAULT 'INV',
@@ -61,7 +61,7 @@ CREATE TABLE IF NOT EXISTS invoice_settings (
 -- Create invoice numbering table for tracking sequential numbers
 CREATE TABLE IF NOT EXISTS invoice_numbering (
     id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-    user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+    user_id TEXT NOT NULL, -- Clerk user ID
     year INTEGER NOT NULL,
     prefix VARCHAR(10) NOT NULL,
     current_number INTEGER DEFAULT 0,
@@ -78,31 +78,32 @@ ALTER TABLE invoice_settings ENABLE ROW LEVEL SECURITY;
 ALTER TABLE invoice_numbering ENABLE ROW LEVEL SECURITY;
 
 -- Invoice templates policies (read-only for users, admin-managed)
+DROP POLICY IF EXISTS "Users can view active templates" ON invoice_templates;
 CREATE POLICY "Users can view active templates" ON invoice_templates
     FOR SELECT USING (is_active = true);
 
 -- Invoice settings policies
 CREATE POLICY "Users can view own invoice settings" ON invoice_settings
-    FOR SELECT USING (auth.uid() = user_id);
+    FOR SELECT USING (auth.jwt() ->> 'sub' = user_id);
 
 CREATE POLICY "Users can insert own invoice settings" ON invoice_settings
-    FOR INSERT WITH CHECK (auth.uid() = user_id);
+    FOR INSERT WITH CHECK (auth.jwt() ->> 'sub' = user_id);
 
 CREATE POLICY "Users can update own invoice settings" ON invoice_settings
-    FOR UPDATE USING (auth.uid() = user_id);
+    FOR UPDATE USING (auth.jwt() ->> 'sub' = user_id);
 
 CREATE POLICY "Users can delete own invoice settings" ON invoice_settings
-    FOR DELETE USING (auth.uid() = user_id);
+    FOR DELETE USING (auth.jwt() ->> 'sub' = user_id);
 
 -- Invoice numbering policies
 CREATE POLICY "Users can view own numbering" ON invoice_numbering
-    FOR SELECT USING (auth.uid() = user_id);
+    FOR SELECT USING (auth.jwt() ->> 'sub' = user_id);
 
 CREATE POLICY "Users can insert own numbering" ON invoice_numbering
-    FOR INSERT WITH CHECK (auth.uid() = user_id);
+    FOR INSERT WITH CHECK (auth.jwt() ->> 'sub' = user_id);
 
 CREATE POLICY "Users can update own numbering" ON invoice_numbering
-    FOR UPDATE USING (auth.uid() = user_id);
+    FOR UPDATE USING (auth.jwt() ->> 'sub' = user_id);
 
 -- Insert default invoice templates
 INSERT INTO invoice_templates (name, description, template_type, config, is_default) VALUES
@@ -122,20 +123,27 @@ END;
 $$ language 'plpgsql';
 
 -- Add updated_at triggers
+DROP TRIGGER IF EXISTS update_invoice_templates_updated_at ON invoice_templates;
 CREATE TRIGGER update_invoice_templates_updated_at 
     BEFORE UPDATE ON invoice_templates 
     FOR EACH ROW EXECUTE PROCEDURE update_updated_at_column();
 
+DROP TRIGGER IF EXISTS update_invoice_settings_updated_at ON invoice_settings;
 CREATE TRIGGER update_invoice_settings_updated_at 
     BEFORE UPDATE ON invoice_settings 
     FOR EACH ROW EXECUTE PROCEDURE update_updated_at_column();
 
+DROP TRIGGER IF EXISTS update_invoice_numbering_updated_at ON invoice_numbering;
 CREATE TRIGGER update_invoice_numbering_updated_at 
     BEFORE UPDATE ON invoice_numbering 
     FOR EACH ROW EXECUTE PROCEDURE update_updated_at_column();
 
 -- Create indexes for better performance
+DROP INDEX IF EXISTS idx_invoice_templates_type;
 CREATE INDEX idx_invoice_templates_type ON invoice_templates(template_type);
+DROP INDEX IF EXISTS idx_invoice_templates_active;
 CREATE INDEX idx_invoice_templates_active ON invoice_templates(is_active);
+DROP INDEX IF EXISTS idx_invoice_settings_user_id;
 CREATE INDEX idx_invoice_settings_user_id ON invoice_settings(user_id);
-CREATE INDEX idx_invoice_numbering_user_year ON invoice_numbering(user_id, year); 
+DROP INDEX IF EXISTS idx_invoice_numbering_user_year;
+CREATE INDEX idx_invoice_numbering_user_year ON invoice_numbering(user_id, year);

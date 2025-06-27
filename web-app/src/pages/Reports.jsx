@@ -1,42 +1,27 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import Footer from '@components/shared/Footer';
-import nexaLogo from '@assets/logo_nexa.png';
+import Footer from '../components/shared/Footer';
 import {
-  DocumentChartBarIcon,
-  CalendarIcon,
-  ArrowDownTrayIcon,
   ChartBarIcon,
-  DocumentTextIcon,
-  CurrencyDollarIcon,
-  UserGroupIcon,
-  ClipboardDocumentListIcon,
   PresentationChartLineIcon,
-  DocumentArrowDownIcon,
-  BanknotesIcon,
-  ReceiptPercentIcon,
-  ArrowRightIcon,
-  ChevronRightIcon,
-  ArrowTrendingUpIcon,
-  ArrowTrendingDownIcon,
+  ChartPieIcon,
+  DocumentTextIcon,
+  UserGroupIcon,
+  CheckCircleIcon,
   ClockIcon,
   ExclamationTriangleIcon,
-  CheckCircleIcon,
-  XCircleIcon,
-  ArrowUpIcon,
-  ArrowDownIcon,
-  EyeIcon,
-  Cog6ToothIcon,
-  PrinterIcon,
-  ShareIcon,
+  ArrowTrendingUpIcon,
+  CurrencyDollarIcon,
+  CalendarIcon,
   ChevronDownIcon,
-  BuildingOfficeIcon,
-  ChartPieIcon,
-  TableCellsIcon,
-  DocumentDuplicateIcon,
-  BookmarkIcon,
+  ArrowDownTrayIcon,
+  ArrowRightIcon,
+  EyeIcon,
   TrashIcon,
-  PencilIcon,
+  ShareIcon,
+  ChevronRightIcon,
+  DocumentChartBarIcon,
+  Cog6ToothIcon,
 } from '@heroicons/react/24/outline';
 
 const Reports = () => {
@@ -113,40 +98,6 @@ const Reports = () => {
         icon: ChartBarIcon,
         bgColor: 'bg-indigo-50',
         iconColor: 'text-indigo-600',
-      },
-    },
-    invoices: {
-      totalInvoices: {
-        value: '156',
-        change: '+7.5%',
-        trend: 'up',
-        icon: DocumentTextIcon,
-        bgColor: 'bg-blue-50',
-        iconColor: 'text-blue-600',
-      },
-      paidInvoices: {
-        value: '142',
-        change: '+9.2%',
-        trend: 'up',
-        icon: CheckCircleIcon,
-        bgColor: 'bg-green-50',
-        iconColor: 'text-green-600',
-      },
-      pendingInvoices: {
-        value: '12',
-        change: '-15.3%',
-        trend: 'down',
-        icon: ClockIcon,
-        bgColor: 'bg-yellow-50',
-        iconColor: 'text-yellow-600',
-      },
-      overdueInvoices: {
-        value: '2',
-        change: '-50.0%',
-        trend: 'down',
-        icon: ExclamationTriangleIcon,
-        bgColor: 'bg-red-50',
-        iconColor: 'text-red-600',
       },
     },
     custom: {
@@ -304,40 +255,6 @@ const Reports = () => {
         iconColor: 'text-purple-600',
       },
     ],
-    invoices: [
-      {
-        id: 'invoice-status',
-        title: 'Invoice Status',
-        description: 'Outstanding, paid, and overdue invoices',
-        icon: DocumentTextIcon,
-        iconBg: 'bg-blue-100',
-        iconColor: 'text-blue-600',
-      },
-      {
-        id: 'payment-tracking',
-        title: 'Payment Tracking',
-        description: 'Track payment status and history',
-        icon: CheckCircleIcon,
-        iconBg: 'bg-green-100',
-        iconColor: 'text-green-600',
-      },
-      {
-        id: 'overdue-analysis',
-        title: 'Overdue Analysis',
-        description: 'Analyze overdue invoices and patterns',
-        icon: ExclamationTriangleIcon,
-        iconBg: 'bg-red-100',
-        iconColor: 'text-red-600',
-      },
-      {
-        id: 'invoice-aging',
-        title: 'Invoice Aging',
-        description: 'Age analysis of outstanding invoices',
-        icon: ClockIcon,
-        iconBg: 'bg-orange-100',
-        iconColor: 'text-orange-600',
-      },
-    ],
     custom: [
       {
         id: 'custom-dashboard',
@@ -374,7 +291,7 @@ const Reports = () => {
     ],
   };
 
-  const handleGenerateReport = reportId => {
+  const handleGenerateReport = (reportId) => {
     console.log(`Generating report: ${reportId}`);
     // TODO: Implement report generation logic
   };
@@ -522,7 +439,7 @@ const Reports = () => {
       {/* Report Cards Grid */}
       <div className='px-6 py-6'>
         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4'>
-          {reportCards[activeTab].map(report => {
+          {reportCards[activeTab]?.map(report => {
             const IconComponent = report.icon;
             return (
               <div
@@ -606,249 +523,134 @@ const Reports = () => {
               }}
               title='Client Acquisition vs Churn'
             />
-            <SimplePieChart title='Revenue Sources' />
-            <SimplePieChart title='Invoice Status' />
+            <SimplePieChart title='Revenue Sources' data={{}} />
+            <SimplePieChart title='Expense Categories' data={{}} />
           </div>
         </div>
       )}
 
-      {activeTab === 'client' && (
-        <div className='px-6 py-6'>
-          <div className='grid grid-cols-1 lg:grid-cols-2 gap-6'>
-            <SimpleBarChart
-              data={{
-                revenue: chartData.clientAcquisition.newClients,
-                months: chartData.clientAcquisition.months,
-              }}
-              title='New Clients by Month'
-            />
-            <SimplePieChart title='Client Distribution' />
-            <SimplePieChart title='Client Satisfaction' />
-            <SimpleBarChart
-              data={{
-                revenue: [94, 92, 95, 91, 96, 94],
-                months: chartData.clientAcquisition.months,
-              }}
-              title='Client Retention Rate'
-            />
-          </div>
-        </div>
-      )}
-
+      {/* Custom Report Builder */}
       {activeTab === 'custom' && (
         <div className='px-6 py-6'>
-          <div className='grid grid-cols-1 lg:grid-cols-2 gap-6'>
-            <SimpleBarChart
-              data={{
-                revenue: [5, 8, 12, 15, 18, 28],
-                months: chartData.clientAcquisition.months,
-              }}
-              title='Custom Reports Generated'
-            />
-            <SimplePieChart title='Report Types Distribution' />
-            <SimplePieChart title='Export Formats' />
-            <SimpleBarChart
-              data={{
-                revenue: [2, 4, 6, 8, 10, 12],
-                months: chartData.clientAcquisition.months,
-              }}
-              title='Scheduled Reports'
-            />
-          </div>
-        </div>
-      )}
-
-      {/* Top Clients Table (Financial Reports only) */}
-      {activeTab === 'financial' && (
-        <div className='px-6 py-6'>
-          <div className='grid grid-cols-1 lg:grid-cols-2 gap-6'>
+          <div className='grid grid-cols-1 lg:grid-cols-3 gap-6'>
+            {/* Report Builder */}
             <div className='bg-white rounded-lg p-6 border border-gray-200 shadow-sm'>
-              <div className='flex items-center justify-between mb-4'>
-                <h3 className='text-lg font-semibold text-gray-900'>Client Industries</h3>
-                <button className='text-blue-600 text-sm hover:text-blue-700'>
-                  View All Clients <ArrowRightIcon className='h-4 w-4 inline ml-1' />
-                </button>
-              </div>
-              <div className='space-y-3'>
-                <div className='flex items-center space-x-3'>
-                  <div className='w-3 h-3 rounded bg-blue-500'></div>
-                  <span className='text-sm text-gray-600'>Technology</span>
-                </div>
-                <div className='flex items-center space-x-3'>
-                  <div className='w-3 h-3 rounded bg-purple-500'></div>
-                  <span className='text-sm text-gray-600'>Manufacturing</span>
-                </div>
-                <div className='flex items-center space-x-3'>
-                  <div className='w-3 h-3 rounded bg-pink-500'></div>
-                  <span className='text-sm text-gray-600'>Finance</span>
-                </div>
-                <div className='flex items-center space-x-3'>
-                  <div className='w-3 h-3 rounded bg-green-500'></div>
-                  <span className='text-sm text-gray-600'>Healthcare</span>
-                </div>
-              </div>
-            </div>
-
-            <div className='bg-white rounded-lg p-6 border border-gray-200 shadow-sm'>
-              <h3 className='text-lg font-semibold text-gray-900 mb-4'>Top Clients by Revenue</h3>
+              <h3 className='text-base font-semibold text-gray-900 mb-4'>Report Builder</h3>
+              
               <div className='space-y-4'>
-                <div className='flex items-center justify-between py-2 border-b border-gray-100'>
-                  <span className='font-medium text-gray-600'>Client</span>
-                  <div className='flex space-x-16'>
-                    <span className='font-medium text-gray-600'>Revenue</span>
-                    <span className='font-medium text-gray-600'>Growth</span>
-                  </div>
-                </div>
-                <div className='flex items-center justify-between py-2'>
-                  <span className='text-gray-900'>Acme Corporation</span>
-                  <div className='flex space-x-16'>
-                    <span className='text-gray-900'>$24,500</span>
-                    <span className='text-green-600'>+12%</span>
-                  </div>
-                </div>
-                <div className='flex items-center justify-between py-2'>
-                  <span className='text-gray-900'>Globex Industries</span>
-                  <div className='flex space-x-16'>
-                    <span className='text-gray-900'>$18,700</span>
-                    <span className='text-green-600'>+8%</span>
-                  </div>
-                </div>
-                <div className='flex items-center justify-between py-2'>
-                  <span className='text-gray-900'>Initech LLC</span>
-                  <div className='flex space-x-16'>
-                    <span className='text-gray-900'>$15,200</span>
-                    <span className='text-red-600'>-3%</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Report Builder Section */}
-      <div className='px-6 py-6'>
-        <h2 className='text-lg font-semibold text-gray-900 mb-6'>Report Builder</h2>
-        <div className='grid grid-cols-1 lg:grid-cols-3 gap-6'>
-          {/* Configuration Panel */}
-          <div className='bg-white rounded-lg p-6 border border-gray-200 shadow-sm'>
-            <h3 className='text-base font-semibold text-gray-900 mb-4'>Configure Report</h3>
-
-            <div className='space-y-4'>
-              <div>
-                <label className='block text-sm text-gray-700 mb-2'>Report Type</label>
-                <div className='relative'>
-                  <select className='w-full p-2 border border-gray-300 rounded-md text-sm bg-gray-50'>
-                    <option>Financial Report</option>
-                    <option>Client Report</option>
-                    <option>Custom Report</option>
+                <div>
+                  <label className='block text-sm text-gray-700 mb-2'>Report Type</label>
+                  <select className='w-full p-2 border border-gray-300 rounded-md text-sm'>
+                    <option>Financial Overview</option>
+                    <option>Client Analysis</option>
+                    <option>Performance Metrics</option>
                   </select>
                 </div>
-              </div>
 
-              <div>
-                <label className='block text-sm text-gray-700 mb-2'>Date Range</label>
-                <div className='grid grid-cols-2 gap-2'>
-                  <input
-                    type='date'
-                    className='p-2 border border-gray-300 rounded-md text-sm'
-                    placeholder='Start Date'
-                  />
-                  <input
-                    type='date'
-                    className='p-2 border border-gray-300 rounded-md text-sm'
-                    placeholder='End Date'
-                  />
+                <div>
+                  <label className='block text-sm text-gray-700 mb-2'>Date Range</label>
+                  <div className='grid grid-cols-2 gap-2'>
+                    <input
+                      type='date'
+                      className='p-2 border border-gray-300 rounded-md text-sm'
+                      placeholder='Start Date'
+                    />
+                    <input
+                      type='date'
+                      className='p-2 border border-gray-300 rounded-md text-sm'
+                      placeholder='End Date'
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className='block text-sm text-gray-700 mb-2'>Metrics</label>
+                  <div className='space-y-2'>
+                    <label className='flex items-center space-x-2'>
+                      <input type='checkbox' defaultChecked className='rounded text-blue-600' />
+                      <span className='text-sm text-gray-700'>Revenue</span>
+                    </label>
+                    <label className='flex items-center space-x-2'>
+                      <input type='checkbox' defaultChecked className='rounded text-blue-600' />
+                      <span className='text-sm text-gray-700'>Expenses</span>
+                    </label>
+                    <label className='flex items-center space-x-2'>
+                      <input type='checkbox' defaultChecked className='rounded text-blue-600' />
+                      <span className='text-sm text-gray-700'>Profit Margin</span>
+                    </label>
+                  </div>
+                </div>
+
+                <div>
+                  <label className='block text-sm text-gray-700 mb-2'>Visualization Type</label>
+                  <div className='grid grid-cols-3 gap-2'>
+                    <button className='p-3 border-2 border-blue-500 bg-blue-50 rounded-md text-center'>
+                      <ChartBarIcon className='h-5 w-5 text-blue-600 mx-auto mb-1' />
+                      <span className='text-xs text-blue-600'>Bar Chart</span>
+                    </button>
+                    <button className='p-3 border border-gray-300 rounded-md text-center hover:bg-gray-50'>
+                      <PresentationChartLineIcon className='h-5 w-5 text-gray-400 mx-auto mb-1' />
+                      <span className='text-xs text-gray-600'>Line Chart</span>
+                    </button>
+                    <button className='p-3 border border-gray-300 rounded-md text-center hover:bg-gray-50'>
+                      <ChartPieIcon className='h-5 w-5 text-gray-400 mx-auto mb-1' />
+                      <span className='text-xs text-gray-600'>Pie Chart</span>
+                    </button>
+                  </div>
+                </div>
+
+                <div className='flex space-x-3 pt-4'>
+                  <button className='flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-md text-sm hover:bg-gray-50'>
+                    Save Template
+                  </button>
+                  <button className='flex-1 px-4 py-2 bg-blue-600 text-white rounded-md text-sm hover:bg-blue-700'>
+                    Generate Report
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* Report Preview */}
+            <div className='lg:col-span-2 bg-white rounded-lg p-6 border border-gray-200 shadow-sm'>
+              <div className='flex items-center justify-between mb-4'>
+                <h3 className='text-base font-semibold text-gray-900'>Report Preview</h3>
+                <div className='flex space-x-2'>
+                  <button className='p-2 text-gray-400 hover:text-gray-600'>
+                    <EyeIcon className='h-5 w-5' />
+                  </button>
+                  <button className='p-2 text-gray-400 hover:text-gray-600'>
+                    <ArrowDownTrayIcon className='h-5 w-5' />
+                  </button>
+                  <button className='p-2 text-gray-400 hover:text-gray-600'>
+                    <ShareIcon className='h-5 w-5' />
+                  </button>
                 </div>
               </div>
 
-              <div>
-                <label className='block text-sm text-gray-700 mb-2'>Metrics</label>
-                <div className='space-y-2'>
-                  <label className='flex items-center space-x-2'>
-                    <input type='checkbox' defaultChecked className='rounded text-blue-600' />
-                    <span className='text-sm text-gray-700'>Revenue</span>
-                  </label>
-                  <label className='flex items-center space-x-2'>
-                    <input type='checkbox' defaultChecked className='rounded text-blue-600' />
-                    <span className='text-sm text-gray-700'>Expenses</span>
-                  </label>
-                  <label className='flex items-center space-x-2'>
-                    <input type='checkbox' defaultChecked className='rounded text-blue-600' />
-                    <span className='text-sm text-gray-700'>Profit Margin</span>
-                  </label>
+              <div className='border-b border-gray-200 pb-4 mb-4'>
+                <h4 className='text-lg font-medium text-gray-900'>Financial Performance</h4>
+                <p className='text-sm text-gray-600'>Last 6 months revenue analysis</p>
+              </div>
+
+              <div className='h-64 bg-gray-50 rounded-lg flex items-center justify-center mb-6'>
+                <div className='text-center'>
+                  <ChartBarIcon className='h-12 w-12 text-gray-400 mx-auto mb-2' />
+                  <p className='text-sm text-gray-500'>Chart will appear here</p>
                 </div>
               </div>
 
-              <div>
-                <label className='block text-sm text-gray-700 mb-2'>Visualization Type</label>
-                <div className='grid grid-cols-3 gap-2'>
-                  <button className='p-3 border-2 border-blue-500 bg-blue-50 rounded-md text-center'>
-                    <ChartBarIcon className='h-5 w-5 text-blue-600 mx-auto mb-1' />
-                    <span className='text-xs text-blue-600'>Bar Chart</span>
-                  </button>
-                  <button className='p-3 border border-gray-300 rounded-md text-center hover:bg-gray-50'>
-                    <PresentationChartLineIcon className='h-5 w-5 text-gray-400 mx-auto mb-1' />
-                    <span className='text-xs text-gray-600'>Line Chart</span>
-                  </button>
-                  <button className='p-3 border border-gray-300 rounded-md text-center hover:bg-gray-50'>
-                    <ChartPieIcon className='h-5 w-5 text-gray-400 mx-auto mb-1' />
-                    <span className='text-xs text-gray-600'>Pie Chart</span>
-                  </button>
+              <div className='grid grid-cols-2 gap-4'>
+                <div className='h-32 bg-gray-50 rounded-lg flex items-center justify-center'>
+                  <p className='text-sm text-gray-500'>Client Distribution</p>
                 </div>
-              </div>
-
-              <div className='flex space-x-3 pt-4'>
-                <button className='flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-md text-sm hover:bg-gray-50'>
-                  Save Template
-                </button>
-                <button className='flex-1 px-4 py-2 bg-blue-600 text-white rounded-md text-sm hover:bg-blue-700'>
-                  Generate Report
-                </button>
-              </div>
-            </div>
-          </div>
-
-          {/* Report Preview */}
-          <div className='lg:col-span-2 bg-white rounded-lg p-6 border border-gray-200 shadow-sm'>
-            <div className='flex items-center justify-between mb-4'>
-              <h3 className='text-base font-semibold text-gray-900'>Report Preview</h3>
-              <div className='flex space-x-2'>
-                <button className='p-2 text-gray-400 hover:text-gray-600'>
-                  <EyeIcon className='h-5 w-5' />
-                </button>
-                <button className='p-2 text-gray-400 hover:text-gray-600'>
-                  <ArrowDownTrayIcon className='h-5 w-5' />
-                </button>
-                <button className='p-2 text-gray-400 hover:text-gray-600'>
-                  <ShareIcon className='h-5 w-5' />
-                </button>
-              </div>
-            </div>
-
-            <div className='border-b border-gray-200 pb-4 mb-4'>
-              <h4 className='text-lg font-medium text-gray-900'>Financial Performance</h4>
-              <p className='text-sm text-gray-600'>Last 6 months revenue analysis</p>
-            </div>
-
-            <div className='h-64 bg-gray-50 rounded-lg flex items-center justify-center mb-6'>
-              <div className='text-center'>
-                <ChartBarIcon className='h-12 w-12 text-gray-400 mx-auto mb-2' />
-                <p className='text-sm text-gray-500'>Chart will appear here</p>
-              </div>
-            </div>
-
-            <div className='grid grid-cols-2 gap-4'>
-              <div className='h-32 bg-gray-50 rounded-lg flex items-center justify-center'>
-                <p className='text-sm text-gray-500'>Client Distribution</p>
-              </div>
-              <div className='h-32 bg-gray-50 rounded-lg flex items-center justify-center'>
-                <p className='text-sm text-gray-500'>Invoice Status</p>
+                <div className='h-32 bg-gray-50 rounded-lg flex items-center justify-center'>
+                  <p className='text-sm text-gray-500'>Invoice Status</p>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
 
       {/* Recent Reports Section */}
       <div className='px-6 py-6'>

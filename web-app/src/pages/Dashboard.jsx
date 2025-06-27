@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { useAuth, useUser } from '@clerk/clerk-react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -32,9 +32,21 @@ import {
   User,
   Grid,
   BarChart3,
+  Eye,
+  Download,
+  RefreshCw,
+  PieChart,
 } from 'lucide-react';
 import nexaFooterLogo from '@assets/logo_nexa_footer.png';
 import nexaLogo from '@assets/logo_nexa.png';
+
+// Import hooks
+import { useRealtimeDashboard } from '@hooks/useRealtimeDashboard';
+import useDateRange from '@hooks/useDateRange';
+
+// Import services
+import clientService from '@lib/clientService';
+import { supabase } from '@lib/supabaseClient';
 
 const Dashboard = () => {
   const { isSignedIn } = useAuth();
@@ -44,20 +56,335 @@ const Dashboard = () => {
   
   // State to toggle between enhanced and classic dashboard
   const [useEnhancedDashboard, setUseEnhancedDashboard] = useState(() => {
-    try {
-      const saved = localStorage.getItem('dashboard-mode');
-      return saved ? JSON.parse(saved) : true; // Default to enhanced dashboard
-    } catch (error) {
-      return true;
-    }
+    const saved = localStorage.getItem('dashboard-mode');
+    return saved === 'enhanced';
   });
+
+  // Date range for data filtering
+  const { dateRange } = useDateRange();
+
+  // Trasforma dateRange per essere compatibile con useRealtimeDashboard
+  const realtimeDateRange = useMemo(() => ({
+    start: dateRange.startDate,
+    end: dateRange.endDate
+  }), [dateRange.startDate, dateRange.endDate]);
+  
+  const { dashboardData, loading: dashboardLoading, error: dashboardError } = useRealtimeDashboard(
+    realtimeDateRange, 
+    true
+  );
+
+  // ALL HOOKS AND STATES MUST BE DECLARED BEFORE ANY CONDITIONAL RETURNS
+  const [notifications, setNotifications] = useState([]);
+  const [recentClients, setRecentClients] = useState([]);
+  const [upcomingWork, setUpcomingWork] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedPeriod, setSelectedPeriod] = useState('monthly'); // Add period state
+
+  // Dropdown states for card menus
+  const [activeDropdown, setActiveDropdown] = useState(null);
+  const dropdownRefs = useRef({});
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (activeDropdown && dropdownRefs.current[activeDropdown] && 
+          !dropdownRefs.current[activeDropdown].contains(event.target)) {
+        setActiveDropdown(null);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [activeDropdown]);
+
+  const toggleDropdown = (dropdownId) => {
+    setActiveDropdown(activeDropdown === dropdownId ? null : dropdownId);
+  };
+
+  // Handle period change
+  const handlePeriodChange = (period) => {
+    setSelectedPeriod(period);
+    // Here you can add logic to refresh data based on the selected period
+    console.log('Period changed to:', period);
+  };
+
+  // Dropdown menu component
+  const CardDropdownMenu = ({ dropdownId, options }) => (
+    <div className="relative" ref={el => dropdownRefs.current[dropdownId] = el}>
+      <button
+        onClick={() => toggleDropdown(dropdownId)}
+        className="h-5 w-5 text-gray-400 hover:text-gray-600 cursor-pointer transition-colors"
+        aria-label="Card options"
+      >
+        <MoreHorizontal className="h-5 w-5" />
+      </button>
+      
+      {activeDropdown === dropdownId && (
+        <div className="absolute right-0 top-6 w-48 bg-white rounded-md shadow-lg border border-gray-200 py-1 z-10">
+          {options.map((option, index) => (
+            <button
+              key={index}
+              onClick={() => {
+                option.action();
+                setActiveDropdown(null);
+              }}
+              className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center space-x-2"
+            >
+              {option.icon && <option.icon className="h-4 w-4" />}
+              <span>{option.label}</span>
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+
+  // Load real data from database
+  useEffect(() => {
+    const loadRealData = async () => {
+      if (!isSignedIn || !user) return;
+
+      try {
+        // Load recent clients (limit to 4 most recent)
+        const clientsResult = await clientService.getClients({
+          limit: 4,
+          sortBy: 'created_at',
+          ascending: false
+        });
+        
+        if (clientsResult.data && clientsResult.data.length > 0) {
+          const formattedClients = clientsResult.data.map(client => ({
+            id: client.id,
+            name: client.full_name || client.name || 'Cliente',
+            industry: client.notes || 'Non specificato',
+            status: 'active', // Default status since we don't have this field
+            lastInvoice: 'Nessuna fattura',
+            lastContact: new Date(client.created_at).toLocaleDateString('it-IT'),
+            initials: (client.full_name || client.name || 'C').substring(0, 2).toUpperCase(),
+          }));
+          setRecentClients(formattedClients);
+        }
+
+        // Load upcoming events from database (if events table exists)
+        // For now, we'll leave this empty since we need to check if events table has data
+        setUpcomingWork([]);
+        
+        // Load recent notifications (for now, we'll leave this empty)
+        setNotifications([]);
+
+      } catch (error) {
+        console.error('Error loading dashboard data:', error);
+      }
+    };
+
+    loadRealData();
+  }, [isSignedIn, user]);
 
   const toggleDashboardMode = () => {
     const newMode = !useEnhancedDashboard;
     setUseEnhancedDashboard(newMode);
-    localStorage.setItem('dashboard-mode', JSON.stringify(newMode));
+    localStorage.setItem('dashboard-mode', newMode ? 'enhanced' : 'classic');
   };
 
+  // Generic filter function
+  const filterByTerm = (items, fields) => {
+    if (!searchTerm.trim()) return [];
+    const term = searchTerm.toLowerCase();
+    return items.filter(item =>
+      fields.some(field => (item[field] || '').toString().toLowerCase().includes(term)),
+    );
+  };
+
+  // Filters for each category
+  const filteredClients = filterByTerm(recentClients, [
+    'name',
+    'industry',
+    'lastInvoice',
+  ]);
+
+  const filteredNotifications = filterByTerm(notifications, [
+    'title',
+    'message',
+  ]);
+
+  const filteredUpcomingWork = filterByTerm(upcomingWork, [
+    'title',
+    'client',
+  ]);
+
+  // Navigation handlers
+  const handleViewAllClients = () => navigate('/clients');
+  const handleViewAllNotifications = () => navigate('/notifications');
+  const handleViewReports = () => navigate('/reports');
+  const handleViewSettings = () => navigate('/settings');
+
+  const handleViewCalendar = () => navigate('/calendar');
+  const handleAddNewEvent = () => navigate('/calendar?action=new');
+  const handleAddClient = () => navigate('/clients?action=new');
+  const handleCreateInvoice = () => navigate('/invoices?action=new');
+  const handleTrackExpense = () => navigate('/transactions?action=expense');
+  const handleScheduleMeeting = () => navigate('/calendar?action=meeting');
+
+  // Dropdown menu options for each card
+  const businessHealthOptions = [
+    {
+      label: t('dropdownOptions.viewDetails'),
+      icon: Eye,
+      action: () => navigate('/analytics')
+    },
+    {
+      label: t('dropdownOptions.exportReport'),
+      icon: Download,
+      action: () => console.log('Export business health report')
+    },
+    {
+      label: t('dropdownOptions.refreshData'),
+      icon: RefreshCw,
+      action: () => window.location.reload()
+    }
+  ];
+
+  const revenueStreamOptions = [
+    {
+      label: t('dropdownOptions.viewAnalytics'),
+      icon: BarChart3,
+      action: () => navigate('/analytics')
+    },
+    {
+      label: t('dropdownOptions.revenueSettings'),
+      icon: Settings,
+      action: () => navigate('/settings')
+    },
+    {
+      label: t('dropdownOptions.exportData'),
+      icon: Download,
+      action: () => console.log('Export revenue data')
+    }
+  ];
+
+  const invoiceTrackerOptions = [
+    {
+      label: t('dropdownOptions.viewAllInvoices'),
+      icon: FileText,
+      action: () => navigate('/invoices')
+    },
+    {
+      label: t('dropdownOptions.createInvoice'),
+      icon: Plus,
+      action: () => navigate('/invoices?action=new')
+    },
+    {
+      label: t('dropdownOptions.invoiceSettings'),
+      icon: Settings,
+      action: () => navigate('/settings')
+    }
+  ];
+
+  // Get real data for Classic View
+  const getRealDataForClassicView = () => {
+    // DEBUG: Vediamo cosa contiene dashboardData
+    console.log('🔍 DEBUG Classic View - dashboardData:', dashboardData);
+    console.log('🔍 DEBUG Classic View - dashboardLoading:', dashboardLoading);
+    
+    if (dashboardLoading || !dashboardData) {
+      console.log('⚠️ Classic View: Usando dati di fallback');
+      return {
+        businessHealthScore: 0, // Changed from 75 to 0
+        revenueData: {
+          monthly: '€0,00',
+          growth: '+0%',
+          lastMonth: '€0,00',
+        },
+        clientData: {
+          active: '0',
+          growth: '+0%',
+          lastMonth: '0',
+        },
+        upcomingEvents: {
+          count: '0',
+          period: 'questa settimana', // Removed translation reference
+        }
+      };
+    }
+
+    // Extract real data from dashboard - STRUTTURA CORRETTA
+    const kpis = dashboardData.kpis || {};
+    const clients = dashboardData.clients || {};
+    const trends = dashboardData.trends || {};
+    
+    console.log('💰 Classic View - kpis data:', kpis);
+    console.log('👥 Classic View - clients data:', clients);
+    console.log('📈 Classic View - trends data:', trends);
+    
+    // Calculate revenue data - USA STRUTTURA CORRETTA
+    const currentRevenue = kpis.totalRevenue || 0;
+    const currentExpenses = kpis.totalExpenses || 0;
+    const revenueGrowth = trends.revenue ? `+${trends.revenue}%` : '+0%';
+
+    // Calculate client data - USA STRUTTURA CORRETTA  
+    const activeClientsCount = clients.active || 0;
+    const totalClientsCount = clients.total || 0;
+    const clientGrowth = trends.clients ? `+${trends.clients}%` : '+0%'; // Use real data instead of hardcoded
+
+    // Business health score based on real data
+    const businessHealthScore = Math.min(100, Math.max(0, 
+      ((currentRevenue > 0 ? 30 : 0) + 
+       (activeClientsCount > 0 ? 25 : 0) + 
+       (revenueGrowth.includes('+') ? 25 : 0) + 
+       (clientGrowth.includes('+') ? 20 : 0))
+    ));
+
+    const result = {
+      businessHealthScore,
+      revenueData: {
+        monthly: `€${currentRevenue.toLocaleString('it-IT', { minimumFractionDigits: 2 })}`,
+        growth: revenueGrowth,
+        lastMonth: `€${(currentRevenue - currentExpenses).toLocaleString('it-IT', { minimumFractionDigits: 2 })}`,
+      },
+      clientData: {
+        active: activeClientsCount.toString(),
+        growth: clientGrowth,
+        lastMonth: totalClientsCount.toString(),
+      },
+      upcomingEvents: {
+        count: (dashboardData.calendar?.upcomingEvents || 0).toString(),
+        period: t('values.upcomingEventsPeriod'),
+      }
+    };
+    
+    console.log('✅ Classic View - Final result:', result);
+    return result;
+  };
+
+  const realData = getRealDataForClassicView();
+  const { businessHealthScore, revenueData, clientData, upcomingEvents } = realData;
+
+  // Helper function to get status color
+  const getStatusColor = status => {
+    switch (status) {
+      case 'active':
+        return 'bg-green-500';
+      case 'pending':
+        return 'bg-yellow-500';
+      case 'overdue':
+        return 'bg-red-500';
+      default:
+        return 'bg-gray-500';
+    }
+  };
+
+  // Helper function to get avatar background color
+  const getAvatarColor = index => {
+    const colors = ['bg-blue-500', 'bg-green-500', 'bg-purple-500', 'bg-red-500', 'bg-yellow-500'];
+    return colors[index % colors.length];
+  };
+
+  const handleViewDetails = clientId => navigate(`/clients/${clientId}`);
+
+  // NOW WE CAN SAFELY DO CONDITIONAL RENDERING AFTER ALL HOOKS ARE DECLARED
   // If enhanced dashboard is enabled, render it directly
   if (useEnhancedDashboard) {
     return (
@@ -83,188 +410,7 @@ const Dashboard = () => {
   }
 
   // Classic Dashboard Implementation (existing code)
-  const [notifications, setNotifications] = useState([
-    {
-      id: 1,
-      type: 'payment',
-      title: t('notifications.paymentReceived'),
-      message: t('recentNotifications.data.paymentReceived'),
-      time: t('recentNotifications.data.twoMinutesAgo'),
-      icon: CheckCircle,
-      color: 'bg-green-500',
-    },
-    {
-      id: 2,
-      type: 'meeting',
-      title: t('notifications.meetingReminder'),
-      message: t('recentNotifications.data.newInvoice'),
-      time: t('recentNotifications.data.oneHourAgo'),
-      icon: Clock,
-      color: 'bg-blue-500',
-    },
-    {
-      id: 3,
-      type: 'overdue',
-      title: t('notifications.invoiceOverdue'),
-      message: t('recentNotifications.data.taskCompleted'),
-      time: t('recentNotifications.data.threeDaysAgo'),
-      icon: AlertTriangle,
-      color: 'bg-red-500',
-    },
-  ]);
-
-  const [recentClients] = useState([
-    {
-      id: 1,
-      name: t('recentClients.data.acmeCorporation'),
-      industry: t('recentClients.data.technology'),
-      status: 'active',
-      lastInvoice: t('recentClients.data.acmeInvoice'),
-      lastContact: t('time.daysAgo', { count: 2 }),
-      initials: 'AC',
-    },
-    {
-      id: 2,
-      name: t('recentClients.data.globexIndustries'),
-      industry: t('recentClients.data.manufacturing'),
-      status: 'pending',
-      lastInvoice: t('recentClients.data.globexInvoice'),
-      lastContact: t('time.daysAgo', { count: 5 }),
-      initials: 'GI',
-    },
-    {
-      id: 3,
-      name: t('recentClients.data.soylentCorp'),
-      industry: t('recentClients.data.foodBeverage'),
-      status: 'active',
-      lastInvoice: t('recentClients.data.soylentInvoice'),
-      lastContact: t('time.today'),
-      initials: 'SC',
-    },
-    {
-      id: 4,
-      name: t('recentClients.data.initechLLC'),
-      industry: t('recentClients.data.software'),
-      status: 'overdue',
-      lastInvoice: t('recentClients.data.initechInvoice'),
-      lastContact: t('time.weekAgo'),
-      initials: 'IL',
-    },
-  ]);
-
-  const [upcomingWork] = useState([
-    {
-      id: 1,
-      title: t('upcomingWork.data.clientMeeting'),
-      client: t('upcomingWork.data.acmeCorporationVirtual'),
-      time: t('upcomingWork.data.tenAM'),
-      duration: t('upcomingWork.data.oneHour'),
-      color: 'bg-blue-500',
-      icon: Users,
-    },
-    {
-      id: 2,
-      title: t('upcomingWork.data.projectPresentation'),
-      client: t('upcomingWork.data.globexIndustriesOffice'),
-      time: t('upcomingWork.data.twoPM'),
-      duration: t('upcomingWork.data.twoHours'),
-      color: 'bg-purple-500',
-      icon: FileText,
-    },
-    {
-      id: 3,
-      title: t('upcomingWork.data.invoiceDue'),
-      client: t('upcomingWork.data.soylentCorpNA'),
-      time: t('upcomingWork.data.endOfDay'),
-      duration: t('upcomingWork.data.allDay'),
-      color: 'bg-red-500',
-      icon: Receipt,
-    },
-  ]);
-
-  const [searchTerm, setSearchTerm] = useState('');
-
-  // Generic filter function
-  const filterByTerm = (items, fields) => {
-    if (!searchTerm.trim()) return [];
-    const term = searchTerm.toLowerCase();
-    return items.filter(item =>
-      fields.some(field => (item[field] || '').toString().toLowerCase().includes(term)),
-    );
-  };
-
-  // Filters for each category
-  const filteredClients = filterByTerm(recentClients, [
-    'name',
-    'industry',
-    'lastInvoice',
-    'lastContact',
-    'initials',
-  ]);
-  const filteredWork = filterByTerm(upcomingWork, ['title', 'client', 'time', 'duration']);
-  const filteredNotifications = filterByTerm(notifications, ['title', 'message', 'time']);
-
-  // Revenue data for the chart
-  const revenueChartData = [
-    { month: t('months.jan'), revenue: parseInt(t('values.janRevenue')) },
-    { month: t('months.feb'), revenue: parseInt(t('values.febRevenue')) },
-    { month: t('months.mar'), revenue: parseInt(t('values.marRevenue')) },
-    { month: t('months.apr'), revenue: parseInt(t('values.aprRevenue')) },
-    { month: t('months.may'), revenue: parseInt(t('values.mayRevenue')) },
-    { month: t('months.jun'), revenue: parseInt(t('values.junRevenue')) },
-    { month: t('months.jul'), revenue: parseInt(t('values.julRevenue')) },
-  ];
-
-  const businessHealthScore = parseInt(t('values.businessHealthScore'));
-  const revenueData = {
-    monthly: t('values.monthlyRevenue'),
-    growth: t('values.revenueGrowth'),
-    lastMonth: t('values.lastMonthRevenue'),
-  };
-
-  const clientData = {
-    active: t('values.activeClients'),
-    growth: t('values.clientGrowth'),
-    lastMonth: t('values.lastMonthClients'),
-  };
-
-  const upcomingEvents = {
-    count: t('values.upcomingEventsCount'),
-    period: t('values.upcomingEventsPeriod'),
-  };
-
-  // Helper function to get status color
-  const getStatusColor = status => {
-    switch (status) {
-      case 'active':
-        return 'bg-green-500';
-      case 'pending':
-        return 'bg-yellow-500';
-      case 'overdue':
-        return 'bg-red-500';
-      default:
-        return 'bg-gray-500';
-    }
-  };
-
-  // Helper function to get avatar background color
-  const getAvatarColor = index => {
-    const colors = ['bg-blue-500', 'bg-green-500', 'bg-purple-500', 'bg-red-500', 'bg-yellow-500'];
-    return colors[index % colors.length];
-  };
-
-  // Navigation handlers
-  const handleViewAllClients = () => navigate('/clients');
-  const handleViewAllNotifications = () => navigate('/notifications');
-  const handleViewReports = () => navigate('/reports');
-  const handleViewSettings = () => navigate('/settings');
-  const handleViewDetails = clientId => navigate(`/clients/${clientId}`);
-  const handleViewCalendar = () => navigate('/calendar');
-  const handleAddNewEvent = () => navigate('/calendar?action=new');
-  const handleAddClient = () => navigate('/clients?action=new');
-  const handleCreateInvoice = () => navigate('/invoices?action=new');
-  const handleTrackExpense = () => navigate('/transactions?action=expense');
-  const handleScheduleMeeting = () => navigate('/calendar?action=meeting');
+  // ... existing code ...
 
   return (
     <ErrorBoundary>
@@ -280,6 +426,16 @@ const Dashboard = () => {
             <span className="text-gray-700">Enhanced View</span>
           </button>
         </div>
+
+        {/* Loading State */}
+        {dashboardLoading && (
+          <div className="fixed top-20 right-4 z-40 bg-blue-100 text-blue-800 px-4 py-2 rounded-lg shadow-sm">
+            <div className="flex items-center space-x-2">
+              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600"></div>
+              <span className="text-sm">Caricamento dati...</span>
+            </div>
+          </div>
+        )}
 
         {/* Main Content */}
         <div className='flex-1 p-0'>
@@ -321,12 +477,12 @@ const Dashboard = () => {
                           ))}
                         </div>
                       )}
-                      {filteredWork.length > 0 && (
+                      {filteredUpcomingWork.length > 0 && (
                         <div>
                           <div className='px-3 py-1 font-semibold text-purple-600 border-b border-gray-100'>
                             {t('search.work')}
                           </div>
-                          {filteredWork.map(work => (
+                          {filteredUpcomingWork.map(work => (
                             <div
                               key={'work-' + work.id}
                               className='px-3 py-2 hover:bg-purple-50 cursor-pointer'
@@ -354,7 +510,7 @@ const Dashboard = () => {
                         </div>
                       )}
                       {filteredClients.length === 0 &&
-                        filteredWork.length === 0 &&
+                        filteredUpcomingWork.length === 0 &&
                         filteredNotifications.length === 0 && (
                           <div className='px-3 py-2 text-gray-400'>{t('search.noResults')}</div>
                         )}
@@ -364,15 +520,15 @@ const Dashboard = () => {
               </div>
             </div>
 
-            {/* Top Row - Business Health, Revenue Streams, Invoice Tracker */}
-            <div className='grid grid-cols-3 gap-6 w-full'>
+            {/* Top Row - Business Health, Revenue Streams, Invoice Tracker, Quick Actions */}
+            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 w-full'>
               {/* Business Health */}
-              <div className='bg-white rounded-xl shadow-sm p-6 w-full'>
+              <div className='bg-white rounded-xl shadow-sm p-6'>
                 <div className='flex items-center justify-between mb-6'>
                   <h3 className='text-xl font-semibold text-gray-900'>
                     {t('businessHealth.title')}
                   </h3>
-                  <MoreHorizontal className='h-5 w-5 text-gray-400 cursor-pointer' />
+                  <CardDropdownMenu dropdownId="businessHealthOptions" options={businessHealthOptions} />
                 </div>
 
                 <div className='flex flex-col items-center mb-8'>
@@ -430,197 +586,263 @@ const Dashboard = () => {
               </div>
 
               {/* Revenue Streams */}
-              <div className='bg-white rounded-xl shadow-sm p-6 w-full'>
+              <div className='bg-white rounded-xl shadow-sm p-6'>
                 <div className='flex items-center justify-between mb-6'>
                   <h3 className='text-xl font-semibold text-gray-900'>
                     {t('revenueStreams.title')}
                   </h3>
-                  <MoreHorizontal className='h-5 w-5 text-gray-400 cursor-pointer' />
+                  <CardDropdownMenu dropdownId="revenueStreamOptions" options={revenueStreamOptions} />
                 </div>
 
-                <div className='relative w-full h-64 mb-6 flex items-center justify-center'>
-                  {/* Improved pie chart representation */}
-                  <div className='relative w-40 h-40'>
-                    <div
-                      className='absolute inset-0 rounded-full'
-                      style={{
-                        background: `conic-gradient(#059669 0deg 162deg, #d97706 162deg 270deg, #4f46e5 270deg 360deg)`,
-                      }}
-                    ></div>
-                    <div className='absolute inset-4 bg-white rounded-full flex items-center justify-center'>
-                      <div className='text-center'>
-                        <div className='text-xl font-bold text-gray-900'>
-                          {t('values.totalRevenue')}
+                {dashboardData?.revenueStreams ? (
+                  <>
+                    <div className='relative w-full h-64 mb-6 flex items-center justify-center'>
+                      {/* Dynamic pie chart representation */}
+                      <div className='relative w-40 h-40'>
+                        <div
+                          className='absolute inset-0 rounded-full'
+                          style={{
+                            background: dashboardData.revenueStreams.chartGradient || '#E5E7EB',
+                          }}
+                        ></div>
+                        <div className='absolute inset-4 bg-white rounded-full flex items-center justify-center'>
+                          <div className='text-center'>
+                            <div className='text-xl font-bold text-gray-900'>
+                              €{dashboardData.revenueStreams.total?.toLocaleString() || '0'}
+                            </div>
+                            <div className='text-xs text-gray-500'>{t('revenueStreams.total')}</div>
+                          </div>
                         </div>
-                        <div className='text-xs text-gray-500'>{t('revenueStreams.total')}</div>
                       </div>
                     </div>
-                  </div>
-                </div>
 
-                <div className='space-y-3'>
-                  <div className='flex items-center justify-between'>
-                    <div className='flex items-center space-x-2'>
-                      <div className='w-3 h-3 bg-green-600 rounded-full'></div>
-                      <span className='text-gray-900'>{t('revenueStreams.consulting')}</span>
+                    <div className='space-y-4'>
+                      {dashboardData.revenueStreams.categories?.map((category, index) => (
+                        <div key={index} className='flex items-center justify-between'>
+                          <div className='flex items-center space-x-2'>
+                            <div 
+                              className='w-3 h-3 rounded-full'
+                              style={{ backgroundColor: category.color }}
+                            ></div>
+                            <span className='text-gray-900'>{category.name}</span>
+                          </div>
+                          <span className='text-gray-900 font-bold'>{category.percentage}%</span>
+                        </div>
+                      )) || (
+                        <div className='text-center text-gray-500 text-sm py-4'>
+                          {t('revenueStreams.noCategories')}
+                        </div>
+                      )}
                     </div>
-                    <span className='text-gray-900 font-medium'>45%</span>
-                  </div>
-                  <div className='flex items-center justify-between'>
-                    <div className='flex items-center space-x-2'>
-                      <div className='w-3 h-3 bg-orange-600 rounded-full'></div>
-                      <span className='text-gray-900'>{t('revenueStreams.products')}</span>
+                  </>
+                ) : (
+                  <div className='flex items-center justify-center h-64 bg-gray-50 rounded-lg'>
+                    <div className='text-center'>
+                      <PieChart className='h-12 w-12 text-gray-300 mx-auto mb-3' />
+                      <p className='text-gray-500 text-sm'>{t('revenueStreams.noDataAvailable')}</p>
+                      <p className='text-gray-400 text-xs mt-1'>{t('revenueStreams.connectDataSource')}</p>
                     </div>
-                    <span className='text-gray-900 font-medium'>30%</span>
                   </div>
-                  <div className='flex items-center justify-between'>
-                    <div className='flex items-center space-x-2'>
-                      <div className='w-3 h-3 bg-indigo-600 rounded-full'></div>
-                      <span className='text-gray-900'>{t('revenueStreams.services')}</span>
-                    </div>
-                    <span className='text-gray-900 font-medium'>25%</span>
-                  </div>
-                </div>
+                )}
               </div>
 
               {/* Invoice Tracker */}
-              <div className='bg-white rounded-xl shadow-sm p-6 w-full'>
+              <div className='bg-white rounded-xl shadow-sm p-6'>
                 <div className='flex items-center justify-between mb-6'>
                   <h3 className='text-xl font-semibold text-gray-900'>
                     {t('invoiceTracker.title')}
                   </h3>
-                  <MoreHorizontal className='h-5 w-5 text-gray-400 cursor-pointer' />
+                  <CardDropdownMenu dropdownId="invoiceTrackerOptions" options={invoiceTrackerOptions} />
                 </div>
 
-                <div className='space-y-4'>
-                  <div className='flex items-center justify-between p-3 bg-green-50 rounded-lg'>
-                    <div className='flex items-center space-x-3'>
-                      <div className='w-8 h-8 bg-green-600 rounded-full flex items-center justify-center'>
-                        <CheckCircle className='h-4 w-4 text-white' />
+                {/* Progress Bar for Paid vs Outstanding */}
+                <div className='mb-6'>
+                  {dashboardData?.invoiceData ? (
+                    <>
+                      <div className='flex items-center justify-between mb-2'>
+                        <span className='text-sm text-gray-600'>{t('invoiceTracker.paid')}</span>
+                        <span className='text-sm text-gray-600'>{t('invoiceTracker.outstanding')}</span>
                       </div>
-                      <div>
-                        <div className='font-medium text-gray-900'>{t('invoiceTracker.paid')}</div>
-                        <div className='text-sm text-gray-500'>{t('values.paidAmount')}</div>
+                      <div className='w-full bg-gray-200 rounded-full h-4 mb-2'>
+                        <div 
+                          className='bg-green-600 h-4 rounded-full' 
+                          style={{
+                            width: `${dashboardData.invoiceData.paidPercentage || 0}%`
+                          }}
+                        ></div>
+                      </div>
+                      <div className='flex items-center justify-between'>
+                        <div className='text-right'>
+                          <div className='text-lg font-bold text-green-600'>
+                            €{dashboardData.invoiceData.totalPaid?.toLocaleString() || '0'}
+                          </div>
+                          <div className='text-xs text-gray-500'>{t('invoiceTracker.totalPaid')}</div>
+                        </div>
+                        <div className='text-right'>
+                          <div className='text-lg font-bold text-orange-600'>
+                            €{dashboardData.invoiceData.totalOutstanding?.toLocaleString() || '0'}
+                          </div>
+                          <div className='text-xs text-gray-500'>{t('invoiceTracker.totalOutstanding')}</div>
+                        </div>
+                      </div>
+                    </>
+                  ) : (
+                    <div className='flex items-center justify-center h-32 bg-gray-50 rounded-lg'>
+                      <div className='text-center'>
+                        <FileText className='h-8 w-8 text-gray-300 mx-auto mb-2' />
+                        <p className='text-gray-500 text-sm'>{t('invoiceTracker.noDataAvailable')}</p>
+                        <p className='text-gray-400 text-xs mt-1'>{t('invoiceTracker.connectDataSource')}</p>
                       </div>
                     </div>
-                    <div className='text-right'>
-                      <div className='text-2xl font-bold text-green-600'>
-                        {t('values.paidAmount')}
-                      </div>
-                    </div>
-                  </div>
+                  )}
+                </div>
+              </div>
 
-                  <div className='flex items-center justify-between p-3 bg-yellow-50 rounded-lg'>
-                    <div className='flex items-center space-x-3'>
-                      <div className='w-8 h-8 bg-yellow-600 rounded-full flex items-center justify-center'>
-                        <Clock className='h-4 w-4 text-white' />
-                      </div>
-                      <div>
-                        <div className='font-medium text-gray-900'>{t('invoiceTracker.pending')}</div>
-                        <div className='text-sm text-gray-500'>{t('invoiceTracker.outstanding')}</div>
-                      </div>
+              {/* Quick Actions */}
+              <div className='bg-white rounded-xl shadow-sm p-6'>
+                <h3 className='text-xl font-semibold text-gray-900 mb-6'>
+                  {t('quickActions.title')}
+                </h3>
+
+                <div className='grid grid-cols-2 gap-3'>
+                  <button
+                    onClick={handleAddClient}
+                    className='bg-blue-500 text-white p-4 rounded-xl hover:bg-blue-600 transition-all transform hover:scale-105 flex flex-col items-center justify-center aspect-square'
+                  >
+                    <UserPlus className='h-6 w-6 mx-auto mb-2' />
+                    <div className='text-center text-xs font-medium'>
+                      {t('quickActions.addClient')}
                     </div>
-                    <div className='text-right'>
-                      <div className='text-2xl font-bold text-yellow-600'>
-                        {t('values.pendingAmount')}
-                      </div>
+                  </button>
+
+                  <button
+                    onClick={handleCreateInvoice}
+                    className='bg-green-500 text-white p-4 rounded-xl hover:bg-green-600 transition-all transform hover:scale-105 flex flex-col items-center justify-center aspect-square'
+                  >
+                    <Receipt className='h-6 w-6 mx-auto mb-2' />
+                    <div className='text-center text-xs font-medium'>
+                      {t('quickActions.newInvoice')}
                     </div>
-                  </div>
+                  </button>
+
+                  <button
+                    onClick={handleTrackExpense}
+                    className='bg-yellow-500 text-white p-4 rounded-xl hover:bg-yellow-600 transition-all transform hover:scale-105 flex flex-col items-center justify-center aspect-square'
+                  >
+                    <DollarSign className='h-6 w-6 mx-auto mb-2' />
+                    <div className='text-center text-xs font-medium'>
+                      {t('quickActions.trackExpense')}
+                    </div>
+                  </button>
+
+                  <button
+                    onClick={handleScheduleMeeting}
+                    className='bg-purple-500 text-white p-4 rounded-xl hover:bg-purple-600 transition-all transform hover:scale-105 flex flex-col items-center justify-center aspect-square'
+                  >
+                    <CalendarIcon className='h-6 w-6 mx-auto mb-2' />
+                    <div className='text-center text-xs font-medium'>
+                      {t('quickActions.scheduleMeeting')}
+                    </div>
+                  </button>
                 </div>
               </div>
             </div>
 
             {/* Revenue Overview Chart */}
-            <div className='bg-white rounded-xl shadow-sm p-6 w-full'>
+            <div className='bg-white rounded-xl shadow-sm p-6'>
               <div className='flex items-center justify-between mb-6'>
                 <h3 className='text-xl font-semibold text-gray-900'>
                   {t('revenueOverview.title')}
                 </h3>
                 <div className='flex items-center space-x-2'>
-                  <button className='px-3 py-1 text-sm bg-blue-100 text-blue-600 rounded-full'>
+                  <button 
+                    onClick={() => handlePeriodChange('monthly')}
+                    className={`px-3 py-1 text-sm rounded-full transition-colors ${
+                      selectedPeriod === 'monthly' 
+                        ? 'bg-blue-100 text-blue-600' 
+                        : 'text-gray-500 hover:bg-gray-100'
+                    }`}
+                  >
                     {t('revenueOverview.monthly')}
                   </button>
-                  <button className='px-3 py-1 text-sm text-gray-500 hover:bg-gray-100 rounded-full'>
+                  <button 
+                    onClick={() => handlePeriodChange('quarterly')}
+                    className={`px-3 py-1 text-sm rounded-full transition-colors ${
+                      selectedPeriod === 'quarterly' 
+                        ? 'bg-blue-100 text-blue-600' 
+                        : 'text-gray-500 hover:bg-gray-100'
+                    }`}
+                  >
                     {t('revenueOverview.quarterly')}
                   </button>
-                  <button className='px-3 py-1 text-sm text-gray-500 hover:bg-gray-100 rounded-full'>
+                  <button 
+                    onClick={() => handlePeriodChange('yearly')}
+                    className={`px-3 py-1 text-sm rounded-full transition-colors ${
+                      selectedPeriod === 'yearly' 
+                        ? 'bg-blue-100 text-blue-600' 
+                        : 'text-gray-500 hover:bg-gray-100'
+                    }`}
+                  >
                     {t('revenueOverview.yearly')}
                   </button>
                 </div>
               </div>
 
-              {/* Chart Area */}
-              <div className='relative h-64 mb-4'>
-                <svg className='w-full h-full' viewBox='0 0 800 200'>
-                  {/* Grid lines */}
-                  <defs>
-                    <pattern
-                      id='grid'
-                      width='40'
-                      height='40'
-                      patternUnits='userSpaceOnUse'
-                    >
-                      <path
-                        d='M 40 0 L 0 0 0 40'
-                        fill='none'
-                        stroke='#f3f4f6'
-                        strokeWidth='1'
-                      />
-                    </pattern>
-                  </defs>
-                  <rect width='100%' height='100%' fill='url(#grid)' />
-
-                  {/* Y-axis labels */}
-                  <text x='10' y='20' className='text-xs fill-gray-500'>
-                    {t('values.chartMax')}
-                  </text>
-                  <text x='10' y='70' className='text-xs fill-gray-500'>
-                    {t('values.chartHigh')}
-                  </text>
-                  <text x='10' y='120' className='text-xs fill-gray-500'>
-                    {t('values.chartMid')}
-                  </text>
-                  <text x='10' y='190' className='text-xs fill-gray-500'>
-                    {t('values.chartMin')}
-                  </text>
-
-                  {/* Chart line */}
-                  <polyline
-                    fill='none'
-                    stroke='#3b82f6'
-                    strokeWidth='3'
-                    points={revenueChartData
-                      .map((point, index) => {
-                        const x = 80 + (index * 100);
-                        const y = 180 - (point.revenue / 30000) * 160;
-                        return `${x},${y}`;
-                      })
-                      .join(' ')}
-                  />
-
-                  {/* Data points */}
-                  {revenueChartData.map((point, index) => {
-                    const x = 80 + (index * 100);
-                    const y = 180 - (point.revenue / 30000) * 160;
-                    return (
-                      <g key={index}>
-                        <circle cx={x} cy={y} r='4' fill='#3b82f6' />
-                        <text x={x} y='200' className='text-xs fill-gray-600 text-anchor-middle'>
-                          {point.month}
-                        </text>
-                      </g>
-                    );
-                  })}
-                </svg>
+              {/* Chart Area - Dynamic Area Chart */}
+              <div className='relative h-80 mb-4'>
+                {dashboardData?.revenueChart?.length > 0 ? (
+                  <svg className='w-full h-full' viewBox='0 0 800 300' preserveAspectRatio='none'>
+                    <defs>
+                      <linearGradient id='revenueGradient' x1='0%' y1='0%' x2='0%' y2='100%'>
+                        <stop offset='0%' stopColor='#3B82F6' stopOpacity='0.3'/>
+                        <stop offset='100%' stopColor='#3B82F6' stopOpacity='0.1'/>
+                      </linearGradient>
+                      <linearGradient id='transactionGradient' x1='0%' y1='0%' x2='0%' y2='100%'>
+                        <stop offset='0%' stopColor='#10B981' stopOpacity='0.2'/>
+                        <stop offset='100%' stopColor='#10B981' stopOpacity='0.05'/>
+                      </linearGradient>
+                    </defs>
+                    
+                    {/* Grid lines */}
+                    {[0, 1, 2, 3, 4].map(i => (
+                      <line key={i} x1='50' y1={60 * i + 20} x2='750' y2={60 * i + 20} stroke='#E5E7EB' strokeWidth='1'/>
+                    ))}
+                    
+                    {/* Chart will be populated with real data when available */}
+                    <text x='400' y='150' fill='#6B7280' fontSize='14' textAnchor='middle'>
+                      {t('revenueOverview.noDataAvailable')}
+                    </text>
+                  </svg>
+                ) : (
+                  <div className='flex items-center justify-center h-full bg-gray-50 rounded-lg'>
+                    <div className='text-center'>
+                      <BarChart3 className='h-12 w-12 text-gray-300 mx-auto mb-3' />
+                      <p className='text-gray-500 text-sm'>{t('revenueOverview.noDataMessage')}</p>
+                      <p className='text-gray-400 text-xs mt-1'>{t('revenueOverview.connectDataSource')}</p>
+                    </div>
+                  </div>
+                )}
+                
+                {/* Chart Legend */}
+                <div className='absolute bottom-4 left-1/2 transform -translate-x-1/2 flex items-center space-x-6'>
+                  <div className='flex items-center space-x-2'>
+                    <div className='w-3 h-3 bg-blue-500 rounded-full'></div>
+                    <span className='text-sm text-gray-600'>{t('revenueOverview.revenue')}</span>
+                  </div>
+                  <div className='flex items-center space-x-2'>
+                    <div className='w-3 h-3 bg-green-500 rounded-full'></div>
+                    <span className='text-sm text-gray-600'>{t('revenueOverview.transactions')}</span>
+                  </div>
+                </div>
               </div>
 
               <p className='text-sm text-gray-600'>{t('revenueOverview.trendDescription')}</p>
             </div>
 
-            {/* Bottom Row - Clients, Work, Notifications, Quick Actions, Performance */}
-            <div className='grid grid-cols-1 lg:grid-cols-12 gap-6 w-full'>
+            {/* Bottom Section - 2x2 Grid Layout */}
+            <div className='grid grid-cols-1 md:grid-cols-2 gap-6 w-full'>
               {/* Recent Clients */}
-              <div className='lg:col-span-3 bg-white rounded-xl shadow-sm p-6 w-full'>
+              <div className='bg-white rounded-xl shadow-sm p-6'>
                 <div className='flex items-center justify-between mb-6'>
                   <h3 className='text-xl font-semibold text-gray-900'>
                     {t('recentClients.title')}
@@ -634,7 +856,8 @@ const Dashboard = () => {
                 </div>
 
                 <div className='space-y-4'>
-                  {recentClients.map((client, index) => (
+                  {recentClients.length > 0 ? (
+                    recentClients.map((client, index) => (
                     <div
                       key={client.id}
                       className='flex items-center space-x-3 p-3 hover:bg-gray-50 rounded-lg cursor-pointer transition-colors'
@@ -656,12 +879,24 @@ const Dashboard = () => {
                         <p className='text-xs text-gray-400'>{client.lastContact}</p>
                       </div>
                     </div>
-                  ))}
+                    ))
+                  ) : (
+                    <div className='text-center py-8'>
+                      <Users className='h-12 w-12 text-gray-300 mx-auto mb-3' />
+                      <p className='text-gray-500 text-sm'>Nessun cliente recente</p>
+                      <button
+                        onClick={handleAddClient}
+                        className='mt-2 text-blue-600 text-sm hover:text-blue-800'
+                      >
+                        Aggiungi il primo cliente
+                      </button>
+                    </div>
+                  )}
                 </div>
               </div>
 
               {/* Upcoming Work */}
-              <div className='lg:col-span-2 bg-white rounded-xl shadow-sm p-6 w-full'>
+              <div className='bg-white rounded-xl shadow-sm p-6'>
                 <div className='flex items-center justify-between mb-6'>
                   <h3 className='text-xl font-semibold text-gray-900'>{t('upcomingWork.title')}</h3>
                   <button
@@ -673,7 +908,8 @@ const Dashboard = () => {
                 </div>
 
                 <div className='space-y-4'>
-                  {upcomingWork.map(work => {
+                  {upcomingWork.length > 0 ? (
+                    upcomingWork.map(work => {
                     const IconComponent = work.icon;
                     return (
                       <div key={work.id} className='flex items-start space-x-3'>
@@ -691,7 +927,19 @@ const Dashboard = () => {
                         </div>
                       </div>
                     );
-                  })}
+                    })
+                  ) : (
+                    <div className='text-center py-8'>
+                      <Calendar className='h-12 w-12 text-gray-300 mx-auto mb-3' />
+                      <p className='text-gray-500 text-sm'>Nessun evento in programma</p>
+                      <button
+                        onClick={handleAddNewEvent}
+                        className='mt-2 text-blue-600 text-sm hover:text-blue-800'
+                      >
+                        Programma il primo evento
+                      </button>
+                    </div>
+                  )}
                 </div>
 
                 <button
@@ -701,9 +949,12 @@ const Dashboard = () => {
                   {t('upcomingWork.addNewEvent')}
                 </button>
               </div>
+            </div>
 
+            {/* Bottom Row - Notifications and Performance */}
+            <div className='grid grid-cols-1 md:grid-cols-2 gap-6 w-full'>
               {/* Recent Notifications */}
-              <div className='lg:col-span-3 bg-white rounded-xl shadow-sm p-6 w-full'>
+              <div className='bg-white rounded-xl shadow-sm p-6'>
                 <div className='flex items-center justify-between mb-6'>
                   <h3 className='text-xl font-semibold text-gray-900'>
                     {t('recentNotifications.title')}
@@ -717,7 +968,8 @@ const Dashboard = () => {
                 </div>
 
                 <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
-                  {notifications.map(notification => {
+                  {notifications.length > 0 ? (
+                    notifications.map(notification => {
                     const IconComponent = notification.icon;
                     return (
                       <div
@@ -740,7 +992,14 @@ const Dashboard = () => {
                         </div>
                       </div>
                     );
-                  })}
+                    })
+                  ) : (
+                    <div className='text-center py-8 col-span-full'>
+                      <Bell className='h-12 w-12 text-gray-300 mx-auto mb-3' />
+                      <p className='text-gray-500 text-sm'>Nessuna notifica recente</p>
+                      <p className='text-gray-400 text-xs mt-1'>Le notifiche appariranno qui quando avrai attività</p>
+                    </div>
+                  )}
                 </div>
 
                 {/* Quick Stats */}
@@ -748,19 +1007,19 @@ const Dashboard = () => {
                   <div className='grid grid-cols-3 gap-4 text-center'>
                     <div>
                       <div className='text-2xl font-bold text-blue-600'>
-                        {t('values.unreadCount')}
+                        0
                       </div>
                       <div className='text-sm text-gray-500'>{t('performance.unread')}</div>
                     </div>
                     <div>
                       <div className='text-2xl font-bold text-green-600'>
-                        {t('values.thisWeekCount')}
+                        0
                       </div>
                       <div className='text-sm text-gray-500'>{t('performance.thisWeek')}</div>
                     </div>
                     <div>
                       <div className='text-2xl font-bold text-gray-600'>
-                        {t('values.totalCount')}
+                        {notifications.length}
                       </div>
                       <div className='text-sm text-gray-500'>{t('performance.total')}</div>
                     </div>
@@ -768,75 +1027,10 @@ const Dashboard = () => {
                 </div>
               </div>
 
-              {/* Quick Actions - Expanded */}
-              <div className='lg:col-span-4 bg-white rounded-xl shadow-sm p-6 w-full'>
-                <h3 className='text-xl font-semibold text-gray-900 mb-6'>
-                  {t('quickActionsExpanded.title')}
-                </h3>
 
-                <div className='grid grid-cols-2 gap-4 mb-6'>
-                  <button
-                    onClick={handleAddClient}
-                    className='bg-blue-500 text-white p-4 rounded-lg hover:bg-blue-600 transition-all transform hover:scale-105'
-                  >
-                    <UserPlus className='h-6 w-6 mx-auto mb-2' />
-                    <div className='text-center text-sm font-medium'>
-                      {t('quickActions.addClient')}
-                    </div>
-                  </button>
 
-                  <button
-                    onClick={handleCreateInvoice}
-                    className='bg-green-500 text-white p-4 rounded-lg hover:bg-green-600 transition-all transform hover:scale-105'
-                  >
-                    <Receipt className='h-6 w-6 mx-auto mb-2' />
-                    <div className='text-center text-sm font-medium'>
-                      {t('quickActions.newInvoice')}
-                    </div>
-                  </button>
-
-                  <button
-                    onClick={handleTrackExpense}
-                    className='bg-yellow-500 text-white p-4 rounded-lg hover:bg-yellow-600 transition-all transform hover:scale-105'
-                  >
-                    <DollarSign className='h-6 w-6 mx-auto mb-2' />
-                    <div className='text-center text-sm font-medium'>
-                      {t('quickActions.trackExpense')}
-                    </div>
-                  </button>
-
-                  <button
-                    onClick={handleScheduleMeeting}
-                    className='bg-purple-500 text-white p-4 rounded-lg hover:bg-purple-600 transition-all transform hover:scale-105'
-                  >
-                    <CalendarIcon className='h-6 w-6 mx-auto mb-2' />
-                    <div className='text-center text-sm font-medium'>
-                      {t('quickActions.scheduleMeeting')}
-                    </div>
-                  </button>
-                </div>
-
-                {/* Additional Actions */}
-                <div className='space-y-2'>
-                  <button
-                    onClick={handleViewSettings}
-                    className='w-full text-left p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors flex items-center space-x-3'
-                  >
-                    <Settings className='h-4 w-4 text-gray-600' />
-                    <span className='text-sm text-gray-700'>{t('actions.settings')}</span>
-                  </button>
-                  <button
-                    onClick={handleViewReports}
-                    className='w-full text-left p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors flex items-center space-x-3'
-                  >
-                    <TrendingUp className='h-4 w-4 text-gray-600' />
-                    <span className='text-sm text-gray-700'>{t('actions.reports')}</span>
-                  </button>
-                </div>
-              </div>
-
-              {/* KPI Summary - Expanded */}
-              <div className='lg:col-span-3 bg-white rounded-xl shadow-sm p-6 w-full'>
+              {/* Performance - KPI Summary */}
+              <div className='bg-white rounded-xl shadow-sm p-6'>
                 <div className='flex items-center justify-between mb-6'>
                   <h3 className='text-xl font-semibold text-gray-900'>{t('performance.title')}</h3>
                   <span className='text-blue-600 text-sm font-medium'>
@@ -892,10 +1086,10 @@ const Dashboard = () => {
                   <div>
                     <div className='text-gray-500 mb-2'>{t('performance.conversionRate')}</div>
                     <div className='flex items-center justify-between'>
-                      <span className='text-2xl font-bold text-gray-900'>68%</span>
-                      <span className='text-green-600 text-sm flex items-center'>
+                      <span className='text-2xl font-bold text-gray-900'>0%</span>
+                      <span className='text-gray-600 text-sm flex items-center'>
                         <ArrowUpRight className='h-3 w-3 mr-1' />
-                        +3%
+                        +0%
                       </span>
                     </div>
                   </div>

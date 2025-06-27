@@ -1,5 +1,6 @@
-import { supabase } from '@lib/supabaseClient';
-import Logger from '@utils/Logger';
+import { supabase } from './supabaseClient';
+import Logger from '../utils/Logger';
+import { getUserIdForUuidTables, convertClerkIdToUuid } from '../utils/userIdConverter';
 
 /**
  * Expense Service
@@ -10,6 +11,41 @@ class ExpenseService {
   constructor() {
     this.tableName = 'expenses';
     this.categoriesTableName = 'expense_categories';
+  }
+
+  /**
+   * Get current user UUID for database queries
+   * @returns {string|null} UUID formatted user ID
+   */
+  getCurrentUserUuid() {
+    try {
+      // In produzione, questo dovrebbe venire dal contesto Clerk
+      // Per ora usiamo il Clerk ID reale dell'utente corrente
+      if (window.Clerk && window.Clerk.user) {
+        const user = window.Clerk.user;
+        if (user && user.id) {
+          const uuid = convertClerkIdToUuid(user.id);
+          if (!uuid) {
+            throw new Error(`Nessun mapping UUID trovato per Clerk ID: ${user.id}`);
+          }
+          return uuid;
+        }
+      }
+      
+      // Fallback per testing/development
+      const fallbackClerkId = 'user_2yyhN4lw9ritLheD4CxN5RRMXUR';
+      console.warn('expenseService: Usando Clerk ID fallback per development:', fallbackClerkId);
+      
+      const uuid = convertClerkIdToUuid(fallbackClerkId);
+      if (!uuid) {
+        throw new Error(`Nessun mapping UUID trovato per Clerk ID fallback: ${fallbackClerkId}`);
+      }
+      
+      return uuid;
+    } catch (error) {
+      Logger.error('Errore nell\'ottenere UUID utente:', error);
+      throw error;
+    }
   }
 
   // ==================== CRUD OPERATIONS ====================
@@ -48,6 +84,9 @@ class ExpenseService {
    */
   async getExpenses(filters = {}) {
     try {
+      const userUuid = this.getCurrentUserUuid();
+      Logger.info('expenseService.getExpenses: Cercando spese per user_id:', userUuid);
+
       let query = supabase
         .from(this.tableName)
         .select(
@@ -56,6 +95,7 @@ class ExpenseService {
           expense_categories(name, color, icon, tax_deductible_default)
         `,
         )
+        .eq('user_id', userUuid)
         .order('date', { ascending: false });
 
       // Applica filtri
@@ -86,11 +126,16 @@ class ExpenseService {
 
       const { data, error } = await query;
 
-      if (error) throw error;
-      return { success: true, data: data || [] };
+      if (error) {
+        Logger.error('Errore nel recupero spese:', error);
+        throw error;
+      }
+
+      Logger.info('expenseService.getExpenses: Spese trovate:', data?.length || 0);
+      return data || [];
     } catch (error) {
-      Logger.error('Error fetching expenses:', error);
-      return { success: false, error: error.message };
+      Logger.error('Errore nel servizio spese:', error);
+      throw error;
     }
   }
 
@@ -174,8 +219,11 @@ class ExpenseService {
    */
   async getExpenseStats(period = 'month', startDate = null, endDate = null) {
     try {
-      // Calcola date se non fornite
-      if (!startDate || !endDate) {
+      const userUuid = this.getCurrentUserUuid();
+      Logger.info('expenseService.getExpenseStats: Calcolando statistiche per user_id:', userUuid);
+
+      // Calculate dates if not provided or invalid
+      if (!startDate || !endDate || !(startDate instanceof Date) || !(endDate instanceof Date)) {
         const now = new Date();
         switch (period) {
           case 'day':
@@ -206,30 +254,55 @@ class ExpenseService {
             startDate = new Date(now.getFullYear(), 0, 1);
             endDate = new Date(now.getFullYear() + 1, 0, 1);
             break;
+          default:
+            // Default to current month if period is not recognized
+            startDate = new Date(now.getFullYear(), now.getMonth(), 1);
+            endDate = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+            break;
         }
+      }
+
+      // Additional validation to ensure dates are valid
+      if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
+        throw new Error('Invalid date range provided');
       }
 
       const { data, error } = await supabase
         .from(this.tableName)
         .select('amount, date, category, tax_deductible, vendor')
+        .eq('user_id', userUuid)
         .gte('date', startDate.toISOString())
         .lt('date', endDate.toISOString());
 
-      if (error) throw error;
+      if (error) {
+        Logger.error('Errore nel recupero statistiche spese:', error);
+        throw error;
+      }
+
+      Logger.info('expenseService.getExpenseStats: Query results', {
+        data,
+        rowCount: data?.length,
+        userUuid,
+        startDate: startDate.toISOString(),
+        endDate: endDate.toISOString()
+      });
+
+      // Handle null/undefined data
+      const expenses = data || [];
 
       const stats = {
-        totalAmount: data.reduce((sum, expense) => sum + parseFloat(expense.amount), 0),
-        totalCount: data.length,
+        totalAmount: expenses.reduce((sum, expense) => sum + parseFloat(expense.amount || 0), 0),
+        totalCount: expenses.length,
         averageAmount:
-          data.length > 0
-            ? data.reduce((sum, expense) => sum + parseFloat(expense.amount), 0) / data.length
+          expenses.length > 0
+            ? expenses.reduce((sum, expense) => sum + parseFloat(expense.amount || 0), 0) / expenses.length
             : 0,
-        taxDeductibleAmount: data
+        taxDeductibleAmount: expenses
           .filter(e => e.tax_deductible)
-          .reduce((sum, expense) => sum + parseFloat(expense.amount), 0),
-        nonTaxDeductibleAmount: data
+          .reduce((sum, expense) => sum + parseFloat(expense.amount || 0), 0),
+        nonTaxDeductibleAmount: expenses
           .filter(e => !e.tax_deductible)
-          .reduce((sum, expense) => sum + parseFloat(expense.amount), 0),
+          .reduce((sum, expense) => sum + parseFloat(expense.amount || 0), 0),
         byCategory: {},
         byVendor: {},
         dailyTrend: [],
@@ -239,53 +312,63 @@ class ExpenseService {
       };
 
       // Raggruppa per categoria
-      data.forEach(expense => {
-        if (!stats.byCategory[expense.category]) {
-          stats.byCategory[expense.category] = {
+      expenses.forEach(expense => {
+        const category = expense.category || 'Uncategorized';
+        if (!stats.byCategory[category]) {
+          stats.byCategory[category] = {
             amount: 0,
             count: 0,
             taxDeductible: 0,
             nonTaxDeductible: 0,
           };
         }
-        stats.byCategory[expense.category].amount += parseFloat(expense.amount);
-        stats.byCategory[expense.category].count += 1;
+        stats.byCategory[category].amount += parseFloat(expense.amount || 0);
+        stats.byCategory[category].count += 1;
 
         if (expense.tax_deductible) {
-          stats.byCategory[expense.category].taxDeductible += parseFloat(expense.amount);
+          stats.byCategory[category].taxDeductible += parseFloat(expense.amount || 0);
         } else {
-          stats.byCategory[expense.category].nonTaxDeductible += parseFloat(expense.amount);
+          stats.byCategory[category].nonTaxDeductible += parseFloat(expense.amount || 0);
         }
       });
 
       // Raggruppa per fornitore
-      data.forEach(expense => {
+      expenses.forEach(expense => {
         const vendor = expense.vendor || 'Non specificato';
         if (!stats.byVendor[vendor]) {
           stats.byVendor[vendor] = { amount: 0, count: 0 };
         }
-        stats.byVendor[vendor].amount += parseFloat(expense.amount);
+        stats.byVendor[vendor].amount += parseFloat(expense.amount || 0);
         stats.byVendor[vendor].count += 1;
       });
 
       // Trend giornaliero
       const dailyData = {};
-      data.forEach(expense => {
-        const date = new Date(expense.date).toISOString().split('T')[0];
-        if (!dailyData[date]) {
-          dailyData[date] = 0;
+      expenses.forEach(expense => {
+        if (expense.date) {
+          const date = new Date(expense.date).toISOString().split('T')[0];
+          if (!dailyData[date]) {
+            dailyData[date] = 0;
+          }
+          dailyData[date] += parseFloat(expense.amount || 0);
         }
-        dailyData[date] += parseFloat(expense.amount);
       });
 
       stats.dailyTrend = Object.entries(dailyData)
         .map(([date, amount]) => ({ date, amount }))
         .sort((a, b) => new Date(a.date) - new Date(b.date));
 
-      return { success: true, data: stats };
+      Logger.info('expenseService.getExpenseStats: Statistiche calcolate:', {
+        total: stats.totalAmount,
+        count: stats.totalCount,
+        average: stats.averageAmount,
+        categories: Object.keys(stats.byCategory).length
+      });
+
+      return stats;
     } catch (error) {
-      Logger.error('Error getting expense stats:', error);
-      return { success: false, error: error.message };
+      Logger.error('Errore nel calcolo statistiche spese:', error);
+      throw error;
     }
   }
 

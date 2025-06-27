@@ -80,12 +80,24 @@ class SecurityService {
     try {
       const { data, error } = await supabase
         .from('user_roles')
-        .select('role')
+        .select(`
+          role_id,
+          roles!inner(
+            name
+          )
+        `)
         .eq('user_id', userId)
         .single();
 
-      if (error) throw error;
-      return data?.role || ROLES.USER;
+      if (error) {
+        if (error.code === 'PGRST116') {
+          // No role found, return default
+          return ROLES.USER;
+        }
+        throw error;
+      }
+
+      return data?.roles?.name || ROLES.USER;
     } catch (error) {
       logger.error('Error getting user role:', error);
       return ROLES.USER; // Default role
@@ -99,14 +111,28 @@ class SecurityService {
         throw new Error('Invalid role specified');
       }
 
+      // First, get the role ID from the role name
+      const { data: roleData, error: roleError } = await supabase
+        .from('roles')
+        .select('id')
+        .eq('name', newRole)
+        .single();
+
+      if (roleError) throw roleError;
+      if (!roleData) throw new Error(`Role '${newRole}' not found`);
+
+      // Get current role for logging
+      const currentRole = await this.getUserRole(userId);
+
       const { data, error } = await supabase
         .from('user_roles')
         .upsert({
           user_id: userId,
-          role: newRole,
+          role_id: roleData.id,
           updated_by: updatedBy,
           updated_at: new Date().toISOString()
-        });
+        })
+        .select();
 
       if (error) throw error;
 
@@ -115,7 +141,7 @@ class SecurityService {
         action: 'ROLE_UPDATED',
         userId: updatedBy,
         targetUserId: userId,
-        details: { newRole, previousRole: await this.getUserRole(userId) },
+        details: { newRole, previousRole: currentRole },
         severity: 'HIGH'
       });
 
@@ -171,11 +197,7 @@ class SecurityService {
     try {
       let query = supabase
         .from('security_audit_logs')
-        .select(`
-          *,
-          profiles!security_audit_logs_user_id_fkey(full_name, email),
-          target_profiles:profiles!security_audit_logs_target_user_id_fkey(full_name, email)
-        `)
+        .select('*')
         .order('timestamp', { ascending: false });
 
       // Apply filters
@@ -493,4 +515,4 @@ class SecurityService {
 }
 
 export const securityService = new SecurityService();
-export default securityService; 
+export default securityService;

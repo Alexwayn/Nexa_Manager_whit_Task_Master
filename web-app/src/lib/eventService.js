@@ -1,5 +1,20 @@
-import { supabase } from '@lib/supabaseClient';
+import { supabase, executeWithClerkAuth } from '@lib/supabaseClerkClient';
 import Logger from '@utils/Logger';
+
+/**
+ * Get current user from Clerk context
+ * @returns {Object|null} Current user object from Clerk
+ */
+const getCurrentUser = () => {
+  // Get user from Clerk context
+  if (typeof window !== 'undefined' && window.clerk?.user) {
+    return {
+      id: window.clerk.user.id,
+      email: window.clerk.user.primaryEmailAddress?.emailAddress,
+    };
+  }
+  return null;
+};
 
 /**
  * Event Service - Comprehensive data service for calendar events
@@ -136,27 +151,50 @@ export const getEvents = async (options = {}) => {
  * Get events for a specific date range (used by calendar views)
  * @param {string} startDate - Start date (YYYY-MM-DD)
  * @param {string} endDate - End date (YYYY-MM-DD)
+ * @param {string} userId - User ID to filter events
  * @returns {Promise<Array>} Array of events
  */
-export const getEventsForDateRange = async (startDate, endDate) => {
+export const getEventsForDateRange = async (startDate, endDate, userId) => {
   try {
-    const { data, error } = await supabase
-      .from('events')
-      .select(
-        `
-        *,
-        clients (
+    // Validate user ID is provided
+    if (!userId) {
+      throw new Error('User ID is required for fetching events');
+    }
+
+    const { data, error } = await executeWithClerkAuth(async (authenticatedClient) => {
+      return await authenticatedClient
+        .from('events')
+        .select(
+          `
           id,
-          name,
-          email,
-          phone
+          title,
+          type,
+          date,
+          start_time,
+          end_time,
+          client,
+          client_id,
+          note,
+          location,
+          priority,
+          reminder,
+          color,
+          created_at,
+          updated_at,
+          clients (
+            id,
+            name,
+            email,
+            phone
+          )
+        `,
         )
-      `,
-      )
-      .gte('date', startDate)
-      .lte('date', endDate)
-      .order('date')
-      .order('start_time');
+        .eq('user_id', userId) // Filter by provided user ID
+        .gte('date', startDate)
+        .lte('date', endDate)
+        .order('date')
+        .order('start_time');
+    });
 
     if (error) {
       Logger.error('Error fetching events for date range:', error);
@@ -216,6 +254,11 @@ export const getEvent = async id => {
  */
 export const createEvent = async eventData => {
   try {
+    // Validate user_id is provided
+    if (!eventData.user_id) {
+      throw new Error('User ID is required for creating events');
+    }
+
     // Validate required fields
     const requiredFields = ['title', 'type', 'date'];
     for (const field of requiredFields) {
@@ -243,21 +286,37 @@ export const createEvent = async eventData => {
       updated_at: new Date().toISOString(),
     };
 
-    const { data, error } = await supabase
-      .from('events')
-      .insert([formattedEvent])
-      .select(
-        `
-        *,
-        clients (
+    const { data, error } = await executeWithClerkAuth(async (authenticatedClient) => {
+      return await authenticatedClient
+        .from('events')
+        .insert([formattedEvent])
+        .select(
+          `
           id,
-          name,
-          email,
-          phone
+          title,
+          type,
+          date,
+          start_time,
+          end_time,
+          client,
+          client_id,
+          note,
+          location,
+          priority,
+          reminder,
+          color,
+          created_at,
+          updated_at,
+          clients (
+            id,
+            name,
+            email,
+            phone
+          )
+        `,
         )
-      `,
-      )
-      .single();
+        .single();
+    });
 
     if (error) {
       Logger.error('Error creating event:', error);

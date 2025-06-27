@@ -2017,7 +2017,7 @@
           64,
           66
         ],
-        "status": "in-progress",
+        "status": "done",
         "subtasks": [
           {
             "id": 1,
@@ -2047,7 +2047,7 @@
               1
             ],
             "details": "Develop components to display client metrics (e.g., active clients, retention rates) and business health scores. Enable drill-down to view underlying data and segment clients by relevant attributes.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Test widget data accuracy, verify drill-down functionality, and ensure insights update correctly with data changes."
           },
           {
@@ -2059,7 +2059,7 @@
               3
             ],
             "details": "Develop UI components for selecting custom date ranges and predefined periods. Ensure all widgets and charts update dynamically based on selected filters. Implement visual indicators for comparative analysis.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Test date range selection, confirm data updates across all widgets, and verify comparative analysis calculations and indicators."
           },
           {
@@ -2072,7 +2072,7 @@
               4
             ],
             "details": "Set up real-time data subscriptions to keep dashboard metrics and charts up to date. Implement export features (e.g., CSV, PDF) for analytics and reports, ensuring data integrity and formatting.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Simulate real-time data changes to verify live updates, and test export functionality for completeness and correct formatting."
           }
         ]
@@ -2269,7 +2269,7 @@
           66,
           68
         ],
-        "status": "pending",
+        "status": "in-progress",
         "subtasks": [
           {
             "id": 1,
@@ -2277,7 +2277,7 @@
             "description": "Establish the structure, hierarchy, and objectives for the reporting system, including report types, frequency, formats, and security requirements.",
             "dependencies": [],
             "details": "Gather input from stakeholders to identify key metrics, KPIs, and business objectives. Document the reporting framework to ensure consistency and alignment with organizational needs.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Review framework documentation with stakeholders and validate alignment with business objectives."
           },
           {
@@ -2288,7 +2288,7 @@
               1
             ],
             "details": "Create scalable data models and optimize data pipelines for real-time and scheduled reporting. Ensure data governance and security are incorporated.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Perform data integrity and performance tests on reporting queries and validate data accuracy."
           },
           {
@@ -2299,7 +2299,7 @@
               2
             ],
             "details": "Develop UI/UX for report selection and customization. Enable users to create, modify, and save custom reports using flexible field selection.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Conduct user acceptance testing for report creation, customization, and template usage."
           },
           {
@@ -2561,7 +2561,7 @@
         "description": "Build a comprehensive company profile management system with logo upload functionality, user roles and permissions, billing management, tax configuration, data export, API access, and system preferences.",
         "details": "1. Enhance the existing settings module to include company profile management:\n   - Create a form for company details (name, address, contact info, etc.)\n   - Implement logo upload using Supabase Storage\n   - Add validation for company details\n\n2. Develop a user role and permission system:\n   - Design a flexible role-based access control (RBAC) schema\n   - Create an interface for managing roles and permissions\n   - Implement middleware to enforce permissions across the application\n\n3. Build billing and subscription management:\n   - Integrate with a payment gateway (e.g., Stripe)\n   - Create subscription plans and pricing tiers\n   - Implement upgrade/downgrade functionality\n   - Add billing history and invoice generation\n\n4. Implement tax configuration and rates management:\n   - Create a tax rate management interface\n   - Support multiple jurisdictions and tax rules\n   - Integrate tax calculations with invoicing and billing\n\n5. Develop backup and data export features:\n   - Implement scheduled backups to Supabase Storage\n   - Create data export functionality for various entities (clients, invoices, etc.)\n   - Support multiple export formats (CSV, JSON, XML)\n\n6. Add API access and webhook configuration:\n   - Design and implement a RESTful API for third-party integrations\n   - Create an API key management system\n   - Implement webhook functionality for real-time event notifications\n   - Add an interface for configuring webhooks\n\n7. Create system preferences and customization options:\n   - Implement a flexible key-value store for system preferences\n   - Create an interface for managing global and user-specific preferences\n   - Add theming options and custom branding capabilities\n\n8. Implement audit logs and activity tracking:\n   - Design a comprehensive logging system\n   - Track user actions, system events, and data changes\n   - Create an interface for viewing and filtering audit logs\n\n9. Enhance the existing AuthContext to incorporate the new role-based permissions\n10. Update the settings database schema to accommodate new fields and relationships\n11. Ensure all new features are responsive and work across different devices",
         "testStrategy": "1. Test company profile updates:\n   - Verify all fields can be updated and are properly validated\n   - Test logo upload, including file type and size restrictions\n   - Ensure company profile changes are reflected throughout the application\n\n2. Validate user role and permission system:\n   - Create multiple roles with different permission sets\n   - Test access control for various application features\n   - Verify that permission changes take effect immediately\n\n3. Test billing and subscription management:\n   - Verify successful integration with the payment gateway\n   - Test subscription creation, upgrade, and downgrade flows\n   - Ensure billing history and invoices are accurately generated\n\n4. Validate tax configuration and calculations:\n   - Test tax rate creation for multiple jurisdictions\n   - Verify tax calculations in invoices and billing\n   - Test tax rate updates and their effect on existing and new transactions\n\n5. Test backup and data export features:\n   - Verify scheduled backups are created and stored correctly\n   - Test data export for all supported entities and formats\n   - Ensure exported data is complete and accurately formatted\n\n6. Validate API access and webhook functionality:\n   - Test API endpoints for all CRUD operations\n   - Verify API key creation, rotation, and revocation\n   - Test webhook configurations and ensure proper event delivery\n\n7. Test system preferences and customization:\n   - Verify all customization options can be set and retrieved\n   - Test theming changes and custom branding applications\n   - Ensure user-specific preferences override global settings where applicable\n\n8. Validate audit logs and activity tracking:\n   - Verify all relevant actions are properly logged\n   - Test the audit log interface, including filtering and search functionality\n   - Ensure sensitive information is properly masked in logs\n\n9. Perform cross-browser and responsive design testing\n10. Conduct performance testing, especially for data-intensive operations\n11. Perform security testing, including penetration testing and vulnerability assessments",
-        "status": "pending",
+        "status": "done",
         "dependencies": [
           72,
           61,
@@ -2578,7 +2578,7 @@
             "description": "Create a comprehensive company profile management module, including forms for company details, logo upload functionality using Supabase Storage, and validation for all fields.",
             "dependencies": [],
             "details": "This subtask covers building the UI and backend for company information management, integrating file storage for logo uploads, and ensuring robust validation for all company data inputs.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Verify form validation, successful logo upload and retrieval, and correct storage of company details in the database."
           },
           {
@@ -2589,7 +2589,7 @@
               1
             ],
             "details": "This subtask includes schema design for roles and permissions, UI for administrators to assign roles, and backend logic to restrict access based on user roles.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Test role assignment, permission enforcement, and access restrictions for various user scenarios."
           },
           {
@@ -2600,7 +2600,7 @@
               2
             ],
             "details": "This subtask involves setting up payment processing, managing subscription states, and generating invoices, ensuring seamless billing operations.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Simulate subscription changes, process payments, and verify invoice generation and billing history accuracy."
           },
           {
@@ -2611,7 +2611,7 @@
               3
             ],
             "details": "This subtask focuses on flexible tax configuration, jurisdiction support, and ensuring tax calculations are correctly applied to all billing operations.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Test tax rate creation, jurisdiction assignment, and correct tax application on invoices."
           },
           {
@@ -2622,15 +2622,26 @@
               4
             ],
             "details": "This subtask ensures data resilience and portability by automating backups and enabling users to export their data in different formats.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Verify scheduled backups, test data export for all supported entities and formats, and ensure data integrity in exported files."
+          },
+          {
+            "id": 6,
+            "title": "Add API Access and Webhook Configuration",
+            "description": "Design and implement a RESTful API for third-party integrations, create an API key management system, and implement webhook functionality for real-time event notifications.",
+            "details": "This subtask includes creating API endpoints, managing API keys, and setting up a webhook system for event-driven notifications.",
+            "status": "done",
+            "dependencies": [
+              5
+            ],
+            "parentTaskId": 76
           }
         ]
       }
     ],
     "metadata": {
       "created": "2025-06-18T17:58:30.256Z",
-      "updated": "2025-06-25T23:30:04.974Z",
+      "updated": "2025-06-26T17:32:18.706Z",
       "description": "Tasks for master context"
     }
   }

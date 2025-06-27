@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS public.event_invitations (
     -- Metadata
     created_at TIMESTAMPTZ DEFAULT NOW(),
     updated_at TIMESTAMPTZ DEFAULT NOW(),
-    created_by UUID REFERENCES auth.users(id) ON DELETE SET NULL
+    created_by TEXT -- Clerk user ID
 );
 
 -- Create event_attendees table for confirmed attendees (post-RSVP)
@@ -84,7 +84,7 @@ CREATE TABLE IF NOT EXISTS public.event_comments (
     comment_type TEXT CHECK (comment_type IN ('general', 'question', 'update', 'reminder', 'system')) DEFAULT 'general',
     
     -- Author information
-    author_id UUID REFERENCES auth.users(id) ON DELETE SET NULL,
+    author_id TEXT, -- Clerk user ID
     author_name TEXT NOT NULL,
     author_email TEXT,
     
@@ -118,7 +118,7 @@ CREATE TABLE IF NOT EXISTS public.event_attachments (
     
     -- Access control
     is_public BOOLEAN DEFAULT FALSE, -- Can attendees access this file?
-    uploaded_by UUID REFERENCES auth.users(id) ON DELETE SET NULL,
+    uploaded_by TEXT, -- Clerk user ID
     
     -- Metadata
     created_at TIMESTAMPTZ DEFAULT NOW(),
@@ -147,7 +147,7 @@ ON public.event_invitations FOR SELECT
 USING (EXISTS (
     SELECT 1 FROM public.events 
     WHERE events.id = event_invitations.event_id 
-    AND events.user_id = auth.uid()
+    AND events.user_id = auth.uid()::text
 ));
 
 CREATE POLICY "Users can create invitations for their events" 
@@ -155,7 +155,7 @@ ON public.event_invitations FOR INSERT
 WITH CHECK (EXISTS (
     SELECT 1 FROM public.events 
     WHERE events.id = event_invitations.event_id 
-    AND events.user_id = auth.uid()
+    AND events.user_id = auth.uid()::text
 ));
 
 CREATE POLICY "Users can update invitations for their events" 
@@ -163,7 +163,7 @@ ON public.event_invitations FOR UPDATE
 USING (EXISTS (
     SELECT 1 FROM public.events 
     WHERE events.id = event_invitations.event_id 
-    AND events.user_id = auth.uid()
+    AND events.user_id = auth.uid()::text
 ));
 
 CREATE POLICY "Users can delete invitations for their events" 
@@ -171,7 +171,7 @@ ON public.event_invitations FOR DELETE
 USING (EXISTS (
     SELECT 1 FROM public.events 
     WHERE events.id = event_invitations.event_id 
-    AND events.user_id = auth.uid()
+    AND events.user_id = auth.uid()::text
 ));
 
 -- Allow invitees to view and update their own invitations (for RSVP)
@@ -190,7 +190,7 @@ ON public.event_attendees FOR ALL
 USING (EXISTS (
     SELECT 1 FROM public.events 
     WHERE events.id = event_attendees.event_id 
-    AND events.user_id = auth.uid()
+    AND events.user_id = auth.uid()::text
 ));
 
 -- RLS policies for event_comments
@@ -199,7 +199,7 @@ ON public.event_comments FOR ALL
 USING (EXISTS (
     SELECT 1 FROM public.events 
     WHERE events.id = event_comments.event_id 
-    AND events.user_id = auth.uid()
+    AND events.user_id = auth.uid()::text
 ));
 
 -- Allow public comments to be viewed by attendees
@@ -220,7 +220,7 @@ ON public.event_attachments FOR ALL
 USING (EXISTS (
     SELECT 1 FROM public.events 
     WHERE events.id = event_attachments.event_id 
-    AND events.user_id = auth.uid()
+    AND events.user_id = auth.uid()::text
 ));
 
 -- Allow public attachments to be viewed by attendees
@@ -249,6 +249,7 @@ BEFORE UPDATE ON public.event_invitations
 FOR EACH ROW
 EXECUTE FUNCTION trigger_set_timestamp();
 
+DROP TRIGGER IF EXISTS set_timestamp_event_attendees ON public.event_attendees;
 CREATE TRIGGER set_timestamp_event_attendees
 BEFORE UPDATE ON public.event_attendees
 FOR EACH ROW
@@ -305,4 +306,4 @@ $$ LANGUAGE plpgsql;
 CREATE TRIGGER create_attendee_from_rsvp_trigger
 AFTER UPDATE ON public.event_invitations
 FOR EACH ROW
-EXECUTE FUNCTION create_attendee_from_rsvp(); 
+EXECUTE FUNCTION create_attendee_from_rsvp();

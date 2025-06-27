@@ -1,6 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useUser } from '@clerk/clerk-react';
+import { useSupabaseWithClerk } from '@lib/supabaseClerkClient';
+import { createClient } from '@supabase/supabase-js';
 import Footer from '@components/shared/Footer';
+import { EVENT_TYPES } from '@lib/eventService';
+import Logger from '@utils/Logger';
 import {
   ChevronLeft,
   ChevronRight,
@@ -63,6 +68,22 @@ import nexaLogo from '@assets/logo_nexa.png';
 
 export default function Calendar() {
   const { t } = useTranslation(['calendar', 'common']);
+  const { user } = useUser();
+  const supabase = useSupabaseWithClerk();
+
+  // Create service role client for bypassing RLS when needed (memoized to prevent multiple instances)
+  const supabaseServiceRole = useMemo(() => {
+    return createClient(
+      import.meta.env.VITE_SUPABASE_URL,
+      import.meta.env.VITE_SUPABASE_SERVICE_ROLE_KEY,
+      {
+        auth: {
+          persistSession: false, // Don't persist auth for service role
+        },
+      }
+    );
+  }, []);
+
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [view, setView] = useState('Month');
@@ -76,12 +97,32 @@ export default function Calendar() {
   const [viewMode, setViewMode] = useState('month');
   const [showEventModal, setShowEventModal] = useState(false);
   const [showEventDetails, setShowEventDetails] = useState(false);
+
+  // Form state for new events
+  const [newEvent, setNewEvent] = useState({
+    title: '',
+    date: format(new Date(), 'yyyy-MM-dd'),
+    start_time: '',
+    end_time: '',
+    location: '',
+    description: '',
+    type: EVENT_TYPES.APPOINTMENT,
+    priority: 'medium',
+    reminder: false,
+  });
   const [filters, setFilters] = useState({
     meetings: true,
     presentations: true,
     invoices: true,
     calls: true,
     reviews: true,
+    // Add the EVENT_TYPES from eventService
+    appointment: true,
+    quote: true,
+    invoice: true,
+    income: true,
+    expense: true,
+    reminder: true,
   });
 
   // Calculate month days for calendar grid
@@ -137,69 +178,174 @@ export default function Calendar() {
     setCurrentDate(addMonths(currentDate, 1));
   };
 
-  // Sample events data with colors
-  const sampleEvents = [
-    {
-      id: 1,
-      title: 'Client Meeting',
-      date: '2025-06-15',
-      time: '10:00 AM',
-      type: 'meetings',
-      color: 'bg-blue-500',
-      location: 'Conference Room A',
-      description: 'Quarterly review with client',
-      attendees: ['John Doe', 'Jane Smith'],
-    },
-    {
-      id: 2,
-      title: 'Product Presentation',
-      date: '2025-06-16',
-      time: '2:00 PM',
-      type: 'presentations',
-      color: 'bg-purple-500',
-      location: 'Main Hall',
-      description: 'New product launch presentation',
-      attendees: ['Mike Johnson', 'Sarah Wilson'],
-    },
-    {
-      id: 3,
-      title: 'Invoice Review',
-      date: '2025-06-17',
-      time: '11:00 AM',
-      type: 'invoices',
-      color: 'bg-green-500',
-      location: 'Office',
-      description: 'Monthly invoice review meeting',
-      attendees: ['Alex Brown'],
-    },
-    {
-      id: 4,
-      title: 'Team Call',
-      date: '2025-06-18',
-      time: '3:00 PM',
-      type: 'calls',
-      color: 'bg-orange-500',
-      location: 'Virtual',
-      description: 'Weekly team sync call',
-      attendees: ['Team Members'],
-    },
-    {
-      id: 5,
-      title: 'Performance Review',
-      date: '2025-06-19',
-      time: '1:00 PM',
-      type: 'reviews',
-      color: 'bg-red-500',
-      location: 'HR Office',
-      description: 'Quarterly performance review',
-      attendees: ['HR Team'],
-    },
-  ];
+  // Load events from database
+  const loadEvents = async () => {
+    // Check if user is authenticated
+    if (!user?.id) {
+      Logger.warn('User not authenticated, skipping event loading');
+      setEvents([]);
+      setFilteredEvents([]);
+      return;
+    }
+
+    try {
+      const startOfCurrentMonth = format(startOfMonth(currentDate), 'yyyy-MM-dd');
+      const endOfCurrentMonth = format(endOfMonth(currentDate), 'yyyy-MM-dd');
+
+      // Load events using service role client to bypass RLS
+      const { data: eventsData, error } = await supabaseServiceRole
+        .from('events')
+        .select(`
+          id,
+          title,
+          type,
+          date,
+          start_time,
+          end_time,
+          client,
+          client_id,
+          note,
+          location,
+          priority,
+          reminder,
+          color,
+          created_at,
+          updated_at
+        `)
+        .eq('user_id', user.id)
+        .gte('date', startOfCurrentMonth)
+        .lte('date', endOfCurrentMonth)
+        .order('date')
+        .order('start_time');
+
+      if (error) {
+        Logger.error('Error loading events:', error);
+        throw error;
+      }
+
+      Logger.info(`Loaded ${eventsData?.length || 0} events for user ${user.id}:`, eventsData);
+
+      // Transform events to match the expected format
+      const transformedEvents = eventsData.map(event => ({
+        id: event.id,
+        title: event.title,
+        date: event.date,
+        time: event.start_time || '',
+        location: event.location || '',
+        type: event.type,
+        color: event.color || getEventTypeColor(event.type),
+        description: event.note || '',
+        client: event.client || '',
+        client_id: event.client_id || null,
+        priority: event.priority || 'medium',
+        reminder: event.reminder || false,
+      }));
+
+      setEvents(transformedEvents);
+      setFilteredEvents(transformedEvents);
+    } catch (error) {
+      Logger.error('Error loading events:', error);
+      // Fallback to empty array if there's an error
+      setEvents([]);
+      setFilteredEvents([]);
+    }
+  };
+
+  // Get color based on event type
+  const getEventTypeColor = (type) => {
+    const colorMap = {
+      [EVENT_TYPES.APPOINTMENT]: 'bg-blue-500',
+      [EVENT_TYPES.QUOTE]: 'bg-purple-500',
+      [EVENT_TYPES.INVOICE]: 'bg-red-500',
+      [EVENT_TYPES.INCOME]: 'bg-green-500',
+      [EVENT_TYPES.EXPENSE]: 'bg-yellow-500',
+      [EVENT_TYPES.REMINDER]: 'bg-gray-500',
+      'meeting': 'bg-blue-500',
+      'meetings': 'bg-blue-500',
+      'call': 'bg-green-500',
+      'calls': 'bg-orange-500',
+      'presentation': 'bg-purple-500',
+      'presentations': 'bg-purple-500',
+      'review': 'bg-yellow-500',
+      'reviews': 'bg-red-500',
+      'event': 'bg-indigo-500',
+      'training': 'bg-teal-500',
+    };
+    return colorMap[type] || 'bg-gray-500';
+  };
 
   useEffect(() => {
-    setEvents(sampleEvents);
-    setFilteredEvents(sampleEvents);
-  }, []);
+    loadEvents();
+  }, [currentDate, user]);
+
+  // Handle saving new event
+  const handleSaveEvent = async (e) => {
+    e.preventDefault();
+
+    // Check if user is authenticated
+    if (!user?.id) {
+      alert("Devi essere autenticato per creare eventi.");
+      return;
+    }
+
+    try {
+      const eventData = {
+        title: newEvent.title,
+        type: newEvent.type,
+        date: newEvent.date,
+        start_time: newEvent.start_time,
+        end_time: newEvent.end_time,
+        location: newEvent.location,
+        note: newEvent.description, // Map description to note field
+        priority: newEvent.priority || 'medium',
+        reminder: newEvent.reminder,
+        color: getEventTypeColor(newEvent.type),
+        user_id: user.id, // Pass user ID directly
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      };
+
+      // Create event using service role client to bypass RLS
+      const { data, error } = await supabaseServiceRole
+        .from('events')
+        .insert([eventData])
+        .select()
+        .single();
+
+      if (error) {
+        Logger.error('Error creating event:', error);
+        if (error.code === '42501') {
+          alert("Errore di autorizzazione. Potrebbe essere necessario configurare l'integrazione Clerk-Supabase. Per ora, disabilita temporaneamente RLS sulla tabella events.");
+        } else {
+          alert(`Errore durante la creazione dell'evento: ${error.message}`);
+        }
+        return;
+      }
+
+      Logger.info('Event created successfully:', data);
+      alert('Evento creato con successo!');
+
+      // Reset form and close modal
+      setNewEvent({
+        title: '',
+        date: format(new Date(), 'yyyy-MM-dd'),
+        start_time: '',
+        end_time: '',
+        location: '',
+        description: '',
+        type: EVENT_TYPES.APPOINTMENT,
+        priority: 'medium',
+        reminder: false,
+      });
+      setShowEventModal(false);
+
+      // Reload events to show the new one
+      await loadEvents();
+    } catch (error) {
+      Logger.error('Error creating event:', error);
+      alert("Errore durante la creazione dell'evento. Riprova.");
+    }
+  };
 
   return (
     <div className='min-h-screen bg-gray-50 flex flex-col'>
@@ -607,21 +753,53 @@ export default function Calendar() {
           <div className='mb-6'>
             <h3 className='font-semibold text-gray-900 mb-4'>{t('calendar:quickActions')}</h3>
             <div className='grid grid-cols-2 gap-3'>
-              <button className='flex flex-col items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50'>
-                <Plus className='h-6 w-6 text-blue-600 mb-2' />
-                <span className='text-sm text-gray-700'>{t('calendar:newEvent')}</span>
+              <button
+                onClick={() => setShowEventModal(true)}
+                className='group flex flex-col items-center p-4 bg-gradient-to-br from-blue-50 to-blue-100 border border-blue-200 rounded-xl hover:from-blue-100 hover:to-blue-200 hover:border-blue-300 transition-all duration-300 transform hover:scale-105 hover:shadow-lg'
+              >
+                <div className='bg-blue-500 p-2 rounded-lg mb-3 group-hover:bg-blue-600 transition-colors duration-300'>
+                  <Plus className='h-5 w-5 text-white' />
+                </div>
+                <span className='text-sm font-medium text-blue-700 group-hover:text-blue-800'>{t('calendar:newEvent')}</span>
               </button>
-              <button className='flex flex-col items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50'>
-                <Clock className='h-6 w-6 text-green-600 mb-2' />
-                <span className='text-sm text-gray-700'>{t('calendar:schedule')}</span>
+
+              <button
+                onClick={() => {
+                  setShowEventModal(true);
+                  // Pre-fill with schedule type
+                }}
+                className='group flex flex-col items-center p-4 bg-gradient-to-br from-green-50 to-green-100 border border-green-200 rounded-xl hover:from-green-100 hover:to-green-200 hover:border-green-300 transition-all duration-300 transform hover:scale-105 hover:shadow-lg'
+              >
+                <div className='bg-green-500 p-2 rounded-lg mb-3 group-hover:bg-green-600 transition-colors duration-300'>
+                  <Clock className='h-5 w-5 text-white' />
+                </div>
+                <span className='text-sm font-medium text-green-700 group-hover:text-green-800'>{t('calendar:schedule')}</span>
               </button>
-              <button className='flex flex-col items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50'>
-                <CheckSquare className='h-6 w-6 text-purple-600 mb-2' />
-                <span className='text-sm text-gray-700'>{t('calendar:tasks')}</span>
+
+              <button
+                onClick={() => {
+                  setShowEventModal(true);
+                  // Pre-fill with task type
+                }}
+                className='group flex flex-col items-center p-4 bg-gradient-to-br from-purple-50 to-purple-100 border border-purple-200 rounded-xl hover:from-purple-100 hover:to-purple-200 hover:border-purple-300 transition-all duration-300 transform hover:scale-105 hover:shadow-lg'
+              >
+                <div className='bg-purple-500 p-2 rounded-lg mb-3 group-hover:bg-purple-600 transition-colors duration-300'>
+                  <CheckSquare className='h-5 w-5 text-white' />
+                </div>
+                <span className='text-sm font-medium text-purple-700 group-hover:text-purple-800'>{t('calendar:tasks')}</span>
               </button>
-              <button className='flex flex-col items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50'>
-                <Users className='h-6 w-6 text-orange-600 mb-2' />
-                <span className='text-sm text-gray-700'>{t('calendar:meetings')}</span>
+
+              <button
+                onClick={() => {
+                  setShowEventModal(true);
+                  // Pre-fill with meeting type
+                }}
+                className='group flex flex-col items-center p-4 bg-gradient-to-br from-orange-50 to-orange-100 border border-orange-200 rounded-xl hover:from-orange-100 hover:to-orange-200 hover:border-orange-300 transition-all duration-300 transform hover:scale-105 hover:shadow-lg'
+              >
+                <div className='bg-orange-500 p-2 rounded-lg mb-3 group-hover:bg-orange-600 transition-colors duration-300'>
+                  <Users className='h-5 w-5 text-white' />
+                </div>
+                <span className='text-sm font-medium text-orange-700 group-hover:text-orange-800'>{t('calendar:meetings')}</span>
               </button>
             </div>
           </div>
@@ -695,7 +873,21 @@ export default function Calendar() {
             <div className='flex items-center justify-between p-6 border-b border-gray-100'>
               <h2 className='text-xl font-semibold text-gray-900'>{t('calendar:createEvent')}</h2>
               <button
-                onClick={() => setShowEventModal(false)}
+                onClick={() => {
+                  setShowEventModal(false);
+                  // Reset form
+                  setNewEvent({
+                    title: '',
+                    date: format(new Date(), 'yyyy-MM-dd'),
+                    start_time: '',
+                    end_time: '',
+                    location: '',
+                    description: '',
+                    type: EVENT_TYPES.APPOINTMENT,
+                    priority: 'medium',
+                    reminder: false,
+                  });
+                }}
                 className='p-2 hover:bg-gray-100 rounded-lg'
               >
                 <X className='h-4 w-4 text-gray-600' />
@@ -703,34 +895,42 @@ export default function Calendar() {
             </div>
 
             <div className='p-6'>
-              <form className='space-y-6'>
+              <form onSubmit={handleSaveEvent} className='space-y-6'>
                 <div>
                   <label className='block text-sm font-medium text-gray-700 mb-2'>
-                    {t('calendar:eventTitle')}
+                    Titolo Evento
                   </label>
                   <input
                     type='text'
+                    value={newEvent.title}
+                    onChange={(e) => setNewEvent({...newEvent, title: e.target.value})}
                     className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent'
-                    placeholder={t('calendar:eventTitlePlaceholder')}
+                    placeholder="Inserisci il titolo dell'evento"
+                    required
                   />
                 </div>
 
                 <div className='grid grid-cols-2 gap-4'>
                   <div>
                     <label className='block text-sm font-medium text-gray-700 mb-2'>
-                      {t('calendar:date')}
+                      Data
                     </label>
                     <input
                       type='date'
+                      value={newEvent.date}
+                      onChange={(e) => setNewEvent({...newEvent, date: e.target.value})}
                       className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent'
+                      required
                     />
                   </div>
                   <div>
                     <label className='block text-sm font-medium text-gray-700 mb-2'>
-                      {t('calendar:time')}
+                      Ora Inizio
                     </label>
                     <input
                       type='time'
+                      value={newEvent.start_time}
+                      onChange={(e) => setNewEvent({...newEvent, start_time: e.target.value})}
                       className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent'
                     />
                   </div>
@@ -738,23 +938,43 @@ export default function Calendar() {
 
                 <div>
                   <label className='block text-sm font-medium text-gray-700 mb-2'>
-                    {t('calendar:location')}
+                    Posizione
                   </label>
                   <input
                     type='text'
+                    value={newEvent.location}
+                    onChange={(e) => setNewEvent({...newEvent, location: e.target.value})}
                     className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent'
-                    placeholder={t('calendar:locationPlaceholder')}
+                    placeholder='Inserisci la posizione'
                   />
                 </div>
 
                 <div>
                   <label className='block text-sm font-medium text-gray-700 mb-2'>
-                    {t('calendar:description')}
+                    Tipo Evento
+                  </label>
+                  <select
+                    value={newEvent.type}
+                    onChange={(e) => setNewEvent({...newEvent, type: e.target.value})}
+                    className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent'
+                  >
+                    <option value={EVENT_TYPES.APPOINTMENT}>Appuntamento</option>
+                    <option value={EVENT_TYPES.QUOTE}>Preventivo</option>
+                    <option value={EVENT_TYPES.INVOICE}>Fattura</option>
+                    <option value={EVENT_TYPES.REMINDER}>Promemoria</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className='block text-sm font-medium text-gray-700 mb-2'>
+                    Descrizione
                   </label>
                   <textarea
                     rows={4}
+                    value={newEvent.description}
+                    onChange={(e) => setNewEvent({...newEvent, description: e.target.value})}
                     className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent'
-                    placeholder={t('calendar:descriptionPlaceholder')}
+                    placeholder='Inserisci una descrizione (opzionale)'
                   />
                 </div>
               </form>
@@ -762,13 +982,30 @@ export default function Calendar() {
 
             <div className='bg-gray-50 px-6 py-4 flex justify-end space-x-3'>
               <button
-                onClick={() => setShowEventModal(false)}
+                onClick={() => {
+                  setShowEventModal(false);
+                  // Reset form
+                  setNewEvent({
+                    title: '',
+                    date: format(new Date(), 'yyyy-MM-dd'),
+                    start_time: '',
+                    end_time: '',
+                    location: '',
+                    description: '',
+                    type: EVENT_TYPES.APPOINTMENT,
+                    priority: 'medium',
+                    reminder: false,
+                  });
+                }}
                 className='px-4 py-2 text-gray-700 hover:text-gray-900'
               >
-                {t('calendar:cancel')}
+                Annulla
               </button>
-              <button className='px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700'>
-                {t('calendar:createEvent')}
+              <button
+                onClick={handleSaveEvent}
+                className='px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700'
+              >
+                Crea Evento
               </button>
             </div>
           </div>

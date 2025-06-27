@@ -875,6 +875,45 @@ class ClientService {
       };
     }
   }
+
+  /**
+   * Get client metrics for dashboard (total, active, newThisMonth)
+   * @param {Date} startDate - Start date for the period
+   * @param {Date} endDate - End date for the period
+   * @returns {Promise<{success: boolean, data: {total: number, active: number, newThisMonth: number}}>} Metrics
+   */
+  async getClientMetrics(startDate, endDate) {
+    try {
+      const user = this.getCurrentUser();
+      const userId = user?.id;
+      if (!userId) {
+        throw new Error('User not authenticated - no Clerk user ID available');
+      }
+      return await this.executeWithUserContext(userId, async () => {
+        // Get all clients for the user
+        const { data: clients, error } = await supabase
+          .from(this.tableName)
+          .select('*')
+          .eq('user_id', userId);
+        if (error) throw error;
+        const total = clients.length;
+        // Consider all as active (or add logic if you have is_active field)
+        const active = total;
+        // Count new clients in the selected month
+        let newThisMonth = 0;
+        if (startDate && endDate) {
+          newThisMonth = clients.filter(c => {
+            const created = new Date(c.created_at);
+            return created >= startDate && created <= endDate;
+          }).length;
+        }
+        return { success: true, data: { total, active, newThisMonth } };
+      });
+    } catch (error) {
+      Logger.error('Error fetching client metrics:', error);
+      return { success: false, data: { total: 0, active: 0, newThisMonth: 0 }, error };
+    }
+  }
 }
 
 // Create and export a singleton instance

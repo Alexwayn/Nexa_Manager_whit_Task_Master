@@ -45,7 +45,9 @@
     "activeClients": "Clienti Attivi",
     "newClients": "Nuovi Clienti",
     "performance": "Performance",
-    "vsPreviousMonth": "vs Mese Precedente"
+    "vsPreviousMonth": "vs Mese Precedente",
+    "totalInvoices": "Fatture Totali",
+    "avgPaymentTime": "Tempo Medio Pagamento"
   },
   "charts": {
     "revenue": "Ricavi",
@@ -142,6 +144,7 @@
     }
   },
   "timeSelector": {
+    "title": "Selettore Periodo",
     "last30Days": "Ultimi 30 Giorni",
     "last90Days": "Ultimi 90 Giorni",
     "presets": {
@@ -157,7 +160,10 @@
       "customPeriod": "Periodo Personalizzato"
     },
     "compare": {
-      "comparePeriod": "Confronta Periodo"
+      "comparePeriod": "Confronta Periodo",
+      "yearOverYear": "Anno su Anno",
+      "monthOverMonth": "Mese su Mese",
+      "quarterOverQuarter": "Trimestre su Trimestre"
     }
   },
   "status": {
@@ -176,12 +182,6 @@
   },
   "errors": {
     "loadFailed": "Errore nel caricamento dei dati analytics"
-  },
-  "kpi": {
-    "totalRevenue": "Ricavi Totali",
-    "totalInvoices": "Fatture Totali",
-    "activeClients": "Clienti Attivi",
-    "avgPaymentTime": "Tempo Medio Pagamento"
   },
   "insights": {
     "title": "Approfondimenti",
@@ -281,7 +281,74 @@
     "compare": {
       "comparePeriod": "Confronta Periodo",
       "comparisonOptions": "Opzioni di Confronto",
-      "previousYear": "Anno Precedente"
+      "previousYear": "Anno Precedente",
+      "yearOverYear": "Anno su Anno",
+      "monthOverMonth": "Mese su Mese",
+      "quarterOverQuarter": "Trimestre su Trimestre"
+    }
+  },
+  "clientAnalytics": {
+    "title": "Analisi Clienti",
+    "subtitle": "Approfondimenti completi sui clienti e metriche di business",
+    "clientOverview": "Panoramica Clienti",
+    "totalClients": "Clienti Totali",
+    "activeClients": "Clienti Attivi",
+    "newThisMonth": "Nuovi Questo Mese",
+    "retention": "Tasso di Retention",
+    "clientGrowth": "Crescita Clienti",
+    "clientSegmentation": "Segmentazione Clienti",
+    "topClients": "Top Clienti",
+    "paymentBehavior": "Comportamento Pagamenti",
+    "clientGrowthTrends": "Tendenze Crescita Clienti",
+    "businessHealthScore": "Punteggio Salute Business",
+    "segments": {
+      "champions": "Campioni",
+      "loyalCustomers": "Clienti Fedeli",
+      "potentialLoyalists": "Potenziali Fedeli",
+      "newCustomers": "Nuovi Clienti",
+      "atRisk": "A Rischio",
+      "cantLoseThem": "Non Possiamo Perderli",
+      "hibernating": "Inattivi",
+      "lost": "Persi"
+    },
+    "paymentCategories": {
+      "excellent": "Eccellente (≤15 giorni)",
+      "good": "Buono (16-30 giorni)",
+      "fair": "Discreto (31-60 giorni)",
+      "poor": "Scarso (>60 giorni)"
+    },
+    "healthLevels": {
+      "excellent": "Eccellente",
+      "good": "Buono",
+      "fair": "Discreto",
+      "needsAttention": "Richiede Attenzione"
+    },
+    "metrics": {
+      "totalRevenue": "Ricavi Totali",
+      "invoiceCount": "Numero Fatture",
+      "avgPaymentTime": "Tempo Medio Pagamento",
+      "avgDays": "giorni medi",
+      "days": "giorni",
+      "invoices": "fatture",
+      "client": "Cliente",
+      "basedOnClientMetrics": "Basato su metriche e performance dei clienti"
+    },
+    "actions": {
+      "viewDetails": "Vedi Dettagli",
+      "viewAll": "Vedi Tutti",
+      "analyze": "Analizza",
+      "drillDown": "Approfondisci",
+      "export": "Esporta Dati",
+      "filter": "Filtra"
+    },
+    "loading": {
+      "loadingClientAnalytics": "Caricamento analisi clienti...",
+      "analyzing": "Analizzando dati clienti..."
+    },
+    "errors": {
+      "errorLoadingData": "Errore nel caricamento dati clienti",
+      "noClientData": "Nessun dato cliente disponibile",
+      "failedToLoad": "Errore nel caricamento analisi clienti"
     }
   },
   "totalRevenue": "Ricavi Totali",

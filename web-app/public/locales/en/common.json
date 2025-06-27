@@ -84,6 +84,9 @@
     "down": "Down",
     "left": "Left",
     "right": "Right",
+    "today": "Today",
+    "yesterday": "Yesterday",
+    "daysAgo": "{{count}} days ago",
     "quotes": {
       "tabs": {
         "details": "Details",
@@ -127,7 +130,8 @@
         "title": "Draft Quote",
         "description": "This quote is in draft mode. Send it to the client to begin the approval process."
       }
-    }
+    },
+    "retry": "Retry"
   },
   "confirmationModal": {
     "title": "Confirm deletion",

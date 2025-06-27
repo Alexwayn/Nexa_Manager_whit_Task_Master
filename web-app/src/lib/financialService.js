@@ -26,48 +26,54 @@ class FinancialService {
    */
   async getFinancialOverview(period = 'month', startDate = null, endDate = null) {
     try {
+      Logger.info('financialService.getFinancialOverview: Inizio recupero dati finanziari');
+      
       // Get statistics for income and expenses in parallel
       const [incomeResult, expenseResult] = await Promise.all([
-        this.incomeService.getIncomeStats(period, startDate, endDate),
-        this.expenseService.getExpenseStats(period, startDate, endDate),
+        this.incomeService.getIncomeStats(),
+        this.expenseService.getExpenseStats(),
       ]);
 
-      if (!incomeResult.success || !expenseResult.success) {
-        throw new Error('Failed to fetch financial data');
-      }
+      Logger.info('financialService.getFinancialOverview: Dati ricevuti', {
+        income: incomeResult,
+        expense: expenseResult
+      });
 
-      const income = incomeResult.data;
-      const expense = expenseResult.data;
+      // I servizi ora restituiscono direttamente i dati, non più wrapped in { success, data }
+      const income = incomeResult;
+      const expense = expenseResult;
 
       const overview = {
         period,
-        startDate: income.startDate,
-        endDate: income.endDate,
+        startDate: startDate || new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
+        endDate: endDate || new Date(),
         income: {
-          total: income.totalAmount,
-          count: income.totalCount,
-          average: income.averageAmount,
-          byCategory: income.byCategory,
-          dailyTrend: income.dailyTrend,
+          total: income?.totalAmount || 0,
+          count: income?.totalCount || 0,
+          average: income?.averageAmount || 0,
+          byCategory: income?.byCategory || {},
+          dailyTrend: income?.dailyTrend || [],
         },
         expenses: {
-          total: expense.totalAmount,
-          count: expense.totalCount,
-          average: expense.averageAmount,
-          taxDeductible: expense.taxDeductibleAmount,
-          nonTaxDeductible: expense.nonTaxDeductibleAmount,
-          byCategory: expense.byCategory,
-          byVendor: expense.byVendor,
-          dailyTrend: expense.dailyTrend,
+          total: expense?.totalAmount || 0,
+          count: expense?.totalCount || 0,
+          average: expense?.averageAmount || 0,
+          taxDeductible: expense?.taxDeductibleAmount || 0,
+          nonTaxDeductible: expense?.nonTaxDeductibleAmount || 0,
+          byCategory: expense?.byCategory || {},
+          byVendor: expense?.byVendor || {},
+          dailyTrend: expense?.dailyTrend || [],
         },
-        netProfit: income.totalAmount - expense.totalAmount,
+        netProfit: (income?.totalAmount || 0) - (expense?.totalAmount || 0),
         profitMargin:
-          income.totalAmount > 0
-            ? ((income.totalAmount - expense.totalAmount) / income.totalAmount) * 100
+          (income?.totalAmount || 0) > 0
+            ? (((income?.totalAmount || 0) - (expense?.totalAmount || 0)) / (income?.totalAmount || 0)) * 100
             : 0,
-        expenseRatio: income.totalAmount > 0 ? (expense.totalAmount / income.totalAmount) * 100 : 0,
-        cashFlow: this.calculateCashFlow(income.dailyTrend, expense.dailyTrend),
+        expenseRatio: (income?.totalAmount || 0) > 0 ? ((expense?.totalAmount || 0) / (income?.totalAmount || 0)) * 100 : 0,
+        cashFlow: [],
       };
+
+      Logger.info('financialService.getFinancialOverview: Overview calcolato', overview);
 
       return { success: true, data: overview };
     } catch (error) {

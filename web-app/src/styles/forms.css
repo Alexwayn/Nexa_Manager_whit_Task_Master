@@ -12,11 +12,15 @@ select {
   height: auto !important;
   min-height: 2.75rem !important;
   font-size: 1rem !important;
+  font-family: 'Manrope', system-ui, sans-serif !important;
+  font-weight: 400 !important;
 }
 
 /* Aggiustamenti per le label */
 label {
   margin-bottom: 0.5rem !important;
+  font-family: 'Manrope', system-ui, sans-serif !important;
+  font-weight: 500 !important;
 }
 
 /* Stile per i gruppi di form */
@@ -28,4 +32,16 @@ label {
 .input-container {
   width: 100%;
   position: relative;
+}
+
+/* Stili per titoli dei form */
+.form-title {
+  font-family: 'Plus Jakarta Sans', 'Lexend', system-ui, sans-serif !important;
+  font-weight: 700 !important;
+}
+
+/* Stili per i pulsanti nei form */
+button {
+  font-family: 'Lexend', system-ui, sans-serif !important;
+  font-weight: 500 !important;
 }

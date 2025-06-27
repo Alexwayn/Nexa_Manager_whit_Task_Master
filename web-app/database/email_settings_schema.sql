@@ -4,7 +4,7 @@
 -- Create email_settings table for SMTP and provider configuration
 CREATE TABLE IF NOT EXISTS email_settings (
     id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-    user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+    user_id TEXT NOT NULL, -- Clerk user ID (no foreign key constraint)
     
     -- Provider Configuration
     provider VARCHAR(20) DEFAULT 'smtp', -- smtp, sendgrid, mailgun, ses, emailjs
@@ -50,7 +50,7 @@ CREATE TABLE IF NOT EXISTS email_settings (
 -- Create email_templates table for customizable email templates
 CREATE TABLE IF NOT EXISTS email_templates (
     id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-    user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE, -- NULL for system templates
+    user_id TEXT, -- Clerk user ID (NULL for system templates)
     
     -- Template Identification
     template_key VARCHAR(50) NOT NULL, -- invoice_sent, payment_reminder, etc.
@@ -83,7 +83,7 @@ CREATE TABLE IF NOT EXISTS email_templates (
 -- Create notification_preferences table for email notification settings
 CREATE TABLE IF NOT EXISTS notification_preferences (
     id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-    user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+    user_id TEXT NOT NULL, -- Clerk user ID
     
     -- Invoice Notifications
     invoice_sent BOOLEAN DEFAULT true,
@@ -138,7 +138,7 @@ CREATE TABLE IF NOT EXISTS notification_preferences (
 -- Create email_activity table for tracking email history
 CREATE TABLE IF NOT EXISTS email_activity (
     id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-    user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+    user_id TEXT NOT NULL, -- Clerk user ID
     
     -- Email Identification
     template_id UUID REFERENCES email_templates(id),
@@ -181,52 +181,52 @@ ALTER TABLE email_activity ENABLE ROW LEVEL SECURITY;
 
 -- Email Settings Policies
 CREATE POLICY "Users can view own email settings" ON email_settings
-    FOR SELECT USING (auth.uid() = user_id);
+    FOR SELECT USING (auth.jwt() ->> 'sub' = user_id);
 
 CREATE POLICY "Users can insert own email settings" ON email_settings
-    FOR INSERT WITH CHECK (auth.uid() = user_id);
+    FOR INSERT WITH CHECK (auth.jwt() ->> 'sub' = user_id);
 
 CREATE POLICY "Users can update own email settings" ON email_settings
-    FOR UPDATE USING (auth.uid() = user_id);
+    FOR UPDATE USING (auth.jwt() ->> 'sub' = user_id);
 
 CREATE POLICY "Users can delete own email settings" ON email_settings
-    FOR DELETE USING (auth.uid() = user_id);
+    FOR DELETE USING (auth.jwt() ->> 'sub' = user_id);
 
 -- Email Templates Policies
 CREATE POLICY "Users can view own and system email templates" ON email_templates
-    FOR SELECT USING (auth.uid() = user_id OR user_id IS NULL);
+    FOR SELECT USING (auth.jwt() ->> 'sub' = user_id OR user_id IS NULL);
 
 CREATE POLICY "Users can insert own email templates" ON email_templates
-    FOR INSERT WITH CHECK (auth.uid() = user_id);
+    FOR INSERT WITH CHECK (auth.jwt() ->> 'sub' = user_id);
 
 CREATE POLICY "Users can update own email templates" ON email_templates
-    FOR UPDATE USING (auth.uid() = user_id);
+    FOR UPDATE USING (auth.jwt() ->> 'sub' = user_id);
 
 CREATE POLICY "Users can delete own email templates" ON email_templates
-    FOR DELETE USING (auth.uid() = user_id);
+    FOR DELETE USING (auth.jwt() ->> 'sub' = user_id);
 
 -- Notification Preferences Policies
 CREATE POLICY "Users can view own notification preferences" ON notification_preferences
-    FOR SELECT USING (auth.uid() = user_id);
+    FOR SELECT USING (auth.jwt() ->> 'sub' = user_id);
 
 CREATE POLICY "Users can insert own notification preferences" ON notification_preferences
-    FOR INSERT WITH CHECK (auth.uid() = user_id);
+    FOR INSERT WITH CHECK (auth.jwt() ->> 'sub' = user_id);
 
 CREATE POLICY "Users can update own notification preferences" ON notification_preferences
-    FOR UPDATE USING (auth.uid() = user_id);
+    FOR UPDATE USING (auth.jwt() ->> 'sub' = user_id);
 
 CREATE POLICY "Users can delete own notification preferences" ON notification_preferences
-    FOR DELETE USING (auth.uid() = user_id);
+    FOR DELETE USING (auth.jwt() ->> 'sub' = user_id);
 
 -- Email Activity Policies
 CREATE POLICY "Users can view own email activity" ON email_activity
-    FOR SELECT USING (auth.uid() = user_id);
+    FOR SELECT USING (auth.jwt() ->> 'sub' = user_id);
 
 CREATE POLICY "Users can insert own email activity" ON email_activity
-    FOR INSERT WITH CHECK (auth.uid() = user_id);
+    FOR INSERT WITH CHECK (auth.jwt() ->> 'sub' = user_id);
 
 CREATE POLICY "Users can update own email activity" ON email_activity
-    FOR UPDATE USING (auth.uid() = user_id);
+    FOR UPDATE USING (auth.jwt() ->> 'sub' = user_id);
 
 -- Create updated_at triggers
 CREATE OR REPLACE FUNCTION update_updated_at_column()
@@ -371,18 +371,6 @@ Best regards,
 '["client_name", "company_name", "portal_link", "client_email", "support_email"]',
 true, true, 'en');
 
--- Create default notification preferences for new users
-CREATE OR REPLACE FUNCTION create_default_notification_preferences()
-RETURNS TRIGGER AS $$
-BEGIN
-    INSERT INTO notification_preferences (user_id)
-    VALUES (NEW.id);
-    RETURN NEW;
-END;
-$$ LANGUAGE plpgsql;
-
--- Trigger to create default preferences for new users
-CREATE TRIGGER create_user_notification_preferences
-    AFTER INSERT ON auth.users
-    FOR EACH ROW
-    EXECUTE FUNCTION create_default_notification_preferences(); 
+-- Note: Default notification preferences should be created manually
+-- when a new user is registered through Clerk webhook or application logic
+-- since auth.users table is not used with Clerk authentication

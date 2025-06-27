@@ -14,6 +14,8 @@ const AdvancedTimePeriodSelector = ({
   onDateRangeChange,
   compareMode = false,
   onCompareModeChange,
+  comparisonType = 'yoy',
+  onComparisonTypeChange,
 }) => {
   const { t, i18n } = useTranslation('analytics');
   const [showDatePicker, setShowDatePicker] = useState(false);
@@ -293,17 +295,32 @@ const AdvancedTimePeriodSelector = ({
 
         {/* Compare mode toggle */}
         {compareMode !== undefined && (
-          <div className='flex items-center'>
-            <input
-              type='checkbox'
-              id='compare-mode'
-              checked={compareMode}
-              onChange={e => onCompareModeChange(e.target.checked)}
-              className='w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500'
-            />
-            <label htmlFor='compare-mode' className='ml-2 text-sm text-gray-700'>
-              {t('timeSelector.compare.comparePeriod')}
-            </label>
+          <div className='flex items-center space-x-4'>
+            <div className='flex items-center'>
+              <input
+                type='checkbox'
+                id='compare-mode'
+                checked={compareMode}
+                onChange={e => onCompareModeChange(e.target.checked)}
+                className='w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500'
+              />
+              <label htmlFor='compare-mode' className='ml-2 text-sm text-gray-700'>
+                {t('timeSelector.compare.comparePeriod')}
+              </label>
+            </div>
+            
+            {/* Comparison type selector */}
+            {compareMode && onComparisonTypeChange && (
+              <select
+                value={comparisonType}
+                onChange={e => onComparisonTypeChange(e.target.value)}
+                className='text-sm border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500'
+              >
+                <option value='yoy'>{t('timeSelector.compare.yearOverYear')}</option>
+                <option value='mom'>{t('timeSelector.compare.monthOverMonth')}</option>
+                <option value='qoq'>{t('timeSelector.compare.quarterOverQuarter')}</option>
+              </select>
+            )}
           </div>
         )}
 

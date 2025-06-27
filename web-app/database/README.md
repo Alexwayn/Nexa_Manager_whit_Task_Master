@@ -1,3 +1,85 @@
+# Database Setup e Verifica - Nexa Manager
+
+Questa directory contiene tutti gli script SQL e gli strumenti per configurare e verificare il database di Nexa Manager.
+
+## ⚠️ REGOLA FONDAMENTALE - CONTROLLO PREVENTIVO
+
+**PRIMA DI ESEGUIRE QUALSIASI SCRIPT SQL, DEVI SEMPRE CONTROLLARE COSA C'È GIÀ PRESENTE IN SUPABASE**
+
+Questa regola è obbligatoria per evitare:
+- Errori di tabelle già esistenti
+- Conflitti di dati
+- Perdita di informazioni
+- Problemi di integrità del database
+
+### Come Verificare lo Stato del Database:
+
+1. **Metodo Raccomandato - Script Node.js:**
+   ```bash
+   node check_database_status.js
+   ```
+
+2. **Metodo Alternativo - SQL Editor:**
+   - Apri Supabase Dashboard
+   - Vai su SQL Editor
+   - Esegui `check_database_status.sql`
+
+3. **Controllo Manuale:**
+   - Verifica le tabelle esistenti nel Dashboard
+   - Controlla la struttura delle colonne
+   - Verifica i dati presenti
+
+### Procedura Obbligatoria:
+
+1. ✅ **CONTROLLA** lo stato attuale del database
+2. ✅ **IDENTIFICA** cosa manca o deve essere modificato
+3. ✅ **SELEZIONA** solo gli script necessari
+4. ✅ **ESEGUI** gli script nell'ordine corretto
+5. ✅ **VERIFICA** il risultato dopo ogni script
+
+### 📖 Documentazione Completa:
+
+Per informazioni dettagliate sulla regola di controllo preventivo, consulta:
+- **[📋 REGOLA_CONTROLLO_PREVENTIVO.md](./REGOLA_CONTROLLO_PREVENTIVO.md)** - Documentazione completa
+- **[✅ CHECKLIST_CONTROLLO_PREVENTIVO.md](./CHECKLIST_CONTROLLO_PREVENTIVO.md)** - Checklist rapida
+
+### 🚨 Violazione della Regola:
+
+La mancata applicazione di questa regola può causare:
+- Perdita di dati
+- Downtime del sistema
+- Conflitti nel database
+- Perdita di tempo in debug
+
+**Tutti gli sviluppatori sono tenuti a rispettare questa regola senza eccezioni.**
+
+## 🔍 Verifica Stato Database
+
+Prima di eseguire qualsiasi script SQL, è consigliabile verificare lo stato attuale del database.
+
+### Opzione 1: Script Node.js (Raccomandato)
+
+```bash
+# Dalla directory web-app
+node database/check_database_status.js
+```
+
+Questo script:
+- ✅ Controlla quali tabelle esistono già
+- 📊 Mostra il numero di record per tabella
+- 📋 Raccomanda quali script eseguire
+- ⚠️ Identifica potenziali problemi
+- 💡 Fornisce suggerimenti per la risoluzione
+
+### Opzione 2: Query SQL Manuale
+
+Se preferisci usare direttamente Supabase SQL Editor:
+
+```sql
+-- Copia e incolla il contenuto di check_database_status.sql
+-- nel Supabase Dashboard > SQL Editor
+```
+
 # Configurazione Database Supabase per Nexa Manager
 
 Questo documento contiene le istruzioni per configurare correttamente il database Supabase necessario per l'applicazione Nexa Manager.
@@ -45,4 +127,4 @@ Se riscontri problemi con il salvataggio o il caricamento degli eventi:
 2. Controlla le politiche RLS per assicurarti che l'utente abbia i permessi corretti
 3. Verifica che i campi obbligatori vengano compilati correttamente nel form
 
-Per ulteriori informazioni consulta la documentazione di Supabase sulle tabelle e le politiche RLS. 
+Per ulteriori informazioni consulta la documentazione di Supabase sulle tabelle e le politiche RLS.

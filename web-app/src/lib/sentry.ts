@@ -31,8 +31,9 @@ export const sentryConfig: SentryConfig = {
 export const initSentry = (): void => {
   // Skip initialization if DSN is not provided
   if (!sentryConfig.dsn) {
+    // In development, don't show warning to reduce console noise
     if (isDevelopment) {
-      console.warn('Sentry DSN not provided. Error monitoring is disabled.');
+      console.debug('Sentry DSN not provided. Error monitoring is disabled.');
     }
     return;
   }

@@ -15,6 +15,7 @@
     "clearFilters": "Clear Filters",
     "status": "Status",
     "revenue": "Revenue",
+    "industry": "Industry",
     "allStatus": "All Status",
     "allRevenue": "All Revenue",
     "high": "High (≥€100,000)",
@@ -25,43 +26,62 @@
     "refresh": "Refresh clients",
     "switchToCard": "Switch to card view",
     "switchToTable": "Switch to table view",
-    "view": "View",
     "edit": "Edit",
     "delete": "Delete",
-    "createInvoice": "Create Invoice",
-    "createQuote": "Create Quote",
-    "viewProfile": "View Profile",
-    "sendEmail": "Send Email",
+    "view": "View",
     "call": "Call",
-    "map": "Map"
+    "sendEmail": "Send Email",
+    "createInvoice": "Create Invoice",
+    "exportData": "Export Data"
+  },
+  "table": {
+    "company": "Company",
+    "industry": "Industry",
+    "status": "Status",
+    "location": "Location",
+    "lastContact": "Last Contact",
+    "revenue": "Revenue",
+    "actions": "Actions"
+  },
+  "status": {
+    "active": "Active",
+    "pending": "Pending",
+    "inactive": "Inactive"
+  },
+  "statistics": {
+    "title": "Client Statistics",
+    "totalClients": "Total Clients",
+    "activeClients": "Active Clients",
+    "pendingClients": "Pending Clients",
+    "inactiveClients": "Inactive Clients",
+    "industryBreakdown": "Industry Breakdown",
+    "addNewClient": "Add New Client",
+    "exportList": "Export Client List",
+    "generateReport": "Generate Report"
+  },
+  "pagination": {
+    "previous": "Previous",
+    "next": "Next",
+    "showing": "Showing",
+    "to": "to",
+    "of": "of",
+    "results": "results"
+  },
+  "empty": {
+    "title": "No clients found",
+    "description": "Get started by creating a new client.",
+    "noClients": "No clients found matching your criteria."
+  },
+  "card": {
+    "lastContact": "Last contact: {{date}}",
+    "revenue": "Revenue: {{amount}}",
+    "location": "Location: {{location}}"
   },
   "sort": {
-    "by": "Sort by:",
-    "company": "Company Name",
-    "date": "Last Contact",
-    "location": "LOCATION",
-    "lastContact": "LAST CONTACT",
-    "editClient": "Edit Client",
-    "clientName": "Client Name",
-    "clientEmail": "Client Email",
-    "clientPhone": "Client Phone",
-    "clientAddress": "Client Address",
-    "clientNotes": "Client Notes",
-    "required": "*",
-    "placeholders": {
-      "name": "Enter client name",
-      "email": "Enter email",
-      "phone": "Enter phone number",
-      "address": "Enter address",
-      "notes": "Enter notes"
-    },
-    "cancel": "Cancel",
-    "save": "Save",
-    "saving": "Saving...",
-    "validation": {
-      
-      "format": "Export Format",
-      "selectFormat": "Select format"
-    }
+    "by": "Sort by",
+    "company": "Company",
+    "date": "Date",
+    "lastContact": "Last Contact",
+    "revenue": "Revenue"
   }
 }

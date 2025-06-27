@@ -84,6 +84,9 @@
     "down": "Giù",
     "left": "Sinistra",
     "right": "Destra",
+    "today": "Oggi",
+    "yesterday": "Ieri",
+    "daysAgo": "{{count}} giorni fa",
     "quotes": {
       "tabs": {
         "details": "Dettagli",
@@ -127,7 +130,8 @@
         "title": "Preventivo Bozza",
         "description": "Questo preventivo è in modalità bozza. Invialo al cliente per iniziare il processo di approvazione."
       }
-    }
+    },
+    "retry": "Riprova"
   },
   "confirmationModal": {
     "title": "Conferma eliminazione",

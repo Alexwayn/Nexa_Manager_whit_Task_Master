@@ -1,4 +1,4 @@
-import { useState, Fragment, useEffect } from 'react';
+import React, { useState, Fragment, useEffect } from 'react';
 import { Dialog, Transition, Tab } from '@headlessui/react';
 import {
   UserCircleIcon,
@@ -23,6 +23,14 @@ import Logger from '@utils/Logger';
 import { useTranslation } from 'react-i18next';
 import Footer from '@components/shared/Footer';
 import { businessService } from '@lib/businessService';
+import BusinessProfileSettings from '@components/settings/BusinessProfileSettings';
+import IntegrationsSettings from '@components/settings/IntegrationsSettings';
+import RolesAndPermissionsSettings from '@components/settings/RolesAndPermissionsSettings';
+import TaxSettings from '@components/settings/TaxSettings';
+import DataExportSettings from '@components/settings/DataExportSettings';
+import BillingSettings from '@components/settings/BillingSettings';
+import SecuritySettings from '@components/settings/SecuritySettings';
+import NotificationSettings from '@components/settings/NotificationSettings';
 
 export default function Settings() {
   const { t } = useTranslation('settings');
@@ -33,12 +41,10 @@ export default function Settings() {
   const [isSaving, setIsSaving] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   // Removed password and session state - now handled by Clerk UserProfile
-  const [isUploadingCompanyLogo, setIsUploadingCompanyLogo] = useState(false);
   const [notification, setNotification] = useState({ show: false, message: '', type: 'success' });
-  const [businessProfile, setBusinessProfile] = useState(null);
-  const [loadingBusinessProfile, setLoadingBusinessProfile] = useState(false);
 
-  // Default profile data that will be overwritten with actual data
+  // The business profile state is now managed within BusinessProfileSettings.jsx
+  // so we can remove the business-related fields from profileData
   const [profileData, setProfileData] = useState({
     firstName: '',
     lastName: '',
@@ -84,6 +90,9 @@ export default function Settings() {
     { name: t('tabs.notifications'), icon: BellIcon },
     { name: t('tabs.company'), icon: BuildingOfficeIcon },
     { name: t('tabs.billing'), icon: CreditCardIcon },
+    { name: t('tabs.rolesAndPermissions'), icon: ShieldCheckIcon },
+    { name: t('tabs.tax'), icon: CreditCardIcon },
+    { name: t('tabs.dataExport'), icon: ArrowUpTrayIcon },
   ];
 
   // Fetch user profile on component mount
@@ -91,7 +100,6 @@ export default function Settings() {
     if (isSignedIn && user) {
       try {
         fetchUserProfile();
-        fetchBusinessProfile();
       } catch (error) {
         Logger.error('Error in useEffect during profile fetch:', error);
         setIsLoading(false);
@@ -180,9 +188,12 @@ export default function Settings() {
     }
   }
 
+  // The business profile logic is now handled by BusinessProfileSettings.jsx
+  // so we can remove fetchBusinessProfile, handleBusinessProfileSave, and related states.
+
   // Removed session management functions - now handled by Clerk UserProfile
 
-  const handleBusinessProfileSave = async () => {
+  const handleProfileSave = async () => {
     if (!user?.id) return;
     
     try {
@@ -363,6 +374,8 @@ export default function Settings() {
               { name: t('tabs.notifications'), icon: BellIcon },
               { name: t('tabs.company'), icon: BuildingOfficeIcon },
               { name: t('tabs.billing'), icon: CreditCardIcon },
+              { name: t('tabs.rolesAndPermissions'), icon: ShieldCheckIcon },
+              { name: t('tabs.integrations'), icon: KeyIcon },
             ].map((tab, idx) => (
               <Tab
                 key={tab.name}
@@ -393,6 +406,7 @@ export default function Settings() {
                 { name: t('tabs.notifications'), icon: BellIcon },
                 { name: t('tabs.company'), icon: BuildingOfficeIcon },
                 { name: t('tabs.billing'), icon: CreditCardIcon },
+                { name: t('tabs.integrations'), icon: KeyIcon },
               ].map((tab, idx) => (
                 <Tab
                   key={tab.name}
@@ -417,7 +431,49 @@ export default function Settings() {
           <div className='flex-1'>
             <Tab.Panels className='w-full'>
               {/* Profile Panel */}
-        <Tab.Panel className='p-6 lg:p-8 focus:outline-none'>
+              <Tab.Panel className='p-6 lg:p-8 focus:outline-none'>
+                <UserProfile />
+              </Tab.Panel>
+
+              {/* Security Panel */}
+              <Tab.Panel className='p-6 lg:p-8 focus:outline-none'>
+                <SecuritySettings />
+              </Tab.Panel>
+
+              {/* Notifications Panel */}
+              <Tab.Panel className='p-6 lg:p-8 focus:outline-none'>
+                <NotificationSettings settings={notificationSettings} onSettingsChange={setNotificationSettings} showNotification={showNotification} />
+              </Tab.Panel>
+
+              {/* Company Panel */}
+              <Tab.Panel className='p-6 lg:p-8 focus:outline-none'>
+                <BusinessProfileSettings showNotification={showNotification} />
+              </Tab.Panel>
+
+              {/* Billing Panel */}
+              <Tab.Panel className='p-6 lg:p-8 focus:outline-none'>
+                <BillingSettings showNotification={showNotification} />
+              </Tab.Panel>
+
+              {/* Roles and Permissions Panel */}
+              <Tab.Panel className='p-6 lg:p-8 focus:outline-none'>
+                <RolesAndPermissionsSettings showNotification={showNotification} />
+              </Tab.Panel>
+
+              {/* Tax Panel */}
+              <Tab.Panel className='p-6 lg:p-8 focus:outline-none'>
+                <TaxSettings showNotification={showNotification} />
+              </Tab.Panel>
+
+              {/* Data Export Panel */}
+              <Tab.Panel className='p-6 lg:p-8 focus:outline-none'>
+                <DataExportSettings showNotification={showNotification} />
+              </Tab.Panel>
+
+              {/* Integrations Panel */}
+              <Tab.Panel className='p-6 lg:p-8 focus:outline-none'>
+                <IntegrationsSettings showNotification={showNotification} />
+              </Tab.Panel>
           <form onSubmit={handleProfileSave} className='space-y-8 divide-y divide-gray-200'>
             <div className='space-y-8 divide-y divide-gray-200'>
               <div>

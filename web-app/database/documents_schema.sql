@@ -37,8 +37,8 @@ CREATE TABLE IF NOT EXISTS documents (
     is_active boolean DEFAULT true,
     
     -- Audit fields
-    created_by uuid NOT NULL REFERENCES auth.users(id),
-    updated_by uuid NOT NULL REFERENCES auth.users(id),
+    created_by text NOT NULL,
+    updated_by text NOT NULL,
     created_at timestamptz DEFAULT now(),
     updated_at timestamptz DEFAULT now()
 );
@@ -79,24 +79,24 @@ ALTER TABLE documents ENABLE ROW LEVEL SECURITY;
 -- Policy: Users can view their own documents
 CREATE POLICY "Users can view their own documents" ON documents
     FOR SELECT
-    USING (created_by = auth.uid());
+    USING (created_by = auth.jwt() ->> 'sub');
 
 -- Policy: Users can create documents
 CREATE POLICY "Users can create documents" ON documents
     FOR INSERT
-    WITH CHECK (created_by = auth.uid());
+    WITH CHECK (created_by = auth.jwt() ->> 'sub');
 
 -- Policy: Users can update their own documents
 CREATE POLICY "Users can update their own documents" ON documents
     FOR UPDATE
-    USING (created_by = auth.uid())
-    WITH CHECK (created_by = auth.uid());
+    USING (created_by = auth.jwt() ->> 'sub')
+    WITH CHECK (created_by = auth.jwt() ->> 'sub');
 
 -- Policy: Users can delete their own documents (soft delete by setting is_active = false)
 CREATE POLICY "Users can delete their own documents" ON documents
     FOR UPDATE
-    USING (created_by = auth.uid() AND is_active = true)
-    WITH CHECK (created_by = auth.uid() AND is_active = false);
+    USING (created_by = auth.jwt() ->> 'sub' AND is_active = true)
+    WITH CHECK (created_by = auth.jwt() ->> 'sub' AND is_active = false);
 
 -- Create storage bucket for documents (run this separately in Supabase dashboard)
 -- INSERT INTO storage.buckets (id, name, public) VALUES ('documents', 'documents', false);
@@ -134,7 +134,7 @@ GRANT SELECT ON document_statistics TO authenticated;
 -- Create function to search documents with full text search
 CREATE OR REPLACE FUNCTION search_documents(
     search_term text,
-    user_id uuid DEFAULT auth.uid(),
+    user_id text DEFAULT auth.uid()::text,
     doc_type text DEFAULT NULL,
     limit_count integer DEFAULT 50
 )
@@ -186,4 +186,4 @@ COMMENT ON COLUMN documents.metadata IS 'Flexible JSON storage for document-spec
 COMMENT ON COLUMN documents.version IS 'Document version number for version control';
 COMMENT ON COLUMN documents.parent_document_id IS 'References parent document for versioning';
 COMMENT ON COLUMN documents.is_template IS 'True if this document is a template';
-COMMENT ON COLUMN documents.tags IS 'Array of tags for document categorization and filtering'; 
+COMMENT ON COLUMN documents.tags IS 'Array of tags for document categorization and filtering';

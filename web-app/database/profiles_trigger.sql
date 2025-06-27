@@ -1,6 +1,6 @@
 -- Schema for profiles table (if not already exists)
 CREATE TABLE IF NOT EXISTS public.profiles (
-  id UUID REFERENCES auth.users ON DELETE CASCADE PRIMARY KEY,
+  id TEXT PRIMARY KEY, -- Clerk user ID
   username TEXT,
   full_name TEXT,
   phone TEXT,
@@ -25,12 +25,12 @@ ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "Users can view their own profile" 
   ON public.profiles 
   FOR SELECT 
-  USING (auth.uid() = id);
+  USING (auth.uid()::text = id);
 
 CREATE POLICY "Users can update their own profile" 
   ON public.profiles 
   FOR UPDATE 
-  USING (auth.uid() = id);
+  USING (auth.uid()::text = id);
 
 -- Create function to automatically create a profile for a new user
 CREATE OR REPLACE FUNCTION public.create_profile_for_user()
@@ -65,4 +65,4 @@ DROP TRIGGER IF EXISTS create_profile_on_signup ON auth.users;
 CREATE TRIGGER create_profile_on_signup
 AFTER INSERT ON auth.users
 FOR EACH ROW
-EXECUTE FUNCTION public.create_profile_for_user(); 
+EXECUTE FUNCTION public.create_profile_for_user();
