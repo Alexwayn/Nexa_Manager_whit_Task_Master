@@ -1,19 +1,10 @@
 import { supabase } from '@lib/supabaseClient';
-import { createClient } from '@supabase/supabase-js';
 import TaxCalculationService from '@lib/taxCalculationService';
 import PDFGenerationService from '@lib/pdfGenerationService';
 import Logger from '@utils/Logger';
 
-// Create a service role client for bypassing RLS
-const supabaseServiceRole = createClient(
-  import.meta.env.VITE_SUPABASE_URL,
-  import.meta.env.VITE_SUPABASE_SERVICE_ROLE_KEY,
-  {
-    auth: {
-      persistSession: false,
-    },
-  }
-);
+// Note: Using the standard supabase client with RLS policies
+// Service role keys should never be used in frontend applications for security reasons
 
 /**
  * Invoice Service - Comprehensive data service for invoice management
@@ -139,7 +130,7 @@ export class InvoiceService {
    */
   static async getInvoiceById(invoiceId, userId) {
     try {
-      const { data, error } = await supabaseServiceRole
+      const { data, error } = await supabase
         .from('invoices')
         .select(
           `
@@ -196,7 +187,7 @@ export class InvoiceService {
    */
   static async getInvoices(userId, options = {}) {
     try {
-      let query = supabaseServiceRole
+      let query = supabase
         .from('invoices')
         .select(
           `
@@ -920,7 +911,7 @@ export class InvoiceService {
     try {
       const { startDate, endDate, status } = options;
 
-      let query = supabaseServiceRole.from('invoices').select('*').eq('user_id', userId);
+      let query = supabase.from('invoices').select('*').eq('user_id', userId);
 
       if (startDate) {
         query = query.gte('issue_date', startDate);
@@ -995,7 +986,7 @@ export class InvoiceService {
     try {
       const today = new Date().toISOString().split('T')[0];
 
-      const { data, error } = await supabaseServiceRole
+      const { data, error } = await supabase
         .from('invoices')
         .select(
           `
