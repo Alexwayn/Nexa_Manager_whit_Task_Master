@@ -1,91 +1,141 @@
-#🚀aNexpullt 
+# 🚀 Nexa Manager
 
-Aenomhsbsmaamelatfrmbt whacV,anSupbs
+A comprehensive business management platform built with React, Vite, and Supabase.
 
-##✨Fs
+## ✨ Features
 
-##📊**-R- bussnalyndinghs
--👥 **CMagm**-CmpeCRM futiltywhdtidpofls
--🧾 Invic&Qos**- Psbress*o tlebuslinyismwtPDFg
-- 📅 👥Caiandmrt* -CEfuncntad ipppirtmgm
-- 📈u -Rs twes📅m-nD ngmlbighyc- 📈 **Reports** - Detailed business insights and analytics
-🌍**Mt-ngg**-FItdEshr
--🔐**Sutta**-PwbyCk─woch/MFA ─u r        # This file
--📱RpvDsg#-Wks-pfy-
--💾*Ra-timycI*n-sPwedbySubsefop*t huone
+- 📊 **Dashboard** - Real-time business analytics and insights
+- 👥 **Client Management** - Complete CRM functionality with detailed profiles
+- 🧾 **Invoice & Quotes** - Professional billing system with PDF generation
+- 📅 **Calendar** - Event and appointment management
+- 📈 **Reports** - Detailed business insights and analytics
+- 🌍 **Multi-language** - Full Italian and English support
+- 🔐 **Secure Authentication** - Powered by Clerk with MFA support
+- 📱 **Responsive Design** - Works perfectly on all devices
+- 💾 **Real-time Sync** - Powered by Supabase for instant data updates
 
-🏗️PjcStre
+## 🏗️ Project Structure
 
-na
-x-mg/
-├──wb-app/#MRec3ppplivirionables**
-│   ├──`srh/   c .#eSecrcl
-│#Ed├──ieulloc/#Scesntm n
-│nm └──rnc/`#Webpllcmt
-├──n s/reae af#PjcPdUcuplANo
-├──scps/VITESUPCOK=#vUlycumtt(i18,)
-├──(p/otsa- [Dvelo- [#AGooithonsps
-└──#REDME.m#hifie
-l`
-
-``b🚀QickSr
-npm run dev          # Start development server
-###pPi ilquidiods
--nNd.js18+
-- ry
--Supb acu    # Preview production build
-
-###n  s Rllauntt
-
-1.nr*C   enoh #ootrsioy**
-```bh
-###go<s**y-til>
-ackndPrx-mon:
-
-
-2**IIi8tllsdd**
-DF `G*b
-conc*twb-p
-npnll
- In`t
-
-3lSisi uitvbS e
-ure`` bcnh
-  c.isv.jxrmaw A.igv.ca
-#Edith.atrswhyouSpnCrkoo qtal
- Em```
-
-4. aiSuadis:rv/r(docs/)
-tep```bnth
-nuv
+```
+nexa-manager/
+├── web-app/           # Main React application
+│   ├── src/           # Source code
+│   ├── public/        # Static assets and translations
+│   └── docs/          # Web app specific documentation
+├── docs/              # Project documentation
+├── scripts/           # Utility scripts (i18n, etc.)
+├── reports/           # Generated reports
+└── README.md          # This file
 ```
 
-5wOpybwsNvg`h//lh5173`
-##🔧CgEnrmb
-C`..cl`f`wb-ap`dy:
+## 🚀 Quick Start
 
-```VITE_UPABSE_URL=y_subs_VIT_SUPABASE_ANON_KEY=y_ub__kyITE_SPABASE_SERVICE_ROLE_KEY=yr__l_kyVTE_CLERK_PUBLISHABLE_KEY=yu_lk_ublbe_key```📚tt-[SpGd](ds/sup/)-Itlu
--[DbD](doc/dbs/)-Sadgos-[DGs](oc/dvom/)-Dp wkfw-[APIDun](c/p/)-AIf-[Tbe](ds/uoo/)-Comnsssdo
-##🛠️v###Avps
+### Prerequisites
+- Node.js 18+ 
+- npm or yarn
+- Supabase account
 
-```bsh
-pmnd#Strt vlmt vnpmu#Bduonprnpw#wpubuid
-pm un ts#Rus
-np u#Ru n
-npmrum#dwhr```#ThSk-Frond:Rec18,V,TwdCSS-Backd:Spbas(PsgSQL,Ath,SgAhi**:rk
-*Inz**:18x-Chs:Cjs-DGa:jsPD-IcsLuciR
+### Installation
 
-##🌍Iraaz
-Tlcupspl laguges:🇮🇹Iala (dft-🇬🇧EnlhTrasltfslodnwe-plilal`
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd nexa-manager
+   ```
 
-##🔒Scuty
+2. **Install dependencies**
+   ```bash
+   cd web-app
+   npm install
+   ```
 
--owLvlScy (RLS)bldlldbb-Sr hinhClk-Eirmvoe -Ipvainndztin##📄 L
+3. **Set up environment variables**
+   ```bash
+   cp .env.example .env.local
+   # Edit .env.local with your Supabase and Clerk credentials
+   ```
 
-Ths prjcprtrysftwAh rv🤝CtbutgThvpj.Fqrlthlopam
+4. **Start development server**
+   ```bash
+   npm run dev
+   ```
 
-##📞SppFctr:
--Eil:sppor@xamag.comDon:[d/](dc/I:Ctcthdevlpmt
+5. **Open your browser**
+   Navigate to `http://localhost:5173`
 
---
-**Mwth❤️yhNxa MagrTam**
+## 🔧 Configuration
+
+### Environment Variables
+Create a `.env.local` file in the `web-app` directory:
+
+```env
+VITE_SUPABASE_URL=your_supabase_url
+VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+VITE_SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
+VITE_CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
+```
+
+## 📚 Documentation
+
+- [Setup Guides](docs/setup/) - Installation and configuration
+- [Database Documentation](docs/database/) - Schema and migrations
+- [Development Guides](docs/development/) - Development workflows
+- [API Documentation](docs/api/) - API reference
+- [Troubleshooting](docs/troubleshooting/) - Common issues and solutions
+
+## 🛠️ Development
+
+### Available Scripts
+
+```bash
+npm run dev          # Start development server
+npm run build        # Build for production
+npm run preview      # Preview production build
+npm run test         # Run tests
+npm run lint         # Run ESLint
+npm run format       # Format code with Prettier
+```
+
+### Tech Stack
+
+- **Frontend**: React 18, Vite, TailwindCSS
+- **Backend**: Supabase (PostgreSQL, Auth, Storage)
+- **Authentication**: Clerk
+- **Internationalization**: i18next
+- **Charts**: Chart.js
+- **PDF Generation**: jsPDF
+- **Icons**: Lucide React
+
+## 🌍 Internationalization
+
+The application supports multiple languages:
+- 🇮🇹 Italian (default)
+- 🇬🇧 English
+
+Translation files are located in `web-app/public/locales/`.
+
+## 🔒 Security
+
+- Row Level Security (RLS) enabled on all database tables
+- Secure authentication with Clerk
+- Environment variables for sensitive data
+- Input validation and sanitization
+
+## 📄 License
+
+This project is proprietary software. All rights reserved.
+
+## 🤝 Contributing
+
+This is a private project. For questions or support, please contact the development team.
+
+## 📞 Support
+
+For technical support or questions:
+- Email: support@nexamanager.com
+- Documentation: [docs/](docs/)
+- Issues: Contact the development team
+
+---
+
+**Made with ❤️ by the Nexa Manager Team**
