@@ -38,13 +38,13 @@ export default function BillingSettings({ showNotification }) {
   // Real subscription and billing data - to be connected to actual billing service
   const [subscriptionInfo, setSubscriptionInfo] = useState(null);
   const [paymentMethods, setPaymentMethods] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [billingLoading, setBillingLoading] = useState(true);
 
   // Load real billing data
   useEffect(() => {
     const loadBillingData = async () => {
       try {
-        setLoading(true);
+        setBillingLoading(true);
         // TODO: Replace with actual billing service calls
         // const subscription = await BillingService.getSubscription();
         // const methods = await BillingService.getPaymentMethods();
@@ -57,7 +57,7 @@ export default function BillingSettings({ showNotification }) {
       } catch (error) {
         console.error('Error loading billing data:', error);
       } finally {
-        setLoading(false);
+        setBillingLoading(false);
       }
     };
 
@@ -414,7 +414,6 @@ export default function BillingSettings({ showNotification }) {
                   </button>
                 </div>
               )}
-              ))}
             </div>
           </div>
         )}

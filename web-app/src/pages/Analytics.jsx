@@ -4,7 +4,7 @@ import Footer from '@components/shared/Footer';
 import { useAuth, useUser } from '@clerk/clerk-react';
 import invoiceAnalyticsService from '@lib/invoiceAnalyticsService';
 import Logger from '@utils/Logger';
-import { getUserIdForUuidTables } from '@utils/userUtils';
+import { getUserIdForUuidTables } from '@utils/userIdConverter';
 import ErrorBoundary from '@components/common/ErrorBoundary';
 import ReportsDashboard from '@components/reports/ReportsDashboard'; // Import the new component
 import {

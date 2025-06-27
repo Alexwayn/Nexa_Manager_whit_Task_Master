@@ -1,11 +1,11 @@
 // Font loading optimization utility for Manrope
-export const preloadFonts = () => {
-  const fonts = [
+export const preloadFonts = (): void => {
+  const fonts: string[] = [
     'Manrope:wght@200;300;400;500;600;700;800'
   ];
 
-  fonts.forEach(font => {
-    const link = document.createElement('link');
+  fonts.forEach((font: string) => {
+    const link: HTMLLinkElement = document.createElement('link');
     link.rel = 'preload';
     link.as = 'font';
     link.type = 'font/woff2';
@@ -16,8 +16,8 @@ export const preloadFonts = () => {
 };
 
 // Font display optimization for better performance
-export const optimizeFontDisplay = () => {
-  const style = document.createElement('style');
+export const optimizeFontDisplay = (): void => {
+  const style: HTMLStyleElement = document.createElement('style');
   style.textContent = `
     @font-face {
       font-family: 'Manrope';
@@ -30,7 +30,7 @@ export const optimizeFontDisplay = () => {
 };
 
 // Initialize font loading with performance optimizations
-export const initFontLoading = () => {
+export const initFontLoading = (): void => {
   // Preload critical fonts
   preloadFonts();
   
