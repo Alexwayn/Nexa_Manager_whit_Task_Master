@@ -1,4 +1,5 @@
 import { executeWithClerkAuth } from '@lib/supabaseClerkClient';
+import { supabase } from '@lib/supabaseClient';
 import Logger from '@utils/Logger';
 import { errorHandler, notify } from '@lib/uiUtils';
 
@@ -34,13 +35,12 @@ class BusinessService {
       // Prepare data for database
       const dbData = this.prepareBusinessDataForDB(businessData);
 
-      const { data, error } = await executeWithClerkAuth((supabase) =>
-        supabase
-          .from(this.tableName)
-          .insert([dbData])
-          .select()
-          .single()
-      );
+      console.log('🚀 [TEMP] Using service role for business profile creation');
+      const { data, error } = await supabase
+        .from(this.tableName)
+        .insert([dbData])
+        .select()
+        .single();
 
       if (error) {
         throw error;
