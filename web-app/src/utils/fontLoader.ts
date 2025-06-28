@@ -1,46 +1,82 @@
 // Font loading optimization utility for Manrope
 export const preloadFonts = (): void => {
-  const fonts: string[] = [
-    'Manrope:wght@200;300;400;500;600;700;800'
-  ];
+  try {
+    const fonts: string[] = [
+      'Manrope:wght@200;300;400;500;600;700;800'
+    ];
 
-  fonts.forEach((font: string) => {
-    const link: HTMLLinkElement = document.createElement('link');
-    link.rel = 'preload';
-    link.as = 'font';
-    link.type = 'font/woff2';
-    link.crossOrigin = 'anonymous';
-    link.href = `https://fonts.googleapis.com/css2?family=${font}&display=swap`;
-    document.head.appendChild(link);
-  });
+    fonts.forEach((font: string) => {
+      const link: HTMLLinkElement = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.href = `https://fonts.googleapis.com/css2?family=${font}&display=swap`;
+      link.crossOrigin = 'anonymous';
+      
+      // Gestione errori per CSP
+      link.onerror = () => {
+        console.warn('Font loading blocked by CSP, using fallback fonts');
+      };
+      
+      document.head.appendChild(link);
+    });
+  } catch (error) {
+    console.warn('Font preloading failed, using system fonts:', error);
+  }
 };
 
 // Font display optimization for better performance
 export const optimizeFontDisplay = (): void => {
-  const style: HTMLStyleElement = document.createElement('style');
-  style.textContent = `
-    @font-face {
-      font-family: 'Manrope';
-      font-display: swap;
-      font-weight: 200 800;
-      src: url('https://fonts.gstatic.com/s/manrope/v15/xn7_YHE41ni1AdIRqAuZuw1Bx9mbZk59FO_F87jxeN7B.woff2') format('woff2');
-    }
-  `;
-  document.head.appendChild(style);
+  try {
+    const style: HTMLStyleElement = document.createElement('style');
+    style.textContent = `
+      /* Fallback font stack per migliore compatibilità */
+      :root {
+        --font-family-primary: 'Manrope', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      }
+      
+      body {
+        font-family: var(--font-family-primary);
+        font-display: swap;
+      }
+      
+      /* Ottimizzazione caricamento font */
+      .fonts-loaded {
+        font-family: 'Manrope', system-ui, sans-serif;
+      }
+    `;
+    document.head.appendChild(style);
+  } catch (error) {
+    console.warn('Font optimization failed:', error);
+  }
 };
 
 // Initialize font loading with performance optimizations
 export const initFontLoading = (): void => {
-  // Preload critical fonts
-  preloadFonts();
-  
-  // Optimize font display
-  optimizeFontDisplay();
-  
-  // Add font loading class to body for progressive enhancement
-  if (document.fonts && document.fonts.ready) {
-    document.fonts.ready.then(() => {
-      document.body.classList.add('fonts-loaded');
-    });
+  try {
+    // Preload critical fonts
+    preloadFonts();
+    
+    // Optimize font display
+    optimizeFontDisplay();
+    
+    // Add font loading class to body for progressive enhancement
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(() => {
+        document.body.classList.add('fonts-loaded');
+        console.log('✅ Fonts loaded successfully');
+      }).catch((error) => {
+        console.warn('Font loading promise failed:', error);
+        // Fallback: add class anyway after timeout
+        setTimeout(() => {
+          document.body.classList.add('fonts-loaded');
+        }, 1000);
+      });
+    } else {
+      // Fallback per browser che non supportano document.fonts
+      setTimeout(() => {
+        document.body.classList.add('fonts-loaded');
+      }, 1000);
+    }
+  } catch (error) {
+    console.warn('Font initialization failed:', error);
   }
 }; 
