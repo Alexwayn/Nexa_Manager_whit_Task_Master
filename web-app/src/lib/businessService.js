@@ -1,4 +1,4 @@
-import { supabase } from '@lib/supabaseClient';
+import { executeWithClerkAuth } from '@lib/supabaseClerkClient';
 import Logger from '@utils/Logger';
 import { errorHandler, notify } from '@lib/uiUtils';
 
@@ -34,11 +34,13 @@ class BusinessService {
       // Prepare data for database
       const dbData = this.prepareBusinessDataForDB(businessData);
 
-      const { data, error } = await supabase
-        .from(this.tableName)
-        .insert([dbData])
-        .select()
-        .single();
+      const { data, error } = await executeWithClerkAuth((supabase) =>
+        supabase
+          .from(this.tableName)
+          .insert([dbData])
+          .select()
+          .single()
+      );
 
       if (error) {
         throw error;
@@ -68,11 +70,13 @@ class BusinessService {
    */
   async getBusinessProfileByUserId(userId) {
     try {
-      const { data, error } = await supabase
-        .from(this.tableName)
-        .select('*')
-        .eq('user_id', userId)
-        .single();
+      const { data, error } = await executeWithClerkAuth((supabase) =>
+        supabase
+          .from(this.tableName)
+          .select('*')
+          .eq('user_id', userId)
+          .single()
+      );
 
       if (error && error.code !== 'PGRST116') {
         // PGRST116 is "Row not found" which is expected for new users
@@ -110,12 +114,14 @@ class BusinessService {
       // Prepare data for database
       const dbData = this.prepareBusinessDataForDB(businessData, true);
 
-      const { data, error } = await supabase
-        .from(this.tableName)
-        .update(dbData)
-        .eq('id', profileId)
-        .select()
-        .single();
+      const { data, error } = await executeWithClerkAuth((supabase) =>
+        supabase
+          .from(this.tableName)
+          .update(dbData)
+          .eq('id', profileId)
+          .select()
+          .single()
+      );
 
       if (error) {
         throw error;
@@ -155,12 +161,14 @@ class BusinessService {
       // Prepare data for database
       const dbData = this.prepareBusinessDataForDB(businessData, true);
 
-      const { data, error } = await supabase
-        .from(this.tableName)
-        .update(dbData)
-        .eq('user_id', userId)
-        .select()
-        .single();
+      const { data, error } = await executeWithClerkAuth((supabase) =>
+        supabase
+          .from(this.tableName)
+          .update(dbData)
+          .eq('user_id', userId)
+          .select()
+          .single()
+      );
 
       if (error) {
         throw error;
@@ -190,10 +198,12 @@ class BusinessService {
    */
   async deleteBusinessProfile(profileId) {
     try {
-      const { error } = await supabase
-        .from(this.tableName)
-        .delete()
-        .eq('id', profileId);
+      const { error } = await executeWithClerkAuth((supabase) =>
+        supabase
+          .from(this.tableName)
+          .delete()
+          .eq('id', profileId)
+      );
 
       if (error) {
         throw error;

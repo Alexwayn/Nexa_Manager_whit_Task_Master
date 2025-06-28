@@ -33,16 +33,28 @@ export const useSupabaseWithClerk = () => {
       global: {
         headers: async () => {
           try {
+            console.log('🔍 Attempting to get Clerk token with template: supabase');
             const token = await getToken({ template: 'supabase' });
+            console.log('🎯 Token received:', token ? 'YES' : 'NO');
+
             if (token) {
-              console.log('Using Clerk token for Supabase auth');
+              console.log('✅ Using Clerk token for Supabase auth');
+              console.log('🔑 Token preview:', token.substring(0, 50) + '...');
+
+              // Debug: decode and log JWT payload
+              try {
+                const payload = JSON.parse(atob(token.split('.')[1]));
+                console.log('📋 JWT payload:', payload);
+              } catch (e) {
+                console.warn('❌ Could not decode JWT:', e);
+              }
               return { Authorization: `Bearer ${token}` };
             } else {
-              console.warn('No Clerk token available');
+              console.warn('⚠️ No Clerk token available - template might not exist or be inactive');
               return {};
             }
           } catch (error) {
-            Logger.error('Error getting Clerk token:', error);
+            Logger.error('💥 Error getting Clerk token:', error);
             return {};
           }
         },
@@ -59,11 +71,25 @@ export const useSupabaseWithClerk = () => {
  */
 export const executeWithClerkAuth = async (queryFunction) => {
   try {
+    console.log('🔍 [executeWithClerkAuth] Attempting to get Clerk token with template: supabase');
+
     // Try to get the token from window.Clerk if available
     if (typeof window !== 'undefined' && window.Clerk?.session) {
       const token = await window.Clerk.session.getToken({ template: 'supabase' });
-      
+      console.log('🎯 [executeWithClerkAuth] Token received:', token ? 'YES' : 'NO');
+
       if (token) {
+        console.log('✅ [executeWithClerkAuth] Using Clerk token for Supabase auth');
+        console.log('🔑 [executeWithClerkAuth] Token preview:', token.substring(0, 50) + '...');
+
+        // Debug: decode and log JWT payload
+        try {
+          const payload = JSON.parse(atob(token.split('.')[1]));
+          console.log('📋 [executeWithClerkAuth] JWT payload:', payload);
+        } catch (e) {
+          console.warn('❌ [executeWithClerkAuth] Could not decode JWT:', e);
+        }
+
         // Create a temporary client with the token
         const authenticatedClient = createClient(supabaseUrl, supabaseAnonKey, {
           auth: {
@@ -75,9 +101,13 @@ export const executeWithClerkAuth = async (queryFunction) => {
             },
           },
         });
-        
+
         return await queryFunction(authenticatedClient);
+      } else {
+        console.warn('⚠️ [executeWithClerkAuth] No token received from Clerk session');
       }
+    } else {
+      console.warn('⚠️ [executeWithClerkAuth] No Clerk session available');
     }
     
     // Fallback to regular client if no token available
