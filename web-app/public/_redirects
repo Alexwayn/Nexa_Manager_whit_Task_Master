@@ -1,0 +1,27 @@
+# Redirects for Single Page Application (SPA)
+# This ensures that all routes are handled by React Router
+
+# Handle all routes by serving index.html
+/*    /index.html   200
+
+# API routes should not be redirected
+/api/*  /api/:splat  200
+
+# Static assets should be served directly
+/assets/*  /assets/:splat  200
+/images/*  /images/:splat  200
+/fonts/*   /fonts/:splat   200
+
+# Specific file extensions that should be served directly
+/*.js      /:splat  200
+/*.css     /:splat  200
+/*.png     /:splat  200
+/*.jpg     /:splat  200
+/*.jpeg    /:splat  200
+/*.gif     /:splat  200
+/*.svg     /:splat  200
+/*.ico     /:splat  200
+/*.woff    /:splat  200
+/*.woff2   /:splat  200
+/*.ttf     /:splat  200
+/*.eot     /:splat  200

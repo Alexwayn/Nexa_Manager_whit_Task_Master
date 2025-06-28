@@ -65,6 +65,7 @@ export default defineConfig(({ mode }) => {
       minify: 'terser',
       sourcemap: true, // Essential for Sentry error tracking
       chunkSizeWarningLimit: 500,
+      assetsInlineLimit: 4096, // Inline small assets
       rollupOptions: {
         output: {
           manualChunks: {

@@ -11,6 +11,8 @@ frontend:
         - echo "Building Nexa Manager application..."
         - npm run build
         - echo "Build completed successfully!"
+        - echo "Copying redirect rules..."
+        - cp web-app/public/_redirects web-app/dist/
         - ls -la web-app/dist/
     postBuild:
       commands:
