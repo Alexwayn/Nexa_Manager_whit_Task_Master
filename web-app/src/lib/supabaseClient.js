@@ -3,12 +3,14 @@ import Logger from '@utils/Logger';
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+const supabaseServiceRoleKey = import.meta.env.VITE_SUPABASE_SERVICE_ROLE_KEY;
 
 // Enhanced debugging for deployment environments
 const debugEnvVars = () => {
   Logger.info('Environment Variables Check:');
   Logger.info('- VITE_SUPABASE_URL:', supabaseUrl ? 'Set' : 'Missing');
   Logger.info('- VITE_SUPABASE_ANON_KEY:', supabaseAnonKey ? 'Set' : 'Missing');
+  Logger.info('- VITE_SUPABASE_SERVICE_ROLE_KEY:', supabaseServiceRoleKey ? 'Set' : 'Missing');
   
   if (supabaseUrl) {
     Logger.info('Supabase URL:', supabaseUrl);
@@ -46,11 +48,28 @@ if (!supabaseUrl || !supabaseAnonKey) {
   throw new Error('Missing Supabase environment variables - check deployment configuration');
 }
 
+// Regular client with anon key
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   auth: {
     persistSession: false, // We're using Clerk for auth, not Supabase auth
   },
 });
+
+// Admin client with service role key (bypasses RLS)
+export const supabaseAdmin = supabaseServiceRoleKey
+  ? createClient(supabaseUrl, supabaseServiceRoleKey, {
+      auth: {
+        persistSession: false,
+      },
+    })
+  : null;
+
+// Log which client is available
+if (supabaseAdmin) {
+  Logger.info('🔑 Supabase Admin client created with service role key');
+} else {
+  Logger.warn('⚠️ No service role key - admin operations will not work');
+}
 
 // Utility function to set the current user ID for RLS policies
 export const setCurrentUserId = async (userId) => {

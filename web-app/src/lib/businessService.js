@@ -1,5 +1,5 @@
 import { executeWithClerkAuth } from '@lib/supabaseClerkClient';
-import { supabase } from '@lib/supabaseClient';
+import { supabase, supabaseAdmin } from '@lib/supabaseClient';
 import Logger from '@utils/Logger';
 import { errorHandler, notify } from '@lib/uiUtils';
 
@@ -36,7 +36,12 @@ class BusinessService {
       const dbData = this.prepareBusinessDataForDB(businessData);
 
       console.log('🚀 [TEMP] Using service role for business profile creation');
-      const { data, error } = await supabase
+
+      if (!supabaseAdmin) {
+        throw new Error('Service role key not configured - cannot create business profile');
+      }
+
+      const { data, error } = await supabaseAdmin
         .from(this.tableName)
         .insert([dbData])
         .select()
