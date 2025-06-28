@@ -19,8 +19,8 @@ class BusinessService {
    */
   async createBusinessProfile(businessData) {
     try {
-      console.log('🚀🚀🚀 DEPLOY TEST - createBusinessProfile called! 🚀🚀🚀');
-      alert('🚀 DEPLOY TEST - Function called!');
+      console.log('🚀🚀🚀 DEPLOY TEST v2 - createBusinessProfile called! 🚀🚀🚀');
+      alert('🚀 DEPLOY TEST v2 - Function called!');
 
       // Validate required fields
       const validationError = this.validateBusinessData(businessData);
