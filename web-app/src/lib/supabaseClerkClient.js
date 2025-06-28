@@ -33,24 +33,32 @@ export const useSupabaseWithClerk = () => {
       global: {
         headers: async () => {
           try {
-            console.log('🔍 Attempting to get Clerk token with template: supabase');
-            const token = await getToken({ template: 'supabase' });
-            console.log('🎯 Token received:', token ? 'YES' : 'NO');
+            console.log('🔍 [useSupabaseWithClerk] Attempting to get Clerk token...');
+
+            // Try with template name first
+            let token = await getToken({ template: 'supabase' });
+            console.log('🎯 [useSupabaseWithClerk] Token with name:', token ? 'YES' : 'NO');
+
+            // If no token, try with template ID
+            if (!token) {
+              token = await getToken({ template: 'jtmp_2z5wvuHN0RtLnrZCMsUp0l5x0qc' });
+              console.log('🎯 [useSupabaseWithClerk] Token with ID:', token ? 'YES' : 'NO');
+            }
 
             if (token) {
-              console.log('✅ Using Clerk token for Supabase auth');
-              console.log('🔑 Token preview:', token.substring(0, 50) + '...');
+              console.log('✅ [useSupabaseWithClerk] Using Clerk token for Supabase auth');
+              console.log('🔑 [useSupabaseWithClerk] Token preview:', token.substring(0, 50) + '...');
 
               // Debug: decode and log JWT payload
               try {
                 const payload = JSON.parse(atob(token.split('.')[1]));
-                console.log('📋 JWT payload:', payload);
+                console.log('📋 [useSupabaseWithClerk] JWT payload:', payload);
               } catch (e) {
-                console.warn('❌ Could not decode JWT:', e);
+                console.warn('❌ [useSupabaseWithClerk] Could not decode JWT:', e);
               }
               return { Authorization: `Bearer ${token}` };
             } else {
-              console.warn('⚠️ No Clerk token available - template might not exist or be inactive');
+              console.warn('⚠️ [useSupabaseWithClerk] No token available with either name or ID');
               return {};
             }
           } catch (error) {
@@ -71,12 +79,22 @@ export const useSupabaseWithClerk = () => {
  */
 export const executeWithClerkAuth = async (queryFunction) => {
   try {
-    console.log('🔍 [executeWithClerkAuth] Attempting to get Clerk token with template: supabase');
+    console.log('🔍 [executeWithClerkAuth] Attempting to get Clerk token...');
 
     // Try to get the token from window.Clerk if available
     if (typeof window !== 'undefined' && window.Clerk?.session) {
-      const token = await window.Clerk.session.getToken({ template: 'supabase' });
-      console.log('🎯 [executeWithClerkAuth] Token received:', token ? 'YES' : 'NO');
+
+      // Try with template name first
+      console.log('🎯 [executeWithClerkAuth] Trying with template name: supabase');
+      let token = await window.Clerk.session.getToken({ template: 'supabase' });
+      console.log('🎯 [executeWithClerkAuth] Token with name:', token ? 'YES' : 'NO');
+
+      // If no token, try with template ID
+      if (!token) {
+        console.log('🎯 [executeWithClerkAuth] Trying with template ID: jtmp_2z5wvuHN0RtLnrZCMsUp0l5x0qc');
+        token = await window.Clerk.session.getToken({ template: 'jtmp_2z5wvuHN0RtLnrZCMsUp0l5x0qc' });
+        console.log('🎯 [executeWithClerkAuth] Token with ID:', token ? 'YES' : 'NO');
+      }
 
       if (token) {
         console.log('✅ [executeWithClerkAuth] Using Clerk token for Supabase auth');
@@ -104,7 +122,7 @@ export const executeWithClerkAuth = async (queryFunction) => {
 
         return await queryFunction(authenticatedClient);
       } else {
-        console.warn('⚠️ [executeWithClerkAuth] No token received from Clerk session');
+        console.warn('⚠️ [executeWithClerkAuth] No token received with either name or ID');
       }
     } else {
       console.warn('⚠️ [executeWithClerkAuth] No Clerk session available');
