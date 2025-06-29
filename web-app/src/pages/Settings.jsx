@@ -24,11 +24,11 @@ import { useTranslation } from '@hooks/useTranslation';
 import { useAuthBypass, useUserBypass } from '@hooks/useClerkBypass';
 import Footer from '@components/shared/Footer';
 import { businessService } from '@lib/businessService';
-import BusinessProfileSettings from '@components/settings/BusinessProfileSettings';
-import BillingSettings from '@components/settings/BillingSettings';
+import CompanySettings from '@components/settings/CompanySettingsFallback';
+import BillingSettings from '@components/settings/BillingSettingsFallback';
 import SecuritySettings from '@components/settings/SecuritySettings';
-import NotificationSettings from '@components/settings/NotificationSettings';
-import EmailSettings from '@components/settings/EmailSettings';
+import NotificationSettings from '@components/settings/NotificationSettingsFallback';
+import EmailSettings from '@components/settings/EmailSettingsFallback';
 import AccessibilitySettings from '@components/settings/AccessibilitySettings';
 import BackupSettings from '@components/settings/BackupSettings';
 import IntegrationsSettings from '@components/settings/IntegrationsSettings';
@@ -143,11 +143,11 @@ export default function Settings() {
             return fallbackContent;
           }
         case 3: // Company
-          console.log('Rendering BusinessProfileSettings');
+          console.log('Rendering CompanySettings');
           try {
-            return <BusinessProfileSettings showNotification={showNotification} />;
+            return <CompanySettings showNotification={showNotification} />;
           } catch (error) {
-            console.error('BusinessProfileSettings error:', error);
+            console.error('CompanySettings error:', error);
             return fallbackContent;
           }
         case 4: // Billing
