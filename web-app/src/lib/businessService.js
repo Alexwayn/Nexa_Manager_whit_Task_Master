@@ -19,8 +19,7 @@ class BusinessService {
    */
   async createBusinessProfile(businessData) {
     try {
-      console.log('🚀🚀🚀 DEPLOY TEST v2 - createBusinessProfile called! 🚀🚀🚀');
-      alert('🚀 DEPLOY TEST v2 - Function called!');
+
 
       // Validate required fields
       const validationError = this.validateBusinessData(businessData);
@@ -29,18 +28,12 @@ class BusinessService {
       }
 
       // Check if business profile already exists for this user
-      console.log('🚀🚀🚀 CHECKING EXISTING PROFILE FOR USER:', businessData.user_id);
       const existingProfile = await this.getBusinessProfileByUserId(businessData.user_id);
-      console.log('🚀🚀🚀 EXISTING PROFILE RESULT:', existingProfile);
 
       if (existingProfile.data) {
-        console.log('🚀🚀🚀 PROFILE EXISTS - UPDATING INSTEAD OF CREATING');
-        const updateResult = await this.updateBusinessProfileByUserId(businessData.user_id, businessData);
-        console.log('🚀🚀🚀 UPDATE RESULT:', updateResult);
-        return updateResult;
+        // If profile exists, update it instead
+        return await this.updateBusinessProfileByUserId(businessData.user_id, businessData);
       }
-
-      console.log('🚀🚀🚀 NO EXISTING PROFILE - CREATING NEW ONE');
 
       // Prepare data for database
       const dbData = this.prepareBusinessDataForDB(businessData);
@@ -85,15 +78,12 @@ class BusinessService {
    */
   async getBusinessProfileByUserId(userId) {
     try {
-      console.log('🚀🚀🚀 GETTING BUSINESS PROFILE FOR USER:', userId);
-      // 🚀🚀🚀 TEMP: Use admin client to bypass auth issues
+      // Use admin client to bypass auth issues during onboarding
       const { data, error } = await supabaseAdmin
         .from(this.tableName)
         .select('*')
         .eq('user_id', userId)
         .single();
-
-      console.log('🚀🚀🚀 GET PROFILE RESULT:', { data, error });
 
       if (error && error.code !== 'PGRST116') {
         // PGRST116 is "Row not found" which is expected for new users
@@ -169,19 +159,14 @@ class BusinessService {
    */
   async updateBusinessProfileByUserId(userId, businessData) {
     try {
-      console.log('🚀🚀🚀 UPDATING BUSINESS PROFILE FOR USER:', userId);
-      console.log('🚀🚀🚀 UPDATE DATA:', businessData);
-
       // Validate required fields
       const validationError = this.validateBusinessData(businessData, true);
       if (validationError) {
-        console.log('🚀🚀🚀 VALIDATION ERROR:', validationError);
         throw new Error(validationError);
       }
 
       // Prepare data for database
       const dbData = this.prepareBusinessDataForDB(businessData, true);
-      console.log('🚀🚀🚀 PREPARED DB DATA:', dbData);
 
       // 🚀🚀🚀 TEMP: Use admin client to bypass auth issues
       const { data, error } = await supabaseAdmin

@@ -58,14 +58,9 @@ export default function Onboarding() {
 
   // Check if user has already completed onboarding
   useEffect(() => {
-    // 🚀🚀🚀 TEMPORARILY DISABLED FOR TESTING
-    // if (user?.unsafeMetadata?.onboardingComplete) {
-    //   navigate('/dashboard', { replace: true });
-    // }
-    console.log('🚀🚀🚀 ONBOARDING CHECK', {
-      userMetadata: user?.unsafeMetadata,
-      onboardingComplete: user?.unsafeMetadata?.onboardingComplete
-    });
+    if (user?.unsafeMetadata?.onboardingComplete) {
+      navigate('/dashboard', { replace: true });
+    }
   }, [user, navigate]);
 
   // Show loading while Clerk initializes
@@ -142,20 +137,10 @@ export default function Onboarding() {
 
   const nextStep = async () => {
     const fieldsToValidate = getFieldsForStep(currentStep);
-    console.log('🚀🚀🚀 STEP VALIDATION DEBUG', {
-      currentStep,
-      fieldsToValidate,
-      formValues: getValues()
-    });
-
     const isValid = await trigger(fieldsToValidate);
-    console.log('🚀🚀🚀 VALIDATION RESULT', { isValid, errors });
 
     if (isValid) {
       setCurrentStep(prev => Math.min(prev + 1, totalSteps));
-      console.log('🚀🚀🚀 MOVING TO NEXT STEP');
-    } else {
-      console.log('🚀🚀🚀 VALIDATION FAILED - STAYING ON CURRENT STEP');
     }
   };
 
