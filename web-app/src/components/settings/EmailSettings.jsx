@@ -12,7 +12,7 @@ import {
   PlayIcon,
   ExclamationTriangleIcon
 } from '@heroicons/react/24/outline';
-import { useUser } from '@clerk/clerk-react';
+import { useUserBypass as useUser } from '@hooks/useClerkBypass';
 import { useTranslation } from 'react-i18next';
 import { useClerkAuth } from '../../hooks/useClerkAuth';
 import Logger from '@utils/Logger';

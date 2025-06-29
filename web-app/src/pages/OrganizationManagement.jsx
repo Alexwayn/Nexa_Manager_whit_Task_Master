@@ -7,12 +7,8 @@ import {
   CreditCardIcon,
   ChartBarIcon
 } from '@heroicons/react/24/outline';
-import { 
-  OrganizationProfile,
-  CreateOrganization,
-  useOrganization,
-  useOrganizationList
-} from '@clerk/clerk-react';
+import { useOrganizationBypass as useOrganization, useOrganizationListBypass as useOrganizationList } from '@hooks/useClerkBypass';
+import { OrganizationProfile, CreateOrganization } from '@clerk/clerk-react';
 import { useTranslation } from 'react-i18next';
 import { useOrganizationContext } from '@context/OrganizationContext';
 import Layout from '@components/dashboard/Layout';

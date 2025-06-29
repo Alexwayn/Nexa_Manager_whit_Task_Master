@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useUser } from '@clerk/clerk-react';
+import { useUserBypass as useUser } from '@hooks/useClerkBypass';
 import { useSupabaseWithClerk } from '@lib/supabaseClerkClient';
 import { createClient } from '@supabase/supabase-js';
 import Footer from '@components/shared/Footer';

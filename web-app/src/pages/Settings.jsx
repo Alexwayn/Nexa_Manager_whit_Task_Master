@@ -17,10 +17,11 @@ import {
   XCircleIcon,
   XMarkIcon,
 } from '@heroicons/react/24/outline';
-import { useAuth, useUser, UserProfile } from '@clerk/clerk-react';
+import { UserProfile } from '@clerk/clerk-react';
 import { supabase } from '@lib/supabaseClient';
 import Logger from '@utils/Logger';
 import { useTranslation } from '@hooks/useTranslation';
+import { useAuthBypass, useUserBypass } from '@hooks/useClerkBypass';
 import Footer from '@components/shared/Footer';
 import { businessService } from '@lib/businessService';
 import BusinessProfileSettings from '@components/settings/BusinessProfileSettings';
@@ -37,8 +38,8 @@ import DataExportSettings from '@components/settings/DataExportSettings';
 
 export default function Settings() {
   const { t } = useTranslation('settings');
-  const { isSignedIn } = useAuth();
-  const { user } = useUser();
+  const { isSignedIn } = useAuthBypass();
+  const { user } = useUserBypass();
   const [activeTab, setActiveTab] = useState(0);
   const [notification, setNotification] = useState({ show: false, message: '', type: 'success' });
   const [notificationSettings, setNotificationSettings] = useState({

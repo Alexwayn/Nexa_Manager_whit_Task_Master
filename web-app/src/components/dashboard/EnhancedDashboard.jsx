@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import { useAuth, useUser } from '@clerk/clerk-react';
+import { useAuthBypass as useAuth, useUserBypass as useUser } from '@hooks/useClerkBypass';
 import { useTranslation } from 'react-i18next';
 import { Responsive, WidthProvider } from 'react-grid-layout';
 import 'react-grid-layout/css/styles.css';

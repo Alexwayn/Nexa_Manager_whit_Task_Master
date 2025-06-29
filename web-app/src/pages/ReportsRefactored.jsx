@@ -10,7 +10,7 @@ import {
 import { useLocation, useNavigate } from 'react-router-dom';
 
 // Extracted components
-import { useAuth, useUser } from '@clerk/clerk-react';
+import { useAuthBypass as useAuth, useUserBypass as useUser } from '@hooks/useClerkBypass';
 
 import ReportHeader from '@components/reports/ReportHeader';
 import ReportLoadingSpinner from '@components/reports/ReportLoadingSpinner';

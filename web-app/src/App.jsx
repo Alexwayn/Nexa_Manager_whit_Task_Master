@@ -13,75 +13,86 @@ import './index.css';
 // Get the Clerk publishable key from environment variables
 const clerkPublishableKey = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 
-if (!clerkPublishableKey) {
-  throw new Error('Missing Clerk Publishable Key. Please add VITE_CLERK_PUBLISHABLE_KEY to your environment variables.');
-}
+// Check if we're in development mode
+const isDevelopment = import.meta.env.DEV;
+const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
 
-/**
- * Toast Configuration - Centralized toast settings
- */
-const toastConfig = {
-  position: 'top-right',
-  reverseOrder: false,
-  gutter: 8,
-  containerClassName: '',
-  containerStyle: {},
-  toastOptions: {
-    className: '',
-    duration: 4000,
-    style: {
-      background: 'var(--toast-bg)',
-      color: 'var(--toast-color)',
-    },
-    success: {
-      duration: 3000,
-      iconTheme: {
-        primary: '#10b981',
-        secondary: '#ffffff',
-      },
-    },
-    error: {
-      duration: 5000,
-      iconTheme: {
-        primary: '#ef4444',
-        secondary: '#ffffff',
-      },
-    },
-    loading: {
-      duration: Infinity,
-    },
-  },
+// Debug logging
+console.log('🔍 App.jsx Debug Info:');
+console.log('- isDevelopment:', isDevelopment);
+console.log('- isLocalhost:', isLocalhost);
+console.log('- clerkPublishableKey exists:', !!clerkPublishableKey);
+console.log('- window.location.hostname:', window.location.hostname);
+
+// For development/localhost, we can bypass Clerk completely
+const shouldBypassClerk = isDevelopment && isLocalhost;
+
+console.log('🚧 shouldBypassClerk:', shouldBypassClerk);
+
+// Simple wrapper component for development mode
+const DevelopmentWrapper = ({ children }) => {
+  return (
+    <div>
+      <div style={{
+        backgroundColor: '#fef3c7',
+        border: '1px solid #f59e0b',
+        padding: '8px 16px',
+        margin: '0',
+        textAlign: 'center',
+        fontSize: '14px',
+        color: '#92400e',
+        fontWeight: 'bold'
+      }}>
+        🚧 MODALITÀ SVILUPPO: Autenticazione Clerk bypassata per testing locale
+      </div>
+      {children}
+    </div>
+  );
 };
 
-/**
- * Main App Component - Provides global context and routing
- *
- * Migration to Clerk Authentication:
- * 1. Replaced AuthProvider with ClerkProvider for enterprise-grade auth
- * 2. ClerkProvider handles all authentication state and user management
- * 3. Maintains backward compatibility with existing routing structure
- * 4. Enhanced security with Clerk's built-in protections
- */
 function App() {
+  console.log('🚧 App rendering with shouldBypassClerk:', shouldBypassClerk);
+
+  if (shouldBypassClerk) {
+    console.log('🚧 DEVELOPMENT MODE: Running without Clerk authentication');
+    console.log('⚠️  This is for testing purposes only. Clerk authentication is bypassed.');
+    
+    return (
+      <ErrorBoundary>
+        <DevelopmentWrapper>
+          <ThemeProvider>
+            <OrganizationProvider>
+              <Router>
+                <AppRouter />
+                <FloatingMicrophone />
+                <Toaster position="top-right" />
+              </Router>
+            </OrganizationProvider>
+          </ThemeProvider>
+        </DevelopmentWrapper>
+      </ErrorBoundary>
+    );
+  }
+
+  // Production mode with Clerk
+  console.log('🔐 PRODUCTION MODE: Using Clerk authentication');
+  
+  if (!clerkPublishableKey) {
+    throw new Error('Missing Clerk Publishable Key');
+  }
+
   return (
     <ErrorBoundary>
       <ClerkProvider publishableKey={clerkPublishableKey}>
-        <OrganizationProvider>
-          <ThemeProvider>
+        <ThemeProvider>
+          <OrganizationProvider>
             <Router>
-              <div className='min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-200'>
-                {/* Main Application Router */}
-                <AppRouter />
-
-                {/* Global Toast Notifications */}
-                <Toaster {...toastConfig} />
-
-                {/* Global Floating Microphone - Available on all pages */}
-                <FloatingMicrophone />
-              </div>
+              <AppRouter />
+              <FloatingMicrophone />
+              <Toaster position="top-right" />
             </Router>
-          </ThemeProvider>
-        </OrganizationProvider>
+          </OrganizationProvider>
+        </ThemeProvider>
       </ClerkProvider>
     </ErrorBoundary>
   );

@@ -29,7 +29,7 @@ import {
 } from 'lucide-react';
 import nexaLogo from '@assets/logo_nexa.png';
 import { useTranslation } from 'react-i18next';
-import { useUser } from '@clerk/clerk-react';
+import { useUserBypass as useUser } from '@hooks/useClerkBypass';
 import { useNavigate } from 'react-router-dom';
 import InvoiceService from '@lib/invoiceService';
 import InvoiceAnalyticsService from '@lib/invoiceAnalyticsService';

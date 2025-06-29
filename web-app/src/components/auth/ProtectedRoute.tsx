@@ -6,46 +6,38 @@ interface ProtectedRouteProps {
   children: ReactNode;
 }
 
+// Check if we're in development mode without Clerk
+const isDevelopment = import.meta.env.DEV;
+const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+const shouldBypassClerk = isDevelopment && isLocalhost;
+
 export default function ProtectedRoute({ children }: ProtectedRouteProps) {
-  const { isLoaded, isSignedIn } = useAuth();
-  const { user } = useUser();
   const location = useLocation();
 
-  // Show loading spinner while Clerk is initializing
+  // If we're in development mode, bypass authentication completely
+  if (shouldBypassClerk) {
+    console.log('🚧 ProtectedRoute: Bypassing authentication in development mode');
+    return <>{children}</>;
+  }
+
+  // Production mode with Clerk
+  const { isSignedIn, isLoaded } = useAuth();
+  const { user } = useUser();
+
+  // Wait for Clerk to load
   if (!isLoaded) {
     return (
-      <div className='flex justify-center items-center h-screen'>
-        <div className='animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600'></div>
-        <p className='ml-3 text-blue-600'>Loading...</p>
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-500"></div>
       </div>
     );
   }
 
-  // If user is not signed in, redirect to login with return URL
-  if (!isSignedIn || !user) {
-    return (
-      <Navigate 
-        to='/login' 
-        state={{ returnTo: location.pathname + location.search }} 
-        replace 
-      />
-    );
+  // If not signed in, redirect to sign-in page
+  if (!isSignedIn) {
+    return <Navigate to="/sign-in" state={{ from: location }} replace />;
   }
 
-  // Check if user has completed onboarding (except when already on onboarding page)
-  const hasCompletedOnboarding = user.unsafeMetadata?.onboardingComplete === true;
-  const isOnOnboardingPage = location.pathname === '/onboarding';
-  
-  // If user hasn't completed onboarding and is not on onboarding page, redirect to onboarding
-  if (!hasCompletedOnboarding && !isOnOnboardingPage) {
-    return <Navigate to='/onboarding' replace />;
-  }
-  
-  // If user has completed onboarding but is on onboarding page, redirect to dashboard
-  if (hasCompletedOnboarding && isOnOnboardingPage) {
-    return <Navigate to='/dashboard' replace />;
-  }
-
-  // User is authenticated and onboarding flow is properly handled, render protected content
+  // If signed in, render the protected content
   return <>{children}</>;
 }

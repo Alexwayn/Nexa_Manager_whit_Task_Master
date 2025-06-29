@@ -12,7 +12,7 @@ import {
   TrashIcon,
   PlusIcon,
 } from '@heroicons/react/24/outline';
-import { useAuth, useUser } from '@clerk/clerk-react';
+import { useAuthBypass as useAuth, useUserBypass as useUser } from '@hooks/useClerkBypass';
 import { uploadReceipt, validateFile } from '@lib/storageService';
 import { notify } from '@lib/uiUtils';
 import Logger from '@utils/Logger';

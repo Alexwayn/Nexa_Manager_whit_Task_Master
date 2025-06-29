@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
-import { SignIn, useAuth } from '@clerk/clerk-react';
+import { useAuthBypass as useAuth } from '@hooks/useClerkBypass';
+import { SignIn } from '@clerk/clerk-react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import ErrorBoundary from '@components/common/ErrorBoundary';

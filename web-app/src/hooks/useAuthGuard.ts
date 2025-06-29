@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { useAuth, useUser } from '@clerk/clerk-react';
+import { useAuthBypass as useAuth, useUserBypass as useUser } from '@hooks/useClerkBypass';
 import { useOrganizationContext } from '@context/OrganizationContext';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Logger from '@utils/Logger';

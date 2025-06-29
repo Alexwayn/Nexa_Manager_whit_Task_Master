@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useUser } from '@clerk/clerk-react';
+import { useUserBypass as useUser } from '@hooks/useClerkBypass';
 import { businessService } from '@lib/businessService';
 import Logger from '@utils/Logger';
 import { json2csv } from 'json-2-csv';

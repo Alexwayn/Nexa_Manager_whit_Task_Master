@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { useAuth, useUser } from '@clerk/clerk-react';
+import { useAuthBypass as useAuth, useUserBypass as useUser } from '@hooks/useClerkBypass';
 import { useTranslation } from 'react-i18next';
 import {
   Users,

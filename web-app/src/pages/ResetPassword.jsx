@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '@clerk/clerk-react';
+import { useAuthBypass as useAuth } from '@hooks/useClerkBypass';
 import {
   InformationCircleIcon,
 } from '@heroicons/react/24/outline';

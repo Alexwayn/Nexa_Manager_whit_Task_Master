@@ -5,6 +5,31 @@ import { setSentryUser, setSentryOrganization, clearSentryUser, addBreadcrumb } 
 
 const OrganizationContext = createContext({});
 
+// Check if we're in development mode
+const isDevelopment = import.meta.env.DEV;
+const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+const shouldBypassClerk = isDevelopment && isLocalhost;
+
+// Mock data for development mode
+const mockOrganization = {
+  id: 'dev-org-1',
+  name: 'Development Organization',
+  slug: 'dev-org',
+  membersCount: 1,
+  publicMetadata: { plan: 'development' },
+  memberships: [{
+    role: 'admin',
+    publicUserData: { userId: 'dev-user-1' }
+  }]
+};
+
+const mockUser = {
+  id: 'dev-user-1',
+  firstName: 'Dev',
+  lastName: 'User',
+  primaryEmailAddress: { emailAddress: 'dev@example.com' }
+};
+
 /**
  * Organization Context Provider for Multi-Tenant Support
  * 
@@ -13,11 +38,67 @@ const OrganizationContext = createContext({});
  * enterprise-grade multi-tenancy and Sentry error monitoring.
  */
 export const OrganizationProvider = ({ children }) => {
+  const [selectedOrganization, setSelectedOrganization] = useState(null);
+  const [isInitialized, setIsInitialized] = useState(false);
+
+  // Development mode - bypass Clerk
+  if (shouldBypassClerk) {
+    console.log('🚧 OrganizationProvider: Using development mode with mock data');
+    
+    useEffect(() => {
+      setSelectedOrganization(mockOrganization);
+      setIsInitialized(true);
+      Logger.info('Organization Context: Development mode initialized with mock organization');
+    }, []);
+
+    const contextValue = {
+      // Organization data
+      organization: mockOrganization,
+      organizationList: [{ organization: mockOrganization }],
+      isLoaded: true,
+      isInitialized: true,
+      
+      // Organization management
+      switchOrganization: async (organizationId) => {
+        console.log('🚧 Dev mode: switchOrganization called with', organizationId);
+      },
+      createOrganization: async (name, slug) => {
+        console.log('🚧 Dev mode: createOrganization called with', { name, slug });
+      },
+      getCurrentOrganizationId: () => mockOrganization.id,
+      
+      // Role management
+      hasRole: (role) => role === 'admin',
+      isAdmin: () => true,
+      isMember: () => true,
+      getUserRole: () => 'admin',
+      
+      // Utility functions
+      getOrganizationSlug: () => mockOrganization.slug,
+      getOrganizationName: () => mockOrganization.name,
+      canManageOrganization: () => true,
+      canInviteMembers: () => true,
+      canManageMembers: () => true,
+      canManageBilling: () => true,
+      canViewAnalytics: () => true,
+      getMemberCount: () => 1,
+      isPersonalOrganization: () => false,
+      
+      // Development helpers
+      isDevelopmentMode: true,
+    };
+
+    return (
+      <OrganizationContext.Provider value={contextValue}>
+        {children}
+      </OrganizationContext.Provider>
+    );
+  }
+
+  // Production mode with Clerk
   const { organization, isLoaded: orgLoaded } = useOrganization();
   const { organizationList, isLoaded: listLoaded, setActive } = useOrganizationList();
   const { user } = useUser();
-  const [selectedOrganization, setSelectedOrganization] = useState(null);
-  const [isInitialized, setIsInitialized] = useState(false);
 
   // Update Sentry context when user changes
   useEffect(() => {

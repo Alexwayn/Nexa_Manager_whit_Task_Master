@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useAuth } from '@clerk/clerk-react';
+import { useAuthBypass as useAuth } from '@hooks/useClerkBypass';
 
 /**
  * Custom hook for robust Clerk authentication state management

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '@lib/supabaseClient';
-import { useAuth, useUser } from '@clerk/clerk-react';
+import { useAuthBypass as useAuth, useUserBypass as useUser } from '@hooks/useClerkBypass';
 import ErrorBoundary from '../components/common/ErrorBoundary';
 
 // Simple test function to replace the missing testSupabaseConnection

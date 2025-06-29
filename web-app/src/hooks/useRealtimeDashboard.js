@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { useAuth, useUser } from '@clerk/clerk-react';
+import { useAuthBypass as useAuth, useUserBypass as useUser } from '@hooks/useClerkBypass';
 import { realtimeService } from '@lib/realtimeService';
 import financialService from '@lib/financialService';
 import clientService from '@lib/clientService';

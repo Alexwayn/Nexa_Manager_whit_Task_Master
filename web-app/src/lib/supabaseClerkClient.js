@@ -1,5 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
-import { useAuth } from '@clerk/clerk-react';
+import { useAuthBypass as useAuth } from '@hooks/useClerkBypass';
 import { useMemo } from 'react';
 import Logger from '@utils/Logger';
 

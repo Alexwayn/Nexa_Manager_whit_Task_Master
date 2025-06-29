@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import Footer from '@components/shared/Footer';
-import { useAuth, useUser } from '@clerk/clerk-react';
+import { useAuthBypass as useAuth, useUserBypass as useUser } from '@hooks/useClerkBypass';
 import invoiceAnalyticsService from '@lib/invoiceAnalyticsService';
 import Logger from '@utils/Logger';
 import { getUserIdForUuidTables } from '@utils/userIdConverter';

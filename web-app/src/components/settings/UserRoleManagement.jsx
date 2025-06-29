@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useUser } from '@clerk/clerk-react';
+import { useUserBypass as useUser } from '@hooks/useClerkBypass';
 import { securityService, ROLES, PERMISSIONS } from '../../lib/securityService';
 import {
   UserGroupIcon,

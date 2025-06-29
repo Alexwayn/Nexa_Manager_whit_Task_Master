@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useClerk, useUser } from '@clerk/clerk-react';
 import { useTranslation } from 'react-i18next';
 import { 
   Bars3Icon, 
@@ -11,13 +10,16 @@ import {
 } from '@heroicons/react/24/outline';
 import { useTheme } from '@context/OptimizedThemeContext';
 import LanguageSwitcher from '@components/common/LanguageSwitcher';
+import { useClerkBypass, useUserBypass } from '@hooks/useClerkBypass';
 
 export default function Navbar({ onOpenSidebar }) {
   const { t } = useTranslation('navigation');
-  const { signOut } = useClerk();
-  const { user } = useUser();
   const navigate = useNavigate();
   const { theme, toggleTheme } = useTheme();
+  
+  // Use bypass hooks that automatically handle development mode
+  const { signOut } = useClerkBypass();
+  const { user } = useUserBypass();
   
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const [notificationsOpen, setNotificationsOpen] = useState(false);

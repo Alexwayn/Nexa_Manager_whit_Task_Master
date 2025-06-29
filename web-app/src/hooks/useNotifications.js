@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@lib/supabaseClient';
-import { useAuth, useUser } from '@clerk/clerk-react';
+import { useAuthBypass as useAuth, useUserBypass as useUser } from '@hooks/useClerkBypass';
 // import Logger from '@utils/Logger';
 
 export const useNotifications = () => {
