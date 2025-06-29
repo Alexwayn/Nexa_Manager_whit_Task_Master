@@ -1,4 +1,5 @@
 import { supabase } from '@lib/supabaseClient';
+import { executeWithClerkAuth } from '@lib/supabaseClerkClient';
 import Logger from '@utils/Logger';
 
 /**
@@ -44,10 +45,12 @@ class EmailSettingsService {
    */
   async getEmailSettings() {
     try {
-      const { data, error } = await supabase
-        .from('email_settings')
-        .select('*')
-        .single();
+      const { data, error } = await executeWithClerkAuth((supabase) =>
+        supabase
+          .from('email_settings')
+          .select('*')
+          .single()
+      );
 
       if (error && error.code !== 'PGRST116') {
         throw error;
@@ -314,10 +317,12 @@ class EmailSettingsService {
    */
   async getNotificationPreferences() {
     try {
-      const { data, error } = await supabase
-        .from('notification_preferences')
-        .select('*')
-        .single();
+      const { data, error } = await executeWithClerkAuth((supabase) =>
+        supabase
+          .from('notification_preferences')
+          .select('*')
+          .single()
+      );
 
       if (error && error.code !== 'PGRST116') {
         throw error;
@@ -377,24 +382,26 @@ class EmailSettingsService {
    */
   async getEmailActivity(filters = {}) {
     try {
-      let query = supabase
-        .from('email_activity')
-        .select('*')
-        .order('created_at', { ascending: false });
+      const { data, error } = await executeWithClerkAuth((supabase) => {
+        let query = supabase
+          .from('email_activity')
+          .select('*')
+          .order('created_at', { ascending: false });
 
-      if (filters.status) {
-        query = query.eq('status', filters.status);
-      }
+        if (filters.status) {
+          query = query.eq('status', filters.status);
+        }
 
-      if (filters.template_key) {
-        query = query.eq('template_key', filters.template_key);
-      }
+        if (filters.template_key) {
+          query = query.eq('template_key', filters.template_key);
+        }
 
-      if (filters.limit) {
-        query = query.limit(filters.limit);
-      }
+        if (filters.limit) {
+          query = query.limit(filters.limit);
+        }
 
-      const { data, error } = await query;
+        return query;
+      });
 
       if (error) throw error;
 
