@@ -20,17 +20,20 @@ import {
 import { useAuth, useUser, UserProfile } from '@clerk/clerk-react';
 import { supabase } from '@lib/supabaseClient';
 import Logger from '@utils/Logger';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '@hooks/useTranslation';
 import Footer from '@components/shared/Footer';
 import { businessService } from '@lib/businessService';
 import BusinessProfileSettings from '@components/settings/BusinessProfileSettings';
+import BillingSettings from '@components/settings/BillingSettings';
+import SecuritySettings from '@components/settings/SecuritySettings';
+import NotificationSettings from '@components/settings/NotificationSettings';
+import EmailSettings from '@components/settings/EmailSettings';
+import AccessibilitySettings from '@components/settings/AccessibilitySettings';
+import BackupSettings from '@components/settings/BackupSettings';
 import IntegrationsSettings from '@components/settings/IntegrationsSettings';
 import RolesAndPermissionsSettings from '@components/settings/RolesAndPermissionsSettings';
 import TaxSettings from '@components/settings/TaxSettings';
 import DataExportSettings from '@components/settings/DataExportSettings';
-import BillingSettings from '@components/settings/BillingSettings';
-import SecuritySettings from '@components/settings/SecuritySettings';
-import NotificationSettings from '@components/settings/NotificationSettings';
 
 export default function Settings() {
   const { t } = useTranslation('settings');
@@ -50,6 +53,8 @@ export default function Settings() {
     console.log('isSignedIn:', isSignedIn);
     console.log('user:', user);
     console.log('activeTab:', activeTab);
+    console.log('Current tab name:', tabs[activeTab]?.name);
+    console.log('All tabs:', tabs.map((tab, index) => `${index}: ${tab.name}`));
   }, [isSignedIn, user, activeTab]);
 
   // Show notification function
@@ -67,35 +72,119 @@ export default function Settings() {
     { name: t('tabs.notifications'), description: t('tabs.notificationsDesc'), icon: BellIcon },
     { name: t('tabs.company'), description: t('tabs.companyDesc'), icon: BuildingOfficeIcon },
     { name: t('tabs.billing'), description: t('tabs.billingDesc'), icon: CreditCardIcon },
-    { name: t('tabs.rolesPermissions'), description: t('tabs.rolesPermissionsDesc'), icon: KeyIcon },
-    { name: t('tabs.tax'), description: t('tabs.taxDesc'), icon: PhotoIcon },
-    { name: t('tabs.dataExport'), description: t('tabs.dataExportDesc'), icon: ArrowUpTrayIcon },
+    { name: t('tabs.email'), description: t('tabDescriptions.email'), icon: EnvelopeIcon },
     { name: t('tabs.integrations'), description: t('tabs.integrationsDesc'), icon: DevicePhoneMobileIcon },
+    { name: t('tabs.accessibility'), description: t('tabDescriptions.accessibility'), icon: ShieldCheckIcon },
+    { name: t('tabs.backup'), description: t('tabDescriptions.backup'), icon: ArrowUpTrayIcon },
   ];
 
   // Panel components
   const renderPanelContent = (index) => {
-    switch (index) {
-      case 0:
-        return <UserProfile />;
-      case 1:
-        return <SecuritySettings />;
-      case 2:
-        return <NotificationSettings settings={notificationSettings} onSettingsChange={setNotificationSettings} showNotification={showNotification} />;
-      case 3:
-        return <BusinessProfileSettings showNotification={showNotification} />;
-      case 4:
-        return <BillingSettings showNotification={showNotification} />;
-      case 5:
-        return <RolesAndPermissionsSettings showNotification={showNotification} />;
-      case 6:
-        return <TaxSettings showNotification={showNotification} />;
-      case 7:
-        return <DataExportSettings showNotification={showNotification} />;
-      case 8:
-        return <IntegrationsSettings showNotification={showNotification} />;
-      default:
-        return <UserProfile />;
+    console.log('Rendering panel content for index:', index);
+    
+    // Fallback content per test
+    const fallbackContent = (
+      <div className="p-6 bg-white rounded-lg shadow">
+        <h2 className="text-2xl font-bold text-gray-900 mb-4">
+          {tabs[index]?.name} - Panel {index}
+        </h2>
+        <p className="text-gray-600 mb-4">
+          {tabs[index]?.description}
+        </p>
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+          <p className="text-blue-800">
+            Questo è il contenuto del pannello per "{tabs[index]?.name}". 
+            Se vedi questo messaggio, significa che la struttura dei tab funziona correttamente.
+          </p>
+        </div>
+      </div>
+    );
+    
+    try {
+      switch (index) {
+        case 0: // Profile
+          console.log('Rendering UserProfile');
+          try {
+            return (
+              <div>
+                <UserProfile />
+              </div>
+            );
+          } catch (error) {
+            console.error('UserProfile error:', error);
+            return fallbackContent;
+          }
+        case 1: // Security
+          console.log('Rendering SecuritySettings');
+          try {
+            return <SecuritySettings />;
+          } catch (error) {
+            console.error('SecuritySettings error:', error);
+            return fallbackContent;
+          }
+        case 2: // Notifications
+          console.log('Rendering NotificationSettings');
+          try {
+            return <NotificationSettings settings={notificationSettings} onSettingsChange={setNotificationSettings} showNotification={showNotification} />;
+          } catch (error) {
+            console.error('NotificationSettings error:', error);
+            return fallbackContent;
+          }
+        case 3: // Company
+          console.log('Rendering BusinessProfileSettings');
+          try {
+            return <BusinessProfileSettings showNotification={showNotification} />;
+          } catch (error) {
+            console.error('BusinessProfileSettings error:', error);
+            return fallbackContent;
+          }
+        case 4: // Billing
+          console.log('Rendering BillingSettings');
+          try {
+            return <BillingSettings showNotification={showNotification} />;
+          } catch (error) {
+            console.error('BillingSettings error:', error);
+            return fallbackContent;
+          }
+        case 5: // Email
+          console.log('Rendering EmailSettings');
+          try {
+            return <EmailSettings showNotification={showNotification} />;
+          } catch (error) {
+            console.error('EmailSettings error:', error);
+            return fallbackContent;
+          }
+        case 6: // Integrations
+          console.log('Rendering IntegrationsSettings');
+          try {
+            return <IntegrationsSettings showNotification={showNotification} />;
+          } catch (error) {
+            console.error('IntegrationsSettings error:', error);
+            return fallbackContent;
+          }
+        case 7: // Accessibility
+          console.log('Rendering AccessibilitySettings');
+          try {
+            return <AccessibilitySettings showNotification={showNotification} />;
+          } catch (error) {
+            console.error('AccessibilitySettings error:', error);
+            return fallbackContent;
+          }
+        case 8: // Backup
+          console.log('Rendering BackupSettings');
+          try {
+            return <BackupSettings showNotification={showNotification} />;
+          } catch (error) {
+            console.error('BackupSettings error:', error);
+            return fallbackContent;
+          }
+        default:
+          console.log('Rendering default fallback');
+          return fallbackContent;
+      }
+    } catch (error) {
+      console.error('Error rendering panel content:', error);
+      return fallbackContent;
     }
   };
 
