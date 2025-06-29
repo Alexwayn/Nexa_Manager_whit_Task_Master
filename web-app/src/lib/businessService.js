@@ -29,11 +29,18 @@ class BusinessService {
       }
 
       // Check if business profile already exists for this user
+      console.log('🚀🚀🚀 CHECKING EXISTING PROFILE FOR USER:', businessData.user_id);
       const existingProfile = await this.getBusinessProfileByUserId(businessData.user_id);
+      console.log('🚀🚀🚀 EXISTING PROFILE RESULT:', existingProfile);
+
       if (existingProfile.data) {
-        // If profile exists, update it instead
-        return await this.updateBusinessProfileByUserId(businessData.user_id, businessData);
+        console.log('🚀🚀🚀 PROFILE EXISTS - UPDATING INSTEAD OF CREATING');
+        const updateResult = await this.updateBusinessProfileByUserId(businessData.user_id, businessData);
+        console.log('🚀🚀🚀 UPDATE RESULT:', updateResult);
+        return updateResult;
       }
+
+      console.log('🚀🚀🚀 NO EXISTING PROFILE - CREATING NEW ONE');
 
       // Prepare data for database
       const dbData = this.prepareBusinessDataForDB(businessData);
@@ -160,14 +167,19 @@ class BusinessService {
    */
   async updateBusinessProfileByUserId(userId, businessData) {
     try {
+      console.log('🚀🚀🚀 UPDATING BUSINESS PROFILE FOR USER:', userId);
+      console.log('🚀🚀🚀 UPDATE DATA:', businessData);
+
       // Validate required fields
       const validationError = this.validateBusinessData(businessData, true);
       if (validationError) {
+        console.log('🚀🚀🚀 VALIDATION ERROR:', validationError);
         throw new Error(validationError);
       }
 
       // Prepare data for database
       const dbData = this.prepareBusinessDataForDB(businessData, true);
+      console.log('🚀🚀🚀 PREPARED DB DATA:', dbData);
 
       const { data, error } = await executeWithClerkAuth((supabase) =>
         supabase
