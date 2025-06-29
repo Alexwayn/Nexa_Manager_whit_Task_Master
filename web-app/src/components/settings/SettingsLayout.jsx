@@ -20,18 +20,22 @@ import { useClerkAuth } from '../../hooks/useClerkAuth';
 // Import setting modules
 import ProfileSettings from './ProfileSettings';
 import SecuritySettings from './SecuritySettings';
-import NotificationSettings from './NotificationSettings';
-import CompanySettings from './CompanySettings';
-import BillingSettings from './BillingSettings';
-import EmailSettings from './EmailSettings';
+// import NotificationSettings from './NotificationSettings';
+// import CompanySettings from './CompanySettings';
+// import BillingSettings from './BillingSettings';
+// import EmailSettings from './EmailSettings';
 import IntegrationsSettings from './IntegrationsSettings';
 import BackupSettings from './BackupSettings';
 import AccessibilitySettings from './AccessibilitySettings';
+import CompanySettingsFallback from './CompanySettingsFallback';
+import BillingSettingsFallback from './BillingSettingsFallback';
+import EmailSettingsFallback from './EmailSettingsFallback';
+import NotificationSettingsFallback from './NotificationSettingsFallback';
 
 export default function SettingsLayout() {
   const { t } = useTranslation('settings');
   const { shouldShowLoading, shouldShowAuth, isAuthenticated } = useClerkAuth();
-  const [activeTab, setActiveTab] = useState(0);
+  const [activeTab, setActiveTab] = useState('profile');
   const [notification, setNotification] = useState({ show: false, message: '', type: 'success' });
 
   // Settings tabs configuration
@@ -51,25 +55,25 @@ export default function SettingsLayout() {
     { 
       name: t('tabs.notifications'), 
       icon: BellIcon, 
-      component: NotificationSettings,
+      component: NotificationSettingsFallback,
       description: t('tabDescriptions.notifications', 'Set up your notification preferences')
     },
     { 
       name: t('tabs.company'), 
       icon: BuildingOfficeIcon, 
-      component: CompanySettings,
+      component: CompanySettingsFallback,
       description: t('tabDescriptions.company', 'Manage company information and branding')
     },
     { 
       name: t('tabs.billing'), 
       icon: CreditCardIcon, 
-      component: BillingSettings,
+      component: BillingSettingsFallback,
       description: t('tabDescriptions.billing', 'Configure billing and invoice settings')
     },
     { 
       name: t('tabs.email'), 
       icon: EnvelopeIcon, 
-      component: EmailSettings,
+      component: EmailSettingsFallback,
       description: t('tabDescriptions.email', 'Manage email templates and settings')
     },
     { 
@@ -96,6 +100,8 @@ export default function SettingsLayout() {
     setNotification({ show: true, message, type });
     setTimeout(() => setNotification({ show: false, message: '', type: 'success' }), 5000);
   };
+
+  // renderContent function removed - using tabs array approach instead
 
   // Show loading while authentication is initializing
   if (shouldShowLoading) {
