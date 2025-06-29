@@ -10,7 +10,7 @@ const Invoices = lazy(() => import('@pages/Invoices'));
 const Transactions = lazy(() => import('@pages/Transactions'));
 const Analytics = lazy(() => import('@pages/Analytics'));
 const Reports = lazy(() => import('@pages/Reports'));
-const SettingsLayout = lazy(() => import('@components/settings/SettingsLayout'));
+const Settings = lazy(() => import('@pages/Settings'));
 const Quotes = lazy(() => import('@pages/Quotes'));
 const Test = lazy(() => import('@pages/Test'));
 const Email = lazy(() => import('@pages/Email'));
@@ -207,7 +207,7 @@ export const mainRoutes = [
   },
   {
     path: '/settings',
-    element: SettingsLayout,
+    element: Settings,
     name: 'Settings',
     category: 'account',
   },
