@@ -35,6 +35,7 @@ import IntegrationsSettings from '@components/settings/IntegrationsSettings';
 import RolesAndPermissionsSettings from '@components/settings/RolesAndPermissionsSettings';
 import TaxSettings from '@components/settings/TaxSettings';
 import DataExportSettings from '@components/settings/DataExportSettings';
+import SimpleTabTest from '@components/test/SimpleTabTest';
 
 export default function Settings() {
   const { t } = useTranslation('settings');
@@ -50,13 +51,21 @@ export default function Settings() {
 
   // Debug logging
   useEffect(() => {
-    console.log('Settings component mounted');
-    console.log('isSignedIn:', isSignedIn);
-    console.log('user:', user);
-    console.log('activeTab:', activeTab);
-    console.log('Current tab name:', tabs[activeTab]?.name);
-    console.log('All tabs:', tabs.map((tab, index) => `${index}: ${tab.name}`));
+    console.log('🏠 Settings component mounted');
+    console.log('📊 isSignedIn:', isSignedIn);
+    console.log('👤 user:', user);
+    console.log('🎯 activeTab:', activeTab);
+    console.log('📝 Current tab name:', tabs[activeTab]?.name);
+    console.log('📋 All tabs:', tabs.map((tab, index) => `${index}: ${tab.name}`));
+    console.log('🔧 Tabs structure:', tabs);
   }, [isSignedIn, user, activeTab]);
+
+  // Debug tab changes
+  const handleTabChange = (index) => {
+    console.log('🔄 Tab changed from', activeTab, 'to', index);
+    console.log('🏷️ New tab name:', tabs[index]?.name);
+    setActiveTab(index);
+  };
 
   // Show notification function
   const showNotification = (message, type = 'success') => {
@@ -81,7 +90,9 @@ export default function Settings() {
 
   // Panel components
   const renderPanelContent = (index) => {
-    console.log('Rendering panel content for index:', index);
+    console.log('🎨 Rendering panel content for index:', index);
+    console.log('🎯 Tab name:', tabs[index]?.name);
+    console.log('📝 Tab description:', tabs[index]?.description);
     
     // Fallback content per test
     const fallbackContent = (
@@ -191,10 +202,22 @@ export default function Settings() {
 
   return (
     <div className='min-h-screen bg-gray-50'>
+      {/* Test semplice per debug */}
+      <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-6">
+        <div className="flex">
+          <div className="ml-3">
+            <p className="text-sm text-yellow-700">
+              🧪 <strong>Test Debug:</strong> Se i tab sotto funzionano, il problema è nella struttura Settings principale.
+            </p>
+          </div>
+        </div>
+      </div>
+      <SimpleTabTest />
+      
       <div className='max-w-7xl mx-auto'>
         {/* Mobile Layout */}
         <div className='block lg:hidden'>
-          <Tab.Group selectedIndex={activeTab} onChange={setActiveTab}>
+          <Tab.Group selectedIndex={activeTab} onChange={handleTabChange}>
             {/* Mobile Tab Navigation */}
             <div className='border-b border-gray-200'>
               <Tab.List className='flex overflow-x-auto scrollbar-hide bg-gray-50'>
@@ -233,7 +256,7 @@ export default function Settings() {
 
         {/* Desktop Layout */}
         <div className='hidden lg:flex lg:min-h-screen'>
-          <Tab.Group selectedIndex={activeTab} onChange={setActiveTab}>
+          <Tab.Group selectedIndex={activeTab} onChange={handleTabChange}>
             {/* Sidebar Navigation */}
             <div className='w-80 bg-white border-r border-gray-200 flex-shrink-0'>
               <div className='p-6'>
