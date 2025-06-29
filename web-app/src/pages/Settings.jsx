@@ -44,6 +44,14 @@ export default function Settings() {
     sms: false,
   });
 
+  // Debug logging
+  useEffect(() => {
+    console.log('Settings component mounted');
+    console.log('isSignedIn:', isSignedIn);
+    console.log('user:', user);
+    console.log('activeTab:', activeTab);
+  }, [isSignedIn, user, activeTab]);
+
   // Show notification function
   const showNotification = (message, type = 'success') => {
     setNotification({ show: true, message, type });
@@ -52,148 +60,137 @@ export default function Settings() {
     }, 5000);
   };
 
-  // Renders the complete tabs structure with navigation and content
-  const renderTabsWithContent = () => (
-    <div className='w-full'>
-      <Tab.Group selectedIndex={activeTab} onChange={setActiveTab}>
-        {/* Mobile Tab Navigation */}
-        <div className='block lg:hidden border-b border-gray-200'>
-          <Tab.List className='flex overflow-x-auto scrollbar-hide bg-gray-50'>
-            {[
-              { name: t('tabs.profile'), icon: UserCircleIcon },
-              { name: t('tabs.security'), icon: ShieldCheckIcon },
-              { name: t('tabs.notifications'), icon: BellIcon },
-              { name: t('tabs.company'), icon: BuildingOfficeIcon },
-              { name: t('tabs.billing'), icon: CreditCardIcon },
-              { name: t('tabs.rolesPermissions'), icon: KeyIcon },
-              { name: t('tabs.tax'), icon: PhotoIcon },
-              { name: t('tabs.dataExport'), icon: ArrowUpTrayIcon },
-              { name: t('tabs.integrations'), icon: DevicePhoneMobileIcon },
-            ].map((tab, index) => (
-              <Tab
-                key={index}
-                className={({ selected }) =>
-                  `flex-shrink-0 px-4 py-3 text-sm font-medium whitespace-nowrap focus:outline-none ${
-                    selected
-                      ? 'text-blue-600 border-b-2 border-blue-600 bg-blue-50'
-                      : 'text-gray-500 hover:text-gray-700 hover:bg-gray-100'
-                  }`
-                }
-              >
-                <div className='flex items-center space-x-2'>
-                  <tab.icon className='h-5 w-5' />
-                  <span>{tab.name}</span>
-                </div>
-              </Tab>
-            ))}
-          </Tab.List>
-        </div>
+  // Tab configuration
+  const tabs = [
+    { name: t('tabs.profile'), description: t('tabs.profileDesc'), icon: UserCircleIcon },
+    { name: t('tabs.security'), description: t('tabs.securityDesc'), icon: ShieldCheckIcon },
+    { name: t('tabs.notifications'), description: t('tabs.notificationsDesc'), icon: BellIcon },
+    { name: t('tabs.company'), description: t('tabs.companyDesc'), icon: BuildingOfficeIcon },
+    { name: t('tabs.billing'), description: t('tabs.billingDesc'), icon: CreditCardIcon },
+    { name: t('tabs.rolesPermissions'), description: t('tabs.rolesPermissionsDesc'), icon: KeyIcon },
+    { name: t('tabs.tax'), description: t('tabs.taxDesc'), icon: PhotoIcon },
+    { name: t('tabs.dataExport'), description: t('tabs.dataExportDesc'), icon: ArrowUpTrayIcon },
+    { name: t('tabs.integrations'), description: t('tabs.integrationsDesc'), icon: DevicePhoneMobileIcon },
+  ];
 
-        {/* Desktop Layout */}
-        <div className='hidden lg:flex lg:min-h-screen'>
-          {/* Sidebar Navigation */}
-          <div className='w-80 bg-white border-r border-gray-200 flex-shrink-0'>
-            <div className='p-6'>
-              <h1 className='text-2xl font-bold text-gray-900 mb-2'>{t('title')}</h1>
-              <p className='text-gray-600 text-sm mb-8'>{t('subtitle')}</p>
-              
-              <Tab.List className='space-y-2'>
-                {[
-                  { name: t('tabs.profile'), description: t('tabs.profileDesc'), icon: UserCircleIcon },
-                  { name: t('tabs.security'), description: t('tabs.securityDesc'), icon: ShieldCheckIcon },
-                  { name: t('tabs.notifications'), description: t('tabs.notificationsDesc'), icon: BellIcon },
-                  { name: t('tabs.company'), description: t('tabs.companyDesc'), icon: BuildingOfficeIcon },
-                  { name: t('tabs.billing'), description: t('tabs.billingDesc'), icon: CreditCardIcon },
-                  { name: t('tabs.rolesPermissions'), description: t('tabs.rolesPermissionsDesc'), icon: KeyIcon },
-                  { name: t('tabs.tax'), description: t('tabs.taxDesc'), icon: PhotoIcon },
-                  { name: t('tabs.dataExport'), description: t('tabs.dataExportDesc'), icon: ArrowUpTrayIcon },
-                  { name: t('tabs.integrations'), description: t('tabs.integrationsDesc'), icon: DevicePhoneMobileIcon },
-                ].map((tab, index) => (
+  // Panel components
+  const renderPanelContent = (index) => {
+    switch (index) {
+      case 0:
+        return <UserProfile />;
+      case 1:
+        return <SecuritySettings />;
+      case 2:
+        return <NotificationSettings settings={notificationSettings} onSettingsChange={setNotificationSettings} showNotification={showNotification} />;
+      case 3:
+        return <BusinessProfileSettings showNotification={showNotification} />;
+      case 4:
+        return <BillingSettings showNotification={showNotification} />;
+      case 5:
+        return <RolesAndPermissionsSettings showNotification={showNotification} />;
+      case 6:
+        return <TaxSettings showNotification={showNotification} />;
+      case 7:
+        return <DataExportSettings showNotification={showNotification} />;
+      case 8:
+        return <IntegrationsSettings showNotification={showNotification} />;
+      default:
+        return <UserProfile />;
+    }
+  };
+
+  return (
+    <div className='min-h-screen bg-gray-50'>
+      <div className='max-w-7xl mx-auto'>
+        {/* Mobile Layout */}
+        <div className='block lg:hidden'>
+          <Tab.Group selectedIndex={activeTab} onChange={setActiveTab}>
+            {/* Mobile Tab Navigation */}
+            <div className='border-b border-gray-200'>
+              <Tab.List className='flex overflow-x-auto scrollbar-hide bg-gray-50'>
+                {tabs.map((tab, index) => (
                   <Tab
                     key={index}
                     className={({ selected }) =>
-                      `w-full text-left p-4 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
+                      `flex-shrink-0 px-4 py-3 text-sm font-medium whitespace-nowrap focus:outline-none ${
                         selected
-                          ? 'bg-blue-50 text-blue-700 border border-blue-200'
-                          : 'text-gray-700 hover:bg-gray-50 border border-transparent'
+                          ? 'text-blue-600 border-b-2 border-blue-600 bg-blue-50'
+                          : 'text-gray-500 hover:text-gray-700 hover:bg-gray-100'
                       }`
                     }
                   >
-                    <div className='flex items-start space-x-3'>
-                      <tab.icon className={`h-5 w-5 mt-0.5 ${activeTab === index ? 'text-blue-600' : 'text-gray-400'}`} />
-                      <div className='flex-1 min-w-0'>
-                        <p className={`text-sm font-medium ${activeTab === index ? 'text-blue-700' : 'text-gray-900'}`}>
-                          {tab.name}
-                        </p>
-                        <p className={`text-xs mt-1 ${activeTab === index ? 'text-blue-600' : 'text-gray-500'}`}>
-                          {tab.description}
-                        </p>
-                      </div>
+                    <div className='flex items-center space-x-2'>
+                      <tab.icon className='h-5 w-5' />
+                      <span>{tab.name}</span>
                     </div>
                   </Tab>
                 ))}
               </Tab.List>
             </div>
-          </div>
-          
-          {/* Tab Panels */}
-          <div className='flex-1'>
-            <Tab.Panels className='w-full'>
-              {/* Profile Panel */}
-              <Tab.Panel className='p-6 lg:p-8 focus:outline-none'>
-                <UserProfile />
-              </Tab.Panel>
 
-              {/* Security Panel */}
-              <Tab.Panel className='p-6 lg:p-8 focus:outline-none'>
-                <SecuritySettings />
-              </Tab.Panel>
-
-              {/* Notifications Panel */}
-              <Tab.Panel className='p-6 lg:p-8 focus:outline-none'>
-                <NotificationSettings settings={notificationSettings} onSettingsChange={setNotificationSettings} showNotification={showNotification} />
-              </Tab.Panel>
-
-              {/* Company Panel */}
-              <Tab.Panel className='p-6 lg:p-8 focus:outline-none'>
-                <BusinessProfileSettings showNotification={showNotification} />
-              </Tab.Panel>
-
-              {/* Billing Panel */}
-              <Tab.Panel className='p-6 lg:p-8 focus:outline-none'>
-                <BillingSettings showNotification={showNotification} />
-              </Tab.Panel>
-
-              {/* Roles and Permissions Panel */}
-              <Tab.Panel className='p-6 lg:p-8 focus:outline-none'>
-                <RolesAndPermissionsSettings showNotification={showNotification} />
-              </Tab.Panel>
-
-              {/* Tax Panel */}
-              <Tab.Panel className='p-6 lg:p-8 focus:outline-none'>
-                <TaxSettings showNotification={showNotification} />
-              </Tab.Panel>
-
-              {/* Data Export Panel */}
-              <Tab.Panel className='p-6 lg:p-8 focus:outline-none'>
-                <DataExportSettings showNotification={showNotification} />
-              </Tab.Panel>
-
-              {/* Integrations Panel */}
-              <Tab.Panel className='p-6 lg:p-8 focus:outline-none'>
-                <IntegrationsSettings showNotification={showNotification} />
-              </Tab.Panel>
-            </Tab.Panels>
-          </div>
+            {/* Mobile Tab Panels */}
+            <div className='p-4'>
+              <Tab.Panels>
+                {tabs.map((_, index) => (
+                  <Tab.Panel key={index} className='focus:outline-none'>
+                    {renderPanelContent(index)}
+                  </Tab.Panel>
+                ))}
+              </Tab.Panels>
+            </div>
+          </Tab.Group>
         </div>
-      </Tab.Group>
-    </div>
-  );
 
-  return (
-    <div className='min-h-screen bg-gray-50'>
-      <div className='max-w-7xl mx-auto'>
-        {renderTabsWithContent()}
+        {/* Desktop Layout */}
+        <div className='hidden lg:flex lg:min-h-screen'>
+          <Tab.Group selectedIndex={activeTab} onChange={setActiveTab}>
+            {/* Sidebar Navigation */}
+            <div className='w-80 bg-white border-r border-gray-200 flex-shrink-0'>
+              <div className='p-6'>
+                <h1 className='text-2xl font-bold text-gray-900 mb-2'>{t('title')}</h1>
+                <p className='text-gray-600 text-sm mb-8'>{t('subtitle')}</p>
+                
+                <Tab.List className='space-y-2'>
+                  {tabs.map((tab, index) => (
+                    <Tab
+                      key={index}
+                      className={({ selected }) =>
+                        `w-full text-left p-4 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
+                          selected
+                            ? 'bg-blue-50 text-blue-700 border border-blue-200'
+                            : 'text-gray-700 hover:bg-gray-50 border border-transparent'
+                        }`
+                      }
+                    >
+                      <div className='flex items-start space-x-3'>
+                        <tab.icon className={`h-5 w-5 mt-0.5 ${activeTab === index ? 'text-blue-600' : 'text-gray-400'}`} />
+                        <div className='flex-1 min-w-0'>
+                          <p className={`text-sm font-medium ${activeTab === index ? 'text-blue-700' : 'text-gray-900'}`}>
+                            {tab.name}
+                          </p>
+                          <p className={`text-xs mt-1 ${activeTab === index ? 'text-blue-600' : 'text-gray-500'}`}>
+                            {tab.description}
+                          </p>
+                        </div>
+                      </div>
+                    </Tab>
+                  ))}
+                </Tab.List>
+              </div>
+            </div>
+            
+            {/* Desktop Tab Panels */}
+            <div className='flex-1'>
+              <Tab.Panels className='w-full'>
+                {tabs.map((_, index) => (
+                  <Tab.Panel key={index} className='p-6 lg:p-8 focus:outline-none'>
+                    {renderPanelContent(index)}
+                  </Tab.Panel>
+                ))}
+              </Tab.Panels>
+            </div>
+          </Tab.Group>
+        </div>
       </div>
 
       {/* Notification */}
