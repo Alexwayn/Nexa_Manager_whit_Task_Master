@@ -1,5 +1,4 @@
 import { supabase } from './supabaseClient';
-import { executeWithClerkAuth } from './supabaseClerkClient';
 import logger from './logger';
 
 // User roles and permissions management
@@ -79,19 +78,17 @@ class SecurityService {
   // Role and permission management
   async getUserRole(userId) {
     try {
-      // Use Clerk authentication with Supabase
-      const { data, error } = await executeWithClerkAuth((supabase) =>
-        supabase
-          .from('user_roles')
-          .select(`
-            role_id,
-            roles!inner(
-              name
-            )
-          `)
-          .eq('user_id', userId)
-          .single()
-      );
+      // Temporary: Use direct supabase client (RLS disabled)
+      const { data, error } = await supabase
+        .from('user_roles')
+        .select(`
+          role_id,
+          roles!inner(
+            name
+          )
+        `)
+        .eq('user_id', userId)
+        .single();
 
       if (error) {
         if (error.code === 'PGRST116') {
@@ -199,41 +196,38 @@ class SecurityService {
 
   async getAuditLogs(filters = {}) {
     try {
-      // Use Clerk authentication with Supabase
-      const { data, error } = await executeWithClerkAuth((supabase) => {
-        let query = supabase
-          .from('security_audit_logs')
-          .select('*')
-          .order('timestamp', { ascending: false });
+      // Temporary: Use direct supabase client (RLS disabled)
+      let query = supabase
+        .from('security_audit_logs')
+        .select('*')
+        .order('timestamp', { ascending: false });
 
-        // Apply filters
-        if (filters.userId) {
-          query = query.eq('user_id', filters.userId);
-        }
+      // Apply filters
+      if (filters.userId) {
+        query = query.eq('user_id', filters.userId);
+      }
 
-        if (filters.action) {
-          query = query.eq('action', filters.action);
-        }
+      if (filters.action) {
+        query = query.eq('action', filters.action);
+      }
 
-        if (filters.severity) {
-          query = query.eq('severity', filters.severity);
-        }
+      if (filters.severity) {
+        query = query.eq('severity', filters.severity);
+      }
 
-        if (filters.startDate) {
-          query = query.gte('timestamp', filters.startDate);
-        }
+      if (filters.startDate) {
+        query = query.gte('timestamp', filters.startDate);
+      }
 
-        if (filters.endDate) {
-          query = query.lte('timestamp', filters.endDate);
-        }
+      if (filters.endDate) {
+        query = query.lte('timestamp', filters.endDate);
+      }
 
-        if (filters.limit) {
-          query = query.limit(filters.limit);
-        }
+      if (filters.limit) {
+        query = query.limit(filters.limit);
+      }
 
-        return query;
-      });
-
+      const { data, error } = await query;
       if (error) throw error;
       return data;
     } catch (error) {
@@ -453,14 +447,12 @@ class SecurityService {
   // Session management
   async getUserSessions(userId) {
     try {
-      // Use Clerk authentication with Supabase
-      const { data, error } = await executeWithClerkAuth((supabase) =>
-        supabase
-          .from('user_sessions')
-          .select('*')
-          .eq('user_id', userId)
-          .order('last_active', { ascending: false })
-      );
+      // Temporary: Use direct supabase client (RLS disabled)
+      const { data, error } = await supabase
+        .from('user_sessions')
+        .select('*')
+        .eq('user_id', userId)
+        .order('last_active', { ascending: false });
 
       if (error) throw error;
       return data || [];

@@ -1,5 +1,4 @@
 import { supabase } from '@lib/supabaseClient';
-import { executeWithClerkAuth } from '@lib/supabaseClerkClient';
 import Logger from '@utils/Logger';
 
 /**
@@ -45,12 +44,11 @@ class EmailSettingsService {
    */
   async getEmailSettings() {
     try {
-      const { data, error } = await executeWithClerkAuth((supabase) =>
-        supabase
-          .from('email_settings')
-          .select('*')
-          .single()
-      );
+      // Temporary: Use direct supabase client (RLS disabled)
+      const { data, error } = await supabase
+        .from('email_settings')
+        .select('*')
+        .single();
 
       if (error && error.code !== 'PGRST116') {
         throw error;
