@@ -17,7 +17,7 @@ import {
   XCircleIcon,
   XMarkIcon,
 } from '@heroicons/react/24/outline';
-import { UserProfile } from '@clerk/clerk-react';
+// import { UserProfile } from '@clerk/clerk-react'; // Disabled for development mode
 import { supabase } from '@lib/supabaseClient';
 import Logger from '@utils/Logger';
 import { useTranslation } from '@hooks/useTranslation';
@@ -34,7 +34,7 @@ import BackupSettings from '@components/settings/BackupSettings';
 import IntegrationsSettings from '@components/settings/IntegrationsSettings';
 import RolesAndPermissionsSettings from '@components/settings/RolesAndPermissionsSettings';
 import TaxSettings from '@components/settings/TaxSettings';
-import DataExportSettings from '@components/settings/DataExportSettings';
+import DataExportSettings from '@components/settings/DataExportSettingsFallback';
 import SimpleTabTest from '@components/test/SimpleTabTest';
 
 export default function Settings() {
@@ -115,15 +115,11 @@ export default function Settings() {
     try {
       switch (index) {
         case 0: // Profile
-          console.log('Rendering UserProfile');
+          console.log('Rendering ProfileSettings');
           try {
-            return (
-              <div>
-                <UserProfile />
-              </div>
-            );
+            return <ProfileSettings showNotification={showNotification} />;
           } catch (error) {
-            console.error('UserProfile error:', error);
+            console.error('ProfileSettings error:', error);
             return fallbackContent;
           }
         case 1: // Security
