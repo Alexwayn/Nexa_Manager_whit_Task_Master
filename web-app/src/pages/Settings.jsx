@@ -59,6 +59,8 @@ export default function Settings() {
     console.log('📝 Current tab name:', tabs[activeTab]?.name);
     console.log('📋 All tabs:', tabs.map((tab, index) => `${index}: ${tab.name}`));
     console.log('🔧 Tabs structure:', tabs);
+    console.log('📱 Window width:', window.innerWidth);
+    console.log('🖥️ Should show desktop layout:', window.innerWidth >= 768);
   }, [isSignedIn, user, activeTab]);
 
   // Debug tab changes
@@ -200,8 +202,8 @@ export default function Settings() {
   return (
     <div className='min-h-screen bg-gray-50'>
       <div className='max-w-7xl mx-auto'>
-        {/* Mobile Layout */}
-        <div className='block md:hidden'>
+        {/* Mobile Layout - TEMPORARILY HIDDEN FOR TESTING */}
+        <div className='hidden'>
           <Tab.Group selectedIndex={activeTab} onChange={handleTabChange}>
             {/* Mobile Tab Navigation */}
             <div className='border-b border-gray-200'>
@@ -239,8 +241,8 @@ export default function Settings() {
           </Tab.Group>
         </div>
 
-        {/* Desktop Layout */}
-        <div className='hidden md:flex md:min-h-screen'>
+        {/* Desktop Layout - FORCED FOR TESTING */}
+        <div className='flex min-h-screen'>
           <Tab.Group selectedIndex={activeTab} onChange={handleTabChange}>
             {/* Sidebar Navigation */}
             <div className='w-80 bg-white border-r border-gray-200 flex-shrink-0'>
