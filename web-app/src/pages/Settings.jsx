@@ -201,7 +201,7 @@ export default function Settings() {
     <div className='min-h-screen bg-gray-50'>
       <div className='max-w-7xl mx-auto'>
         {/* Mobile Layout */}
-        <div className='block lg:hidden'>
+        <div className='block md:hidden'>
           <Tab.Group selectedIndex={activeTab} onChange={handleTabChange}>
             {/* Mobile Tab Navigation */}
             <div className='border-b border-gray-200'>
@@ -240,7 +240,7 @@ export default function Settings() {
         </div>
 
         {/* Desktop Layout */}
-        <div className='hidden lg:flex lg:min-h-screen'>
+        <div className='hidden md:flex md:min-h-screen'>
           <Tab.Group selectedIndex={activeTab} onChange={handleTabChange}>
             {/* Sidebar Navigation */}
             <div className='w-80 bg-white border-r border-gray-200 flex-shrink-0'>
@@ -281,7 +281,7 @@ export default function Settings() {
             <div className='flex-1'>
               <Tab.Panels className='w-full'>
                 {tabs.map((_, index) => (
-                  <Tab.Panel key={index} className='p-6 lg:p-8 focus:outline-none'>
+                  <Tab.Panel key={index} className='p-6 md:p-8 focus:outline-none'>
                     {renderPanelContent(index)}
                   </Tab.Panel>
                 ))}
