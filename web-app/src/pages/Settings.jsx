@@ -29,13 +29,14 @@ import BillingSettings from '@components/settings/BillingSettingsFallback';
 import SecuritySettings from '@components/settings/SecuritySettingsFallback';
 import NotificationSettings from '@components/settings/NotificationSettingsFallback';
 import EmailSettings from '@components/settings/EmailSettingsFallback';
+// Using existing components (they work fine in demo mode)
 import AccessibilitySettings from '@components/settings/AccessibilitySettings';
 import BackupSettings from '@components/settings/BackupSettings';
 import IntegrationsSettings from '@components/settings/IntegrationsSettingsFallback';
 import RolesAndPermissionsSettings from '@components/settings/RolesAndPermissionsSettings';
 import TaxSettings from '@components/settings/TaxSettings';
 import DataExportSettings from '@components/settings/DataExportSettingsFallback';
-import SimpleTabTest from '@components/test/SimpleTabTest';
+// SimpleTabTest removed - using real settings tabs only
 
 export default function Settings() {
   const { t } = useTranslation('settings');
@@ -198,18 +199,6 @@ export default function Settings() {
 
   return (
     <div className='min-h-screen bg-gray-50'>
-      {/* Test semplice per debug */}
-      <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-6">
-        <div className="flex">
-          <div className="ml-3">
-            <p className="text-sm text-yellow-700">
-              🧪 <strong>Test Debug:</strong> Se i tab sotto funzionano, il problema è nella struttura Settings principale.
-            </p>
-          </div>
-        </div>
-      </div>
-      <SimpleTabTest />
-      
       <div className='max-w-7xl mx-auto'>
         {/* Mobile Layout */}
         <div className='block lg:hidden'>
