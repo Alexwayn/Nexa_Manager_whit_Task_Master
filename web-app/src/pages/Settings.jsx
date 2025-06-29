@@ -244,50 +244,52 @@ export default function Settings() {
         {/* Desktop Layout - FORCED FOR TESTING */}
         <div className='flex min-h-screen'>
           <Tab.Group selectedIndex={activeTab} onChange={handleTabChange}>
-            {/* Sidebar Navigation */}
-            <div className='w-80 bg-white border-r border-gray-200 flex-shrink-0'>
-              <div className='p-6'>
-                <h1 className='text-2xl font-bold text-gray-900 mb-2'>{t('title')}</h1>
-                <p className='text-gray-600 text-sm mb-8'>{t('subtitle')}</p>
-                
-                <Tab.List className='space-y-2'>
-                  {tabs.map((tab, index) => (
-                    <Tab
-                      key={index}
-                      className={({ selected }) =>
-                        `w-full text-left p-4 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
-                          selected
-                            ? 'bg-blue-50 text-blue-700 border border-blue-200'
-                            : 'text-gray-700 hover:bg-gray-50 border border-transparent'
-                        }`
-                      }
-                    >
-                      <div className='flex items-start space-x-3'>
-                        <tab.icon className={`h-5 w-5 mt-0.5 ${activeTab === index ? 'text-blue-600' : 'text-gray-400'}`} />
-                        <div className='flex-1 min-w-0'>
-                          <p className={`text-sm font-medium ${activeTab === index ? 'text-blue-700' : 'text-gray-900'}`}>
-                            {tab.name}
-                          </p>
-                          <p className={`text-xs mt-1 ${activeTab === index ? 'text-blue-600' : 'text-gray-500'}`}>
-                            {tab.description}
-                          </p>
+            <div className='flex w-full'>
+              {/* Sidebar Navigation */}
+              <div className='w-80 bg-white border-r border-gray-200 flex-shrink-0'>
+                <div className='p-6'>
+                  <h1 className='text-2xl font-bold text-gray-900 mb-2'>{t('title')}</h1>
+                  <p className='text-gray-600 text-sm mb-8'>{t('subtitle')}</p>
+                  
+                  <Tab.List className='space-y-2'>
+                    {tabs.map((tab, index) => (
+                      <Tab
+                        key={index}
+                        className={({ selected }) =>
+                          `w-full text-left p-4 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
+                            selected
+                              ? 'bg-blue-50 text-blue-700 border border-blue-200'
+                              : 'text-gray-700 hover:bg-gray-50 border border-transparent'
+                          }`
+                        }
+                      >
+                        <div className='flex items-start space-x-3'>
+                          <tab.icon className={`h-5 w-5 mt-0.5 ${activeTab === index ? 'text-blue-600' : 'text-gray-400'}`} />
+                          <div className='flex-1 min-w-0'>
+                            <p className={`text-sm font-medium ${activeTab === index ? 'text-blue-700' : 'text-gray-900'}`}>
+                              {tab.name}
+                            </p>
+                            <p className={`text-xs mt-1 ${activeTab === index ? 'text-blue-600' : 'text-gray-500'}`}>
+                              {tab.description}
+                            </p>
+                          </div>
                         </div>
-                      </div>
-                    </Tab>
-                  ))}
-                </Tab.List>
+                      </Tab>
+                    ))}
+                  </Tab.List>
+                </div>
               </div>
-            </div>
-            
-            {/* Desktop Tab Panels */}
-            <div className='flex-1'>
-              <Tab.Panels className='w-full'>
-                {tabs.map((_, index) => (
-                  <Tab.Panel key={index} className='p-6 md:p-8 focus:outline-none'>
-                    {renderPanelContent(index)}
-                  </Tab.Panel>
-                ))}
-              </Tab.Panels>
+              
+              {/* Desktop Tab Panels */}
+              <div className='flex-1 min-w-0'>
+                <Tab.Panels className='h-full'>
+                  {tabs.map((_, index) => (
+                    <Tab.Panel key={index} className='h-full p-6 md:p-8 focus:outline-none'>
+                      {renderPanelContent(index)}
+                    </Tab.Panel>
+                  ))}
+                </Tab.Panels>
+              </div>
             </div>
           </Tab.Group>
         </div>
