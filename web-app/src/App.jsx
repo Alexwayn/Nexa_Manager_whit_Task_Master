@@ -7,6 +7,8 @@ import { OrganizationProvider } from '@context/OrganizationContext';
 import AppRouter from '@router/AppRouter';
 import FloatingMicrophone from '@components/shared/FloatingMicrophone';
 import ErrorBoundary from '@components/common/ErrorBoundary';
+import { StagewiseToolbar } from '@stagewise/toolbar-react';
+import { ReactPlugin } from '@stagewise-plugins/react';
 
 import './index.css';
 
@@ -59,6 +61,7 @@ function App() {
     
     return (
       <ErrorBoundary>
+        <StagewiseToolbar config={{ plugins: [ReactPlugin] }} />
         <DevelopmentWrapper>
           <ThemeProvider>
             <OrganizationProvider>
@@ -83,6 +86,7 @@ function App() {
 
   return (
     <ErrorBoundary>
+      <StagewiseToolbar config={{ plugins: [ReactPlugin] }} />
       <ClerkProvider publishableKey={clerkPublishableKey}>
         <ThemeProvider>
           <OrganizationProvider>
