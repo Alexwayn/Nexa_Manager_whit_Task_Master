@@ -7,8 +7,7 @@ import { OrganizationProvider } from '@context/OrganizationContext';
 import AppRouter from '@router/AppRouter';
 import FloatingMicrophone from '@components/shared/FloatingMicrophone';
 import ErrorBoundary from '@components/common/ErrorBoundary';
-import { StagewiseToolbar } from '@stagewise/toolbar-react';
-import { ReactPlugin } from '@stagewise-plugins/react';
+import { initToolbar } from '@stagewise/toolbar';
 
 import './index.css';
 
@@ -18,6 +17,19 @@ const clerkPublishableKey = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 // Check if we're in development mode
 const isDevelopment = import.meta.env.DEV;
 const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+
+// Stagewise toolbar configuration
+const stagewiseConfig = {
+  plugins: [],
+};
+
+// Initialize stagewise toolbar (framework-agnostic approach)
+function setupStagewise() {
+  // Only initialize once and only in development mode
+  if (isDevelopment) {
+    initToolbar(stagewiseConfig);
+  }
+}
 
 // Debug logging
 console.log('🔍 App.jsx Debug Info:');
@@ -59,9 +71,11 @@ function App() {
     console.log('🚧 DEVELOPMENT MODE: Running without Clerk authentication');
     console.log('⚠️  This is for testing purposes only. Clerk authentication is bypassed.');
     
+    // Initialize stagewise toolbar
+    setupStagewise();
+    
     return (
       <ErrorBoundary>
-        <StagewiseToolbar config={{ plugins: [ReactPlugin] }} />
         <DevelopmentWrapper>
           <ThemeProvider>
             <OrganizationProvider>
@@ -84,9 +98,11 @@ function App() {
     throw new Error('Missing Clerk Publishable Key');
   }
 
+  // Initialize stagewise toolbar for production mode too (it handles dev-only internally)
+  setupStagewise();
+  
   return (
     <ErrorBoundary>
-      <StagewiseToolbar config={{ plugins: [ReactPlugin] }} />
       <ClerkProvider publishableKey={clerkPublishableKey}>
         <ThemeProvider>
           <OrganizationProvider>
