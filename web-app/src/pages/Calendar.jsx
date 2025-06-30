@@ -243,10 +243,7 @@ export default function Calendar() {
     }
   };
 
-  // Check if event is visible based on filters
-  const isEventVisible = event => {
-    return filters[event.type] || false;
-  };
+
 
   // Navigation functions for main calendar
   const handlePrev = () => {
@@ -378,9 +375,57 @@ export default function Calendar() {
     return colorMap[type] || 'bg-gray-500';
   };
 
+  // Map filter keys to event types
+  const getEventTypesForFilter = (filterKey) => {
+    const filterMap = {
+      // UI Filters -> Event Types
+      'meetings': [EVENT_TYPES.APPOINTMENT, 'meeting', 'meetings'],
+      'presentations': [EVENT_TYPES.QUOTE, 'presentation', 'presentations'],
+      'invoices': [EVENT_TYPES.INVOICE, 'invoice', 'invoices'],
+      'calls': [EVENT_TYPES.REMINDER, 'call', 'calls'],
+      'reviews': [EVENT_TYPES.INCOME, EVENT_TYPES.EXPENSE, 'review', 'reviews'],
+      
+      // Direct Event Type Filters (for compatibility)
+      'appointment': [EVENT_TYPES.APPOINTMENT],
+      'quote': [EVENT_TYPES.QUOTE],
+      'invoice': [EVENT_TYPES.INVOICE],
+      'income': [EVENT_TYPES.INCOME],
+      'expense': [EVENT_TYPES.EXPENSE],
+      'reminder': [EVENT_TYPES.REMINDER],
+    };
+    return filterMap[filterKey] || [];
+  };
+
+  // Filter events based on active filters
+  const filterEvents = (events) => {
+    // Get all active filter keys
+    const activeFilters = Object.keys(filters).filter(key => filters[key]);
+    
+    // If no filters are active, show all events
+    if (activeFilters.length === 0) {
+      return events;
+    }
+
+    // Get all event types that should be visible based on active filters
+    const visibleEventTypes = activeFilters.flatMap(filterKey => 
+      getEventTypesForFilter(filterKey)
+    );
+
+    // Filter events that match any of the visible types
+    return events.filter(event => 
+      visibleEventTypes.includes(event.type)
+    );
+  };
+
   useEffect(() => {
     loadEvents();
   }, [currentDate, user]);
+
+  // Update filtered events when filters or events change
+  useEffect(() => {
+    const filtered = filterEvents(events);
+    setFilteredEvents(filtered);
+  }, [events, filters]);
 
   // Handle saving new event
   const handleSaveEvent = async (e) => {
@@ -692,8 +737,8 @@ export default function Calendar() {
                 {/* Calendar Grid */}
                 <div className='grid grid-cols-7 gap-px bg-gray-200 rounded-lg overflow-hidden'>
                   {monthDays.map((day, index) => {
-                    const dayEvents = events.filter(
-                      event => isSameDay(new Date(event.date), day) && isEventVisible(event),
+                    const dayEvents = filteredEvents.filter(
+                      event => isSameDay(new Date(event.date), day),
                     );
 
                     return (
