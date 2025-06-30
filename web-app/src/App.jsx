@@ -24,9 +24,11 @@ const stagewiseConfig = {
 };
 
 // Initialize stagewise toolbar (framework-agnostic approach)
+let stagewiseInitialized = false;
 function setupStagewise() {
   // Only initialize once and only in development mode
-  if (isDevelopment) {
+  if (isDevelopment && !stagewiseInitialized) {
+    stagewiseInitialized = true;
     initToolbar(stagewiseConfig);
   }
 }
