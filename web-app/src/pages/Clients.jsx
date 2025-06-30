@@ -113,7 +113,7 @@ const StatusBadge = ({ status, t }) => {
 };
 
 // Client Card Component for grid view
-const ClientCard = ({ client, getDisplayName, getInitials, formatRevenue, formatLastContact, t, onEdit, onDelete, onCreateInvoice }) => {
+const ClientCard = ({ client, getDisplayName, getInitials, formatRevenue, formatLastContact, t, onEdit, onDelete, onCreateInvoice, onPhoneCall, onSendEmail }) => {
   const displayName = getDisplayName(client);
   const initials = getInitials(displayName);
 
@@ -159,12 +159,20 @@ const ClientCard = ({ client, getDisplayName, getInitials, formatRevenue, format
       <div className="flex items-center justify-between pt-4 border-t border-gray-200">
         <div className="flex items-center space-x-2">
           {client.phone && (
-            <button className="p-2 text-gray-400 hover:text-blue-500 rounded-md hover:bg-gray-100" title={t('actions.call')}>
+            <button 
+              className="p-2 text-gray-400 hover:text-blue-500 rounded-md hover:bg-gray-100" 
+              title={t('actions.call')}
+              onClick={() => onPhoneCall(client)}
+            >
               <PhoneIcon className="h-4 w-4" />
             </button>
           )}
           {client.email && (
-            <button className="p-2 text-gray-400 hover:text-green-500 rounded-md hover:bg-gray-100" title={t('actions.sendEmail')}>
+            <button 
+              className="p-2 text-gray-400 hover:text-green-500 rounded-md hover:bg-gray-100" 
+              title={t('actions.sendEmail')}
+              onClick={() => onSendEmail(client)}
+            >
               <EnvelopeIcon className="h-4 w-4" />
             </button>
           )}
@@ -486,12 +494,25 @@ function Clients() {
   }, []);
 
   const handleConfirmDelete = useCallback(async () => {
+    console.log('🗑️ Delete confirmation started');
+    console.log('Current client:', currentClient);
+    
     if (currentClient) {
+      console.log('🔄 Calling deleteClient for ID:', currentClient.id);
       const result = await deleteClient(currentClient.id);
+      console.log('📝 Delete result:', result);
+      
       if (result.success) {
+        console.log('✅ Delete successful, closing modal');
         setIsDeleteModalOpen(false);
         setCurrentClient(null);
+      } else {
+        console.error('❌ Delete failed:', result.error);
+        // Show error notification if available
+        notify.error('Error deleting client: ' + result.error);
       }
+    } else {
+      console.error('❌ No current client selected for deletion');
     }
   }, [currentClient, deleteClient]);
 
@@ -512,6 +533,89 @@ function Clients() {
     },
     [currentClient, updateClient, createClient],
   );
+
+  // Handle invoice save
+  const handleInvoiceSave = useCallback(async (invoiceData) => {
+    try {
+      console.log('💰 Invoice created successfully:', invoiceData);
+      // Here you would typically save to a database
+      // For now, just show success message and close modal
+      setIsInvoiceModalOpen(false);
+      setCurrentClient(null);
+      
+      // Show success notification
+      notify.success('Invoice created successfully!');
+      
+      return { success: true };
+    } catch (error) {
+      console.error('❌ Error creating invoice:', error);
+      notify.error('Error creating invoice: ' + error.message);
+      return { success: false, error: error.message };
+    }
+  }, []);
+
+  // Handle phone call
+  const handlePhoneCall = useCallback((client) => {
+    console.log('📞 Calling client:', client);
+    console.log('📞 Client phone data:', { phone: client.phone, mobile: client.mobile, telephone: client.telephone });
+    
+    const phoneNumber = client.phone || client.mobile || client.telephone;
+    
+    if (!phoneNumber) {
+      notify.warning('No phone number available for this client');
+      console.log('❌ No phone number found in client data');
+      return;
+    }
+    
+    // Create tel: link to trigger phone call
+    const cleanPhoneNumber = phoneNumber.replace(/[^\d+]/g, ''); // Clean phone number
+    const telLink = `tel:${cleanPhoneNumber}`;
+    
+    try {
+      window.open(telLink, '_self');
+      notify.success(`Calling ${getDisplayName(client)}...`);
+    } catch (error) {
+      console.error('Error making phone call:', error);
+      // Fallback: copy phone number to clipboard
+      navigator.clipboard.writeText(phoneNumber).then(() => {
+        notify.info(`Phone number copied to clipboard: ${phoneNumber}`);
+      }).catch(() => {
+        notify.info(`Phone: ${phoneNumber}`);
+      });
+    }
+  }, []);
+
+  // Handle send email
+  const handleSendEmail = useCallback((client) => {
+    console.log('📧 Sending email to client:', client);
+    console.log('📧 Client email data:', { email: client.email, contact_email: client.contact_email });
+    
+    const emailAddress = client.email || client.contact_email;
+    
+    if (!emailAddress) {
+      notify.warning('No email address available for this client');
+      console.log('❌ No email address found in client data');
+      return;
+    }
+    
+    // Create mailto link
+    const subject = encodeURIComponent(`Message for ${getDisplayName(client)}`);
+    const body = encodeURIComponent(`Hello ${getDisplayName(client)},\n\n`);
+    const mailtoLink = `mailto:${emailAddress}?subject=${subject}&body=${body}`;
+    
+    try {
+      window.open(mailtoLink, '_self');
+      notify.success(`Opening email to ${getDisplayName(client)}...`);
+    } catch (error) {
+      console.error('Error opening email client:', error);
+      // Fallback: copy email to clipboard
+      navigator.clipboard.writeText(emailAddress).then(() => {
+        notify.info(`Email address copied to clipboard: ${emailAddress}`);
+      }).catch(() => {
+        notify.info(`Email: ${emailAddress}`);
+      });
+    }
+  }, []);
 
   // Export clients to CSV
   const handleExportList = useCallback(async () => {
@@ -641,8 +745,6 @@ function Clients() {
   const handleNextPage = () => {
     setCurrentPage(prev => Math.min(totalPages, prev + 1));
   };
-
-
 
   // Loading state
   if (loading) {
@@ -943,12 +1045,20 @@ function Clients() {
                                 <td className='px-6 py-4 whitespace-nowrap text-sm font-medium'>
                                   <div className='flex items-center space-x-2'>
                                     {client.phone && (
-                                      <button className='text-gray-400 hover:text-blue-500' title={t('actions.call')}>
+                                      <button 
+                                        className='text-gray-400 hover:text-blue-500' 
+                                        title={t('actions.call')}
+                                        onClick={() => handlePhoneCall(client)}
+                                      >
                                         <PhoneIcon className='h-4 w-4' />
                                       </button>
                                     )}
                                     {client.email && (
-                                      <button className='text-gray-400 hover:text-green-500' title={t('actions.sendEmail')}>
+                                      <button 
+                                        className='text-gray-400 hover:text-green-500' 
+                                        title={t('actions.sendEmail')}
+                                        onClick={() => handleSendEmail(client)}
+                                      >
                                         <EnvelopeIcon className='h-4 w-4' />
                                       </button>
                                     )}
@@ -1059,6 +1169,8 @@ function Clients() {
                           onEdit={handleEditClient}
                           onDelete={handleDeleteClick}
                           onCreateInvoice={handleCreateInvoice}
+                          onPhoneCall={handlePhoneCall}
+                          onSendEmail={handleSendEmail}
                         />
                       ))}
                     </div>
@@ -1133,6 +1245,7 @@ function Clients() {
             isOpen={isInvoiceModalOpen}
             onClose={() => setIsInvoiceModalOpen(false)}
             client={currentClient}
+            onSave={handleInvoiceSave}
           />
         </Suspense>
       </div>

@@ -1,10 +1,71 @@
 import { useState, useEffect } from 'react';
 import { useAuthBypass as useAuth, useUserBypass as useUser } from '@hooks/useClerkBypass';
-import { supabase } from '@lib/supabaseClient';
+import { supabase, withUserContext } from '@lib/supabaseClient';
 // import Logger from '@utils/Logger';
 
-// Empty client list for production - ready for real clients
-const SAMPLE_CLIENTS = [];
+// Sample data for development/fallback
+const SAMPLE_CLIENTS = [
+  {
+    id: 1,
+    name: 'Alexandru Stepanenco',
+    full_name: 'Alexandru Stepanenco',
+    email: 'rinelox@gmail.com',
+    phone: '+1 (555) 123-4567',
+    industry: 'Technology',
+    status: 'active',
+    location: 'San Francisco, CA',
+    city: 'San Francisco, CA',
+    revenue: 55000,
+    last_contact: '2024-12-29',
+    created_at: '2024-01-15T10:30:00Z',
+    notes: 'Important client for technology consulting'
+  },
+  {
+    id: 2,
+    name: 'Maria Rossi',
+    full_name: 'Maria Rossi',
+    email: 'maria.rossi@example.com',
+    phone: '+39 333 456 7890',
+    industry: 'Marketing',
+    status: 'active',
+    location: 'Milano, IT',
+    city: 'Milano',
+    revenue: 32000,
+    last_contact: '2024-12-28',
+    created_at: '2024-02-10T14:20:00Z',
+    notes: 'Marketing specialist'
+  },
+  {
+    id: 3,
+    name: 'John Smith',
+    full_name: 'John Smith',
+    email: 'john.smith@company.com',
+    phone: '+1 (555) 987-6543',
+    industry: 'Finance',
+    status: 'pending',
+    location: 'New York, NY',
+    city: 'New York',
+    revenue: 78000,
+    last_contact: '2024-12-27',
+    created_at: '2024-03-05T09:15:00Z',
+    notes: 'Financial consulting services'
+  },
+  {
+    id: 4,
+    name: 'Sophie Dubois',
+    full_name: 'Sophie Dubois',
+    email: 'sophie.dubois@paris.fr',
+    phone: '+33 1 42 86 83 26',
+    industry: 'Design',
+    status: 'active',
+    location: 'Paris, FR',
+    city: 'Paris',
+    revenue: 45000,
+    last_contact: '2024-12-26',
+    created_at: '2024-04-12T16:45:00Z',
+    notes: 'Creative design agency'
+  }
+];
 
 
 export function useClients() {

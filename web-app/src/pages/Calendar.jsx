@@ -97,6 +97,7 @@ export default function Calendar() {
   const [viewMode, setViewMode] = useState('month');
   const [showEventModal, setShowEventModal] = useState(false);
   const [showEventDetails, setShowEventDetails] = useState(false);
+  const [eventModalType, setEventModalType] = useState('event'); // 'event', 'schedule', 'task', 'meeting'
 
   // Form state for new events
   const [newEvent, setNewEvent] = useState({
@@ -137,6 +138,95 @@ export default function Calendar() {
       ...prev,
       [filterKey]: !prev[filterKey],
     }));
+  };
+
+  // Functions to open specific modals
+  const openEventModal = (type = 'event') => {
+    setEventModalType(type);
+    setShowEventModal(true);
+    // Pre-fill form based on type
+    switch (type) {
+      case 'schedule':
+        setNewEvent(prev => ({
+          ...prev,
+          type: EVENT_TYPES.APPOINTMENT,
+          title: ''
+        }));
+        break;
+      case 'task':
+        setNewEvent(prev => ({
+          ...prev,
+          type: EVENT_TYPES.REMINDER,
+          title: ''
+        }));
+        break;
+      case 'meeting':
+        setNewEvent(prev => ({
+          ...prev,
+          type: EVENT_TYPES.APPOINTMENT,
+          title: ''
+        }));
+        break;
+      default:
+        // Default new event
+        break;
+    }
+  };
+
+  // Function to get modal titles based on type
+  const getModalTitle = () => {
+    switch (eventModalType) {
+      case 'schedule':
+        return t('calendar:modalTitles.scheduleAppointment');
+      case 'task':
+        return t('calendar:modalTitles.createTask');
+      case 'meeting':
+        return t('calendar:modalTitles.organizeMeeting');
+      default:
+        return t('calendar:modalTitles.createEvent');
+    }
+  };
+
+  // Function to get button text based on type
+  const getButtonText = () => {
+    switch (eventModalType) {
+      case 'schedule':
+        return t('calendar:modalButtons.schedule');
+      case 'task':
+        return t('calendar:modalButtons.createTask');
+      case 'meeting':
+        return t('calendar:modalButtons.organize');
+      default:
+        return t('calendar:modalButtons.createEvent');
+    }
+  };
+
+  // Function to get placeholder text based on type
+  const getTitlePlaceholder = () => {
+    switch (eventModalType) {
+      case 'schedule':
+        return t('calendar:modalPlaceholders.appointmentTitle');
+      case 'task':
+        return t('calendar:modalPlaceholders.taskName');
+      case 'meeting':
+        return t('calendar:modalPlaceholders.meetingTitle');
+      default:
+        return t('calendar:modalPlaceholders.eventTitle');
+    }
+  };
+
+  // Function to get title label based on type
+  const getTitleLabel = () => {
+    switch (eventModalType) {
+      case 'schedule':
+        return t('calendar:modalLabels.appointmentTitle');
+      case 'task':
+        return t('calendar:modalLabels.taskName');
+      case 'meeting':
+        return t('calendar:modalLabels.meetingTitle');
+      default:
+        return t('calendar:modalLabels.eventTitle');
+    }
   };
 
   // Check if event is visible based on filters
@@ -754,52 +844,43 @@ export default function Calendar() {
             <h3 className='font-semibold text-gray-900 mb-4'>{t('calendar:quickActions')}</h3>
             <div className='grid grid-cols-2 gap-3'>
               <button
-                onClick={() => setShowEventModal(true)}
+                onClick={() => openEventModal('event')}
                 className='group flex flex-col items-center p-4 bg-gradient-to-br from-blue-50 to-blue-100 border border-blue-200 rounded-xl hover:from-blue-100 hover:to-blue-200 hover:border-blue-300 transition-all duration-300 transform hover:scale-105 hover:shadow-lg'
               >
                 <div className='bg-blue-500 p-2 rounded-lg mb-3 group-hover:bg-blue-600 transition-colors duration-300'>
                   <Plus className='h-5 w-5 text-white' />
                 </div>
-                <span className='text-sm font-medium text-blue-700 group-hover:text-blue-800'>{t('calendar:newEvent')}</span>
+                <span className='text-sm font-medium text-blue-700 group-hover:text-blue-800'>{t('calendar:quickActionLabels.newEvent')}</span>
               </button>
 
               <button
-                onClick={() => {
-                  setShowEventModal(true);
-                  // Pre-fill with schedule type
-                }}
+                onClick={() => openEventModal('schedule')}
                 className='group flex flex-col items-center p-4 bg-gradient-to-br from-green-50 to-green-100 border border-green-200 rounded-xl hover:from-green-100 hover:to-green-200 hover:border-green-300 transition-all duration-300 transform hover:scale-105 hover:shadow-lg'
               >
                 <div className='bg-green-500 p-2 rounded-lg mb-3 group-hover:bg-green-600 transition-colors duration-300'>
                   <Clock className='h-5 w-5 text-white' />
                 </div>
-                <span className='text-sm font-medium text-green-700 group-hover:text-green-800'>{t('calendar:schedule')}</span>
+                <span className='text-sm font-medium text-green-700 group-hover:text-green-800'>{t('calendar:quickActionLabels.schedule')}</span>
               </button>
 
               <button
-                onClick={() => {
-                  setShowEventModal(true);
-                  // Pre-fill with task type
-                }}
+                onClick={() => openEventModal('task')}
                 className='group flex flex-col items-center p-4 bg-gradient-to-br from-purple-50 to-purple-100 border border-purple-200 rounded-xl hover:from-purple-100 hover:to-purple-200 hover:border-purple-300 transition-all duration-300 transform hover:scale-105 hover:shadow-lg'
               >
                 <div className='bg-purple-500 p-2 rounded-lg mb-3 group-hover:bg-purple-600 transition-colors duration-300'>
                   <CheckSquare className='h-5 w-5 text-white' />
                 </div>
-                <span className='text-sm font-medium text-purple-700 group-hover:text-purple-800'>{t('calendar:tasks')}</span>
+                <span className='text-sm font-medium text-purple-700 group-hover:text-purple-800'>{t('calendar:quickActionLabels.tasks')}</span>
               </button>
 
               <button
-                onClick={() => {
-                  setShowEventModal(true);
-                  // Pre-fill with meeting type
-                }}
+                onClick={() => openEventModal('meeting')}
                 className='group flex flex-col items-center p-4 bg-gradient-to-br from-orange-50 to-orange-100 border border-orange-200 rounded-xl hover:from-orange-100 hover:to-orange-200 hover:border-orange-300 transition-all duration-300 transform hover:scale-105 hover:shadow-lg'
               >
                 <div className='bg-orange-500 p-2 rounded-lg mb-3 group-hover:bg-orange-600 transition-colors duration-300'>
                   <Users className='h-5 w-5 text-white' />
                 </div>
-                <span className='text-sm font-medium text-orange-700 group-hover:text-orange-800'>{t('calendar:meetings')}</span>
+                <span className='text-sm font-medium text-orange-700 group-hover:text-orange-800'>{t('calendar:quickActionLabels.meetings')}</span>
               </button>
             </div>
           </div>
@@ -871,10 +952,11 @@ export default function Calendar() {
         <div className='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50'>
           <div className='bg-white rounded-xl shadow-2xl max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto'>
             <div className='flex items-center justify-between p-6 border-b border-gray-100'>
-              <h2 className='text-xl font-semibold text-gray-900'>{t('calendar:createEvent')}</h2>
+              <h2 className='text-xl font-semibold text-gray-900'>{getModalTitle()}</h2>
               <button
                 onClick={() => {
                   setShowEventModal(false);
+                  setEventModalType('event');
                   // Reset form
                   setNewEvent({
                     title: '',
@@ -898,14 +980,14 @@ export default function Calendar() {
               <form onSubmit={handleSaveEvent} className='space-y-6'>
                 <div>
                   <label className='block text-sm font-medium text-gray-700 mb-2'>
-                    Titolo Evento
+                    {getTitleLabel()}
                   </label>
                   <input
                     type='text'
                     value={newEvent.title}
                     onChange={(e) => setNewEvent({...newEvent, title: e.target.value})}
                     className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent'
-                    placeholder="Inserisci il titolo dell'evento"
+                    placeholder={getTitlePlaceholder()}
                     required
                   />
                 </div>
@@ -951,17 +1033,36 @@ export default function Calendar() {
 
                 <div>
                   <label className='block text-sm font-medium text-gray-700 mb-2'>
-                    Tipo Evento
+                    Tipo {eventModalType === 'task' ? 'Attività' : eventModalType === 'meeting' ? 'Riunione' : 'Evento'}
                   </label>
                   <select
                     value={newEvent.type}
                     onChange={(e) => setNewEvent({...newEvent, type: e.target.value})}
                     className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent'
                   >
-                    <option value={EVENT_TYPES.APPOINTMENT}>Appuntamento</option>
-                    <option value={EVENT_TYPES.QUOTE}>Preventivo</option>
-                    <option value={EVENT_TYPES.INVOICE}>Fattura</option>
-                    <option value={EVENT_TYPES.REMINDER}>Promemoria</option>
+                    {eventModalType === 'task' ? (
+                      <>
+                        <option value={EVENT_TYPES.REMINDER}>Promemoria</option>
+                        <option value={EVENT_TYPES.APPOINTMENT}>Scadenza</option>
+                      </>
+                    ) : eventModalType === 'meeting' ? (
+                      <>
+                        <option value={EVENT_TYPES.APPOINTMENT}>Riunione</option>
+                        <option value={EVENT_TYPES.QUOTE}>Presentazione</option>
+                      </>
+                    ) : eventModalType === 'schedule' ? (
+                      <>
+                        <option value={EVENT_TYPES.APPOINTMENT}>Appuntamento</option>
+                        <option value={EVENT_TYPES.QUOTE}>Consultazione</option>
+                      </>
+                    ) : (
+                      <>
+                        <option value={EVENT_TYPES.APPOINTMENT}>Appuntamento</option>
+                        <option value={EVENT_TYPES.QUOTE}>Preventivo</option>
+                        <option value={EVENT_TYPES.INVOICE}>Fattura</option>
+                        <option value={EVENT_TYPES.REMINDER}>Promemoria</option>
+                      </>
+                    )}
                   </select>
                 </div>
 
@@ -984,6 +1085,7 @@ export default function Calendar() {
               <button
                 onClick={() => {
                   setShowEventModal(false);
+                  setEventModalType('event');
                   // Reset form
                   setNewEvent({
                     title: '',
@@ -1005,7 +1107,7 @@ export default function Calendar() {
                 onClick={handleSaveEvent}
                 className='px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700'
               >
-                Crea Evento
+                {getButtonText()}
               </button>
             </div>
           </div>

@@ -133,7 +133,47 @@
     "income": "Income",
     "expense": "Expense",
     "medium": "Medium",
-    "low": "Low"
+    "low": "Low",
+    "reminder": "Reminder",
+    "deadline": "Deadline",
+    "consultation": "Consultation",
+    "presentation": "Presentation"
+  },
+  "modalTitles": {
+    "createEvent": "Create Event",
+    "scheduleAppointment": "Schedule Appointment",
+    "createTask": "Create Task",
+    "organizeMeeting": "Organize Meeting"
+  },
+  "modalButtons": {
+    "createEvent": "Create Event",
+    "schedule": "Schedule",
+    "createTask": "Create Task",
+    "organize": "Organize"
+  },
+  "modalLabels": {
+    "eventTitle": "Event Title",
+    "appointmentTitle": "Appointment Title",
+    "taskName": "Task Name",
+    "meetingTitle": "Meeting Title"
+  },
+  "modalPlaceholders": {
+    "eventTitle": "Enter the event title",
+    "appointmentTitle": "Enter the appointment title",
+    "taskName": "Enter the task name",
+    "meetingTitle": "Enter the meeting title"
+  },
+  "modalTypeLabels": {
+    "event": "Event",
+    "appointment": "Appointment",
+    "task": "Task",
+    "meeting": "Meeting"
+  },
+  "quickActionLabels": {
+    "newEvent": "New Event",
+    "schedule": "Schedule",
+    "tasks": "Tasks",
+    "meetings": "Meetings"
   },
   "clearFilters": "Clear Filters",
   "sampleData": {
