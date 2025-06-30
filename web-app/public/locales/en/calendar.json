@@ -175,6 +175,48 @@
     "tasks": "Tasks",
     "meetings": "Meetings"
   },
+  "form": {
+    "labels": {
+      "date": "Date",
+      "startTime": "Start Time",
+      "endTime": "End Time",
+      "location": "Location",
+      "type": "Type",
+      "description": "Description",
+      "typeEvent": "Event Type",
+      "typeTask": "Task Type",
+      "typeMeeting": "Meeting Type",
+      "typeSchedule": "Appointment Type"
+    },
+    "placeholders": {
+      "location": "Enter location",
+      "description": "Enter description (optional)"
+    },
+    "buttons": {
+      "cancel": "Cancel",
+      "save": "Save"
+    },
+    "options": {
+      "task": {
+        "reminder": "Reminder",
+        "deadline": "Deadline"
+      },
+      "meeting": {
+        "meeting": "Meeting",
+        "presentation": "Presentation"
+      },
+      "schedule": {
+        "appointment": "Appointment",
+        "consultation": "Consultation"
+      },
+      "event": {
+        "appointment": "Appointment",
+        "quote": "Quote",
+        "invoice": "Invoice",
+        "reminder": "Reminder"
+      }
+    }
+  },
   "clearFilters": "Clear Filters",
   "sampleData": {
     "selectedEvent": {

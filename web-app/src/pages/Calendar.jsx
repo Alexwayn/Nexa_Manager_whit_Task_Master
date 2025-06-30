@@ -229,6 +229,20 @@ export default function Calendar() {
     }
   };
 
+  // Function to get type label based on modal type
+  const getTypeLabel = () => {
+    switch (eventModalType) {
+      case 'schedule':
+        return t('calendar:form.labels.typeSchedule');
+      case 'task':
+        return t('calendar:form.labels.typeTask');
+      case 'meeting':
+        return t('calendar:form.labels.typeMeeting');
+      default:
+        return t('calendar:form.labels.typeEvent');
+    }
+  };
+
   // Check if event is visible based on filters
   const isEventVisible = event => {
     return filters[event.type] || false;
@@ -995,7 +1009,7 @@ export default function Calendar() {
                 <div className='grid grid-cols-2 gap-4'>
                   <div>
                     <label className='block text-sm font-medium text-gray-700 mb-2'>
-                      Data
+                      {t('calendar:form.labels.date')}
                     </label>
                     <input
                       type='date'
@@ -1007,7 +1021,7 @@ export default function Calendar() {
                   </div>
                   <div>
                     <label className='block text-sm font-medium text-gray-700 mb-2'>
-                      Ora Inizio
+                      {t('calendar:form.labels.startTime')}
                     </label>
                     <input
                       type='time'
@@ -1020,20 +1034,20 @@ export default function Calendar() {
 
                 <div>
                   <label className='block text-sm font-medium text-gray-700 mb-2'>
-                    Posizione
+                    {t('calendar:form.labels.location')}
                   </label>
                   <input
                     type='text'
                     value={newEvent.location}
                     onChange={(e) => setNewEvent({...newEvent, location: e.target.value})}
                     className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent'
-                    placeholder='Inserisci la posizione'
+                    placeholder={t('calendar:form.placeholders.location')}
                   />
                 </div>
 
                 <div>
                   <label className='block text-sm font-medium text-gray-700 mb-2'>
-                    Tipo {eventModalType === 'task' ? 'Attività' : eventModalType === 'meeting' ? 'Riunione' : 'Evento'}
+                    {getTypeLabel()}
                   </label>
                   <select
                     value={newEvent.type}
@@ -1042,25 +1056,25 @@ export default function Calendar() {
                   >
                     {eventModalType === 'task' ? (
                       <>
-                        <option value={EVENT_TYPES.REMINDER}>Promemoria</option>
-                        <option value={EVENT_TYPES.APPOINTMENT}>Scadenza</option>
+                        <option value={EVENT_TYPES.REMINDER}>{t('calendar:form.options.task.reminder')}</option>
+                        <option value={EVENT_TYPES.APPOINTMENT}>{t('calendar:form.options.task.deadline')}</option>
                       </>
                     ) : eventModalType === 'meeting' ? (
                       <>
-                        <option value={EVENT_TYPES.APPOINTMENT}>Riunione</option>
-                        <option value={EVENT_TYPES.QUOTE}>Presentazione</option>
+                        <option value={EVENT_TYPES.APPOINTMENT}>{t('calendar:form.options.meeting.meeting')}</option>
+                        <option value={EVENT_TYPES.QUOTE}>{t('calendar:form.options.meeting.presentation')}</option>
                       </>
                     ) : eventModalType === 'schedule' ? (
                       <>
-                        <option value={EVENT_TYPES.APPOINTMENT}>Appuntamento</option>
-                        <option value={EVENT_TYPES.QUOTE}>Consultazione</option>
+                        <option value={EVENT_TYPES.APPOINTMENT}>{t('calendar:form.options.schedule.appointment')}</option>
+                        <option value={EVENT_TYPES.QUOTE}>{t('calendar:form.options.schedule.consultation')}</option>
                       </>
                     ) : (
                       <>
-                        <option value={EVENT_TYPES.APPOINTMENT}>Appuntamento</option>
-                        <option value={EVENT_TYPES.QUOTE}>Preventivo</option>
-                        <option value={EVENT_TYPES.INVOICE}>Fattura</option>
-                        <option value={EVENT_TYPES.REMINDER}>Promemoria</option>
+                        <option value={EVENT_TYPES.APPOINTMENT}>{t('calendar:form.options.event.appointment')}</option>
+                        <option value={EVENT_TYPES.QUOTE}>{t('calendar:form.options.event.quote')}</option>
+                        <option value={EVENT_TYPES.INVOICE}>{t('calendar:form.options.event.invoice')}</option>
+                        <option value={EVENT_TYPES.REMINDER}>{t('calendar:form.options.event.reminder')}</option>
                       </>
                     )}
                   </select>
@@ -1068,14 +1082,14 @@ export default function Calendar() {
 
                 <div>
                   <label className='block text-sm font-medium text-gray-700 mb-2'>
-                    Descrizione
+                    {t('calendar:form.labels.description')}
                   </label>
                   <textarea
                     rows={4}
                     value={newEvent.description}
                     onChange={(e) => setNewEvent({...newEvent, description: e.target.value})}
                     className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent'
-                    placeholder='Inserisci una descrizione (opzionale)'
+                    placeholder={t('calendar:form.placeholders.description')}
                   />
                 </div>
               </form>
@@ -1101,7 +1115,7 @@ export default function Calendar() {
                 }}
                 className='px-4 py-2 text-gray-700 hover:text-gray-900'
               >
-                Annulla
+                {t('calendar:form.buttons.cancel')}
               </button>
               <button
                 onClick={handleSaveEvent}

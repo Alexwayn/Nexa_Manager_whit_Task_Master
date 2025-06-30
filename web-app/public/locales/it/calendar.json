@@ -175,6 +175,48 @@
     "tasks": "Attività",
     "meetings": "Riunioni"
   },
+  "form": {
+    "labels": {
+      "date": "Data",
+      "startTime": "Ora Inizio",
+      "endTime": "Ora Fine",
+      "location": "Posizione",
+      "type": "Tipo",
+      "description": "Descrizione",
+      "typeEvent": "Tipo Evento",
+      "typeTask": "Tipo Attività",
+      "typeMeeting": "Tipo Riunione",
+      "typeSchedule": "Tipo Appuntamento"
+    },
+    "placeholders": {
+      "location": "Inserisci la posizione",
+      "description": "Inserisci una descrizione (opzionale)"
+    },
+    "buttons": {
+      "cancel": "Annulla",
+      "save": "Salva"
+    },
+    "options": {
+      "task": {
+        "reminder": "Promemoria",
+        "deadline": "Scadenza"
+      },
+      "meeting": {
+        "meeting": "Riunione",
+        "presentation": "Presentazione"
+      },
+      "schedule": {
+        "appointment": "Appuntamento",
+        "consultation": "Consultazione"
+      },
+      "event": {
+        "appointment": "Appuntamento",
+        "quote": "Preventivo",
+        "invoice": "Fattura",
+        "reminder": "Promemoria"
+      }
+    }
+  },
   "clearFilters": "Pulisci Filtri",
   "sampleData": {
     "selectedEvent": {
