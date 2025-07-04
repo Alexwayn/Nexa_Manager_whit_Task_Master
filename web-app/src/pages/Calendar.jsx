@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import { useUserBypass as useUser } from '@hooks/useClerkBypass';
 import { useSupabaseWithClerk } from '@lib/supabaseClerkClient';
 import { createClient } from '@supabase/supabase-js';
@@ -62,12 +63,14 @@ import {
   CreditCardIcon,
   UserPlusIcon,
   TrashIcon,
+  HomeIcon,
 } from '@heroicons/react/24/outline';
 import nexaFooterLogo from '@assets/logo_nexa_footer.png';
 import nexaLogo from '@assets/logo_nexa.png';
 
 export default function Calendar() {
   const { t } = useTranslation(['calendar', 'common']);
+  const navigate = useNavigate();
   const { user } = useUser();
   const supabase = useSupabaseWithClerk();
 
@@ -98,6 +101,9 @@ export default function Calendar() {
   const [showEventModal, setShowEventModal] = useState(false);
   const [showEventDetails, setShowEventDetails] = useState(false);
   const [eventModalType, setEventModalType] = useState('event'); // 'event', 'schedule', 'task', 'meeting'
+  const [showDayEventsModal, setShowDayEventsModal] = useState(false);
+  const [selectedDayEvents, setSelectedDayEvents] = useState([]);
+  const [clickedDate, setClickedDate] = useState(null);
 
   // Form state for new events
   const [newEvent, setNewEvent] = useState({
@@ -137,6 +143,51 @@ export default function Calendar() {
     setFilters(prev => ({
       ...prev,
       [filterKey]: !prev[filterKey],
+    }));
+  };
+
+  // Handle day click to show events for that day
+  const handleDayClick = (day, fromMiniCalendar = false) => {
+    if (fromMiniCalendar) {
+      // When clicking from mini calendar, switch to day view and navigate to that day
+      setView('Day');
+      setSelectedDate(day);
+      setCurrentDate(day);
+    } else {
+      // When clicking from main calendar, show modal
+      const dayEvents = filteredEvents.filter(
+        event => isSameDay(new Date(event.date), day)
+      );
+      setSelectedDayEvents(dayEvents);
+      setClickedDate(day);
+      setShowDayEventsModal(true);
+    }
+  };
+
+  // Get unique event types for a specific day with their colors
+  const getEventTypesForDay = (day) => {
+    const dayEvents = filteredEvents.filter(
+      event => isSameDay(new Date(event.date), day)
+    );
+    
+    const eventTypeColors = {
+      'appointment': 'bg-blue-500',
+      'quote': 'bg-purple-500', 
+      'invoice': 'bg-green-500',
+      'income': 'bg-emerald-500',
+      'expense': 'bg-red-500',
+      'reminder': 'bg-orange-500',
+      'meetings': 'bg-blue-500',
+      'presentations': 'bg-purple-500',
+      'invoices': 'bg-green-500',
+      'calls': 'bg-orange-500',
+      'reviews': 'bg-red-500'
+    };
+    
+    const uniqueTypes = [...new Set(dayEvents.map(event => event.type))];
+    return uniqueTypes.map(type => ({
+      type,
+      color: eventTypeColors[type] || 'bg-gray-500'
     }));
   };
 
@@ -254,8 +305,11 @@ export default function Calendar() {
       newDate.setDate(newDate.getDate() - 7);
     } else if (view === 'Day') {
       newDate.setDate(newDate.getDate() - 1);
+    } else if (view === 'List') {
+      newDate.setMonth(newDate.getMonth() - 1);
     }
     setSelectedDate(newDate);
+    setCurrentDate(newDate);
   };
 
   const handleNext = () => {
@@ -266,8 +320,11 @@ export default function Calendar() {
       newDate.setDate(newDate.getDate() + 7);
     } else if (view === 'Day') {
       newDate.setDate(newDate.getDate() + 1);
+    } else if (view === 'List') {
+      newDate.setMonth(newDate.getMonth() + 1);
     }
     setSelectedDate(newDate);
+    setCurrentDate(newDate);
   };
 
   // Navigation functions for mini calendar
@@ -499,12 +556,18 @@ export default function Calendar() {
   return (
     <div className='min-h-screen bg-gray-50 flex flex-col'>
       {/* Breadcrumb */}
-      <div className='bg-blue-50 border-b border-blue-100 px-6 py-4'>
+      <nav className='bg-blue-50 border-b border-gray-200 py-2 px-4 md:px-8'>
         <div className='flex items-center justify-between'>
-          <div className='flex items-center space-x-2 text-sm'>
-            <span className='text-blue-600 font-medium'>{t('calendar:title')}</span>
-            <ChevronRight className='h-4 w-4 text-gray-400' />
-            <span className='text-gray-600'>{t('calendar:events')}</span>
+          <div className='flex items-center space-x-2 text-base'>
+            <HomeIcon className='h-5 w-5 text-blue-600' />
+            <button 
+              onClick={() => navigate('/dashboard')}
+              className='text-blue-600 hover:text-blue-700 font-medium transition-colors'
+            >
+              Dashboard
+            </button>
+            <ChevronRightIcon className='h-5 w-5 text-gray-400' />
+            <span className='text-gray-600 font-bold'>{t('calendar:title')}</span>
           </div>
           <div className='flex items-center space-x-4'>
             <div className='relative'>
@@ -512,12 +575,13 @@ export default function Calendar() {
               <input
                 type='text'
                 placeholder={t('calendar:searchPlaceholder')}
-                className='pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent'
+                className='pl-12 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 w-64 bg-white'
+                style={{ textIndent: '20px' }}
               />
             </div>
           </div>
         </div>
-      </div>
+      </nav>
 
       {/* Main Content */}
       <div className='flex flex-1 bg-gray-50'>
@@ -546,21 +610,40 @@ export default function Calendar() {
                   {day}
                 </div>
               ))}
-              {monthDays.map((day, index) => (
-                <button
-                  key={index}
-                  className={`p-2 text-sm rounded hover:bg-blue-50 ${
-                    isSameDay(day, new Date())
-                      ? 'bg-blue-500 text-white'
-                      : isSameDay(day, selectedDate)
-                        ? 'bg-blue-100 text-blue-600'
-                        : 'text-gray-700'
-                  }`}
-                  onClick={() => setSelectedDate(day)}
-                >
-                  {format(day, 'd')}
-                </button>
-              ))}
+              {monthDays.map((day, index) => {
+                const eventTypes = getEventTypesForDay(day);
+                return (
+                  <button
+                    key={index}
+                    className={`p-2 text-sm rounded hover:bg-blue-50 relative ${
+                      isSameDay(day, new Date())
+                        ? 'bg-blue-500 text-white'
+                        : isSameDay(day, selectedDate)
+                          ? 'bg-blue-100 text-blue-600'
+                          : 'text-gray-700'
+                    }`}
+                    onClick={() => {
+                      handleDayClick(day, true);
+                    }}
+                  >
+                    {format(day, 'd')}
+                    {/* Event type dots */}
+                    {eventTypes.length > 0 && (
+                      <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 flex space-x-0.5">
+                        {eventTypes.slice(0, 3).map((eventType, idx) => (
+                          <div
+                            key={idx}
+                            className={`w-1.5 h-1.5 rounded-full ${eventType.color}`}
+                          />
+                        ))}
+                        {eventTypes.length > 3 && (
+                          <div className="w-1.5 h-1.5 rounded-full bg-gray-400" />
+                        )}
+                      </div>
+                    )}
+                  </button>
+                );
+              })}
             </div>
           </div>
 
@@ -637,27 +720,7 @@ export default function Calendar() {
             </div>
           </div>
 
-          {/* Team Members */}
-          <div>
-            <h3 className='text-sm font-semibold text-gray-900 mb-3'>
-              {t('calendar:teamMembers')}
-            </h3>
-            <div className='space-y-2'>
-              {['John Doe', 'Jane Smith', 'Mike Johnson', 'Sarah Wilson'].map(member => (
-                <div key={member} className='flex items-center space-x-3'>
-                  <div className='w-6 h-6 bg-gray-300 rounded-full flex items-center justify-center'>
-                    <span className='text-xs text-gray-600'>
-                      {member
-                        .split(' ')
-                        .map(n => n[0])
-                        .join('')}
-                    </span>
-                  </div>
-                  <span className='text-sm text-gray-700'>{member}</span>
-                </div>
-              ))}
-            </div>
-          </div>
+
         </div>
 
         {/* Main Calendar Area */}
@@ -715,6 +778,7 @@ export default function Calendar() {
 
           {/* Calendar Grid */}
           <div className='bg-white'>
+            {/* Month View */}
             {view === 'Month' && (
               <div className='p-6'>
                 {/* Days Header */}
@@ -740,27 +804,49 @@ export default function Calendar() {
                     const dayEvents = filteredEvents.filter(
                       event => isSameDay(new Date(event.date), day),
                     );
+                    const eventTypes = getEventTypesForDay(day);
 
                     return (
                       <div
                         key={index}
-                        className={`bg-white p-3 min-h-[120px] ${
+                        className={`bg-white p-3 min-h-[120px] cursor-pointer hover:bg-gray-50 ${
                           !isSameMonth(day, currentDate) ? 'bg-gray-50 text-gray-400' : ''
                         }`}
+                        onClick={() => handleDayClick(day)}
                       >
-                        <div
-                          className={`text-sm font-medium mb-2 ${
-                            isSameDay(day, new Date()) ? 'text-blue-600' : 'text-gray-900'
-                          }`}
-                        >
-                          {format(day, 'd')}
+                        <div className="flex items-center justify-between mb-2">
+                          <div
+                            className={`text-sm font-medium ${
+                              isSameDay(day, new Date()) ? 'text-blue-600' : 'text-gray-900'
+                            }`}
+                          >
+                            {format(day, 'd')}
+                          </div>
+                          {/* Event type dots for main calendar */}
+                          {eventTypes.length > 0 && (
+                            <div className="flex space-x-1">
+                              {eventTypes.slice(0, 4).map((eventType, idx) => (
+                                <div
+                                  key={idx}
+                                  className={`w-2 h-2 rounded-full ${eventType.color}`}
+                                  title={eventType.type}
+                                />
+                              ))}
+                              {eventTypes.length > 4 && (
+                                <div className="w-2 h-2 rounded-full bg-gray-400" title="More types" />
+                              )}
+                            </div>
+                          )}
                         </div>
 
                         <div className='space-y-1'>
                           {dayEvents.slice(0, 3).map(event => (
                             <div
                               key={event.id}
-                              onClick={() => setSelectedEvent(event)}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setSelectedEvent(event);
+                              }}
                               className={`text-xs p-1 rounded cursor-pointer truncate ${event.color} text-white`}
                             >
                               {event.title}
@@ -775,6 +861,193 @@ export default function Calendar() {
                       </div>
                     );
                   })}
+                </div>
+              </div>
+            )}
+
+            {/* Week View */}
+            {view === 'Week' && (
+              <div className='p-6'>
+                <div className='grid grid-cols-8 gap-px bg-gray-200 rounded-lg overflow-hidden'>
+                  {/* Time column */}
+                  <div className='bg-gray-50'>
+                    <div className='p-3 text-center border-b border-gray-200'>
+                      <span className='text-sm font-medium text-gray-700'>Time</span>
+                    </div>
+                    {Array.from({ length: 24 }, (_, i) => (
+                      <div key={i} className='p-2 text-xs text-gray-500 border-b border-gray-200 h-16'>
+                        {`${i.toString().padStart(2, '0')}:00`}
+                      </div>
+                    ))}
+                  </div>
+                  
+                  {/* Week days */}
+                  {Array.from({ length: 7 }, (_, dayIndex) => {
+                    const day = new Date(selectedDate);
+                    day.setDate(day.getDate() - day.getDay() + dayIndex);
+                    const dayEvents = filteredEvents.filter(
+                      event => isSameDay(new Date(event.date), day),
+                    );
+                    
+                    return (
+                      <div key={dayIndex} className='bg-white'>
+                        <div className='p-3 text-center border-b border-gray-200'>
+                          <div className={`text-sm font-medium ${
+                            isSameDay(day, new Date()) ? 'text-blue-600' : 'text-gray-700'
+                          }`}>
+                            {format(day, 'EEE')}
+                          </div>
+                          <div className={`text-lg font-semibold ${
+                            isSameDay(day, new Date()) ? 'text-blue-600' : 'text-gray-900'
+                          }`}>
+                            {format(day, 'd')}
+                          </div>
+                        </div>
+                        <div className='relative'>
+                          {Array.from({ length: 24 }, (_, i) => (
+                            <div key={i} className='border-b border-gray-100 h-16 relative'>
+                              {dayEvents.map(event => (
+                                <div
+                                  key={event.id}
+                                  onClick={() => setSelectedEvent(event)}
+                                  className={`absolute left-1 right-1 text-xs p-1 rounded cursor-pointer truncate ${event.color} text-white m-1`}
+                                  style={{ top: '4px' }}
+                                >
+                                  {event.title}
+                                </div>
+                              ))}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
+            {/* Day View */}
+            {view === 'Day' && (
+              <div className='p-6'>
+                <div className='grid grid-cols-2 gap-4'>
+                  {/* Time column */}
+                  <div className='bg-gray-50 rounded-lg'>
+                    <div className='p-4 border-b border-gray-200'>
+                      <h3 className='text-lg font-semibold text-gray-900'>
+                        {format(selectedDate, 'EEEE, MMMM d, yyyy')}
+                      </h3>
+                    </div>
+                    {Array.from({ length: 24 }, (_, i) => (
+                      <div key={i} className='flex border-b border-gray-200'>
+                        <div className='w-20 p-2 text-xs text-gray-500'>
+                          {`${i.toString().padStart(2, '0')}:00`}
+                        </div>
+                        <div className='flex-1 p-2 min-h-[60px] relative'>
+                          {filteredEvents
+                            .filter(event => isSameDay(new Date(event.date), selectedDate))
+                            .map(event => (
+                              <div
+                                key={event.id}
+                                onClick={() => setSelectedEvent(event)}
+                                className={`text-xs p-2 rounded cursor-pointer truncate ${event.color} text-white mb-1`}
+                              >
+                                {event.title}
+                              </div>
+                            ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  
+                  {/* Events summary */}
+                  <div className='bg-white rounded-lg border border-gray-200'>
+                    <div className='p-4 border-b border-gray-200'>
+                      <h3 className='text-lg font-semibold text-gray-900'>
+                        {t('calendar:events')} ({filteredEvents.filter(event => 
+                          isSameDay(new Date(event.date), selectedDate)
+                        ).length})
+                      </h3>
+                    </div>
+                    <div className='p-4 space-y-3'>
+                      {filteredEvents
+                        .filter(event => isSameDay(new Date(event.date), selectedDate))
+                        .map(event => (
+                          <div
+                            key={event.id}
+                            onClick={() => setSelectedEvent(event)}
+                            className='p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50'
+                          >
+                            <div className='flex items-center justify-between'>
+                              <h4 className='font-medium text-gray-900'>{event.title}</h4>
+                              <span className={`px-2 py-1 rounded text-xs ${event.color} text-white`}>
+                                {event.type}
+                              </span>
+                            </div>
+                            <p className='text-sm text-gray-600 mt-1'>{event.location}</p>
+                            <p className='text-xs text-gray-500 mt-1'>{event.time}</p>
+                          </div>
+                        ))}
+                      {filteredEvents.filter(event => 
+                        isSameDay(new Date(event.date), selectedDate)
+                      ).length === 0 && (
+                        <p className='text-gray-500 text-center py-8'>
+                          {t('calendar:noEvents', 'No events for this day')}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* List View */}
+            {view === 'List' && (
+              <div className='p-6'>
+                <div className='space-y-4'>
+                  {filteredEvents.length === 0 ? (
+                    <p className='text-gray-500 text-center py-8'>
+                      {t('calendar:noEvents', 'No events found')}
+                    </p>
+                  ) : (
+                    filteredEvents.map(event => (
+                      <div
+                        key={event.id}
+                        onClick={() => setSelectedEvent(event)}
+                        className='bg-white border border-gray-200 rounded-lg p-4 cursor-pointer hover:shadow-md transition-shadow'
+                      >
+                        <div className='flex items-center justify-between'>
+                          <div className='flex-1'>
+                            <div className='flex items-center space-x-3'>
+                              <div className={`w-3 h-3 rounded-full ${event.color}`}></div>
+                              <h3 className='text-lg font-semibold text-gray-900'>{event.title}</h3>
+                              <span className={`px-2 py-1 rounded text-xs ${event.color} text-white`}>
+                                {event.type}
+                              </span>
+                            </div>
+                            <div className='mt-2 grid grid-cols-3 gap-4 text-sm text-gray-600'>
+                              <div className='flex items-center space-x-2'>
+                                <CalendarIcon className='h-4 w-4' />
+                                <span>{format(new Date(event.date), 'MMM d, yyyy')}</span>
+                              </div>
+                              <div className='flex items-center space-x-2'>
+                                <Clock className='h-4 w-4' />
+                                <span>{event.start_time} - {event.end_time}</span>
+                              </div>
+                              <div className='flex items-center space-x-2'>
+                                <MapPin className='h-4 w-4' />
+                                <span>{event.location || 'No location'}</span>
+                              </div>
+                            </div>
+                            {event.description && (
+                              <p className='mt-2 text-sm text-gray-600 line-clamp-2'>
+                                {event.description}
+                              </p>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    ))
+                  )}
                 </div>
               </div>
             )}
@@ -1167,6 +1440,104 @@ export default function Calendar() {
                 className='px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700'
               >
                 {getButtonText()}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Day Events Modal */}
+      {showDayEventsModal && (
+        <div className='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50'>
+          <div className='bg-white rounded-lg p-6 w-full max-w-md mx-4 max-h-[80vh] overflow-y-auto'>
+            <div className='flex items-center justify-between mb-4'>
+              <h2 className='text-xl font-semibold text-gray-900'>
+                {t('calendar:dayEvents.title')} - {clickedDate && format(clickedDate, 'MMMM d, yyyy')}
+              </h2>
+              <button
+                onClick={() => setShowDayEventsModal(false)}
+                className='text-gray-400 hover:text-gray-600'
+              >
+                <X className='h-6 w-6' />
+              </button>
+            </div>
+
+            {selectedDayEvents.length > 0 ? (
+              <div className='space-y-4'>
+                {/* Event Types Summary */}
+                <div className='bg-gray-50 rounded-lg p-4'>
+                  <h3 className='text-sm font-medium text-gray-700 mb-3'>
+                    {t('calendar:dayEvents.eventTypes')} ({getEventTypesForDay(clickedDate).length})
+                  </h3>
+                  <div className='flex flex-wrap gap-2'>
+                    {getEventTypesForDay(clickedDate).map((eventType, index) => (
+                      <div
+                        key={index}
+                        className='flex items-center space-x-2 bg-white px-3 py-1 rounded-full border'
+                      >
+                        <div className={`w-3 h-3 rounded-full ${eventType.color}`}></div>
+                        <span className='text-sm text-gray-700 capitalize'>
+                          {eventType.type}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Events List */}
+                <div>
+                  <h3 className='text-sm font-medium text-gray-700 mb-3'>
+                    {t('calendar:dayEvents.allEvents')} ({selectedDayEvents.length})
+                  </h3>
+                  <div className='space-y-3'>
+                    {selectedDayEvents.map(event => (
+                      <div
+                        key={event.id}
+                        className='border border-gray-200 rounded-lg p-3 hover:bg-gray-50 cursor-pointer'
+                        onClick={() => {
+                          setSelectedEvent(event);
+                          setShowDayEventsModal(false);
+                        }}
+                      >
+                        <div className='flex items-center justify-between mb-2'>
+                          <h4 className='font-medium text-gray-900'>{event.title}</h4>
+                          <span className={`px-2 py-1 rounded text-xs text-white ${event.color}`}>
+                            {event.type}
+                          </span>
+                        </div>
+                        {event.start_time && (
+                          <div className='flex items-center text-sm text-gray-600 mb-1'>
+                            <Clock className='h-4 w-4 mr-1' />
+                            {event.start_time}
+                            {event.end_time && ` - ${event.end_time}`}
+                          </div>
+                        )}
+                        {event.location && (
+                          <div className='flex items-center text-sm text-gray-600'>
+                            <MapPin className='h-4 w-4 mr-1' />
+                            {event.location}
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className='text-center py-8'>
+                <CalendarIcon className='h-12 w-12 text-gray-400 mx-auto mb-4' />
+                <p className='text-gray-500'>
+                  {t('calendar:dayEvents.noEvents')}
+                </p>
+              </div>
+            )}
+
+            <div className='flex justify-end mt-6'>
+              <button
+                onClick={() => setShowDayEventsModal(false)}
+                className='px-4 py-2 text-gray-700 hover:text-gray-900'
+              >
+                {t('calendar:form.buttons.close')}
               </button>
             </div>
           </div>

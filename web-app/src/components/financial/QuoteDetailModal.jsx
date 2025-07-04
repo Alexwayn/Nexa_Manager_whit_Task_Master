@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { FileText, Zap, Clock, PenTool, CheckCircle } from 'lucide-react';
 import { useUserBypass as useUser } from '@hooks/useClerkBypass';
 import QuoteStatusBadge from './QuoteStatusBadge';
 import QuoteApprovalActions from './QuoteApprovalActions';
@@ -94,10 +95,10 @@ const QuoteDetailModal = ({
   };
 
   const tabs = [
-    { id: 'details', label: t('quotes.tabs.details', 'Details'), icon: '📄' },
-    { id: 'actions', label: t('quotes.tabs.actions', 'Actions'), icon: '⚡' },
-    { id: 'history', label: t('quotes.tabs.history', 'History'), icon: '📝' },
-    { id: 'signature', label: t('quotes.tabs.signature', 'Signature'), icon: '✍️' }
+    { id: 'details', label: t('quotes.tabs.details', 'Details'), icon: FileText },
+    { id: 'actions', label: t('quotes.tabs.actions', 'Actions'), icon: Zap },
+    { id: 'history', label: t('quotes.tabs.history', 'History'), icon: Clock },
+    { id: 'signature', label: t('quotes.tabs.signature', 'Signature'), icon: PenTool }
   ];
 
   if (!isOpen) return null;
@@ -179,7 +180,7 @@ const QuoteDetailModal = ({
                           }
                         `}
                       >
-                        <span>{tab.icon}</span>
+                        <tab.icon className="w-4 h-4" />
                         {tab.label}
                       </button>
                     ))}
@@ -316,7 +317,7 @@ const QuoteDetailModal = ({
                           </h3>
                           <div className="bg-green-50 border border-green-200 rounded-md p-4">
                             <div className="flex items-center gap-2 mb-2">
-                              <span className="text-green-600">✅</span>
+                              <CheckCircle className="w-5 h-5 text-green-600" />
                               <span className="text-sm font-medium text-green-800">
                                 {t('quotes.signature.completed', 'Quote has been digitally signed')}
                               </span>
@@ -356,4 +357,4 @@ const QuoteDetailModal = ({
   );
 };
 
-export default QuoteDetailModal; 
+export default QuoteDetailModal;

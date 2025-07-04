@@ -358,6 +358,7 @@ const ClassicViewEnhanced = () => {
                   value={searchTerm}
                   onChange={e => setSearchTerm(e.target.value)}
                   className='flex-1 h-5 text-gray-700 bg-transparent border-none focus:border-none focus:ring-0 focus:outline-none text-xs leading-tight font-light placeholder:text-xs placeholder:font-light'
+                  style={{ textIndent: '6px' }}
                 />
                 
                 {/* Refresh Button */}

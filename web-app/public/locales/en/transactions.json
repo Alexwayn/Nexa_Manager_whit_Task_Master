@@ -5,11 +5,21 @@
     "monthly": "Monthly",
     "quarterly": "Quarterly",
     "yearly": "Yearly",
-    "june2023": "June 2023"
+    "june2023": "June 2023",
+    "week1": "Week 1",
+    "week2": "Week 2",
+    "week3": "Week 3",
+    "week4": "Week 4"
   },
   "actions": {
     "export": "Export",
-    "addTransaction": "Add Transaction"
+    "addTransaction": "Add Transaction",
+    "addIncome": "Add Income",
+    "addExpense": "Add Expense",
+    "exportIncomeData": "Export Income Data",
+    "exportExpenseData": "Export Expense Data",
+    "exportBudgetData": "Export Budget Data",
+    "viewAnalytics": "View Analytics"
   },
   "summary": {
     "totalIncome": "Total Income",
@@ -17,7 +27,9 @@
     "netProfit": "Net Profit",
     "budget": "Budget: ${{amount}}",
     "ofBudget": "{{percent}}% of budget",
-    "savingsRate": "Savings Rate"
+    "savingsRate": "Savings Rate",
+    "income": "Income",
+    "expenses": "Expenses"
   },
   "table": {
     "date": "Date",
@@ -31,7 +43,10 @@
     "category": {
       "consulting": "Consulting",
       "services": "Services",
-      "products": "Products"
+      "products": "Products",
+      "sales": "Sales",
+      "investment": "Investment",
+      "other": "Other"
     },
     "status": {
       "received": "Received"
@@ -44,7 +59,11 @@
       "utilities": "Utilities",
       "software": "Software",
       "salaries": "Salaries",
-      "marketing": "Marketing"
+      "marketing": "Marketing",
+      "operations": "Operations",
+      "travel": "Travel",
+      "equipment": "Equipment",
+      "other": "Other"
     },
     "status": {
       "paid": "Paid"
@@ -86,6 +105,145 @@
     }
   },
   "budgetPerformance": {
-    "title": "Budget Performance"
+    "title": "Budget Performance",
+    "underBudget": "Under Budget",
+    "overBudget": "Over Budget",
+    "actual": "Actual: ${{amount}}",
+    "budget": "Budget: ${{amount}}",
+    "addBudgetCategory": "Add Budget Category",
+    "addCategory": "Add Budget Category"
+  },
+  "incomeModal": {
+    "title": "Add Income Transaction",
+    "description": "Record a new income transaction",
+    "amount": "Amount",
+    "amountPlaceholder": "Enter amount",
+    "category": "Category",
+    "categoryPlaceholder": "Select category",
+    "selectCategory": "Select category",
+    "client": "Client",
+    "clientPlaceholder": "Enter client name",
+    "date": "Date",
+    "description": "Description",
+    "descriptionPlaceholder": "Enter description (optional)",
+    "cancel": "Cancel",
+    "addIncome": "Add Income",
+    "save": "Add Income"
+  },
+  "expenseModal": {
+    "title": "Add Expense Transaction",
+    "description": "Record a new expense transaction",
+    "amount": "Amount",
+    "amountPlaceholder": "Enter amount",
+    "category": "Category",
+    "categoryPlaceholder": "Select category",
+    "selectCategory": "Select category",
+    "vendor": "Vendor",
+    "vendorPlaceholder": "Enter vendor name",
+    "date": "Date",
+    "description": "Description",
+    "descriptionPlaceholder": "Enter description (optional)",
+    "cancel": "Cancel",
+    "addExpense": "Add Expense",
+    "save": "Add Expense"
+  },
+  "budgetModal": {
+      "title": "Adjust Budget Categories",
+      "description": "Manage your budget allocations and track spending",
+      "addCategory": "Add New Budget Category",
+      "cancel": "Cancel",
+      "save": "Save Changes",
+      "overBudget": "over budget",
+      "ofBudget": "of budget",
+      "remaining": "remaining",
+      "onTrack": "On track",
+      "progress": "Progress",
+      "approachingLimit": "Approaching limit",
+      "totalBudget": "Total Budget"
+    },
+  "financialReportModal": {
+    "title": "Financial Report",
+    "summary": "Summary",
+    "totalIncome": "Total Income",
+    "totalExpenses": "Total Expenses",
+    "netProfit": "Net Profit",
+    "reportOptions": "Report Options",
+    "monthlyProfitLoss": "Monthly Profit & Loss",
+    "cashFlowStatement": "Cash Flow Statement",
+    "budgetVsActual": "Budget vs Actual",
+    "taxSummary": "Tax Summary",
+    "close": "Close",
+    "generateReport": "Generate Report"
+  },
+  "forecastModal": {
+    "title": "Financial Forecast Tool",
+    "forecastPeriod": "Forecast Period",
+    "next3Months": "Next 3 Months",
+    "next6Months": "Next 6 Months",
+    "next12Months": "Next 12 Months",
+    "projectedResults": "Projected Results",
+    "projectedIncome": "Projected Income",
+    "projectedExpenses": "Projected Expenses",
+    "projectedProfit": "Projected Profit",
+    "forecastAssumptions": "Forecast Assumptions",
+    "monthlyIncomeGrowth": "Monthly Income Growth",
+    "monthlyExpenseGrowth": "Monthly Expense Growth",
+    "close": "Close",
+    "updateForecast": "Update Forecast"
+  },
+  "recurringModal": {
+    "title": "Recurring Items",
+    "name": "Name",
+    "amount": "Amount",
+    "frequency": "Frequency",
+    "nextDate": "Next Date",
+    "weekly": "Weekly",
+    "monthly": "Monthly",
+    "quarterly": "Quarterly",
+    "yearly": "Yearly",
+    "addNewItem": "Add New Recurring Item",
+    "close": "Close",
+    "saveChanges": "Save Changes"
+  },
+  "budgetInfo": {
+    "budgetPeriod": "Budget Period:",
+    "remainingDays": "Remaining Days:",
+    "june1to30": "June 1 - June 30, 2023",
+    "fifteenDays": "15 days",
+    "of": "of ${{amount}}"
+  },
+  "quickActions": {
+    "title": "Quick Actions",
+    "adjustBudget": "Adjust Budget",
+    "financialReport": "Financial Report",
+    "forecastTool": "Forecast Tool",
+    "recurringItems": "Recurring Items"
+  },
+  "upcomingTasks": {
+    "title": "Upcoming Financial Tasks",
+    "taxPayment": "Tax payment due in 5 days",
+    "monthlyReview": "Monthly financial review on Jun 30",
+    "budgetPlanning": "Budget planning for Q3 starts Jul 15"
+  },
+  "charts": {
+    "incomeVsExpenses": "Income vs Expenses",
+    "income": "Income",
+    "expenses": "Expenses",
+    "budgetProgress": "Budget Progress"
+  },
+  "budgetInfo": {
+    "budgetPeriod": "Budget Period:",
+    "june1to30": "June 1 - June 30, 2023",
+    "remainingDays": "Remaining Days:",
+    "fifteenDays": "15 days",
+    "of": "of ${{amount}}"
+  },
+  "cashFlow": {
+    "title": "Cash Flow Forecast",
+    "next90Days": "Next 90 Days",
+    "currentBalance": "Current Balance:",
+    "projected": "Projected (Aug 30):",
+    "currentBalanceAmount": "$32,500",
+    "projectedAmount": "$39,500"
   }
 }

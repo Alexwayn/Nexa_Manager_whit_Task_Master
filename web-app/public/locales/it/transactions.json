@@ -5,19 +5,31 @@
     "monthly": "Mensile",
     "quarterly": "Trimestrale",
     "yearly": "Annuale",
-    "june2023": "Giugno 2023"
+    "june2023": "Giugno 2023",
+    "week1": "Settimana 1",
+    "week2": "Settimana 2",
+    "week3": "Settimana 3",
+    "week4": "Settimana 4"
   },
   "actions": {
     "export": "Esporta",
-    "addTransaction": "Aggiungi Transazione"
+    "addTransaction": "Aggiungi Transazione",
+    "addIncome": "Aggiungi Entrata",
+    "addExpense": "Aggiungi Uscita",
+    "exportIncomeData": "Esporta Dati Entrate",
+    "exportExpenseData": "Esporta Dati Uscite",
+    "exportBudgetData": "Esporta Dati Budget",
+    "viewAnalytics": "Visualizza Analisi"
   },
   "summary": {
     "totalIncome": "Entrate Totali",
     "totalExpenses": "Uscite Totali",
     "netProfit": "Utile Netto",
-    "budget": "Budget: ${{amount}}",
+    "budget": "Budget: €{{amount}}",
     "ofBudget": "{{percent}}% del budget",
-    "savingsRate": "Tasso di Risparmio"
+    "savingsRate": "Tasso di Risparmio",
+    "income": "Entrate",
+    "expenses": "Uscite"
   },
   "table": {
     "date": "Data",
@@ -31,7 +43,10 @@
     "category": {
       "consulting": "Consulenza",
       "services": "Servizi",
-      "products": "Prodotti"
+      "products": "Prodotti",
+      "sales": "Vendite",
+      "investment": "Investimenti",
+      "other": "Altro"
     },
     "status": {
       "received": "Ricevuto"
@@ -44,7 +59,11 @@
       "utilities": "Utenze",
       "software": "Software",
       "salaries": "Stipendi",
-      "marketing": "Marketing"
+      "marketing": "Marketing",
+      "operations": "Operazioni",
+      "travel": "Viaggi",
+      "equipment": "Attrezzature",
+      "other": "Altro"
     },
     "status": {
       "paid": "Pagato"
@@ -86,6 +105,137 @@
     }
   },
   "budgetPerformance": {
-    "title": "Performance del Budget"
+    "title": "Performance del Budget",
+    "underBudget": "Sotto Budget",
+    "overBudget": "Sopra Budget",
+    "actualAmount": "Effettivo: €",
+    "budgetAmount": "Budget: €",
+    "addCategory": "Aggiungi Categoria Budget"
+  },
+  "incomeModal": {
+    "title": "Aggiungi Transazione di Entrata",
+    "description": "Registra una nuova transazione di entrata",
+    "amount": "Importo",
+    "amountPlaceholder": "Inserisci importo",
+    "category": "Categoria",
+    "categoryPlaceholder": "Seleziona categoria",
+    "selectCategory": "Seleziona categoria",
+    "client": "Cliente",
+    "clientPlaceholder": "Inserisci nome cliente",
+    "date": "Data",
+    "description": "Descrizione",
+    "descriptionPlaceholder": "Inserisci descrizione (opzionale)",
+    "cancel": "Annulla",
+    "addIncome": "Aggiungi Entrata",
+    "save": "Aggiungi Entrata"
+  },
+  "expenseModal": {
+    "title": "Aggiungi Transazione di Uscita",
+    "description": "Registra una nuova transazione di uscita",
+    "amount": "Importo",
+    "amountPlaceholder": "Inserisci importo",
+    "category": "Categoria",
+    "categoryPlaceholder": "Seleziona categoria",
+    "selectCategory": "Seleziona categoria",
+    "vendor": "Fornitore",
+    "vendorPlaceholder": "Inserisci nome fornitore",
+    "date": "Data",
+    "description": "Descrizione",
+    "descriptionPlaceholder": "Inserisci descrizione (opzionale)",
+    "cancel": "Annulla",
+    "addExpense": "Aggiungi Uscita",
+    "save": "Aggiungi Uscita"
+  },
+  "budgetModal": {
+      "title": "Regola Categorie Budget",
+      "description": "Gestisci le tue allocazioni di budget e monitora le spese",
+      "addCategory": "Aggiungi Nuova Categoria Budget",
+      "cancel": "Annulla",
+      "save": "Salva Modifiche",
+      "overBudget": "oltre il budget",
+      "ofBudget": "del budget",
+      "remaining": "rimanenti",
+      "onTrack": "In linea",
+      "progress": "Progresso",
+      "approachingLimit": "Avvicinandosi al limite",
+      "totalBudget": "Budget Totale"
+    },
+  "financialReportModal": {
+    "title": "Report Finanziario",
+    "summary": "Riepilogo",
+    "totalIncome": "Entrate Totali",
+    "totalExpenses": "Uscite Totali",
+    "netProfit": "Utile Netto",
+    "reportOptions": "Opzioni Report",
+    "monthlyProfitLoss": "Profitti e Perdite Mensili",
+    "cashFlowStatement": "Rendiconto Flussi di Cassa",
+    "budgetVsActual": "Budget vs Effettivo",
+    "taxSummary": "Riepilogo Fiscale",
+    "close": "Chiudi",
+    "generateReport": "Genera Report"
+  },
+  "forecastModal": {
+    "title": "Strumento di Previsione",
+    "forecastPeriod": "Periodo di Previsione",
+    "next3Months": "Prossimi 3 Mesi",
+    "next6Months": "Prossimi 6 Mesi",
+    "next12Months": "Prossimi 12 Mesi",
+    "projectedResults": "Risultati Previsti",
+    "projectedIncome": "Entrate Previste",
+    "projectedExpenses": "Uscite Previste",
+    "projectedProfit": "Utile Previsto",
+    "forecastAssumptions": "Ipotesi di Previsione",
+    "monthlyIncomeGrowth": "Crescita Entrate Mensili",
+    "monthlyExpenseGrowth": "Crescita Uscite Mensili",
+    "close": "Chiudi",
+    "updateForecast": "Aggiorna Previsione"
+  },
+  "recurringModal": {
+    "title": "Elementi Ricorrenti",
+    "name": "Nome",
+    "amount": "Importo",
+    "frequency": "Frequenza",
+    "nextDate": "Prossima Data",
+    "weekly": "Settimanale",
+    "monthly": "Mensile",
+    "quarterly": "Trimestrale",
+    "yearly": "Annuale",
+    "addNewItem": "Aggiungi Nuovo Elemento Ricorrente",
+    "close": "Chiudi",
+    "saveChanges": "Salva Modifiche"
+  },
+  "charts": {
+    "incomeVsExpenses": "Entrate vs Uscite",
+    "income": "Entrate",
+    "expenses": "Uscite",
+    "budgetProgress": "Progresso Budget"
+  },
+  "quickActions": {
+    "title": "Azioni Rapide",
+    "adjustBudget": "Modifica Budget",
+    "financialReport": "Report Finanziario",
+    "forecastTool": "Strumento di Previsione",
+    "recurringItems": "Elementi Ricorrenti"
+  },
+  "upcomingTasks": {
+    "title": "Prossime Attività Finanziarie",
+    "taxPayment": "Pagamento tasse in scadenza tra 5 giorni",
+    "monthlyReview": "Revisione finanziaria mensile il 30 Giu",
+    "budgetPlanning": "Pianificazione budget per Q3 inizia il 15 Lug"
+  },
+  "budgetInfo": {
+    "budgetPeriod": "Periodo di Budget:",
+    "june1to30": "1 Giugno - 30 Giugno, 2023",
+    "remainingDays": "Giorni Rimanenti:",
+    "fifteenDays": "15 giorni",
+    "of": "di ${{amount}}"
+  },
+  "cashFlow": {
+    "title": "Previsione del Flusso di Cassa",
+    "next90Days": "Prossimi 90 Giorni",
+    "currentBalance": "Saldo Attuale:",
+    "projected": "Previsto (30 Ago):",
+    "currentBalanceAmount": "€32.500",
+    "projectedAmount": "€39.500"
   }
 }

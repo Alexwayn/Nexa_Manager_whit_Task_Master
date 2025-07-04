@@ -7,6 +7,8 @@ import ClientService from '@lib/clientService';
 import Logger from '@utils/Logger';
 import { getUserIdForUuidTables } from '@utils/userIdConverter';
 
+
+
 /**
  * InvoiceForm Component
  * Comprehensive form for creating and editing invoices with the same design as QuoteForm
@@ -491,47 +493,32 @@ const InvoiceForm = ({
         </div>
 
         {/* Dates Row */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Issue Date */}
+        <div className='grid grid-cols-1 md:grid-cols-2 gap-6 mb-6'>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              {t('form.issueDate')} <span className="text-red-500">*</span>
-            </label>
+            <label htmlFor='issue_date' className='block text-sm font-medium text-gray-700 mb-1 required'>{t('form.issue_date')}</label>
             <div className="relative">
               <input
                 type="date"
+                id="issue_date"
                 value={formData.issue_date}
                 onChange={(e) => handleInputChange('issue_date', e.target.value)}
-                className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
-                  validationErrors.issue_date ? 'border-red-500' : 'border-gray-300'
-                }`}
+                className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${validationErrors.issue_date ? 'border-red-500' : 'border-gray-300'}`}
+                required
               />
-              <Calendar className="absolute right-3 top-2.5 w-5 h-5 text-gray-400 pointer-events-none" />
             </div>
-            {validationErrors.issue_date && (
-              <p className="text-red-500 text-sm mt-1">{validationErrors.issue_date}</p>
-            )}
+            {validationErrors.issue_date && <p className="text-red-500 text-xs mt-1">{validationErrors.issue_date}</p>}
           </div>
-
-          {/* Due Date */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              {t('form.dueDate')} <span className="text-red-500">*</span>
-            </label>
+            <label htmlFor='due_date' className='block text-sm font-medium text-gray-700 mb-1'>{t('form.due_date')}</label>
             <div className="relative">
               <input
                 type="date"
+                id="due_date"
                 value={formData.due_date}
                 onChange={(e) => handleInputChange('due_date', e.target.value)}
-                className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
-                  validationErrors.due_date ? 'border-red-500' : 'border-gray-300'
-                }`}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               />
-              <Calendar className="absolute right-3 top-2.5 w-5 h-5 text-gray-400 pointer-events-none" />
             </div>
-            {validationErrors.due_date && (
-              <p className="text-red-500 text-sm mt-1">{validationErrors.due_date}</p>
-            )}
           </div>
         </div>
 
@@ -553,7 +540,7 @@ const InvoiceForm = ({
             {formData.items.map((item, index) => (
               <div key={item.id} className="grid grid-cols-12 gap-4 items-end p-4 bg-gray-50 rounded-lg">
                 {/* Description */}
-                <div className="col-span-5">
+                <div className="col-span-6">
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     {t('form.itemDescription')}
                   </label>
@@ -616,12 +603,12 @@ const InvoiceForm = ({
                 </div>
 
                 {/* Remove Button */}
-                <div className="col-span-1">
+                <div className="col-span-12 mt-2 flex justify-end">
                   <button
                     type="button"
                     onClick={() => removeItem(item.id)}
                     disabled={formData.items.length === 1}
-                    className="w-full p-2 text-red-600 hover:bg-red-50 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="p-2 text-red-600 hover:bg-red-50 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     <Trash2 className="w-4 h-4" />
                   </button>
@@ -630,28 +617,75 @@ const InvoiceForm = ({
             ))}
           </div>
 
-          {/* Totals Summary */}
-          <div className="mt-6 border-t pt-4">
-            <div className="flex justify-end">
-              <div className="w-64 space-y-2">
-                <div className="flex justify-between">
-                  <span className="text-gray-600">{t('form.subtotal')}:</span>
-                  <span className="font-medium">€{formData.subtotal.toFixed(2)}</span>
+          {/* Financial Summary */}
+          <div className="bg-gray-50 rounded-lg p-4 mt-6">
+            <h3 className="text-lg font-medium text-gray-900 mb-4">{t('form.financialSummary', 'Financial Summary')}</h3>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  {t('form.globalDiscount', 'Global Discount')} (%)
+                </label>
+                <input
+                  type="number"
+                  value={formData.discount_percentage}
+                  onChange={(e) => setFormData(prev => ({ ...prev, discount_percentage: parseFloat(e.target.value) || 0 }))}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  min="0"
+                  max="100"
+                  step="0.01"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  {t('form.taxRate', 'Aliquota IVA')} (%)
+                </label>
+                <input
+                  type="number"
+                  value={formData.tax_rate}
+                  onChange={(e) => setFormData(prev => ({ ...prev, tax_rate: parseFloat(e.target.value) || 0 }))}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  min="0"
+                  max="100"
+                  step="0.01"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  {t('form.currency', 'Currency')}
+                </label>
+                <select
+                  value={formData.currency}
+                  onChange={(e) => setFormData(prev => ({ ...prev, currency: e.target.value }))}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                >
+                  <option value="EUR">EUR (€)</option>
+                  <option value="USD">USD ($)</option>
+                  <option value="GBP">GBP (£)</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="border-t border-gray-200 pt-4 space-y-2">
+              <div className="flex justify-between text-sm">
+                <span className="text-gray-600">{t('form.subtotal')}:</span>
+                <span className="font-medium">{formData.currency} {formData.subtotal.toFixed(2)}</span>
+              </div>
+              {formData.discount_percentage > 0 && (
+                <div className="flex justify-between text-sm">
+                  <span className="text-gray-600">{t('form.discount')} ({formData.discount_percentage}%):</span>
+                  <span className="font-medium">-{formData.currency} {formData.discount_amount.toFixed(2)}</span>
                 </div>
-                {formData.discount_percentage > 0 && (
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">{t('form.discount')} ({formData.discount_percentage}%):</span>
-                    <span className="font-medium">-€{formData.discount_amount.toFixed(2)}</span>
-                  </div>
-                )}
-                <div className="flex justify-between">
-                  <span className="text-gray-600">{t('form.tax')} ({formData.tax_rate}%):</span>
-                  <span className="font-medium">€{formData.tax_amount.toFixed(2)}</span>
-                </div>
-                <div className="flex justify-between border-t pt-2">
-                  <span className="text-lg font-semibold">{t('form.grandTotal')}:</span>
-                  <span className="text-lg font-bold">€{formData.total_amount.toFixed(2)}</span>
-                </div>
+              )}
+              <div className="flex justify-between text-sm">
+                <span className="text-gray-600">{t('form.tax')}:</span>
+                <span className="font-medium">{formData.currency} {formData.tax_amount.toFixed(2)}</span>
+              </div>
+              <div className="flex justify-between text-lg font-semibold text-gray-900 border-t border-gray-200 pt-2">
+                <span>{t('form.total')}:</span>
+                <span>{formData.currency} {formData.total_amount.toFixed(2)}</span>
               </div>
             </div>
           </div>

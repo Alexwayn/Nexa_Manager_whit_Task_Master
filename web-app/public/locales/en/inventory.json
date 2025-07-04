@@ -91,5 +91,601 @@
   "emptyState": {
     "title": "No products found",
     "message": "Try adjusting your search or filters to find what you're looking for."
+  },
+  "sidebar": {
+    "stockWarnings": "Stock Warnings",
+    "viewAll": "View All",
+    "inStock": "{{count}} in stock",
+    "min": "Min: {{count}}",
+    "reorder": "Reorder"
+  },
+  "search": {
+    "placeholder": "Search products..."
+  },
+  "sort": {
+    "label": "Sort by:",
+    "nameAZ": "Name (A-Z)",
+    "nameZA": "Name (Z-A)",
+    "stockLow": "Stock (Low to High)",
+    "stockHigh": "Stock (High to Low)",
+    "priceLow": "Price (Low to High)",
+    "priceHigh": "Price (High to Low)"
+  },
+  "activities": {
+    "recentActivities": "Recent Activities",
+    "viewAll": "View All",
+    "stockAdjustment": "Stock Adjustment",
+    "newItemAdded": "New Item Added",
+    "itemReordered": "Item Reordered",
+    "minutesAgo": "{{count}} minutes ago",
+    "hoursAgo": "{{count}} hours ago",
+    "yesterday": "Yesterday"
+  },
+  "quickActions": {
+    "title": "Quick Actions",
+    "addNewItem": "Add New Item",
+    "manageCategories": "Manage Categories",
+    "exportInventory": "Export Inventory",
+    "stockAlerts": "Stock Alerts"
+  },
+  "categories": {
+    "inventoryByCategory": "Inventory by Category",
+    "furniture": "Furniture",
+    "electronics": "Electronics",
+    "supplies": "Supplies",
+    "accessories": "Accessories",
+    "other": "Other",
+    "clothing": "Clothing",
+    "books": "Books",
+    "homeGarden": "Home & Garden",
+    "sports": "Sports",
+    "automotive": "Automotive",
+    "healthBeauty": "Health & Beauty",
+    "toysGames": "Toys & Games",
+    "descriptions": {
+      "electronics": "Electronic devices and accessories",
+      "clothing": "Apparel and fashion items",
+      "books": "Books and educational materials",
+      "homeGarden": "Home improvement and garden supplies",
+      "sports": "Sports equipment and accessories",
+      "automotive": "Car parts and automotive supplies",
+      "healthBeauty": "Health and beauty products",
+      "toysGames": "Toys and gaming products"
+    }
+  },
+  "valueTrend": {
+    "title": "Inventory Value Trend",
+    "currentValue": "Current inventory value"
+  },
+  "filters": {
+    "title": "Filters",
+    "category": "All Categories",
+    "location": "All Locations",
+    "stockStatus": "All Stock Status",
+    "clearFilters": "Clear Filters"
+  },
+  "pagination": {
+    "showing": "Showing",
+    "to": "to",
+    "of": "of",
+    "results": "results",
+    "previous": "Previous",
+    "next": "Next",
+    "page": "Page"
+  },
+  "reports": {
+    "title": "Generate Reports",
+    "selectType": "Select Report Type",
+    "options": "Report Options",
+    "dateRange": "Date Range",
+    "filters": "Filters",
+    "preview": "Report Preview",
+    "generate": "Generate Report",
+    "types": {
+      "inventorySummary": {
+        "name": "Inventory Summary",
+        "description": "Complete overview of all inventory items"
+      },
+      "stockLevels": {
+        "name": "Stock Levels Report",
+        "description": "Current stock levels and alerts"
+      },
+      "lowStock": {
+        "name": "Low Stock Report",
+        "description": "Items below minimum stock levels"
+      },
+      "inventoryValuation": {
+        "name": "Inventory Valuation",
+        "description": "Total value of inventory by category"
+      },
+      "movementHistory": {
+        "name": "Movement History",
+        "description": "Stock movements over time"
+      },
+      "supplierAnalysis": {
+        "name": "Supplier Analysis",
+        "description": "Performance analysis by supplier"
+      }
+    },
+    "filters": {
+      "label": "Filters",
+      "allCategories": "All Categories",
+      "electronics": "Electronics",
+      "furniture": "Furniture",
+      "officeSupplies": "Office Supplies",
+      "officesupplies": "Office Supplies",
+      "allLocations": "All Locations",
+      "warehouseA": "Warehouse A",
+      "warehousea": "Warehouse A",
+      "warehouseB": "Warehouse B",
+      "warehouseb": "Warehouse B",
+      "storeFront": "Store Front",
+      "storefront": "Store Front",
+      "allStockLevels": "All Stock Levels",
+      "inStock": "In Stock",
+      "instock": "In Stock",
+      "lowStock": "Low Stock",
+      "lowstock": "Low Stock",
+      "outOfStock": "Out of Stock",
+      "outofstock": "Out of Stock",
+      "category": "Category",
+      "location": "Location",
+      "supplier": "Supplier",
+      "stockLevel": "Stock Level"
+     },
+      "preview": {
+      "title": "Report Preview",
+      "type": "Type",
+      "period": "Period",
+      "present": "Present",
+      "category": "Category",
+      "location": "Location",
+      "stockLevel": "Stock Level"
+    },
+    "messages": {
+      "generating": "Generating report...",
+      "generated": "Report generated successfully!",
+      "completed": "Report generated successfully!",
+      "failed": "Failed to generate report. Please try again.",
+      "noData": "No data available for the selected criteria."
+    },
+    "movementHistory": {
+      "title": "Movement History",
+      "description": "Track inventory movements over time",
+      "dateRange": "Date Range",
+      "movementType": "Movement Type",
+      "allMovements": "All Movements",
+      "stockIn": "Stock In",
+      "stockOut": "Stock Out",
+      "adjustments": "Adjustments",
+      "transfers": "Transfers"
+    },
+    "supplierAnalysis": {
+      "title": "Supplier Analysis",
+      "description": "Analyze supplier performance and costs",
+      "topSuppliers": "Top Suppliers",
+      "supplierPerformance": "Supplier Performance",
+      "costAnalysis": "Cost Analysis",
+      "deliveryTimes": "Delivery Times",
+      "qualityRatings": "Quality Ratings"
+    }
+  },
+  "modals": {
+    "addItem": {
+      "title": "Add New Item",
+      "name": "Item Name",
+      "category": "Category",
+      "location": "Location",
+      "stock": "Stock Quantity",
+      "price": "Price",
+      "supplier": "Supplier",
+      "description": "Description",
+      "sku": "SKU",
+      "minStock": "Minimum Stock Level",
+      "save": "Save Item",
+      "cancel": "Cancel",
+      "required": "This field is required",
+      "success": "Item added successfully!",
+      "error": "Failed to add item. Please try again.",
+      "fields": {
+        "name": "Item Name",
+        "sku": "SKU",
+        "category": "Category",
+        "location": "Location",
+        "stock": "Stock Quantity",
+        "minStock": "Minimum Stock Level",
+        "price": "Price",
+        "supplier": "Supplier",
+        "description": "Description",
+        "image": "Product Image"
+      },
+      "placeholders": {
+        "name": "Enter item name...",
+        "sku": "Enter SKU code...",
+        "category": "Select category...",
+        "location": "Select location...",
+        "stock": "Enter current stock...",
+        "minStock": "Enter minimum stock level...",
+        "price": "Enter price...",
+        "supplier": "Enter supplier name...",
+        "description": "Enter item description..."
+      },
+      "imageUpload": {
+        "uploadFile": "Upload a file",
+        "dragDrop": "or drag and drop",
+        "fileTypes": "PNG, JPG, GIF up to 10MB",
+        "selected": "Selected: {{fileName}}"
+      },
+      "buttons": {
+        "cancel": "Cancel",
+        "add": "Add Item",
+        "adding": "Adding..."
+      },
+      "errors": {
+        "nameRequired": "Product name is required",
+        "skuRequired": "SKU is required",
+        "categoryRequired": "Category is required",
+        "locationRequired": "Location is required",
+        "stockRequired": "Stock quantity is required",
+        "minStockRequired": "Minimum stock is required",
+        "priceRequired": "Price is required",
+        "supplierRequired": "Supplier is required"
+      }
+    },
+    "manageCategories": {
+      "title": "Manage Categories",
+      "addNew": "Add New Category",
+      "categoryName": "Category Name",
+      "description": "Description",
+      "save": "Save",
+      "cancel": "Cancel",
+      "delete": "Delete",
+      "edit": "Edit",
+      "confirmDelete": "Are you sure you want to delete this category?",
+      "success": "Category saved successfully!",
+      "deleteSuccess": "Category deleted successfully!",
+      "error": "Failed to save category. Please try again."
+    },
+    "exportInventory": {
+      "title": "Export Inventory",
+      "format": "Export Format",
+      "csv": "CSV",
+      "excel": "Excel",
+      "pdf": "PDF",
+      "includeImages": "Include Images",
+      "dateRange": "Date Range",
+      "allTime": "All Time",
+      "lastMonth": "Last Month",
+      "lastQuarter": "Last Quarter",
+      "export": "Export",
+      "cancel": "Cancel",
+      "success": "Export completed successfully!",
+      "error": "Export failed. Please try again.",
+      "fields": {
+        "format": "Export Format",
+        "formatDesc": "Choose the format for your exported data",
+        "fieldsToExport": "Fields to Export",
+        "fieldsDesc": "Select which fields to include in your export"
+      },
+      "formats": {
+        "csv": {
+          "name": "CSV",
+          "description": "Comma-separated values, compatible with Excel and other spreadsheet applications"
+        },
+        "excel": {
+          "name": "Excel",
+          "description": "Microsoft Excel format with formatting and formulas"
+        },
+        "pdf": {
+          "name": "PDF",
+          "description": "Portable document format, ideal for reports and printing"
+        },
+        "json": {
+          "name": "JSON",
+          "description": "JavaScript Object Notation, perfect for data integration"
+        }
+      },
+      "dataFilters": {
+        "title": "Data Filters",
+        "description": "Filter which data to include in the export",
+        "category": "Category",
+        "allCategories": "All Categories",
+        "stockLevel": "Stock Level",
+        "allStockLevels": "All Stock Levels",
+        "outOfStock": "Out of Stock",
+        "lowStock": "Low Stock",
+        "normalStock": "Normal Stock",
+        "location": "Location",
+        "allLocations": "All Locations",
+        "dateRange": "Date Range",
+        "allTime": "All Time",
+        "today": "Today",
+        "thisWeek": "This Week",
+        "thisMonth": "This Month",
+        "thisQuarter": "This Quarter",
+        "thisYear": "This Year"
+      },
+      "fieldSelection": {
+        "selectAll": "Select All",
+        "deselectAll": "Deselect All"
+      },
+      "availableFields": {
+        "name": "Name",
+        "sku": "SKU",
+        "category": "Category",
+        "stock": "Stock",
+        "minStock": "Min Stock",
+        "price": "Price",
+        "location": "Location",
+        "supplier": "Supplier",
+        "lastUpdated": "Last Updated",
+        "description": "Description",
+        "image": "Image"
+      },
+      "exportPreview": {
+        "title": "Export Preview",
+        "recordsToExport": "Records to Export",
+        "fieldsSelected": "Fields Selected",
+        "format": "Format",
+        "estimatedSize": "Estimated Size"
+      },
+      "buttons": {
+        "exportData": "Export Data",
+        "exporting": "Exporting..."
+      },
+      "messages": {
+        "exportCompleted": "Export completed!\n\nFile: {{fileName}}\nFormat: {{formatName}}\nRecords: {{recordCount}}\nFields: {{fieldCount}}",
+        "exportFailed": "Export failed. Please try again."
+      },
+      "filters": {
+        "category": "Category Filter",
+        "location": "Location Filter",
+        "stockStatus": "Stock Status Filter",
+        "all": "All",
+        "inStock": "In Stock",
+        "lowStock": "Low Stock",
+        "outOfStock": "Out of Stock"
+      }
+    },
+      "manageCategories": {
+        "title": "Manage Categories",
+        "forms": {
+          "addTitle": "Add New Category"
+        },
+        "fields": {
+          "name": "Category Name",
+          "description": "Description"
+        },
+        "placeholders": {
+          "name": "Enter category name",
+          "description": "Enter description (optional)"
+        },
+        "buttons": {
+          "addNew": "Add New Category",
+          "cancel": "Cancel",
+          "add": "Add Category",
+          "saveChanges": "Save Changes",
+          "save": "Save Changes"
+        },
+        "errors": {
+          "nameRequired": "Category name is required",
+          "nameExists": "Category already exists"
+        },
+        "messages": {
+          "cannotDelete": "Cannot delete \"{{name}}\" because it contains {{count}} items. Please move or delete the items first.",
+          "confirmDelete": "Are you sure you want to delete the category \"{{name}}\"?"
+        },
+        "itemCount": {
+          "singular": "item",
+          "plural": "items"
+        },
+        "tooltips": {
+          "edit": "Edit category",
+          "delete": "Delete category"
+        }
+      },
+      "stockAlerts": {
+      "title": "Stock Alerts ({{count}} items need attention)",
+      "lowStockItems": "Low Stock Items",
+      "outOfStockItems": "Out of Stock Items",
+      "criticalStockItems": "Critical Stock Items",
+      "reorderSuggestions": "Reorder Suggestions",
+      "item": "Item",
+      "currentStock": "Current Stock",
+      "minStock": "Min Stock",
+      "suggestedOrder": "Suggested Order",
+      "reorder": "Reorder",
+      "dismiss": "Dismiss",
+      "close": "Close",
+      "noAlerts": "No stock alerts at this time",
+      "noAlertsMessage": "All stock levels are healthy!",
+      "noAlertsDescription": "No items require immediate attention.",
+      "generateReport": "Generate Report",
+      "reorderSuccess": "Reorder request submitted successfully!",
+      "emptyState": {
+        "title": "All stock levels are healthy!",
+        "description": "No items require immediate attention."
+      },
+      "filters": {
+        "all": "All Alerts",
+        "outOfStock": "Out of Stock",
+        "critical": "Critical",
+        "lowStock": "Low Stock"
+      },
+      "bulkActions": {
+        "itemsSelected": "{{count}} items selected",
+        "createReorder": "Create Reorder",
+        "updateStock": "Update Stock",
+        "sendNotifications": "Send Notifications"
+      },
+      "table": {
+        "selectAll": "Select All ({{count}})",
+        "current": "Current",
+        "minimum": "Minimum",
+        "category": "Category",
+        "location": "Location",
+        "lastUpdated": "Last Updated"
+      },
+      "messages": {
+        "outOfStock": "Out of stock",
+        "critical": "Critical stock level",
+        "low": "Low stock",
+        "immediateAction": "Immediate action required!",
+        "selectItemsFirst": "Please select items first.",
+        "reorderCreated": "Reorder request created for {{count}} items.",
+        "stockUpdateOpened": "Stock update form opened for {{count}} items.",
+        "notificationsSent": "Notifications sent for {{count}} items.",
+        "generatingReport": "Generating stock alerts report..."
+      },
+      "emptyFilter": "No {{filter}} stock alerts in this category.",
+      "buttons": {
+        "close": "Close",
+        "generateReport": "Generate Report"
+      }
+     }
+   },
+   "reorder": {
+      "title": "Reorder Item",
+      "itemInfo": "Item Information",
+      "quantity": "Reorder Quantity",
+      "urgencyLabel": "Urgency Level",
+      "supplier": "Supplier",
+      "notes": "Notes (Optional)",
+      "costSummaryTitle": "Cost Summary",
+      "createOrder": "Create Reorder",
+      "units": "units",
+      "stockDeficit": "Stock deficit: {{deficit}} units below minimum level",
+      "fields": {
+        "name": "Name:",
+        "sku": "SKU:",
+        "currentStock": "Current Stock:",
+        "minimumStock": "Minimum Stock:",
+        "unitPrice": "Unit Price:",
+        "supplier": "Supplier:"
+      },
+      "actions": {
+        "fillDeficit": "Fill deficit ({{deficit}})",
+        "reorderToMinimum": "Reorder to minimum ({{minimum}})",
+        "reorderToDouble": "Reorder to double minimum ({{double}})"
+      },
+      "placeholders": {
+        "supplier": "Enter supplier name",
+        "notes": "Add any special instructions or notes..."
+      },
+      "costSummary": {
+        "quantity": "Quantity:",
+        "unitPrice": "Unit Price:",
+        "estimatedTotal": "Estimated Total:"
+      },
+      "urgency": {
+        "low": "Low",
+        "normal": "Normal",
+        "high": "High"
+      },
+      "messages": {
+        "created": "Reorder created for {{quantity}} units of {{itemName}}"
+      }
+    },
+    "categories": {
+    "furniture": "Furniture",
+    "electronics": "Electronics",
+    "supplies": "Supplies",
+    "accessories": "Accessories",
+    "other": "Other",
+    "clothing": "Clothing",
+    "books": "Books",
+    "homeGarden": "Home & Garden",
+    "sports": "Sports",
+    "automotive": "Automotive",
+    "healthBeauty": "Health & Beauty",
+    "toysGames": "Toys & Games",
+    "inventoryByCategory": "Inventory by Category",
+    "descriptions": {
+      "electronics": "Electronic devices and accessories",
+      "clothing": "Apparel and fashion items",
+      "books": "Books and educational materials",
+      "homeGarden": "Home improvement and garden supplies",
+      "sports": "Sports equipment and accessories",
+      "automotive": "Car parts and automotive supplies",
+      "healthBeauty": "Health and beauty products",
+      "toysGames": "Toys and gaming products"
+    }
+  },
+  "sidebar": {
+    "stockWarnings": "Stock Warnings",
+    "viewAll": "View All",
+    "inStock": "{{count}} in stock",
+    "min": "Min: {{count}}",
+    "reorder": "Reorder"
+  },
+  "activities": {
+    "recentActivities": "Recent Activities",
+    "viewAll": "View All",
+    "stockAdjustment": "Stock Adjustment",
+    "newItemAdded": "New Item Added",
+    "itemReordered": "Item Reordered",
+    "minutesAgo": "{{count}} minutes ago",
+    "hoursAgo": "{{count}} hours ago",
+    "yesterday": "Yesterday"
+  },
+  "quickActions": {
+    "title": "Quick Actions",
+    "addNewItem": "Add New Item",
+    "manageCategories": "Manage Categories",
+    "exportInventory": "Export Inventory",
+    "stockAlerts": "Stock Alerts"
+  },
+  "valueTrend": {
+    "title": "Inventory Value Trend",
+    "currentValue": "Current inventory value"
+  },
+  "common": {
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "add": "Add",
+    "remove": "Remove",
+    "close": "Close",
+    "confirm": "Confirm",
+    "yes": "Yes",
+    "no": "No",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "warning": "Warning",
+    "info": "Information",
+    "required": "Required",
+    "optional": "Optional",
+    "search": "Search",
+    "filter": "Filter",
+    "sort": "Sort",
+    "export": "Export",
+    "import": "Import",
+    "refresh": "Refresh",
+    "reset": "Reset",
+    "clear": "Clear",
+    "apply": "Apply",
+    "submit": "Submit",
+    "update": "Update",
+    "create": "Create",
+    "view": "View",
+    "download": "Download",
+    "upload": "Upload",
+    "select": "Select",
+    "selectAll": "Select All",
+    "deselectAll": "Deselect All",
+    "next": "Next",
+    "previous": "Previous",
+    "back": "Back",
+    "continue": "Continue",
+    "finish": "Finish",
+    "done": "Done",
+    "ok": "OK",
+    "hide": "Hide",
+    "show": "Show",
+    "noData": "No data available",
+    "startDate": "Start Date",
+    "endDate": "End Date"
   }
 }

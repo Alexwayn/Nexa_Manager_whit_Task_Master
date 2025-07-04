@@ -92,14 +92,143 @@
     "pdfGeneratedForEmail": "PDF generated successfully. Email integration coming soon."
   },
   "stats": {
+    "totalQuotes": "Total Quotes",
+    "totalQuotesSubtitle": "All quotes in system",
+    "pendingQuotes": "Pending Quotes",
+    "pendingQuotesSubtitle": "Awaiting client response",
+    "acceptedQuotes": "Accepted Quotes",
+    "acceptedQuotesSubtitle": "Approved by clients",
+    "totalValue": "Total Value",
+    "totalValueSubtitle": "Combined quote value",
     "totalPending": {
+      "title": "Total Pending",
       "subtitle": "From {{count}} quotes",
       "trend": "{{percent}}% from last month"
     },
     "acceptedThisMonth": {
+      "title": "Accepted This Month",
+      "subtitle": "Accepted quotes",
+      "trend": "Growth trend",
       "asc": "Ascending"
     },
+    "rejected": {
+      "title": "Rejected",
+      "subtitle": "Rejected quotes",
+      "trend": "Rejection trend"
+    },
+    "averageResponseTime": {
+      "title": "Average Response Time",
+      "subtitle": "Client response time",
+      "trend": "Response trend"
+    },
     "clientPlaceholder": "Search by client ID or name"
+  },
+  "dashboard": {
+    "quickActions": {
+      "createQuote": {
+        "title": "Create Quote",
+        "description": "Create a new quote for your clients",
+        "button": "Create Quote"
+      },
+      "createInvoice": {
+        "title": "Create Invoice",
+        "description": "Generate a new invoice",
+        "button": "Create Invoice"
+      },
+      "sendFollowups": {
+        "title": "Send Follow-ups",
+        "description": "Send follow-up emails to clients",
+        "button": "Send Follow-ups"
+      },
+      "generateReport": {
+        "title": "Generate Report",
+        "description": "Create detailed reports",
+        "button": "Generate Report"
+      }
+    },
+    "charts": {
+      "quoteStatus": "Quote Status",
+      "accepted": "Accepted",
+      "monthlyQuotes": "Monthly Quotes",
+      "created": "Created",
+      "thisMonth": "This Month",
+      "fromLastMonth": "from last month",
+      "topClients": "Top Clients"
+    }
+  },
+  "filters": {
+    "title": "Filters",
+    "clearAll": "Clear All",
+    "status": {
+      "label": "Status",
+      "all": "All Status"
+    },
+    "client": {
+      "label": "Client",
+      "all": "All Clients"
+    },
+    "dateRange": {
+      "label": "Date Range",
+      "all": "All Dates"
+    },
+    "amount": {
+      "label": "Amount",
+      "any": "Any Amount"
+    },
+    "applyFilters": "Apply Filters",
+    "clients": {
+      "acme": "Acme Corporation",
+      "globex": "Globex Industries",
+      "soylent": "Soylent Corp",
+      "initech": "Initech LLC"
+    },
+    "dateRanges": {
+      "last7Days": "Last 7 days",
+      "last30Days": "Last 30 days",
+      "last90Days": "Last 90 days"
+    },
+    "amountRanges": {
+      "range1": "€0 - €5,000",
+      "range2": "€5,000 - €15,000",
+      "range3": "€15,000+"
+    }
+  },
+  "table": {
+    "recentQuotes": "Recent Quotes",
+    "searchPlaceholder": "Search quotes...",
+    "headers": {
+      "quote": "Quote",
+      "client": "Client",
+      "issueDate": "Issue Date",
+      "dueDate": "Due Date",
+      "amount": "Amount",
+      "status": "Status",
+      "actions": "Actions"
+    },
+    "actions": {
+      "viewDetails": "View Details",
+      "editQuote": "Edit Quote",
+      "downloadPdf": "Download PDF"
+    },
+    "pagination": {
+      "showing": "Showing",
+      "to": "to",
+      "of": "of",
+      "previous": "Previous",
+      "next": "Next"
+    }
+  },
+  "recentActivity": {
+    "title": "Recent Activity",
+    "viewAll": "View All"
+  },
+  "tabs": {
+    "quotes": "Quotes",
+    "invoices": "Invoices"
+  },
+
+  "common": {
+    "quotes": "quotes"
   },
   "actionsDropdown": {
     "view": "View",

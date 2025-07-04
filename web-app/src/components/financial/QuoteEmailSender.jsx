@@ -8,6 +8,7 @@ import {
   CheckCircleIcon,
   DocumentTextIcon,
 } from '@heroicons/react/24/outline';
+import { Mail, Clock, CheckCircle } from 'lucide-react';
 import emailService from '@lib/emailService';
 import DOMPurify from 'dompurify';
 import Logger from '@utils/Logger';
@@ -66,19 +67,19 @@ const QuoteEmailSender = ({ isOpen, onClose, quote, onEmailSent }) => {
       id: 'quote_sent',
       name: t('quoteSender.templates.quote_sent.name'),
       description: t('quoteSender.templates.quote_sent.description'),
-      icon: '📧',
+      icon: Mail,
     },
     {
       id: 'quote_reminder',
       name: t('quoteSender.templates.quote_reminder.name'),
       description: t('quoteSender.templates.quote_reminder.description'),
-      icon: '⏰',
+      icon: Clock,
     },
     {
       id: 'quote_accepted',
       name: t('quoteSender.templates.quote_accepted.name'),
       description: t('quoteSender.templates.quote_accepted.description'),
-      icon: '✅',
+      icon: CheckCircle,
     },
   ];
 
@@ -344,7 +345,7 @@ const QuoteEmailSender = ({ isOpen, onClose, quote, onEmailSent }) => {
                               onClick={() => handleInputChange('templateType', template.id)}
                             >
                               <div className='flex items-start'>
-                                <span className='text-2xl mr-3'>{template.icon}</span>
+                                <template.icon className='w-6 h-6 mr-3 mt-1' />
                                 <div>
                                   <p className='font-semibold'>{template.name}</p>
                                   <p className='text-sm text-gray-500'>{template.description}</p>

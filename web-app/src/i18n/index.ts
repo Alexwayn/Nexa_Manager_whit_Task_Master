@@ -81,6 +81,11 @@ i18n
   })
   .then(() => {
     console.log('i18next initialized successfully');
+    // Set Italian as default if no language is stored
+    if (!localStorage.getItem('nexa-language')) {
+      localStorage.setItem('nexa-language', 'it');
+      i18n.changeLanguage('it');
+    }
   })
   .catch(error => {
     console.error('i18next initialization failed:', error);

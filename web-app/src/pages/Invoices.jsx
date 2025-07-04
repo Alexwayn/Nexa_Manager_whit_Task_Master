@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import jsPDF from 'jspdf';
 import {
   Plus,
   Download,
@@ -27,6 +28,7 @@ import {
   MapPin,
   ExternalLink,
 } from 'lucide-react';
+import { HomeIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 import nexaLogo from '@assets/logo_nexa.png';
 import { useTranslation } from 'react-i18next';
 import { useUserBypass as useUser } from '@hooks/useClerkBypass';
@@ -34,6 +36,7 @@ import { useNavigate } from 'react-router-dom';
 import InvoiceService from '@lib/invoiceService';
 import InvoiceAnalyticsService from '@lib/invoiceAnalyticsService';
 import InvoiceModal from '@components/financial/InvoiceModal';
+import ViewInvoiceModal from '@components/financial/ViewInvoiceModal';
 import { getUserIdForUuidTables } from '@utils/userIdConverter';
 import Logger from '@utils/Logger';
 import Footer from '@components/shared/Footer';
@@ -51,11 +54,114 @@ const InvoicesPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [analytics, setAnalytics] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
+  
+  // Filter states
+  const [filters, setFilters] = useState({
+    status: '',
+    client: '',
+    dateRange: '',
+    amount: ''
+  });
+
+  const dateInputRef = useRef(null);
 
   // Modal states
   const [isInvoiceModalOpen, setIsInvoiceModalOpen] = useState(false);
+  const [isViewInvoiceModalOpen, setIsViewInvoiceModalOpen] = useState(false);
   const [selectedInvoice, setSelectedInvoice] = useState(null);
   const [selectedClient, setSelectedClient] = useState(null);
+
+  // Dropdown states for analytics card menus
+  const [activeDropdown, setActiveDropdown] = useState(null);
+  const dropdownRefs = useRef({});
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (activeDropdown && dropdownRefs.current[activeDropdown] && 
+          !dropdownRefs.current[activeDropdown].contains(event.target)) {
+        setActiveDropdown(null);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [activeDropdown]);
+
+  const toggleDropdown = (dropdownId) => {
+    setActiveDropdown(activeDropdown === dropdownId ? null : dropdownId);
+  };
+
+  // Dropdown menu options for analytics cards
+  const paymentStatusOptions = [
+    {
+      label: t('dropdownOptions.viewDetails', 'View Details'),
+      icon: Eye,
+      action: () => navigate('/analytics')
+    },
+    {
+      label: t('dropdownOptions.exportReport', 'Export Report'),
+      icon: Download,
+      action: () => console.log('Export payment status report')
+    },
+    {
+      label: t('dropdownOptions.refreshData', 'Refresh Data'),
+      icon: ArrowUpRight,
+      action: () => window.location.reload()
+    }
+  ];
+
+  const monthlyInvoicesOptions = [
+    {
+      label: t('dropdownOptions.viewAnalytics', 'View Analytics'),
+      icon: TrendingUp,
+      action: () => navigate('/analytics')
+    },
+    {
+      label: t('dropdownOptions.exportChart', 'Export Chart'),
+      icon: Download,
+      action: () => console.log('Export monthly invoices chart')
+    },
+    {
+      label: t('dropdownOptions.changeView', 'Change View'),
+      icon: Calendar,
+      action: () => console.log('Change chart view')
+    }
+  ];
+
+  // Dropdown menu component
+  const CardDropdownMenu = ({ dropdownId, options }) => (
+    <div className="relative" ref={el => dropdownRefs.current[dropdownId] = el}>
+      <button
+        onClick={() => toggleDropdown(dropdownId)}
+        className="w-5 h-5 text-gray-400 hover:text-gray-600 cursor-pointer transition-colors"
+        aria-label="Card options"
+      >
+        <MoreHorizontal className="w-5 h-5" />
+      </button>
+      
+      {activeDropdown === dropdownId && (
+        <div className="absolute right-0 top-6 w-48 bg-white rounded-md shadow-lg border border-gray-200 py-1 z-10">
+          {options.map((option, index) => (
+            <button
+              key={index}
+              onClick={() => {
+                option.action();
+                setActiveDropdown(null);
+              }}
+              className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center space-x-2"
+            >
+              {option.icon && <option.icon className="h-4 w-4" />}
+              <span>{option.label}</span>
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
 
   // Load real invoice data
   const loadInvoices = async () => {
@@ -147,6 +253,18 @@ const InvoicesPage = () => {
     }
   }, [user?.id]);
 
+  // Apply filters when invoices data changes
+  useEffect(() => {
+    if (invoices.length > 0) {
+      applyFilters();
+    }
+  }, [invoices]);
+
+  // Apply filters when search term or filters change
+  useEffect(() => {
+    applyFilters();
+  }, [searchTerm, filters, invoices]);
+
   // Modal handlers
   const handleCreateInvoice = () => {
     setSelectedInvoice(null);
@@ -196,13 +314,216 @@ const InvoicesPage = () => {
     alert(t('actions.export') + ' - Coming soon!');
   };
 
+  const handleViewInvoice = (invoice) => {
+    setSelectedInvoice(invoice);
+    setIsViewInvoiceModalOpen(true);
+  };
+
+  const handleDownloadInvoice = (invoice) => {
+    // Generate and download professional PDF invoice
+    try {
+      const invoiceData = {
+        id: invoice.id,
+        number: invoice.invoice_number || invoice.id,
+        client: invoice.client_name || 'N/A',
+        amount: invoice.total_amount || invoice.amount || 0,
+        issueDate: invoice.issue_date,
+        dueDate: invoice.due_date,
+        status: invoice.status || 'pending',
+        items: invoice.items || []
+      };
+      
+      // Create new PDF document
+      const pdf = new jsPDF();
+      
+      // Set font
+      pdf.setFont('helvetica');
+      
+      // Header
+      pdf.setFontSize(24);
+      pdf.setTextColor(0, 123, 255); // Blue color
+      pdf.text('INVOICE', 105, 30, { align: 'center' });
+      
+      pdf.setFontSize(14);
+      pdf.setTextColor(100, 100, 100); // Gray color
+      pdf.text(`#${invoiceData.number}`, 105, 40, { align: 'center' });
+      
+      // Line under header
+      pdf.setDrawColor(0, 123, 255);
+      pdf.setLineWidth(1);
+      pdf.line(20, 50, 190, 50);
+      
+      // Invoice details section
+      pdf.setFontSize(12);
+      pdf.setTextColor(0, 0, 0); // Black color
+      
+      // Bill To section
+      pdf.setFont('helvetica', 'bold');
+      pdf.text('Bill To:', 20, 70);
+      pdf.setFont('helvetica', 'normal');
+      pdf.text(invoiceData.client, 20, 80);
+      
+      // Invoice details section
+      pdf.setFont('helvetica', 'bold');
+      pdf.text('Invoice Details:', 120, 70);
+      pdf.setFont('helvetica', 'normal');
+      
+      const issueDate = invoiceData.issueDate ? new Date(invoiceData.issueDate).toLocaleDateString() : 'N/A';
+      const dueDate = invoiceData.dueDate ? new Date(invoiceData.dueDate).toLocaleDateString() : 'N/A';
+      
+      pdf.text(`Issue Date: ${issueDate}`, 120, 80);
+      pdf.text(`Due Date: ${dueDate}`, 120, 90);
+      pdf.text(`Status: ${invoiceData.status.toUpperCase()}`, 120, 100);
+      
+      // Items table header
+      const tableStartY = 120;
+      pdf.setFont('helvetica', 'bold');
+      pdf.setFillColor(248, 249, 250); // Light gray background
+      pdf.rect(20, tableStartY, 170, 10, 'F');
+      
+      pdf.text('Description', 25, tableStartY + 7);
+      pdf.text('Qty', 100, tableStartY + 7);
+      pdf.text('Unit Price', 120, tableStartY + 7);
+      pdf.text('Total', 160, tableStartY + 7);
+      
+      // Table border
+      pdf.setDrawColor(221, 221, 221);
+      pdf.setLineWidth(0.5);
+      pdf.rect(20, tableStartY, 170, 10);
+      
+      // Items
+      let currentY = tableStartY + 20;
+      pdf.setFont('helvetica', 'normal');
+      
+      if (invoiceData.items && invoiceData.items.length > 0) {
+        invoiceData.items.forEach((item, index) => {
+          const quantity = item.quantity || 1;
+          const price = item.price || 0;
+          const total = quantity * price;
+          
+          pdf.text(item.description || 'Service/Product', 25, currentY);
+          pdf.text(quantity.toString(), 100, currentY);
+          pdf.text(`€${price.toFixed(2)}`, 120, currentY);
+          pdf.text(`€${total.toFixed(2)}`, 160, currentY);
+          
+          // Row border
+          pdf.rect(20, currentY - 7, 170, 10);
+          currentY += 15;
+        });
+      } else {
+        // Default item if no items available
+        pdf.text('Service/Product', 25, currentY);
+        pdf.text('1', 100, currentY);
+        pdf.text(`€${invoiceData.amount.toFixed(2)}`, 120, currentY);
+        pdf.text(`€${invoiceData.amount.toFixed(2)}`, 160, currentY);
+        pdf.rect(20, currentY - 7, 170, 10);
+        currentY += 15;
+      }
+      
+      // Total section
+      currentY += 20;
+      pdf.setFont('helvetica', 'bold');
+      pdf.setFontSize(16);
+      pdf.setTextColor(0, 123, 255);
+      pdf.text(`Total: €${invoiceData.amount.toFixed(2)}`, 190, currentY, { align: 'right' });
+      
+      // Footer
+      pdf.setFontSize(10);
+      pdf.setTextColor(100, 100, 100);
+      pdf.text('Thank you for your business!', 105, 280, { align: 'center' });
+      
+      // Save the PDF
+      pdf.save(`invoice-${invoiceData.number}.pdf`);
+      
+      // Show success message
+      alert(t('success.invoiceDownloaded', { defaultValue: 'Invoice PDF downloaded successfully!' }));
+    } catch (error) {
+      console.error('Error downloading invoice:', error);
+      alert(t('error.downloadFailed', { defaultValue: 'Failed to download invoice PDF' }));
+    }
+  };
+
+  const handleDeleteInvoice = (invoice) => {
+    if (window.confirm(t('actions.confirmDelete', { defaultValue: 'Are you sure you want to delete this invoice?' }))) {
+      // TODO: Implement delete invoice functionality
+      alert(t('actions.delete', { defaultValue: 'Delete Invoice' }) + ' - Coming soon!');
+    }
+  };
+
+  // Filter functions
+  const handleFilterChange = (filterType, value) => {
+    const newFilters = { ...filters, [filterType]: value };
+    setFilters(newFilters);
+    applyFilters(newFilters);
+  };
+
+  const clearAllFilters = () => {
+    const clearedFilters = {
+      status: '',
+      client: '',
+      dateRange: '',
+      amount: ''
+    };
+    setFilters(clearedFilters);
+    setFilteredInvoices(invoices);
+    setCurrentPage(1);
+  };
+
+  const applyFilters = (currentFilters = filters) => {
+    let filtered = [...invoices];
+
+    // Filter by search term
+    if (searchTerm && searchTerm.trim() !== '') {
+      const searchLower = searchTerm.toLowerCase();
+      filtered = filtered.filter(invoice => 
+        invoice.id.toLowerCase().includes(searchLower) ||
+        invoice.client.name.toLowerCase().includes(searchLower) ||
+        invoice.status.toLowerCase().includes(searchLower)
+      );
+    }
+
+    // Filter by status
+    if (currentFilters.status && currentFilters.status !== '') {
+      filtered = filtered.filter(invoice => 
+        invoice.status.toLowerCase() === currentFilters.status.toLowerCase()
+      );
+    }
+
+    // Filter by client
+    if (currentFilters.client && currentFilters.client !== '') {
+      filtered = filtered.filter(invoice => 
+        invoice.client.name.toLowerCase().includes(currentFilters.client.toLowerCase())
+      );
+    }
+
+    // Filter by date range
+    if (currentFilters.dateRange) {
+      const filterDate = new Date(currentFilters.dateRange);
+      filtered = filtered.filter(invoice => {
+        const issueDate = new Date(invoice.rawData.issue_date);
+        return issueDate >= filterDate;
+      });
+    }
+
+    setFilteredInvoices(filtered);
+    setCurrentPage(1);
+  };
+
+  const handleViewAllClients = () => {
+    navigate('/clients');
+  };
+
+  const handleApplyFilters = () => {
+    applyFilters();
+  };
+
   // Show loading state if translations are not ready or data is loading - AFTER all hooks
   if (!ready || loading) {
     return (
       <div className='min-h-screen bg-[#F9FAFB] flex items-center justify-center'>
         <div className='text-center'>
           <div className='animate-spin rounded-full h-12 w-12 border-b-2 border-[#357AF3] mx-auto mb-4'></div>
-          <p className='text-gray-600'>{loading ? 'Loading invoices...' : 'Loading...'}</p>
+          <p className='text-gray-600'>{loading ? t('loading.invoices') : t('loading.generic')}</p>
         </div>
       </div>
     );
@@ -214,12 +535,12 @@ const InvoicesPage = () => {
       <div className='min-h-screen bg-[#F9FAFB] flex items-center justify-center'>
         <div className='text-center'>
           <XCircle className='h-12 w-12 text-red-500 mx-auto mb-4' />
-          <p className='text-red-600 mb-4'>Error loading invoices: {error}</p>
+          <p className='text-red-600 mb-4'>{t('error.title')} {error}</p>
           <button
             onClick={loadInvoices}
             className='bg-[#357AF3] text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors'
           >
-            Retry
+            {t('error.retry')}
           </button>
         </div>
       </div>
@@ -236,8 +557,8 @@ const InvoicesPage = () => {
           subtitle: t('stats.totalOutstanding.subtitle', { count: 0 }),
           trend: { value: '0%', type: 'up', color: 'text-gray-600' },
           icon: DollarSign,
-          bgColor: 'bg-orange-50',
-          iconColor: 'text-orange-600',
+          bgColor: 'bg-gradient-to-br from-orange-500 to-orange-600',
+          iconColor: 'text-white',
         },
         {
           title: t('stats.paidThisMonth.title'),
@@ -245,8 +566,8 @@ const InvoicesPage = () => {
           subtitle: t('stats.paidThisMonth.subtitle', { count: 0 }),
           trend: { value: '0%', type: 'up', color: 'text-gray-600' },
           icon: CheckCircle,
-          bgColor: 'bg-green-50',
-          iconColor: 'text-green-600',
+          bgColor: 'bg-gradient-to-br from-green-500 to-green-600',
+          iconColor: 'text-white',
         },
         {
           title: t('stats.overdue.title'),
@@ -254,8 +575,8 @@ const InvoicesPage = () => {
           subtitle: t('stats.overdue.subtitle', { count: 0 }),
           trend: { value: '0%', type: 'up', color: 'text-gray-600' },
           icon: XCircle,
-          bgColor: 'bg-red-50',
-          iconColor: 'text-red-600',
+          bgColor: 'bg-gradient-to-br from-red-500 to-red-600',
+          iconColor: 'text-white',
         },
         {
           title: t('stats.averagePaymentTime.title'),
@@ -263,8 +584,8 @@ const InvoicesPage = () => {
           subtitle: t('stats.averagePaymentTime.subtitle'),
           trend: { value: '0 days', type: 'down', color: 'text-gray-600' },
           icon: Clock,
-          bgColor: 'bg-blue-50',
-          iconColor: 'text-[#357AF3]',
+          bgColor: 'bg-gradient-to-br from-primary-500 to-primary-600',
+          iconColor: 'text-white',
         },
       ];
     }
@@ -282,8 +603,8 @@ const InvoicesPage = () => {
         subtitle: t('stats.totalOutstanding.subtitle', { count: analytics.totalInvoices || 0 }),
         trend: { value: '0%', type: 'up', color: 'text-orange-600' },
         icon: DollarSign,
-        bgColor: 'bg-orange-50',
-        iconColor: 'text-orange-600',
+        bgColor: 'bg-gradient-to-br from-orange-500 to-orange-600',
+        iconColor: 'text-white',
       },
       {
         title: t('stats.paidThisMonth.title'),
@@ -291,8 +612,8 @@ const InvoicesPage = () => {
         subtitle: t('stats.paidThisMonth.subtitle', { count: paidCount }),
         trend: { value: '0%', type: 'up', color: 'text-green-600' },
         icon: CheckCircle,
-        bgColor: 'bg-green-50',
-        iconColor: 'text-green-600',
+        bgColor: 'bg-gradient-to-br from-green-500 to-green-600',
+        iconColor: 'text-white',
       },
       {
         title: t('stats.overdue.title'),
@@ -300,8 +621,8 @@ const InvoicesPage = () => {
         subtitle: t('stats.overdue.subtitle', { count: overdueCount }),
         trend: { value: '0%', type: 'up', color: 'text-red-600' },
         icon: XCircle,
-        bgColor: 'bg-red-50',
-        iconColor: 'text-red-600',
+        bgColor: 'bg-gradient-to-br from-red-500 to-red-600',
+        iconColor: 'text-white',
       },
       {
         title: t('stats.averagePaymentTime.title'),
@@ -309,8 +630,8 @@ const InvoicesPage = () => {
         subtitle: t('stats.averagePaymentTime.subtitle'),
         trend: { value: '0 days', type: 'down', color: 'text-green-600' },
         icon: Clock,
-        bgColor: 'bg-blue-50',
-        iconColor: 'text-[#357AF3]',
+        bgColor: 'bg-gradient-to-br from-primary-500 to-primary-600',
+        iconColor: 'text-white',
       },
     ];
   };
@@ -352,8 +673,8 @@ const InvoicesPage = () => {
         ...client,
         amount: new Intl.NumberFormat('en-US', { style: 'currency', currency: 'EUR' }).format(client.totalAmount),
         onTimePercentage: client.invoiceCount > 0
-          ? `${Math.round((client.paidCount / client.invoiceCount) * 100)}% paid`
-          : '0% paid',
+          ? `${Math.round((client.paidCount / client.invoiceCount) * 100)}% ${t('status.paid')}`
+          : `0% ${t('status.paid')}`,
       }))
       .sort((a, b) => b.totalAmount - a.totalAmount)
       .slice(0, 4);
@@ -442,9 +763,18 @@ const InvoicesPage = () => {
   return (
     <div className='min-h-screen bg-[#F9FAFB]'>
       {/* Breadcrumb */}
-      <div className='bg-blue-50 border-b border-gray-200 px-6 py-3 flex items-center space-x-2'>
-        <ChevronLeft className='h-4 w-4 text-gray-400' />
-        <span className='text-gray-600 text-sm'>{t('breadcrumb')}</span>
+      <div className='bg-blue-50 border-b border-gray-200 py-2 px-4 md:px-8'>
+        <div className='flex items-center space-x-2 text-base'>
+          <HomeIcon className='h-5 w-5 text-blue-600' />
+          <button 
+                onClick={() => navigate('/dashboard')}
+                className='text-blue-600 hover:text-blue-700 font-medium transition-colors'
+              >
+                Dashboard
+              </button>
+          <ChevronRightIcon className='h-5 w-5 text-gray-400' />
+          <span className='text-gray-600 font-bold'>{t('breadcrumb')}</span>
+        </div>
       </div>
 
       {/* Main Content */}
@@ -488,7 +818,7 @@ const InvoicesPage = () => {
               {t('tabs.invoices')}
             </button>
             <button
-              onClick={() => setActiveTab('quotes')}
+              onClick={() => navigate('/quotes')}
               className={`py-4 px-2 text-base font-semibold border-b-2 transition-colors ${
                 activeTab === 'quotes'
                   ? 'text-[#357AF3] border-[#357AF3]'
@@ -510,36 +840,16 @@ const InvoicesPage = () => {
                 {stats.map((stat, index) => {
                   // Define card colors based on stat type
                   const cardColors = {
-                    0: {
-                      // Total Outstanding
-                      bg: 'bg-gradient-to-br from-orange-50 to-orange-100',
-                      border: 'border-orange-200',
-                      shadow: 'shadow-orange-100/50',
-                    },
-                    1: {
-                      // Paid This Month
-                      bg: 'bg-gradient-to-br from-green-50 to-green-100',
-                      border: 'border-green-200',
-                      shadow: 'shadow-green-100/50',
-                    },
-                    2: {
-                      // Overdue
-                      bg: 'bg-gradient-to-br from-red-50 to-red-100',
-                      border: 'border-red-200',
-                      shadow: 'shadow-red-100/50',
-                    },
-                    3: {
-                      // Average Payment Time
-                      bg: 'bg-gradient-to-br from-blue-50 to-blue-100',
-                      border: 'border-blue-200',
-                      shadow: 'shadow-blue-100/50',
-                    },
+                    0: 'bg-gradient-to-br from-orange-50 to-orange-100 border border-orange-200 hover:border-orange-300', // Total Outstanding
+                    1: 'bg-gradient-to-br from-green-50 to-green-100 border border-green-200 hover:border-green-300', // Paid This Month
+                    2: 'bg-gradient-to-br from-red-50 to-red-100 border border-red-200 hover:border-red-300', // Overdue
+                    3: 'bg-gradient-to-br from-primary-50 to-primary-100 border border-primary-200 hover:border-primary-300', // Average Payment Time
                   };
 
                   return (
                     <div
                       key={index}
-                      className={`${cardColors[index].bg} rounded-xl border-2 ${cardColors[index].border} p-6 shadow-lg ${cardColors[index].shadow} hover:shadow-xl transition-all duration-300 hover:scale-105 cursor-pointer group`}
+                      className={`${cardColors[index]} rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 cursor-pointer group`}
                     >
                       <div className='flex justify-between items-start mb-4'>
                         <div>
@@ -576,16 +886,18 @@ const InvoicesPage = () => {
             {/* Right: Quick Action Cards - Beautiful Design */}
             <div className='grid grid-cols-2 gap-4'>
               {/* Create Invoice */}
-              <div className='bg-[#357AF3] rounded-xl p-6 text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 cursor-pointer'>
-                <div className='flex justify-center mb-4'>
-                  <FileText className='w-12 h-12' />
+              <div className='bg-[#357AF3] rounded-xl p-6 text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 cursor-pointer flex flex-col'>
+                <div className='flex-grow'>
+                  <div className='flex justify-center mb-4'>
+                    <FileText className='w-12 h-12' />
+                  </div>
+                  <h4 className='text-lg font-bold text-center mb-2'>
+                    {t('quickActions.createInvoice.title')}
+                  </h4>
+                  <p className='text-blue-100 text-center text-sm mb-4'>
+                    {t('quickActions.createInvoice.description')}
+                  </p>
                 </div>
-                <h4 className='text-lg font-bold text-center mb-2'>
-                  {t('quickActions.createInvoice.title')}
-                </h4>
-                <p className='text-blue-100 text-center text-sm mb-4'>
-                  {t('quickActions.createInvoice.description')}
-                </p>
                 <button
                   onClick={handleCreateInvoice}
                   className='w-full bg-white text-[#357AF3] py-2 px-4 rounded-lg hover:bg-gray-50 transition-colors font-semibold text-sm'
@@ -595,16 +907,18 @@ const InvoicesPage = () => {
               </div>
 
               {/* Create Quote */}
-              <div className='bg-green-600 rounded-xl p-6 text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 cursor-pointer'>
-                <div className='flex justify-center mb-4'>
-                  <FileText className='w-12 h-12' />
+              <div className='bg-green-600 rounded-xl p-6 text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 cursor-pointer flex flex-col'>
+                <div className='flex-grow'>
+                  <div className='flex justify-center mb-4'>
+                    <FileText className='w-12 h-12' />
+                  </div>
+                  <h4 className='text-lg font-bold text-center mb-2'>
+                    {t('quickActions.createQuote.title')}
+                  </h4>
+                  <p className='text-green-100 text-center text-sm mb-4'>
+                    {t('quickActions.createQuote.description')}
+                  </p>
                 </div>
-                <h4 className='text-lg font-bold text-center mb-2'>
-                  {t('quickActions.createQuote.title')}
-                </h4>
-                <p className='text-green-100 text-center text-sm mb-4'>
-                  {t('quickActions.createQuote.description')}
-                </p>
                 <button
                   onClick={handleCreateQuote}
                   className='w-full bg-white text-green-600 py-2 px-4 rounded-lg hover:bg-gray-50 transition-colors font-semibold text-sm'
@@ -614,16 +928,18 @@ const InvoicesPage = () => {
               </div>
 
               {/* Send Reminders */}
-              <div className='bg-amber-500 rounded-xl p-6 text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 cursor-pointer'>
-                <div className='flex justify-center mb-4'>
-                  <Mail className='w-12 h-12' />
+              <div className='bg-amber-500 rounded-xl p-6 text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 cursor-pointer flex flex-col'>
+                <div className='flex-grow'>
+                  <div className='flex justify-center mb-4'>
+                    <Mail className='w-12 h-12' />
+                  </div>
+                  <h4 className='text-lg font-bold text-center mb-2'>
+                    {t('quickActions.sendReminders.title')}
+                  </h4>
+                  <p className='text-amber-100 text-center text-sm mb-4'>
+                    {t('quickActions.sendReminders.description')}
+                  </p>
                 </div>
-                <h4 className='text-lg font-bold text-center mb-2'>
-                  {t('quickActions.sendReminders.title')}
-                </h4>
-                <p className='text-amber-100 text-center text-sm mb-4'>
-                  {t('quickActions.sendReminders.description')}
-                </p>
                 <button
                   onClick={handleSendReminders}
                   className='w-full bg-white text-amber-600 py-2 px-4 rounded-lg hover:bg-gray-50 transition-colors font-semibold text-sm'
@@ -633,16 +949,18 @@ const InvoicesPage = () => {
               </div>
 
               {/* Generate Report */}
-              <div className='bg-purple-600 rounded-xl p-6 text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 cursor-pointer'>
-                <div className='flex justify-center mb-4'>
-                  <FileText className='w-12 h-12' />
+              <div className='bg-purple-600 rounded-xl p-6 text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 cursor-pointer flex flex-col'>
+                <div className='flex-grow'>
+                  <div className='flex justify-center mb-4'>
+                    <FileText className='w-12 h-12' />
+                  </div>
+                  <h4 className='text-lg font-bold text-center mb-2'>
+                    {t('quickActions.generateReport.title')}
+                  </h4>
+                  <p className='text-purple-100 text-center text-sm mb-4'>
+                    {t('quickActions.generateReport.description')}
+                  </p>
                 </div>
-                <h4 className='text-lg font-bold text-center mb-2'>
-                  {t('quickActions.generateReport.title')}
-                </h4>
-                <p className='text-purple-100 text-center text-sm mb-4'>
-                  {t('quickActions.generateReport.description')}
-                </p>
                 <button
                   onClick={handleGenerateReport}
                   className='w-full bg-white text-purple-600 py-2 px-4 rounded-lg hover:bg-gray-50 transition-colors font-semibold text-sm'
@@ -661,7 +979,7 @@ const InvoicesPage = () => {
                 <h3 className='text-lg font-bold text-gray-900'>
                   {t('analytics.paymentStatus.title')}
                 </h3>
-                <MoreHorizontal className='w-5 h-5 text-gray-400 cursor-pointer hover:text-gray-600 transition-colors' />
+                <CardDropdownMenu dropdownId="paymentStatusOptions" options={paymentStatusOptions} />
               </div>
 
               {/* Enhanced Layout with Chart and Stats */}
@@ -770,7 +1088,7 @@ const InvoicesPage = () => {
                     {t('analytics.monthlyInvoices.subtitle')}
                   </p>
                 </div>
-                <MoreHorizontal className='w-5 h-5 text-gray-400 cursor-pointer hover:text-gray-600 transition-colors' />
+                <CardDropdownMenu dropdownId="monthlyInvoicesOptions" options={monthlyInvoicesOptions} />
               </div>
 
               {/* Enhanced Bar Chart */}
@@ -871,7 +1189,10 @@ const InvoicesPage = () => {
                 <h3 className='text-lg font-bold text-gray-900'>
                   {t('analytics.topClients.title')}
                 </h3>
-                <button className='text-[#357AF3] hover:text-blue-800 text-xs font-semibold'>
+                <button 
+                  onClick={handleViewAllClients}
+                  className='text-[#357AF3] hover:text-blue-800 text-xs font-semibold'
+                >
                   {t('analytics.topClients.viewAllClients')}
                 </button>
               </div>
@@ -899,7 +1220,10 @@ const InvoicesPage = () => {
                         </button>
                       </div>
                     ))}
-                    <button className='w-full text-center text-[#357AF3] hover:text-blue-800 text-sm font-semibold py-2 border border-[#357AF3] rounded-lg hover:bg-blue-50 transition-colors'>
+                    <button 
+                      onClick={handleViewAllClients}
+                      className='w-full text-center text-[#357AF3] hover:text-blue-800 text-sm font-semibold py-2 border border-[#357AF3] rounded-lg hover:bg-blue-50 transition-colors'
+                    >
                       {t('analytics.topClients.viewAllClients')}
                     </button>
                   </>
@@ -919,7 +1243,10 @@ const InvoicesPage = () => {
           <div className='bg-white rounded-xl border border-gray-200 p-8 mb-8 shadow-sm'>
             <div className='flex justify-between items-center mb-6'>
               <h3 className='text-xl font-bold text-gray-900'>{t('filters.title')}</h3>
-              <button className='text-[#357AF3] hover:text-blue-800 text-sm font-semibold'>
+              <button 
+                onClick={clearAllFilters}
+                className='text-[#357AF3] hover:text-blue-800 text-sm font-semibold'
+              >
                 {t('filters.clearAll')}
               </button>
             </div>
@@ -928,42 +1255,62 @@ const InvoicesPage = () => {
                 <label className='block text-sm font-medium text-gray-700 mb-2'>
                   {t('filters.status.label')}
                 </label>
-                <select className='w-full border border-gray-300 rounded-lg px-4 py-3 bg-gray-50 focus:ring-2 focus:ring-[#357AF3] focus:border-[#357AF3] transition-colors'>
-                  <option>{t('filters.status.all')}</option>
-                  <option>{t('filters.status.paid')}</option>
-                  <option>{t('filters.status.sent')}</option>
-                  <option>{t('filters.status.overdue')}</option>
-                  <option>{t('filters.status.draft')}</option>
+                <select 
+                  value={filters.status}
+                  onChange={(e) => handleFilterChange('status', e.target.value)}
+                  className='w-full border border-gray-300 rounded-lg px-4 py-3 bg-gray-50 focus:ring-2 focus:ring-[#357AF3] focus:border-[#357AF3] transition-colors'
+                >
+                  <option value=''>{t('filters.status.all')}</option>
+                  <option value='paid'>{t('filters.status.paid')}</option>
+                  <option value='sent'>{t('filters.status.sent')}</option>
+                  <option value='overdue'>{t('filters.status.overdue')}</option>
+                  <option value='draft'>{t('filters.status.draft')}</option>
                 </select>
               </div>
               <div>
                 <label className='block text-sm font-medium text-gray-700 mb-2'>
                   {t('filters.client.label')}
                 </label>
-                <select className='w-full border border-gray-300 rounded-lg px-4 py-3 bg-gray-50 focus:ring-2 focus:ring-[#357AF3] focus:border-[#357AF3] transition-colors'>
-                  <option>{t('filters.client.all')}</option>
-                </select>
+                <input
+                  type='text'
+                  value={filters.client}
+                  onChange={(e) => handleFilterChange('client', e.target.value)}
+                  placeholder={t('filters.client.all')}
+                  className='w-full border border-gray-300 rounded-lg px-4 py-3 bg-gray-50 focus:ring-2 focus:ring-[#357AF3] focus:border-[#357AF3] transition-colors'
+                />
               </div>
               <div>
                 <label className='block text-sm font-medium text-gray-700 mb-2'>
                   {t('filters.dateRange.label')}
                 </label>
-                <input
-                  type='text'
-                  placeholder={t('filters.dateRange.placeholder')}
-                  className='w-full border border-gray-300 rounded-lg px-4 py-3 text-gray-500 focus:ring-2 focus:ring-[#357AF3] focus:border-[#357AF3] transition-colors'
-                />
+                <div className='relative'>
+                  <input
+                    ref={dateInputRef}
+                    type='date'
+                    value={filters.dateRange}
+                    onChange={(e) => handleFilterChange('dateRange', e.target.value)}
+                    placeholder={t('filters.dateRange.placeholder')}
+                    className='w-full border border-gray-300 rounded-lg px-4 py-3 text-gray-900 focus:ring-2 focus:ring-[#357AF3] focus:border-[#357AF3] transition-colors'
+                  />
+                </div>
               </div>
               <div>
                 <label className='block text-sm font-medium text-gray-700 mb-2'>
                   {t('filters.amount.label')}
                 </label>
-                <select className='w-full border border-gray-300 rounded-lg px-4 py-3 bg-gray-50 focus:ring-2 focus:ring-[#357AF3] focus:border-[#357AF3] transition-colors'>
-                  <option>{t('filters.amount.any')}</option>
+                <select 
+                  value={filters.amount}
+                  onChange={(e) => handleFilterChange('amount', e.target.value)}
+                  className='w-full border border-gray-300 rounded-lg px-4 py-3 bg-gray-50 focus:ring-2 focus:ring-[#357AF3] focus:border-[#357AF3] transition-colors'
+                >
+                  <option value=''>{t('filters.amount.any')}</option>
                 </select>
               </div>
               <div className='flex items-end'>
-                <button className='w-full bg-[#357AF3] text-white px-6 py-3 rounded-lg flex items-center justify-center space-x-2 hover:bg-blue-700 font-semibold transition-colors'>
+                <button 
+                  onClick={handleApplyFilters}
+                  className='w-full bg-[#357AF3] text-white px-6 py-3 rounded-lg flex items-center justify-center space-x-2 hover:bg-blue-700 font-semibold transition-colors'
+                >
                   <Filter className='w-5 h-5' />
                   <span>{t('filters.applyFilters')}</span>
                 </button>
@@ -975,13 +1322,16 @@ const InvoicesPage = () => {
           <div className='bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm mb-8'>
             <div className='px-8 py-6 border-b border-gray-200 flex justify-between items-center'>
               <h3 className='text-xl font-bold text-gray-900'>{t('table.title')}</h3>
-              <div className='flex items-center space-x-2'>
-                <span className='text-sm text-gray-600 font-medium'>{t('table.show')}</span>
-                <select className='border border-gray-300 rounded-lg px-3 py-2 text-sm bg-gray-50 focus:ring-2 focus:ring-[#357AF3] focus:border-[#357AF3]'>
-                  <option>{t('table.perPage.10')}</option>
-                  <option>{t('table.perPage.25')}</option>
-                  <option>{t('table.perPage.50')}</option>
-                </select>
+              <div className='relative'>
+                <Search className='absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4' />
+                <input
+                  type='text'
+                  placeholder='Search invoices...'
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className='w-64 bg-white border border-gray-300 rounded-lg pl-12 pr-4 py-2 text-sm focus:ring-blue-500 focus:border-blue-500'
+                  style={{ textIndent: '20px' }}
+                />
               </div>
             </div>
 
@@ -1025,7 +1375,10 @@ const InvoicesPage = () => {
                       <div className='font-bold text-gray-900'>{invoice.amount}</div>
                       <div>{getStatusBadge(invoice.status)}</div>
                       <div className='flex items-center space-x-2'>
-                        <button className='p-2 hover:bg-gray-100 rounded-lg transition-colors'>
+                        <button 
+                          onClick={() => handleViewInvoice(invoice.rawData)}
+                          className='p-2 hover:bg-gray-100 rounded-lg transition-colors'
+                        >
                           <Eye className='w-4 h-4 text-gray-500' />
                         </button>
                         <button
@@ -1034,10 +1387,16 @@ const InvoicesPage = () => {
                         >
                           <Edit className='w-4 h-4 text-gray-500' />
                         </button>
-                        <button className='p-2 hover:bg-gray-100 rounded-lg transition-colors'>
+                        <button 
+                          onClick={() => handleDownloadInvoice(invoice.rawData)}
+                          className='p-2 hover:bg-gray-100 rounded-lg transition-colors'
+                        >
                           <Download className='w-4 h-4 text-gray-500' />
                         </button>
-                        <button className='p-2 hover:bg-gray-100 rounded-lg transition-colors'>
+                        <button 
+                          onClick={() => handleDeleteInvoice(invoice.rawData)}
+                          className='p-2 hover:bg-gray-100 rounded-lg transition-colors'
+                        >
                           <Trash2 className='w-4 h-4 text-gray-500' />
                         </button>
                       </div>
@@ -1150,6 +1509,13 @@ const InvoicesPage = () => {
         client={selectedClient}
         onInvoiceCreated={handleInvoiceCreated}
         onInvoiceUpdated={handleInvoiceUpdated}
+      />
+
+      {/* View Invoice Modal */}
+      <ViewInvoiceModal
+        isOpen={isViewInvoiceModalOpen}
+        onClose={() => setIsViewInvoiceModalOpen(false)}
+        invoice={selectedInvoice}
       />
     </div>
   );

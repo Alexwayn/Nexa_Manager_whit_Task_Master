@@ -37,6 +37,7 @@ import {
   RefreshCw,
   PieChart,
 } from 'lucide-react';
+import { HomeIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 import nexaFooterLogo from '@assets/logo_nexa_footer.png';
 import nexaLogo from '@assets/logo_nexa.png';
 
@@ -227,6 +228,7 @@ const Dashboard = () => {
   const handleCreateInvoice = () => navigate('/invoices?action=new');
   const handleTrackExpense = () => navigate('/transactions?action=expense');
   const handleScheduleMeeting = () => navigate('/calendar?action=meeting');
+  const handleGoToDashboard = () => navigate('/dashboard');
 
   // Dropdown menu options for each card
   const businessHealthOptions = [
@@ -439,86 +441,91 @@ const Dashboard = () => {
 
         {/* Main Content */}
         <div className='flex-1 p-0'>
-          <div className='space-y-6 px-2 md:px-4'>
-            {/* Breadcrumb */}
-            <div className='bg-blue-50 border-b border-gray-200 py-2 px-4 md:px-8'>
-              <div className='flex items-center justify-between'>
-                <div className='flex items-center space-x-2 text-sm'>
-                  <span className='text-blue-600 font-medium'>{t('title')}</span>
-                  <ChevronDown className='h-4 w-4 text-gray-400 rotate-[-90deg]' />
-                  <span className='text-gray-600'>{t('overview')}</span>
-                </div>
-                {/* Search Bar */}
-                <div className='flex items-center bg-white rounded px-2 h-10 w-100 py-0 relative'>
-                  <Search className='h-2 w-2 text-gray-400 mr-1' />
-                  <input
-                    type='text'
-                    placeholder={t('search.placeholder')}
-                    value={searchTerm}
-                    onChange={e => setSearchTerm(e.target.value)}
-                    className='flex-1 h-5 text-gray-700 bg-transparent border-none focus:border-none focus:ring-0 focus:outline-none text-xs leading-tight font-light placeholder:text-xs placeholder:font-light'
-                  />
-                  {/* Search results dropdown */}
-                  {searchTerm.trim() && (
-                    <div className='absolute left-0 top-full mt-1 w-full bg-white border border-gray-100 rounded shadow-lg z-50 max-h-64 overflow-y-auto text-xs'>
-                      {filteredClients.length > 0 && (
-                        <div>
-                          <div className='px-3 py-1 font-semibold text-blue-600 border-b border-gray-100'>
-                            {t('search.clients')}
-                          </div>
-                          {filteredClients.map(client => (
-                            <div
-                              key={'client-' + client.id}
-                              className='px-3 py-2 hover:bg-blue-50 cursor-pointer'
-                            >
-                              <span className='font-medium'>{client.name}</span>{' '}
-                              <span className='text-gray-400'>({client.industry})</span>
-                            </div>
-                          ))}
+          {/* Breadcrumb */}
+          <nav className='bg-blue-50 border-b border-gray-200 py-2 px-4 md:px-8'>
+            <div className='flex items-center justify-between'>
+              <div className='flex items-center space-x-2 text-base'>
+                <HomeIcon className='h-5 w-5 text-blue-600' />
+                <button className='text-blue-600 hover:text-blue-700 font-medium transition-colors'>
+                  Dashboard
+                </button>
+                <ChevronRightIcon className='h-5 w-5 text-gray-400' />
+                <span className='text-gray-600 font-bold'>{t('overview')}</span>
+              </div>
+              {/* Search Bar */}
+              <div className='flex items-center bg-white rounded px-2 h-10 w-100 py-0 relative'>
+                <Search className='h-2 w-2 text-gray-400 mr-1' />
+                <input
+                  type='text'
+                  placeholder={t('search.placeholder')}
+                  value={searchTerm}
+                  onChange={e => setSearchTerm(e.target.value)}
+                  className='flex-1 h-5 text-gray-700 bg-transparent border-none focus:border-none focus:ring-0 focus:outline-none text-xs leading-tight font-light placeholder:text-xs placeholder:font-light'
+                  style={{ textIndent: '6px' }}
+                />
+                {/* Search results dropdown */}
+                {searchTerm.trim() && (
+                  <div className='absolute left-0 top-full mt-1 w-full bg-white border border-gray-100 rounded shadow-lg z-50 max-h-64 overflow-y-auto text-xs'>
+                    {filteredClients.length > 0 && (
+                      <div>
+                        <div className='px-3 py-1 font-semibold text-blue-600 border-b border-gray-100'>
+                          {t('search.clients')}
                         </div>
-                      )}
-                      {filteredUpcomingWork.length > 0 && (
-                        <div>
-                          <div className='px-3 py-1 font-semibold text-purple-600 border-b border-gray-100'>
-                            {t('search.work')}
+                        {filteredClients.map(client => (
+                          <div
+                            key={'client-' + client.id}
+                            className='px-3 py-2 hover:bg-blue-50 cursor-pointer'
+                          >
+                            <span className='font-medium'>{client.name}</span>{' '}
+                            <span className='text-gray-400'>({client.industry})</span>
                           </div>
-                          {filteredUpcomingWork.map(work => (
-                            <div
-                              key={'work-' + work.id}
-                              className='px-3 py-2 hover:bg-purple-50 cursor-pointer'
-                            >
-                              <span className='font-medium'>{work.title}</span>{' '}
-                              <span className='text-gray-400'>{work.client}</span>
-                            </div>
-                          ))}
+                        ))}
+                      </div>
+                    )}
+                    {filteredUpcomingWork.length > 0 && (
+                      <div>
+                        <div className='px-3 py-1 font-semibold text-purple-600 border-b border-gray-100'>
+                          {t('search.work')}
                         </div>
-                      )}
-                      {filteredNotifications.length > 0 && (
-                        <div>
-                          <div className='px-3 py-1 font-semibold text-green-600 border-b border-gray-100'>
-                            {t('search.notifications')}
+                        {filteredUpcomingWork.map(work => (
+                          <div
+                            key={'work-' + work.id}
+                            className='px-3 py-2 hover:bg-purple-50 cursor-pointer'
+                          >
+                            <span className='font-medium'>{work.title}</span>{' '}
+                            <span className='text-gray-400'>{work.client}</span>
                           </div>
-                          {filteredNotifications.map(n => (
-                            <div
-                              key={'notif-' + n.id}
-                              className='px-3 py-2 hover:bg-green-50 cursor-pointer'
-                            >
-                              <span className='font-medium'>{n.title}</span>{' '}
-                              <span className='text-gray-400'>{n.message}</span>
-                            </div>
-                          ))}
+                        ))}
+                      </div>
+                    )}
+                    {filteredNotifications.length > 0 && (
+                      <div>
+                        <div className='px-3 py-1 font-semibold text-green-600 border-b border-gray-100'>
+                          {t('search.notifications')}
                         </div>
+                        {filteredNotifications.map(n => (
+                          <div
+                            key={'notif-' + n.id}
+                            className='px-3 py-2 hover:bg-green-50 cursor-pointer'
+                          >
+                            <span className='font-medium'>{n.title}</span>{' '}
+                            <span className='text-gray-400'>{n.message}</span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                    {filteredClients.length === 0 &&
+                      filteredUpcomingWork.length === 0 &&
+                      filteredNotifications.length === 0 && (
+                        <div className='px-3 py-2 text-gray-400'>{t('search.noResults')}</div>
                       )}
-                      {filteredClients.length === 0 &&
-                        filteredUpcomingWork.length === 0 &&
-                        filteredNotifications.length === 0 && (
-                          <div className='px-3 py-2 text-gray-400'>{t('search.noResults')}</div>
-                        )}
-                    </div>
-                  )}
-                </div>
+                  </div>
+                )}
               </div>
             </div>
+          </nav>
+          
+          <div className='space-y-6 px-4 md:px-8 py-6'>
 
             {/* Top Row - Business Health, Revenue Streams, Invoice Tracker, Quick Actions */}
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 w-full'>

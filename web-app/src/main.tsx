@@ -1,5 +1,6 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
+import { initToolbar } from '@stagewise/toolbar';
 import './index.css';
 import './styles/forms.css';
 import './styles/rtl-support.css';
@@ -21,8 +22,24 @@ if (!rootElement) {
   throw new Error('Root element not found');
 }
 
+// Render the main app
 createRoot(rootElement).render(
   <StrictMode>
     <App />
   </StrictMode>,
 );
+
+// Initialize Stagewise toolbar (framework-agnostic approach)
+const stagewiseConfig = {
+  plugins: [],
+};
+
+function setupStagewise() {
+  // Only initialize once and only in development mode
+  if (process.env.NODE_ENV === 'development') {
+    initToolbar(stagewiseConfig);
+  }
+}
+
+// Call the setup function when appropriate for your framework
+setupStagewise();

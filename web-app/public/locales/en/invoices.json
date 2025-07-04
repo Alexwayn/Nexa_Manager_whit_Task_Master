@@ -72,6 +72,10 @@
       "amount": "Amount",
       "status": "Status",
       "actions": "Actions"
+    },
+    "noInvoices": {
+      "title": "No invoices found",
+      "description": "Get started by creating your first invoice."
     }
   },
   "status": {
@@ -81,24 +85,25 @@
     "draft": "Draft"
   },
   "pagination": {
-    "showing": "Showing",
+    "showing": "Showing {{start}} to {{end}} of {{total}} results",
     "previous": "Previous",
     "next": "Next"
   },
   "recentActivity": {
     "title": "Recent Activity",
     "viewAll": "View All",
-    "payment": "Payment received",
-    "created": "Invoice created",
+    "payment": "Payment received for invoice {{invoiceId}} from {{clientName}}",
+    "created": "Invoice {{invoiceId}} created for {{clientName}}",
     "reminder": "Reminder sent",
-    "overdue": "Invoice overdue",
+    "overdue": "Invoice {{invoiceId}} from {{clientName}} is overdue",
     "time": {
       "minutesAgo": "{{count}} minutes ago",
       "hourAgo": "1 hour ago",
       "hoursAgo": "{{count}} hours ago",
       "dayAgo": "1 day ago",
       "daysAgo": "{{count}} days ago"
-    }
+    },
+    "noActivity": "No recent activity to display"
   },
   "quickActions": {
     "createInvoice": {
@@ -138,37 +143,9 @@
     },
     "topClients": {
       "title": "Top Clients",
-      "viewAllClients": "View All Clients"
+      "viewAllClients": "View All Clients",
+      "noClients": "No client data available"
     }
-  },
-  "footer": {
-    "description": "Streamline your business operations with our comprehensive management platform.",
-    "resources": "Resources",
-    "legal": "Legal",
-    "contact": "Contact Us",
-    "copyright": "© 2025 Nexa Manager. All rights reserved.",
-    "securityVerified": "Security Verified",
-    "language": "English (EN)",
-    "resources": {
-      "helpCenter": "Help Center",
-      "documentation": "Documentation",
-      "apiReference": "API Reference",
-      "systemStatus": "System Status"
-    },
-    "legal": {
-      "termsOfService": "Terms of Service",
-      "privacyPolicy": "Privacy Policy",
-      "security": "Security",
-      "compliance": "Compliance"
-    },
-    "contact": {
-      "email": "support@nexamanager.com",
-      "phone": "Live Support (+39 351 693 692)",
-      "description": "Need assistance? Our support team is available 24/7 to help you.",
-      "button": "Contact Support"
-    },
-    "quoteToInvoice": "Convert Quote to Invoice",
-    "quoteToInvoiceSuccess": "Quote successfully converted to invoice."
   },
   "paymentModal": {
     "newPayment": "New Payment",
@@ -253,15 +230,6 @@
       "button": "Contact Support"
     }
   },
-  "invoices": {
-    "pagination": {
-      "next": "Next"
-    },
-    "recentActivity": {
-      "title": "Recent Activity",
-      "viewAll": "View All"
-    }
-  },
   "form": {
     "createInvoice": "Create Invoice",
     "editInvoice": "Edit Invoice",
@@ -281,15 +249,20 @@
     "descriptionPlaceholder": "Enter description...",
     "issueDate": "Issue Date",
     "issueDateRequired": "Issue date is required",
+    "issue_date": "Issue Date",
     "dueDate": "Due Date",
     "dueDateRequired": "Due date is required",
+    "due_date": "Due Date",
+    "financialSummary": "Financial Summary",
+    "globalDiscount": "Global Discount",
+    "currency": "Currency",
     "pdfSettings": "PDF Settings",
     "pdfTemplate": "PDF Template",
     "pdfActions": "PDF Actions",
     "preview": "Preview",
     "download": "Download",
     "email": "Email",
-    "pdfActionsRequire": "PDF actions require title and client to be selected",
+    "pdfActionsRequire": "PDF actions require title and client selected",
     "items": "Items",
     "addItem": "Add Item",
     "itemDescription": "Description",
@@ -300,7 +273,7 @@
     "subtotal": "Subtotal",
     "discount": "Discount",
     "tax": "Tax",
-    "grandTotal": "Total",
+    "grandTotal": "Grand Total",
     "cancel": "Cancel",
     "saveAsDraft": "Save as Draft",
     "createInvoiceButton": "Create Invoice",
@@ -324,14 +297,14 @@
   "notifications": {
     "invoiceCreated": "Invoice created successfully!",
     "invoiceUpdated": "Invoice updated successfully!",
-    "saveFailed": "Failed to save invoice"
+    "saveFailed": "Error saving invoice"
   },
   "loading": {
-    "creating": "Creating invoice...",
-    "updating": "Updating invoice..."
+    "invoices": "Loading invoices...",
+    "generic": "Loading..."
   },
-  "errors": {
-    "saveFailed": "Failed to save invoice",
-    "loadFailed": "Failed to load form data"
+  "error": {
+    "title": "Error loading invoices:",
+    "retry": "Retry"
   }
 }

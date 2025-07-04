@@ -12,7 +12,7 @@ import { useTheme } from '@context/OptimizedThemeContext';
 import LanguageSwitcher from '@components/common/LanguageSwitcher';
 import { useClerkBypass, useUserBypass } from '@hooks/useClerkBypass';
 
-export default function Navbar({ onOpenSidebar }) {
+export default function Navbar({ onOpenSidebar, sidebarCollapsed = false }) {
   const { t } = useTranslation('navigation');
   const navigate = useNavigate();
   const { theme, toggleTheme } = useTheme();

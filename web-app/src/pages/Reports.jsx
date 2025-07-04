@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import Footer from '../components/shared/Footer';
 import {
   ChartBarIcon,
@@ -22,10 +23,12 @@ import {
   ChevronRightIcon,
   DocumentChartBarIcon,
   Cog6ToothIcon,
+  HomeIcon,
 } from '@heroicons/react/24/outline';
 
 const Reports = () => {
   const { t } = useTranslation('reports');
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('financial');
   const [timeRange, setTimeRange] = useState('Last 30 Days');
   const [reportBuilderTab, setReportBuilderTab] = useState('recent');
@@ -367,13 +370,17 @@ const Reports = () => {
   return (
     <div className='min-h-screen bg-white'>
       {/* Breadcrumb */}
-      <div className='bg-blue-50 border-b border-gray-200'>
-        <div className='px-6 py-3'>
-          <div className='flex items-center space-x-2 text-sm'>
-            <span className='text-blue-600 font-normal'>Reports</span>
-            <ChevronRightIcon className='h-3 w-3 text-gray-400' />
-            <span className='text-gray-500 font-normal'>Overview</span>
-          </div>
+      <div className='bg-blue-50 border-b border-gray-200 px-6 py-3'>
+        <div className='flex items-center space-x-2 text-base'>
+          <HomeIcon className='h-5 w-5 text-blue-600' />
+          <button 
+            onClick={() => navigate('/dashboard')}
+            className='text-blue-600 hover:text-blue-700 font-medium transition-colors'
+          >
+            Dashboard
+          </button>
+          <ChevronRightIcon className='h-5 w-5 text-gray-400' />
+          <span className='text-gray-600 font-bold'>Reports</span>
         </div>
       </div>
 

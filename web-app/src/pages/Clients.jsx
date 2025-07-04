@@ -779,21 +779,26 @@ function Clients() {
         {/* Main Content */}
         <div className="flex-1 flex">
           <div className="flex-1">
+            {/* Breadcrumb */}
+            <div className='bg-blue-50 border-b border-gray-200 py-2 px-4 md:px-8'>
+              <div className='flex items-center justify-between'>
+                <div className='flex items-center space-x-2 text-base'>
+                  <button 
+                    onClick={() => navigate('/dashboard')}
+                    className='flex items-center space-x-1 text-blue-600 hover:text-blue-700 font-medium transition-colors'
+                  >
+                    <HomeIcon className="h-5 w-5" />
+                    <span>{t('common.navigation.home', 'Dashboard')}</span>
+                  </button>
+                  <ChevronDownIcon className='h-5 w-5 text-gray-400 rotate-[-90deg]' />
+                  <span className="text-gray-600 font-bold">{t('breadcrumb')}</span>
+                </div>
+              </div>
+            </div>
+
             {/* Header */}
             <div className='bg-white border-b border-gray-200'>
               <div className='px-6 py-4'>
-                {/* Breadcrumb */}
-                <nav className="flex items-center space-x-2 text-sm text-gray-500 mb-4">
-                  <HomeIcon className="h-4 w-4" />
-                  <button 
-                    onClick={() => navigate('/')}
-                    className="hover:text-gray-700"
-                  >
-                    {t('common.navigation.home', 'Home')}
-                  </button>
-                  <BreadcrumbChevronIcon className="h-4 w-4" />
-                  <span className="text-gray-900 font-medium">{t('breadcrumb')}</span>
-                </nav>
                 
                 {/* Header with title and controls */}
                 <div className='flex justify-between items-center mb-6'>

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import Footer from '@components/shared/Footer';
 import ErrorBoundary from '@components/common/ErrorBoundary';
 import {
@@ -19,6 +20,8 @@ import {
   ArchiveBoxIcon,
   DocumentArrowUpIcon,
   FolderPlusIcon,
+  HomeIcon,
+  ChevronRightIcon,
 } from '@heroicons/react/24/outline';
 import {
   DocumentIcon as DocumentSolidIcon,
@@ -34,6 +37,7 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 
 const Documents = () => {
   const { t } = useTranslation(['documents', 'common']);
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [selectedFolder, setSelectedFolder] = useState('all');
   const [selectedCategory, setSelectedCategory] = useState('All Categories');
@@ -280,8 +284,18 @@ const Documents = () => {
     <ErrorBoundary>
       <div className='min-h-screen bg-gray-50'>
         {/* Breadcrumb */}
-        <div className='bg-blue-50 border-b border-gray-200 px-6 py-3'>
-          <span className='text-blue-700 font-medium'>{t('title')}</span>
+        <div className='bg-blue-50 border-b border-gray-200 py-2 px-4 md:px-8'>
+          <div className='flex items-center space-x-2 text-base text-gray-700'>
+            <HomeIcon className='h-5 w-5 text-gray-500' />
+            <button 
+              onClick={() => navigate('/dashboard')}
+              className='text-blue-600 hover:text-blue-700 font-medium transition-colors'
+            >
+              Dashboard
+            </button>
+            <ChevronRightIcon className='h-5 w-5 text-gray-400' />
+            <span className='font-bold'>{t('title')}</span>
+          </div>
         </div>
 
         {/* Header */}

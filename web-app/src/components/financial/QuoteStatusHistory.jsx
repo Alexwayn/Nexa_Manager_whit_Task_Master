@@ -4,6 +4,16 @@ import { useUserBypass as useUser } from '@hooks/useClerkBypass';
 import { QuoteApprovalService } from '@lib/quoteApprovalService';
 import QuoteStatusBadge from './QuoteStatusBadge';
 import Logger from '@utils/Logger';
+import { 
+  Plus, 
+  CheckCircle, 
+  XCircle, 
+  Clock, 
+  Send, 
+  Ban, 
+  RotateCcw, 
+  FileText 
+} from 'lucide-react';
 
 /**
  * QuoteStatusHistory Component
@@ -43,14 +53,14 @@ const QuoteStatusHistory = ({ quoteId, className = '' }) => {
   };
 
   const getChangeIcon = (oldStatus, newStatus) => {
-    if (!oldStatus) return '🆕'; // New quote
-    if (newStatus === 'accepted') return '✅';
-    if (newStatus === 'rejected') return '❌';
-    if (newStatus === 'expired') return '⏰';
-    if (newStatus === 'sent') return '📤';
-    if (newStatus === 'cancelled') return '🚫';
-    if (newStatus === 'converted') return '🔄';
-    return '📝';
+    if (!oldStatus) return Plus; // New quote
+    if (newStatus === 'accepted') return CheckCircle;
+    if (newStatus === 'rejected') return XCircle;
+    if (newStatus === 'expired') return Clock;
+    if (newStatus === 'sent') return Send;
+    if (newStatus === 'cancelled') return Ban;
+    if (newStatus === 'converted') return RotateCcw;
+    return FileText;
   };
 
   if (isLoading) {
@@ -115,9 +125,9 @@ const QuoteStatusHistory = ({ quoteId, className = '' }) => {
           >
             {/* Icon */}
             <div className="flex-shrink-0 mt-0.5">
-              <span className="text-lg">
-                {getChangeIcon(entry.old_status, entry.new_status)}
-              </span>
+              {React.createElement(getChangeIcon(entry.old_status, entry.new_status), {
+                className: "w-5 h-5 text-gray-600"
+              })}
             </div>
 
             {/* Content */}
@@ -178,4 +188,4 @@ const QuoteStatusHistory = ({ quoteId, className = '' }) => {
   );
 };
 
-export default QuoteStatusHistory; 
+export default QuoteStatusHistory;

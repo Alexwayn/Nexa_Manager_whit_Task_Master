@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import Footer from '@components/shared/Footer';
 import {
   PencilIcon,
@@ -17,11 +18,13 @@ import {
   PaperClipIcon,
   PhoneIcon,
   EnvelopeIcon,
+  HomeIcon,
 } from '@heroicons/react/24/outline';
 import { StarIcon as StarSolidIcon, CheckIcon } from '@heroicons/react/24/solid';
 
 export default function Email() {
   const { t } = useTranslation('email');
+  const navigate = useNavigate();
   const [selectedFolder, setSelectedFolder] = useState('inbox');
   const [selectedEmail, setSelectedEmail] = useState(null);
   const [selectedEmails, setSelectedEmails] = useState(new Set());
@@ -274,9 +277,21 @@ Email: sarah.johnson@acmecorp.com`,
 
   return (
     <div className='h-screen flex flex-col bg-white'>
-      {/* Header */}
-      <div className='bg-blue-50 border-b border-gray-200 px-6 py-3'>
-        <span className='text-blue-700 font-medium'>Email</span>
+      {/* Breadcrumb */}
+      <div className='bg-blue-50 border-b border-gray-200 py-2 px-4 md:px-8'>
+        <div className='flex items-center justify-between'>
+          <div className='flex items-center space-x-2 text-base'>
+            <button 
+              onClick={() => navigate('/dashboard')}
+              className='flex items-center space-x-1 text-blue-600 hover:text-blue-700 font-medium transition-colors'
+            >
+              <HomeIcon className="h-5 w-5" />
+              <span>Dashboard</span>
+            </button>
+            <ChevronRightIcon className='h-4 w-4 text-gray-400' />
+            <span className="text-gray-600 font-bold">Email</span>
+          </div>
+        </div>
       </div>
 
       <div className='flex flex-1 overflow-hidden'>

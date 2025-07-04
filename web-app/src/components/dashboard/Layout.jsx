@@ -7,6 +7,7 @@ import { useTheme } from '@context/OptimizedThemeContext';
 
 export default function Layout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false); // Default expanded state
   const { t } = useTranslation('navigation');
   useTheme(); // Keep theme context active
 
@@ -34,8 +35,10 @@ export default function Layout() {
   return (
     <div className="h-screen flex bg-gray-50 dark:bg-gray-900 w-full">
       {/* Desktop Sidebar */}
-      <div className="hidden lg:fixed lg:inset-y-0 lg:flex lg:w-72 lg:flex-col">
-        <Sidebar />
+      <div className={`hidden lg:fixed lg:inset-y-0 lg:flex lg:flex-col transition-all duration-300 ease-in-out ${
+        sidebarCollapsed ? 'lg:w-16' : 'lg:w-72'
+      }`}>
+        <Sidebar collapsed={sidebarCollapsed} onToggleCollapse={() => setSidebarCollapsed(!sidebarCollapsed)} />
       </div>
 
       {/* Mobile Sidebar Overlay */}
@@ -52,17 +55,19 @@ export default function Layout() {
                   </svg>
                 </button>
               </div>
-              <Sidebar onCloseSidebar={() => setSidebarOpen(false)} />
+              <Sidebar onCloseSidebar={() => setSidebarOpen(false)} collapsed={false} />
             </div>
           </div>
         </div>
       )}
 
       {/* Main Content Area */}
-      <div className="flex flex-1 flex-col lg:pl-72 w-full">
+      <div className={`flex flex-1 flex-col w-full transition-all duration-300 ease-in-out ${
+        sidebarCollapsed ? 'lg:pl-16' : 'lg:pl-72'
+      }`}>
         {/* Top Navigation */}
         <div className="sticky top-0 z-40 bg-white dark:bg-gray-800">
-          <Navbar setSidebarOpen={setSidebarOpen} />
+          <Navbar setSidebarOpen={setSidebarOpen} sidebarCollapsed={sidebarCollapsed} />
         </div>
         
         {/* Main Content */}

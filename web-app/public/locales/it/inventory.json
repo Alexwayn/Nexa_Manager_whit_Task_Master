@@ -91,5 +91,486 @@
   "emptyState": {
     "title": "Nessun prodotto trovato",
     "message": "Prova a modificare la ricerca o i filtri per trovare quello che cerchi."
+  },
+  "sidebar": {
+    "topSellingProducts": "Prodotti Più Venduti",
+    "stockWarnings": "Avvisi di Scorta",
+    "viewAll": "Visualizza Tutto",
+    "reorder": "Riordina"
+  },
+  "search": {
+    "placeholder": "Cerca prodotti..."
+  },
+  "sort": {
+    "label": "Ordina per:",
+    "nameAZ": "Nome (A-Z)",
+    "nameZA": "Nome (Z-A)",
+    "stockLow": "Scorta (Bassa ad Alta)",
+    "stockHigh": "Scorta (Alta a Bassa)",
+    "priceLow": "Prezzo (Basso ad Alto)",
+    "priceHigh": "Prezzo (Alto a Basso)"
+  },
+  "activities": {
+    "title": "Attività Recenti",
+    "stockAdjustment": "Regolazione Scorte",
+    "newItem": "Nuovo Articolo Aggiunto",
+    "lowStock": "Avviso Scorte Basse",
+    "purchaseOrder": "Ordine di Acquisto Creato",
+    "minutesAgo": "{{count}} minuti fa",
+    "hoursAgo": "{{count}} ore fa",
+    "daysAgo": "{{count}} giorni fa",
+    "viewAll": "Visualizza Tutto"
+  },
+  "quickActions": {
+    "title": "Azioni Rapide",
+    "addNewItem": "Aggiungi Nuovo Articolo",
+    "createPurchaseOrder": "Crea Ordine di Acquisto",
+    "manageCategories": "Gestisci Categorie",
+    "exportInventory": "Esporta Inventario",
+    "stockAlerts": "Avvisi Scorte"
+  },
+  "categories": {
+    "inventoryByCategory": "Inventario per Categoria",
+    "furniture": "Mobili",
+    "electronics": "Elettronica",
+    "supplies": "Forniture",
+    "accessories": "Accessori",
+    "other": "Altro"
+  },
+  "valueTrend": {
+    "title": "Tendenza Valore Inventario",
+    "currentValue": "Valore inventario corrente"
+  },
+  "filters": {
+    "title": "Filtri",
+    "category": "Tutte le Categorie",
+    "location": "Tutte le Sedi",
+    "stockStatus": "Tutti gli Stati Scorta",
+    "clearFilters": "Cancella Filtri"
+  },
+  "pagination": {
+    "showing": "Mostrando",
+    "to": "a",
+    "of": "di",
+    "results": "risultati",
+    "previous": "Precedente",
+    "next": "Successivo",
+    "page": "Pagina"
+  },
+  "categories": {
+    "inventoryByCategory": "Inventario per Categoria",
+    "furniture": "Mobili",
+    "electronics": "Elettronica",
+    "supplies": "Forniture",
+    "accessories": "Accessori",
+    "other": "Altro",
+    "clothing": "Abbigliamento",
+    "books": "Libri",
+    "homeGarden": "Casa e Giardino",
+    "sports": "Sport",
+    "automotive": "Automotive",
+    "healthBeauty": "Salute e Bellezza",
+    "toysGames": "Giocattoli e Giochi",
+    "descriptions": {
+      "electronics": "Dispositivi elettronici e tecnologia",
+      "clothing": "Abbigliamento e accessori moda",
+      "books": "Libri e materiale di lettura",
+      "homeGarden": "Articoli per casa e giardino",
+      "sports": "Attrezzature e abbigliamento sportivo",
+      "automotive": "Parti e accessori per auto",
+      "healthBeauty": "Prodotti per salute e bellezza",
+      "toysGames": "Giocattoli e giochi per bambini"
+    }
+  },
+  "reports": {
+    "title": "Report",
+    "selectType": "Seleziona Tipo Report",
+    "types": {
+      "inventorySummary": {
+        "name": "Riepilogo Inventario",
+        "description": "Panoramica completa dell'inventario"
+      },
+      "stockLevels": {
+        "name": "Livelli Scorta",
+        "description": "Report dettagliato dei livelli di scorta"
+      },
+      "lowStock": {
+        "name": "Report Scorte Basse",
+        "description": "Articoli che necessitano riordino"
+      },
+      "inventoryValuation": {
+        "name": "Valutazione Inventario",
+        "description": "Valore totale dell'inventario"
+      },
+      "movementHistory": {
+        "name": "Storico Movimenti",
+        "description": "Cronologia movimenti inventario"
+      },
+      "supplierAnalysis": {
+        "name": "Analisi Fornitori",
+        "description": "Performance e analisi fornitori"
+      }
+    },
+    "options": "Opzioni Report",
+    "dateRange": "Intervallo Date",
+    "filters": {
+      "allCategories": "Tutte le Categorie",
+      "allLocations": "Tutte le Sedi",
+      "allStockLevels": "Tutti i Livelli Scorta"
+    },
+    "preview": "Anteprima Report",
+    "generate": "Genera Report"
+  },
+  "modals": {
+    "addItem": {
+      "title": "Aggiungi Nuovo Articolo",
+      "subtitle": "Aggiungi un nuovo prodotto al tuo inventario",
+      "fields": {
+        "name": "Nome Prodotto",
+        "sku": "SKU",
+        "category": "Categoria",
+        "location": "Sede",
+        "supplier": "Fornitore",
+        "price": "Prezzo Unitario",
+        "stock": "Scorta",
+        "minStock": "Livello Minimo Scorta",
+        "description": "Descrizione",
+        "image": "Immagine Prodotto"
+      },
+      "placeholders": {
+        "name": "Inserisci nome prodotto",
+        "sku": "Inserisci SKU",
+        "category": "Seleziona categoria",
+        "location": "Seleziona sede",
+        "supplier": "Inserisci nome fornitore",
+        "price": "0,00",
+        "stock": "Inserisci quantità",
+        "minStock": "Inserisci quantità minima",
+        "description": "Inserisci descrizione prodotto (opzionale)"
+      },
+      "imageUpload": {
+        "uploadFile": "Carica File",
+        "dragDrop": "Trascina e rilascia un'immagine qui, o clicca per selezionare",
+        "fileTypes": "PNG, JPG, GIF fino a 10MB"
+      },
+      "buttons": {
+        "cancel": "Annulla",
+        "add": "Aggiungi Articolo"
+      },
+      "errors": {
+        "nameRequired": "Il nome del prodotto è obbligatorio"
+      }
+    },
+    "manageCategories": {
+      "title": "Gestisci Categorie",
+      "subtitle": "Aggiungi, modifica o rimuovi categorie prodotto",
+      "fields": {
+        "name": "Nome Categoria",
+        "description": "Descrizione"
+      },
+      "placeholders": {
+        "name": "Inserisci nome categoria",
+        "description": "Inserisci descrizione categoria"
+      },
+      "form": {
+        "addTitle": "Aggiungi Nuova Categoria",
+        "editTitle": "Modifica Categoria"
+      },
+      "buttons": {
+        "add": "Aggiungi",
+        "addNew": "Aggiungi Nuova Categoria",
+        "cancel": "Annulla",
+        "save": "Salva Modifiche",
+        "saveChanges": "Salva Modifiche",
+        "edit": "Modifica",
+        "delete": "Elimina"
+      },
+      "actions": {
+        "edit": "Modifica categoria",
+        "delete": "Elimina categoria"
+      },
+      "itemCount": {
+        "singular": "{{count}} articolo",
+        "plural": "{{count}} articoli"
+      },
+      "messages": {
+        "confirmDelete": "Sei sicuro di voler eliminare questa categoria?",
+        "categoryAdded": "Categoria aggiunta con successo",
+        "categoryUpdated": "Categoria aggiornata con successo",
+        "categoryDeleted": "Categoria eliminata con successo"
+      },
+      "errors": {
+        "nameRequired": "Il nome della categoria è obbligatorio",
+        "nameExists": "Una categoria con questo nome esiste già"
+      },
+      "tooltips": {
+        "edit": "Modifica questa categoria",
+        "delete": "Elimina questa categoria"
+      }
+    },
+    "exportInventory": {
+      "title": "Esporta Inventario",
+      "subtitle": "Esporta i dati del tuo inventario in vari formati",
+      "fields": {
+        "format": "Formato Esportazione",
+        "formatDesc": "Scegli il formato per l'esportazione dei dati",
+        "fieldsToExport": "Campi da Esportare",
+        "fieldsDesc": "Seleziona i campi da includere nell'esportazione"
+      },
+      "formats": {
+        "csv": {
+          "name": "CSV",
+          "description": "Valori separati da virgola, compatibile con Excel"
+        },
+        "excel": {
+          "name": "Excel",
+          "description": "Foglio di calcolo Microsoft Excel"
+        },
+        "pdf": {
+          "name": "PDF",
+          "description": "Documento PDF formattato per la stampa"
+        },
+        "json": {
+          "name": "JSON",
+          "description": "Formato dati strutturato per sviluppatori"
+        }
+      },
+      "dataFilters": {
+        "title": "Filtri Dati",
+        "description": "Applica filtri per limitare i dati esportati",
+        "category": "Categoria",
+        "allCategories": "Tutte le Categorie",
+        "stockLevel": "Livello Scorta",
+        "allStockLevels": "Tutti i Livelli",
+        "outOfStock": "Esaurito",
+        "lowStock": "Scorta Bassa",
+        "normalStock": "Scorta Normale",
+        "location": "Sede",
+        "allLocations": "Tutte le Sedi",
+        "dateRange": "Intervallo Date",
+        "allTime": "Tutto il Tempo",
+        "today": "Oggi",
+        "thisWeek": "Questa Settimana",
+        "thisMonth": "Questo Mese",
+        "thisQuarter": "Questo Trimestre",
+        "thisYear": "Quest'Anno"
+      },
+      "fieldSelection": {
+        "selectAll": "Seleziona Tutto"
+      },
+      "availableFields": {
+        "name": "Nome Prodotto",
+        "sku": "SKU",
+        "category": "Categoria",
+        "stock": "Quantità Scorta",
+        "minStock": "Scorta Minima",
+        "price": "Prezzo Unitario",
+        "location": "Sede",
+        "supplier": "Fornitore",
+        "lastUpdated": "Ultimo Aggiornamento",
+        "description": "Descrizione",
+        "image": "Immagine"
+      },
+      "exportPreview": {
+        "title": "Anteprima Esportazione",
+        "recordsToExport": "Record da esportare: {{count}}",
+        "fieldsSelected": "Campi selezionati: {{count}}",
+        "format": "Formato: {{format}}",
+        "estimatedSize": "Dimensione stimata: {{size}}"
+      },
+      "buttons": {
+        "cancel": "Annulla",
+        "exportData": "Esporta Dati"
+      },
+      "messages": {
+        "exportCompleted": "Esportazione completata con successo",
+        "exportFailed": "Esportazione fallita. Riprova."
+      }
+    },
+    "stockAlerts": {
+      "title": "Avvisi Scorte",
+      "subtitle": "Gestisci articoli con scorte basse e avvisi",
+      "tabs": {
+        "lowStock": "Articoli Scorta Bassa",
+        "outOfStock": "Articoli Esauriti",
+        "settings": "Impostazioni Avvisi"
+      },
+      "table": {
+        "product": "Prodotto",
+        "current": "Scorta Attuale",
+        "minimum": "Scorta Minima",
+        "status": "Stato",
+        "actions": "Azioni"
+      },
+      "actions": {
+        "reorder": "Riordina",
+        "updateStock": "Aggiorna Scorta",
+        "selectAll": "Seleziona Tutto",
+        "bulkReorder": "Riordino di Massa",
+        "sendNotification": "Invia Notifica"
+      },
+      "settings": {
+        "emailNotifications": "Notifiche Email",
+        "dailyReports": "Report Giornalieri Scorte",
+        "criticalAlerts": "Avvisi Scorte Critiche",
+        "autoReorder": "Suggerimenti Riordino Automatico"
+      },
+      "buttons": {
+        "close": "Chiudi",
+        "saveSettings": "Salva Impostazioni"
+      }
+    },
+    "reports": {
+      "title": "Genera Report",
+      "subtitle": "Crea report dettagliati dell'inventario",
+      "selectType": "Seleziona Tipo Report",
+      "options": "Opzioni Report",
+      "dateRange": "Intervallo Date",
+      "generate": "Genera Report",
+      "preview": "Anteprima Report",
+      "types": {
+        "inventorySummary": {
+          "name": "Riepilogo Inventario",
+          "description": "Panoramica completa di tutti gli articoli dell'inventario"
+        },
+        "stockLevels": {
+          "name": "Report Livelli Scorta",
+          "description": "Livelli di scorta attuali e avvisi"
+        },
+        "lowStock": {
+          "name": "Report Scorte Basse",
+          "description": "Articoli sotto i livelli minimi di scorta"
+        },
+        "inventoryValuation": {
+          "name": "Valutazione Inventario",
+          "description": "Valore totale dell'inventario per categoria"
+        },
+        "movementHistory": {
+          "name": "Storico Movimenti",
+          "description": "Movimenti di scorta nel tempo"
+        },
+        "supplierAnalysis": {
+          "name": "Analisi Fornitori",
+          "description": "Analisi delle prestazioni per fornitore"
+        }
+      },
+      "filters": {
+        "label": "Filtri",
+        "allCategories": "Tutte le Categorie",
+        "electronics": "Elettronica",
+        "furniture": "Mobili",
+        "officeSupplies": "Forniture Ufficio",
+        "allLocations": "Tutte le Sedi",
+        "warehouseA": "Magazzino A",
+        "warehouseB": "Magazzino B",
+        "storeFront": "Negozio",
+        "allStockLevels": "Tutti i Livelli di Scorta",
+        "inStock": "In Magazzino",
+        "lowStock": "Scorta Bassa",
+        "outOfStock": "Esaurito"
+      },
+      "preview": {
+        "type": "Tipo",
+        "period": "Periodo",
+        "present": "Presente",
+        "category": "Categoria",
+        "location": "Sede",
+        "stockLevel": "Livello Scorta"
+      },
+      "messages": {
+        "generated": "Report generato con successo!"
+      }
+    },
+    "reorder": {
+      "title": "Riordina Articolo",
+      "itemInfo": "Informazioni Articolo",
+      "quantity": "Quantità Riordino",
+      "urgencyLabel": "Livello di Urgenza",
+      "supplier": "Fornitore",
+      "notes": "Note (Opzionale)",
+      "costSummaryTitle": "Riepilogo Costi",
+      "createOrder": "Crea Riordino",
+      "units": "unità",
+      "stockDeficit": "Deficit scorte: {{deficit}} unità sotto il livello minimo",
+      "fields": {
+        "name": "Nome:",
+        "sku": "SKU:",
+        "currentStock": "Scorta Attuale:",
+        "minimumStock": "Scorta Minima:",
+        "unitPrice": "Prezzo Unitario:",
+        "supplier": "Fornitore:"
+      },
+      "actions": {
+        "fillDeficit": "Riempi deficit ({{deficit}})",
+        "reorderToMinimum": "Riordina al minimo ({{minimum}})",
+        "reorderToDouble": "Riordina al doppio del minimo ({{double}})"
+      },
+      "placeholders": {
+        "supplier": "Inserisci nome fornitore",
+        "notes": "Aggiungi istruzioni speciali o note..."
+      },
+      "costSummary": {
+        "quantity": "Quantità:",
+        "unitPrice": "Prezzo Unitario:",
+        "estimatedTotal": "Totale Stimato:"
+      },
+      "urgency": {
+        "low": "Bassa",
+        "normal": "Normale",
+        "high": "Alta"
+      },
+      "messages": {
+         "created": "Riordino creato per {{quantity}} unità di {{itemName}}"
+       }
+     },
+     "common": {
+       "cancel": "Annulla",
+       "save": "Salva",
+       "delete": "Elimina",
+       "edit": "Modifica",
+       "add": "Aggiungi",
+       "remove": "Rimuovi",
+       "close": "Chiudi",
+       "confirm": "Conferma",
+       "yes": "Sì",
+       "no": "No",
+       "loading": "Caricamento...",
+       "error": "Errore",
+       "success": "Successo",
+       "warning": "Avviso",
+       "info": "Informazione",
+       "required": "Obbligatorio",
+       "optional": "Opzionale",
+       "search": "Cerca",
+       "filter": "Filtra",
+       "sort": "Ordina",
+       "export": "Esporta",
+       "import": "Importa",
+       "refresh": "Aggiorna",
+       "reset": "Reimposta",
+       "clear": "Cancella",
+       "apply": "Applica",
+       "submit": "Invia",
+       "update": "Aggiorna",
+       "create": "Crea",
+       "view": "Visualizza",
+       "download": "Scarica",
+       "upload": "Carica",
+       "select": "Seleziona",
+       "selectAll": "Seleziona Tutto",
+       "deselectAll": "Deseleziona Tutto",
+       "next": "Successivo",
+       "previous": "Precedente",
+       "back": "Indietro",
+       "continue": "Continua",
+       "finish": "Termina",
+       "done": "Fatto",
+       "ok": "OK",
+       "hide": "Nascondi",
+       "show": "Mostra",
+       "noData": "Nessun dato disponibile",
+       "startDate": "Data Inizio",
+       "endDate": "Data Fine"
+     }
   }
 }

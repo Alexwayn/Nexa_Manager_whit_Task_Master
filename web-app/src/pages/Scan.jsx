@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import Footer from '@components/shared/Footer';
 import {
   CameraIcon,
@@ -12,11 +13,13 @@ import {
   DocumentDuplicateIcon,
   EyeIcon,
   ChevronRightIcon,
+  HomeIcon,
 } from '@heroicons/react/24/outline';
 import { notify } from '@lib/uiUtils';
 
 export default function Scan() {
   const { t } = useTranslation('scan');
+  const navigate = useNavigate();
   const fileInputRef = useRef(null);
   const [currentStep, setCurrentStep] = useState(1);
   const [selectedScanType, setSelectedScanType] = useState('upload');
@@ -119,11 +122,17 @@ export default function Scan() {
   return (
     <div className='min-h-screen bg-gray-50'>
       {/* Breadcrumb */}
-      <div className='bg-blue-50 border-b border-gray-200 px-8 py-5'>
-        <div className='flex items-center space-x-2 text-gray-600'>
-          <span>Documents</span>
+      <div className='bg-blue-50 border-b border-gray-200 py-2 px-4 md:px-8'>
+        <div className='flex items-center space-x-2 text-sm text-gray-600'>
+          <HomeIcon className='h-4 w-4 text-gray-500' />
+          <button 
+            onClick={() => navigate('/dashboard')}
+            className='text-blue-600 hover:text-blue-700 font-medium transition-colors'
+          >
+            Dashboard
+          </button>
           <ChevronRightIcon className='h-4 w-4' />
-          <span className='text-blue-600'>Document Scanner</span>
+          <span className='text-gray-900 font-medium'>Scan</span>
         </div>
       </div>
 

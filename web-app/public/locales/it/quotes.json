@@ -81,17 +81,80 @@
   },
   "errors": {
     "loadClientsFailed": "Caricamento clienti fallito",
-    "loadTemplatesFailed": "Caricamento template fallito"
+    "loadTemplatesFailed": "Caricamento template fallito",
+    "loadPdfTemplatesFailed": "Caricamento template PDF fallito",
+    "pdfPreviewFailed": "Generazione anteprima PDF fallita",
+    "pdfDownloadFailed": "Download PDF fallito",
+    "emailPdfFailed": "Generazione PDF per email fallita",
+    "saveFailed": "Salvataggio preventivo fallito"
+  },
+  "success": {
+    "pdfGeneratedForEmail": "PDF generato con successo. Integrazione email in arrivo."
   },
   "stats": {
+    "totalQuotes": "Preventivi Totali",
+    "totalQuotesSubtitle": "Tutti i preventivi nel sistema",
+    "pendingQuotes": "Preventivi In Attesa",
+    "pendingQuotesSubtitle": "In attesa di risposta del cliente",
+    "acceptedQuotes": "Preventivi Accettati",
+    "acceptedQuotesSubtitle": "Approvati dai clienti",
+    "totalValue": "Valore Totale",
+    "totalValueSubtitle": "Valore combinato dei preventivi",
     "totalPending": {
+      "title": "Totale In Attesa",
       "subtitle": "Da {{count}} preventivi",
       "trend": "{{percent}}% dall'ultimo mese"
     },
     "acceptedThisMonth": {
-      "asc": "Crescente"
+      "title": "Accettati Questo Mese",
+      "subtitle": "Da {{count}} preventivi",
+      "trend": "{{percent}}% dall'ultimo mese"
     },
-    "clientPlaceholder": "Cerca per ID cliente o nome"
+    "rejected": {
+      "title": "Rifiutati",
+      "subtitle": "Da {{count}} preventivi",
+      "trend": "{{percent}}% dall'ultimo mese"
+    },
+    "averageResponseTime": {
+       "title": "Tempo Medio di Risposta",
+       "subtitle": "Ultimi 30 giorni",
+       "trend": "{{days}} giorni di miglioramento"
+     },
+      "clientPlaceholder": "Cerca per ID cliente o nome"
+  },
+  "dashboard": {
+    "quickActions": {
+      "createQuote": {
+        "title": "Crea Preventivo",
+        "description": "Genera nuovo preventivo",
+        "button": "Crea Ora"
+      },
+      "createInvoice": {
+        "title": "Crea Fattura",
+        "description": "Converti in fattura",
+        "button": "Crea Ora"
+      },
+      "sendFollowups": {
+        "title": "Invia Solleciti",
+        "description": "Segui preventivi in attesa",
+        "button": "Invia Tutti"
+      },
+      "generateReport": {
+        "title": "Genera Report",
+        "description": "Analisi preventivi",
+        "button": "Genera"
+      }
+    },
+    "charts": {
+      "quoteStatus": "Stato Preventivi",
+      "monthlyQuotes": "Preventivi Mensili",
+      "topClients": "Clienti Principali",
+      "created": "Creati",
+      "accepted": "Accettati",
+      "thisMonth": "Questo Mese",
+      "quotes": "preventivi",
+      "fromLastMonth": "dall'ultimo mese"
+    }
   },
   "actionsDropdown": {
     "view": "Vedi",
@@ -144,6 +207,80 @@
     "quoteSent": "Preventivo {{quoteNumber}} inviato a {{clientName}}",
     "quoteRejected": "Preventivo {{quoteNumber}} rifiutato da {{clientName}}"
   },
+  "filters": {
+    "title": "Filtri",
+    "clearAll": "Cancella Tutto",
+    "status": {
+      "label": "Stato",
+      "all": "Tutti gli Stati"
+    },
+    "client": {
+      "label": "Cliente",
+      "all": "Tutti i Clienti"
+    },
+    "dateRange": {
+      "label": "Intervallo Date",
+      "all": "Tutte le Date"
+    },
+    "amount": {
+      "label": "Importo",
+      "any": "Qualsiasi Importo"
+    },
+    "applyFilters": "Applica Filtri",
+    "clients": {
+      "acme": "Acme Corporation",
+      "globex": "Globex Industries",
+      "soylent": "Soylent Corp",
+      "initech": "Initech LLC"
+    },
+    "dateRanges": {
+      "last7Days": "Ultimi 7 giorni",
+      "last30Days": "Ultimi 30 giorni",
+      "last90Days": "Ultimi 90 giorni"
+    },
+    "amountRanges": {
+      "range1": "€0 - €5.000",
+      "range2": "€5.000 - €15.000",
+      "range3": "€15.000+"
+    }
+  },
+  "table": {
+    "recentQuotes": "Preventivi Recenti",
+    "searchPlaceholder": "Cerca preventivi...",
+    "headers": {
+      "quote": "Preventivo",
+      "client": "Cliente",
+      "issueDate": "Data Emissione",
+      "dueDate": "Data Scadenza",
+      "amount": "Importo",
+      "status": "Stato",
+      "actions": "Azioni"
+    },
+    "actions": {
+      "viewDetails": "Visualizza Dettagli",
+      "editQuote": "Modifica Preventivo",
+      "downloadPdf": "Scarica PDF"
+    },
+    "pagination": {
+      "showing": "Mostrando",
+      "to": "a",
+      "of": "di",
+      "previous": "Precedente",
+      "next": "Successivo"
+    }
+  },
+  "common": {
+    "quotes": "preventivi"
+  },
+  "recentActivity": {
+    "title": "Attività Recenti",
+    "viewAll": "Visualizza Tutto"
+  },
+  "tabs": {
+    "quotes": "Preventivi",
+    "invoices": "Fatture"
+  },
+
   "nexaManager": "Nexa Manager",
   "lifecycle": {
     "currentStatus": "Stato Corrente:",

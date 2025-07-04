@@ -72,6 +72,10 @@
       "amount": "Importo",
       "status": "Stato",
       "actions": "Azioni"
+    },
+    "noInvoices": {
+      "title": "Nessuna fattura trovata",
+      "description": "Inizia creando la tua prima fattura."
     }
   },
   "status": {
@@ -81,24 +85,25 @@
     "draft": "Bozza"
   },
   "pagination": {
-    "showing": "Mostrando",
+    "showing": "Mostrando da {{start}} a {{end}} di {{total}} risultati",
     "previous": "Precedente",
     "next": "Successivo"
   },
   "recentActivity": {
     "title": "Attività Recente",
     "viewAll": "Visualizza Tutto",
-    "payment": "Pagamento ricevuto",
-    "created": "Fattura creata",
+    "payment": "Pagamento ricevuto per la fattura {{invoiceId}} da {{clientName}}",
+    "created": "Fattura {{invoiceId}} creata per {{clientName}}",
     "reminder": "Promemoria inviato",
-    "overdue": "Fattura scaduta",
+    "overdue": "La fattura {{invoiceId}} di {{clientName}} è scaduta",
     "time": {
       "minutesAgo": "{{count}} minuti fa",
       "hourAgo": "1 ora fa",
       "hoursAgo": "{{count}} ore fa",
       "dayAgo": "1 giorno fa",
       "daysAgo": "{{count}} giorni fa"
-    }
+    },
+    "noActivity": "Nessuna attività recente da visualizzare"
   },
   "quickActions": {
     "createInvoice": {
@@ -138,7 +143,8 @@
     },
     "topClients": {
       "title": "Migliori Clienti",
-      "viewAllClients": "Visualizza Tutti i Clienti"
+      "viewAllClients": "Visualizza Tutti i Clienti",
+      "noClients": "Nessun dato sui clienti disponibile"
     }
   },
   "footer": {
@@ -168,7 +174,16 @@
       "button": "Contatta il Supporto"
     },
     "quoteToInvoice": "Converti Preventivo in Fattura",
-    "quoteToInvoiceSuccess": "Preventivo convertito in fattura con successo."
+    "quoteToInvoiceSuccess": "Preventivo convertito in fattura con successo.",
+    "totalValue": "Valore totale",
+    "paidAmount": "Importo Pagato",
+    "ofTotal": "del totale",
+    "outstanding": "In Sospeso",
+    "toCollect": "Da incassare",
+    "invoiceStatus": "Stato Fattura",
+    "overdueInvoices": "Fatture Scadute",
+    "daysOverdue": "{{count}} giorni di ritardo",
+    "viewAllOverdue": "Visualizza tutte le fatture scadute ({{count}} altre)"
   },
   "paymentModal": {
     "newPayment": "Nuovo Pagamento",
@@ -226,42 +241,6 @@
     "stripe": "Stripe",
     "other": "Altro"
   },
-  "footer": {
-    "description": "Semplifica le operazioni aziendali con la nostra piattaforma di gestione completa.",
-    "resourcesTitle": "Risorse",
-    "legalTitle": "Legale",
-    "contactTitle": "Contattaci",
-    "copyright": "© 2025 Nexa Manager. Tutti i diritti riservati.",
-    "securityVerified": "Sicurezza Verificata",
-    "language": "Italiano (IT)",
-    "resources": {
-      "helpCenter": "Centro Assistenza",
-      "documentation": "Documentazione",
-      "apiReference": "Riferimento API",
-      "systemStatus": "Stato del Sistema"
-    },
-    "legal": {
-      "termsOfService": "Termini di Servizio",
-      "privacyPolicy": "Informativa sulla Privacy",
-      "security": "Sicurezza",
-      "compliance": "Conformità"
-    },
-    "contact": {
-      "email": "support@nexamanager.com",
-      "phone": "Supporto Live (+39 351 693 692)",
-      "description": "Hai bisogno di assistenza? Il nostro team di supporto è disponibile 24/7 per aiutarti.",
-      "button": "Contatta il Supporto"
-    }
-  },
-  "invoices": {
-    "pagination": {
-      "next": "Successivo"
-    },
-    "recentActivity": {
-      "title": "Attività Recente",
-      "viewAll": "Visualizza Tutto"
-    }
-  },
   "form": {
     "createInvoice": "Crea Fattura",
     "editInvoice": "Modifica Fattura",
@@ -279,10 +258,15 @@
     "categoryPlaceholder": "Inserisci categoria...",
     "description": "Descrizione",
     "descriptionPlaceholder": "Inserisci descrizione...",
-    "issueDate": "Data Emissione",
+    "issueDate": "Data di Emissione",
     "issueDateRequired": "La data di emissione è obbligatoria",
-    "dueDate": "Data Scadenza",
+    "issue_date": "Data di Emissione",
+    "dueDate": "Data di Scadenza",
     "dueDateRequired": "La data di scadenza è obbligatoria",
+    "due_date": "Data di Scadenza",
+    "financialSummary": "Riepilogo Finanziario",
+    "globalDiscount": "Sconto Globale",
+    "currency": "Valuta",
     "pdfSettings": "Impostazioni PDF",
     "pdfTemplate": "Template PDF",
     "pdfActions": "Azioni PDF",
@@ -327,11 +311,11 @@
     "saveFailed": "Errore durante il salvataggio della fattura"
   },
   "loading": {
-    "creating": "Creazione fattura...",
-    "updating": "Aggiornamento fattura..."
+    "invoices": "Caricamento fatture...",
+    "generic": "Caricamento..."
   },
-  "errors": {
-    "saveFailed": "Errore durante il salvataggio della fattura",
-    "loadFailed": "Errore durante il caricamento dei dati del form"
+  "error": {
+    "title": "Errore durante il caricamento delle fatture:",
+    "retry": "Riprova"
   }
 }

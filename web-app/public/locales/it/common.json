@@ -87,6 +87,8 @@
     "today": "Oggi",
     "yesterday": "Ieri",
     "daysAgo": "{{count}} giorni fa",
+    "startDate": "Data Inizio",
+    "endDate": "Data Fine",
     "quotes": {
       "tabs": {
         "details": "Dettagli",

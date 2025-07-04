@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   MicrophoneIcon,
   SpeakerWaveIcon,
@@ -6,9 +7,9 @@ import {
   ArrowRightIcon,
   ChevronRightIcon,
   QuestionMarkCircleIcon,
+  HomeIcon,
 } from '@heroicons/react/24/outline';
 import {
-  HomeIcon,
   UsersIcon,
   DocumentTextIcon,
   PlusIcon,
@@ -22,6 +23,7 @@ import { useTranslation } from 'react-i18next';
 
 const Voice = () => {
   const { t } = useTranslation('voice');
+  const navigate = useNavigate();
   const [isListening, setIsListening] = useState(false);
 
   // Handle voice activation
@@ -193,9 +195,21 @@ const Voice = () => {
 
   return (
     <div className='min-h-screen bg-gray-50'>
-      {/* Header Section */}
-      <div className='bg-blue-50 border-b border-gray-200 px-8 py-5'>
-        <h1 className='text-blue-600 text-base font-medium'>Voice Commands</h1>
+      {/* Breadcrumb */}
+      <div className='bg-blue-50 border-b border-gray-200 py-2 px-4 md:px-8'>
+        <div className='flex items-center justify-between'>
+          <div className='flex items-center space-x-2 text-base'>
+            <button 
+              onClick={() => navigate('/dashboard')}
+              className='flex items-center space-x-1 text-blue-600 hover:text-blue-700 font-medium transition-colors'
+            >
+              <HomeIcon className="h-5 w-5" />
+              <span>Dashboard</span>
+            </button>
+            <ChevronRightIcon className='h-4 w-4 text-gray-400' />
+            <span className="text-gray-600 font-bold">Voice Assistant</span>
+          </div>
+        </div>
       </div>
 
       {/* Main Content */}
