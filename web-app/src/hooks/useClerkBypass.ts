@@ -1,12 +1,69 @@
 import { useAuth, useUser, useClerk, useOrganization, useOrganizationList } from '@clerk/clerk-react';
 
+// Type definitions
+interface MockEmailAddress {
+  id: string;
+  emailAddress: string;
+  verification: { status: string };
+}
+
+interface MockUser {
+  id: string;
+  firstName: string;
+  lastName: string;
+  fullName: string;
+  imageUrl: string | null;
+  emailAddresses: MockEmailAddress[];
+  primaryEmailAddress: MockEmailAddress;
+  unsafeMetadata?: {
+    onboardingComplete?: boolean;
+    [key: string]: any;
+  };
+}
+
+interface MockOrganization {
+  id: string;
+  name: string;
+  slug: string;
+  membersCount: number;
+  publicMetadata: Record<string, any>;
+  privateMetadata: Record<string, any>;
+}
+
+interface MockAuth {
+  isSignedIn: boolean;
+  isLoaded: boolean;
+  user: MockUser | null;
+  isAuthenticated: boolean;
+  loading: boolean;
+}
+
+interface MockClerk {
+  signOut: () => Promise<void>;
+  session: {
+    id: string;
+    user: MockUser;
+  };
+}
+
+interface MockOrganizationData {
+  organization: MockOrganization | null;
+  isLoaded: boolean;
+}
+
+interface MockOrganizationList {
+  organizationList: MockOrganization[];
+  isLoaded: boolean;
+  setActive: () => Promise<void>;
+}
+
 // Check if we're in development mode
 const isDevelopment = import.meta.env.DEV;
 const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
 const shouldBypassClerk = isDevelopment && isLocalhost;
 
 // Mock data for development mode
-const mockUser = {
+const mockUser: MockUser = {
   id: 'dev-user-1',
   firstName: 'Dev',
   lastName: 'User',
@@ -21,10 +78,13 @@ const mockUser = {
     id: 'dev-email-1',
     emailAddress: 'dev@localhost.com',
     verification: { status: 'verified' }
+  },
+  unsafeMetadata: {
+    onboardingComplete: true
   }
 };
 
-const mockOrganization = {
+const mockOrganization: MockOrganization = {
   id: 'dev-org-1',
   name: 'Development Organization',
   slug: 'dev-org',
@@ -33,7 +93,7 @@ const mockOrganization = {
   privateMetadata: {}
 };
 
-const mockAuth = {
+const mockAuth: MockAuth = {
   isSignedIn: true,
   isLoaded: true,
   user: mockUser,
@@ -41,8 +101,8 @@ const mockAuth = {
   loading: false
 };
 
-const mockClerk = {
-  signOut: async () => {
+const mockClerk: MockClerk = {
+  signOut: async (): Promise<void> => {
     console.log('🚧 Mock signOut called in development mode');
     return Promise.resolve();
   },
@@ -52,15 +112,15 @@ const mockClerk = {
   }
 };
 
-const mockOrganizationData = {
+const mockOrganizationData: MockOrganizationData = {
   organization: mockOrganization,
   isLoaded: true
 };
 
-const mockOrganizationList = {
+const mockOrganizationList: MockOrganizationList = {
   organizationList: [mockOrganization],
   isLoaded: true,
-  setActive: async () => {
+  setActive: async (): Promise<void> => {
     console.log('🚧 Mock setActive called in development mode');
     return Promise.resolve();
   }
@@ -108,4 +168,4 @@ export const useOrganizationListBypass = () => {
 };
 
 // Export bypass status for other components
-export const isClerkBypassed = shouldBypassClerk; 
+export const isClerkBypassed: boolean = shouldBypassClerk; 

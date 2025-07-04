@@ -1,5 +1,5 @@
 import { Navigate, useLocation } from 'react-router-dom';
-import { useAuth, useUser } from '@clerk/clerk-react';
+import { useAuth } from '@clerk/clerk-react';
 import { ReactNode } from 'react';
 
 interface ProtectedRouteProps {
@@ -22,7 +22,6 @@ export default function ProtectedRoute({ children }: ProtectedRouteProps) {
 
   // Production mode with Clerk
   const { isSignedIn, isLoaded } = useAuth();
-  const { user } = useUser();
 
   // Wait for Clerk to load
   if (!isLoaded) {
