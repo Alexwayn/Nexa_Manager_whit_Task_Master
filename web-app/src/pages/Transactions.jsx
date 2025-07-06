@@ -825,7 +825,7 @@ export default function Transactions() {
                   {incomeTransactions.map(transaction => (
                     <div
                       key={transaction.id}
-                      className='grid grid-cols-5 gap-4 px-3 py-4 border-b border-gray-100 text-sm'
+                      className='grid grid-cols-5 gap-4 px-3 py-4 border-b border-gray-100 text-body'
                     >
                       <span className='text-gray-900'>{transaction.date}</span>
                       <div className='flex items-center gap-2'>
@@ -843,7 +843,7 @@ export default function Transactions() {
                         +${transaction.amount.toLocaleString()}
                       </span>
                       <div className='flex justify-center'>
-                        <span className='bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs font-semibold'>
+                        <span className='bg-green-100 text-green-800 px-2 py-1 rounded-full text-caption font-semibold'>
                           {safeT(
                             `income.status.${transaction.status.toLowerCase()}`,
                             {},
@@ -908,7 +908,7 @@ export default function Transactions() {
                   {expenseTransactions.map(transaction => (
                     <div
                       key={transaction.id}
-                      className='grid grid-cols-5 gap-4 px-3 py-4 border-b border-gray-100 text-sm'
+                      className='grid grid-cols-5 gap-4 px-3 py-4 border-b border-gray-100 text-body'
                     >
                       <span className='text-gray-900'>{transaction.date}</span>
                       <span>
@@ -923,7 +923,7 @@ export default function Transactions() {
                         -${transaction.amount.toLocaleString()}
                       </span>
                       <div className='flex justify-center'>
-                        <span className='bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs font-semibold'>
+                        <span className='bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-caption font-semibold'>
                           {safeT(
                             `expenses.status.${transaction.status.toLowerCase()}`,
                             {},
@@ -1009,7 +1009,7 @@ export default function Transactions() {
                           </span>
                         </div>
                       </div>
-                      <div className='flex justify-between text-sm text-gray-500'>
+                      <div className='flex justify-between text-body text-gray-500'>
                         <span>Actual: ${item.actual.toLocaleString()}</span>
                         <span>Budget: ${item.budget.toLocaleString()}</span>
                       </div>
@@ -1021,7 +1021,7 @@ export default function Transactions() {
                       </div>
                       <div className='text-right'>
                         <span
-                          className={`text-xs ${item.status === 'under' ? 'text-green-600' : 'text-red-600'}`}
+                          className={`text-caption ${item.status === 'under' ? 'text-green-600' : 'text-red-600'}`}
                         >
                           {item.status === 'under' ? '-' : '+'}
                           {Math.abs(item.variance).toLocaleString()} ({item.percentage}%)
@@ -1045,14 +1045,14 @@ export default function Transactions() {
               <div className='bg-white rounded-xl shadow-sm p-6'>
                 <div className='flex items-center justify-between mb-4'>
                   <h3 className='text-section-title'>{safeT('cashFlow.title', {}, 'Cash Flow Forecast')}</h3>
-                  <div className='bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs'>
+                  <div className='bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-caption'>
                     {safeT('cashFlow.next90Days', {}, 'Next 90 Days')}
                   </div>
                 </div>
                 {/* Chart Container */}
                 <div className='h-80 bg-white rounded-lg mb-4 relative'>
                   {/* Y-axis labels */}
-                  <div className='absolute left-0 top-0 h-full flex flex-col justify-between text-xs text-gray-400 py-2'>
+                  <div className='absolute left-0 top-0 h-full flex flex-col justify-between text-caption text-gray-400 py-2'>
                     <span>60000</span>
                     <span>45000</span>
                     <span>30000</span>
@@ -1135,7 +1135,7 @@ export default function Transactions() {
                   </div>
                   
                   {/* X-axis labels */}
-                  <div className='absolute bottom-0 left-12 right-4 flex justify-between text-xs text-gray-400 pb-2'>
+                  <div className='absolute bottom-0 left-12 right-4 flex justify-between text-caption text-gray-400 pb-2'>
                     <span>Jun 30</span>
                     <span>Jul 15</span>
                     <span>Jul 30</span>
@@ -1260,8 +1260,8 @@ export default function Transactions() {
                 <div className='space-y-6'>
                   {/* Forecast Period */}
                   <div>
-                    <label className='block text-sm font-medium text-gray-700 mb-2'>{safeT('forecastModal.forecastPeriod', {}, 'Forecast Period')}</label>
-                    <select className='w-full border border-gray-300 rounded-md px-3 py-2 focus:border-blue-500 focus:outline-none'>
+                    <label className='block text-body font-medium text-gray-700 mb-2'>{safeT('forecastModal.forecastPeriod', {}, 'Forecast Period')}</label>
+                    <select className='w-full border border-gray-300 rounded px-3 py-2 text-body focus:border-blue-500 focus:outline-none'>
                       <option>{safeT('forecastModal.next3Months', {}, 'Next 3 Months')}</option>
                       <option>{safeT('forecastModal.next6Months', {}, 'Next 6 Months')}</option>
                       <option>{safeT('forecastModal.next12Months', {}, 'Next 12 Months')}</option>
@@ -1344,29 +1344,29 @@ export default function Transactions() {
                     <div key={item.id} className='border border-gray-200 rounded-lg p-4'>
                       <div className='grid grid-cols-5 gap-4 items-center'>
                         <div>
-                          <label className='block text-xs text-gray-500 mb-1'>{safeT('recurringModal.name', {}, 'Name')}</label>
+                          <label className='block text-caption text-gray-500 mb-1'>{safeT('recurringModal.name', {}, 'Name')}</label>
                           <input
                             type='text'
                             value={item.name}
                             onChange={(e) => handleUpdateRecurringItem(item.id, 'name', e.target.value)}
-                            className='w-full border border-gray-300 rounded px-2 py-1 text-sm focus:border-blue-500 focus:outline-none'
+                            className='w-full border border-gray-300 rounded px-2 py-1 text-body focus:border-blue-500 focus:outline-none'
                           />
                         </div>
                         <div>
-                          <label className='block text-xs text-gray-500 mb-1'>{safeT('recurringModal.amount', {}, 'Amount')}</label>
+                          <label className='block text-caption text-gray-500 mb-1'>{safeT('recurringModal.amount', {}, 'Amount')}</label>
                           <input
                             type='number'
                             value={item.amount}
                             onChange={(e) => handleUpdateRecurringItem(item.id, 'amount', parseFloat(e.target.value) || 0)}
-                            className='w-full border border-gray-300 rounded px-2 py-1 text-sm focus:border-blue-500 focus:outline-none'
+                            className='w-full border border-gray-300 rounded px-2 py-1 text-body focus:border-blue-500 focus:outline-none'
                           />
                         </div>
                         <div>
-                          <label className='block text-xs text-gray-500 mb-1'>{safeT('recurringModal.frequency', {}, 'Frequency')}</label>
+                          <label className='block text-caption text-gray-500 mb-1'>{safeT('recurringModal.frequency', {}, 'Frequency')}</label>
                           <select
                             value={item.frequency}
                             onChange={(e) => handleUpdateRecurringItem(item.id, 'frequency', e.target.value)}
-                            className='w-full border border-gray-300 rounded px-2 py-1 text-sm focus:border-blue-500 focus:outline-none'
+                            className='w-full border border-gray-300 rounded px-2 py-1 text-body focus:border-blue-500 focus:outline-none'
                           >
                             <option>{safeT('recurringModal.weekly', {}, 'Weekly')}</option>
                             <option>{safeT('recurringModal.monthly', {}, 'Monthly')}</option>
@@ -1375,12 +1375,12 @@ export default function Transactions() {
                           </select>
                         </div>
                         <div>
-                          <label className='block text-xs text-gray-500 mb-1'>{safeT('recurringModal.nextDate', {}, 'Next Date')}</label>
+                          <label className='block text-caption text-gray-500 mb-1'>{safeT('recurringModal.nextDate', {}, 'Next Date')}</label>
                           <input
                             type='date'
                             value={item.nextDate}
                             onChange={(e) => handleUpdateRecurringItem(item.id, 'nextDate', e.target.value)}
-                            className='w-full border border-gray-300 rounded px-2 py-1 text-sm focus:border-blue-500 focus:outline-none'
+                            className='w-full border border-gray-300 rounded px-2 py-1 text-body focus:border-blue-500 focus:outline-none'
                           />
                         </div>
                         <div className='flex justify-end'>
@@ -1436,7 +1436,7 @@ export default function Transactions() {
                     <h2 className='text-page-title text-gray-900'>
                       {safeT('incomeModal.title', {}, 'Add Income Transaction')}
                     </h2>
-                    <p className='text-sm text-gray-600 mt-1'>{safeT('incomeModal.description', {}, 'Record a new income transaction')}</p>
+                    <p className='text-body text-gray-600 mt-1'>{safeT('incomeModal.description', {}, 'Record a new income transaction')}</p>
                   </div>
                 </div>
                 <button
@@ -1451,7 +1451,7 @@ export default function Transactions() {
               <div className='p-6'>
                 <form className='space-y-4'>
                   <div>
-                    <label className='block text-sm font-medium text-gray-700 mb-2'>
+                    <label className='block text-body font-medium text-gray-700 mb-2'>
                       {safeT('incomeModal.amount', {}, 'Amount')}
                     </label>
                     <input
@@ -1461,7 +1461,7 @@ export default function Transactions() {
                     />
                   </div>
                   <div>
-                    <label className='block text-sm font-medium text-gray-700 mb-2'>
+                    <label className='block text-body font-medium text-gray-700 mb-2'>
                       {safeT('incomeModal.category', {}, 'Category')}
                     </label>
                     <select className='w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all'>
@@ -1473,7 +1473,7 @@ export default function Transactions() {
                     </select>
                   </div>
                   <div>
-                    <label className='block text-sm font-medium text-gray-700 mb-2'>
+                    <label className='block text-body font-medium text-gray-700 mb-2'>
                       {safeT('incomeModal.client', {}, 'Client')}
                     </label>
                     <input
@@ -1483,7 +1483,7 @@ export default function Transactions() {
                     />
                   </div>
                   <div>
-                    <label className='block text-sm font-medium text-gray-700 mb-2'>
+                    <label className='block text-body font-medium text-gray-700 mb-2'>
                       {safeT('incomeModal.date', {}, 'Date')}
                     </label>
                     <input
@@ -1492,7 +1492,7 @@ export default function Transactions() {
                     />
                   </div>
                   <div>
-                    <label className='block text-sm font-medium text-gray-700 mb-2'>
+                    <label className='block text-body font-medium text-gray-700 mb-2'>
                       {safeT('incomeModal.description', {}, 'Description')}
                     </label>
                     <textarea
@@ -1537,7 +1537,7 @@ export default function Transactions() {
                     <h2 className='text-page-title text-gray-900'>
                       {safeT('expenseModal.title', {}, 'Add Expense Transaction')}
                     </h2>
-                    <p className='text-sm text-gray-600 mt-1'>{safeT('expenseModal.description', {}, 'Record a new expense transaction')}</p>
+                    <p className='text-body text-gray-600 mt-1'>{safeT('expenseModal.description', {}, 'Record a new expense transaction')}</p>
                   </div>
                 </div>
                 <button
@@ -1552,7 +1552,7 @@ export default function Transactions() {
               <div className='p-6'>
                 <form className='space-y-4'>
                   <div>
-                    <label className='block text-sm font-medium text-gray-700 mb-2'>
+                    <label className='block text-body font-medium text-gray-700 mb-2'>
                       {safeT('expenseModal.amount', {}, 'Amount')}
                     </label>
                     <input
@@ -1562,7 +1562,7 @@ export default function Transactions() {
                     />
                   </div>
                   <div>
-                    <label className='block text-sm font-medium text-gray-700 mb-2'>
+                    <label className='block text-body font-medium text-gray-700 mb-2'>
                       {safeT('expenseModal.category', {}, 'Category')}
                     </label>
                     <select className='w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none transition-all'>
@@ -1575,7 +1575,7 @@ export default function Transactions() {
                     </select>
                   </div>
                   <div>
-                    <label className='block text-sm font-medium text-gray-700 mb-2'>
+                    <label className='block text-body font-medium text-gray-700 mb-2'>
                       {safeT('expenseModal.vendor', {}, 'Vendor')}
                     </label>
                     <input
@@ -1585,7 +1585,7 @@ export default function Transactions() {
                     />
                   </div>
                   <div>
-                    <label className='block text-sm font-medium text-gray-700 mb-2'>
+                    <label className='block text-body font-medium text-gray-700 mb-2'>
                       {safeT('expenseModal.date', {}, 'Date')}
                     </label>
                     <input
@@ -1594,7 +1594,7 @@ export default function Transactions() {
                     />
                   </div>
                   <div>
-                    <label className='block text-sm font-medium text-gray-700 mb-2'>
+                    <label className='block text-body font-medium text-gray-700 mb-2'>
                       {safeT('expenseModal.description', {}, 'Description')}
                     </label>
                     <textarea
@@ -1641,7 +1641,7 @@ export default function Transactions() {
                     <h2 className='text-page-title text-gray-900'>
                       {safeT('budgetModal.title', {}, 'Adjust Budget Categories')}
                     </h2>
-                    <p className='text-subtitle text-gray-600 mt-1'>{safeT('budgetModal.description', {}, 'Manage your budget allocations and track spending')}</p>
+                    <p className='text-body text-gray-600 mt-1'>{safeT('budgetModal.description', {}, 'Manage your budget allocations and track spending')}</p>
                   </div>
                 </div>
                 <button
@@ -1698,17 +1698,17 @@ export default function Transactions() {
                         {/* Budget Overview */}
                         <div className='grid grid-cols-3 gap-4 mb-4'>
                           <div className='text-center p-3 bg-gray-50 rounded-lg'>
-                            <div className='text-xs text-gray-500 uppercase tracking-wide mb-1'>Spent</div>
+                            <div className='text-caption text-gray-500 uppercase tracking-wide mb-1'>Spent</div>
                             <div className='text-lg font-bold text-gray-900'>${category.spent.toLocaleString()}</div>
                           </div>
                           <div className='text-center p-3 bg-blue-50 rounded-lg'>
-                            <div className='text-xs text-blue-600 uppercase tracking-wide mb-1'>Budget</div>
+                            <div className='text-caption text-blue-600 uppercase tracking-wide mb-1'>Budget</div>
                             <div className='text-lg font-bold text-blue-700'>${category.budget.toLocaleString()}</div>
                           </div>
                           <div className={`text-center p-3 rounded-lg ${
                             isOverBudget ? 'bg-red-50' : 'bg-green-50'
                           }`}>
-                            <div className={`text-xs uppercase tracking-wide mb-1 ${
+                            <div className={`text-caption uppercase tracking-wide mb-1 ${
                               isOverBudget ? 'text-red-600' : 'text-green-600'
                             }`}>
                               {isOverBudget ? 'Over' : 'Remaining'}
@@ -1724,10 +1724,10 @@ export default function Transactions() {
                         {/* Enhanced Progress Bar */}
                         <div className='mb-4'>
                           <div className='flex justify-between items-center mb-2'>
-                            <span className='text-sm font-medium text-gray-700'>
+                            <span className='text-body font-medium text-gray-700'>
                               {safeT('budgetModal.progress', {}, 'Progress')}: {spentPercentage.toFixed(1)}%
                             </span>
-                            <span className={`text-sm font-semibold px-2 py-1 rounded-full ${
+                            <span className={`text-body font-semibold px-2 py-1 rounded-full ${
                               isOverBudget 
                                 ? 'bg-red-100 text-red-700' 
                                 : spentPercentage > 80 
@@ -1768,7 +1768,7 @@ export default function Transactions() {
                                   ? 'bg-yellow-500'
                                   : 'bg-green-500'
                             }`}></div>
-                            <span className='text-sm text-gray-600'>
+                            <span className='text-body text-gray-600'>
                               {isOverBudget 
                                 ? safeT('budgetModal.overBudget', {}, 'Budget exceeded')
                                 : spentPercentage > 80 
@@ -1777,7 +1777,7 @@ export default function Transactions() {
                               }
                             </span>
                           </div>
-                          <span className={`text-sm font-medium ${
+                          <span className={`text-body font-medium ${
                             isOverBudget ? 'text-red-600' : 'text-green-600'
                           }`}>
                             {isOverBudget ? '-' : '+'}${Math.abs(remaining).toLocaleString()} {safeT('budgetModal.remaining', {}, 'remaining')}
@@ -1801,7 +1801,7 @@ export default function Transactions() {
 
                 {/* Modal Footer */}
                 <div className='flex items-center justify-between mt-8 pt-6 border-t border-gray-200'>
-                  <div className='text-sm text-gray-500'>
+                  <div className='text-body text-gray-500'>
                     {safeT('budgetModal.totalBudget', {}, 'Total Budget')}: <span className='font-semibold text-gray-700'>
                       ${budgetCategories.reduce((sum, cat) => sum + cat.budget, 0).toLocaleString()}
                     </span>
