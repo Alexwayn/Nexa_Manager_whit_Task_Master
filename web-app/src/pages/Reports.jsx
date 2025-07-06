@@ -305,11 +305,11 @@ const Reports = () => {
     if (!data || !data.revenue || !data.months) {
       return (
         <div className='bg-white rounded-lg p-6 border border-gray-200 shadow-sm'>
-          <h3 className='text-lg font-semibold text-gray-900 mb-4'>{title}</h3>
+          <h3 className='text-card-title font-semibold text-gray-900 mb-4'>{title}</h3>
           <div className='h-64 flex items-center justify-center'>
             <div className='text-center'>
               <ChartBarIcon className='h-12 w-12 text-gray-400 mx-auto mb-2' />
-              <p className='text-sm text-gray-500'>No data available</p>
+              <p className='text-body text-gray-500'>No data available</p>
             </div>
           </div>
         </div>
@@ -318,7 +318,7 @@ const Reports = () => {
 
     return (
       <div className='bg-white rounded-lg p-6 border border-gray-200 shadow-sm'>
-        <h3 className='text-lg font-semibold text-gray-900 mb-4'>{title}</h3>
+        <h3 className='text-card-title font-semibold text-gray-900 mb-4'>{title}</h3>
         <div className='h-64 flex items-end justify-between space-x-2'>
           {data.revenue.map((value, index) => (
             <div key={index} className='flex flex-col items-center space-y-2 flex-1'>
@@ -336,19 +336,19 @@ const Reports = () => {
                   ></div>
                 )}
               </div>
-              <span className='text-xs text-gray-600'>{data.months[index]}</span>
+              <span className='text-caption text-gray-600'>{data.months[index]}</span>
             </div>
           ))}
         </div>
         <div className='flex justify-center mt-4 space-x-6'>
           <div className='flex items-center space-x-2'>
             <div className='w-3 h-3 bg-blue-500 rounded'></div>
-            <span className='text-sm text-gray-600'>Revenue</span>
+            <span className='text-body text-gray-600'>Revenue</span>
           </div>
           {data.expenses && (
             <div className='flex items-center space-x-2'>
               <div className='w-3 h-3 bg-gray-300 rounded'></div>
-              <span className='text-sm text-gray-600'>Expenses</span>
+              <span className='text-body text-gray-600'>Expenses</span>
             </div>
           )}
         </div>
@@ -358,10 +358,10 @@ const Reports = () => {
 
   const SimplePieChart = ({ title, data }) => (
     <div className='bg-white rounded-lg p-6 border border-gray-200 shadow-sm'>
-      <h3 className='text-lg font-semibold text-gray-900 mb-4'>{title}</h3>
+      <h3 className='text-card-title font-semibold text-gray-900 mb-4'>{title}</h3>
       <div className='flex items-center justify-center h-48'>
         <div className='w-32 h-32 rounded-full border-8 border-blue-500 flex items-center justify-center bg-gray-100'>
-          <span className='text-sm text-gray-600'>Chart</span>
+          <span className='text-body text-gray-600'>Chart</span>
         </div>
       </div>
     </div>
@@ -371,7 +371,7 @@ const Reports = () => {
     <div className='min-h-screen bg-white'>
       {/* Breadcrumb */}
       <div className='bg-blue-50 border-b border-gray-200 px-6 py-3'>
-        <div className='flex items-center space-x-2 text-base'>
+        <div className='flex items-center space-x-2 text-nav-text'>
           <HomeIcon className='h-5 w-5 text-blue-600' />
           <button 
             onClick={() => navigate('/dashboard')}
@@ -387,11 +387,11 @@ const Reports = () => {
       {/* Header */}
       <div className='px-6 py-4'>
         <div className='flex items-center justify-between'>
-          <h1 className='text-2xl font-semibold text-black'>Reports and Analysis</h1>
+          <h1 className='text-page-title font-semibold text-black'>Reports and Analysis</h1>
           <div className='flex items-center space-x-3'>
             {/* Time Range Selector */}
             <div className='relative'>
-              <button className='flex items-center space-x-2 px-4 py-2 border border-gray-300 rounded-md bg-white text-sm font-normal text-black hover:bg-gray-50'>
+              <button className='flex items-center space-x-2 px-4 py-2 border border-gray-300 rounded-md bg-white text-body font-normal text-black hover:bg-gray-50'>
                 <CalendarIcon className='h-4 w-4 text-gray-500' />
                 <span>{timeRange}</span>
                 <ChevronDownIcon className='h-4 w-4 text-gray-500' />
@@ -399,7 +399,7 @@ const Reports = () => {
             </div>
 
             {/* Export Button */}
-            <button className='flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-md text-sm font-normal hover:bg-blue-700'>
+            <button className='flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-md text-body font-normal hover:bg-blue-700'>
               <ArrowDownTrayIcon className='h-4 w-4' />
               <span>Export</span>
             </button>
@@ -412,7 +412,7 @@ const Reports = () => {
         <div className='flex space-x-10'>
           <button
             onClick={() => setActiveTab('financial')}
-            className={`py-3 px-4 text-base font-medium border-b-2 ${
+            className={`py-3 px-4 text-nav-text font-medium border-b-2 ${
               activeTab === 'financial'
                 ? 'text-blue-600 border-blue-600'
                 : 'text-gray-500 border-transparent hover:text-gray-700'
@@ -422,7 +422,7 @@ const Reports = () => {
           </button>
           <button
             onClick={() => setActiveTab('client')}
-            className={`py-3 px-4 text-base font-medium border-b-2 ${
+            className={`py-3 px-4 text-nav-text font-medium border-b-2 ${
               activeTab === 'client'
                 ? 'text-blue-600 border-blue-600'
                 : 'text-gray-500 border-transparent hover:text-gray-700'
@@ -432,7 +432,7 @@ const Reports = () => {
           </button>
           <button
             onClick={() => setActiveTab('custom')}
-            className={`py-3 px-4 text-base font-medium border-b-2 ${
+            className={`py-3 px-4 text-nav-text font-medium border-b-2 ${
               activeTab === 'custom'
                 ? 'text-blue-600 border-blue-600'
                 : 'text-gray-500 border-transparent hover:text-gray-700'
@@ -463,15 +463,15 @@ const Reports = () => {
                 </div>
 
                 {/* Title */}
-                <h3 className='text-base font-semibold text-gray-900 mb-1'>{report.title}</h3>
+                <h3 className='text-card-title font-semibold text-gray-900 mb-1'>{report.title}</h3>
 
                 {/* Description */}
-                <p className='text-sm text-gray-500 mb-4 leading-5'>{report.description}</p>
+                <p className='text-body text-gray-500 mb-4 leading-5'>{report.description}</p>
 
                 {/* Generate Report Button */}
                 <button
                   onClick={() => handleGenerateReport(report.id)}
-                  className='flex items-center space-x-1 text-blue-600 text-sm font-normal hover:text-blue-700 transition-colors duration-200'
+                  className='flex items-center space-x-1 text-blue-600 text-body font-normal hover:text-blue-700 transition-colors duration-200'
                 >
                   <span>Generate Report</span>
                   <ArrowRightIcon className='h-4 w-4' />
@@ -497,7 +497,7 @@ const Reports = () => {
                       <IconComponent className={`h-5 w-5 ${metric.iconColor}`} />
                     </div>
                     <div
-                      className={`flex items-center space-x-1 text-sm ${
+                      className={`flex items-center space-x-1 text-body ${
                         metric.trend === 'up' ? 'text-green-600' : 'text-red-600'
                       }`}
                     >
@@ -505,10 +505,10 @@ const Reports = () => {
                     </div>
                   </div>
                   <div>
-                    <p className='text-sm text-gray-600 mb-1'>
+                    <p className='text-body text-gray-600 mb-1'>
                       {key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}
                     </p>
-                    <p className='text-2xl font-semibold text-gray-900'>{metric.value}</p>
+                    <p className='text-page-title font-semibold text-gray-900'>{metric.value}</p>
                   </div>
                 </div>
               );
@@ -542,12 +542,12 @@ const Reports = () => {
           <div className='grid grid-cols-1 lg:grid-cols-3 gap-6'>
             {/* Report Builder */}
             <div className='bg-white rounded-lg p-6 border border-gray-200 shadow-sm'>
-              <h3 className='text-base font-semibold text-gray-900 mb-4'>Report Builder</h3>
+              <h3 className='text-card-title font-semibold text-gray-900 mb-4'>Report Builder</h3>
               
               <div className='space-y-4'>
                 <div>
-                  <label className='block text-sm text-gray-700 mb-2'>Report Type</label>
-                  <select className='w-full p-2 border border-gray-300 rounded-md text-sm'>
+                  <label className='block text-body text-gray-700 mb-2'>Report Type</label>
+                  <select className='w-full p-2 border border-gray-300 rounded-md text-body'>
                     <option>Financial Overview</option>
                     <option>Client Analysis</option>
                     <option>Performance Metrics</option>
@@ -555,62 +555,62 @@ const Reports = () => {
                 </div>
 
                 <div>
-                  <label className='block text-sm text-gray-700 mb-2'>Date Range</label>
+                  <label className='block text-body text-gray-700 mb-2'>Date Range</label>
                   <div className='grid grid-cols-2 gap-2'>
                     <input
                       type='date'
-                      className='p-2 border border-gray-300 rounded-md text-sm'
+                      className='p-2 border border-gray-300 rounded-md text-body'
                       placeholder='Start Date'
                     />
                     <input
                       type='date'
-                      className='p-2 border border-gray-300 rounded-md text-sm'
+                      className='p-2 border border-gray-300 rounded-md text-body'
                       placeholder='End Date'
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className='block text-sm text-gray-700 mb-2'>Metrics</label>
+                  <label className='block text-body text-gray-700 mb-2'>Metrics</label>
                   <div className='space-y-2'>
                     <label className='flex items-center space-x-2'>
                       <input type='checkbox' defaultChecked className='rounded text-blue-600' />
-                      <span className='text-sm text-gray-700'>Revenue</span>
+                      <span className='text-body text-gray-700'>Revenue</span>
                     </label>
                     <label className='flex items-center space-x-2'>
                       <input type='checkbox' defaultChecked className='rounded text-blue-600' />
-                      <span className='text-sm text-gray-700'>Expenses</span>
+                      <span className='text-body text-gray-700'>Expenses</span>
                     </label>
                     <label className='flex items-center space-x-2'>
                       <input type='checkbox' defaultChecked className='rounded text-blue-600' />
-                      <span className='text-sm text-gray-700'>Profit Margin</span>
+                      <span className='text-body text-gray-700'>Profit Margin</span>
                     </label>
                   </div>
                 </div>
 
                 <div>
-                  <label className='block text-sm text-gray-700 mb-2'>Visualization Type</label>
+                  <label className='block text-body text-gray-700 mb-2'>Visualization Type</label>
                   <div className='grid grid-cols-3 gap-2'>
                     <button className='p-3 border-2 border-blue-500 bg-blue-50 rounded-md text-center'>
                       <ChartBarIcon className='h-5 w-5 text-blue-600 mx-auto mb-1' />
-                      <span className='text-xs text-blue-600'>Bar Chart</span>
+                      <span className='text-caption text-blue-600'>Bar Chart</span>
                     </button>
                     <button className='p-3 border border-gray-300 rounded-md text-center hover:bg-gray-50'>
                       <PresentationChartLineIcon className='h-5 w-5 text-gray-400 mx-auto mb-1' />
-                      <span className='text-xs text-gray-600'>Line Chart</span>
+                      <span className='text-caption text-gray-600'>Line Chart</span>
                     </button>
                     <button className='p-3 border border-gray-300 rounded-md text-center hover:bg-gray-50'>
                       <ChartPieIcon className='h-5 w-5 text-gray-400 mx-auto mb-1' />
-                      <span className='text-xs text-gray-600'>Pie Chart</span>
+                      <span className='text-caption text-gray-600'>Pie Chart</span>
                     </button>
                   </div>
                 </div>
 
                 <div className='flex space-x-3 pt-4'>
-                  <button className='flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-md text-sm hover:bg-gray-50'>
+                  <button className='flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-md text-body hover:bg-gray-50'>
                     Save Template
                   </button>
-                  <button className='flex-1 px-4 py-2 bg-blue-600 text-white rounded-md text-sm hover:bg-blue-700'>
+                  <button className='flex-1 px-4 py-2 bg-blue-600 text-white rounded-md text-body hover:bg-blue-700'>
                     Generate Report
                   </button>
                 </div>
@@ -620,7 +620,7 @@ const Reports = () => {
             {/* Report Preview */}
             <div className='lg:col-span-2 bg-white rounded-lg p-6 border border-gray-200 shadow-sm'>
               <div className='flex items-center justify-between mb-4'>
-                <h3 className='text-base font-semibold text-gray-900'>Report Preview</h3>
+                <h3 className='text-card-title font-semibold text-gray-900'>Report Preview</h3>
                 <div className='flex space-x-2'>
                   <button className='p-2 text-gray-400 hover:text-gray-600'>
                     <EyeIcon className='h-5 w-5' />
@@ -635,23 +635,23 @@ const Reports = () => {
               </div>
 
               <div className='border-b border-gray-200 pb-4 mb-4'>
-                <h4 className='text-lg font-medium text-gray-900'>Financial Performance</h4>
-                <p className='text-sm text-gray-600'>Last 6 months revenue analysis</p>
+                <h4 className='text-card-title font-medium text-gray-900'>Financial Performance</h4>
+                <p className='text-body text-gray-600'>Last 6 months revenue analysis</p>
               </div>
 
               <div className='h-64 bg-gray-50 rounded-lg flex items-center justify-center mb-6'>
                 <div className='text-center'>
                   <ChartBarIcon className='h-12 w-12 text-gray-400 mx-auto mb-2' />
-                  <p className='text-sm text-gray-500'>Chart will appear here</p>
+                  <p className='text-body text-gray-500'>Chart will appear here</p>
                 </div>
               </div>
 
               <div className='grid grid-cols-2 gap-4'>
                 <div className='h-32 bg-gray-50 rounded-lg flex items-center justify-center'>
-                  <p className='text-sm text-gray-500'>Client Distribution</p>
+                  <p className='text-body text-gray-500'>Client Distribution</p>
                 </div>
                 <div className='h-32 bg-gray-50 rounded-lg flex items-center justify-center'>
-                  <p className='text-sm text-gray-500'>Invoice Status</p>
+                  <p className='text-body text-gray-500'>Invoice Status</p>
                 </div>
               </div>
             </div>
@@ -665,7 +665,7 @@ const Reports = () => {
           <div className='flex space-x-8'>
             <button
               onClick={() => setReportBuilderTab('recent')}
-              className={`py-3 px-1 text-base font-medium border-b-2 ${
+              className={`py-3 px-1 text-nav-text font-medium border-b-2 ${
                 reportBuilderTab === 'recent'
                   ? 'text-blue-600 border-blue-600'
                   : 'text-gray-500 border-transparent hover:text-gray-700'
@@ -675,7 +675,7 @@ const Reports = () => {
             </button>
             <button
               onClick={() => setReportBuilderTab('saved')}
-              className={`py-3 px-1 text-base font-medium border-b-2 ${
+              className={`py-3 px-1 text-nav-text font-medium border-b-2 ${
                 reportBuilderTab === 'saved'
                   ? 'text-blue-600 border-blue-600'
                   : 'text-gray-500 border-transparent hover:text-gray-700'
@@ -689,7 +689,7 @@ const Reports = () => {
         <div className='bg-white rounded-lg border border-gray-200 overflow-hidden shadow-sm'>
           {/* Table Header */}
           <div className='bg-gray-50 px-6 py-3'>
-            <div className='grid grid-cols-12 gap-4 text-xs font-medium text-gray-500 uppercase tracking-wider'>
+            <div className='grid grid-cols-12 gap-4 text-caption font-medium text-gray-500 uppercase tracking-wider'>
               <div className='col-span-4'>Report Name</div>
               <div className='col-span-2'>Date</div>
               <div className='col-span-2'>Type</div>
@@ -709,12 +709,12 @@ const Reports = () => {
                       <div className='bg-blue-100 rounded-md p-2'>
                         <IconComponent className='h-5 w-5 text-blue-600' />
                       </div>
-                      <span className='text-sm font-medium text-gray-900'>{report.name}</span>
+                      <span className='text-body font-medium text-gray-900'>{report.name}</span>
                     </div>
-                    <div className='col-span-2 text-sm text-gray-600'>{report.date}</div>
+                    <div className='col-span-2 text-body text-gray-600'>{report.date}</div>
                     <div className='col-span-2'>
                       <span
-                        className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${
+                        className={`inline-flex px-2 py-1 text-caption font-medium rounded-full ${
                           report.type === 'Financial'
                             ? 'bg-blue-100 text-blue-800'
                             : report.type === 'Client'
@@ -728,7 +728,7 @@ const Reports = () => {
                     <div className='col-span-2'>
                       <div className='flex items-center space-x-1'>
                         <CheckCircleIcon className='h-4 w-4 text-green-500' />
-                        <span className='text-sm text-gray-600'>{report.status}</span>
+                        <span className='text-body text-gray-600'>{report.status}</span>
                       </div>
                     </div>
                     <div className='col-span-2 flex justify-end space-x-2'>
