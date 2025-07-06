@@ -101,8 +101,8 @@ const Analytics = () => {
       <div className='min-h-screen bg-gray-50 flex items-center justify-center'>
         <div className='text-center'>
           <div className='mx-auto h-12 w-12 text-red-400'>⚠️</div>
-          <h3 className='mt-2 text-sm font-medium text-gray-900'>{error}</h3>
-          <p className='mt-1 text-sm text-gray-500'>Please try again later</p>
+          <h3 className='mt-2 text-error font-medium text-gray-900'>{error}</h3>
+          <p className='mt-1 text-body text-gray-500'>Please try again later</p>
         </div>
       </div>
     );
@@ -114,7 +114,7 @@ const Analytics = () => {
         {/* Breadcrumb */}
         <div className='bg-blue-50 border-b border-gray-200 py-2 px-4 md:px-8'>
           <div className='flex items-center justify-between'>
-            <div className='flex items-center space-x-2 text-base'>
+            <div className='flex items-center space-x-2 text-nav-text'>
               <button 
                 onClick={() => navigate('/dashboard')}
                 className='flex items-center space-x-1 text-blue-600 hover:text-blue-700 font-medium transition-colors'
@@ -134,7 +134,7 @@ const Analytics = () => {
             <div className='flex space-x-6'>
               <button
                 onClick={() => setActiveTab('invoice-analytics')}
-                className={`pb-2 text-base font-medium ${
+                className={`pb-2 text-nav-text font-medium ${
                   activeTab === 'invoice-analytics'
                     ? 'text-blue-600 border-b-2 border-blue-600'
                     : 'text-gray-500 hover:text-gray-700'
@@ -144,7 +144,7 @@ const Analytics = () => {
               </button>
               <button
                 onClick={() => setActiveTab('advanced-analytics')}
-                className={`pb-2 text-base font-medium ${
+                className={`pb-2 text-nav-text font-medium ${
                   activeTab === 'advanced-analytics'
                     ? 'text-blue-600 border-b-2 border-blue-600'
                     : 'text-gray-500 hover:text-gray-700'
@@ -154,7 +154,7 @@ const Analytics = () => {
               </button>
               <button
                 onClick={() => setActiveTab('forecasting')}
-                className={`pb-2 text-base font-medium ${
+                className={`pb-2 text-nav-text font-medium ${
                   activeTab === 'forecasting'
                     ? 'text-blue-600 border-b-2 border-blue-600'
                     : 'text-gray-500 hover:text-gray-700'
@@ -164,7 +164,7 @@ const Analytics = () => {
               </button>
               <button
                 onClick={() => setActiveTab('reports-and-insights')}
-                className={`pb-2 text-base font-medium ${
+                className={`pb-2 text-nav-text font-medium ${
                   activeTab === 'reports-and-insights'
                     ? 'text-blue-600 border-b-2 border-blue-600'
                     : 'text-gray-500 hover:text-gray-700'
@@ -186,8 +186,8 @@ const Analytics = () => {
                 {/* Invoice Status Card */}
                 <div className='bg-white rounded-xl shadow-sm border border-gray-200 p-6'>
                   <div className='flex items-center justify-between mb-6'>
-                    <h3 className='text-lg font-semibold text-black'>Invoice Status</h3>
-                    <div className='flex items-center text-sm text-gray-500'>
+                    <h3 className='text-card-title font-semibold text-black'>Invoice Status</h3>
+                    <div className='flex items-center text-body text-gray-500'>
                       <span>This Month</span>
                       <ChevronDownIcon className='ml-2 h-4 w-4' />
                     </div>
@@ -231,23 +231,23 @@ const Analytics = () => {
                     </div>
                   </div>
 
-                  <div className='flex justify-between text-sm text-gray-500 mb-4'>
+                  <div className='flex justify-between text-body text-gray-500 mb-4'>
                     <span>Paid</span>
                     <span>Pending</span>
                     <span>Overdue</span>
                   </div>
 
                   <div className='flex justify-between'>
-                    <span className='text-lg font-semibold text-green-600'>65%</span>
-                    <span className='text-lg font-semibold text-yellow-500'>25%</span>
-                    <span className='text-lg font-semibold text-red-500'>10%</span>
+                    <span className='text-card-title font-semibold text-green-600'>65%</span>
+                    <span className='text-card-title font-semibold text-yellow-500'>25%</span>
+                    <span className='text-card-title font-semibold text-red-500'>10%</span>
                   </div>
                 </div>
 
                 {/* Invoice Aging Card */}
                 <div className='bg-white rounded-xl shadow-sm border border-gray-200 p-6'>
                   <div className='flex items-center justify-between mb-4'>
-                    <h3 className='text-lg font-semibold text-black'>Invoice Aging</h3>
+                    <h3 className='text-card-title font-semibold text-black'>Invoice Aging</h3>
                     <div className='w-4 h-4 border border-gray-300 rounded'></div>
                   </div>
 
@@ -260,11 +260,11 @@ const Analytics = () => {
                   </div>
 
                   <div className='flex items-center justify-between'>
-                    <span className='text-sm text-gray-500'>
+                    <span className='text-body text-gray-500'>
                       Total Outstanding:{' '}
                       <span className='font-semibold text-gray-900'>$100,000</span>
                     </span>
-                    <div className='flex items-center text-blue-600 text-sm'>
+                    <div className='flex items-center text-blue-600 text-body'>
                       <span>View Details</span>
                       <ArrowRightIcon className='ml-1 h-4 w-4' />
                     </div>
@@ -274,8 +274,8 @@ const Analytics = () => {
                 {/* Recent Payments Card */}
                 <div className='bg-white rounded-xl shadow-sm border border-gray-200 p-6'>
                   <div className='flex items-center justify-between mb-4'>
-                    <h3 className='text-lg font-semibold text-black'>Recent Payments</h3>
-                    <span className='text-blue-600 text-sm cursor-pointer'>View All</span>
+                    <h3 className='text-card-title font-semibold text-black'>Recent Payments</h3>
+                    <span className='text-blue-600 text-body cursor-pointer'>View All</span>
                   </div>
 
                   <div className='space-y-4'>
@@ -289,7 +289,7 @@ const Analytics = () => {
                         </div>
                         <div className='flex-1'>
                           <div className='font-medium text-black'>{payment.company}</div>
-                          <div className='text-sm text-gray-500'>{payment.date}</div>
+                          <div className='text-body text-gray-500'>{payment.date}</div>
                         </div>
                         <div className='font-semibold text-black'>{payment.amount}</div>
                       </div>
@@ -303,7 +303,7 @@ const Analytics = () => {
                 {/* Payment Velocity */}
                 <div className='bg-white rounded-xl shadow-sm border border-gray-200 p-6'>
                   <div className='flex items-center justify-between mb-4'>
-                    <h3 className='text-lg font-semibold text-black'>Payment Velocity</h3>
+                    <h3 className='text-card-title font-semibold text-black'>Payment Velocity</h3>
                     <ChevronDownIcon className='h-4 w-4 text-gray-400' />
                   </div>
 
@@ -327,10 +327,10 @@ const Analytics = () => {
                   </div>
 
                   <div className='flex items-center justify-between'>
-                    <span className='text-sm text-gray-500'>Avg Payment Time</span>
+                    <span className='text-body text-gray-500'>Avg Payment Time</span>
                     <div className='flex items-center'>
-                      <span className='text-lg font-semibold text-black mr-2'>15</span>
-                      <span className='text-sm text-gray-500'>days</span>
+                      <span className='text-card-title font-semibold text-black mr-2'>15</span>
+                      <span className='text-body text-gray-500'>days</span>
                       <ArrowTrendingDownIcon className='ml-2 h-4 w-4 text-green-500' />
                     </div>
                   </div>
@@ -339,8 +339,8 @@ const Analytics = () => {
                 {/* Top Clients */}
                 <div className='bg-white rounded-xl shadow-sm border border-gray-200 p-6'>
                   <div className='flex items-center justify-between mb-4'>
-                    <h3 className='text-lg font-semibold text-black'>Top Clients</h3>
-                    <span className='text-blue-600 text-sm cursor-pointer'>View All</span>
+                    <h3 className='text-card-title font-semibold text-black'>Top Clients</h3>
+                    <span className='text-blue-600 text-body cursor-pointer'>View All</span>
                   </div>
 
                   <div className='space-y-4'>
@@ -352,10 +352,10 @@ const Analytics = () => {
                     ].map((client, index) => (
                       <div key={index} className='flex items-center space-x-3'>
                         <div className='w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center'>
-                          <span className='text-xs font-medium text-blue-600'>{index + 1}</span>
+                          <span className='text-caption font-medium text-blue-600'>{index + 1}</span>
                         </div>
                         <div className='flex-1'>
-                          <div className='font-medium text-black text-sm'>{client.name}</div>
+                          <div className='font-medium text-black text-body'>{client.name}</div>
                           <div className='w-full bg-gray-200 rounded-full h-1.5 mt-1'>
                             <div
                               className='bg-blue-600 h-1.5 rounded-full'
@@ -363,7 +363,7 @@ const Analytics = () => {
                             ></div>
                           </div>
                         </div>
-                        <div className='font-semibold text-black text-sm'>{client.amount}</div>
+                        <div className='font-semibold text-black text-body'>{client.amount}</div>
                       </div>
                     ))}
                   </div>
@@ -372,8 +372,8 @@ const Analytics = () => {
                 {/* Invoice Conversion */}
                 <div className='bg-white rounded-xl shadow-sm border border-gray-200 p-6'>
                   <div className='flex items-center justify-between mb-4'>
-                    <h3 className='text-lg font-semibold text-black'>Invoice Conversion</h3>
-                    <span className='text-blue-600 text-sm cursor-pointer'>Details</span>
+                    <h3 className='text-card-title font-semibold text-black'>Invoice Conversion</h3>
+                    <span className='text-blue-600 text-body cursor-pointer'>Details</span>
                   </div>
 
                   {/* Bar Chart */}
@@ -384,7 +384,7 @@ const Analytics = () => {
                           className='w-6 bg-gradient-to-t from-blue-600 to-blue-400 rounded-t'
                           style={{ height: `${height}%` }}
                         ></div>
-                        <span className='text-xs text-gray-500 mt-2'>
+                        <span className='text-caption text-gray-500 mt-2'>
                           {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'][index]}
                         </span>
                       </div>
@@ -393,16 +393,16 @@ const Analytics = () => {
 
                   <div className='grid grid-cols-3 gap-4 text-center'>
                     <div>
-                      <div className='text-lg font-semibold text-green-600'>142</div>
-                      <div className='text-xs text-gray-500'>Sent</div>
+                      <div className='text-card-title font-semibold text-green-600'>142</div>
+                      <div className='text-caption text-gray-500'>Sent</div>
                     </div>
                     <div>
-                      <div className='text-lg font-semibold text-yellow-500'>24.8</div>
-                      <div className='text-xs text-gray-500'>Viewed</div>
+                      <div className='text-card-title font-semibold text-yellow-500'>24.8</div>
+                      <div className='text-caption text-gray-500'>Viewed</div>
                     </div>
                     <div>
-                      <div className='text-lg font-semibold text-red-500'>18.5</div>
-                      <div className='text-xs text-gray-500'>Paid</div>
+                      <div className='text-card-title font-semibold text-red-500'>18.5</div>
+                      <div className='text-caption text-gray-500'>Paid</div>
                     </div>
                   </div>
                 </div>
@@ -418,8 +418,8 @@ const Analytics = () => {
                 {/* Revenue Breakdown */}
                 <div className='bg-white rounded-xl shadow-sm border border-gray-200 p-6'>
                   <div className='flex items-center justify-between mb-4'>
-                    <h3 className='text-lg font-semibold text-black'>Revenue Breakdown</h3>
-                    <span className='text-blue-600 text-sm cursor-pointer'>Details</span>
+                    <h3 className='text-card-title font-semibold text-black'>Revenue Breakdown</h3>
+                    <span className='text-blue-600 text-body cursor-pointer'>Details</span>
                   </div>
 
                   {/* Donut Chart */}
@@ -463,23 +463,23 @@ const Analytics = () => {
                     <div className='flex items-center justify-between'>
                       <div className='flex items-center'>
                         <div className='w-3 h-3 bg-blue-500 rounded-full mr-2'></div>
-                        <span className='text-sm text-gray-600'>Services</span>
+                        <span className='text-body text-gray-600'>Services</span>
                       </div>
-                      <span className='text-sm font-medium'>$45,000</span>
+                      <span className='text-body font-medium'>$45,000</span>
                     </div>
                     <div className='flex items-center justify-between'>
                       <div className='flex items-center'>
                         <div className='w-3 h-3 bg-green-500 rounded-full mr-2'></div>
-                        <span className='text-sm text-gray-600'>Products</span>
+                        <span className='text-body text-gray-600'>Products</span>
                       </div>
-                      <span className='text-sm font-medium'>$32,000</span>
+                      <span className='text-body font-medium'>$32,000</span>
                     </div>
                     <div className='flex items-center justify-between'>
                       <div className='flex items-center'>
                         <div className='w-3 h-3 bg-yellow-500 rounded-full mr-2'></div>
-                        <span className='text-sm text-gray-600'>Consulting</span>
+                        <span className='text-body text-gray-600'>Consulting</span>
                       </div>
-                      <span className='text-sm font-medium'>$23,000</span>
+                      <span className='text-body font-medium'>$23,000</span>
                     </div>
                   </div>
                 </div>
@@ -487,7 +487,7 @@ const Analytics = () => {
                 {/* Monthly Expenses */}
                 <div className='bg-white rounded-xl shadow-sm border border-gray-200 p-6'>
                   <div className='flex items-center justify-between mb-4'>
-                    <h3 className='text-lg font-semibold text-black'>Monthly Expenses</h3>
+                    <h3 className='text-card-title font-semibold text-black'>Monthly Expenses</h3>
                     <ChevronDownIcon className='h-4 w-4 text-gray-400' />
                   </div>
 
@@ -499,7 +499,7 @@ const Analytics = () => {
                           className='w-8 bg-gradient-to-t from-purple-600 to-purple-400 rounded-t'
                           style={{ height: `${height}%` }}
                         ></div>
-                        <span className='text-xs text-gray-500 mt-2'>
+                        <span className='text-caption text-gray-500 mt-2'>
                           {['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'][index]}
                         </span>
                       </div>
@@ -507,16 +507,16 @@ const Analytics = () => {
                   </div>
 
                   <div className='text-center'>
-                    <div className='text-2xl font-bold text-black'>$18,500</div>
-                    <div className='text-sm text-gray-500'>Average Monthly</div>
+                    <div className='text-page-title font-bold text-black'>$18,500</div>
+                    <div className='text-body text-gray-500'>Average Monthly</div>
                   </div>
                 </div>
 
                 {/* Cash Flow Analysis */}
                 <div className='bg-white rounded-xl shadow-sm border border-gray-200 p-6'>
                   <div className='flex items-center justify-between mb-4'>
-                    <h3 className='text-lg font-semibold text-black'>Cash Flow Analysis</h3>
-                    <span className='text-blue-600 text-sm cursor-pointer'>Report</span>
+                    <h3 className='text-card-title font-semibold text-black'>Cash Flow Analysis</h3>
+                    <span className='text-blue-600 text-body cursor-pointer'>Report</span>
                   </div>
 
                   {/* Area Chart Placeholder */}
@@ -543,12 +543,12 @@ const Analytics = () => {
 
                   <div className='grid grid-cols-2 gap-4'>
                     <div className='text-center'>
-                      <div className='text-lg font-semibold text-green-600'>+$45,200</div>
-                      <div className='text-xs text-gray-500'>Inflow</div>
+                      <div className='text-card-title font-semibold text-green-600'>+$45,200</div>
+                      <div className='text-caption text-gray-500'>Inflow</div>
                     </div>
                     <div className='text-center'>
-                      <div className='text-lg font-semibold text-red-500'>-$18,500</div>
-                      <div className='text-xs text-gray-500'>Outflow</div>
+                      <div className='text-card-title font-semibold text-red-500'>-$18,500</div>
+                      <div className='text-caption text-gray-500'>Outflow</div>
                     </div>
                   </div>
                 </div>
@@ -559,7 +559,7 @@ const Analytics = () => {
                 {/* Profit Margin Trends */}
                 <div className='bg-white rounded-xl shadow-sm border border-gray-200 p-6'>
                   <div className='flex items-center justify-between mb-4'>
-                    <h3 className='text-lg font-semibold text-black'>Profit Margin Trends</h3>
+                    <h3 className='text-card-title font-semibold text-black'>Profit Margin Trends</h3>
                     <ChevronDownIcon className='h-4 w-4 text-gray-400' />
                   </div>
 
@@ -574,11 +574,11 @@ const Analytics = () => {
                   </div>
 
                   <div className='text-center'>
-                    <div className='text-2xl font-bold text-blue-600'>68%</div>
-                    <div className='text-sm text-gray-500'>Current Margin</div>
+                    <div className='text-page-title font-bold text-blue-600'>68%</div>
+                    <div className='text-body text-gray-500'>Current Margin</div>
                     <div className='flex items-center justify-center mt-2'>
                       <ArrowTrendingUpIcon className='h-4 w-4 text-green-500 mr-1' />
-                      <span className='text-sm text-green-500'>+5.2%</span>
+                      <span className='text-body text-green-500'>+5.2%</span>
                     </div>
                   </div>
                 </div>
@@ -586,8 +586,8 @@ const Analytics = () => {
                 {/* Financial Health */}
                 <div className='bg-white rounded-xl shadow-sm border border-gray-200 p-6'>
                   <div className='flex items-center justify-between mb-4'>
-                    <h3 className='text-lg font-semibold text-black'>Financial Health</h3>
-                    <span className='text-blue-600 text-sm cursor-pointer'>Details</span>
+                    <h3 className='text-card-title font-semibold text-black'>Financial Health</h3>
+                    <span className='text-blue-600 text-body cursor-pointer'>Details</span>
                   </div>
 
                   {/* Circular Progress */}
@@ -614,23 +614,23 @@ const Analytics = () => {
                         />
                       </svg>
                       <div className='absolute inset-0 flex items-center justify-center'>
-                        <span className='text-2xl font-bold text-blue-600'>80</span>
+                        <span className='text-page-title font-bold text-blue-600'>80</span>
                       </div>
                     </div>
                   </div>
 
                   <div className='space-y-3'>
                     <div className='flex justify-between'>
-                      <span className='text-sm text-gray-600'>Cash Flow</span>
-                      <span className='text-sm font-medium text-green-600'>Excellent</span>
+                      <span className='text-body text-gray-600'>Cash Flow</span>
+                      <span className='text-body font-medium text-green-600'>Excellent</span>
                     </div>
                     <div className='flex justify-between'>
-                      <span className='text-sm text-gray-600'>Debt Ratio</span>
-                      <span className='text-sm font-medium text-yellow-600'>Good</span>
+                      <span className='text-body text-gray-600'>Debt Ratio</span>
+                      <span className='text-body font-medium text-yellow-600'>Good</span>
                     </div>
                     <div className='flex justify-between'>
-                      <span className='text-sm text-gray-600'>Liquidity</span>
-                      <span className='text-sm font-medium text-green-600'>Very Good</span>
+                      <span className='text-body text-gray-600'>Liquidity</span>
+                      <span className='text-body font-medium text-green-600'>Very Good</span>
                     </div>
                   </div>
                 </div>
@@ -638,7 +638,7 @@ const Analytics = () => {
                 {/* Expense Breakdown */}
                 <div className='bg-white rounded-xl shadow-sm border border-gray-200 p-6'>
                   <div className='flex items-center justify-between mb-4'>
-                    <h3 className='text-lg font-semibold text-black'>Expense Breakdown</h3>
+                    <h3 className='text-card-title font-semibold text-black'>Expense Breakdown</h3>
                     <ChevronDownIcon className='h-4 w-4 text-gray-400' />
                   </div>
 
@@ -671,8 +671,8 @@ const Analytics = () => {
                     ].map((expense, index) => (
                       <div key={index} className='space-y-2'>
                         <div className='flex justify-between'>
-                          <span className='text-sm text-gray-600'>{expense.category}</span>
-                          <span className='text-sm font-medium'>{expense.amount}</span>
+                          <span className='text-body text-gray-600'>{expense.category}</span>
+                          <span className='text-body font-medium'>{expense.amount}</span>
                         </div>
                         <div className='w-full bg-gray-200 rounded-full h-2'>
                           <div
@@ -696,11 +696,11 @@ const Analytics = () => {
                 {/* 6-Month Revenue Projection */}
                 <div className='bg-white rounded-xl shadow-sm border border-gray-200 p-6'>
                   <div className='flex items-center justify-between mb-4'>
-                    <h3 className='text-lg font-semibold text-black'>6-Month Revenue Projection</h3>
+                    <h3 className='text-card-title font-semibold text-black'>6-Month Revenue Projection</h3>
                     <div className='flex items-center space-x-2'>
-                      <span className='text-sm text-gray-500'>Projected</span>
-                      <span className='text-sm text-gray-500'>Actual</span>
-                      <span className='text-sm text-gray-500'>Target</span>
+                      <span className='text-body text-gray-500'>Projected</span>
+                      <span className='text-body text-gray-500'>Actual</span>
+                      <span className='text-body text-gray-500'>Target</span>
                     </div>
                   </div>
 
@@ -734,16 +734,16 @@ const Analytics = () => {
 
                   <div className='grid grid-cols-3 gap-4 text-center'>
                     <div>
-                      <div className='text-xl font-bold text-blue-600'>$225,000</div>
-                      <div className='text-sm text-gray-500'>6-Month Projected</div>
+                      <div className='text-card-title font-bold text-blue-600'>$225,000</div>
+                      <div className='text-body text-gray-500'>6-Month Projected</div>
                     </div>
                     <div>
-                      <div className='text-xl font-bold text-green-600'>$238,000</div>
-                      <div className='text-sm text-gray-500'>Expected</div>
+                      <div className='text-card-title font-bold text-green-600'>$238,000</div>
+                      <div className='text-body text-gray-500'>Expected</div>
                     </div>
                     <div>
-                      <div className='text-xl font-bold text-yellow-600'>$195,000</div>
-                      <div className='text-sm text-gray-500'>Conservative</div>
+                      <div className='text-card-title font-bold text-yellow-600'>$195,000</div>
+                      <div className='text-body text-gray-500'>Conservative</div>
                     </div>
                   </div>
                 </div>
@@ -751,14 +751,14 @@ const Analytics = () => {
                 {/* Growth Trend Analysis */}
                 <div className='bg-white rounded-xl shadow-sm border border-gray-200 p-6'>
                   <div className='flex items-center justify-between mb-4'>
-                    <h3 className='text-lg font-semibold text-black'>Growth Trend Analysis</h3>
-                    <span className='text-blue-600 text-sm cursor-pointer'>View Report</span>
+                    <h3 className='text-card-title font-semibold text-black'>Growth Trend Analysis</h3>
+                    <span className='text-blue-600 text-body cursor-pointer'>View Report</span>
                   </div>
 
                   <div className='space-y-6'>
                     <div className='text-center'>
-                      <div className='text-3xl font-bold text-green-600 mb-2'>+23.5%</div>
-                      <div className='text-sm text-gray-500'>Quarterly Growth Rate</div>
+                      <div className='text-page-title font-bold text-green-600 mb-2'>+23.5%</div>
+                      <div className='text-body text-gray-500'>Quarterly Growth Rate</div>
                     </div>
 
                     <div className='space-y-4'>
@@ -789,9 +789,9 @@ const Analytics = () => {
                         },
                       ].map((item, index) => (
                         <div key={index} className='flex items-center justify-between'>
-                          <span className='text-sm text-gray-600'>{item.metric}</span>
+                          <span className='text-body text-gray-600'>{item.metric}</span>
                           <div className='flex items-center'>
-                            <span className={`text-sm font-medium ${item.color}`}>
+                            <span className={`text-body font-medium ${item.color}`}>
                               {item.value}
                             </span>
                             {item.trend === 'up' ? (
@@ -812,7 +812,7 @@ const Analytics = () => {
                 {/* Quarterly Targets */}
                 <div className='bg-white rounded-xl shadow-sm border border-gray-200 p-6'>
                   <div className='flex items-center justify-between mb-4'>
-                    <h3 className='text-lg font-semibold text-black'>Quarterly Targets</h3>
+                    <h3 className='text-card-title font-semibold text-black'>Quarterly Targets</h3>
                     <ChevronDownIcon className='h-4 w-4 text-gray-400' />
                   </div>
 
@@ -825,8 +825,8 @@ const Analytics = () => {
                     ].map((item, index) => (
                       <div key={index} className='space-y-2'>
                         <div className='flex justify-between'>
-                          <span className='text-sm font-medium'>{item.quarter}</span>
-                          <span className='text-sm text-gray-600'>{item.target}</span>
+                          <span className='text-body font-medium'>{item.quarter}</span>
+                          <span className='text-body text-gray-600'>{item.target}</span>
                         </div>
                         {item.progress > 0 && (
                           <div className='w-full bg-gray-200 rounded-full h-2'>
@@ -838,7 +838,7 @@ const Analytics = () => {
                             ></div>
                           </div>
                         )}
-                        <div className='flex justify-between text-xs'>
+                        <div className='flex justify-between text-caption'>
                           <span className='text-gray-500'>Actual: {item.actual}</span>
                           {item.progress > 0 && (
                             <span
@@ -858,14 +858,14 @@ const Analytics = () => {
                 {/* Budget Planning */}
                 <div className='bg-white rounded-xl shadow-sm border border-gray-200 p-6'>
                   <div className='flex items-center justify-between mb-4'>
-                    <h3 className='text-lg font-semibold text-black'>Budget Planning</h3>
-                    <span className='text-blue-600 text-sm cursor-pointer'>Edit Budget</span>
+                    <h3 className='text-card-title font-semibold text-black'>Budget Planning</h3>
+                    <span className='text-blue-600 text-body cursor-pointer'>Edit Budget</span>
                   </div>
 
                   <div className='space-y-4'>
                     <div className='text-center mb-4'>
-                      <div className='text-2xl font-bold text-black'>$418,000</div>
-                      <div className='text-sm text-gray-500'>Annual Budget</div>
+                      <div className='text-page-title font-bold text-black'>$418,000</div>
+                      <div className='text-body text-gray-500'>Annual Budget</div>
                     </div>
 
                     {[
@@ -896,8 +896,8 @@ const Analytics = () => {
                     ].map((item, index) => (
                       <div key={index} className='space-y-2'>
                         <div className='flex justify-between'>
-                          <span className='text-sm text-gray-600'>{item.category}</span>
-                          <span className='text-sm font-medium'>{item.allocated}</span>
+                          <span className='text-body text-gray-600'>{item.category}</span>
+                          <span className='text-body font-medium'>{item.allocated}</span>
                         </div>
                         <div className='w-full bg-gray-200 rounded-full h-2'>
                           <div
@@ -905,7 +905,7 @@ const Analytics = () => {
                             style={{ width: `${item.percentage}%` }}
                           ></div>
                         </div>
-                        <div className='flex justify-between text-xs text-gray-500'>
+                        <div className='flex justify-between text-caption text-gray-500'>
                           <span>Spent: {item.spent}</span>
                           <span>{item.percentage}%</span>
                         </div>
@@ -917,8 +917,8 @@ const Analytics = () => {
                 {/* Scenario Modeling */}
                 <div className='bg-white rounded-xl shadow-sm border border-gray-200 p-6'>
                   <div className='flex items-center justify-between mb-4'>
-                    <h3 className='text-lg font-semibold text-black'>Scenario Modeling</h3>
-                    <span className='text-blue-600 text-sm cursor-pointer'>Create New</span>
+                    <h3 className='text-card-title font-semibold text-black'>Scenario Modeling</h3>
+                    <span className='text-blue-600 text-body cursor-pointer'>Create New</span>
                   </div>
 
                   <div className='space-y-4'>
@@ -945,19 +945,19 @@ const Analytics = () => {
                       <div key={index} className='p-4 border border-gray-200 rounded-lg'>
                         <div className='flex justify-between items-center mb-2'>
                           <span className='font-medium text-black'>{scenario.scenario}</span>
-                          <span className='text-sm text-gray-500'>{scenario.probability}</span>
+                          <span className='text-body text-gray-500'>{scenario.probability}</span>
                         </div>
-                        <div className={`text-lg font-bold ${scenario.color}`}>
+                        <div className={`text-card-title font-bold ${scenario.color}`}>
                           {scenario.revenue}
                         </div>
-                        <div className='text-xs text-gray-500 mt-1'>Annual Revenue Projection</div>
+                        <div className='text-caption text-gray-500 mt-1'>Annual Revenue Projection</div>
                       </div>
                     ))}
                   </div>
 
                   <div className='mt-6 p-4 bg-gray-50 rounded-lg'>
-                    <div className='text-sm font-medium text-black mb-2'>Key Assumptions:</div>
-                    <ul className='text-xs text-gray-600 space-y-1'>
+                    <div className='text-body font-medium text-black mb-2'>Key Assumptions:</div>
+                    <ul className='text-caption text-gray-600 space-y-1'>
                       <li>• 15% client growth rate</li>
                       <li>• 8% average price increase</li>
                       <li>• 5% market expansion</li>
