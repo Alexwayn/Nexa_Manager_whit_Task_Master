@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import ErrorBoundary from '@components/common/ErrorBoundary';
 import Footer from '@components/shared/Footer';
-import EnhancedDashboard from '@components/dashboard/EnhancedDashboard';
+
 import {
   Search,
   Bell,
@@ -30,7 +30,6 @@ import {
   ArrowUpRight,
   ArrowDownRight,
   User,
-  Grid,
   BarChart3,
   Eye,
   Download,
@@ -55,11 +54,7 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const { t } = useTranslation('dashboard');
   
-  // State to toggle between enhanced and classic dashboard
-  const [useEnhancedDashboard, setUseEnhancedDashboard] = useState(() => {
-    const saved = localStorage.getItem('dashboard-mode');
-    return saved === 'enhanced';
-  });
+
 
   // Date range for data filtering
   const { dateRange } = useDateRange();
@@ -184,11 +179,7 @@ const Dashboard = () => {
     loadRealData();
   }, [isSignedIn, user]);
 
-  const toggleDashboardMode = () => {
-    const newMode = !useEnhancedDashboard;
-    setUseEnhancedDashboard(newMode);
-    localStorage.setItem('dashboard-mode', newMode ? 'enhanced' : 'classic');
-  };
+
 
   // Generic filter function
   const filterByTerm = (items, fields) => {
@@ -386,48 +377,12 @@ const Dashboard = () => {
 
   const handleViewDetails = clientId => navigate(`/clients/${clientId}`);
 
-  // NOW WE CAN SAFELY DO CONDITIONAL RENDERING AFTER ALL HOOKS ARE DECLARED
-  // If enhanced dashboard is enabled, render it directly
-  if (useEnhancedDashboard) {
-    return (
-      <ErrorBoundary>
-        <div className="min-h-screen bg-gray-50">
-          {/* Dashboard Mode Toggle */}
-          <div className="fixed top-4 right-4 z-50">
-            <button
-              onClick={toggleDashboardMode}
-              className="flex items-center space-x-2 bg-white border border-gray-200 rounded-lg px-3 py-2 shadow-sm hover:shadow-md transition-all text-sm"
-              title={t('switchToClassic')}
-            >
-              <BarChart3 className="h-4 w-4 text-blue-600" />
-              <span className="text-gray-700">Classic View</span>
-            </button>
-          </div>
-          
-          <EnhancedDashboard />
-          <Footer />
-        </div>
-      </ErrorBoundary>
-    );
-  }
-
-  // Classic Dashboard Implementation (existing code)
-  // ... existing code ...
+  // Classic Dashboard Implementation
 
   return (
     <ErrorBoundary>
       <div className='min-h-screen bg-gray-50'>
-        {/* Dashboard Mode Toggle */}
-        <div className="fixed top-4 right-4 z-50">
-          <button
-            onClick={toggleDashboardMode}
-            className="flex items-center space-x-2 bg-white border border-gray-200 rounded-lg px-3 py-2 shadow-sm hover:shadow-md transition-all text-sm"
-            title={t('switchToEnhanced')}
-          >
-            <Grid className="h-4 w-4 text-blue-600" />
-            <span className="text-gray-700">Enhanced View</span>
-          </button>
-        </div>
+
 
         {/* Loading State */}
         {dashboardLoading && (
@@ -526,13 +481,18 @@ const Dashboard = () => {
           </nav>
           
           <div className='space-y-6 px-4 md:px-8 py-6'>
+            {/* Dashboard Title */}
+            <div className='mb-8'>
+              <h1 className='text-page-title text-gray-900'>{t('title')}</h1>
+              <p className='text-subtitle text-gray-600 mt-2'>{t('subtitle')}</p>
+            </div>
 
             {/* Top Row - Business Health, Revenue Streams, Invoice Tracker, Quick Actions */}
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 w-full'>
               {/* Business Health */}
               <div className='bg-white rounded-xl shadow-sm p-6'>
                 <div className='flex items-center justify-between mb-6'>
-                  <h3 className='text-xl font-semibold text-gray-900'>
+                  <h3 className='text-section-title text-gray-900'>
                     {t('businessHealth.title')}
                   </h3>
                   <CardDropdownMenu dropdownId="businessHealthOptions" options={businessHealthOptions} />
@@ -555,7 +515,7 @@ const Dashboard = () => {
                       />
                     </svg>
                     <div className='absolute inset-0 flex flex-col items-center justify-center'>
-                      <span className='text-4xl font-bold text-blue-600'>
+                      <span className='text-card-metric text-blue-600'>
                         {businessHealthScore}
                       </span>
                       <span className='text-gray-500 text-sm'>{t('businessHealth.outOf100')}</span>
@@ -595,7 +555,7 @@ const Dashboard = () => {
               {/* Revenue Streams */}
               <div className='bg-white rounded-xl shadow-sm p-6'>
                 <div className='flex items-center justify-between mb-6'>
-                  <h3 className='text-xl font-semibold text-gray-900'>
+                  <h3 className='text-section-title text-gray-900'>
                     {t('revenueStreams.title')}
                   </h3>
                   <CardDropdownMenu dropdownId="revenueStreamOptions" options={revenueStreamOptions} />
@@ -656,7 +616,7 @@ const Dashboard = () => {
               {/* Invoice Tracker */}
               <div className='bg-white rounded-xl shadow-sm p-6'>
                 <div className='flex items-center justify-between mb-6'>
-                  <h3 className='text-xl font-semibold text-gray-900'>
+                  <h3 className='text-section-title text-gray-900'>
                     {t('invoiceTracker.title')}
                   </h3>
                   <CardDropdownMenu dropdownId="invoiceTrackerOptions" options={invoiceTrackerOptions} />
@@ -667,8 +627,8 @@ const Dashboard = () => {
                   {dashboardData?.invoiceData ? (
                     <>
                       <div className='flex items-center justify-between mb-2'>
-                        <span className='text-sm text-gray-600'>{t('invoiceTracker.paid')}</span>
-                        <span className='text-sm text-gray-600'>{t('invoiceTracker.outstanding')}</span>
+                        <span className='text-subtitle text-gray-600'>{t('invoiceTracker.paid')}</span>
+                        <span className='text-subtitle text-gray-600'>{t('invoiceTracker.outstanding')}</span>
                       </div>
                       <div className='w-full bg-gray-200 rounded-full h-4 mb-2'>
                         <div 
@@ -680,16 +640,16 @@ const Dashboard = () => {
                       </div>
                       <div className='flex items-center justify-between'>
                         <div className='text-right'>
-                          <div className='text-lg font-bold text-green-600'>
+                          <div className='text-card-metric text-green-600'>
                             €{dashboardData.invoiceData.totalPaid?.toLocaleString() || '0'}
                           </div>
-                          <div className='text-xs text-gray-500'>{t('invoiceTracker.totalPaid')}</div>
+                          <div className='text-metric-small text-gray-500'>{t('invoiceTracker.totalPaid')}</div>
                         </div>
                         <div className='text-right'>
-                          <div className='text-lg font-bold text-orange-600'>
+                          <div className='text-card-metric text-orange-600'>
                             €{dashboardData.invoiceData.totalOutstanding?.toLocaleString() || '0'}
                           </div>
-                          <div className='text-xs text-gray-500'>{t('invoiceTracker.totalOutstanding')}</div>
+                          <div className='text-metric-small text-gray-500'>{t('invoiceTracker.totalOutstanding')}</div>
                         </div>
                       </div>
                     </>
@@ -697,8 +657,8 @@ const Dashboard = () => {
                     <div className='flex items-center justify-center h-32 bg-gray-50 rounded-lg'>
                       <div className='text-center'>
                         <FileText className='h-8 w-8 text-gray-300 mx-auto mb-2' />
-                        <p className='text-gray-500 text-sm'>{t('invoiceTracker.noDataAvailable')}</p>
-                        <p className='text-gray-400 text-xs mt-1'>{t('invoiceTracker.connectDataSource')}</p>
+                        <p className='text-subtitle text-gray-500'>{t('invoiceTracker.noDataAvailable')}</p>
+                        <p className='text-metric-small text-gray-400 mt-1'>{t('invoiceTracker.connectDataSource')}</p>
                       </div>
                     </div>
                   )}
@@ -707,7 +667,7 @@ const Dashboard = () => {
 
               {/* Quick Actions */}
               <div className='bg-white rounded-xl shadow-sm p-6'>
-                <h3 className='text-xl font-semibold text-gray-900 mb-6'>
+                <h3 className='text-section-title text-gray-900 mb-6'>
                   {t('quickActions.title')}
                 </h3>
 
@@ -717,7 +677,7 @@ const Dashboard = () => {
                     className='bg-blue-500 text-white p-4 rounded-xl hover:bg-blue-600 transition-all transform hover:scale-105 flex flex-col items-center justify-center aspect-square'
                   >
                     <UserPlus className='h-6 w-6 mx-auto mb-2' />
-                    <div className='text-center text-xs font-medium'>
+                    <div className='text-center text-button-text font-medium'>
                       {t('quickActions.addClient')}
                     </div>
                   </button>
@@ -727,7 +687,7 @@ const Dashboard = () => {
                     className='bg-green-500 text-white p-4 rounded-xl hover:bg-green-600 transition-all transform hover:scale-105 flex flex-col items-center justify-center aspect-square'
                   >
                     <Receipt className='h-6 w-6 mx-auto mb-2' />
-                    <div className='text-center text-xs font-medium'>
+                    <div className='text-center text-button-text font-medium'>
                       {t('quickActions.newInvoice')}
                     </div>
                   </button>
@@ -737,7 +697,7 @@ const Dashboard = () => {
                     className='bg-yellow-500 text-white p-4 rounded-xl hover:bg-yellow-600 transition-all transform hover:scale-105 flex flex-col items-center justify-center aspect-square'
                   >
                     <DollarSign className='h-6 w-6 mx-auto mb-2' />
-                    <div className='text-center text-xs font-medium'>
+                    <div className='text-center text-button-text font-medium'>
                       {t('quickActions.trackExpense')}
                     </div>
                   </button>
@@ -747,7 +707,7 @@ const Dashboard = () => {
                     className='bg-purple-500 text-white p-4 rounded-xl hover:bg-purple-600 transition-all transform hover:scale-105 flex flex-col items-center justify-center aspect-square'
                   >
                     <CalendarIcon className='h-6 w-6 mx-auto mb-2' />
-                    <div className='text-center text-xs font-medium'>
+                    <div className='text-center text-button-text font-medium'>
                       {t('quickActions.scheduleMeeting')}
                     </div>
                   </button>
@@ -758,13 +718,13 @@ const Dashboard = () => {
             {/* Revenue Overview Chart */}
             <div className='bg-white rounded-xl shadow-sm p-6'>
               <div className='flex items-center justify-between mb-6'>
-                <h3 className='text-xl font-semibold text-gray-900'>
+                <h3 className='text-section-title text-gray-900'>
                   {t('revenueOverview.title')}
                 </h3>
                 <div className='flex items-center space-x-2'>
                   <button 
                     onClick={() => handlePeriodChange('monthly')}
-                    className={`px-3 py-1 text-sm rounded-full transition-colors ${
+                    className={`px-3 py-1 text-nav-text rounded-full transition-colors ${
                       selectedPeriod === 'monthly' 
                         ? 'bg-blue-100 text-blue-600' 
                         : 'text-gray-500 hover:bg-gray-100'
@@ -774,7 +734,7 @@ const Dashboard = () => {
                   </button>
                   <button 
                     onClick={() => handlePeriodChange('quarterly')}
-                    className={`px-3 py-1 text-sm rounded-full transition-colors ${
+                    className={`px-3 py-1 text-nav-text rounded-full transition-colors ${
                       selectedPeriod === 'quarterly' 
                         ? 'bg-blue-100 text-blue-600' 
                         : 'text-gray-500 hover:bg-gray-100'
@@ -784,7 +744,7 @@ const Dashboard = () => {
                   </button>
                   <button 
                     onClick={() => handlePeriodChange('yearly')}
-                    className={`px-3 py-1 text-sm rounded-full transition-colors ${
+                    className={`px-3 py-1 text-nav-text rounded-full transition-colors ${
                       selectedPeriod === 'yearly' 
                         ? 'bg-blue-100 text-blue-600' 
                         : 'text-gray-500 hover:bg-gray-100'
@@ -824,8 +784,8 @@ const Dashboard = () => {
                   <div className='flex items-center justify-center h-full bg-gray-50 rounded-lg'>
                     <div className='text-center'>
                       <BarChart3 className='h-12 w-12 text-gray-300 mx-auto mb-3' />
-                      <p className='text-gray-500 text-sm'>{t('revenueOverview.noDataMessage')}</p>
-                      <p className='text-gray-400 text-xs mt-1'>{t('revenueOverview.connectDataSource')}</p>
+                      <p className='text-subtitle text-gray-500'>{t('revenueOverview.noDataMessage')}</p>
+                      <p className='text-metric-small text-gray-400 mt-1'>{t('revenueOverview.connectDataSource')}</p>
                     </div>
                   </div>
                 )}
@@ -834,16 +794,16 @@ const Dashboard = () => {
                 <div className='absolute bottom-4 left-1/2 transform -translate-x-1/2 flex items-center space-x-6'>
                   <div className='flex items-center space-x-2'>
                     <div className='w-3 h-3 bg-blue-500 rounded-full'></div>
-                    <span className='text-sm text-gray-600'>{t('revenueOverview.revenue')}</span>
+                    <span className='text-subtitle text-gray-600'>{t('revenueOverview.revenue')}</span>
                   </div>
                   <div className='flex items-center space-x-2'>
                     <div className='w-3 h-3 bg-green-500 rounded-full'></div>
-                    <span className='text-sm text-gray-600'>{t('revenueOverview.transactions')}</span>
+                    <span className='text-subtitle text-gray-600'>{t('revenueOverview.transactions')}</span>
                   </div>
                 </div>
               </div>
 
-              <p className='text-sm text-gray-600'>{t('revenueOverview.trendDescription')}</p>
+              <p className='text-subtitle text-gray-600'>{t('revenueOverview.trendDescription')}</p>
             </div>
 
             {/* Bottom Section - 2x2 Grid Layout */}
@@ -851,12 +811,12 @@ const Dashboard = () => {
               {/* Recent Clients */}
               <div className='bg-white rounded-xl shadow-sm p-6'>
                 <div className='flex items-center justify-between mb-6'>
-                  <h3 className='text-xl font-semibold text-gray-900'>
+                  <h3 className='text-section-title text-gray-900'>
                     {t('recentClients.title')}
                   </h3>
                   <button
                     onClick={handleViewAllClients}
-                    className='text-blue-600 text-sm hover:text-blue-800'
+                    className='text-blue-600 text-nav-text hover:text-blue-800'
                   >
                     {t('recentClients.viewAll')}
                   </button>
@@ -871,29 +831,29 @@ const Dashboard = () => {
                       onClick={() => handleViewDetails(client.id)}
                     >
                       <div
-                        className={`w-10 h-10 ${getAvatarColor(index)} rounded-full flex items-center justify-center text-white font-medium text-sm`}
+                        className={`w-10 h-10 ${getAvatarColor(index)} rounded-full flex items-center justify-center text-white font-medium text-nav-text`}
                       >
                         {client.initials}
                       </div>
                       <div className='flex-1 min-w-0'>
                         <div className='flex items-center space-x-2'>
-                          <h4 className='font-medium text-gray-900 truncate'>{client.name}</h4>
+                          <h4 className='text-card-title text-gray-900 truncate'>{client.name}</h4>
                           <div
                             className={`w-2 h-2 ${getStatusColor(client.status)} rounded-full`}
                           ></div>
                         </div>
-                        <p className='text-sm text-gray-500 truncate'>{client.industry}</p>
-                        <p className='text-xs text-gray-400'>{client.lastContact}</p>
+                        <p className='text-subtitle text-gray-500 truncate'>{client.industry}</p>
+                        <p className='text-metric-small text-gray-400'>{client.lastContact}</p>
                       </div>
                     </div>
                     ))
                   ) : (
                     <div className='text-center py-8'>
                       <Users className='h-12 w-12 text-gray-300 mx-auto mb-3' />
-                      <p className='text-gray-500 text-sm'>Nessun cliente recente</p>
+                      <p className='text-subtitle text-gray-500'>Nessun cliente recente</p>
                       <button
                         onClick={handleAddClient}
-                        className='mt-2 text-blue-600 text-sm hover:text-blue-800'
+                        className='mt-2 text-blue-600 text-nav-text hover:text-blue-800'
                       >
                         Aggiungi il primo cliente
                       </button>
@@ -905,10 +865,10 @@ const Dashboard = () => {
               {/* Upcoming Work */}
               <div className='bg-white rounded-xl shadow-sm p-6'>
                 <div className='flex items-center justify-between mb-6'>
-                  <h3 className='text-xl font-semibold text-gray-900'>{t('upcomingWork.title')}</h3>
+                  <h3 className='text-section-title text-gray-900'>{t('upcomingWork.title')}</h3>
                   <button
                     onClick={handleViewCalendar}
-                    className='text-blue-600 text-sm hover:text-blue-800'
+                    className='text-blue-600 text-nav-text hover:text-blue-800'
                   >
                     {t('upcomingWork.viewCalendar')}
                   </button>
@@ -924,12 +884,12 @@ const Dashboard = () => {
                           <IconComponent className='h-4 w-4 text-white' />
                         </div>
                         <div className='flex-1 min-w-0'>
-                          <h4 className='font-medium text-gray-900 text-sm'>{work.title}</h4>
-                          <p className='text-xs text-gray-500 truncate'>{work.client}</p>
+                          <h4 className='text-card-title text-gray-900'>{work.title}</h4>
+                          <p className='text-metric-small text-gray-500 truncate'>{work.client}</p>
                           <div className='flex items-center space-x-2 mt-1'>
-                            <span className='text-xs text-gray-400'>{work.time}</span>
-                            <span className='text-xs text-gray-400'>•</span>
-                            <span className='text-xs text-gray-400'>{work.duration}</span>
+                            <span className='text-metric-small text-gray-400'>{work.time}</span>
+                            <span className='text-metric-small text-gray-400'>•</span>
+                            <span className='text-metric-small text-gray-400'>{work.duration}</span>
                           </div>
                         </div>
                       </div>
@@ -938,10 +898,10 @@ const Dashboard = () => {
                   ) : (
                     <div className='text-center py-8'>
                       <Calendar className='h-12 w-12 text-gray-300 mx-auto mb-3' />
-                      <p className='text-gray-500 text-sm'>Nessun evento in programma</p>
+                      <p className='text-subtitle text-gray-500'>Nessun evento in programma</p>
                       <button
                         onClick={handleAddNewEvent}
-                        className='mt-2 text-blue-600 text-sm hover:text-blue-800'
+                        className='mt-2 text-blue-600 text-nav-text hover:text-blue-800'
                       >
                         Programma il primo evento
                       </button>
@@ -951,7 +911,7 @@ const Dashboard = () => {
 
                 <button
                   onClick={handleAddNewEvent}
-                  className='w-full mt-4 py-2 border border-gray-300 rounded-lg text-sm text-gray-700 hover:bg-gray-50 transition-colors'
+                  className='w-full mt-4 py-2 border border-gray-300 rounded-lg text-button-text text-gray-700 hover:bg-gray-50 transition-colors'
                 >
                   {t('upcomingWork.addNewEvent')}
                 </button>
@@ -963,12 +923,12 @@ const Dashboard = () => {
               {/* Recent Notifications */}
               <div className='bg-white rounded-xl shadow-sm p-6'>
                 <div className='flex items-center justify-between mb-6'>
-                  <h3 className='text-xl font-semibold text-gray-900'>
+                  <h3 className='text-section-title text-gray-900'>
                     {t('recentNotifications.title')}
                   </h3>
                   <button
                     onClick={handleViewAllNotifications}
-                    className='text-blue-600 text-sm hover:text-blue-800'
+                    className='text-blue-600 text-nav-text hover:text-blue-800'
                   >
                     {t('recentNotifications.viewAll')}
                   </button>
@@ -988,13 +948,13 @@ const Dashboard = () => {
                             <IconComponent className='h-4 w-4 text-white' />
                           </div>
                           <div className='flex-1 min-w-0'>
-                            <h4 className='font-medium text-gray-900 truncate'>
+                            <h4 className='text-card-title text-gray-900 truncate'>
                               {notification.title}
                             </h4>
-                            <p className='text-gray-500 text-sm line-clamp-2'>
+                            <p className='text-subtitle text-gray-500 line-clamp-2'>
                               {notification.message}
                             </p>
-                            <p className='text-gray-400 text-xs mt-2'>{notification.time}</p>
+                            <p className='text-metric-small text-gray-400 mt-2'>{notification.time}</p>
                           </div>
                         </div>
                       </div>
@@ -1003,8 +963,8 @@ const Dashboard = () => {
                   ) : (
                     <div className='text-center py-8 col-span-full'>
                       <Bell className='h-12 w-12 text-gray-300 mx-auto mb-3' />
-                      <p className='text-gray-500 text-sm'>Nessuna notifica recente</p>
-                      <p className='text-gray-400 text-xs mt-1'>Le notifiche appariranno qui quando avrai attività</p>
+                      <p className='text-subtitle text-gray-500'>Nessuna notifica recente</p>
+                      <p className='text-metric-small text-gray-400 mt-1'>Le notifiche appariranno qui quando avrai attività</p>
                     </div>
                   )}
                 </div>
@@ -1013,22 +973,22 @@ const Dashboard = () => {
                 <div className='mt-6 pt-6 border-t border-gray-100'>
                   <div className='grid grid-cols-3 gap-4 text-center'>
                     <div>
-                      <div className='text-2xl font-bold text-blue-600'>
+                      <div className='text-card-metric text-blue-600'>
                         0
                       </div>
-                      <div className='text-sm text-gray-500'>{t('performance.unread')}</div>
+                      <div className='text-metric-small text-gray-500'>{t('performance.unread')}</div>
                     </div>
                     <div>
-                      <div className='text-2xl font-bold text-green-600'>
+                      <div className='text-card-metric text-green-600'>
                         0
                       </div>
-                      <div className='text-sm text-gray-500'>{t('performance.thisWeek')}</div>
+                      <div className='text-metric-small text-gray-500'>{t('performance.thisWeek')}</div>
                     </div>
                     <div>
-                      <div className='text-2xl font-bold text-gray-600'>
+                      <div className='text-card-metric text-gray-600'>
                         {notifications.length}
                       </div>
-                      <div className='text-sm text-gray-500'>{t('performance.total')}</div>
+                      <div className='text-metric-small text-gray-500'>{t('performance.total')}</div>
                     </div>
                   </div>
                 </div>
@@ -1039,8 +999,8 @@ const Dashboard = () => {
               {/* Performance - KPI Summary */}
               <div className='bg-white rounded-xl shadow-sm p-6'>
                 <div className='flex items-center justify-between mb-6'>
-                  <h3 className='text-xl font-semibold text-gray-900'>{t('performance.title')}</h3>
-                  <span className='text-blue-600 text-sm font-medium'>
+                  <h3 className='text-section-title text-gray-900'>{t('performance.title')}</h3>
+                  <span className='text-blue-600 text-nav-text font-medium'>
                     {t('performance.thisMonth')}
                   </span>
                 </div>
@@ -1048,17 +1008,17 @@ const Dashboard = () => {
                 <div className='space-y-6'>
                   <div className='border-b border-gray-100 pb-4'>
                     <div className='flex items-center justify-between mb-2'>
-                      <span className='text-gray-500'>{t('performance.monthlyRevenue')}</span>
-                      <span className='text-green-600 font-medium flex items-center'>
+                      <span className='text-subtitle text-gray-500'>{t('performance.monthlyRevenue')}</span>
+                      <span className='text-green-600 text-nav-text font-medium flex items-center'>
                         <ArrowUpRight className='h-4 w-4 mr-1' />
                         {revenueData.growth}
                       </span>
                     </div>
                     <div className='flex items-center justify-between'>
-                      <span className='text-2xl font-bold text-gray-900'>
+                      <span className='text-card-metric text-gray-900'>
                         {revenueData.monthly}
                       </span>
-                      <span className='text-gray-500 text-sm'>
+                      <span className='text-metric-small text-gray-500'>
                         {t('performance.vs')} {revenueData.lastMonth}
                       </span>
                     </div>
@@ -1066,35 +1026,35 @@ const Dashboard = () => {
 
                   <div className='border-b border-gray-100 pb-4'>
                     <div className='flex items-center justify-between mb-2'>
-                      <span className='text-gray-500'>{t('performance.activeClients')}</span>
-                      <span className='text-green-600 font-medium flex items-center'>
+                      <span className='text-subtitle text-gray-500'>{t('performance.activeClients')}</span>
+                      <span className='text-green-600 text-nav-text font-medium flex items-center'>
                         <ArrowUpRight className='h-4 w-4 mr-1' />
                         {clientData.growth}
                       </span>
                     </div>
                     <div className='flex items-center justify-between'>
-                      <span className='text-2xl font-bold text-gray-900'>{clientData.active}</span>
-                      <span className='text-gray-500 text-sm'>
+                      <span className='text-card-metric text-gray-900'>{clientData.active}</span>
+                      <span className='text-metric-small text-gray-500'>
                         {t('performance.vs')} {clientData.lastMonth}
                       </span>
                     </div>
                   </div>
 
                   <div className='border-b border-gray-100 pb-4'>
-                    <div className='text-gray-500 mb-2'>{t('performance.upcomingEvents')}</div>
+                    <div className='text-subtitle text-gray-500 mb-2'>{t('performance.upcomingEvents')}</div>
                     <div className='flex items-center justify-between'>
-                      <span className='text-2xl font-bold text-gray-900'>
+                      <span className='text-card-metric text-gray-900'>
                         {upcomingEvents.count}
                       </span>
-                      <span className='text-gray-500 text-sm'>{upcomingEvents.period}</span>
+                      <span className='text-metric-small text-gray-500'>{upcomingEvents.period}</span>
                     </div>
                   </div>
 
                   <div>
-                    <div className='text-gray-500 mb-2'>{t('performance.conversionRate')}</div>
+                    <div className='text-subtitle text-gray-500 mb-2'>{t('performance.conversionRate')}</div>
                     <div className='flex items-center justify-between'>
-                      <span className='text-2xl font-bold text-gray-900'>0%</span>
-                      <span className='text-gray-600 text-sm flex items-center'>
+                      <span className='text-card-metric text-gray-900'>0%</span>
+                      <span className='text-metric-small text-gray-600 flex items-center'>
                         <ArrowUpRight className='h-3 w-3 mr-1' />
                         +0%
                       </span>

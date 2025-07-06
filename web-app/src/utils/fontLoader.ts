@@ -1,8 +1,8 @@
-// Font loading optimization utility for Manrope
+// Font loading optimization utility for Plus Jakarta Sans
 export const preloadFonts = (): void => {
   try {
     const fonts: string[] = [
-      'Manrope:wght@200;300;400;500;600;700;800'
+      'Plus+Jakarta+Sans:wght@200;300;400;500;600;700;800'
     ];
 
     fonts.forEach((font: string) => {
@@ -30,7 +30,7 @@ export const optimizeFontDisplay = (): void => {
     style.textContent = `
       /* Fallback font stack per migliore compatibilità */
       :root {
-        --font-family-primary: 'Manrope', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        --font-family-primary: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       }
       
       body {
@@ -40,7 +40,7 @@ export const optimizeFontDisplay = (): void => {
       
       /* Ottimizzazione caricamento font */
       .fonts-loaded {
-        font-family: 'Manrope', system-ui, sans-serif;
+        font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
       }
     `;
     document.head.appendChild(style);

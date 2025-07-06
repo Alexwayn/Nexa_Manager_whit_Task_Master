@@ -138,7 +138,7 @@ export default function Sidebar({ onCloseSidebar, collapsed = false, onToggleCol
                         isActive
                           ? 'bg-primary-100 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400'
                           : 'text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-gray-100 dark:hover:bg-gray-700',
-                        'group flex rounded-md p-2 text-sm leading-6 font-semibold transition-colors duration-200',
+                        'group flex rounded-md p-2 text-nav-text transition-colors duration-200',
                         collapsed ? 'justify-center' : 'gap-x-3'
                       )
                     }
@@ -168,7 +168,7 @@ export default function Sidebar({ onCloseSidebar, collapsed = false, onToggleCol
                           isActive
                             ? 'bg-primary-100 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400'
                             : 'text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-gray-100 dark:hover:bg-gray-700',
-                          'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold transition-colors duration-200',
+                          'group flex gap-x-3 rounded-md p-2 text-nav-text transition-colors duration-200',
                         )
                       }
                     >
@@ -196,7 +196,7 @@ export default function Sidebar({ onCloseSidebar, collapsed = false, onToggleCol
                           isActive
                             ? 'bg-primary-100 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400'
                             : 'text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-gray-100 dark:hover:bg-gray-700',
-                          'group flex rounded-md p-2 text-sm leading-6 font-semibold transition-colors duration-200',
+                          'group flex rounded-md p-2 text-nav-text transition-colors duration-200',
                           collapsed ? 'justify-center' : 'gap-x-3'
                         )
                       }

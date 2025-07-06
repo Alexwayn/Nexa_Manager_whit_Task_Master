@@ -1,3 +1,6 @@
+/* Import Typography Improvements */
+@import './styles/typography-improvements.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -83,9 +86,9 @@
     font-family: 'JetBrains Mono', 'Fira Code', monospace;
   }
 
-  /* Headings with Manrope - Different weights for hierarchy */
+  /* Headings with Plus Jakarta Sans - Different weights for hierarchy */
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Manrope', system-ui, sans-serif;
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
     font-weight: 700; /* Bold for all headings */
   }
 
@@ -189,13 +192,13 @@
 
   .card-title {
     @apply text-2xl font-semibold leading-none tracking-tight;
-    font-family: 'Manrope', system-ui, sans-serif;
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
     font-weight: 700;
   }
 
   .card-description {
     @apply text-sm text-gray-500 dark:text-gray-400;
-    font-family: 'Manrope', system-ui, sans-serif;
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
     font-weight: 500;
   }
 
@@ -798,44 +801,44 @@ nav[role="navigation"] {
 
 /* Font utility classes for consistent typography */
 .font-display {
-  font-family: 'Manrope', system-ui, sans-serif;
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
   font-weight: 700;
 }
 
 .font-body {
-  font-family: 'Manrope', system-ui, sans-serif;
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
   font-weight: 500;
 }
 
 .font-ui {
-  font-family: 'Manrope', system-ui, sans-serif;
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
   font-weight: 500;
 }
 
 /* Typography scale with new fonts */
 .text-display-xl {
-  font-family: 'Manrope', system-ui, sans-serif;
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
   font-size: 3rem;
   font-weight: 700;
   line-height: 1.1;
 }
 
 .text-display-lg {
-  font-family: 'Manrope', system-ui, sans-serif;
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
   font-size: 2.25rem;
   font-weight: 700;
   line-height: 1.2;
 }
 
 .text-display-md {
-  font-family: 'Manrope', system-ui, sans-serif;
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
   font-size: 1.875rem;
   font-weight: 700;
   line-height: 1.3;
 }
 
 .text-display-sm {
-  font-family: 'Manrope', system-ui, sans-serif;
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
   font-size: 1.5rem;
   font-weight: 700;
   line-height: 1.4;
@@ -843,78 +846,78 @@ nav[role="navigation"] {
 
 /* Consistent sizing for UI elements */
 .sidebar-item {
-  font-family: 'Manrope', system-ui, sans-serif;
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
   font-size: 0.875rem;
   font-weight: 500;
   line-height: 1.5;
 }
 
 .sidebar-title {
-  font-family: 'Manrope', system-ui, sans-serif;
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
   font-size: 1rem;
   font-weight: 700;
   line-height: 1.4;
 }
 
 .dashboard-card-title {
-  font-family: 'Manrope', system-ui, sans-serif;
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
   font-size: 1.125rem;
   font-weight: 700;
   line-height: 1.4;
 }
 
 .dashboard-card-content {
-  font-family: 'Manrope', system-ui, sans-serif;
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
   font-size: 0.875rem;
   font-weight: 500;
   line-height: 1.6;
 }
 
 .button-text {
-  font-family: 'Manrope', system-ui, sans-serif;
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
   font-weight: 500;
 }
 
 .input-text {
-  font-family: 'Manrope', system-ui, sans-serif;
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
   font-weight: 500;
 }
 
 /* Navigation and menu items */
 .nav-item {
-  font-family: 'Manrope', system-ui, sans-serif;
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
   font-weight: 500;
 }
 
 .nav-title {
-  font-family: 'Manrope', system-ui, sans-serif;
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
   font-weight: 700;
 }
 
 /* Classi specifiche per elementi importanti */
 .client-name {
-  font-family: 'Manrope', system-ui, sans-serif;
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
   font-weight: 500; /* Medium per nomi clienti più leggibili */
   color: inherit;
 }
 
 .important-text {
-  font-family: 'Manrope', system-ui, sans-serif;
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
   font-weight: 500; /* Medium per testo importante */
 }
 
 .body-text-light {
-  font-family: 'Manrope', system-ui, sans-serif;
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
   font-weight: 400; /* Regular per testo secondario */
 }
 
 .body-text-medium {
-  font-family: 'Manrope', system-ui, sans-serif;
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
   font-weight: 500; /* Medium per testo principale */
 }
 
 .body-text-semibold {
-  font-family: 'Manrope', system-ui, sans-serif;
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
   font-weight: 600; /* Semibold per enfasi */
 }
 

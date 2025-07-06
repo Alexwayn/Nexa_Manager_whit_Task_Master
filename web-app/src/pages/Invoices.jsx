@@ -783,7 +783,7 @@ const InvoicesPage = () => {
         <div className='bg-white border-b border-gray-200 px-8 py-6'>
           <div className='flex justify-between items-center'>
             <div>
-              <h1 className='text-3xl font-bold text-gray-900'>{t('title')}</h1>
+              <h1 className='text-page-title'>{t('title')}</h1>
             </div>
             <div className='flex space-x-3'>
               <button
@@ -853,7 +853,7 @@ const InvoicesPage = () => {
                     >
                       <div className='flex justify-between items-start mb-4'>
                         <div>
-                          <p className='text-sm font-semibold text-gray-700 mb-1'>{stat.title}</p>
+                          <p className='text-card-title'>{stat.title}</p>
                         </div>
                         <div
                           className={`p-3 rounded-full ${stat.bgColor} ring-2 ring-white shadow-md group-hover:scale-110 transition-transform duration-300`}
@@ -862,10 +862,10 @@ const InvoicesPage = () => {
                         </div>
                       </div>
                       <div className='mb-4'>
-                        <p className='text-3xl font-bold text-gray-900 group-hover:text-gray-800 transition-colors'>
+                        <p className='text-card-metric group-hover:text-gray-800 transition-colors'>
                           {stat.amount}
                         </p>
-                        <p className='text-sm text-gray-600 mt-1 font-medium'>{stat.subtitle}</p>
+                        <p className='text-subtitle'>{stat.subtitle}</p>
                       </div>
                       <div className='flex items-center bg-white/60 rounded-lg px-3 py-2 backdrop-blur-sm'>
                         {stat.trend.type === 'up' ? (
@@ -891,16 +891,16 @@ const InvoicesPage = () => {
                   <div className='flex justify-center mb-4'>
                     <FileText className='w-12 h-12' />
                   </div>
-                  <h4 className='text-lg font-bold text-center mb-2'>
+                  <h4 className='text-action-title text-center mb-2'>
                     {t('quickActions.createInvoice.title')}
                   </h4>
-                  <p className='text-blue-100 text-center text-sm mb-4'>
+                  <p className='text-action-description text-center mb-4'>
                     {t('quickActions.createInvoice.description')}
                   </p>
                 </div>
                 <button
                   onClick={handleCreateInvoice}
-                  className='w-full bg-white text-[#357AF3] py-2 px-4 rounded-lg hover:bg-gray-50 transition-colors font-semibold text-sm'
+                  className='w-full bg-white text-[#357AF3] py-2 px-4 rounded-lg hover:bg-gray-50 transition-colors text-button-text'
                 >
                   {t('quickActions.createInvoice.button')}
                 </button>
@@ -912,16 +912,16 @@ const InvoicesPage = () => {
                   <div className='flex justify-center mb-4'>
                     <FileText className='w-12 h-12' />
                   </div>
-                  <h4 className='text-lg font-bold text-center mb-2'>
+                  <h4 className='text-action-title text-center mb-2'>
                     {t('quickActions.createQuote.title')}
                   </h4>
-                  <p className='text-green-100 text-center text-sm mb-4'>
+                  <p className='text-action-description text-center mb-4'>
                     {t('quickActions.createQuote.description')}
                   </p>
                 </div>
                 <button
                   onClick={handleCreateQuote}
-                  className='w-full bg-white text-green-600 py-2 px-4 rounded-lg hover:bg-gray-50 transition-colors font-semibold text-sm'
+                  className='w-full bg-white text-green-600 py-2 px-4 rounded-lg hover:bg-gray-50 transition-colors text-button-text'
                 >
                   {t('quickActions.createQuote.button')}
                 </button>
@@ -933,16 +933,16 @@ const InvoicesPage = () => {
                   <div className='flex justify-center mb-4'>
                     <Mail className='w-12 h-12' />
                   </div>
-                  <h4 className='text-lg font-bold text-center mb-2'>
+                  <h4 className='text-action-title text-center mb-2'>
                     {t('quickActions.sendReminders.title')}
                   </h4>
-                  <p className='text-amber-100 text-center text-sm mb-4'>
+                  <p className='text-action-description text-center mb-4'>
                     {t('quickActions.sendReminders.description')}
                   </p>
                 </div>
                 <button
                   onClick={handleSendReminders}
-                  className='w-full bg-white text-amber-600 py-2 px-4 rounded-lg hover:bg-gray-50 transition-colors font-semibold text-sm'
+                  className='w-full bg-white text-amber-600 py-2 px-4 rounded-lg hover:bg-gray-50 transition-colors text-button-text'
                 >
                   {t('quickActions.sendReminders.button')}
                 </button>
@@ -954,16 +954,16 @@ const InvoicesPage = () => {
                   <div className='flex justify-center mb-4'>
                     <FileText className='w-12 h-12' />
                   </div>
-                  <h4 className='text-lg font-bold text-center mb-2'>
+                  <h4 className='text-action-title text-center mb-2'>
                     {t('quickActions.generateReport.title')}
                   </h4>
-                  <p className='text-purple-100 text-center text-sm mb-4'>
+                  <p className='text-action-description text-center mb-4'>
                     {t('quickActions.generateReport.description')}
                   </p>
                 </div>
                 <button
                   onClick={handleGenerateReport}
-                  className='w-full bg-white text-purple-600 py-2 px-4 rounded-lg hover:bg-gray-50 transition-colors font-semibold text-sm'
+                  className='w-full bg-white text-purple-600 py-2 px-4 rounded-lg hover:bg-gray-50 transition-colors text-button-text'
                 >
                   {t('quickActions.generateReport.button')}
                 </button>
@@ -976,7 +976,7 @@ const InvoicesPage = () => {
             {/* Payment Status Chart - Redesigned */}
             <div className='bg-white rounded-xl border border-gray-200 p-6 shadow-sm'>
               <div className='flex justify-between items-center mb-6'>
-                <h3 className='text-lg font-bold text-gray-900'>
+                <h3 className='text-section-title'>
                   {t('analytics.paymentStatus.title')}
                 </h3>
                 <CardDropdownMenu dropdownId="paymentStatusOptions" options={paymentStatusOptions} />
@@ -1081,7 +1081,7 @@ const InvoicesPage = () => {
             <div className='bg-white rounded-xl border border-gray-200 p-6 shadow-sm'>
               <div className='flex justify-between items-center mb-6'>
                 <div>
-                  <h3 className='text-lg font-bold text-gray-900'>
+                  <h3 className='text-section-title'>
                     {t('analytics.monthlyInvoices.title')}
                   </h3>
                   <p className='text-xs text-gray-500 mt-1'>
@@ -1186,7 +1186,7 @@ const InvoicesPage = () => {
             {/* Top Clients - Compact in Same Row */}
             <div className='bg-white rounded-xl border border-gray-200 p-6 shadow-sm'>
               <div className='flex justify-between items-center mb-6'>
-                <h3 className='text-lg font-bold text-gray-900'>
+                <h3 className='text-section-title'>
                   {t('analytics.topClients.title')}
                 </h3>
                 <button 
@@ -1242,7 +1242,7 @@ const InvoicesPage = () => {
           {/* Filters */}
           <div className='bg-white rounded-xl border border-gray-200 p-8 mb-8 shadow-sm'>
             <div className='flex justify-between items-center mb-6'>
-              <h3 className='text-xl font-bold text-gray-900'>{t('filters.title')}</h3>
+              <h3 className='text-section-title'>{t('filters.title')}</h3>
               <button 
                 onClick={clearAllFilters}
                 className='text-[#357AF3] hover:text-blue-800 text-sm font-semibold'
@@ -1321,7 +1321,7 @@ const InvoicesPage = () => {
           {/* Invoices Table */}
           <div className='bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm mb-8'>
             <div className='px-8 py-6 border-b border-gray-200 flex justify-between items-center'>
-              <h3 className='text-xl font-bold text-gray-900'>{t('table.title')}</h3>
+              <h3 className='text-section-title'>{t('table.title')}</h3>
               <div className='relative'>
                 <Search className='absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4' />
                 <input
@@ -1467,7 +1467,7 @@ const InvoicesPage = () => {
           {/* Recent Activity */}
           <div className='bg-white rounded-xl border border-gray-200 p-8 mb-8 shadow-sm'>
             <div className='flex justify-between items-center mb-8'>
-              <h3 className='text-xl font-bold text-gray-900'>{t('recentActivity.title')}</h3>
+              <h3 className='text-section-title'>{t('recentActivity.title')}</h3>
               <button className='text-[#357AF3] hover:text-blue-800 text-sm font-semibold'>
                 {t('recentActivity.viewAll')}
               </button>
