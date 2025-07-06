@@ -1336,7 +1336,7 @@ const InvoicesPage = () => {
             </div>
 
             {/* Table Header */}
-            <div className='bg-gray-50 px-8 py-4 border-b border-gray-200'>
+            <div className='bg-gray-50 px-8 py-4 border-b border-gray-200 text-table-header'>
               <div className='grid grid-cols-7 gap-6 text-sm font-semibold text-gray-700'>
                 <div>{t('table.headers.invoice')}</div>
                 <div>{t('table.headers.client')}</div>

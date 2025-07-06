@@ -976,25 +976,25 @@ const QuotesPage = () => {
                 <table className='w-full'>
                   <thead className='bg-gray-50'>
                     <tr>
-                      <th className='px-6 py-3 text-left text-metric-small font-medium text-gray-500 uppercase tracking-wider'>
+                      <th className='px-6 py-3 text-left text-table-header text-gray-500 uppercase tracking-wider'>
                         {t('table.headers.quote') || 'Quote'}
                       </th>
-                      <th className='px-6 py-3 text-left text-metric-small font-medium text-gray-500 uppercase tracking-wider'>
+                      <th className='px-6 py-3 text-left text-table-header text-gray-500 uppercase tracking-wider'>
                         {t('table.headers.client') || 'Client'}
                       </th>
-                      <th className='px-6 py-3 text-left text-metric-small font-medium text-gray-500 uppercase tracking-wider'>
+                      <th className='px-6 py-3 text-left text-table-header text-gray-500 uppercase tracking-wider'>
                         {t('table.headers.issueDate') || 'Issue Date'}
                       </th>
-                      <th className='px-6 py-3 text-left text-metric-small font-medium text-gray-500 uppercase tracking-wider'>
+                      <th className='px-6 py-3 text-left text-table-header text-gray-500 uppercase tracking-wider'>
                         {t('table.headers.dueDate') || 'Due Date'}
                       </th>
-                      <th className='px-6 py-3 text-left text-metric-small font-medium text-gray-500 uppercase tracking-wider'>
+                      <th className='px-6 py-3 text-left text-table-header text-gray-500 uppercase tracking-wider'>
                         {t('table.headers.amount') || 'Amount'}
                       </th>
-                      <th className='px-6 py-3 text-left text-metric-small font-medium text-gray-500 uppercase tracking-wider'>
+                      <th className='px-6 py-3 text-left text-table-header text-gray-500 uppercase tracking-wider'>
                         {t('table.headers.status') || 'Status'}
                       </th>
-                      <th className='px-6 py-3 text-left text-metric-small font-medium text-gray-500 uppercase tracking-wider'>
+                      <th className='px-6 py-3 text-left text-table-header text-gray-500 uppercase tracking-wider'>
                         {t('table.headers.actions') || 'Actions'}
                       </th>
                     </tr>

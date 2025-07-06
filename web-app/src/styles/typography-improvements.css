@@ -111,6 +111,16 @@
    ADDITIONAL REFINEMENTS
    ======================================== */
 
+/* Table Headers - Uppercase with tracking */
+.text-table-header {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
 /* Small metrics text for better hierarchy */
 .text-metric-small {
   font-family: 'Plus Jakarta Sans', sans-serif;
@@ -193,4 +203,4 @@
   .text-subtitle {
     transition: none;
   }
-} 
+}

@@ -689,7 +689,7 @@ const Reports = () => {
         <div className='bg-white rounded-lg border border-gray-200 overflow-hidden shadow-sm'>
           {/* Table Header */}
           <div className='bg-gray-50 px-6 py-3'>
-            <div className='grid grid-cols-12 gap-4 text-caption font-medium text-gray-500 uppercase tracking-wider'>
+            <div className='grid grid-cols-12 gap-4 text-table-header text-gray-500 uppercase tracking-wider'>
               <div className='col-span-4'>Report Name</div>
               <div className='col-span-2'>Date</div>
               <div className='col-span-2'>Type</div>

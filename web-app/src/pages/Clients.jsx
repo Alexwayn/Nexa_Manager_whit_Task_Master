@@ -989,25 +989,25 @@ function Clients() {
                     <table className='min-w-full divide-y divide-gray-200'>
                       <thead className='bg-gray-50'>
                         <tr>
-                          <th className='px-6 py-3 text-left text-metric-small font-medium text-gray-500 uppercase tracking-wider'>
+                          <th className='px-6 py-3 text-left text-table-header text-gray-500 uppercase tracking-wider'>
                             {t('table.company', 'Company')}
                           </th>
-                          <th className='px-6 py-3 text-left text-metric-small font-medium text-gray-500 uppercase tracking-wider'>
+                          <th className='px-6 py-3 text-left text-table-header text-gray-500 uppercase tracking-wider'>
                             {t('table.industry', 'Industry')}
                           </th>
-                          <th className='px-6 py-3 text-left text-metric-small font-medium text-gray-500 uppercase tracking-wider'>
+                          <th className='px-6 py-3 text-left text-table-header text-gray-500 uppercase tracking-wider'>
                             {t('table.status', 'Status')}
                           </th>
-                          <th className='px-6 py-3 text-left text-metric-small font-medium text-gray-500 uppercase tracking-wider'>
+                          <th className='px-6 py-3 text-left text-table-header text-gray-500 uppercase tracking-wider'>
                             {t('table.location', 'Location')}
                           </th>
-                          <th className='px-6 py-3 text-left text-metric-small font-medium text-gray-500 uppercase tracking-wider'>
+                          <th className='px-6 py-3 text-left text-table-header text-gray-500 uppercase tracking-wider'>
                             {t('table.lastContact', 'Last Contact')}
                           </th>
-                          <th className='px-6 py-3 text-left text-metric-small font-medium text-gray-500 uppercase tracking-wider'>
+                          <th className='px-6 py-3 text-left text-table-header text-gray-500 uppercase tracking-wider'>
                             {t('table.revenue', 'Revenue')}
                           </th>
-                          <th className='px-6 py-3 text-left text-metric-small font-medium text-gray-500 uppercase tracking-wider'>
+                          <th className='px-6 py-3 text-left text-table-header text-gray-500 uppercase tracking-wider'>
                             {t('table.actions', 'Actions')}
                           </th>
                         </tr>

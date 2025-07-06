@@ -87,7 +87,7 @@ const ClientTable = ({
           <tr>
             <th
               scope='col'
-              className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100'
+              className='px-6 py-3 text-left text-table-header text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100'
               onClick={() => onSort('name')}
             >
               <div className='flex items-center space-x-1'>
@@ -96,20 +96,20 @@ const ClientTable = ({
               </div>
             </th>
             <th
-              scope='col'
-              className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100'
-              onClick={() => onSort('email')}
-            >
+                scope='col'
+                className='px-6 py-3 text-left text-table-header text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100'
+                onClick={() => onSort('email')}
+              >
               <div className='flex items-center space-x-1'>
                 <span>Email</span>
                 {getSortIcon('email')}
               </div>
             </th>
             <th
-              scope='col'
-              className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100'
-              onClick={() => onSort('phone')}
-            >
+                scope='col'
+                className='px-6 py-3 text-left text-table-header text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100'
+                onClick={() => onSort('phone')}
+              >
               <div className='flex items-center space-x-1'>
                 <span>Telefono</span>
                 {getSortIcon('phone')}
@@ -117,25 +117,25 @@ const ClientTable = ({
             </th>
             <th
               scope='col'
-              className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+              className='px-6 py-3 text-left text-table-header text-gray-500 uppercase tracking-wider'
             >
               Stato
             </th>
             <th
-              scope='col'
-              className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100'
-              onClick={() => onSort('revenue')}
-            >
+                scope='col'
+                className='px-6 py-3 text-left text-table-header text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100'
+                onClick={() => onSort('lastActivity')}
+              >
               <div className='flex items-center space-x-1'>
                 <span>Fatturato</span>
                 {getSortIcon('revenue')}
               </div>
             </th>
             <th
-              scope='col'
-              className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100'
-              onClick={() => onSort('created_at')}
-            >
+                scope='col'
+                className='px-6 py-3 text-left text-table-header text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100'
+                onClick={() => onSort('createdAt')}
+              >
               <div className='flex items-center space-x-1'>
                 <span>Data Creazione</span>
                 {getSortIcon('created_at')}

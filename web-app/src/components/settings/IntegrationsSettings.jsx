@@ -799,10 +799,10 @@ export default function IntegrationsSettings({ showNotification }) {
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Activity</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Service</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Time</th>
+                  <th className="px-6 py-3 text-left text-table-header text-gray-500 uppercase tracking-wider">Activity</th>
+                <th className="px-6 py-3 text-left text-table-header text-gray-500 uppercase tracking-wider">Service</th>
+                <th className="px-6 py-3 text-left text-table-header text-gray-500 uppercase tracking-wider">Status</th>
+                <th className="px-6 py-3 text-left text-table-header text-gray-500 uppercase tracking-wider">Time</th>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
@@ -896,4 +896,4 @@ export default function IntegrationsSettings({ showNotification }) {
       {activeTab === 'activity' && renderActivityTab()}
     </div>
   );
-} 
+}
