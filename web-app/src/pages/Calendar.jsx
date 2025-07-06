@@ -729,7 +729,7 @@ export default function Calendar() {
           <div className='bg-white border-b border-gray-200 px-6 py-4'>
             <div className='flex items-center justify-between'>
               <div className='flex items-center space-x-6'>
-                <h1 className='text-2xl font-bold text-gray-900'>
+                <h1 className='text-page-title text-gray-900'>
                   {format(selectedDate, 'MMMM yyyy')}
                 </h1>
                 <div className='flex items-center space-x-1'>
@@ -754,7 +754,7 @@ export default function Calendar() {
                     <button
                       key={viewType.key}
                       onClick={() => setView(viewType.key)}
-                      className={`px-3 py-1 text-sm rounded-md transition-colors ${
+                      className={`px-3 py-1 text-nav-text rounded-md transition-colors ${
                         view === viewType.key
                           ? 'bg-white text-gray-900 shadow-sm'
                           : 'text-gray-600 hover:text-gray-900'
@@ -770,7 +770,7 @@ export default function Calendar() {
                   className='flex items-center space-x-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700'
                 >
                   <Plus className='h-4 w-4' />
-                  <span>{t('calendar:newEvent')}</span>
+                  <span className='text-button-text'>{t('calendar:newEvent')}</span>
                 </button>
               </div>
             </div>
@@ -793,7 +793,7 @@ export default function Calendar() {
                     'Saturday',
                   ].map((day, index) => (
                     <div key={index} className='bg-gray-50 p-3 text-center'>
-                      <span className='text-sm font-medium text-gray-700'>{day}</span>
+                      <span className='text-metric-small font-medium text-gray-700'>{day}</span>
                     </div>
                   ))}
                 </div>
@@ -816,7 +816,7 @@ export default function Calendar() {
                       >
                         <div className="flex items-center justify-between mb-2">
                           <div
-                            className={`text-sm font-medium ${
+                            className={`text-nav-text font-medium ${
                               isSameDay(day, new Date()) ? 'text-blue-600' : 'text-gray-900'
                             }`}
                           >
@@ -847,13 +847,13 @@ export default function Calendar() {
                                 e.stopPropagation();
                                 setSelectedEvent(event);
                               }}
-                              className={`text-xs p-1 rounded cursor-pointer truncate ${event.color} text-white`}
+                              className={`text-metric-small p-1 rounded cursor-pointer truncate ${event.color} text-white`}
                             >
                               {event.title}
                             </div>
                           ))}
                           {dayEvents.length > 3 && (
-                            <div className='text-xs text-gray-500'>
+                            <div className='text-metric-small text-gray-500'>
                               +{dayEvents.length - 3} more
                             </div>
                           )}
@@ -872,10 +872,10 @@ export default function Calendar() {
                   {/* Time column */}
                   <div className='bg-gray-50'>
                     <div className='p-3 text-center border-b border-gray-200'>
-                      <span className='text-sm font-medium text-gray-700'>Time</span>
+                      <span className='text-nav-text font-medium text-gray-700'>Time</span>
                     </div>
                     {Array.from({ length: 24 }, (_, i) => (
-                      <div key={i} className='p-2 text-xs text-gray-500 border-b border-gray-200 h-16'>
+                      <div key={i} className='p-2 text-metric-small text-gray-500 border-b border-gray-200 h-16'>
                         {`${i.toString().padStart(2, '0')}:00`}
                       </div>
                     ))}
@@ -892,12 +892,12 @@ export default function Calendar() {
                     return (
                       <div key={dayIndex} className='bg-white'>
                         <div className='p-3 text-center border-b border-gray-200'>
-                          <div className={`text-sm font-medium ${
+                          <div className={`text-nav-text font-medium ${
                             isSameDay(day, new Date()) ? 'text-blue-600' : 'text-gray-700'
                           }`}>
                             {format(day, 'EEE')}
                           </div>
-                          <div className={`text-lg font-semibold ${
+                          <div className={`text-card-title font-semibold ${
                             isSameDay(day, new Date()) ? 'text-blue-600' : 'text-gray-900'
                           }`}>
                             {format(day, 'd')}
@@ -910,7 +910,7 @@ export default function Calendar() {
                                 <div
                                   key={event.id}
                                   onClick={() => setSelectedEvent(event)}
-                                  className={`absolute left-1 right-1 text-xs p-1 rounded cursor-pointer truncate ${event.color} text-white m-1`}
+                                  className={`absolute left-1 right-1 text-metric-small p-1 rounded cursor-pointer truncate ${event.color} text-white m-1`}
                                   style={{ top: '4px' }}
                                 >
                                   {event.title}
@@ -933,13 +933,13 @@ export default function Calendar() {
                   {/* Time column */}
                   <div className='bg-gray-50 rounded-lg'>
                     <div className='p-4 border-b border-gray-200'>
-                      <h3 className='text-lg font-semibold text-gray-900'>
+                      <h3 className='text-card-title text-gray-900'>
                         {format(selectedDate, 'EEEE, MMMM d, yyyy')}
                       </h3>
                     </div>
                     {Array.from({ length: 24 }, (_, i) => (
                       <div key={i} className='flex border-b border-gray-200'>
-                        <div className='w-20 p-2 text-xs text-gray-500'>
+                        <div className='w-20 p-2 text-metric-small text-gray-500'>
                           {`${i.toString().padStart(2, '0')}:00`}
                         </div>
                         <div className='flex-1 p-2 min-h-[60px] relative'>
@@ -949,7 +949,7 @@ export default function Calendar() {
                               <div
                                 key={event.id}
                                 onClick={() => setSelectedEvent(event)}
-                                className={`text-xs p-2 rounded cursor-pointer truncate ${event.color} text-white mb-1`}
+                                className={`text-metric-small p-2 rounded cursor-pointer truncate ${event.color} text-white mb-1`}
                               >
                                 {event.title}
                               </div>
@@ -962,7 +962,7 @@ export default function Calendar() {
                   {/* Events summary */}
                   <div className='bg-white rounded-lg border border-gray-200'>
                     <div className='p-4 border-b border-gray-200'>
-                      <h3 className='text-lg font-semibold text-gray-900'>
+                      <h3 className='text-card-title text-gray-900'>
                         {t('calendar:events')} ({filteredEvents.filter(event => 
                           isSameDay(new Date(event.date), selectedDate)
                         ).length})
@@ -978,19 +978,19 @@ export default function Calendar() {
                             className='p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50'
                           >
                             <div className='flex items-center justify-between'>
-                              <h4 className='font-medium text-gray-900'>{event.title}</h4>
-                              <span className={`px-2 py-1 rounded text-xs ${event.color} text-white`}>
+                              <h4 className='text-card-title text-gray-900'>{event.title}</h4>
+                              <span className={`px-2 py-1 rounded text-metric-small ${event.color} text-white`}>
                                 {event.type}
                               </span>
                             </div>
-                            <p className='text-sm text-gray-600 mt-1'>{event.location}</p>
-                            <p className='text-xs text-gray-500 mt-1'>{event.time}</p>
+                            <p className='text-subtitle text-gray-600 mt-1'>{event.location}</p>
+                            <p className='text-metric-small text-gray-500 mt-1'>{event.time}</p>
                           </div>
                         ))}
                       {filteredEvents.filter(event => 
                         isSameDay(new Date(event.date), selectedDate)
                       ).length === 0 && (
-                        <p className='text-gray-500 text-center py-8'>
+                        <p className='text-subtitle text-gray-500 text-center py-8'>
                           {t('calendar:noEvents', 'No events for this day')}
                         </p>
                       )}
@@ -1003,51 +1003,39 @@ export default function Calendar() {
             {/* List View */}
             {view === 'List' && (
               <div className='p-6'>
-                <div className='space-y-4'>
-                  {filteredEvents.length === 0 ? (
-                    <p className='text-gray-500 text-center py-8'>
-                      {t('calendar:noEvents', 'No events found')}
-                    </p>
-                  ) : (
-                    filteredEvents.map(event => (
-                      <div
-                        key={event.id}
-                        onClick={() => setSelectedEvent(event)}
-                        className='bg-white border border-gray-200 rounded-lg p-4 cursor-pointer hover:shadow-md transition-shadow'
-                      >
-                        <div className='flex items-center justify-between'>
-                          <div className='flex-1'>
-                            <div className='flex items-center space-x-3'>
+                <div className='bg-white rounded-lg border border-gray-200'>
+                  <div className='p-4 border-b border-gray-200'>
+                    <h3 className='text-section-title text-gray-900'>{t('calendar:upcomingEvents')}</h3>
+                  </div>
+                  <div className='divide-y divide-gray-200'>
+                    {filteredEvents.length > 0 ? (
+                      filteredEvents.map(event => (
+                        <div
+                          key={event.id}
+                          onClick={() => setSelectedEvent(event)}
+                          className='p-4 hover:bg-gray-50 cursor-pointer'
+                        >
+                          <div className='flex items-center justify-between'>
+                            <div className='flex items-center space-x-4'>
                               <div className={`w-3 h-3 rounded-full ${event.color}`}></div>
-                              <h3 className='text-lg font-semibold text-gray-900'>{event.title}</h3>
-                              <span className={`px-2 py-1 rounded text-xs ${event.color} text-white`}>
-                                {event.type}
-                              </span>
-                            </div>
-                            <div className='mt-2 grid grid-cols-3 gap-4 text-sm text-gray-600'>
-                              <div className='flex items-center space-x-2'>
-                                <CalendarIcon className='h-4 w-4' />
-                                <span>{format(new Date(event.date), 'MMM d, yyyy')}</span>
-                              </div>
-                              <div className='flex items-center space-x-2'>
-                                <Clock className='h-4 w-4' />
-                                <span>{event.start_time} - {event.end_time}</span>
-                              </div>
-                              <div className='flex items-center space-x-2'>
-                                <MapPin className='h-4 w-4' />
-                                <span>{event.location || 'No location'}</span>
+                              <div>
+                                <h4 className='text-card-title text-gray-900'>{event.title}</h4>
+                                <p className='text-subtitle text-gray-600'>{event.location}</p>
                               </div>
                             </div>
-                            {event.description && (
-                              <p className='mt-2 text-sm text-gray-600 line-clamp-2'>
-                                {event.description}
-                              </p>
-                            )}
+                            <div className='text-right'>
+                              <p className='text-nav-text text-gray-900'>{format(new Date(event.date), 'MMM d, yyyy')}</p>
+                              <p className='text-metric-small text-gray-500'>{event.time}</p>
+                            </div>
                           </div>
                         </div>
+                      ))
+                    ) : (
+                      <div className='p-8 text-center'>
+                        <p className='text-subtitle text-gray-500'>{t('calendar:noEvents', 'No events found')}</p>
                       </div>
-                    ))
-                  )}
+                    )}
+                  </div>
                 </div>
               </div>
             )}
