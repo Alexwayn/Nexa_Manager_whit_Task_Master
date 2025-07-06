@@ -1165,42 +1165,70 @@ export default function Calendar() {
             <div className='grid grid-cols-2 gap-3'>
               <button
                 onClick={() => openEventModal('event')}
-                className='group flex flex-col items-center p-4 bg-gradient-to-br from-blue-50 to-blue-100 border border-blue-200 rounded-xl hover:from-blue-100 hover:to-blue-200 hover:border-blue-300 transition-all duration-300 transform hover:scale-105 hover:shadow-lg'
+                className='relative overflow-hidden bg-gradient-to-br from-blue-600 to-blue-700 text-white p-6 rounded-xl flex flex-col items-center gap-3 hover:from-blue-700 hover:to-blue-800 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl group'
+                style={{
+                  background: 'linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%)',
+                }}
               >
-                <div className='bg-blue-500 p-2 rounded-lg mb-3 group-hover:bg-blue-600 transition-colors duration-300'>
-                  <Plus className='h-5 w-5 text-white' />
+                <div className='absolute inset-0 opacity-10'>
+                  <div className='absolute top-2 left-2 w-4 h-4 bg-white rounded-full'></div>
+                  <div className='absolute top-8 right-4 w-2 h-2 bg-white rounded-full'></div>
+                  <div className='absolute bottom-4 left-6 w-3 h-3 bg-white rounded-full'></div>
+                  <div className='absolute bottom-2 right-2 w-5 h-5 bg-white rounded-full'></div>
                 </div>
-                <span className='text-sm font-medium text-blue-700 group-hover:text-blue-800'>{t('calendar:quickActionLabels.newEvent')}</span>
+                <Plus className='h-8 w-8 relative z-10 group-hover:scale-110 transition-transform duration-300' />
+                <span className='text-sm font-semibold relative z-10 text-center leading-tight'>{t('calendar:quickActionLabels.newEvent')}</span>
               </button>
 
               <button
                 onClick={() => openEventModal('schedule')}
-                className='group flex flex-col items-center p-4 bg-gradient-to-br from-green-50 to-green-100 border border-green-200 rounded-xl hover:from-green-100 hover:to-green-200 hover:border-green-300 transition-all duration-300 transform hover:scale-105 hover:shadow-lg'
+                className='relative overflow-hidden bg-gradient-to-br from-green-500 to-green-600 text-white p-6 rounded-xl flex flex-col items-center gap-3 hover:from-green-600 hover:to-green-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl group'
+                style={{
+                  background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+                }}
               >
-                <div className='bg-green-500 p-2 rounded-lg mb-3 group-hover:bg-green-600 transition-colors duration-300'>
-                  <Clock className='h-5 w-5 text-white' />
+                <div className='absolute inset-0 opacity-10'>
+                  <div className='absolute top-4 left-4 w-3 h-3 bg-white rounded-full'></div>
+                  <div className='absolute top-2 right-6 w-4 h-4 bg-white rounded-full'></div>
+                  <div className='absolute bottom-6 left-2 w-2 h-2 bg-white rounded-full'></div>
+                  <div className='absolute bottom-2 right-4 w-6 h-6 bg-white rounded-full'></div>
                 </div>
-                <span className='text-sm font-medium text-green-700 group-hover:text-green-800'>{t('calendar:quickActionLabels.schedule')}</span>
+                <Clock className='h-8 w-8 relative z-10 group-hover:scale-110 transition-transform duration-300' />
+                <span className='text-sm font-semibold relative z-10 text-center leading-tight'>{t('calendar:quickActionLabels.schedule')}</span>
               </button>
 
               <button
                 onClick={() => openEventModal('task')}
-                className='group flex flex-col items-center p-4 bg-gradient-to-br from-purple-50 to-purple-100 border border-purple-200 rounded-xl hover:from-purple-100 hover:to-purple-200 hover:border-purple-300 transition-all duration-300 transform hover:scale-105 hover:shadow-lg'
+                className='relative overflow-hidden bg-gradient-to-br from-purple-500 to-purple-600 text-white p-6 rounded-xl flex flex-col items-center gap-3 hover:from-purple-600 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl group'
+                style={{
+                  background: 'linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)',
+                }}
               >
-                <div className='bg-purple-500 p-2 rounded-lg mb-3 group-hover:bg-purple-600 transition-colors duration-300'>
-                  <CheckSquare className='h-5 w-5 text-white' />
+                <div className='absolute inset-0 opacity-10'>
+                  <div className='absolute top-2 left-4 w-6 h-6 bg-white rounded-full'></div>
+                  <div className='absolute top-5 right-5 w-2 h-2 bg-white rounded-full'></div>
+                  <div className='absolute bottom-4 left-2 w-3 h-3 bg-white rounded-full'></div>
+                  <div className='absolute bottom-2 right-3 w-4 h-4 bg-white rounded-full'></div>
                 </div>
-                <span className='text-sm font-medium text-purple-700 group-hover:text-purple-800'>{t('calendar:quickActionLabels.tasks')}</span>
+                <CheckSquare className='h-8 w-8 relative z-10 group-hover:scale-110 transition-transform duration-300' />
+                <span className='text-sm font-semibold relative z-10 text-center leading-tight'>{t('calendar:quickActionLabels.tasks')}</span>
               </button>
 
               <button
                 onClick={() => openEventModal('meeting')}
-                className='group flex flex-col items-center p-4 bg-gradient-to-br from-orange-50 to-orange-100 border border-orange-200 rounded-xl hover:from-orange-100 hover:to-orange-200 hover:border-orange-300 transition-all duration-300 transform hover:scale-105 hover:shadow-lg'
+                className='relative overflow-hidden bg-gradient-to-br from-orange-500 to-orange-600 text-white p-6 rounded-xl flex flex-col items-center gap-3 hover:from-orange-600 hover:to-orange-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl group'
+                style={{
+                  background: 'linear-gradient(135deg, #f97316 0%, #ea580c 100%)',
+                }}
               >
-                <div className='bg-orange-500 p-2 rounded-lg mb-3 group-hover:bg-orange-600 transition-colors duration-300'>
-                  <Users className='h-5 w-5 text-white' />
+                <div className='absolute inset-0 opacity-10'>
+                  <div className='absolute top-3 left-6 w-5 h-5 bg-white rounded-full'></div>
+                  <div className='absolute top-6 right-2 w-3 h-3 bg-white rounded-full'></div>
+                  <div className='absolute bottom-3 left-3 w-4 h-4 bg-white rounded-full'></div>
+                  <div className='absolute bottom-6 right-6 w-2 h-2 bg-white rounded-full'></div>
                 </div>
-                <span className='text-sm font-medium text-orange-700 group-hover:text-orange-800'>{t('calendar:quickActionLabels.meetings')}</span>
+                <Users className='h-8 w-8 relative z-10 group-hover:scale-110 transition-transform duration-300' />
+                <span className='text-sm font-semibold relative z-10 text-center leading-tight'>{t('calendar:quickActionLabels.meetings')}</span>
               </button>
             </div>
           </div>

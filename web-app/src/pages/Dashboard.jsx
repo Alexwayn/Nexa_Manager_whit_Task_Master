@@ -487,8 +487,8 @@ const Dashboard = () => {
               <p className='text-subtitle text-gray-600 mt-2'>{t('subtitle')}</p>
             </div>
 
-            {/* Top Row - Business Health, Revenue Streams, Invoice Tracker, Quick Actions */}
-            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 w-full'>
+            {/* Top Row - Business Health, Revenue Streams, Quick Actions (3 cards) */}
+            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full'>
               {/* Business Health */}
               <div className='bg-white rounded-xl shadow-sm p-6'>
                 <div className='flex items-center justify-between mb-6'>
@@ -613,6 +613,144 @@ const Dashboard = () => {
                 )}
               </div>
 
+
+
+              {/* Quick Actions */}
+              <div className='bg-white rounded-xl shadow-sm p-6'>
+                <h3 className='text-section-title text-gray-900 mb-6'>
+                  {t('quickActions.title')}
+                </h3>
+
+                <div className='grid grid-cols-2 gap-3'>
+                  {/* Add Client Card */}
+                  <div className='group relative bg-gradient-to-br from-[#4F46E5] to-[#357AF3] rounded-2xl p-4 text-white shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 cursor-pointer overflow-hidden h-full'>
+                    {/* Background Pattern */}
+                    <div className='absolute top-0 right-0 w-32 h-32 opacity-10'>
+                      <svg viewBox='0 0 100 100' className='w-full h-full'>
+                        <circle cx='50' cy='50' r='40' fill='none' stroke='currentColor' strokeWidth='1'/>
+                        <circle cx='50' cy='50' r='25' fill='none' stroke='currentColor' strokeWidth='1'/>
+                        <circle cx='50' cy='50' r='10' fill='currentColor'/>
+                      </svg>
+                    </div>
+                    
+                    <div className='relative z-10 h-full flex flex-col'>
+                      <div className='flex items-center mb-3'>
+                        <div className='p-2 bg-white/20 rounded-lg backdrop-blur-sm'>
+                          <UserPlus className='h-5 w-5' />
+                        </div>
+                        <h4 className='text-lg font-bold ml-2'>{t('quickActions.addClient')}</h4>
+                      </div>
+                      <p className='text-blue-100 text-xs mb-4 leading-relaxed flex-grow'>Aggiungi nuovo cliente</p>
+                      <div className='flex justify-center mt-auto'>
+                        <button
+                          onClick={handleAddClient}
+                          className='bg-white/90 backdrop-blur-sm text-[#4F46E5] px-3 py-1.5 rounded-lg font-semibold hover:bg-white hover:scale-105 transition-all duration-200 shadow-lg text-xs w-full max-w-[120px] text-center'
+                        >
+                          Aggiungi Cliente
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* New Invoice Card */}
+                  <div className='group relative bg-gradient-to-br from-[#059669] to-[#10B981] rounded-2xl p-4 text-white shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 cursor-pointer overflow-hidden h-full'>
+                    {/* Background Pattern */}
+                    <div className='absolute top-0 right-0 w-32 h-32 opacity-10'>
+                      <svg viewBox='0 0 100 100' className='w-full h-full'>
+                        <rect x='20' y='20' width='60' height='60' fill='none' stroke='currentColor' strokeWidth='2' rx='8'/>
+                        <line x1='30' y1='35' x2='70' y2='35' stroke='currentColor' strokeWidth='2'/>
+                        <line x1='30' y1='50' x2='70' y2='50' stroke='currentColor' strokeWidth='2'/>
+                        <line x1='30' y1='65' x2='55' y2='65' stroke='currentColor' strokeWidth='2'/>
+                      </svg>
+                    </div>
+                    
+                    <div className='relative z-10 h-full flex flex-col'>
+                      <div className='flex items-center mb-3'>
+                        <div className='p-2 bg-white/20 rounded-lg backdrop-blur-sm'>
+                          <Receipt className='h-5 w-5' />
+                        </div>
+                        <h4 className='text-lg font-bold ml-2'>{t('quickActions.newInvoice')}</h4>
+                      </div>
+                      <p className='text-green-100 text-xs mb-4 leading-relaxed flex-grow'>Crea nuova fattura</p>
+                      <div className='flex justify-center mt-auto'>
+                        <button
+                          onClick={handleCreateInvoice}
+                          className='bg-white/90 backdrop-blur-sm text-[#059669] px-3 py-1.5 rounded-lg font-semibold hover:bg-white hover:scale-105 transition-all duration-200 shadow-lg text-xs w-full max-w-[120px] text-center'
+                        >
+                          Nuova Fattura
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Track Expense Card */}
+                  <div className='group relative bg-gradient-to-br from-[#D97706] to-[#F59E0B] rounded-2xl p-4 text-white shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 cursor-pointer overflow-hidden h-full'>
+                    {/* Background Pattern */}
+                    <div className='absolute top-0 right-0 w-32 h-32 opacity-10'>
+                      <svg viewBox='0 0 100 100' className='w-full h-full'>
+                        <circle cx='50' cy='50' r='30' fill='none' stroke='currentColor' strokeWidth='2'/>
+                        <text x='50' y='55' textAnchor='middle' fontSize='20' fill='currentColor' fontWeight='bold'>€</text>
+                      </svg>
+                    </div>
+                    
+                    <div className='relative z-10 h-full flex flex-col'>
+                      <div className='flex items-center mb-3'>
+                        <div className='p-2 bg-white/20 rounded-lg backdrop-blur-sm'>
+                          <DollarSign className='h-5 w-5' />
+                        </div>
+                        <h4 className='text-lg font-bold ml-2'>{t('quickActions.trackExpense')}</h4>
+                      </div>
+                      <p className='text-amber-100 text-xs mb-4 leading-relaxed flex-grow'>Registra spese aziendali</p>
+                      <div className='flex justify-center mt-auto'>
+                        <button
+                          onClick={handleTrackExpense}
+                          className='bg-white/90 backdrop-blur-sm text-[#D97706] px-3 py-1.5 rounded-lg font-semibold hover:bg-white hover:scale-105 transition-all duration-200 shadow-lg text-xs w-full max-w-[120px] text-center'
+                        >
+                          Registra Spesa
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Schedule Meeting Card */}
+                  <div className='group relative bg-gradient-to-br from-[#7C3AED] to-[#A855F7] rounded-2xl p-4 text-white shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 cursor-pointer overflow-hidden h-full'>
+                    {/* Background Pattern */}
+                    <div className='absolute top-0 right-0 w-32 h-32 opacity-10'>
+                      <svg viewBox='0 0 100 100' className='w-full h-full'>
+                        <rect x='25' y='30' width='50' height='40' fill='none' stroke='currentColor' strokeWidth='2' rx='4'/>
+                        <line x1='35' y1='25' x2='35' y2='35' stroke='currentColor' strokeWidth='2'/>
+                        <line x1='65' y1='25' x2='65' y2='35' stroke='currentColor' strokeWidth='2'/>
+                        <line x1='30' y1='45' x2='70' y2='45' stroke='currentColor' strokeWidth='1'/>
+                        <line x1='30' y1='55' x2='70' y2='55' stroke='currentColor' strokeWidth='1'/>
+                        <line x1='30' y1='65' x2='50' y2='65' stroke='currentColor' strokeWidth='1'/>
+                      </svg>
+                    </div>
+                    
+                    <div className='relative z-10 h-full flex flex-col'>
+                      <div className='flex items-center mb-3'>
+                        <div className='p-2 bg-white/20 rounded-lg backdrop-blur-sm'>
+                          <CalendarIcon className='h-5 w-5' />
+                        </div>
+                        <h4 className='text-lg font-bold ml-2'>{t('quickActions.scheduleMeeting')}</h4>
+                      </div>
+                      <p className='text-purple-100 text-xs mb-4 leading-relaxed flex-grow'>Pianifica incontro cliente</p>
+                      <div className='flex justify-center mt-auto'>
+                        <button
+                          onClick={handleScheduleMeeting}
+                          className='bg-white/90 backdrop-blur-sm text-[#7C3AED] px-3 py-1.5 rounded-lg font-semibold hover:bg-white hover:scale-105 transition-all duration-200 shadow-lg text-xs w-full max-w-[120px] text-center'
+                        >
+                          Pianifica
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+            {/* Second Row - Invoice Tracker and Revenue Overview */}
+            <div className='grid grid-cols-2 gap-4 w-full'>
               {/* Invoice Tracker */}
               <div className='bg-white rounded-xl shadow-sm p-6'>
                 <div className='flex items-center justify-between mb-6'>
@@ -665,57 +803,7 @@ const Dashboard = () => {
                 </div>
               </div>
 
-              {/* Quick Actions */}
-              <div className='bg-white rounded-xl shadow-sm p-6'>
-                <h3 className='text-section-title text-gray-900 mb-6'>
-                  {t('quickActions.title')}
-                </h3>
-
-                <div className='grid grid-cols-2 gap-3'>
-                  <button
-                    onClick={handleAddClient}
-                    className='bg-blue-500 text-white p-4 rounded-xl hover:bg-blue-600 transition-all transform hover:scale-105 flex flex-col items-center justify-center aspect-square'
-                  >
-                    <UserPlus className='h-6 w-6 mx-auto mb-2' />
-                    <div className='text-center text-button-text font-medium'>
-                      {t('quickActions.addClient')}
-                    </div>
-                  </button>
-
-                  <button
-                    onClick={handleCreateInvoice}
-                    className='bg-green-500 text-white p-4 rounded-xl hover:bg-green-600 transition-all transform hover:scale-105 flex flex-col items-center justify-center aspect-square'
-                  >
-                    <Receipt className='h-6 w-6 mx-auto mb-2' />
-                    <div className='text-center text-button-text font-medium'>
-                      {t('quickActions.newInvoice')}
-                    </div>
-                  </button>
-
-                  <button
-                    onClick={handleTrackExpense}
-                    className='bg-yellow-500 text-white p-4 rounded-xl hover:bg-yellow-600 transition-all transform hover:scale-105 flex flex-col items-center justify-center aspect-square'
-                  >
-                    <DollarSign className='h-6 w-6 mx-auto mb-2' />
-                    <div className='text-center text-button-text font-medium'>
-                      {t('quickActions.trackExpense')}
-                    </div>
-                  </button>
-
-                  <button
-                    onClick={handleScheduleMeeting}
-                    className='bg-purple-500 text-white p-4 rounded-xl hover:bg-purple-600 transition-all transform hover:scale-105 flex flex-col items-center justify-center aspect-square'
-                  >
-                    <CalendarIcon className='h-6 w-6 mx-auto mb-2' />
-                    <div className='text-center text-button-text font-medium'>
-                      {t('quickActions.scheduleMeeting')}
-                    </div>
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            {/* Revenue Overview Chart */}
+              {/* Revenue Overview Chart */}
             <div className='bg-white rounded-xl shadow-sm p-6'>
               <div className='flex items-center justify-between mb-6'>
                 <h3 className='text-section-title text-gray-900'>
@@ -805,9 +893,10 @@ const Dashboard = () => {
 
               <p className='text-subtitle text-gray-600'>{t('revenueOverview.trendDescription')}</p>
             </div>
+            </div>
 
             {/* Bottom Section - 2x2 Grid Layout */}
-            <div className='grid grid-cols-1 md:grid-cols-2 gap-6 w-full'>
+            <div className='grid grid-cols-2 gap-4 w-full'>
               {/* Recent Clients */}
               <div className='bg-white rounded-xl shadow-sm p-6'>
                 <div className='flex items-center justify-between mb-6'>
@@ -1060,6 +1149,8 @@ const Dashboard = () => {
                       </span>
                     </div>
                   </div>
+
+
                 </div>
               </div>
             </div>

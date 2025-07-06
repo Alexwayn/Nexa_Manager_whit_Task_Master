@@ -883,90 +883,134 @@ const InvoicesPage = () => {
               </div>
             </div>
 
-            {/* Right: Quick Action Cards - Beautiful Design */}
+            {/* Right: Quick Action Cards - Beautiful Design with Patterns */}
             <div className='grid grid-cols-2 gap-4'>
               {/* Create Invoice */}
-              <div className='bg-[#357AF3] rounded-xl p-6 text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 cursor-pointer flex flex-col'>
-                <div className='flex-grow'>
-                  <div className='flex justify-center mb-4'>
-                    <FileText className='w-12 h-12' />
-                  </div>
-                  <h4 className='text-action-title text-center mb-2'>
-                    {t('quickActions.createInvoice.title')}
-                  </h4>
-                  <p className='text-action-description text-center mb-4'>
-                    {t('quickActions.createInvoice.description')}
-                  </p>
+              <div className='group relative bg-gradient-to-br from-[#4F46E5] to-[#357AF3] rounded-2xl p-4 text-white shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 cursor-pointer overflow-hidden h-full'>
+                {/* Background Pattern */}
+                <div className='absolute inset-0 opacity-10'>
+                  <div className='absolute top-0 left-0 w-32 h-32 bg-white rounded-full -translate-x-16 -translate-y-16'></div>
+                  <div className='absolute bottom-0 right-0 w-24 h-24 bg-white rounded-full translate-x-12 translate-y-12'></div>
+                  <div className='absolute top-1/2 right-0 w-16 h-16 bg-white rounded-full translate-x-8'></div>
                 </div>
-                <button
-                  onClick={handleCreateInvoice}
-                  className='w-full bg-white text-[#357AF3] py-2 px-4 rounded-lg hover:bg-gray-50 transition-colors text-button-text'
-                >
-                  {t('quickActions.createInvoice.button')}
-                </button>
+                <div className='relative z-10 flex flex-col h-full'>
+                  <div className='flex-grow'>
+                    <div className='flex justify-center mb-3'>
+                      <FileText className='w-10 h-10' />
+                    </div>
+                    <h4 className='text-lg font-bold text-center mb-2'>
+                      {t('quickActions.createInvoice.title')}
+                    </h4>
+                    <p className='text-blue-100 text-xs mb-4 leading-relaxed flex-grow text-center'>
+                      {t('quickActions.createInvoice.description')}
+                    </p>
+                  </div>
+                  <div className='flex justify-center mt-auto'>
+                    <button
+                      onClick={handleCreateInvoice}
+                      className='bg-white/90 backdrop-blur-sm text-[#4F46E5] px-3 py-1.5 rounded-lg font-semibold hover:bg-white hover:scale-105 transition-all duration-200 shadow-lg text-xs w-full max-w-[120px] text-center'
+                    >
+                      {t('quickActions.createInvoice.button')}
+                    </button>
+                  </div>
+                </div>
               </div>
 
               {/* Create Quote */}
-              <div className='bg-green-600 rounded-xl p-6 text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 cursor-pointer flex flex-col'>
-                <div className='flex-grow'>
-                  <div className='flex justify-center mb-4'>
-                    <FileText className='w-12 h-12' />
-                  </div>
-                  <h4 className='text-action-title text-center mb-2'>
-                    {t('quickActions.createQuote.title')}
-                  </h4>
-                  <p className='text-action-description text-center mb-4'>
-                    {t('quickActions.createQuote.description')}
-                  </p>
+              <div className='group relative bg-gradient-to-br from-[#059669] to-[#10B981] rounded-2xl p-4 text-white shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 cursor-pointer overflow-hidden h-full'>
+                {/* Background Pattern */}
+                <div className='absolute inset-0 opacity-10'>
+                  <div className='absolute top-0 right-0 w-28 h-28 bg-white rounded-full translate-x-14 -translate-y-14'></div>
+                  <div className='absolute bottom-0 left-0 w-20 h-20 bg-white rounded-full -translate-x-10 translate-y-10'></div>
+                  <div className='absolute top-1/3 left-0 w-12 h-12 bg-white rounded-full -translate-x-6'></div>
+                  <div className='absolute bottom-1/3 right-1/4 w-8 h-8 bg-white rounded-full'></div>
                 </div>
-                <button
-                  onClick={handleCreateQuote}
-                  className='w-full bg-white text-green-600 py-2 px-4 rounded-lg hover:bg-gray-50 transition-colors text-button-text'
-                >
-                  {t('quickActions.createQuote.button')}
-                </button>
+                <div className='relative z-10 flex flex-col h-full'>
+                  <div className='flex-grow'>
+                    <div className='flex justify-center mb-3'>
+                      <FileText className='w-10 h-10' />
+                    </div>
+                    <h4 className='text-lg font-bold text-center mb-2'>
+                      {t('quickActions.createQuote.title')}
+                    </h4>
+                    <p className='text-green-100 text-xs mb-4 leading-relaxed flex-grow text-center'>
+                      {t('quickActions.createQuote.description')}
+                    </p>
+                  </div>
+                  <div className='flex justify-center mt-auto'>
+                    <button
+                      onClick={handleCreateQuote}
+                      className='bg-white/90 backdrop-blur-sm text-[#059669] px-3 py-1.5 rounded-lg font-semibold hover:bg-white hover:scale-105 transition-all duration-200 shadow-lg text-xs w-full max-w-[120px] text-center'
+                    >
+                      {t('quickActions.createQuote.button')}
+                    </button>
+                  </div>
+                </div>
               </div>
 
               {/* Send Reminders */}
-              <div className='bg-amber-500 rounded-xl p-6 text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 cursor-pointer flex flex-col'>
-                <div className='flex-grow'>
-                  <div className='flex justify-center mb-4'>
-                    <Mail className='w-12 h-12' />
-                  </div>
-                  <h4 className='text-action-title text-center mb-2'>
-                    {t('quickActions.sendReminders.title')}
-                  </h4>
-                  <p className='text-action-description text-center mb-4'>
-                    {t('quickActions.sendReminders.description')}
-                  </p>
+              <div className='group relative bg-gradient-to-br from-[#D97706] to-[#F59E0B] rounded-2xl p-4 text-white shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 cursor-pointer overflow-hidden h-full'>
+                {/* Background Pattern */}
+                <div className='absolute inset-0 opacity-10'>
+                  <div className='absolute top-1/4 left-0 w-24 h-24 bg-white rounded-full -translate-x-12'></div>
+                  <div className='absolute bottom-0 right-0 w-32 h-32 bg-white rounded-full translate-x-16 translate-y-16'></div>
+                  <div className='absolute top-0 right-1/3 w-16 h-16 bg-white rounded-full -translate-y-8'></div>
+                  <div className='absolute bottom-1/4 left-1/3 w-10 h-10 bg-white rounded-full'></div>
                 </div>
-                <button
-                  onClick={handleSendReminders}
-                  className='w-full bg-white text-amber-600 py-2 px-4 rounded-lg hover:bg-gray-50 transition-colors text-button-text'
-                >
-                  {t('quickActions.sendReminders.button')}
-                </button>
+                <div className='relative z-10 flex flex-col h-full'>
+                  <div className='flex-grow'>
+                    <div className='flex justify-center mb-3'>
+                      <Mail className='w-10 h-10' />
+                    </div>
+                    <h4 className='text-lg font-bold text-center mb-2'>
+                      {t('quickActions.sendReminders.title')}
+                    </h4>
+                    <p className='text-orange-100 text-xs mb-4 leading-relaxed flex-grow text-center'>
+                      {t('quickActions.sendReminders.description')}
+                    </p>
+                  </div>
+                  <div className='flex justify-center mt-auto'>
+                    <button
+                      onClick={handleSendReminders}
+                      className='bg-white/90 backdrop-blur-sm text-[#D97706] px-3 py-1.5 rounded-lg font-semibold hover:bg-white hover:scale-105 transition-all duration-200 shadow-lg text-xs w-full max-w-[120px] text-center'
+                    >
+                      {t('quickActions.sendReminders.button')}
+                    </button>
+                  </div>
+                </div>
               </div>
 
               {/* Generate Report */}
-              <div className='bg-purple-600 rounded-xl p-6 text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 cursor-pointer flex flex-col'>
-                <div className='flex-grow'>
-                  <div className='flex justify-center mb-4'>
-                    <FileText className='w-12 h-12' />
-                  </div>
-                  <h4 className='text-action-title text-center mb-2'>
-                    {t('quickActions.generateReport.title')}
-                  </h4>
-                  <p className='text-action-description text-center mb-4'>
-                    {t('quickActions.generateReport.description')}
-                  </p>
+              <div className='group relative bg-gradient-to-br from-[#7C3AED] to-[#A855F7] rounded-2xl p-4 text-white shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 cursor-pointer overflow-hidden h-full'>
+                {/* Background Pattern */}
+                <div className='absolute inset-0 opacity-10'>
+                  <div className='absolute top-0 left-1/4 w-20 h-20 bg-white rounded-full -translate-y-10'></div>
+                  <div className='absolute bottom-1/4 right-0 w-28 h-28 bg-white rounded-full translate-x-14'></div>
+                  <div className='absolute top-1/2 left-0 w-14 h-14 bg-white rounded-full -translate-x-7'></div>
+                  <div className='absolute bottom-0 left-1/2 w-18 h-18 bg-white rounded-full translate-y-9'></div>
+                  <div className='absolute top-1/4 right-1/4 w-6 h-6 bg-white rounded-full'></div>
                 </div>
-                <button
-                  onClick={handleGenerateReport}
-                  className='w-full bg-white text-purple-600 py-2 px-4 rounded-lg hover:bg-gray-50 transition-colors text-button-text'
-                >
-                  {t('quickActions.generateReport.button')}
-                </button>
+                <div className='relative z-10 flex flex-col h-full'>
+                  <div className='flex-grow'>
+                    <div className='flex justify-center mb-3'>
+                      <FileText className='w-10 h-10' />
+                    </div>
+                    <h4 className='text-lg font-bold text-center mb-2'>
+                      {t('quickActions.generateReport.title')}
+                    </h4>
+                    <p className='text-purple-100 text-xs mb-4 leading-relaxed flex-grow text-center'>
+                      {t('quickActions.generateReport.description')}
+                    </p>
+                  </div>
+                  <div className='flex justify-center mt-auto'>
+                    <button
+                      onClick={handleGenerateReport}
+                      className='bg-white/90 backdrop-blur-sm text-[#7C3AED] px-3 py-1.5 rounded-lg font-semibold hover:bg-white hover:scale-105 transition-all duration-200 shadow-lg text-xs w-full max-w-[120px] text-center'
+                    >
+                      {t('quickActions.generateReport.button')}
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

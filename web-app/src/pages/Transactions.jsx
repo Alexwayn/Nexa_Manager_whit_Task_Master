@@ -731,31 +731,67 @@ export default function Transactions() {
                 <div className='grid grid-cols-2 gap-4 mb-6'>
                   <button 
                     onClick={handleAdjustBudget}
-                    className='bg-blue-600 text-white p-4 rounded-lg flex flex-col items-center gap-2 hover:bg-blue-700 transition-colors duration-200'
+                    className='relative overflow-hidden bg-gradient-to-br from-blue-600 to-blue-700 text-white p-6 rounded-xl flex flex-col items-center gap-3 hover:from-blue-700 hover:to-blue-800 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl group'
+                    style={{
+                      background: 'linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%)',
+                    }}
                   >
-                    <ChartBarIcon className='w-6 h-6' />
-                    <span className='text-action-description'>{safeT('quickActions.adjustBudget', {}, 'Adjust Budget')}</span>
+                    <div className='absolute inset-0 opacity-10'>
+                      <div className='absolute top-2 left-2 w-4 h-4 bg-white rounded-full'></div>
+                      <div className='absolute top-8 right-4 w-2 h-2 bg-white rounded-full'></div>
+                      <div className='absolute bottom-4 left-6 w-3 h-3 bg-white rounded-full'></div>
+                      <div className='absolute bottom-2 right-2 w-5 h-5 bg-white rounded-full'></div>
+                    </div>
+                    <ChartBarIcon className='w-8 h-8 relative z-10 group-hover:scale-110 transition-transform duration-300' />
+                    <span className='text-sm font-semibold relative z-10 text-center leading-tight'>{safeT('quickActions.adjustBudget', {}, 'Adjust Budget')}</span>
                   </button>
                   <button 
                     onClick={handleFinancialReport}
-                    className='bg-green-500 text-white p-4 rounded-lg flex flex-col items-center gap-2 hover:bg-green-600 transition-colors duration-200'
+                    className='relative overflow-hidden bg-gradient-to-br from-green-500 to-green-600 text-white p-6 rounded-xl flex flex-col items-center gap-3 hover:from-green-600 hover:to-green-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl group'
+                    style={{
+                      background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+                    }}
                   >
-                    <DocumentTextIcon className='w-6 h-6' />
-                    <span className='text-action-description'>{safeT('quickActions.financialReport', {}, 'Financial Report')}</span>
+                    <div className='absolute inset-0 opacity-10'>
+                      <div className='absolute top-4 left-4 w-3 h-3 bg-white rounded-full'></div>
+                      <div className='absolute top-2 right-6 w-4 h-4 bg-white rounded-full'></div>
+                      <div className='absolute bottom-6 left-2 w-2 h-2 bg-white rounded-full'></div>
+                      <div className='absolute bottom-2 right-4 w-6 h-6 bg-white rounded-full'></div>
+                    </div>
+                    <DocumentTextIcon className='w-8 h-8 relative z-10 group-hover:scale-110 transition-transform duration-300' />
+                    <span className='text-sm font-semibold relative z-10 text-center leading-tight'>{safeT('quickActions.financialReport', {}, 'Financial Report')}</span>
                   </button>
                   <button 
                     onClick={handleForecastTool}
-                    className='bg-yellow-500 text-white p-4 rounded-lg flex flex-col items-center gap-2 hover:bg-yellow-600 transition-colors duration-200'
+                    className='relative overflow-hidden bg-gradient-to-br from-yellow-500 to-yellow-600 text-white p-6 rounded-xl flex flex-col items-center gap-3 hover:from-yellow-600 hover:to-yellow-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl group'
+                    style={{
+                      background: 'linear-gradient(135deg, #eab308 0%, #ca8a04 100%)',
+                    }}
                   >
-                    <ChartBarIcon className='w-6 h-6' />
-                    <span className='text-action-description'>{safeT('quickActions.forecastTool', {}, 'Forecast Tool')}</span>
+                    <div className='absolute inset-0 opacity-10'>
+                      <div className='absolute top-3 left-6 w-5 h-5 bg-white rounded-full'></div>
+                      <div className='absolute top-6 right-2 w-3 h-3 bg-white rounded-full'></div>
+                      <div className='absolute bottom-3 left-3 w-4 h-4 bg-white rounded-full'></div>
+                      <div className='absolute bottom-6 right-6 w-2 h-2 bg-white rounded-full'></div>
+                    </div>
+                    <ChartBarIcon className='w-8 h-8 relative z-10 group-hover:scale-110 transition-transform duration-300' />
+                    <span className='text-sm font-semibold relative z-10 text-center leading-tight'>{safeT('quickActions.forecastTool', {}, 'Forecast Tool')}</span>
                   </button>
                   <button 
                     onClick={handleRecurringItems}
-                    className='bg-purple-500 text-white p-4 rounded-lg flex flex-col items-center gap-2 hover:bg-purple-600 transition-colors duration-200'
+                    className='relative overflow-hidden bg-gradient-to-br from-purple-500 to-purple-600 text-white p-6 rounded-xl flex flex-col items-center gap-3 hover:from-purple-600 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl group'
+                    style={{
+                      background: 'linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)',
+                    }}
                   >
-                    <CalendarIcon className='w-6 h-6' />
-                    <span className='text-action-description'>{safeT('quickActions.recurringItems', {}, 'Recurring Items')}</span>
+                    <div className='absolute inset-0 opacity-10'>
+                      <div className='absolute top-2 left-4 w-6 h-6 bg-white rounded-full'></div>
+                      <div className='absolute top-5 right-5 w-2 h-2 bg-white rounded-full'></div>
+                      <div className='absolute bottom-4 left-2 w-3 h-3 bg-white rounded-full'></div>
+                      <div className='absolute bottom-2 right-3 w-4 h-4 bg-white rounded-full'></div>
+                    </div>
+                    <CalendarIcon className='w-8 h-8 relative z-10 group-hover:scale-110 transition-transform duration-300' />
+                    <span className='text-sm font-semibold relative z-10 text-center leading-tight'>{safeT('quickActions.recurringItems', {}, 'Recurring Items')}</span>
                   </button>
                 </div>
 

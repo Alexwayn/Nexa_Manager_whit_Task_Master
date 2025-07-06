@@ -91,12 +91,29 @@ const QuickActions = ({ onAddItem, onManageCategories, onExportInventory, onStoc
             <button
               key={action.id}
               onClick={action.onClick}
-              className={`group flex flex-col items-center p-4 ${action.gradientBg} border ${action.borderColor} rounded-xl hover:${action.hoverGradient} hover:${action.hoverBorder} transition-all duration-300 transform hover:scale-105 hover:shadow-lg min-h-[100px]`}
+              className={`group relative overflow-hidden flex flex-col items-center p-4 rounded-xl transition-all duration-300 transform hover:scale-105 hover:shadow-lg min-h-[100px] text-white`}
+              style={{
+                background: action.id === 1 ? 'linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%)' :
+                           action.id === 2 ? 'linear-gradient(135deg, #10b981 0%, #059669 100%)' :
+                           action.id === 3 ? 'linear-gradient(135deg, #eab308 0%, #ca8a04 100%)' :
+                           'linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)'
+              }}
             >
-              <div className={`${action.iconBg} p-2 rounded-lg mb-3 group-hover:${action.hoverIconBg} transition-colors duration-300`}>
-                <action.icon className="h-5 w-5 text-white" />
+              {/* Background Pattern */}
+              <div className="absolute inset-0 opacity-10">
+                <div className="absolute top-2 left-2 w-4 h-4 bg-white rounded-full"></div>
+                <div className="absolute top-8 right-4 w-2 h-2 bg-white rounded-full"></div>
+                <div className="absolute bottom-4 left-6 w-3 h-3 bg-white rounded-full"></div>
+                <div className="absolute bottom-2 right-2 w-5 h-5 bg-white rounded-full"></div>
               </div>
-              <span className={`text-center text-sm font-medium leading-tight ${action.textColor} group-hover:${action.hoverTextColor}`}>{action.title}</span>
+              
+              {/* Content */}
+              <div className="relative z-10 flex flex-col items-center gap-3">
+                <div className="bg-white bg-opacity-20 p-3 rounded-lg group-hover:bg-opacity-30 transition-all duration-300">
+                  <action.icon className="h-6 w-6 text-white" />
+                </div>
+                <span className="text-center text-sm font-medium leading-tight text-white">{action.title}</span>
+              </div>
             </button>
           ))}
         </div>

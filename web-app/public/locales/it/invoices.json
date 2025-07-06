@@ -114,12 +114,12 @@
     "createQuote": {
       "title": "Crea Preventivo",
       "description": "Crea un nuovo preventivo per un cliente",
-      "button": "Nuovo Preventivo"
+      "button": "Preventivo"
     },
     "sendReminders": {
       "title": "Invia Promemoria",
       "description": "Invia promemoria per fatture scadute",
-      "button": "Invia Promemoria"
+      "button": "Promemoria"
     },
     "generateReport": {
       "title": "Genera Report",

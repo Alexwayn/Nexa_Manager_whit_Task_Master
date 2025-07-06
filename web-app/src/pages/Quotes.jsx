@@ -571,64 +571,136 @@ const QuotesPage = () => {
 
               {/* Quick Action Cards - Right Side */}
               <div className='grid grid-cols-2 gap-4'>
-                <div className='bg-[#357AF3] rounded-xl p-6 text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105'>
-                  <div className='flex justify-center mb-4'>
-                    <FileText className='w-12 h-12' />
+                {/* Create Quote */}
+                <div className='group relative bg-gradient-to-br from-[#4F46E5] to-[#357AF3] rounded-2xl p-4 text-white shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 cursor-pointer overflow-hidden h-full'>
+                  {/* Background Pattern */}
+                  <div className='absolute inset-0 opacity-10'>
+                    <div className='absolute top-0 left-0 w-32 h-32 bg-white rounded-full -translate-x-16 -translate-y-16'></div>
+                    <div className='absolute bottom-0 right-0 w-24 h-24 bg-white rounded-full translate-x-12 translate-y-12'></div>
+                    <div className='absolute top-1/2 right-0 w-16 h-16 bg-white rounded-full translate-x-8'></div>
                   </div>
-                  <h4 className='text-lg font-bold text-center mb-2'>{t('dashboard.quickActions.createQuote.title') || 'Create Quote'}</h4>
-                  <p className='text-blue-100 text-center text-sm mb-4'>{t('dashboard.quickActions.createQuote.description') || 'Generate new quote'}</p>
-                  <button 
-                    onClick={() => handleCreateQuote()}
-                    disabled={isLoading}
-                    className='w-full bg-white text-[#357AF3] py-2 px-4 rounded-lg hover:bg-gray-50 transition-colors font-semibold text-sm disabled:opacity-50 disabled:cursor-not-allowed'
-                  >
-                    {t('dashboard.quickActions.createQuote.button') || 'Create Now'}
-                  </button>
+                  <div className='relative z-10 flex flex-col h-full'>
+                    <div className='flex-grow'>
+                      <div className='flex justify-center mb-3'>
+                        <FileText className='w-10 h-10' />
+                      </div>
+                      <h4 className='text-lg font-bold text-center mb-2'>
+                        {t('dashboard.quickActions.createQuote.title') || 'Create Quote'}
+                      </h4>
+                      <p className='text-blue-100 text-xs mb-4 leading-relaxed flex-grow text-center'>
+                        {t('dashboard.quickActions.createQuote.description') || 'Generate new quote'}
+                      </p>
+                    </div>
+                    <div className='flex justify-center mt-auto'>
+                      <button
+                        onClick={() => handleCreateQuote()}
+                        disabled={isLoading}
+                        className='bg-white/90 backdrop-blur-sm text-[#4F46E5] px-3 py-1.5 rounded-lg font-semibold hover:bg-white hover:scale-105 transition-all duration-200 shadow-lg text-xs w-full max-w-[120px] text-center disabled:opacity-50 disabled:cursor-not-allowed'
+                      >
+                        {t('dashboard.quickActions.createQuote.button') || 'Create Now'}
+                      </button>
+                    </div>
+                  </div>
                 </div>
 
-                <div className='bg-green-600 rounded-xl p-6 text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105'>
-                  <div className='flex justify-center mb-4'>
-                    <FileText className='w-12 h-12' />
+                {/* Create Invoice */}
+                <div className='group relative bg-gradient-to-br from-[#059669] to-[#10B981] rounded-2xl p-4 text-white shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 cursor-pointer overflow-hidden h-full'>
+                  {/* Background Pattern */}
+                  <div className='absolute inset-0 opacity-10'>
+                    <div className='absolute top-0 right-0 w-28 h-28 bg-white rounded-full translate-x-14 -translate-y-14'></div>
+                    <div className='absolute bottom-0 left-0 w-20 h-20 bg-white rounded-full -translate-x-10 translate-y-10'></div>
+                    <div className='absolute top-1/3 left-0 w-12 h-12 bg-white rounded-full -translate-x-6'></div>
+                    <div className='absolute bottom-1/3 right-1/4 w-8 h-8 bg-white rounded-full'></div>
                   </div>
-                  <h4 className='text-lg font-bold text-center mb-2'>{t('dashboard.quickActions.createInvoice.title') || 'Create Invoice'}</h4>
-                  <p className='text-green-100 text-center text-sm mb-4'>{t('dashboard.quickActions.createInvoice.description') || 'Convert to invoice'}</p>
-                  <button 
-                    onClick={() => navigate('/invoices')}
-                    className='w-full bg-white text-green-600 py-2 px-4 rounded-lg hover:bg-gray-50 transition-colors font-semibold text-sm'
-                  >
-                    {t('dashboard.quickActions.createInvoice.button') || 'Create Now'}
-                  </button>
+                  <div className='relative z-10 flex flex-col h-full'>
+                    <div className='flex-grow'>
+                      <div className='flex justify-center mb-3'>
+                        <FileText className='w-10 h-10' />
+                      </div>
+                      <h4 className='text-lg font-bold text-center mb-2'>
+                        {t('dashboard.quickActions.createInvoice.title') || 'Create Invoice'}
+                      </h4>
+                      <p className='text-green-100 text-xs mb-4 leading-relaxed flex-grow text-center'>
+                        {t('dashboard.quickActions.createInvoice.description') || 'Convert to invoice'}
+                      </p>
+                    </div>
+                    <div className='flex justify-center mt-auto'>
+                      <button
+                        onClick={() => navigate('/invoices')}
+                        className='bg-white/90 backdrop-blur-sm text-[#059669] px-3 py-1.5 rounded-lg font-semibold hover:bg-white hover:scale-105 transition-all duration-200 shadow-lg text-xs w-full max-w-[120px] text-center'
+                      >
+                        {t('dashboard.quickActions.createInvoice.button') || 'Create Now'}
+                      </button>
+                    </div>
+                  </div>
                 </div>
 
-                <div className='bg-amber-500 rounded-xl p-6 text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105'>
-                  <div className='flex justify-center mb-4'>
-                    <Mail className='w-12 h-12' />
+                {/* Send Follow-ups */}
+                <div className='group relative bg-gradient-to-br from-[#D97706] to-[#F59E0B] rounded-2xl p-4 text-white shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 cursor-pointer overflow-hidden h-full'>
+                  {/* Background Pattern */}
+                  <div className='absolute inset-0 opacity-10'>
+                    <div className='absolute top-1/4 left-0 w-24 h-24 bg-white rounded-full -translate-x-12'></div>
+                    <div className='absolute bottom-0 right-0 w-32 h-32 bg-white rounded-full translate-x-16 translate-y-16'></div>
+                    <div className='absolute top-0 right-1/3 w-16 h-16 bg-white rounded-full -translate-y-8'></div>
+                    <div className='absolute bottom-1/4 left-1/3 w-10 h-10 bg-white rounded-full'></div>
                   </div>
-                  <h4 className='text-lg font-bold text-center mb-2'>{t('dashboard.quickActions.sendFollowups.title') || 'Send Follow-ups'}</h4>
-                  <p className='text-amber-100 text-center text-sm mb-4'>{t('dashboard.quickActions.sendFollowups.description') || 'Follow pending quotes'}</p>
-                  <button 
-                    onClick={() => {
-                      // Show success message for follow-ups
-                      alert('Follow-up emails sent successfully!');
-                    }}
-                    className='w-full bg-white text-amber-600 py-2 px-4 rounded-lg hover:bg-gray-50 transition-colors font-semibold text-sm'
-                  >
-                    {t('dashboard.quickActions.sendFollowups.button') || 'Send All'}
-                  </button>
+                  <div className='relative z-10 flex flex-col h-full'>
+                    <div className='flex-grow'>
+                      <div className='flex justify-center mb-3'>
+                        <Mail className='w-10 h-10' />
+                      </div>
+                      <h4 className='text-lg font-bold text-center mb-2'>
+                        {t('dashboard.quickActions.sendFollowups.title') || 'Send Follow-ups'}
+                      </h4>
+                      <p className='text-orange-100 text-xs mb-4 leading-relaxed flex-grow text-center'>
+                        {t('dashboard.quickActions.sendFollowups.description') || 'Follow pending quotes'}
+                      </p>
+                    </div>
+                    <div className='flex justify-center mt-auto'>
+                      <button
+                        onClick={() => {
+                          // Show success message for follow-ups
+                          alert('Follow-up emails sent successfully!');
+                        }}
+                        className='bg-white/90 backdrop-blur-sm text-[#D97706] px-3 py-1.5 rounded-lg font-semibold hover:bg-white hover:scale-105 transition-all duration-200 shadow-lg text-xs w-full max-w-[120px] text-center'
+                      >
+                        {t('dashboard.quickActions.sendFollowups.button') || 'Send All'}
+                      </button>
+                    </div>
+                  </div>
                 </div>
 
-                <div className='bg-purple-600 rounded-xl p-6 text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105'>
-                  <div className='flex justify-center mb-4'>
-                    <TrendingUp className='w-12 h-12' />
+                {/* Generate Report */}
+                <div className='group relative bg-gradient-to-br from-[#7C3AED] to-[#A855F7] rounded-2xl p-4 text-white shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 cursor-pointer overflow-hidden h-full'>
+                  {/* Background Pattern */}
+                  <div className='absolute inset-0 opacity-10'>
+                    <div className='absolute top-0 left-1/4 w-20 h-20 bg-white rounded-full -translate-y-10'></div>
+                    <div className='absolute bottom-1/4 right-0 w-28 h-28 bg-white rounded-full translate-x-14'></div>
+                    <div className='absolute top-1/2 left-0 w-14 h-14 bg-white rounded-full -translate-x-7'></div>
+                    <div className='absolute bottom-0 left-1/2 w-18 h-18 bg-white rounded-full translate-y-9'></div>
+                    <div className='absolute top-1/4 right-1/4 w-6 h-6 bg-white rounded-full'></div>
                   </div>
-                  <h4 className='text-lg font-bold text-center mb-2'>{t('dashboard.quickActions.generateReport.title') || 'Generate Report'}</h4>
-                  <p className='text-purple-100 text-center text-sm mb-4'>{t('dashboard.quickActions.generateReport.description') || 'Quotes analytics'}</p>
-                  <button 
-                    onClick={() => navigate('/reports')}
-                    className='w-full bg-white text-purple-600 py-2 px-4 rounded-lg hover:bg-gray-50 transition-colors font-semibold text-sm'
-                  >
-                    {t('dashboard.quickActions.generateReport.button') || 'Generate'}
-                  </button>
+                  <div className='relative z-10 flex flex-col h-full'>
+                    <div className='flex-grow'>
+                      <div className='flex justify-center mb-3'>
+                        <TrendingUp className='w-10 h-10' />
+                      </div>
+                      <h4 className='text-lg font-bold text-center mb-2'>
+                        {t('dashboard.quickActions.generateReport.title') || 'Generate Report'}
+                      </h4>
+                      <p className='text-purple-100 text-xs mb-4 leading-relaxed flex-grow text-center'>
+                        {t('dashboard.quickActions.generateReport.description') || 'Quotes analytics'}
+                      </p>
+                    </div>
+                    <div className='flex justify-center mt-auto'>
+                      <button
+                        onClick={() => navigate('/reports')}
+                        className='bg-white/90 backdrop-blur-sm text-[#7C3AED] px-3 py-1.5 rounded-lg font-semibold hover:bg-white hover:scale-105 transition-all duration-200 shadow-lg text-xs w-full max-w-[120px] text-center'
+                      >
+                        {t('dashboard.quickActions.generateReport.button') || 'Generate'}
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
