@@ -214,12 +214,12 @@ const AddItemModal = ({ isOpen, onClose, onSave }) => {
                             id="name"
                             value={formData.name}
                             onChange={handleInputChange}
-                            className={`block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm ${
+                            className={`block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-input-text ${
                               errors.name ? 'border-red-300' : ''
                             }`}
                             placeholder={safeT('modals.addItem.placeholders.name', {}, 'Enter product name')}
                           />
-                          {errors.name && <p className="mt-1 text-sm text-red-600">{errors.name}</p>}
+                          {errors.name && <p className="mt-1 text-error text-red-600">{errors.name}</p>}
                         </div>
 
                         {/* SKU */}
@@ -233,12 +233,12 @@ const AddItemModal = ({ isOpen, onClose, onSave }) => {
                             id="sku"
                             value={formData.sku}
                             onChange={handleInputChange}
-                            className={`block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm ${
+                            className={`block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-input-text ${
                               errors.sku ? 'border-red-300' : ''
                             }`}
                             placeholder={safeT('modals.addItem.placeholders.sku', {}, 'Enter SKU')}
                           />
-                          {errors.sku && <p className="mt-1 text-sm text-red-600">{errors.sku}</p>}
+                          {errors.sku && <p className="mt-1 text-error text-red-600">{errors.sku}</p>}
                         </div>
 
                         {/* Category */}
@@ -251,7 +251,7 @@ const AddItemModal = ({ isOpen, onClose, onSave }) => {
                             id="category"
                             value={formData.category}
                             onChange={handleInputChange}
-                            className={`block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm ${
+                            className={`block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-input-text ${
                               errors.category ? 'border-red-300' : ''
                             }`}
                           >
@@ -260,7 +260,7 @@ const AddItemModal = ({ isOpen, onClose, onSave }) => {
                               <option key={category} value={category}>{category}</option>
                             ))}
                           </select>
-                          {errors.category && <p className="mt-1 text-sm text-red-600">{errors.category}</p>}
+                          {errors.category && <p className="mt-1 text-error text-red-600">{errors.category}</p>}
                         </div>
 
                         {/* Location */}
@@ -273,7 +273,7 @@ const AddItemModal = ({ isOpen, onClose, onSave }) => {
                             id="location"
                             value={formData.location}
                             onChange={handleInputChange}
-                            className={`block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm ${
+                            className={`block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-input-text ${
                               errors.location ? 'border-red-300' : ''
                             }`}
                           >
@@ -282,7 +282,7 @@ const AddItemModal = ({ isOpen, onClose, onSave }) => {
                               <option key={location} value={location}>{location}</option>
                             ))}
                           </select>
-                          {errors.location && <p className="mt-1 text-sm text-red-600">{errors.location}</p>}
+                          {errors.location && <p className="mt-1 text-error text-red-600">{errors.location}</p>}
                         </div>
 
                         {/* Stock */}
@@ -297,12 +297,12 @@ const AddItemModal = ({ isOpen, onClose, onSave }) => {
                             min="0"
                             value={formData.stock}
                             onChange={handleInputChange}
-                            className={`block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm ${
+                            className={`block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-input-text ${
                               errors.stock ? 'border-red-300' : ''
                             }`}
                             placeholder={safeT('modals.addItem.placeholders.stock', {}, '0')}
                           />
-                          {errors.stock && <p className="mt-1 text-sm text-red-600">{errors.stock}</p>}
+                          {errors.stock && <p className="mt-1 text-error text-red-600">{errors.stock}</p>}
                         </div>
 
                         {/* Minimum Stock */}
@@ -317,12 +317,12 @@ const AddItemModal = ({ isOpen, onClose, onSave }) => {
                             min="0"
                             value={formData.minStock}
                             onChange={handleInputChange}
-                            className={`block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm ${
+                            className={`block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-input-text ${
                               errors.minStock ? 'border-red-300' : ''
                             }`}
                             placeholder={safeT('modals.addItem.placeholders.minStock', {}, '0')}
                           />
-                          {errors.minStock && <p className="mt-1 text-sm text-red-600">{errors.minStock}</p>}
+                          {errors.minStock && <p className="mt-1 text-error text-red-600">{errors.minStock}</p>}
                         </div>
 
                         {/* Price */}
@@ -332,7 +332,7 @@ const AddItemModal = ({ isOpen, onClose, onSave }) => {
                           </label>
                           <div className="relative">
                             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                              <span className="text-gray-500 sm:text-sm">$</span>
+                              <span className="text-gray-500 text-input-text">$</span>
                             </div>
                             <input
                               type="number"
@@ -342,13 +342,13 @@ const AddItemModal = ({ isOpen, onClose, onSave }) => {
                               step="0.01"
                               value={formData.price}
                               onChange={handleInputChange}
-                              className={`block w-full pl-7 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm ${
+                              className={`block w-full pl-7 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-input-text ${
                                 errors.price ? 'border-red-300' : ''
                               }`}
                               placeholder={safeT('modals.addItem.placeholders.price', {}, '0.00')}
                             />
                           </div>
-                          {errors.price && <p className="mt-1 text-sm text-red-600">{errors.price}</p>}
+                          {errors.price && <p className="mt-1 text-error text-red-600">{errors.price}</p>}
                         </div>
 
                         {/* Supplier */}
@@ -362,12 +362,12 @@ const AddItemModal = ({ isOpen, onClose, onSave }) => {
                             id="supplier"
                             value={formData.supplier}
                             onChange={handleInputChange}
-                            className={`block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm ${
+                            className={`block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-input-text ${
                               errors.supplier ? 'border-red-300' : ''
                             }`}
                             placeholder={safeT('modals.addItem.placeholders.supplier', {}, 'Enter supplier name')}
                           />
-                          {errors.supplier && <p className="mt-1 text-sm text-red-600">{errors.supplier}</p>}
+                          {errors.supplier && <p className="mt-1 text-error text-red-600">{errors.supplier}</p>}
                         </div>
                       </div>
 
@@ -382,7 +382,7 @@ const AddItemModal = ({ isOpen, onClose, onSave }) => {
                           rows={3}
                           value={formData.description}
                           onChange={handleInputChange}
-                          className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                          className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-input-text"
                           placeholder={safeT('modals.addItem.placeholders.description', {}, 'Enter product description (optional)')}
                         />
                       </div>
@@ -395,7 +395,7 @@ const AddItemModal = ({ isOpen, onClose, onSave }) => {
                         <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
                           <div className="space-y-1 text-center">
                             <PhotoIcon className="mx-auto h-12 w-12 text-gray-400" />
-                            <div className="flex text-sm text-gray-600">
+                            <div className="flex text-body text-gray-600">
                               <label
                                 htmlFor="image"
                                 className="relative cursor-pointer bg-white rounded-md font-medium text-blue-600 hover:text-blue-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-blue-500"
@@ -412,9 +412,9 @@ const AddItemModal = ({ isOpen, onClose, onSave }) => {
                               </label>
                               <p className="pl-1">{safeT('modals.addItem.imageUpload.dragDrop', {}, 'or drag and drop')}</p>
                             </div>
-                            <p className="text-xs text-gray-500">{safeT('modals.addItem.imageUpload.fileTypes', {}, 'PNG, JPG, GIF up to 10MB')}</p>
+                            <p className="text-caption text-gray-500">{safeT('modals.addItem.imageUpload.fileTypes', {}, 'PNG, JPG, GIF up to 10MB')}</p>
                             {formData.image && (
-                              <p className="text-sm text-green-600">{safeT('modals.addItem.imageUpload.selected', { fileName: formData.image.name }, `Selected: ${formData.image.name}`)}</p>
+                              <p className="text-body text-green-600">{safeT('modals.addItem.imageUpload.selected', { fileName: formData.image.name }, `Selected: ${formData.image.name}`)}</p>
                             )}
                           </div>
                         </div>
