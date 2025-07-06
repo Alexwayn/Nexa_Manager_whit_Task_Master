@@ -83,7 +83,7 @@ const ReorderModal = ({ isOpen, onClose, item }) => {
         <div className="flex items-center justify-between p-6 border-b border-gray-200">
           <div className="flex items-center space-x-3">
             <ArrowPathIcon className="h-6 w-6 text-blue-600" />
-            <h2 className="text-xl font-semibold text-gray-900">
+            <h2 className="text-page-title text-gray-900">
               {safeT('reorder.title', {}, 'Reorder Item')}
             </h2>
           </div>
@@ -99,7 +99,7 @@ const ReorderModal = ({ isOpen, onClose, item }) => {
         <div className="p-6 overflow-y-auto max-h-[calc(90vh-140px)]">
           {/* Item Information */}
           <div className="bg-gray-50 rounded-lg p-4 mb-6">
-            <h3 className="font-medium text-gray-900 mb-3">
+            <h3 className="text-card-title text-gray-900 mb-3">
               {safeT('reorder.itemInfo', {}, 'Item Information')}
             </h3>
             <div className="grid grid-cols-2 gap-4 text-sm">
@@ -149,7 +149,7 @@ const ReorderModal = ({ isOpen, onClose, item }) => {
           <div className="space-y-6">
             {/* Quantity */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-form-label text-gray-700 mb-2">
                 {safeT('reorder.quantity', {}, 'Reorder Quantity')}
               </label>
               <div className="flex items-center space-x-3">
@@ -200,7 +200,7 @@ const ReorderModal = ({ isOpen, onClose, item }) => {
 
             {/* Urgency */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-form-label text-gray-700 mb-2">
                 {safeT('reorder.urgencyLabel', {}, 'Urgency Level')}
               </label>
               <div className="grid grid-cols-3 gap-3">
@@ -218,7 +218,7 @@ const ReorderModal = ({ isOpen, onClose, item }) => {
                         : 'border-gray-300 text-gray-700 hover:border-gray-400'
                     }`}
                   >
-                    {option.label}
+                    <span className="text-button-text">{option.label}</span>
                   </button>
                 ))}
               </div>
@@ -226,7 +226,7 @@ const ReorderModal = ({ isOpen, onClose, item }) => {
 
             {/* Supplier */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-form-label text-gray-700 mb-2">
                 {safeT('reorder.supplier', {}, 'Supplier')}
               </label>
               <input
@@ -240,7 +240,7 @@ const ReorderModal = ({ isOpen, onClose, item }) => {
 
             {/* Notes */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-form-label text-gray-700 mb-2">
                 {safeT('reorder.notes', {}, 'Notes (Optional)')}
               </label>
               <textarea
@@ -254,7 +254,7 @@ const ReorderModal = ({ isOpen, onClose, item }) => {
 
             {/* Cost Summary */}
             <div className="bg-blue-50 rounded-lg p-4">
-              <h4 className="font-medium text-blue-900 mb-2">
+              <h4 className="text-card-title text-blue-900 mb-2">
                 {safeT('reorder.costSummaryTitle', {}, 'Cost Summary')}
               </h4>
               <div className="space-y-1 text-sm">
@@ -281,7 +281,7 @@ const ReorderModal = ({ isOpen, onClose, item }) => {
             onClick={onClose}
             className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
           >
-            {safeT('common.cancel', {}, 'Cancel')}
+            <span className="text-button-text">{safeT('common.cancel', {}, 'Cancel')}</span>
           </button>
           <button
             onClick={handleReorder}
@@ -289,7 +289,7 @@ const ReorderModal = ({ isOpen, onClose, item }) => {
             className="px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
           >
             <ArrowPathIcon className="h-4 w-4" />
-            <span>{safeT('reorder.createOrder', {}, 'Create Reorder')}</span>
+            <span className="text-button-text">{safeT('reorder.createOrder', {}, 'Create Reorder')}</span>
           </button>
         </div>
       </div>

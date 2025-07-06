@@ -323,7 +323,7 @@ export default function Transactions() {
           <div className='flex-1 px-6 py-6 space-y-6'>
             {/* Page Header */}
             <div className='flex items-center justify-between'>
-              <h1 className='text-2xl font-semibold text-gray-900'>
+              <h1 className='text-page-title text-gray-900'>
                 {safeT('title', {}, 'Income & Expenses')}
               </h1>
               <div className='flex items-center gap-3'>
@@ -334,26 +334,26 @@ export default function Transactions() {
                     className='flex items-center gap-2 border border-gray-300 rounded-md px-3 py-2 hover:bg-gray-50 transition-colors'
                   >
                     <CalendarIcon className='w-4 h-4 text-gray-600' />
-                    <span className='text-gray-700'>{safeT(`period.${selectedPeriod.toLowerCase()}`, {}, selectedPeriod)}</span>
+                    <span className='text-nav-text text-gray-700'>{safeT(`period.${selectedPeriod.toLowerCase()}`, {}, selectedPeriod)}</span>
                     <ChevronDownIcon className='w-4 h-4 text-gray-600' />
                   </button>
                   {dateMenuOpen && (
                     <div className='absolute top-full left-0 mt-1 bg-white border border-gray-200 rounded-md shadow-lg z-10 min-w-full'>
                       <button 
                         onClick={() => handlePeriodChange('Monthly')}
-                        className='block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50'
+                        className='block w-full text-left px-4 py-2 text-nav-text text-gray-700 hover:bg-gray-50'
                       >
                         {safeT('period.monthly', {}, 'Monthly')}
                       </button>
                       <button 
                         onClick={() => handlePeriodChange('Quarterly')}
-                        className='block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50'
+                        className='block w-full text-left px-4 py-2 text-nav-text text-gray-700 hover:bg-gray-50'
                       >
                         {safeT('period.quarterly', {}, 'Quarterly')}
                       </button>
                       <button 
                         onClick={() => handlePeriodChange('Yearly')}
-                        className='block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50'
+                        className='block w-full text-left px-4 py-2 text-nav-text text-gray-700 hover:bg-gray-50'
                       >
                         {safeT('period.yearly', {}, 'Yearly')}
                       </button>
@@ -366,7 +366,7 @@ export default function Transactions() {
                   className='bg-blue-600 text-white px-4 py-2 rounded-md flex items-center gap-2 hover:bg-blue-700 transition-colors'
                 >
                   <DocumentArrowDownIcon className='w-4 h-4' />
-                  <span>{safeT('actions.export', {}, 'Export')}</span>
+                  <span className='text-button-text'>{safeT('actions.export', {}, 'Export')}</span>
                 </button>
               </div>
             </div>
@@ -381,10 +381,10 @@ export default function Transactions() {
                       <ArrowUpIcon className='w-5 h-5 text-white' />
                     </div>
                     <div>
-                      <p className='text-blue-700 text-sm font-medium'>
+                      <p className='text-card-title text-blue-700'>
                         {safeT('summary.totalIncome', {}, 'Total Income')}
                       </p>
-                      <p className='text-3xl font-bold text-blue-900'>
+                      <p className='text-kpi-value text-blue-900'>
                         ${financialData.totalIncome.toLocaleString()}
                       </p>
                     </div>
@@ -400,7 +400,7 @@ export default function Transactions() {
                     style={{ width: `${financialData.incomeProgress}%` }}
                   ></div>
                 </div>
-                <div className='flex justify-between text-xs text-blue-600 font-medium'>
+                <div className='flex justify-between text-subtitle text-blue-600'>
                   <span>{safeT('summary.budget', { amount: '0' }, 'Budget: $0')}</span>
                   <span>{safeT('summary.ofBudget', { percent: 0 }, '0% of budget')}</span>
                 </div>
@@ -414,10 +414,10 @@ export default function Transactions() {
                       <ArrowDownIcon className='w-5 h-5 text-white' />
                     </div>
                     <div>
-                      <p className='text-red-700 text-sm font-medium'>
+                      <p className='text-card-title text-red-700'>
                         {safeT('summary.totalExpenses', {}, 'Total Expenses')}
                       </p>
-                      <p className='text-3xl font-bold text-red-900'>
+                      <p className='text-kpi-value text-red-900'>
                         ${financialData.totalExpenses.toLocaleString()}
                       </p>
                     </div>
@@ -447,10 +447,10 @@ export default function Transactions() {
                       <ChartBarIcon className='w-5 h-5 text-white' />
                     </div>
                     <div>
-                      <p className='text-green-700 text-sm font-medium'>
+                      <p className='text-card-title text-green-700'>
                         {safeT('summary.netProfit', {}, 'Net Profit')}
                       </p>
-                      <p className='text-3xl font-bold text-green-900'>
+                      <p className='text-kpi-value text-green-900'>
                         ${financialData.netProfit.toLocaleString()}
                       </p>
                     </div>
@@ -484,11 +484,11 @@ export default function Transactions() {
               {/* Income vs Expenses Chart */}
               <div className='col-span-2 bg-white rounded-xl shadow-lg p-6 border border-gray-100'>
                 <div className='flex items-center justify-between mb-6'>
-                  <h3 className='text-lg font-semibold text-gray-800'>{safeT('charts.incomeVsExpenses', {}, 'Income vs Expenses')}</h3>
+                  <h3 className='text-section-title text-gray-800'>{safeT('charts.incomeVsExpenses', {}, 'Income vs Expenses')}</h3>
                   <div className='flex items-center gap-2 bg-gray-50 p-1 rounded-lg'>
                     <button 
                       onClick={() => handlePeriodChange('Monthly')}
-                      className={`px-3 py-1.5 rounded-md text-sm font-medium shadow-sm transition-colors ${
+                      className={`px-3 py-1.5 rounded-md text-nav-text shadow-sm transition-colors ${
                         selectedPeriod === 'Monthly' 
                           ? 'bg-blue-500 text-white' 
                           : 'text-gray-500 hover:text-gray-700'
@@ -498,9 +498,9 @@ export default function Transactions() {
                     </button>
                     <button 
                       onClick={() => handlePeriodChange('Quarterly')}
-                      className={`px-3 py-1.5 text-sm transition-colors ${
+                      className={`px-3 py-1.5 text-nav-text transition-colors ${
                         selectedPeriod === 'Quarterly' 
-                          ? 'bg-blue-500 text-white rounded-md font-medium shadow-sm' 
+                          ? 'bg-blue-500 text-white rounded-md shadow-sm' 
                           : 'text-gray-500 hover:text-gray-700'
                       }`}
                     >
@@ -508,9 +508,9 @@ export default function Transactions() {
                     </button>
                     <button 
                       onClick={() => handlePeriodChange('Yearly')}
-                      className={`px-3 py-1.5 text-sm transition-colors ${
+                      className={`px-3 py-1.5 text-nav-text transition-colors ${
                         selectedPeriod === 'Yearly' 
-                          ? 'bg-blue-500 text-white rounded-md font-medium shadow-sm' 
+                          ? 'bg-blue-500 text-white rounded-md shadow-sm' 
                           : 'text-gray-500 hover:text-gray-700'
                       }`}
                     >
@@ -578,7 +578,7 @@ export default function Transactions() {
               {/* Budget Progress */}
               <div className='col-span-2 bg-white rounded-xl shadow-lg p-6 border border-gray-100'>
                 <div className='flex items-center justify-between mb-6'>
-                  <h3 className='text-lg font-semibold text-gray-800'>{safeT('charts.budgetProgress', {}, 'Budget Progress')}</h3>
+                  <h3 className='text-section-title text-gray-800'>{safeT('charts.budgetProgress', {}, 'Budget Progress')}</h3>
                   <div className='relative budget-progress-menu'>
                     <button 
                       onClick={() => {
@@ -627,7 +627,7 @@ export default function Transactions() {
                 </div>
                 <div className='grid grid-cols-2 gap-6 mb-6'>
                   <div className='text-center'>
-                    <p className='text-blue-600 text-sm font-medium mb-3'>{safeT('summary.income', {}, 'Income')}</p>
+                    <p className='text-card-title text-blue-600 mb-3'>{safeT('summary.income', {}, 'Income')}</p>
                     <div className='w-28 h-28 mx-auto mb-3 relative'>
                       {/* Background Circle */}
                       <svg className='w-full h-full transform -rotate-90' viewBox='0 0 100 100'>
@@ -659,18 +659,18 @@ export default function Transactions() {
                       </svg>
                       {/* Percentage in center */}
                       <div className='absolute inset-0 flex items-center justify-center'>
-                        <span className='text-lg font-bold text-blue-600'>
+                        <span className='text-card-metric text-blue-600'>
                           {financialData.incomeProgress}%
                         </span>
                       </div>
                     </div>
-                    <p className='font-bold text-xl text-blue-900'>
+                    <p className='text-card-metric text-blue-900'>
                       ${financialData.totalIncome.toLocaleString()}
                     </p>
-                    <p className='text-xs text-blue-600 font-medium'>{safeT('budgetInfo.of', { amount: '0' }, 'of $0')}</p>
+                    <p className='text-subtitle text-blue-600'>{safeT('budgetInfo.of', { amount: '0' }, 'of $0')}</p>
                   </div>
                   <div className='text-center'>
-                    <p className='text-red-600 text-sm font-medium mb-3'>{safeT('summary.expenses', {}, 'Expenses')}</p>
+                    <p className='text-card-title text-red-600 mb-3'>{safeT('summary.expenses', {}, 'Expenses')}</p>
                     <div className='w-28 h-28 mx-auto mb-3 relative'>
                       {/* Background Circle */}
                       <svg className='w-full h-full transform -rotate-90' viewBox='0 0 100 100'>
@@ -702,15 +702,15 @@ export default function Transactions() {
                       </svg>
                       {/* Percentage in center */}
                       <div className='absolute inset-0 flex items-center justify-center'>
-                        <span className='text-lg font-bold text-red-600'>
+                        <span className='text-card-metric text-red-600'>
                           {financialData.expenseProgress}%
                         </span>
                       </div>
                     </div>
-                    <p className='font-bold text-xl text-red-900'>
+                    <p className='text-card-metric text-red-900'>
                       ${financialData.totalExpenses.toLocaleString()}
                     </p>
-                    <p className='text-xs text-red-600 font-medium'>{safeT('budgetInfo.of', { amount: '0' }, 'of $0')}</p>
+                    <p className='text-subtitle text-red-600'>{safeT('budgetInfo.of', { amount: '0' }, 'of $0')}</p>
                   </div>
                 </div>
                 <div className='border-t border-gray-100 pt-4 space-y-3 bg-gray-50 rounded-lg p-4'>
@@ -727,41 +727,41 @@ export default function Transactions() {
 
               {/* Quick Actions */}
               <div className='col-span-2 bg-white rounded-xl shadow-sm p-6'>
-                <h3 className='text-lg font-semibold mb-4'>{safeT('quickActions.title', {}, 'Quick Actions')}</h3>
+                <h3 className='text-section-title mb-4'>{safeT('quickActions.title', {}, 'Quick Actions')}</h3>
                 <div className='grid grid-cols-2 gap-4 mb-6'>
                   <button 
                     onClick={handleAdjustBudget}
                     className='bg-blue-600 text-white p-4 rounded-lg flex flex-col items-center gap-2 hover:bg-blue-700 transition-colors duration-200'
                   >
                     <ChartBarIcon className='w-6 h-6' />
-                    <span className='text-sm'>{safeT('quickActions.adjustBudget', {}, 'Adjust Budget')}</span>
+                    <span className='text-action-description'>{safeT('quickActions.adjustBudget', {}, 'Adjust Budget')}</span>
                   </button>
                   <button 
                     onClick={handleFinancialReport}
                     className='bg-green-500 text-white p-4 rounded-lg flex flex-col items-center gap-2 hover:bg-green-600 transition-colors duration-200'
                   >
                     <DocumentTextIcon className='w-6 h-6' />
-                    <span className='text-sm'>{safeT('quickActions.financialReport', {}, 'Financial Report')}</span>
+                    <span className='text-action-description'>{safeT('quickActions.financialReport', {}, 'Financial Report')}</span>
                   </button>
                   <button 
                     onClick={handleForecastTool}
                     className='bg-yellow-500 text-white p-4 rounded-lg flex flex-col items-center gap-2 hover:bg-yellow-600 transition-colors duration-200'
                   >
                     <ChartBarIcon className='w-6 h-6' />
-                    <span className='text-sm'>{safeT('quickActions.forecastTool', {}, 'Forecast Tool')}</span>
+                    <span className='text-action-description'>{safeT('quickActions.forecastTool', {}, 'Forecast Tool')}</span>
                   </button>
                   <button 
                     onClick={handleRecurringItems}
                     className='bg-purple-500 text-white p-4 rounded-lg flex flex-col items-center gap-2 hover:bg-purple-600 transition-colors duration-200'
                   >
                     <CalendarIcon className='w-6 h-6' />
-                    <span className='text-sm'>{safeT('quickActions.recurringItems', {}, 'Recurring Items')}</span>
+                    <span className='text-action-description'>{safeT('quickActions.recurringItems', {}, 'Recurring Items')}</span>
                   </button>
                 </div>
 
                 {/* Upcoming Tasks */}
                 <div className='bg-gray-50 rounded-lg p-4'>
-                  <h4 className='font-medium mb-3'>{safeT('upcomingTasks.title', {}, 'Upcoming Financial Tasks')}</h4>
+                  <h4 className='text-card-title mb-3'>{safeT('upcomingTasks.title', {}, 'Upcoming Financial Tasks')}</h4>
                   <div className='space-y-2 text-sm'>
                     <div className='text-gray-500 text-center py-4'>
                       {safeT('upcomingTasks.noTasks', {}, 'No upcoming tasks')}
@@ -776,7 +776,7 @@ export default function Transactions() {
               {/* Income Transactions */}
               <div className='bg-white rounded-xl shadow-sm p-6'>
                 <div className='flex items-center justify-between mb-4'>
-                  <h3 className='text-lg font-semibold'>
+                  <h3 className='text-section-title'>
                     {safeT('income.title', {}, 'Income Transactions')}
                   </h3>
                   <div className='flex items-center gap-3'>
@@ -803,7 +803,7 @@ export default function Transactions() {
                     </div>
                     <button 
                       onClick={handleAddIncome}
-                      className='bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 hover:bg-blue-700 transition-colors shadow-sm'
+                      className='bg-blue-600 text-white px-4 py-2 rounded-lg text-button-text flex items-center gap-2 hover:bg-blue-700 transition-colors shadow-sm'
                     >
                       <PlusIcon className='w-4 h-4' />
                       {safeT('actions.addIncome', {}, 'Add Income')}
@@ -812,7 +812,7 @@ export default function Transactions() {
                 </div>
 
                 {/* Table Header */}
-                <div className='grid grid-cols-5 gap-4 bg-gray-50 px-3 py-3 text-xs font-medium text-gray-500 uppercase tracking-wide'>
+                <div className='grid grid-cols-5 gap-4 bg-gray-50 px-3 py-3 text-table-header text-gray-500 uppercase tracking-wide'>
                   <span>{safeT('table.date', {}, 'Date')}</span>
                   <span>{safeT('table.category', {}, 'Category')}</span>
                   <span>{safeT('table.client', {}, 'Client')}</span>
@@ -859,7 +859,7 @@ export default function Transactions() {
               {/* Expense Transactions */}
               <div className='bg-white rounded-xl shadow-sm p-6'>
                 <div className='flex items-center justify-between mb-4'>
-                  <h3 className='text-lg font-semibold'>
+                  <h3 className='text-section-title'>
                     {safeT('expenses.title', {}, 'Expense Transactions')}
                   </h3>
                   <div className='flex items-center gap-3'>
@@ -886,7 +886,7 @@ export default function Transactions() {
                     </div>
                     <button 
                       onClick={handleAddExpense}
-                      className='bg-red-500 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 hover:bg-red-600 transition-colors shadow-sm'
+                      className='bg-red-500 text-white px-4 py-2 rounded-lg text-button-text flex items-center gap-2 hover:bg-red-600 transition-colors shadow-sm'
                     >
                       <PlusIcon className='w-4 h-4' />
                       {safeT('actions.addExpense', {}, 'Add Expense')}
@@ -895,7 +895,7 @@ export default function Transactions() {
                 </div>
 
                 {/* Table Header */}
-                <div className='grid grid-cols-5 gap-4 bg-gray-50 px-3 py-3 text-xs font-medium text-gray-500 uppercase tracking-wide'>
+                <div className='grid grid-cols-5 gap-4 bg-gray-50 px-3 py-3 text-table-header text-gray-500 uppercase tracking-wide'>
                   <span>{safeT('table.date', {}, 'Date')}</span>
                   <span>{safeT('table.category', {}, 'Category')}</span>
                   <span>{safeT('table.client', {}, 'Client')}</span>
@@ -942,7 +942,7 @@ export default function Transactions() {
               {/* Budget Performance */}
               <div className='bg-white rounded-xl shadow-sm p-6'>
                 <div className='flex items-center justify-between mb-4'>
-                  <h3 className='text-lg font-semibold'>
+                  <h3 className='text-section-title'>
                     {safeT('budgetPerformance.title', {}, 'Budget Performance')}
                   </h3>
                   <div className='relative budget-performance-menu-container'>
@@ -1044,7 +1044,7 @@ export default function Transactions() {
               {/* Cash Flow Forecast */}
               <div className='bg-white rounded-xl shadow-sm p-6'>
                 <div className='flex items-center justify-between mb-4'>
-                  <h3 className='text-lg font-semibold'>{safeT('cashFlow.title', {}, 'Cash Flow Forecast')}</h3>
+                  <h3 className='text-section-title'>{safeT('cashFlow.title', {}, 'Cash Flow Forecast')}</h3>
                   <div className='bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs'>
                     {safeT('cashFlow.next90Days', {}, 'Next 90 Days')}
                   </div>
@@ -1167,7 +1167,7 @@ export default function Transactions() {
             <div className='bg-white rounded-xl shadow-2xl w-full max-w-4xl mx-4 max-h-[90vh] overflow-y-auto'>
               {/* Modal Header */}
               <div className='flex items-center justify-between p-6 border-b border-gray-200'>
-                <h2 className='text-xl font-semibold text-gray-900'>
+                <h2 className='text-page-title text-gray-900'>
                   {safeT('financialReportModal.title', {}, 'Financial Report')}
                 </h2>
                 <button
@@ -1183,7 +1183,7 @@ export default function Transactions() {
                  <div className='grid grid-cols-2 gap-6 mb-6'>
                    {/* Summary Stats */}
                    <div className='space-y-4'>
-                     <h3 className='text-lg font-semibold text-gray-800'>{safeT('financialReportModal.summary', {}, 'Summary')}</h3>
+                     <h3 className='text-section-title text-gray-800'>{safeT('financialReportModal.summary', {}, 'Summary')}</h3>
                      <div className='space-y-3'>
                        <div className='flex justify-between p-3 bg-blue-50 rounded-lg'>
                          <span className='text-blue-700'>{safeT('financialReportModal.totalIncome', {}, 'Total Income')}</span>
@@ -1202,7 +1202,7 @@ export default function Transactions() {
  
                    {/* Report Options */}
                    <div className='space-y-4'>
-                     <h3 className='text-lg font-semibold text-gray-800'>{safeT('financialReportModal.reportOptions', {}, 'Report Options')}</h3>
+                     <h3 className='text-section-title text-gray-800'>{safeT('financialReportModal.reportOptions', {}, 'Report Options')}</h3>
                      <div className='space-y-3'>
                        <button className='w-full p-3 text-left border border-gray-300 rounded-lg hover:bg-gray-50'>
                          {safeT('financialReportModal.monthlyProfitLoss', {}, 'Monthly Profit & Loss')}
@@ -1244,7 +1244,7 @@ export default function Transactions() {
             <div className='bg-white rounded-xl shadow-2xl w-full max-w-3xl mx-4 max-h-[90vh] overflow-y-auto'>
               {/* Modal Header */}
               <div className='flex items-center justify-between p-6 border-b border-gray-200'>
-                <h2 className='text-xl font-semibold text-gray-900'>
+                <h2 className='text-page-title text-gray-900'>
                   {safeT('forecastModal.title', {}, 'Financial Forecast Tool')}
                 </h2>
                 <button
@@ -1270,7 +1270,7 @@ export default function Transactions() {
 
                   {/* Forecast Results */}
                   <div className='bg-gray-50 rounded-lg p-4'>
-                    <h3 className='text-lg font-semibold text-gray-800 mb-4'>{safeT('forecastModal.projectedResults', {}, 'Projected Results')}</h3>
+                    <h3 className='text-section-title text-gray-800 mb-4'>{safeT('forecastModal.projectedResults', {}, 'Projected Results')}</h3>
                     <div className='grid grid-cols-3 gap-4'>
                       <div className='text-center p-3 bg-white rounded-lg'>
                         <p className='text-sm text-gray-600'>{safeT('forecastModal.projectedIncome', {}, 'Projected Income')}</p>
@@ -1289,7 +1289,7 @@ export default function Transactions() {
 
                   {/* Assumptions */}
                   <div>
-                    <h3 className='text-lg font-semibold text-gray-800 mb-3'>{safeT('forecastModal.forecastAssumptions', {}, 'Forecast Assumptions')}</h3>
+                    <h3 className='text-section-title text-gray-800 mb-3'>{safeT('forecastModal.forecastAssumptions', {}, 'Forecast Assumptions')}</h3>
                     <div className='space-y-3'>
                       <div className='flex items-center justify-between p-3 border border-gray-200 rounded-lg'>
                         <span>{safeT('forecastModal.monthlyIncomeGrowth', {}, 'Monthly Income Growth')}</span>
@@ -1326,7 +1326,7 @@ export default function Transactions() {
             <div className='bg-white rounded-xl shadow-2xl w-full max-w-4xl mx-4 max-h-[90vh] overflow-y-auto'>
               {/* Modal Header */}
               <div className='flex items-center justify-between p-6 border-b border-gray-200'>
-                <h2 className='text-xl font-semibold text-gray-900'>
+                <h2 className='text-page-title text-gray-900'>
                   {safeT('recurringModal.title', {}, 'Recurring Items')}
                 </h2>
                 <button
@@ -1433,7 +1433,7 @@ export default function Transactions() {
                     <PlusIcon className='w-5 h-5 text-blue-600' />
                   </div>
                   <div>
-                    <h2 className='text-xl font-bold text-gray-900'>
+                    <h2 className='text-page-title text-gray-900'>
                       {safeT('incomeModal.title', {}, 'Add Income Transaction')}
                     </h2>
                     <p className='text-sm text-gray-600 mt-1'>{safeT('incomeModal.description', {}, 'Record a new income transaction')}</p>
@@ -1534,7 +1534,7 @@ export default function Transactions() {
                     <PlusIcon className='w-5 h-5 text-red-600' />
                   </div>
                   <div>
-                    <h2 className='text-xl font-bold text-gray-900'>
+                    <h2 className='text-page-title text-gray-900'>
                       {safeT('expenseModal.title', {}, 'Add Expense Transaction')}
                     </h2>
                     <p className='text-sm text-gray-600 mt-1'>{safeT('expenseModal.description', {}, 'Record a new expense transaction')}</p>
@@ -1638,10 +1638,10 @@ export default function Transactions() {
                     </svg>
                   </div>
                   <div>
-                    <h2 className='text-xl font-bold text-gray-900'>
+                    <h2 className='text-page-title text-gray-900'>
                       {safeT('budgetModal.title', {}, 'Adjust Budget Categories')}
                     </h2>
-                    <p className='text-sm text-gray-600 mt-1'>{safeT('budgetModal.description', {}, 'Manage your budget allocations and track spending')}</p>
+                    <p className='text-subtitle text-gray-600 mt-1'>{safeT('budgetModal.description', {}, 'Manage your budget allocations and track spending')}</p>
                   </div>
                 </div>
                 <button

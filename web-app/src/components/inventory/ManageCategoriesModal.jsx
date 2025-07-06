@@ -143,7 +143,7 @@ const ManageCategoriesModal = ({ isOpen, onClose, onSave }) => {
 
                 <div className="sm:flex sm:items-start">
                   <div className="w-full">
-                    <Dialog.Title as="h3" className="text-lg font-semibold leading-6 text-gray-900 mb-6">
+                    <Dialog.Title as="h3" className="text-page-title text-gray-900 mb-6">
                       {safeT('modals.manageCategories.title', {}, 'Manage Categories')}
                     </Dialog.Title>
 
@@ -152,17 +152,17 @@ const ManageCategoriesModal = ({ isOpen, onClose, onSave }) => {
                       {!showAddForm ? (
                         <button
                           onClick={() => setShowAddForm(true)}
-                          className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                          className="inline-flex items-center px-4 py-2 border border-transparent text-button-text rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                         >
                           <PlusIcon className="h-4 w-4 mr-2" />
                           {safeT('modals.manageCategories.buttons.addNew', {}, 'Add New Category')}
                         </button>
                       ) : (
                         <div className="bg-gray-50 p-4 rounded-lg border">
-                          <h4 className="text-sm font-medium text-gray-900 mb-3">{safeT('modals.manageCategories.forms.addTitle', {}, 'Add New Category')}</h4>
+                          <h4 className="text-card-title text-gray-900 mb-3">{safeT('modals.manageCategories.forms.addTitle', {}, 'Add New Category')}</h4>
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
-                              <label className="block text-sm font-medium text-gray-700 mb-1">
+                              <label className="block text-form-label text-gray-700 mb-1">
                                 {safeT('modals.manageCategories.fields.name', {}, 'Category Name')} *
                               </label>
                               <input
@@ -180,7 +180,7 @@ const ManageCategoriesModal = ({ isOpen, onClose, onSave }) => {
                               {errors.name && <p className="mt-1 text-sm text-red-600">{errors.name}</p>}
                             </div>
                             <div>
-                              <label className="block text-sm font-medium text-gray-700 mb-1">
+                              <label className="block text-form-label text-gray-700 mb-1">
                                 {safeT('modals.manageCategories.fields.description', {}, 'Description')}
                               </label>
                               <input
@@ -199,13 +199,13 @@ const ManageCategoriesModal = ({ isOpen, onClose, onSave }) => {
                                 setNewCategory({ name: '', description: '' });
                                 setErrors({});
                               }}
-                              className="px-3 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
+                              className="px-3 py-2 border border-gray-300 rounded-md text-button-text text-gray-700 bg-white hover:bg-gray-50"
                             >
                               {safeT('modals.manageCategories.buttons.cancel', {}, 'Cancel')}
                             </button>
                             <button
                               onClick={handleAddCategory}
-                              className="px-3 py-2 border border-transparent rounded-md text-sm font-medium text-white bg-blue-600 hover:bg-blue-700"
+                              className="px-3 py-2 border border-transparent rounded-md text-button-text text-white bg-blue-600 hover:bg-blue-700"
                             >
                               {safeT('modals.manageCategories.buttons.add', {}, 'Add Category')}
                             </button>
@@ -223,7 +223,7 @@ const ManageCategoriesModal = ({ isOpen, onClose, onSave }) => {
                               <div className="px-4 py-4 bg-gray-50">
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                                   <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                                    <label className="block text-form-label text-gray-700 mb-1">
                                       {safeT('modals.manageCategories.fields.name', {}, 'Category Name')} *
                                     </label>
                                     <input
@@ -240,7 +240,7 @@ const ManageCategoriesModal = ({ isOpen, onClose, onSave }) => {
                                     {errors.editName && <p className="mt-1 text-sm text-red-600">{errors.editName}</p>}
                                   </div>
                                   <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                                    <label className="block text-form-label text-gray-700 mb-1">
                                       {safeT('modals.manageCategories.fields.description', {}, 'Description')}
                                     </label>
                                     <input
@@ -257,13 +257,13 @@ const ManageCategoriesModal = ({ isOpen, onClose, onSave }) => {
                                       setEditingCategory(null);
                                       setErrors({});
                                     }}
-                                    className="px-3 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
+                                    className="px-3 py-2 border border-gray-300 rounded-md text-button-text text-gray-700 bg-white hover:bg-gray-50"
                                   >
                                     {safeT('modals.manageCategories.buttons.cancel', {}, 'Cancel')}
                                   </button>
                                   <button
                                     onClick={handleUpdateCategory}
-                                    className="px-3 py-2 border border-transparent rounded-md text-sm font-medium text-white bg-blue-600 hover:bg-blue-700"
+                                    className="px-3 py-2 border border-transparent rounded-md text-button-text text-white bg-blue-600 hover:bg-blue-700"
                                   >
                                     {safeT('modals.manageCategories.buttons.saveChanges', {}, 'Save Changes')}
                                   </button>
@@ -312,14 +312,14 @@ const ManageCategoriesModal = ({ isOpen, onClose, onSave }) => {
                       <button
                         type="button"
                         onClick={handleClose}
-                        className="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                        className="rounded-md border border-gray-300 bg-white px-4 py-2 text-button-text text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                       >
                         {safeT('modals.manageCategories.buttons.cancel', {}, 'Cancel')}
                       </button>
                       <button
                         type="button"
                         onClick={handleSave}
-                        className="rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                        className="rounded-md border border-transparent bg-blue-600 px-4 py-2 text-button-text text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                       >
                         {safeT('modals.manageCategories.buttons.save', {}, 'Save Changes')}
                       </button>

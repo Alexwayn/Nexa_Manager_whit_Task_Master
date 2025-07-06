@@ -89,7 +89,7 @@ const ReportsModal = ({ isOpen, onClose }) => {
         <div className="flex items-center justify-between p-6 border-b border-gray-200">
           <div className="flex items-center space-x-3">
             <DocumentTextIcon className="h-6 w-6 text-blue-600" />
-            <h2 className="text-xl font-semibold text-gray-900">
+            <h2 className="text-page-title text-gray-900">
               {safeT('reports.title', {}, 'Generate Reports')}
             </h2>
           </div>
@@ -106,7 +106,7 @@ const ReportsModal = ({ isOpen, onClose }) => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Report Types */}
             <div>
-              <h3 className="text-lg font-medium text-gray-900 mb-4">
+              <h3 className="text-card-title text-gray-900 mb-4">
                 {safeT('reports.selectType', {}, 'Select Report Type')}
               </h3>
               <div className="space-y-3">
@@ -137,13 +137,13 @@ const ReportsModal = ({ isOpen, onClose }) => {
 
             {/* Filters and Options */}
             <div>
-              <h3 className="text-lg font-medium text-gray-900 mb-4">
+              <h3 className="text-card-title text-gray-900 mb-4">
                 {safeT('reports.options', {}, 'Report Options')}
               </h3>
               
               {/* Date Range */}
               <div className="mb-6">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-form-label text-gray-700 mb-2">
                   <CalendarIcon className="h-4 w-4 inline mr-1" />
                   {safeT('reports.dateRange', {}, 'Date Range')}
                 </label>
@@ -167,7 +167,7 @@ const ReportsModal = ({ isOpen, onClose }) => {
 
               {/* Filters */}
               <div className="mb-6">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-form-label text-gray-700 mb-2">
                   <FunnelIcon className="h-4 w-4 inline mr-1" />
                   {safeT('reports.filters.label', {}, 'Filters')}
                 </label>
@@ -209,7 +209,7 @@ const ReportsModal = ({ isOpen, onClose }) => {
 
               {/* Preview */}
               <div className="bg-gray-50 rounded-lg p-4">
-                <h4 className="font-medium text-gray-900 mb-2">
+                <h4 className="text-card-title text-gray-900 mb-2">
                   {safeT('reports.preview.title', {}, 'Report Preview')}
                 </h4>
                 <div className="text-sm text-gray-600">
@@ -232,14 +232,14 @@ const ReportsModal = ({ isOpen, onClose }) => {
             onClick={onClose}
             className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
           >
-            {safeT('common.cancel', {}, 'Cancel')}
+            <span className="text-button-text">{safeT('common.cancel', {}, 'Cancel')}</span>
           </button>
           <button
             onClick={handleGenerateReport}
             className="px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 flex items-center space-x-2"
           >
             <ArrowDownTrayIcon className="h-4 w-4" />
-            <span>{safeT('reports.generate', {}, 'Generate Report')}</span>
+            <span className="text-button-text">{safeT('reports.generate', {}, 'Generate Report')}</span>
           </button>
         </div>
       </div>

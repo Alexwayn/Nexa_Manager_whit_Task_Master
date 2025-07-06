@@ -197,7 +197,7 @@ const AddItemModal = ({ isOpen, onClose, onSave }) => {
 
                 <div className="sm:flex sm:items-start">
                   <div className="w-full">
-                    <Dialog.Title as="h3" className="text-lg font-semibold leading-6 text-gray-900 mb-6">
+                    <Dialog.Title as="h3" className="text-page-title text-gray-900 mb-6">
                       {safeT('modals.addItem.title', {}, 'Add New Inventory Item')}
                     </Dialog.Title>
 
@@ -205,7 +205,7 @@ const AddItemModal = ({ isOpen, onClose, onSave }) => {
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         {/* Product Name */}
                         <div>
-                          <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
+                          <label htmlFor="name" className="block text-form-label text-gray-700 mb-2">
                             {safeT('modals.addItem.fields.name', {}, 'Product Name')} *
                           </label>
                           <input
@@ -224,7 +224,7 @@ const AddItemModal = ({ isOpen, onClose, onSave }) => {
 
                         {/* SKU */}
                         <div>
-                          <label htmlFor="sku" className="block text-sm font-medium text-gray-700 mb-2">
+                          <label htmlFor="sku" className="block text-form-label text-gray-700 mb-2">
                             {safeT('modals.addItem.fields.sku', {}, 'SKU')} *
                           </label>
                           <input
@@ -243,7 +243,7 @@ const AddItemModal = ({ isOpen, onClose, onSave }) => {
 
                         {/* Category */}
                         <div>
-                          <label htmlFor="category" className="block text-sm font-medium text-gray-700 mb-2">
+                          <label htmlFor="category" className="block text-form-label text-gray-700 mb-2">
                             {safeT('modals.addItem.fields.category', {}, 'Category')} *
                           </label>
                           <select
@@ -265,7 +265,7 @@ const AddItemModal = ({ isOpen, onClose, onSave }) => {
 
                         {/* Location */}
                         <div>
-                          <label htmlFor="location" className="block text-sm font-medium text-gray-700 mb-2">
+                          <label htmlFor="location" className="block text-form-label text-gray-700 mb-2">
                             {safeT('modals.addItem.fields.location', {}, 'Location')} *
                           </label>
                           <select
@@ -287,7 +287,7 @@ const AddItemModal = ({ isOpen, onClose, onSave }) => {
 
                         {/* Stock */}
                         <div>
-                          <label htmlFor="stock" className="block text-sm font-medium text-gray-700 mb-2">
+                          <label htmlFor="stock" className="block text-form-label text-gray-700 mb-2">
                             {safeT('modals.addItem.fields.stock', {}, 'Current Stock')} *
                           </label>
                           <input
@@ -307,7 +307,7 @@ const AddItemModal = ({ isOpen, onClose, onSave }) => {
 
                         {/* Minimum Stock */}
                         <div>
-                          <label htmlFor="minStock" className="block text-sm font-medium text-gray-700 mb-2">
+                          <label htmlFor="minStock" className="block text-form-label text-gray-700 mb-2">
                             {safeT('modals.addItem.fields.minStock', {}, 'Minimum Stock')} *
                           </label>
                           <input
@@ -327,7 +327,7 @@ const AddItemModal = ({ isOpen, onClose, onSave }) => {
 
                         {/* Price */}
                         <div>
-                          <label htmlFor="price" className="block text-sm font-medium text-gray-700 mb-2">
+                          <label htmlFor="price" className="block text-form-label text-gray-700 mb-2">
                             {safeT('modals.addItem.fields.price', {}, 'Price')} *
                           </label>
                           <div className="relative">
@@ -353,7 +353,7 @@ const AddItemModal = ({ isOpen, onClose, onSave }) => {
 
                         {/* Supplier */}
                         <div>
-                          <label htmlFor="supplier" className="block text-sm font-medium text-gray-700 mb-2">
+                          <label htmlFor="supplier" className="block text-form-label text-gray-700 mb-2">
                             {safeT('modals.addItem.fields.supplier', {}, 'Supplier')} *
                           </label>
                           <input
@@ -373,7 +373,7 @@ const AddItemModal = ({ isOpen, onClose, onSave }) => {
 
                       {/* Description */}
                       <div>
-                        <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-2">
+                        <label htmlFor="description" className="block text-form-label text-gray-700 mb-2">
                           {safeT('modals.addItem.fields.description', {}, 'Description')}
                         </label>
                         <textarea
@@ -389,7 +389,7 @@ const AddItemModal = ({ isOpen, onClose, onSave }) => {
 
                       {/* Image Upload */}
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                        <label className="block text-form-label text-gray-700 mb-2">
                           {safeT('modals.addItem.fields.image', {}, 'Product Image')}
                         </label>
                         <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
@@ -426,14 +426,14 @@ const AddItemModal = ({ isOpen, onClose, onSave }) => {
                           type="button"
                           onClick={handleClose}
                           disabled={saving}
-                          className="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50"
+                          className="rounded-md border border-gray-300 bg-white px-4 py-2 text-button-text text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50"
                         >
                           {safeT('modals.addItem.buttons.cancel', {}, 'Cancel')}
                         </button>
                         <button
                           type="submit"
                           disabled={saving}
-                          className="rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50"
+                          className="rounded-md border border-transparent bg-blue-600 px-4 py-2 text-button-text text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50"
                         >
                           {saving ? safeT('modals.addItem.buttons.adding', {}, 'Adding...') : safeT('modals.addItem.buttons.add', {}, 'Add Item')}
                         </button>

@@ -175,7 +175,7 @@ const StockAlertsModal = ({ isOpen, onClose, inventoryData }) => {
 
                 <div className="sm:flex sm:items-start">
                   <div className="w-full">
-                    <Dialog.Title as="h3" className="text-lg font-semibold leading-6 text-gray-900 mb-6 flex items-center">
+                    <Dialog.Title as="h3" className="text-page-title text-gray-900 mb-6 flex items-center">
                       <ExclamationTriangleIcon className="h-6 w-6 text-orange-500 mr-2" />
                       {safeT('modals.stockAlerts.title', {count: stockAlerts.length}, `Stock Alerts (${stockAlerts.length} items need attention)`)}
                     </Dialog.Title>
@@ -183,8 +183,8 @@ const StockAlertsModal = ({ isOpen, onClose, inventoryData }) => {
                     {stockAlerts.length === 0 ? (
                       <div className="text-center py-12">
                         <CheckCircleIcon className="mx-auto h-12 w-12 text-green-400" />
-                        <h3 className="mt-2 text-sm font-medium text-gray-900">{safeT('modals.stockAlerts.emptyState.title', {}, 'All stock levels are healthy!')}</h3>
-                        <p className="mt-1 text-sm text-gray-500">
+                        <h3 className="mt-2 text-card-title text-gray-900">{safeT('modals.stockAlerts.emptyState.title', {}, 'All stock levels are healthy!')}</h3>
+                        <p className="mt-1 text-subtitle text-gray-500">
                           {safeT('modals.stockAlerts.emptyState.description', {}, 'No items require immediate attention.')}
                         </p>
                       </div>
@@ -209,7 +209,7 @@ const StockAlertsModal = ({ isOpen, onClose, inventoryData }) => {
                                       : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
                                   }`}
                                 >
-                                  {tab.label}
+                                  <span className="text-nav-text">{tab.label}</span>
                                   {tab.count > 0 && (
                                     <span className={`ml-2 py-0.5 px-2 rounded-full text-xs ${
                                       filter === tab.key ? 'bg-blue-100 text-blue-600' : 'bg-gray-100 text-gray-600'
@@ -235,19 +235,19 @@ const StockAlertsModal = ({ isOpen, onClose, inventoryData }) => {
                                   onClick={() => handleBulkAction('reorder')}
                                   className="px-3 py-1 bg-blue-600 text-white text-sm rounded-md hover:bg-blue-700"
                                 >
-                                  {safeT('modals.stockAlerts.bulkActions.createReorder', {}, 'Create Reorder')}
+                                  <span className="text-button-text">{safeT('modals.stockAlerts.bulkActions.createReorder', {}, 'Create Reorder')}</span>
                                 </button>
                                 <button
                                   onClick={() => handleBulkAction('update')}
                                   className="px-3 py-1 bg-green-600 text-white text-sm rounded-md hover:bg-green-700"
                                 >
-                                  {safeT('modals.stockAlerts.bulkActions.updateStock', {}, 'Update Stock')}
+                                  <span className="text-button-text">{safeT('modals.stockAlerts.bulkActions.updateStock', {}, 'Update Stock')}</span>
                                 </button>
                                 <button
                                   onClick={() => handleBulkAction('notify')}
                                   className="px-3 py-1 bg-orange-600 text-white text-sm rounded-md hover:bg-orange-700"
                                 >
-                                  {safeT('modals.stockAlerts.bulkActions.sendNotifications', {}, 'Send Notifications')}
+                                  <span className="text-button-text">{safeT('modals.stockAlerts.bulkActions.sendNotifications', {}, 'Send Notifications')}</span>
                                 </button>
                               </div>
                             </div>
@@ -264,7 +264,7 @@ const StockAlertsModal = ({ isOpen, onClose, inventoryData }) => {
                                 onChange={handleSelectAll}
                                 className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                               />
-                              <label className="ml-3 text-sm font-medium text-gray-700">
+                              <label className="ml-3 text-form-label text-gray-700">
                                 {safeT('modals.stockAlerts.table.selectAll', {count: filteredAlerts.length}, `Select All (${filteredAlerts.length})`)}
                               </label>
                             </div>
@@ -359,7 +359,7 @@ const StockAlertsModal = ({ isOpen, onClose, inventoryData }) => {
                         {filteredAlerts.length === 0 && (
                           <div className="text-center py-8">
                             <CheckCircleIcon className="mx-auto h-8 w-8 text-green-400" />
-                            <p className="mt-2 text-sm text-gray-500">
+                            <p className="mt-2 text-subtitle text-gray-500">
                               {safeT('modals.stockAlerts.emptyFilter', {filter: filter === 'all' ? '' : filter}, `No ${filter === 'all' ? '' : filter} stock alerts in this category.`)}
                             </p>
                           </div>
@@ -374,7 +374,7 @@ const StockAlertsModal = ({ isOpen, onClose, inventoryData }) => {
                         onClick={onClose}
                         className="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                       >
-                        {safeT('modals.stockAlerts.buttons.close', {}, 'Close')}
+                        <span className="text-button-text">{safeT('modals.stockAlerts.buttons.close', {}, 'Close')}</span>
                       </button>
                       {stockAlerts.length > 0 && (
                         <button
@@ -385,7 +385,7 @@ const StockAlertsModal = ({ isOpen, onClose, inventoryData }) => {
                           }}
                           className="rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                         >
-                          {safeT('modals.stockAlerts.buttons.generateReport', {}, 'Generate Report')}
+                          <span className="text-button-text">{safeT('modals.stockAlerts.buttons.generateReport', {}, 'Generate Report')}</span>
                         </button>
                       )}
                     </div>

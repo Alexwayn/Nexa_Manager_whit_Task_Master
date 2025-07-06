@@ -340,10 +340,10 @@ export default function Inventory() {
             {/* Header Section */}
             <div className='flex items-center justify-between px-4 md:px-8'>
               <div>
-                <h1 className='text-2xl font-bold text-gray-900'>
+                <h1 className='text-page-title text-gray-900'>
                   {safeT('header.title', {}, 'Inventory Management')}
                 </h1>
-                <p className='text-gray-600 mt-1'>
+                <p className='text-subtitle text-gray-600 mt-1'>
                   {safeT('header.subtitle', {}, 'Track, control, and manage all your products.')}
                 </p>
               </div>
@@ -353,21 +353,21 @@ export default function Inventory() {
                   className='flex items-center space-x-2 px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors'
                 >
                   <DocumentTextIcon className='h-4 w-4' />
-                  <span>{safeT('buttons.reports', {}, 'Reports')}</span>
+                  <span className='text-button-text'>{safeT('buttons.reports', {}, 'Reports')}</span>
                 </button>
                 <button 
                   onClick={() => setIsExportInventoryModalOpen(true)}
                   className='flex items-center space-x-2 px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors'
                 >
                   <ArrowDownTrayIcon className='h-4 w-4' />
-                  <span>{safeT('buttons.export', {}, 'Export')}</span>
+                  <span className='text-button-text'>{safeT('buttons.export', {}, 'Export')}</span>
                 </button>
                 <button 
                   onClick={() => setIsAddItemModalOpen(true)}
                   className='flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors'
                 >
                   <PlusIcon className='h-4 w-4' />
-                  <span>{safeT('buttons.addNewItem', {}, 'Add New Item')}</span>
+                  <span className='text-button-text'>{safeT('buttons.addNewItem', {}, 'Add New Item')}</span>
                 </button>
               </div>
             </div>
@@ -382,10 +382,10 @@ export default function Inventory() {
                        <CurrencyDollarIcon className='w-5 h-5 text-white' />
                     </div>
                     <div>
-                      <p className='text-blue-700 text-sm font-medium'>
+                      <p className='text-card-title text-blue-700'>
                         {safeT('stats.totalValue', {}, 'Total Inventory Value')}
                       </p>
-                      <p className='text-3xl font-bold text-blue-900'>
+                      <p className='text-card-metric text-blue-900'>
                          €{totalValue.toLocaleString()}
                        </p>
                     </div>
@@ -415,10 +415,10 @@ export default function Inventory() {
                       <ExclamationTriangleIcon className='w-5 h-5 text-white' />
                     </div>
                     <div>
-                      <p className='text-red-700 text-sm font-medium'>
+                      <p className='text-card-title text-red-700'>
                         {safeT('stats.lowStock', {}, 'Low Stock Items')}
                       </p>
-                      <p className='text-3xl font-bold text-red-900'>
+                      <p className='text-card-metric text-red-900'>
                          {lowStockItems}
                        </p>
                     </div>
@@ -448,10 +448,10 @@ export default function Inventory() {
                        <ArrowPathIcon className='w-5 h-5 text-white' />
                     </div>
                     <div>
-                      <p className='text-green-700 text-sm font-medium'>
+                      <p className='text-card-title text-green-700'>
                         {safeT('stats.itemsToReorder', {}, 'Items to Reorder')}
                       </p>
-                      <p className='text-3xl font-bold text-green-900'>
+                      <p className='text-card-metric text-green-900'>
                          {needsReorderItems}
                        </p>
                     </div>
@@ -496,7 +496,7 @@ export default function Inventory() {
                       }`}
                       onClick={() => setActiveTab('allProducts')}
                     >
-                      {safeT('tabs.allProducts', {}, 'All Products')}
+                      <span className='text-nav-text'>{safeT('tabs.allProducts', {}, 'All Products')}</span>
                     </button>
                     <button
                       className={`pb-2 text-sm font-medium border-b-2 ${
@@ -506,7 +506,7 @@ export default function Inventory() {
                       }`}
                       onClick={() => setActiveTab('categories')}
                     >
-                      {safeT('tabs.categories', {}, 'Categories')}
+                      <span className='text-nav-text'>{safeT('tabs.categories', {}, 'Categories')}</span>
                     </button>
                     <button
                       className={`pb-2 text-sm font-medium border-b-2 ${
@@ -516,7 +516,7 @@ export default function Inventory() {
                       }`}
                       onClick={() => setActiveTab('locations')}
                     >
-                      {safeT('tabs.locations', {}, 'Locations')}
+                      <span className='text-nav-text'>{safeT('tabs.locations', {}, 'Locations')}</span>
                     </button>
                   </div>
                   
@@ -621,19 +621,19 @@ export default function Inventory() {
                     <tr>
                       {activeTab === 'categories' ? (
                         <>
-                          <th className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
+                          <th className='px-6 py-3 text-left text-table-header text-gray-500 uppercase tracking-wider'>
                             {safeT('table.category', {}, 'Category')}
                           </th>
-                          <th className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
+                          <th className='px-6 py-3 text-left text-table-header text-gray-500 uppercase tracking-wider'>
                             Items Count
                           </th>
-                          <th className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
+                          <th className='px-6 py-3 text-left text-table-header text-gray-500 uppercase tracking-wider'>
                             Total Stock
                           </th>
-                          <th className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
+                          <th className='px-6 py-3 text-left text-table-header text-gray-500 uppercase tracking-wider'>
                             Total Value
                           </th>
-                          <th className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
+                          <th className='px-6 py-3 text-left text-table-header text-gray-500 uppercase tracking-wider'>
                             {safeT('table.lastUpdated', {}, 'Last Updated')}
                           </th>
                           <th className='relative px-6 py-3'>
@@ -642,19 +642,19 @@ export default function Inventory() {
                         </>
                       ) : activeTab === 'locations' ? (
                         <>
-                          <th className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
+                          <th className='px-6 py-3 text-left text-table-header text-gray-500 uppercase tracking-wider'>
                             {safeT('table.location', {}, 'Location')}
                           </th>
-                          <th className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
+                          <th className='px-6 py-3 text-left text-table-header text-gray-500 uppercase tracking-wider'>
                             Items Count
                           </th>
-                          <th className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
+                          <th className='px-6 py-3 text-left text-table-header text-gray-500 uppercase tracking-wider'>
                             Total Stock
                           </th>
-                          <th className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
+                          <th className='px-6 py-3 text-left text-table-header text-gray-500 uppercase tracking-wider'>
                             Total Value
                           </th>
-                          <th className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
+                          <th className='px-6 py-3 text-left text-table-header text-gray-500 uppercase tracking-wider'>
                             {safeT('table.lastUpdated', {}, 'Last Updated')}
                           </th>
                           <th className='relative px-6 py-3'>
@@ -663,25 +663,25 @@ export default function Inventory() {
                         </>
                       ) : (
                         <>
-                          <th className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
+                          <th className='px-6 py-3 text-left text-table-header text-gray-500 uppercase tracking-wider'>
                             {safeT('table.product', {}, 'Product')}
                           </th>
-                          <th className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
+                          <th className='px-6 py-3 text-left text-table-header text-gray-500 uppercase tracking-wider'>
                             {safeT('table.category', {}, 'Category')}
                           </th>
-                          <th className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
+                          <th className='px-6 py-3 text-left text-table-header text-gray-500 uppercase tracking-wider'>
                             {safeT('table.location', {}, 'Location')}
                           </th>
-                          <th className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
+                          <th className='px-6 py-3 text-left text-table-header text-gray-500 uppercase tracking-wider'>
                             {safeT('table.stock', {}, 'Stock')}
                           </th>
-                          <th className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
+                          <th className='px-6 py-3 text-left text-table-header text-gray-500 uppercase tracking-wider'>
                             {safeT('table.price', {}, 'Price')}
                           </th>
-                          <th className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
+                          <th className='px-6 py-3 text-left text-table-header text-gray-500 uppercase tracking-wider'>
                             {safeT('table.supplier', {}, 'Supplier')}
                           </th>
-                          <th className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
+                          <th className='px-6 py-3 text-left text-table-header text-gray-500 uppercase tracking-wider'>
                             {safeT('table.lastUpdated', {}, 'Last Updated')}
                           </th>
                           <th className='relative px-6 py-3'>
@@ -836,10 +836,10 @@ export default function Inventory() {
                         <td colSpan='8' className='text-center py-12'>
                           <div className='flex flex-col items-center'>
                             <MagnifyingGlassIcon className='h-12 w-12 text-gray-400' />
-                            <h3 className='mt-2 text-sm font-medium text-gray-900'>
+                            <h3 className='mt-2 text-card-title text-gray-900'>
                               {safeT('emptyState.title', {}, 'No products found')}
                             </h3>
-                            <p className='mt-1 text-sm text-gray-500'>
+                            <p className='mt-1 text-subtitle text-gray-500'>
                               {safeT(
                                 'emptyState.message',
                                 {},
@@ -862,14 +862,14 @@ export default function Inventory() {
                     disabled={currentPage === 1}
                     className='relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed'
                   >
-                    {safeT('pagination.previous', {}, 'Precedente')}
+                    <span className='text-button-text'>{safeT('pagination.previous', {}, 'Precedente')}</span>
                   </button>
                   <button
                     onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
                     disabled={currentPage === totalPages}
                     className='ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed'
                   >
-                    {safeT('pagination.next', {}, 'Successivo')}
+                    <span className='text-button-text'>{safeT('pagination.next', {}, 'Successivo')}</span>
                   </button>
                 </div>
                 <div className='hidden sm:flex-1 sm:flex sm:items-center sm:justify-between'>

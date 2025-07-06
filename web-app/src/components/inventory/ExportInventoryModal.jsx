@@ -217,7 +217,7 @@ const ExportInventoryModal = ({ isOpen, onClose, inventoryData }) => {
 
                 <div className="sm:flex sm:items-start">
                   <div className="w-full">
-                    <Dialog.Title as="h3" className="text-lg font-semibold leading-6 text-gray-900 mb-6 flex items-center">
+                    <Dialog.Title as="h3" className="text-page-title text-gray-900 mb-6 flex items-center">
                       <DocumentArrowDownIcon className="h-6 w-6 text-blue-500 mr-2" />
                       {safeT('modals.exportInventory.title', {}, 'Export Inventory Data')}
                     </Dialog.Title>
@@ -225,8 +225,8 @@ const ExportInventoryModal = ({ isOpen, onClose, inventoryData }) => {
                     <div className="space-y-6">
                       {/* Export Format Selection */}
                       <div>
-                        <label className="text-base font-medium text-gray-900">{safeT('modals.exportInventory.fields.format', {}, 'Export Format')}</label>
-                        <p className="text-sm leading-5 text-gray-500">{safeT('modals.exportInventory.fields.formatDesc', {}, 'Choose the format for your exported data')}</p>
+                        <label className="text-card-title text-gray-900">{safeT('modals.exportInventory.fields.format', {}, 'Export Format')}</label>
+                        <p className="text-subtitle text-gray-500">{safeT('modals.exportInventory.fields.formatDesc', {}, 'Choose the format for your exported data')}</p>
                         <fieldset className="mt-4">
                           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
                             {exportFormats.map((format) => {
@@ -280,7 +280,7 @@ const ExportInventoryModal = ({ isOpen, onClose, inventoryData }) => {
                         <p className="text-sm leading-5 text-gray-500">{safeT('modals.exportInventory.dataFilters.description', {}, 'Filter which data to include in the export')}</p>
                         <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
                           <div>
-                            <label className="block text-sm font-medium text-gray-700">{safeT('modals.exportInventory.dataFilters.category', {}, 'Category')}</label>
+                            <label className="block text-form-label text-gray-700">{safeT('modals.exportInventory.dataFilters.category', {}, 'Category')}</label>
                             <select
                               value={filters.category}
                               onChange={(e) => setFilters(prev => ({ ...prev, category: e.target.value }))}
@@ -294,7 +294,7 @@ const ExportInventoryModal = ({ isOpen, onClose, inventoryData }) => {
                           </div>
                           
                           <div>
-                            <label className="block text-sm font-medium text-gray-700">{safeT('modals.exportInventory.dataFilters.stockLevel', {}, 'Stock Level')}</label>
+                            <label className="block text-form-label text-gray-700">{safeT('modals.exportInventory.dataFilters.stockLevel', {}, 'Stock Level')}</label>
                             <select
                               value={filters.stockLevel}
                               onChange={(e) => setFilters(prev => ({ ...prev, stockLevel: e.target.value }))}
@@ -308,7 +308,7 @@ const ExportInventoryModal = ({ isOpen, onClose, inventoryData }) => {
                           </div>
                           
                           <div>
-                            <label className="block text-sm font-medium text-gray-700">{safeT('modals.exportInventory.dataFilters.location', {}, 'Location')}</label>
+                            <label className="block text-form-label text-gray-700">{safeT('modals.exportInventory.dataFilters.location', {}, 'Location')}</label>
                             <select
                               value={filters.location}
                               onChange={(e) => setFilters(prev => ({ ...prev, location: e.target.value }))}
@@ -322,7 +322,7 @@ const ExportInventoryModal = ({ isOpen, onClose, inventoryData }) => {
                           </div>
                           
                           <div>
-                            <label className="block text-sm font-medium text-gray-700">{safeT('modals.exportInventory.dataFilters.dateRange', {}, 'Date Range')}</label>
+                            <label className="block text-form-label text-gray-700">{safeT('modals.exportInventory.dataFilters.dateRange', {}, 'Date Range')}</label>
                             <select
                               value={filters.dateRange}
                               onChange={(e) => setFilters(prev => ({ ...prev, dateRange: e.target.value }))}
@@ -343,7 +343,7 @@ const ExportInventoryModal = ({ isOpen, onClose, inventoryData }) => {
                       <div>
                         <div className="flex items-center justify-between">
                           <div>
-                            <label className="text-base font-medium text-gray-900">{safeT('modals.exportInventory.fields.fieldsToExport', {}, 'Fields to Export')}</label>
+                            <label className="text-card-title text-gray-900">{safeT('modals.exportInventory.fields.fieldsToExport', {}, 'Fields to Export')}</label>
                             <p className="text-sm leading-5 text-gray-500">
                               {safeT('modals.exportInventory.fields.fieldsDesc', {selectedFieldsCount}, 'Select which fields to include ({selectedFieldsCount} selected)')}
                             </p>
@@ -418,7 +418,7 @@ const ExportInventoryModal = ({ isOpen, onClose, inventoryData }) => {
                         disabled={isExporting}
                         className="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50"
                       >
-                        {safeT('common.cancel', {}, 'Cancel')}
+                        <span className="text-button-text">{safeT('common.cancel', {}, 'Cancel')}</span>
                       </button>
                       <button
                         type="button"
@@ -432,12 +432,12 @@ const ExportInventoryModal = ({ isOpen, onClose, inventoryData }) => {
                               <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                               <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                             </svg>
-                            {safeT('modals.exportInventory.buttons.exporting', {}, 'Exporting...')}
+                            <span className="text-button-text">{safeT('modals.exportInventory.buttons.exporting', {}, 'Exporting...')}</span>
                           </>
                         ) : (
                           <>
                             <DocumentArrowDownIcon className="h-4 w-4 mr-2" />
-                            {safeT('modals.exportInventory.buttons.exportData', {}, 'Export Data')}
+                            <span className="text-button-text">{safeT('modals.exportInventory.buttons.exportData', {}, 'Export Data')}</span>
                           </>
                         )}
                       </button>
