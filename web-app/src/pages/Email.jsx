@@ -280,7 +280,7 @@ Email: sarah.johnson@acmecorp.com`,
       {/* Breadcrumb */}
       <div className='bg-blue-50 border-b border-gray-200 py-2 px-4 md:px-8'>
         <div className='flex items-center justify-between'>
-          <div className='flex items-center space-x-2 text-base'>
+          <div className='flex items-center space-x-2 text-nav-text'>
             <button 
               onClick={() => navigate('/dashboard')}
               className='flex items-center space-x-1 text-blue-600 hover:text-blue-700 font-medium transition-colors'
@@ -325,7 +325,7 @@ Email: sarah.johnson@acmecorp.com`,
                   </div>
                   {folder.count && (
                     <span
-                      className={`text-xs px-2 py-1 rounded-full ${
+                      className={`text-caption px-2 py-1 rounded-full ${
                         isActive
                           ? 'bg-blue-600 text-white'
                           : folder.id === 'spam'
@@ -347,7 +347,7 @@ Email: sarah.johnson@acmecorp.com`,
           {/* Labels Section */}
           <div className='px-4 py-4 border-t border-gray-200'>
             <div className='flex items-center justify-between mb-3'>
-              <span className='text-sm font-medium text-gray-500 uppercase tracking-wider'>
+              <span className='text-caption font-medium text-gray-500 uppercase tracking-wider'>
                 Labels
               </span>
               <PlusIcon className='h-4 w-4 text-gray-400' />
@@ -366,7 +366,7 @@ Email: sarah.johnson@acmecorp.com`,
           {/* Email Folders Section */}
           <div className='px-4 py-4 border-t border-gray-200'>
             <div className='flex items-center justify-between mb-3'>
-              <span className='text-sm font-medium text-gray-500 uppercase tracking-wider'>
+              <span className='text-caption font-medium text-gray-500 uppercase tracking-wider'>
                 Folders
               </span>
               <PlusIcon className='h-4 w-4 text-gray-400' />
@@ -445,7 +445,7 @@ Email: sarah.johnson@acmecorp.com`,
                       )}
                     </button>
                   </div>
-                  <span className='text-xs text-gray-500'>{email.time}</span>
+                  <span className='text-caption text-gray-500'>{email.time}</span>
                 </div>
 
                 <div className='flex items-center space-x-2 mb-1'>
@@ -461,7 +461,7 @@ Email: sarah.johnson@acmecorp.com`,
                   {email.subject}
                 </div>
 
-                <div className='text-sm text-gray-600 line-clamp-2'>{email.preview}</div>
+                <div className='text-body text-gray-600 line-clamp-2'>{email.preview}</div>
               </div>
             ))}
           </div>
@@ -493,7 +493,7 @@ Email: sarah.johnson@acmecorp.com`,
                   </button>
                 </div>
 
-                <h1 className='text-2xl font-semibold text-gray-900 mb-4'>
+                <h1 className='text-page-title font-semibold text-gray-900 mb-4'>
                   {selectedEmail.subject}
                 </h1>
 
@@ -508,7 +508,7 @@ Email: sarah.johnson@acmecorp.com`,
                       <span className='font-medium text-gray-900'>{selectedEmail.sender}</span>
                       <span className='text-gray-600'>&lt;{selectedEmail.email}&gt;</span>
                     </div>
-                    <div className='flex items-center space-x-2 text-sm text-gray-600'>
+                    <div className='flex items-center space-x-2 text-body text-gray-600'>
                       <span>To: John Doe</span>
                       <span>•</span>
                       <span>
@@ -585,10 +585,10 @@ Email: sarah.johnson@acmecorp.com`,
                         >
                           {getAttachmentIcon(attachment.type)}
                           <div>
-                            <div className='font-medium text-sm text-gray-900'>
+                            <div className='font-medium text-body text-gray-900'>
                               {attachment.name}
                             </div>
-                            <div className='text-xs text-gray-500'>{attachment.size}</div>
+                            <div className='text-caption text-gray-500'>{attachment.size}</div>
                           </div>
                         </div>
                       ))}
@@ -613,7 +613,7 @@ Email: sarah.johnson@acmecorp.com`,
                     <div className='flex justify-end mt-4'>
                       <button
                         onClick={handleReplySubmit}
-                        className='bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors flex items-center space-x-2'
+                        className='bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors flex items-center space-x-2 text-body'
                       >
                         <span>Send</span>
                         <PaperAirplaneIcon className='h-4 w-4' />
@@ -627,8 +627,8 @@ Email: sarah.johnson@acmecorp.com`,
             <div className='flex-1 flex items-center justify-center'>
               <div className='text-center'>
                 <EnvelopeIcon className='h-16 w-16 text-gray-400 mx-auto mb-4' />
-                <h3 className='text-lg font-medium text-gray-900 mb-2'>No email selected</h3>
-                <p className='text-gray-500'>Select an email from the list to view its contents</p>
+                <h3 className='text-card-title font-medium text-gray-900 mb-2'>No email selected</h3>
+                <p className='text-body text-gray-500'>Select an email from the list to view its contents</p>
               </div>
             </div>
           )}
