@@ -402,8 +402,8 @@ export default function Inventory() {
                   ></div>
                 </div>
                 <div className='flex justify-between text-badge text-blue-600 font-medium'>
-                  <span>Target: €{(totalValue * 1.2).toLocaleString()}</span>
-                  <span>75% of target</span>
+                  <span>{safeT('stats.target', {}, 'Target: ')} €{(totalValue * 1.2).toLocaleString()}</span>
+                  <span>{safeT('stats.targetPercentage', {}, '75% of target')}</span>
                 </div>
               </div>
 
@@ -416,7 +416,7 @@ export default function Inventory() {
                     </div>
                     <div>
                       <p className='text-card-title text-red-700'>
-                        {safeT('stats.lowStock', {}, 'Low Stock Items')}
+                        {safeT('stats.lowStock', {}, 'Articoli in Scarsità')}
                       </p>
                       <p className='text-card-metric text-red-900'>
                          {lowStockItems}
@@ -425,7 +425,7 @@ export default function Inventory() {
                   </div>
                   <div className='flex items-center gap-1 bg-red-500 text-white px-3 py-1.5 rounded-full text-badge font-semibold shadow-sm'>
                     <ExclamationTriangleIcon className='w-3 h-3' />
-                    Alert
+                    {safeT('stats.alert', {}, 'Alert')}
                   </div>
                 </div>
                 <div className='w-full bg-red-200 rounded-full h-3 mb-2 shadow-inner'>
@@ -435,8 +435,8 @@ export default function Inventory() {
                   ></div>
                 </div>
                 <div className='flex justify-between text-badge text-red-600 font-medium'>
-                  <span>Critical: {Math.floor(lowStockItems * 0.3)}</span>
-                  <span>Needs attention</span>
+                  <span>{safeT('stats.critical', {}, 'Critical: ')} {Math.floor(lowStockItems * 0.3)}</span>
+                  <span>{safeT('stats.needsAttention', {}, 'Needs attention')}</span>
                 </div>
               </div>
 
@@ -449,7 +449,7 @@ export default function Inventory() {
                     </div>
                     <div>
                       <p className='text-card-title text-green-700'>
-                        {safeT('stats.itemsToReorder', {}, 'Items to Reorder')}
+                        {safeT('stats.itemsToReorder', {}, 'Articoli da Riordinare')}
                       </p>
                       <p className='text-card-metric text-green-900'>
                          {needsReorderItems}
@@ -458,12 +458,12 @@ export default function Inventory() {
                   </div>
                   <div className='flex items-center gap-1 bg-green-500 text-white px-3 py-1.5 rounded-full text-badge font-semibold shadow-sm'>
                      <ArrowPathIcon className='w-3 h-3' />
-                     Ready
+                     {safeT('stats.ready', {}, 'Ready')}
                    </div>
                 </div>
                 <div className='flex items-center gap-2 mb-2'>
                   <span className='text-green-700 text-nav-text font-medium'>
-                    Reorder Rate:
+                    {safeT('stats.reorderRate', {}, 'Reorder Rate:')}
                   </span>
                   <span className='font-bold text-green-900'>{Math.min(Math.floor((needsReorderItems / 20) * 100), 100)}%</span>
                   <div className='flex-1 bg-green-200 rounded-full h-3 shadow-inner'>
@@ -475,7 +475,7 @@ export default function Inventory() {
                 </div>
                 <div className='flex justify-between text-badge text-green-600 font-medium'>
                   <span>{Math.min(Math.floor((needsReorderItems / 20) * 100), 100)}%</span>
-                  <span>Reorder efficiency</span>
+                  <span>{safeT('stats.reorderEfficiency', {}, 'Reorder efficiency')}</span>
                 </div>
               </div>
             </div>
@@ -625,13 +625,13 @@ export default function Inventory() {
                             {safeT('table.category', {}, 'Category')}
                           </th>
                           <th className='px-6 py-3 text-left text-table-header text-gray-500 uppercase tracking-wider'>
-                            Items Count
+                            {safeT('table.itemsCount', {}, 'Items Count')}
                           </th>
                           <th className='px-6 py-3 text-left text-table-header text-gray-500 uppercase tracking-wider'>
-                            Total Stock
+                            {safeT('table.totalStock', {}, 'Total Stock')}
                           </th>
                           <th className='px-6 py-3 text-left text-table-header text-gray-500 uppercase tracking-wider'>
-                            Total Value
+                            {safeT('table.totalValue', {}, 'Total Value')}
                           </th>
                           <th className='px-6 py-3 text-left text-table-header text-gray-500 uppercase tracking-wider'>
                             {safeT('table.lastUpdated', {}, 'Last Updated')}
@@ -719,7 +719,7 @@ export default function Inventory() {
                                 <span className='font-medium'>{item.stock}</span>
                               </td>
                               <td className='px-6 py-4 whitespace-nowrap text-table-cell text-gray-900'>
-                                ${item.totalValue.toFixed(2)}
+                                €{item.totalValue.toFixed(2)}
                               </td>
                               <td className='px-6 py-4 whitespace-nowrap text-table-cell text-gray-500'>
                                 <div className='flex items-center'>
@@ -811,7 +811,7 @@ export default function Inventory() {
                                 </div>
                               </td>
                               <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-800'>
-                                ${item.price.toFixed(2)}
+                                €{item.price.toFixed(2)}
                               </td>
                               <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-800'>
                                 {item.supplier}

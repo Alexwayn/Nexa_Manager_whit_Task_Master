@@ -17,9 +17,16 @@
     "totalValue": "Valore Totale Inventario",
     "lowStock": "Articoli in Scarsità",
     "itemsToReorder": "Articoli da Riordinare",
-    "needsAttention": "{{count}} articoli richiedono attenzione",
+    "needsAttention": "Richiede attenzione",
     "criticallyLow": "{{count}} esauriti",
-    "trend": "+8.2%"
+    "trend": "+8.2%",
+    "target": "Obiettivo:",
+    "targetPercentage": "75% dell'obiettivo",
+    "alert": "Avviso",
+    "critical": "Critico:",
+    "ready": "Pronto",
+    "reorderRate": "Tasso di Riordino:",
+    "reorderEfficiency": "Efficienza di Riordino"
   },
   "tabs": {
     "allProducts": "Tutti i Prodotti",
@@ -41,7 +48,10 @@
     "of": "di",
     "results": "risultati",
     "previous": "Precedente",
-    "next": "Successivo"
+    "next": "Successivo",
+    "itemsCount": "Conteggio Articoli",
+    "totalStock": "Scorta Totale",
+    "totalValue": "Valore Totale"
   },
   "status": {
     "inStock": "In Magazzino",
@@ -96,7 +106,11 @@
     "topSellingProducts": "Prodotti Più Venduti",
     "stockWarnings": "Avvisi di Scorta",
     "viewAll": "Visualizza Tutto",
-    "reorder": "Riordina"
+    "inStock": "{{count}} in magazzino",
+    "min": "Min: {{count}}",
+    "reorder": "Riordina",
+    "healthyStock": "Tutti i livelli di scorta sono a posto!",
+    "noAttention": "Nessun articolo richiede attenzione immediata."
   },
   "search": {
     "placeholder": "Cerca prodotti..."
@@ -214,11 +228,14 @@
     "options": "Opzioni Report",
     "dateRange": "Intervallo Date",
     "filters": {
+      "label": "Filtri",
       "allCategories": "Tutte le Categorie",
       "allLocations": "Tutte le Sedi",
       "allStockLevels": "Tutti i Livelli Scorta"
     },
-    "preview": "Anteprima Report",
+    "preview": {
+      "title": "Anteprima Report"
+    },
     "generate": "Genera Report"
   },
   "modals": {
@@ -356,7 +373,8 @@
         "thisYear": "Quest'Anno"
       },
       "fieldSelection": {
-        "selectAll": "Seleziona Tutto"
+        "selectAll": "Seleziona Tutto",
+        "deselectAll": "Deseleziona Tutto"
       },
       "availableFields": {
         "name": "Nome Prodotto",
@@ -380,10 +398,11 @@
       },
       "buttons": {
         "cancel": "Annulla",
-        "exportData": "Esporta Dati"
+        "exportData": "Esporta Dati",
+        "exporting": "Esportazione..."
       },
       "messages": {
-        "exportCompleted": "Esportazione completata con successo",
+        "exportCompleted": "Esportazione completata!\n\nFile: {{fileName}}\nFormato: {{formatName}}\nRecord: {{recordCount}}\nCampi: {{fieldCount}}",
         "exportFailed": "Esportazione fallita. Riprova."
       }
     },
@@ -395,6 +414,43 @@
         "outOfStock": "Articoli Esauriti",
         "settings": "Impostazioni Avvisi"
       },
+    "reorder": {
+      "title": "Riordina Articolo",
+      "itemInfo": "Informazioni Articolo",
+      "fields": {
+        "name": "Nome",
+        "sku": "SKU",
+        "currentStock": "Scorta Attuale",
+        "minimumStock": "Scorta Minima",
+        "unitPrice": "Prezzo Unitario",
+        "supplier": "Fornitore"
+      },
+      "stockDeficit": "Deficit scorte: {{deficit}} unità sotto il livello minimo",
+      "quantity": "Quantità Riordino",
+      "units": "unità",
+      "actions": {
+        "fillDeficit": "Riempi deficit ({{deficit}})",
+        "reorderToMinimum": "Riordina al minimo ({{minimum}})",
+        "reorderToDouble": "Riordina al doppio del minimo ({{double}})"
+      },
+      "urgencyLabel": "Livello di Urgenza",
+      "urgency": {
+        "low": "Bassa",
+        "normal": "Normale",
+        "high": "Alta"
+      },
+      "supplierLabel": "Fornitore",
+      "notesLabel": "Note Aggiuntive",
+      "notesPlaceholder": "Aggiungi note per il team acquisti...",
+      "estimatedCost": "Costo Stimato",
+      "buttons": {
+        "cancel": "Annulla",
+        "createReorder": "Crea Riordino"
+      },
+      "messages": {
+        "created": "Riordino creato per {{quantity}} unità di {{itemName}}"
+      }
+    },
       "table": {
         "product": "Prodotto",
         "current": "Scorta Attuale",
@@ -456,26 +512,34 @@
       },
       "filters": {
         "label": "Filtri",
-        "allCategories": "Tutte le Categorie",
+        "allCategories": "Tutte le categorie",
         "electronics": "Elettronica",
         "furniture": "Mobili",
-        "officeSupplies": "Forniture Ufficio",
-        "allLocations": "Tutte le Sedi",
-        "warehouseA": "Magazzino A",
-        "warehouseB": "Magazzino B",
-        "storeFront": "Negozio",
-        "allStockLevels": "Tutti i Livelli di Scorta",
-        "inStock": "In Magazzino",
-        "lowStock": "Scorta Bassa",
-        "outOfStock": "Esaurito"
+        "office-supplies": "Articoli per ufficio",
+        "officesupplies": "Articoli per ufficio",
+        "allLocations": "Tutte le sedi",
+        "warehouse-a": "Magazzino A",
+        "warehousea": "Magazzino A",
+        "warehouse-b": "Magazzino B",
+        "warehouseb": "Magazzino B",
+        "store-front": "Negozio",
+        "storefront": "Negozio",
+        "allStockLevels": "Tutti i livelli di stock",
+        "in-stock": "In stock",
+        "instock": "In stock",
+        "low-stock": "Scorte in esaurimento",
+        "lowstock": "Scorte in esaurimento",
+        "out-of-stock": "Esaurito",
+        "outofstock": "Esaurito"
       },
       "preview": {
+        "title": "Anteprima Report",
         "type": "Tipo",
-        "period": "Periodo",
-        "present": "Presente",
         "category": "Categoria",
         "location": "Sede",
-        "stockLevel": "Livello Scorta"
+        "stockLevel": "Livello Stock",
+        "period": "Periodo",
+        "present": "Oggi"
       },
       "messages": {
         "generated": "Report generato con successo!"

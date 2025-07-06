@@ -17,9 +17,16 @@
     "totalValue": "Total Inventory Value",
     "lowStock": "Low Stock Items",
     "itemsToReorder": "Items to Reorder",
-    "needsAttention": "{{count}} items need attention",
+    "needsAttention": "Needs attention",
     "criticallyLow": "{{count}} out of stock",
-    "trend": "+8.2%"
+    "trend": "+8.2%",
+    "target": "Target:",
+    "targetPercentage": "75% of target",
+    "alert": "Alert",
+    "critical": "Critical:",
+    "ready": "Ready",
+    "reorderRate": "Reorder Rate:",
+    "reorderEfficiency": "Reorder efficiency"
   },
   "tabs": {
     "allProducts": "All Products",
@@ -41,7 +48,10 @@
     "of": "of",
     "results": "results",
     "previous": "Previous",
-    "next": "Next"
+    "next": "Next",
+    "itemsCount": "Items Count",
+    "totalStock": "Total Stock",
+    "totalValue": "Total Value"
   },
   "status": {
     "inStock": "In Stock",
@@ -178,8 +188,12 @@
     "selectType": "Select Report Type",
     "options": "Report Options",
     "dateRange": "Date Range",
-    "filters": "Filters",
-    "preview": "Report Preview",
+    "filters": {
+      "label": "Filters"
+    },
+    "preview": {
+      "title": "Report Preview"
+    },
     "generate": "Generate Report",
     "types": {
       "inventorySummary": {
@@ -208,39 +222,35 @@
       }
     },
     "filters": {
-      "label": "Filters",
-      "allCategories": "All Categories",
-      "electronics": "Electronics",
-      "furniture": "Furniture",
-      "officeSupplies": "Office Supplies",
-      "officesupplies": "Office Supplies",
-      "allLocations": "All Locations",
-      "warehouseA": "Warehouse A",
-      "warehousea": "Warehouse A",
-      "warehouseB": "Warehouse B",
-      "warehouseb": "Warehouse B",
-      "storeFront": "Store Front",
-      "storefront": "Store Front",
-      "allStockLevels": "All Stock Levels",
-      "inStock": "In Stock",
-      "instock": "In Stock",
-      "lowStock": "Low Stock",
-      "lowstock": "Low Stock",
-      "outOfStock": "Out of Stock",
-      "outofstock": "Out of Stock",
-      "category": "Category",
-      "location": "Location",
-      "supplier": "Supplier",
-      "stockLevel": "Stock Level"
-     },
-      "preview": {
-      "title": "Report Preview",
-      "type": "Type",
-      "period": "Period",
-      "present": "Present",
-      "category": "Category",
-      "location": "Location",
-      "stockLevel": "Stock Level"
+        "label": "Filters",
+        "allCategories": "All Categories",
+        "electronics": "Electronics",
+        "furniture": "Furniture",
+        "office-supplies": "Office Supplies",
+        "officesupplies": "Office Supplies",
+        "allLocations": "All Locations",
+        "warehouse-a": "Warehouse A",
+        "warehousea": "Warehouse A",
+        "warehouse-b": "Warehouse B",
+        "warehouseb": "Warehouse B",
+        "store-front": "Storefront",
+        "storefront": "Storefront",
+        "allStockLevels": "All Stock Levels",
+        "in-stock": "In Stock",
+        "instock": "In Stock",
+        "low-stock": "Low Stock",
+        "lowstock": "Low Stock",
+        "out-of-stock": "Out of Stock",
+        "outofstock": "Out of Stock"
+    },
+    "preview": {
+        "title": "Report Preview",
+        "type": "Type",
+        "category": "Category",
+        "location": "Location",
+        "stockLevel": "Stock Level",
+        "period": "Period",
+        "present": "Present"
     },
     "messages": {
       "generating": "Generating report...",
@@ -547,40 +557,35 @@
    "reorder": {
       "title": "Reorder Item",
       "itemInfo": "Item Information",
-      "quantity": "Reorder Quantity",
-      "urgencyLabel": "Urgency Level",
-      "supplier": "Supplier",
-      "notes": "Notes (Optional)",
-      "costSummaryTitle": "Cost Summary",
-      "createOrder": "Create Reorder",
-      "units": "units",
-      "stockDeficit": "Stock deficit: {{deficit}} units below minimum level",
       "fields": {
-        "name": "Name:",
-        "sku": "SKU:",
-        "currentStock": "Current Stock:",
-        "minimumStock": "Minimum Stock:",
-        "unitPrice": "Unit Price:",
-        "supplier": "Supplier:"
+        "name": "Name",
+        "sku": "SKU",
+        "currentStock": "Current Stock",
+        "minimumStock": "Minimum Stock",
+        "unitPrice": "Unit Price",
+        "supplier": "Supplier"
       },
+      "stockDeficit": "Stock deficit: {{deficit}} units below minimum level",
+      "quantity": "Reorder Quantity",
+      "units": "units",
       "actions": {
         "fillDeficit": "Fill deficit ({{deficit}})",
         "reorderToMinimum": "Reorder to minimum ({{minimum}})",
         "reorderToDouble": "Reorder to double minimum ({{double}})"
       },
-      "placeholders": {
-        "supplier": "Enter supplier name",
-        "notes": "Add any special instructions or notes..."
-      },
-      "costSummary": {
-        "quantity": "Quantity:",
-        "unitPrice": "Unit Price:",
-        "estimatedTotal": "Estimated Total:"
-      },
+      "urgencyLabel": "Urgency Level",
       "urgency": {
         "low": "Low",
         "normal": "Normal",
         "high": "High"
+      },
+      "supplierLabel": "Supplier",
+      "notesLabel": "Additional Notes",
+      "notesPlaceholder": "Add notes for the purchasing team...",
+      "estimatedCost": "Estimated Cost",
+      "buttons": {
+        "cancel": "Cancel",
+        "createReorder": "Create Reorder"
       },
       "messages": {
         "created": "Reorder created for {{quantity}} units of {{itemName}}"

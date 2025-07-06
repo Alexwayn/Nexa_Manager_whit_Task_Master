@@ -33,37 +33,79 @@ const ReportsModal = ({ isOpen, onClose }) => {
       id: 'inventory-summary',
       name: safeT('reports.types.inventorySummary.name', {}, 'Inventory Summary'),
       description: safeT('reports.types.inventorySummary.description', {}, 'Complete overview of all inventory items'),
-      icon: ChartBarIcon
+      icon: ChartBarIcon,
+      colors: {
+        border: 'border-blue-500',
+        background: 'bg-blue-50',
+        icon: 'text-blue-600',
+        hover: 'hover:border-blue-400',
+        shadow: 'hover:shadow-blue-100'
+      }
     },
     {
       id: 'stock-levels',
       name: safeT('reports.types.stockLevels.name', {}, 'Stock Levels Report'),
       description: safeT('reports.types.stockLevels.description', {}, 'Current stock levels and alerts'),
-      icon: DocumentTextIcon
+      icon: DocumentTextIcon,
+      colors: {
+        border: 'border-green-500',
+        background: 'bg-green-50',
+        icon: 'text-green-600',
+        hover: 'hover:border-green-400',
+        shadow: 'hover:shadow-green-100'
+      }
     },
     {
       id: 'low-stock',
       name: safeT('reports.types.lowStock.name', {}, 'Low Stock Report'),
       description: safeT('reports.types.lowStock.description', {}, 'Items below minimum stock levels'),
-      icon: DocumentTextIcon
+      icon: DocumentTextIcon,
+      colors: {
+        border: 'border-red-500',
+        background: 'bg-red-50',
+        icon: 'text-red-600',
+        hover: 'hover:border-red-400',
+        shadow: 'hover:shadow-red-100'
+      }
     },
     {
       id: 'inventory-valuation',
       name: safeT('reports.types.inventoryValuation.name', {}, 'Inventory Valuation'),
       description: safeT('reports.types.inventoryValuation.description', {}, 'Total value of inventory by category'),
-      icon: ChartBarIcon
+      icon: ChartBarIcon,
+      colors: {
+        border: 'border-purple-500',
+        background: 'bg-purple-50',
+        icon: 'text-purple-600',
+        hover: 'hover:border-purple-400',
+        shadow: 'hover:shadow-purple-100'
+      }
     },
     {
       id: 'movement-history',
       name: safeT('reports.types.movementHistory.name', {}, 'Movement History'),
       description: safeT('reports.types.movementHistory.description', {}, 'Stock movements over time'),
-      icon: DocumentTextIcon
+      icon: DocumentTextIcon,
+      colors: {
+        border: 'border-orange-500',
+        background: 'bg-orange-50',
+        icon: 'text-orange-600',
+        hover: 'hover:border-orange-400',
+        shadow: 'hover:shadow-orange-100'
+      }
     },
     {
       id: 'supplier-analysis',
       name: safeT('reports.types.supplierAnalysis.name', {}, 'Supplier Analysis'),
       description: safeT('reports.types.supplierAnalysis.description', {}, 'Performance analysis by supplier'),
-      icon: ChartBarIcon
+      icon: ChartBarIcon,
+      colors: {
+        border: 'border-indigo-500',
+        background: 'bg-indigo-50',
+        icon: 'text-indigo-600',
+        hover: 'hover:border-indigo-400',
+        shadow: 'hover:shadow-indigo-100'
+      }
     }
   ];
 
@@ -112,18 +154,21 @@ const ReportsModal = ({ isOpen, onClose }) => {
               <div className="space-y-3">
                 {reportTypes.map((report) => {
                   const IconComponent = report.icon;
+                  const isSelected = selectedReport === report.id;
                   return (
                     <div
                       key={report.id}
-                      className={`p-4 border rounded-lg cursor-pointer transition-all ${
-                        selectedReport === report.id
-                          ? 'border-blue-500 bg-blue-50'
-                          : 'border-gray-200 hover:border-gray-300'
+                      className={`p-4 border rounded-lg cursor-pointer transition-all duration-200 transform hover:scale-105 hover:shadow-lg ${
+                        isSelected
+                          ? `${report.colors.border} ${report.colors.background} ${report.colors.shadow}`
+                          : `border-gray-200 hover:border-gray-300 ${report.colors.hover}`
                       }`}
                       onClick={() => setSelectedReport(report.id)}
                     >
                       <div className="flex items-start space-x-3">
-                        <IconComponent className="h-5 w-5 text-blue-600 mt-0.5" />
+                        <IconComponent className={`h-5 w-5 mt-0.5 transition-colors ${
+                          isSelected ? report.colors.icon : 'text-gray-500'
+                        }`} />
                         <div>
                           <h4 className="font-medium text-gray-900">{report.name}</h4>
                           <p className="text-sm text-gray-600 mt-1">{report.description}</p>
@@ -218,8 +263,8 @@ const ReportsModal = ({ isOpen, onClose }) => {
                     <p><span className="font-medium">{safeT('reports.preview.period', {}, 'Period')}:</span> {dateRange.startDate} to {dateRange.endDate || safeT('reports.preview.present', {}, 'Present')}</p>
                   )}
                   {filters.category && <p><span className="font-medium">{safeT('reports.preview.category', {}, 'Category')}:</span> {safeT(`reports.filters.${filters.category}`, {}, filters.category)}</p>}
-                  {filters.location && <p><span className="font-medium">{safeT('reports.preview.location', {}, 'Location')}:</span> {safeT(`reports.filters.${filters.location.replace('-', '')}`, {}, filters.location)}</p>}
-                  {filters.stockLevel && <p><span className="font-medium">{safeT('reports.preview.stockLevel', {}, 'Stock Level')}:</span> {safeT(`reports.filters.${filters.stockLevel.replace('-', '')}`, {}, filters.stockLevel)}</p>}
+                  {filters.location && <p><span className="font-medium">{safeT('reports.preview.location', {}, 'Location')}:</span> {safeT(`reports.filters.${filters.location}`, {}, filters.location)}</p>}
+                  {filters.stockLevel && <p><span className="font-medium">{safeT('reports.preview.stockLevel', {}, 'Stock Level')}:</span> {safeT(`reports.filters.${filters.stockLevel}`, {}, filters.stockLevel)}</p>}
                 </div>
               </div>
             </div>

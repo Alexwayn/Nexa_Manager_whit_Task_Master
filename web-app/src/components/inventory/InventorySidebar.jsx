@@ -7,15 +7,7 @@ import {
 } from '@heroicons/react/24/outline';
 
 const InventorySidebar = ({ onReorder }) => {
-  const { t, ready } = useTranslation('inventory');
-
-  // Safe translation function
-  const safeT = (key, options = {}, fallback = key) => {
-    if (!ready) return fallback;
-    return t(key, options);
-  };
-
-
+  const { t } = useTranslation('inventory');
 
   // Sample data for stock warnings
   const stockWarnings = [
@@ -67,15 +59,16 @@ const InventorySidebar = ({ onReorder }) => {
       <div className="bg-white rounded-none shadow-sm p-6 border border-gray-200">
         <div className="flex justify-between items-center mb-4">
           <h3 className="text-lg font-semibold text-gray-900">
-            {safeT('sidebar.stockWarnings', {}, 'Stock Warnings')}
+            {t('sidebar.stockWarnings', 'Stock Warnings')}
           </h3>
           <button className="text-blue-600 text-sm font-medium hover:text-blue-700">
-            {safeT('sidebar.viewAll', {}, 'View All')}
+            {t('sidebar.viewAll', 'View All')}
           </button>
         </div>
         
-        <div className="space-y-3">
-          {stockWarnings.map((item) => (
+                {stockWarnings.length > 0 ? (
+          <div className="space-y-3">
+            {stockWarnings.map((item) => (
             <div 
               key={item.id}
               className="bg-gray-50 rounded-lg p-3 flex items-center gap-3"
@@ -105,10 +98,10 @@ const InventorySidebar = ({ onReorder }) => {
                 </div>
                 <div className="flex items-center gap-1 text-sm">
                   <span style={{ color: item.textColor }} className="font-medium">
-                    {safeT('sidebar.inStock', { count: item.stock }, `${item.stock} in stock`)}
+                    {t('sidebar.inStock', { count: item.stock, defaultValue: `${item.stock} in stock` })}
                   </span>
                   <span className="text-gray-600">
-                    ({safeT('sidebar.min', { count: item.minStock }, `Min: ${item.minStock}`)})
+                    ({t('sidebar.min', { count: item.minStock, defaultValue: `Min: ${item.minStock}` })})
                   </span>
                 </div>
               </div>
@@ -126,11 +119,17 @@ const InventorySidebar = ({ onReorder }) => {
                 })}
                 className="text-blue-600 text-sm font-medium hover:text-blue-700 flex-shrink-0 px-3 py-1 hover:bg-blue-50 rounded"
               >
-                {safeT('sidebar.reorder', {}, 'Reorder')}
+                {t('sidebar.reorder', 'Reorder')}
               </button>
             </div>
           ))}
         </div>
+        ) : (
+          <div className="text-center text-gray-500 py-4">
+            <p className="font-semibold">{t('sidebar.healthyStock', 'All stock levels are healthy!')}</p>
+            <p>{t('sidebar.noAttention', 'No items require immediate attention.')}</p>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -7,9 +7,21 @@ import { OrganizationProvider } from '@context/OrganizationContext';
 import AppRouter from '@router/AppRouter';
 import FloatingMicrophone from '@components/shared/FloatingMicrophone';
 import ErrorBoundary from '@components/common/ErrorBoundary';
+// import LanguageForcer from '@components/debug/LanguageForcer'; // Removed debug component
+
 import { initToolbar } from '@stagewise/toolbar';
 
 import './index.css';
+import './i18n'; // Import i18n configuration
+import i18n from './i18n';
+
+// Debug i18n initialization
+console.log('🌐 i18n Debug Info:');
+console.log('- Current language:', i18n.language);
+console.log('- Resolved language:', i18n.resolvedLanguage);
+console.log('- Is initialized:', i18n.isInitialized);
+console.log('- Available languages:', i18n.languages);
+console.log('- localStorage language:', localStorage.getItem('nexa-language'));
 
 // Get the Clerk publishable key from environment variables
 const clerkPublishableKey = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
@@ -84,6 +96,7 @@ function App() {
               <Router>
                 <AppRouter />
                 <FloatingMicrophone />
+
                 <Toaster position="top-right" />
               </Router>
             </OrganizationProvider>
@@ -111,6 +124,7 @@ function App() {
             <Router>
               <AppRouter />
               <FloatingMicrophone />
+
               <Toaster position="top-right" />
             </Router>
           </OrganizationProvider>

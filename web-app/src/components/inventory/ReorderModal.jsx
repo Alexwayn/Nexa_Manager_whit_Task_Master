@@ -10,40 +10,14 @@ import {
 } from '@heroicons/react/24/outline';
 
 const ReorderModal = ({ isOpen, onClose, item }) => {
-  const { t, ready, i18n } = useTranslation(['inventory', 'common']);
+  const { t, ready } = useTranslation(['inventory', 'common'], { useSuspense: false });
   const [reorderQuantity, setReorderQuantity] = useState(item?.minStock || 0);
   const [urgency, setUrgency] = useState('normal');
   const [notes, setNotes] = useState('');
   const [supplier, setSupplier] = useState(item?.supplier || '');
 
-  // Safe translation function with explicit namespace
-  const safeT = (key, options = {}, fallback = key) => {
-    if (!ready) {
-      return fallback;
-    }
-    try {
-      // Determina il namespace dalla chiave
-      const isCommonKey = key.startsWith('common.');
-      const namespace = isCommonKey ? 'common' : 'inventory';
-      const actualKey = isCommonKey ? key.replace('common.', '') : key;
-      
-      const translation = t(actualKey, { ...options, ns: namespace });
-      
-      // Verifica se la traduzione è valida
-      const isValidTranslation = translation !== actualKey && 
-                                translation !== `${namespace}:${actualKey}` &&
-                                translation !== key;
-      
-      return isValidTranslation ? translation : fallback;
-    } catch (error) {
-      console.error(`❌ Errore traduzione per ${key}:`, error);
-      return fallback;
-    }
-  };
-
-
-
-
+  // Wait for i18n to be ready before rendering
+  if (!ready || !item) return null;
 
   const handleReorder = () => {
     // Here you would implement the actual reorder logic
@@ -60,7 +34,11 @@ const ReorderModal = ({ isOpen, onClose, item }) => {
     console.log('Creating reorder:', reorderData);
     
     // Show success message
-    alert(safeT('reorder.messages.created', { quantity: reorderQuantity, itemName: item.name }, `Reorder created for ${reorderQuantity} units of ${item.name}`));
+    alert(t('inventory:reorder.messages.created', { 
+      defaultValue: `Riordino creato per ${reorderQuantity} unità di ${item.name}`,
+      quantity: reorderQuantity, 
+      itemName: item.name 
+    }));
     onClose();
   };
 
@@ -69,7 +47,7 @@ const ReorderModal = ({ isOpen, onClose, item }) => {
     setReorderQuantity(newQuantity);
   };
 
-  if (!isOpen || !item) return null;
+  if (!isOpen) return null;
 
   const estimatedCost = (item.price || 0) * reorderQuantity;
   const currentStockLevel = item.stock;
@@ -78,13 +56,13 @@ const ReorderModal = ({ isOpen, onClose, item }) => {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-hidden">
+      <div className="bg-white rounded-lg shadow-xl w-full max-w-2xl" style={{ height: '90vh', display: 'flex', flexDirection: 'column' }}>
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-gray-200">
+        <div className="flex items-center justify-between p-6 border-b border-gray-200 flex-shrink-0">
           <div className="flex items-center space-x-3">
             <ArrowPathIcon className="h-6 w-6 text-blue-600" />
             <h2 className="text-page-title text-gray-900">
-              {safeT('reorder.title', {}, 'Reorder Item')}
+              {t('inventory:reorder.title', 'Riordina Articolo')}
             </h2>
           </div>
           <button
@@ -96,23 +74,23 @@ const ReorderModal = ({ isOpen, onClose, item }) => {
         </div>
 
         {/* Content */}
-        <div className="p-6 overflow-y-auto max-h-[calc(90vh-140px)]">
+        <div className="p-6 overflow-y-auto flex-grow">
           {/* Item Information */}
           <div className="bg-gray-50 rounded-lg p-4 mb-6">
             <h3 className="text-card-title text-gray-900 mb-3">
-              {safeT('reorder.itemInfo', {}, 'Item Information')}
+              {t('inventory:reorder.itemInfo', 'Informazioni Articolo')}
             </h3>
             <div className="grid grid-cols-2 gap-4 text-sm">
               <div>
-                <span className="text-gray-600">{safeT('reorder.fields.name', {}, 'Name:')}:</span>
+                <span className="text-gray-600">{t('inventory:reorder.fields.name', 'Nome:')}</span>
                 <span className="ml-2 font-medium">{item.name}</span>
               </div>
               <div>
-                <span className="text-gray-600">{safeT('reorder.fields.sku', {}, 'SKU:')}:</span>
+                <span className="text-gray-600">{t('inventory:reorder.fields.sku', 'SKU:')}</span>
                 <span className="ml-2 font-medium">{item.sku}</span>
               </div>
               <div>
-                <span className="text-gray-600">{safeT('reorder.fields.currentStock', {}, 'Current Stock:')}:</span>
+                <span className="text-gray-600">{t('inventory:reorder.fields.currentStock', 'Scorta Attuale:')}</span>
                 <span className={`ml-2 font-medium ${
                   currentStockLevel <= minStockLevel ? 'text-red-600' : 'text-green-600'
                 }`}>
@@ -120,15 +98,15 @@ const ReorderModal = ({ isOpen, onClose, item }) => {
                 </span>
               </div>
               <div>
-                <span className="text-gray-600">{safeT('reorder.fields.minimumStock', {}, 'Minimum Stock:')}:</span>
+                <span className="text-gray-600">{t('inventory:reorder.fields.minimumStock', 'Scorta Minima:')}:</span>
                 <span className="ml-2 font-medium">{minStockLevel}</span>
               </div>
               <div>
-                <span className="text-gray-600">{safeT('reorder.fields.unitPrice', {}, 'Unit Price:')}:</span>
-                <span className="ml-2 font-medium">${item.price?.toFixed(2)}</span>
+                <span className="text-gray-600">{t('inventory:reorder.fields.unitPrice', 'Prezzo Unitario:')}:</span>
+                <span className="ml-2 font-medium">€{item.price?.toFixed(2)}</span>
               </div>
               <div>
-                <span className="text-gray-600">{safeT('reorder.fields.supplier', {}, 'Supplier:')}:</span>
+                <span className="text-gray-600">{t('inventory:reorder.fields.supplier', 'Fornitore:')}:</span>
                 <span className="ml-2 font-medium">{item.supplier}</span>
               </div>
             </div>
@@ -138,7 +116,7 @@ const ReorderModal = ({ isOpen, onClose, item }) => {
                 <div className="flex items-center">
                   <ExclamationTriangleIcon className="h-5 w-5 text-red-600 mr-2" />
                   <span className="text-red-800 text-sm font-medium">
-                    {safeT('reorder.stockDeficit', {deficit: stockDeficit}, `Stock deficit: ${stockDeficit} units below minimum level`)}
+                    {t('inventory:reorder.stockDeficit', { deficit: stockDeficit, defaultValue: `Deficit scorte: ${stockDeficit} unità sotto il livello minimo` })}
                   </span>
                 </div>
               </div>
@@ -150,7 +128,7 @@ const ReorderModal = ({ isOpen, onClose, item }) => {
             {/* Quantity */}
             <div>
               <label className="block text-form-label text-gray-700 mb-2">
-                {safeT('reorder.quantity', {}, 'Reorder Quantity')}
+                {t('inventory:reorder.quantity', 'Quantità Riordino')}
               </label>
               <div className="flex items-center space-x-3">
                 <button
@@ -173,7 +151,7 @@ const ReorderModal = ({ isOpen, onClose, item }) => {
                 >
                   <PlusIcon className="h-4 w-4" />
                 </button>
-                <span className="text-sm text-gray-600">{safeT('reorder.units', {}, 'units')}</span>
+                <span className="text-sm text-gray-600">{t('inventory:reorder.units', 'unità')}</span>
               </div>
               <div className="mt-2 flex space-x-4">
                 <button
@@ -181,19 +159,19 @@ const ReorderModal = ({ isOpen, onClose, item }) => {
                   className="text-sm text-blue-600 hover:text-blue-700"
                   disabled={stockDeficit <= 0}
                 >
-                  {safeT('reorder.actions.fillDeficit', {deficit: stockDeficit}, `Fill deficit (${stockDeficit})`)}
+                  {t('inventory:reorder.actions.fillDeficit', { deficit: stockDeficit, defaultValue: `Riempi deficit (${stockDeficit})` })}
                 </button>
                 <button
                   onClick={() => setReorderQuantity(minStockLevel)}
                   className="text-sm text-blue-600 hover:text-blue-700"
                 >
-                  {safeT('reorder.actions.reorderToMinimum', {minimum: minStockLevel}, `Reorder to minimum (${minStockLevel})`)}
+                  {t('inventory:reorder.actions.reorderToMinimum', { minimum: minStockLevel, defaultValue: `Riordina al minimo (${minStockLevel})` })}
                 </button>
                 <button
                   onClick={() => setReorderQuantity(minStockLevel * 2)}
                   className="text-sm text-blue-600 hover:text-blue-700"
                 >
-                  {safeT('reorder.actions.reorderToDouble', {double: minStockLevel * 2}, `Reorder to double minimum (${minStockLevel * 2})`)}
+                  {t('inventory:reorder.actions.reorderToDouble', { double: minStockLevel * 2, defaultValue: `Riordina al doppio del minimo (${minStockLevel * 2})` })}
                 </button>
               </div>
             </div>
@@ -201,13 +179,13 @@ const ReorderModal = ({ isOpen, onClose, item }) => {
             {/* Urgency */}
             <div>
               <label className="block text-form-label text-gray-700 mb-2">
-                {safeT('reorder.urgencyLabel', {}, 'Urgency Level')}
+                {t('inventory:reorder.urgencyLabel', 'Livello di Urgenza')}
               </label>
               <div className="grid grid-cols-3 gap-3">
                 {[
-                  { value: 'low', label: safeT('reorder.urgency.low', {}, 'Low'), color: 'green' },
-                  { value: 'normal', label: safeT('reorder.urgency.normal', {}, 'Normal'), color: 'blue' },
-                  { value: 'high', label: safeT('reorder.urgency.high', {}, 'High'), color: 'red' }
+                  { value: 'low', label: t('inventory:reorder.urgency.low', 'Bassa'), color: 'green' },
+                  { value: 'normal', label: t('inventory:reorder.urgency.normal', 'Normale'), color: 'blue' },
+                  { value: 'high', label: t('inventory:reorder.urgency.high', 'Alta'), color: 'red' }
                 ].map((option) => (
                   <button
                     key={option.value}
@@ -226,49 +204,51 @@ const ReorderModal = ({ isOpen, onClose, item }) => {
 
             {/* Supplier */}
             <div>
-              <label className="block text-form-label text-gray-700 mb-2">
-                {safeT('reorder.supplier', {}, 'Supplier')}
+              <label htmlFor="supplier" className="block text-form-label text-gray-700 mb-2">
+                {t('inventory:reorder.supplier', 'Fornitore')}
               </label>
               <input
                 type="text"
+                id="supplier"
                 value={supplier}
                 onChange={(e) => setSupplier(e.target.value)}
+                placeholder={t('inventory:reorder.placeholders.supplier', 'Es. Fornitore Principale')}
                 className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                placeholder={safeT('reorder.placeholders.supplier', {}, 'Enter supplier name')}
               />
             </div>
 
             {/* Notes */}
             <div>
-              <label className="block text-form-label text-gray-700 mb-2">
-                {safeT('reorder.notes', {}, 'Notes (Optional)')}
+              <label htmlFor="notes" className="block text-form-label text-gray-700 mb-2">
+                {t('inventory:reorder.notes', 'Note Aggiuntive')}
               </label>
               <textarea
+                id="notes"
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
-                rows={3}
+                placeholder={t('inventory:reorder.placeholders.notes', 'Aggiungi note per il riordino...')}
                 className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                placeholder={safeT('reorder.placeholders.notes', {}, 'Add any special instructions or notes...')}
-              />
+                rows="3"
+              ></textarea>
             </div>
 
             {/* Cost Summary */}
-            <div className="bg-blue-50 rounded-lg p-4">
-              <h4 className="text-card-title text-blue-900 mb-2">
-                {safeT('reorder.costSummaryTitle', {}, 'Cost Summary')}
+            <div className="bg-gray-50 rounded-lg p-4">
+              <h4 className="text-card-title text-gray-900 mb-3">
+                {t('inventory:reorder.costSummaryTitle', 'Riepilogo Costi Stimati')}
               </h4>
-              <div className="space-y-1 text-sm">
+              <div className="space-y-2 text-sm">
                 <div className="flex justify-between">
-                  <span className="text-blue-700">{safeT('reorder.costSummary.quantity', {}, 'Quantity:')}:</span>
-                  <span className="font-medium">{reorderQuantity} {safeT('reorder.units', {}, 'units')}</span>
+                  <span className="text-gray-600">{t('inventory:reorder.costSummary.quantity', 'Quantità:')}</span>
+                  <span className="font-medium">{reorderQuantity} {t('inventory:reorder.units', 'unità')}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-blue-700">{safeT('reorder.costSummary.unitPrice', {}, 'Unit Price:')}:</span>
-                  <span className="font-medium">${item.price?.toFixed(2)}</span>
+                  <span className="text-gray-600">{t('inventory:reorder.costSummary.unitPrice', 'Prezzo Unitario:')}</span>
+                  <span className="font-medium">€{item.price?.toFixed(2)}</span>
                 </div>
-                <div className="flex justify-between border-t border-blue-200 pt-1">
-                  <span className="text-blue-700 font-medium">{safeT('reorder.costSummary.estimatedTotal', {}, 'Estimated Total:')}:</span>
-                  <span className="font-bold text-blue-900">${estimatedCost.toFixed(2)}</span>
+                <div className="flex justify-between text-base font-semibold pt-2 border-t border-gray-200 mt-2">
+                  <span className="text-gray-800">{t('inventory:reorder.costSummary.estimatedTotal', 'Totale Stimato:')}</span>
+                  <span className="text-blue-600">€{estimatedCost.toFixed(2)}</span>
                 </div>
               </div>
             </div>
@@ -276,20 +256,22 @@ const ReorderModal = ({ isOpen, onClose, item }) => {
         </div>
 
         {/* Footer */}
-        <div className="flex items-center justify-end space-x-3 p-6 border-t border-gray-200 bg-gray-50">
+        <div className="flex justify-end items-center p-6 bg-gray-50 border-t border-gray-200">
           <button
             onClick={onClose}
-            className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            className="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 mr-3"
           >
-            <span className="text-button-text">{safeT('common.cancel', {}, 'Cancel')}</span>
+            {t('common:cancel', 'Annulla')}
           </button>
           <button
             onClick={handleReorder}
-            disabled={reorderQuantity <= 0 || !supplier.trim()}
-            className="px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
+            className="px-6 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:bg-blue-300"
+            disabled={reorderQuantity <= 0}
           >
-            <ArrowPathIcon className="h-4 w-4" />
-            <span className="text-button-text">{safeT('reorder.createOrder', {}, 'Create Reorder')}</span>
+            <div className="flex items-center">
+              <CheckCircleIcon className="h-5 w-5 mr-2" />
+              <span>{t('inventory:reorder.createOrder', 'Crea Riordino')}</span>
+            </div>
           </button>
         </div>
       </div>
