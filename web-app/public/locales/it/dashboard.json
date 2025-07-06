@@ -274,5 +274,8 @@
   "invoiceTracker.totalOutstanding": "Totale In Sospeso",
   "revenueStreams.noDataAvailable": "Nessun dato disponibile",
   "revenueStreams.connectDataSource": "Collega una fonte dati per visualizzare i flussi di ricavi",
-  "revenueStreams.noCategories": "Nessuna categoria di ricavi disponibile"
+  "revenueStreams.noCategories": "Nessuna categoria di ricavi disponibile",
+  "charts": {
+    "noData": "Nessun dato disponibile"
+  }
 }

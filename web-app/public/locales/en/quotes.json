@@ -342,5 +342,6 @@
         "terms": "50% payment at start, 50% on delivery."
       }
     }
-  }
+  },
+  "no_actions_available": "No actions available for this status"
 }

@@ -171,5 +171,10 @@
     "exporting": "Exporting...",
     "report": "Report",
     "noData": "No data to export"
+  },
+  "pagination": {
+    "showing": "Showing {{start}} to {{end}} of {{total}} results",
+    "previous": "Previous",
+    "next": "Next"
   }
 }

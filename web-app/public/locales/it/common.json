@@ -173,5 +173,10 @@
     "exporting": "Esportazione in corso...",
     "report": "Report",
     "noData": "Nessun dato da esportare"
+  },
+  "pagination": {
+    "showing": "Visualizzazione da {{start}} a {{end}} di {{total}} risultati",
+    "previous": "Precedente",
+    "next": "Successivo"
   }
 }

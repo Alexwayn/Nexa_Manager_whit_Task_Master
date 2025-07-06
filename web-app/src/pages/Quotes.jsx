@@ -56,8 +56,88 @@ const QuotesPage = () => {
 
   const { user } = useUser();
   const [activeTab, setActiveTab] = useState('quotes');
-  const [quotes, setQuotes] = useState([]);
-  const [filteredQuotes, setFilteredQuotes] = useState([]);
+  const [quotes, setQuotes] = useState([
+    {
+      id: 1,
+      quote_number: 'QUO-2024-001',
+      client: {
+        name: 'Acme Corporation',
+        industry: 'Technology',
+        avatar: 'AC'
+      },
+      amount: 15000,
+      issue_date: '2024-01-15',
+      due_date: '2024-02-15',
+      status: 'pending'
+    },
+    {
+      id: 2,
+      quote_number: 'QUO-2024-002',
+      client: {
+        name: 'Global Solutions Ltd',
+        industry: 'Consulting',
+        avatar: 'GS'
+      },
+      amount: 8500,
+      issue_date: '2024-01-20',
+      due_date: '2024-02-20',
+      status: 'accepted'
+    },
+    {
+      id: 3,
+      quote_number: 'QUO-2024-003',
+      client: {
+        name: 'Innovation Hub',
+        industry: 'Startup',
+        avatar: 'IH'
+      },
+      amount: 12750,
+      issue_date: '2024-01-25',
+      due_date: '2024-02-25',
+      status: 'pending'
+    }
+  ]);
+  const [filteredQuotes, setFilteredQuotes] = useState([
+    {
+      id: 1,
+      quote_number: 'QUO-2024-001',
+      client: {
+        name: 'Acme Corporation',
+        industry: 'Technology',
+        avatar: 'AC'
+      },
+      amount: 15000,
+      issue_date: '2024-01-15',
+      due_date: '2024-02-15',
+      status: 'pending'
+    },
+    {
+      id: 2,
+      quote_number: 'QUO-2024-002',
+      client: {
+        name: 'Global Solutions Ltd',
+        industry: 'Consulting',
+        avatar: 'GS'
+      },
+      amount: 8500,
+      issue_date: '2024-01-20',
+      due_date: '2024-02-20',
+      status: 'accepted'
+    },
+    {
+      id: 3,
+      quote_number: 'QUO-2024-003',
+      client: {
+        name: 'Innovation Hub',
+        industry: 'Startup',
+        avatar: 'IH'
+      },
+      amount: 12750,
+      issue_date: '2024-01-25',
+      due_date: '2024-02-25',
+      status: 'pending'
+    }
+  ]);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10);
   const [searchTerm, setSearchTerm] = useState('');
@@ -315,7 +395,7 @@ const QuotesPage = () => {
   const formatCurrency = (amount) => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
-      currency: 'USD'
+      currency: 'EUR'
     }).format(amount);
   };
 
@@ -417,7 +497,7 @@ const QuotesPage = () => {
     },
     {
       title: t('stats.totalValue') || 'Total Value',
-      value: '€0',
+      value: '€0.00',
       subtitle: t('stats.totalValueSubtitle') || 'No data available',
       icon: DollarSign,
       bgColor: 'bg-gradient-to-br from-primary-500 to-primary-600',

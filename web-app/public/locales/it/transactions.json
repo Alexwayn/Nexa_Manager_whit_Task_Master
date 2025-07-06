@@ -221,14 +221,17 @@
     "title": "Prossime Attività Finanziarie",
     "taxPayment": "Pagamento tasse in scadenza tra 5 giorni",
     "monthlyReview": "Revisione finanziaria mensile il 30 Giu",
-    "budgetPlanning": "Pianificazione budget per Q3 inizia il 15 Lug"
+    "budgetPlanning": "Pianificazione budget per Q3 inizia il 15 Lug",
+    "noTasks": "Nessuna attività in programma"
   },
   "budgetInfo": {
     "budgetPeriod": "Periodo di Budget:",
     "june1to30": "1 Giugno - 30 Giugno, 2023",
     "remainingDays": "Giorni Rimanenti:",
     "fifteenDays": "15 giorni",
-    "of": "di ${{amount}}"
+    "of": "di €{{amount}}",
+    "noPeriod": "Nessun periodo impostato",
+    "noDays": "0 giorni"
   },
   "cashFlow": {
     "title": "Previsione del Flusso di Cassa",

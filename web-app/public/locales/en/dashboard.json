@@ -256,5 +256,8 @@
     "good": "Good",
     "needsAttention": "Needs Attention"
   },
+  "charts": {
+    "noData": "No data available"
+  },
   "refreshData": "Refresh Data"
 }

@@ -342,5 +342,6 @@
         "terms": "Pagamento 50% all'inizio, 50% alla consegna."
       }
     }
-  }
+  },
+  "no_actions_available": "Nessuna azione disponibile per questo stato"
 }

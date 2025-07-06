@@ -231,12 +231,18 @@
     "expenses": "Expenses",
     "budgetProgress": "Budget Progress"
   },
+  "upcomingTasks": {
+    "title": "Upcoming Financial Tasks",
+    "noTasks": "No upcoming tasks"
+  },
   "budgetInfo": {
     "budgetPeriod": "Budget Period:",
     "june1to30": "June 1 - June 30, 2023",
     "remainingDays": "Remaining Days:",
     "fifteenDays": "15 days",
-    "of": "of ${{amount}}"
+    "of": "of ${{amount}}",
+    "noPeriod": "No period set",
+    "noDays": "0 days"
   },
   "cashFlow": {
     "title": "Cash Flow Forecast",
