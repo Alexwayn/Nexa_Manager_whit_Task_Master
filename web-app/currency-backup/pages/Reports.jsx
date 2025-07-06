@@ -37,7 +37,7 @@ const Reports = () => {
   const metrics = {
     financial: {
       totalRevenue: {
-        value: '€142,500',
+        value: '$142,500',
         change: '+12%',
         trend: 'up',
         icon: CurrencyDollarIcon,
@@ -61,7 +61,7 @@ const Reports = () => {
         iconColor: 'text-green-600',
       },
       outstanding: {
-        value: '€24,350',
+        value: '$24,350',
         change: '-3%',
         trend: 'down',
         icon: ExclamationTriangleIcon,
@@ -506,7 +506,7 @@ const Reports = () => {
                   </div>
                   <div>
                     <p className='text-body text-gray-600 mb-1'>
-                      {key.replace(/([A-Z])/g, ' €1').replace(/^./, str => str.toUpperCase())}
+                      {key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}
                     </p>
                     <p className='text-page-title font-semibold text-gray-900'>{metric.value}</p>
                   </div>

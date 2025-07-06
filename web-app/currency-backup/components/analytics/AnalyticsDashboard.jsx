@@ -156,7 +156,7 @@ const AnalyticsDashboard = () => {
               {safeT('totalIncome', {}, 'Total Income')}
             </p>
             <p className='text-3xl font-bold text-gray-900 dark:text-white mt-2'>
-              {analyticsData?.totalIncome ? `€€{analyticsData.totalIncome.toLocaleString()}` : '€0'}
+              {analyticsData?.totalIncome ? `€€${analyticsData.totalIncome.toLocaleString()}` : '€0'}
             </p>
             <div className='flex items-center mt-2'>
               <ArrowTrendingUpIcon className='w-4 h-4 text-green-500 mr-1' />
@@ -179,7 +179,7 @@ const AnalyticsDashboard = () => {
             </p>
             <p className='text-3xl font-bold text-gray-900 dark:text-white mt-2'>
               {analyticsData?.totalExpenses
-                ? `€€{analyticsData.totalExpenses.toLocaleString()}`
+                ? `€€${analyticsData.totalExpenses.toLocaleString()}`
                 : '€0'}
             </p>
             <div className='flex items-center mt-2'>
@@ -202,7 +202,7 @@ const AnalyticsDashboard = () => {
               {safeT('netProfit', {}, 'Net Profit')}
             </p>
             <p className='text-3xl font-bold text-gray-900 dark:text-white mt-2'>
-              {analyticsData?.netProfit ? `€€{analyticsData.netProfit.toLocaleString()}` : '€0'}
+              {analyticsData?.netProfit ? `€€${analyticsData.netProfit.toLocaleString()}` : '€0'}
             </p>
             <div className='flex items-center mt-2'>
               <ArrowTrendingUpIcon className='w-4 h-4 text-blue-500 mr-1' />

@@ -274,10 +274,10 @@ class EmailTemplateService {
     
     return html.replace(
       /src="\/([^"]+)"/g,
-      `src="${baseUrl}/€1"`
+      `src="${baseUrl}/$1"`
     ).replace(
       /href="\/([^"]+)"/g,
-      `href="${baseUrl}/€1"`
+      `href="${baseUrl}/$1"`
     );
   }
 
@@ -297,7 +297,7 @@ class EmailTemplateService {
     // Style headings
     styled = styled.replace(
       /<h([1-6])(?![^>]*style)/g,
-      '<h€1 style="margin: 0 0 16px 0; font-weight: bold;"'
+      '<h$1 style="margin: 0 0 16px 0; font-weight: bold;"'
     );
 
     // Style links

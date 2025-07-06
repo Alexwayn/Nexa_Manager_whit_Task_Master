@@ -332,7 +332,7 @@ const AddItemModal = ({ isOpen, onClose, onSave }) => {
                           </label>
                           <div className="relative">
                             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                              <span className="text-gray-500 text-input-text">€</span>
+                              <span className="text-gray-500 text-input-text">$</span>
                             </div>
                             <input
                               type="number"

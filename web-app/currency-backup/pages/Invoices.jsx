@@ -403,8 +403,8 @@ const InvoicesPage = () => {
           
           pdf.text(item.description || 'Service/Product', 25, currentY);
           pdf.text(quantity.toString(), 100, currentY);
-          pdf.text(`€{price.toFixed(2)}`, 120, currentY);
-          pdf.text(`€{total.toFixed(2)}`, 160, currentY);
+          pdf.text(`€${price.toFixed(2)}`, 120, currentY);
+          pdf.text(`€${total.toFixed(2)}`, 160, currentY);
           
           // Row border
           pdf.rect(20, currentY - 7, 170, 10);
@@ -414,8 +414,8 @@ const InvoicesPage = () => {
         // Default item if no items available
         pdf.text('Service/Product', 25, currentY);
         pdf.text('1', 100, currentY);
-        pdf.text(`€{invoiceData.amount.toFixed(2)}`, 120, currentY);
-        pdf.text(`€{invoiceData.amount.toFixed(2)}`, 160, currentY);
+        pdf.text(`€${invoiceData.amount.toFixed(2)}`, 120, currentY);
+        pdf.text(`€${invoiceData.amount.toFixed(2)}`, 160, currentY);
         pdf.rect(20, currentY - 7, 170, 10);
         currentY += 15;
       }
@@ -425,7 +425,7 @@ const InvoicesPage = () => {
       pdf.setFont('helvetica', 'bold');
       pdf.setFontSize(16);
       pdf.setTextColor(0, 123, 255);
-      pdf.text(`Total: €{invoiceData.amount.toFixed(2)}`, 190, currentY, { align: 'right' });
+      pdf.text(`Total: €${invoiceData.amount.toFixed(2)}`, 190, currentY, { align: 'right' });
       
       // Footer
       pdf.setFontSize(10);

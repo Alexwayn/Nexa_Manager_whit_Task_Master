@@ -417,7 +417,7 @@ const QuotesPage = () => {
     },
     {
       title: t('stats.totalValue') || 'Total Value',
-      value: '€0',
+      value: '$0',
       subtitle: t('stats.totalValueSubtitle') || 'No data available',
       icon: DollarSign,
       bgColor: 'bg-gradient-to-br from-primary-500 to-primary-600',
@@ -536,31 +536,27 @@ const QuotesPage = () => {
                   return (
                     <div
                       key={index}
-                      className={`${colors} rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 cursor-pointer group`}
+                      className={`${colors} rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6`}
                     >
                       <div className='flex justify-between items-start mb-4'>
                         <div>
-                          <p className='text-card-title'>{stat.title}</p>
+                          <p className='text-sm font-medium text-gray-600 mb-1'>{stat.title}</p>
                         </div>
-                        <div
-                          className={`p-3 rounded-full ${stat.bgColor} ring-2 ring-white shadow-md group-hover:scale-110 transition-transform duration-300`}
-                        >
+                        <div className={`p-3 rounded-full ${stat.bgColor}`}>
                           <stat.icon className={`w-6 h-6 ${stat.iconColor}`} />
                         </div>
                       </div>
-                      <div className='mb-4'>
-                        <p className='text-card-metric group-hover:text-gray-800 transition-colors'>
-                          {stat.value}
-                        </p>
-                        <p className='text-subtitle'>{stat.subtitle}</p>
+                      <div className='mb-3'>
+                        <p className='text-3xl font-bold text-gray-900'>{stat.value}</p>
+                        <p className='text-sm text-gray-600 mt-1'>{stat.subtitle}</p>
                       </div>
-                      <div className='flex items-center bg-white/60 rounded-lg px-3 py-2 backdrop-blur-sm'>
+                      <div className='flex items-center'>
                         {stat.trend.type === 'up' ? (
-                          <ArrowUpRight className={`w-4 h-4 ${stat.trend.color} mr-2`} />
+                          <ArrowUpRight className={`w-4 h-4 ${stat.trend.color} mr-1`} />
                         ) : (
-                          <ArrowDownRight className={`w-4 h-4 ${stat.trend.color} mr-2`} />
+                          <ArrowDownRight className={`w-4 h-4 ${stat.trend.color} mr-1`} />
                         )}
-                        <span className={`text-sm font-semibold ${stat.trend.color}`}>
+                        <span className={`text-sm font-medium ${stat.trend.color}`}>
                           {stat.trend.value}
                         </span>
                       </div>

@@ -30,7 +30,7 @@ const ViewInvoiceModal = ({ isOpen, onClose, invoice }) => {
 
   const formatCurrency = (amount) => {
     if (!amount) return '€0.00';
-    return `€{parseFloat(amount).toFixed(2)}`;
+    return `€${parseFloat(amount).toFixed(2)}`;
   };
 
   return (

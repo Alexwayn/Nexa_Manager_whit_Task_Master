@@ -10,9 +10,9 @@ const ReportViewer = ({ report, onBack }) => {
     title: 'Quarterly Financial Summary',
     columns: ['Month', 'Revenue', 'Expenses', 'Profit'],
     rows: [
-      ['January', '€10,000', '€3,000', '€7,000'],
-      ['February', '€12,500', '€3,500', '€9,000'],
-      ['March', '€15,000', '€4,000', '€11,000'],
+      ['January', '$10,000', '$3,000', '$7,000'],
+      ['February', '$12,500', '$3,500', '$9,000'],
+      ['March', '$15,000', '$4,000', '$11,000'],
     ],
   };
 

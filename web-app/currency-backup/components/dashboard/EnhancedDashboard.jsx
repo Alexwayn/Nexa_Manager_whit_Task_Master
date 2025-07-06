@@ -452,7 +452,7 @@ const EnhancedDashboard = () => {
             color: 'rgba(0, 0, 0, 0.05)',
           },
           ticks: {
-            callback: (value) => `€€{value.toLocaleString()}`,
+            callback: (value) => `€€${value.toLocaleString()}`,
             color: 'rgb(107, 114, 128)',
           },
         },
@@ -549,7 +549,7 @@ const EnhancedDashboard = () => {
             label: function(context) {
               const total = context.dataset.data.reduce((a, b) => a + b, 0);
               const percentage = ((context.raw / total) * 100).toFixed(1);
-              return `${context.label}: €€{context.raw.toLocaleString()} (${percentage}%)`;
+              return `${context.label}: €€${context.raw.toLocaleString()} (${percentage}%)`;
             }
           }
         },

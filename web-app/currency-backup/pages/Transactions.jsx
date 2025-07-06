@@ -385,7 +385,7 @@ export default function Transactions() {
                         {safeT('summary.totalIncome', {}, 'Total Income')}
                       </p>
                       <p className='text-kpi-value text-blue-900'>
-                        €{financialData.totalIncome.toLocaleString()}
+                        €${financialData.totalIncome.toLocaleString()}
                       </p>
                     </div>
                   </div>
@@ -418,7 +418,7 @@ export default function Transactions() {
                         {safeT('summary.totalExpenses', {}, 'Total Expenses')}
                       </p>
                       <p className='text-kpi-value text-red-900'>
-                        €{financialData.totalExpenses.toLocaleString()}
+                        €${financialData.totalExpenses.toLocaleString()}
                       </p>
                     </div>
                   </div>
@@ -451,7 +451,7 @@ export default function Transactions() {
                         {safeT('summary.netProfit', {}, 'Net Profit')}
                       </p>
                       <p className='text-kpi-value text-green-900'>
-                        €{financialData.netProfit.toLocaleString()}
+                        €${financialData.netProfit.toLocaleString()}
                       </p>
                     </div>
                   </div>
@@ -665,7 +665,7 @@ export default function Transactions() {
                       </div>
                     </div>
                     <p className='text-card-metric text-blue-900'>
-                      €{financialData.totalIncome.toLocaleString()}
+                      €${financialData.totalIncome.toLocaleString()}
                     </p>
                     <p className='text-subtitle text-blue-600'>{safeT('budgetInfo.of', { amount: '0' }, 'of €0')}</p>
                   </div>
@@ -708,7 +708,7 @@ export default function Transactions() {
                       </div>
                     </div>
                     <p className='text-card-metric text-red-900'>
-                      €{financialData.totalExpenses.toLocaleString()}
+                      €${financialData.totalExpenses.toLocaleString()}
                     </p>
                     <p className='text-subtitle text-red-600'>{safeT('budgetInfo.of', { amount: '0' }, 'of €0')}</p>
                   </div>
@@ -840,7 +840,7 @@ export default function Transactions() {
                       </div>
                       <span className='text-gray-900'>{transaction.client}</span>
                       <span className='text-right font-medium'>
-                        +€{transaction.amount.toLocaleString()}
+                        +€${transaction.amount.toLocaleString()}
                       </span>
                       <div className='flex justify-center'>
                         <span className='bg-green-100 text-green-800 px-2 py-1 rounded-full text-caption font-semibold'>
@@ -920,7 +920,7 @@ export default function Transactions() {
                       </span>
                       <span className='text-gray-900'>{transaction.vendor}</span>
                       <span className='text-right font-medium'>
-                        -€{transaction.amount.toLocaleString()}
+                        -€${transaction.amount.toLocaleString()}
                       </span>
                       <div className='flex justify-center'>
                         <span className='bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-caption font-semibold'>
@@ -1010,8 +1010,8 @@ export default function Transactions() {
                         </div>
                       </div>
                       <div className='flex justify-between text-body text-gray-500'>
-                        <span>Actual: €{item.actual.toLocaleString()}</span>
-                        <span>Budget: €{item.budget.toLocaleString()}</span>
+                        <span>Actual: €${item.actual.toLocaleString()}</span>
+                        <span>Budget: €${item.budget.toLocaleString()}</span>
                       </div>
                       <div className='w-full bg-gray-200 rounded-full h-2'>
                         <div
@@ -1187,15 +1187,15 @@ export default function Transactions() {
                      <div className='space-y-3'>
                        <div className='flex justify-between p-3 bg-blue-50 rounded-lg'>
                          <span className='text-blue-700'>{safeT('financialReportModal.totalIncome', {}, 'Total Income')}</span>
-                         <span className='font-bold text-blue-900'>€{financialData.totalIncome.toLocaleString()}</span>
+                         <span className='font-bold text-blue-900'>€${financialData.totalIncome.toLocaleString()}</span>
                        </div>
                        <div className='flex justify-between p-3 bg-red-50 rounded-lg'>
                          <span className='text-red-700'>{safeT('financialReportModal.totalExpenses', {}, 'Total Expenses')}</span>
-                         <span className='font-bold text-red-900'>€{financialData.totalExpenses.toLocaleString()}</span>
+                         <span className='font-bold text-red-900'>€${financialData.totalExpenses.toLocaleString()}</span>
                        </div>
                        <div className='flex justify-between p-3 bg-green-50 rounded-lg'>
                          <span className='text-green-700'>{safeT('financialReportModal.netProfit', {}, 'Net Profit')}</span>
-                         <span className='font-bold text-green-900'>€{financialData.netProfit.toLocaleString()}</span>
+                         <span className='font-bold text-green-900'>€${financialData.netProfit.toLocaleString()}</span>
                        </div>
                      </div>
                    </div>
@@ -1699,11 +1699,11 @@ export default function Transactions() {
                         <div className='grid grid-cols-3 gap-4 mb-4'>
                           <div className='text-center p-3 bg-gray-50 rounded-lg'>
                             <div className='text-caption text-gray-500 uppercase tracking-wide mb-1'>Spent</div>
-                            <div className='text-lg font-bold text-gray-900'>€{category.spent.toLocaleString()}</div>
+                            <div className='text-lg font-bold text-gray-900'>€${category.spent.toLocaleString()}</div>
                           </div>
                           <div className='text-center p-3 bg-blue-50 rounded-lg'>
                             <div className='text-caption text-blue-600 uppercase tracking-wide mb-1'>Budget</div>
-                            <div className='text-lg font-bold text-blue-700'>€{category.budget.toLocaleString()}</div>
+                            <div className='text-lg font-bold text-blue-700'>€${category.budget.toLocaleString()}</div>
                           </div>
                           <div className={`text-center p-3 rounded-lg ${
                             isOverBudget ? 'bg-red-50' : 'bg-green-50'
@@ -1716,7 +1716,7 @@ export default function Transactions() {
                             <div className={`text-lg font-bold ${
                               isOverBudget ? 'text-red-700' : 'text-green-700'
                             }`}>
-                              €{Math.abs(remaining).toLocaleString()}
+                              €${Math.abs(remaining).toLocaleString()}
                             </div>
                           </div>
                         </div>
@@ -1780,7 +1780,7 @@ export default function Transactions() {
                           <span className={`text-body font-medium ${
                             isOverBudget ? 'text-red-600' : 'text-green-600'
                           }`}>
-                            {isOverBudget ? '-' : '+'}€{Math.abs(remaining).toLocaleString()} {safeT('budgetModal.remaining', {}, 'remaining')}
+                            {isOverBudget ? '-' : '+'}€${Math.abs(remaining).toLocaleString()} {safeT('budgetModal.remaining', {}, 'remaining')}
                           </span>
                         </div>
                       </div>
@@ -1803,7 +1803,7 @@ export default function Transactions() {
                 <div className='flex items-center justify-between mt-8 pt-6 border-t border-gray-200'>
                   <div className='text-body text-gray-500'>
                     {safeT('budgetModal.totalBudget', {}, 'Total Budget')}: <span className='font-semibold text-gray-700'>
-                      €{budgetCategories.reduce((sum, cat) => sum + cat.budget, 0).toLocaleString()}
+                      €${budgetCategories.reduce((sum, cat) => sum + cat.budget, 0).toLocaleString()}
                     </span>
                   </div>
                   <div className='flex items-center gap-3'>

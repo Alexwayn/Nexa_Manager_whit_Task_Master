@@ -402,7 +402,7 @@ export default function Inventory() {
                   ></div>
                 </div>
                 <div className='flex justify-between text-badge text-blue-600 font-medium'>
-                  <span>Target: €{(totalValue * 1.2).toLocaleString()}</span>
+                  <span>Target: €${(totalValue * 1.2).toLocaleString()}</span>
                   <span>75% of target</span>
                 </div>
               </div>

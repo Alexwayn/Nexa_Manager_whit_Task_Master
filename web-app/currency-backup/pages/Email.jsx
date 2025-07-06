@@ -118,7 +118,7 @@ Email: sarah.johnson@acmecorp.com`,
       email: 'billing@soylent.com',
       subject: 'Invoice #INV-2023-056 Payment Confirmation',
       preview:
-        'Thank you for your payment of €2,150.00 for invoice #INV-2023-056. This email serves as confirmation that your payment has been received...',
+        'Thank you for your payment of $2,150.00 for invoice #INV-2023-056. This email serves as confirmation that your payment has been received...',
       time: 'Yesterday',
       date: 'May 29, 2023',
       isRead: true,

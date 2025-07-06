@@ -130,9 +130,9 @@ const ClassicViewEnhanced = () => {
     return {
       businessHealthScore,
       revenueData: {
-        monthly: `€{currentRevenue.toLocaleString('it-IT', { minimumFractionDigits: 2 })}`,
+        monthly: `€${currentRevenue.toLocaleString('it-IT', { minimumFractionDigits: 2 })}`,
         growth: revenueGrowth,
-        lastMonth: `€{(currentRevenue - currentExpenses).toLocaleString('it-IT', { minimumFractionDigits: 2 })}`,
+        lastMonth: `€${(currentRevenue - currentExpenses).toLocaleString('it-IT', { minimumFractionDigits: 2 })}`,
       },
       clientData: {
         active: activeClientsCount.toString(),

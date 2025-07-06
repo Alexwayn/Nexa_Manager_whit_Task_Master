@@ -615,7 +615,7 @@ export default function IntegrationsSettings({ showNotification }) {
       {Object.entries(integrations).map(([category, services]) => (
         <div key={category} className="bg-white border border-gray-200 rounded-lg p-6">
           <h5 className="text-md font-medium text-gray-900 mb-4 capitalize">
-            {category.replace(/([A-Z])/g, ' €1').trim()}
+            {category.replace(/([A-Z])/g, ' $1').trim()}
           </h5>
           
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -623,7 +623,7 @@ export default function IntegrationsSettings({ showNotification }) {
               <div key={service} className="border border-gray-100 rounded-lg p-4 hover:border-gray-200 transition-colors">
                 <div className="flex items-center justify-between mb-3">
                   <h6 className="text-sm font-medium text-gray-900 capitalize">
-                    {service.replace(/([A-Z])/g, ' €1').trim()}
+                    {service.replace(/([A-Z])/g, ' $1').trim()}
                   </h6>
                   {config.connected ? (
                     <CheckCircleIcon className="h-5 w-5 text-green-500" />

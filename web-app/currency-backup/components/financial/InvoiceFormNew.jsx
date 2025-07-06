@@ -596,7 +596,7 @@ const InvoiceForm = ({
                   </label>
                   <input
                     type="text"
-                    value={`€{(item.total || 0).toFixed(2)}`}
+                    value={`€${(item.total || 0).toFixed(2)}`}
                     readOnly
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-100 text-gray-700"
                   />

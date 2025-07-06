@@ -70,19 +70,19 @@ const Analytics = () => {
   const recentPayments = [
     {
       company: 'Acme Corporation',
-      amount: '€3,450.00',
+      amount: '$3,450.00',
       date: 'Today',
       status: 'paid',
     },
     {
       company: 'Globex Industries',
-      amount: '€5,780.00',
+      amount: '$5,780.00',
       date: '2 days ago',
       status: 'paid',
     },
     {
       company: 'Soylent Corp',
-      amount: '€2,100.00',
+      amount: '$2,100.00',
       date: '1 week ago',
       status: 'paid',
     },
@@ -262,7 +262,7 @@ const Analytics = () => {
                   <div className='flex items-center justify-between'>
                     <span className='text-body text-gray-500'>
                       Total Outstanding:{' '}
-                      <span className='font-semibold text-gray-900'>€100,000</span>
+                      <span className='font-semibold text-gray-900'>$100,000</span>
                     </span>
                     <div className='flex items-center text-blue-600 text-body'>
                       <span>View Details</span>
@@ -345,10 +345,10 @@ const Analytics = () => {
 
                   <div className='space-y-4'>
                     {[
-                      { name: 'Acme Corporation', amount: '€24,500', percentage: 85 },
-                      { name: 'Globex Industries', amount: '€18,750', percentage: 65 },
-                      { name: 'Soylent Corp', amount: '€15,200', percentage: 52 },
-                      { name: 'Initech LLC', amount: '€12,800', percentage: 44 },
+                      { name: 'Acme Corporation', amount: '$24,500', percentage: 85 },
+                      { name: 'Globex Industries', amount: '$18,750', percentage: 65 },
+                      { name: 'Soylent Corp', amount: '$15,200', percentage: 52 },
+                      { name: 'Initech LLC', amount: '$12,800', percentage: 44 },
                     ].map((client, index) => (
                       <div key={index} className='flex items-center space-x-3'>
                         <div className='w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center'>
@@ -465,21 +465,21 @@ const Analytics = () => {
                         <div className='w-3 h-3 bg-blue-500 rounded-full mr-2'></div>
                         <span className='text-body text-gray-600'>Services</span>
                       </div>
-                      <span className='text-body font-medium'>€45,000</span>
+                      <span className='text-body font-medium'>$45,000</span>
                     </div>
                     <div className='flex items-center justify-between'>
                       <div className='flex items-center'>
                         <div className='w-3 h-3 bg-green-500 rounded-full mr-2'></div>
                         <span className='text-body text-gray-600'>Products</span>
                       </div>
-                      <span className='text-body font-medium'>€32,000</span>
+                      <span className='text-body font-medium'>$32,000</span>
                     </div>
                     <div className='flex items-center justify-between'>
                       <div className='flex items-center'>
                         <div className='w-3 h-3 bg-yellow-500 rounded-full mr-2'></div>
                         <span className='text-body text-gray-600'>Consulting</span>
                       </div>
-                      <span className='text-body font-medium'>€23,000</span>
+                      <span className='text-body font-medium'>$23,000</span>
                     </div>
                   </div>
                 </div>
@@ -507,7 +507,7 @@ const Analytics = () => {
                   </div>
 
                   <div className='text-center'>
-                    <div className='text-page-title font-bold text-black'>€18,500</div>
+                    <div className='text-page-title font-bold text-black'>$18,500</div>
                     <div className='text-body text-gray-500'>Average Monthly</div>
                   </div>
                 </div>
@@ -543,11 +543,11 @@ const Analytics = () => {
 
                   <div className='grid grid-cols-2 gap-4'>
                     <div className='text-center'>
-                      <div className='text-card-title font-semibold text-green-600'>+€45,200</div>
+                      <div className='text-card-title font-semibold text-green-600'>+$45,200</div>
                       <div className='text-caption text-gray-500'>Inflow</div>
                     </div>
                     <div className='text-center'>
-                      <div className='text-card-title font-semibold text-red-500'>-€18,500</div>
+                      <div className='text-card-title font-semibold text-red-500'>-$18,500</div>
                       <div className='text-caption text-gray-500'>Outflow</div>
                     </div>
                   </div>
@@ -646,25 +646,25 @@ const Analytics = () => {
                     {[
                       {
                         category: 'Salaries & Benefits',
-                        amount: '€12,500',
+                        amount: '$12,500',
                         percentage: 68,
                         color: 'bg-blue-500',
                       },
                       {
                         category: 'Operations',
-                        amount: '€3,200',
+                        amount: '$3,200',
                         percentage: 17,
                         color: 'bg-green-500',
                       },
                       {
                         category: 'Marketing',
-                        amount: '€1,800',
+                        amount: '$1,800',
                         percentage: 10,
                         color: 'bg-yellow-500',
                       },
                       {
                         category: 'Software & Tools',
-                        amount: '€1,000',
+                        amount: '$1,000',
                         percentage: 5,
                         color: 'bg-purple-500',
                       },
@@ -734,15 +734,15 @@ const Analytics = () => {
 
                   <div className='grid grid-cols-3 gap-4 text-center'>
                     <div>
-                      <div className='text-card-title font-bold text-blue-600'>€225,000</div>
+                      <div className='text-card-title font-bold text-blue-600'>$225,000</div>
                       <div className='text-body text-gray-500'>6-Month Projected</div>
                     </div>
                     <div>
-                      <div className='text-card-title font-bold text-green-600'>€238,000</div>
+                      <div className='text-card-title font-bold text-green-600'>$238,000</div>
                       <div className='text-body text-gray-500'>Expected</div>
                     </div>
                     <div>
-                      <div className='text-card-title font-bold text-yellow-600'>€195,000</div>
+                      <div className='text-card-title font-bold text-yellow-600'>$195,000</div>
                       <div className='text-body text-gray-500'>Conservative</div>
                     </div>
                   </div>
@@ -818,10 +818,10 @@ const Analytics = () => {
 
                   <div className='space-y-4'>
                     {[
-                      { quarter: 'Q1 2024', target: '€85,000', actual: '€92,500', progress: 109 },
-                      { quarter: 'Q2 2024', target: '€95,000', actual: '€88,200', progress: 93 },
-                      { quarter: 'Q3 2024', target: '€105,000', actual: '€98,750', progress: 94 },
-                      { quarter: 'Q4 2024', target: '€115,000', actual: '-', progress: 0 },
+                      { quarter: 'Q1 2024', target: '$85,000', actual: '$92,500', progress: 109 },
+                      { quarter: 'Q2 2024', target: '$95,000', actual: '$88,200', progress: 93 },
+                      { quarter: 'Q3 2024', target: '$105,000', actual: '$98,750', progress: 94 },
+                      { quarter: 'Q4 2024', target: '$115,000', actual: '-', progress: 0 },
                     ].map((item, index) => (
                       <div key={index} className='space-y-2'>
                         <div className='flex justify-between'>
@@ -864,33 +864,33 @@ const Analytics = () => {
 
                   <div className='space-y-4'>
                     <div className='text-center mb-4'>
-                      <div className='text-page-title font-bold text-black'>€418,000</div>
+                      <div className='text-page-title font-bold text-black'>$418,000</div>
                       <div className='text-body text-gray-500'>Annual Budget</div>
                     </div>
 
                     {[
                       {
                         category: 'Marketing & Sales',
-                        allocated: '€45,000',
-                        spent: '€38,200',
+                        allocated: '$45,000',
+                        spent: '$38,200',
                         percentage: 85,
                       },
                       {
                         category: 'Operations',
-                        allocated: '€125,000',
-                        spent: '€98,500',
+                        allocated: '$125,000',
+                        spent: '$98,500',
                         percentage: 79,
                       },
                       {
                         category: 'Research & Development',
-                        allocated: '€85,000',
-                        spent: '€72,300',
+                        allocated: '$85,000',
+                        spent: '$72,300',
                         percentage: 85,
                       },
                       {
                         category: 'Administration',
-                        allocated: '€35,000',
-                        spent: '€28,900',
+                        allocated: '$35,000',
+                        spent: '$28,900',
                         percentage: 83,
                       },
                     ].map((item, index) => (
@@ -925,19 +925,19 @@ const Analytics = () => {
                     {[
                       {
                         scenario: 'Best Case',
-                        revenue: '€485,000',
+                        revenue: '$485,000',
                         probability: '25%',
                         color: 'text-green-600',
                       },
                       {
                         scenario: 'Most Likely',
-                        revenue: '€425,000',
+                        revenue: '$425,000',
                         probability: '50%',
                         color: 'text-blue-600',
                       },
                       {
                         scenario: 'Conservative',
-                        revenue: '€385,000',
+                        revenue: '$385,000',
                         probability: '25%',
                         color: 'text-yellow-600',
                       },

@@ -724,7 +724,7 @@ function Clients() {
           .map(([industry, count]) => `${industry}: ${count} clients (${Math.round((count / reportData.totalClients) * 100)}%)`),
         '',
         '='.repeat(50),
-        `Generated at: €{new Date().toLocaleString()}`,
+        `Generated at: €${new Date().toLocaleString()}`,
         '='.repeat(50)
       ];
 

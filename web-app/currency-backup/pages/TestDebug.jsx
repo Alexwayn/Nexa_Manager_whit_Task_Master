@@ -67,7 +67,7 @@ export default function TestDebug() {
         addLog(`Session found for user: ${data.session.user.email}`, 'success');
         addLog(`User ID: ${data.session.user.id}`, 'info');
         addLog(
-          `Session expires: €{new Date(data.session.expires_at * 1000).toLocaleString()}`,
+          `Session expires: €${new Date(data.session.expires_at * 1000).toLocaleString()}`,
           'info',
         );
       } else {

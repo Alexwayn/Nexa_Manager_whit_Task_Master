@@ -401,7 +401,7 @@ class EmailProviderService {
           <p>This is a test email to verify your email service configuration.</p>
           <div style="background-color: #f3f4f6; padding: 16px; border-radius: 8px; margin: 16px 0;">
             <p><strong>Provider:</strong> ${this.providers[this.activeProvider]?.name || 'Unknown'}</p>
-            <p><strong>Test Date:</strong> €{new Date().toLocaleString()}</p>
+            <p><strong>Test Date:</strong> €${new Date().toLocaleString()}</p>
           </div>
           <p>If you received this email, your configuration is working correctly!</p>
           <hr style="margin: 20px 0; border: none; border-top: 1px solid #e5e7eb;">
