@@ -459,12 +459,12 @@ const QuotesPage = () => {
             <HomeIcon className='h-5 w-5 text-blue-600' />
             <button 
                 onClick={() => navigate('/dashboard')}
-                className='text-blue-600 hover:text-blue-700 font-medium transition-colors'
+                className='text-blue-600 hover:text-blue-700 font-medium transition-colors text-nav-text'
               >
                 Dashboard
               </button>
             <ChevronRightIcon className='h-5 w-5 text-gray-400' />
-            <span className='text-gray-600 font-bold'>{t('breadcrumb') || 'Quotes'}</span>
+            <span className='text-gray-600 font-bold text-nav-text'>{t('breadcrumb') || 'Quotes'}</span>
           </div>
         </div>
 
@@ -474,17 +474,17 @@ const QuotesPage = () => {
           <div className='bg-white border-b border-gray-200 px-8 py-8'>
             <div className='flex justify-between items-center'>
               <div>
-                <h1 className='text-3xl font-bold text-gray-900'>{t('title') || 'Quotes'}</h1>
+                <h1 className='text-page-title text-gray-900'>{t('title') || 'Quotes'}</h1>
               </div>
               <div className='flex space-x-4'>
-                <button className='bg-white border border-gray-300 text-gray-700 px-6 py-3 rounded-xl hover:bg-gray-50 transition-colors flex items-center space-x-2 font-medium shadow-sm'>
+                <button className='bg-white border border-gray-300 text-gray-700 px-6 py-3 rounded-xl hover:bg-gray-50 transition-colors flex items-center space-x-2 font-medium shadow-sm text-button-text'>
                   <Download className='w-5 h-5' />
                   <span>{t('actions.export', 'Export')}</span>
                 </button>
                 <button 
                   onClick={() => handleCreateQuote()}
                   disabled={isLoading}
-                  className='bg-[#357AF3] text-white px-6 py-3 rounded-xl hover:bg-blue-600 transition-colors flex items-center space-x-2 font-medium shadow-sm disabled:opacity-50 disabled:cursor-not-allowed'
+                  className='bg-[#357AF3] text-white px-6 py-3 rounded-xl hover:bg-blue-600 transition-colors flex items-center space-x-2 font-medium shadow-sm disabled:opacity-50 disabled:cursor-not-allowed text-button-text'
                 >
                   <Plus className='w-5 h-5' />
                   <span>{t('actions.createNew', 'Create New Quote')}</span>
@@ -496,7 +496,7 @@ const QuotesPage = () => {
             <div className='flex space-x-8 mt-8'>
               <button
                 onClick={() => setActiveTab('quotes')}
-                className={`pb-4 px-1 border-b-2 font-medium text-sm transition-colors ${
+                className={`pb-4 px-1 border-b-2 font-medium text-nav-text transition-colors ${
                   activeTab === 'quotes'
                     ? 'border-[#357AF3] text-[#357AF3]'
                     : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
@@ -506,7 +506,7 @@ const QuotesPage = () => {
               </button>
               <button
                 onClick={() => navigate('/invoices')}
-                className={`pb-4 px-1 border-b-2 font-medium text-sm transition-colors ${
+                className={`pb-4 px-1 border-b-2 font-medium text-nav-text transition-colors ${
                   activeTab === 'invoices'
                     ? 'border-[#357AF3] text-[#357AF3]'
                     : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
@@ -872,23 +872,23 @@ const QuotesPage = () => {
             {/* Filters Section */}
             <div className='bg-white rounded-xl border border-gray-200 p-8 mb-8 shadow-sm'>
               <div className='flex justify-between items-center mb-6'>
-                <h3 className='text-xl font-bold text-gray-900'>{t('filters.title') || 'Filters'}</h3>
+                <h3 className='text-section-title text-gray-900'>{t('filters.title') || 'Filters'}</h3>
                 <button 
                   onClick={clearAllFilters}
-                  className='text-[#357AF3] hover:text-blue-800 text-sm font-semibold'
+                  className='text-[#357AF3] hover:text-blue-800 text-nav-text font-semibold'
                 >
                   {t('filters.clearAll') || 'Clear All'}
                 </button>
               </div>
               <div className='grid grid-cols-1 md:grid-cols-5 gap-6 mb-6'>
                 <div>
-                  <label className='block text-sm font-medium text-gray-700 mb-2'>
+                  <label className='block text-subtitle text-gray-700 mb-2'>
                     {t('filters.status.label') || 'Status'}
                   </label>
                   <select 
                     value={filters.status}
                     onChange={(e) => handleFilterChange('status', e.target.value)}
-                    className='w-full border border-gray-300 rounded-lg px-4 py-3 bg-gray-50 focus:ring-2 focus:ring-[#357AF3] focus:border-[#357AF3] transition-colors'
+                    className='w-full border border-gray-300 rounded-lg px-4 py-3 bg-gray-50 focus:ring-2 focus:ring-[#357AF3] focus:border-[#357AF3] transition-colors text-nav-text'
                   >
                     <option value="">{t('filters.status.all') || 'All'}</option>
                     <option value="pending">{t('status.pending') || 'Pending'}</option>
@@ -899,26 +899,26 @@ const QuotesPage = () => {
                   </select>
                 </div>
                 <div>
-                  <label className='block text-sm font-medium text-gray-700 mb-2'>
+                  <label className='block text-subtitle text-gray-700 mb-2'>
                     {t('filters.client.label') || 'Client'}
                   </label>
                   <select 
                     value={filters.client}
                     onChange={(e) => handleFilterChange('client', e.target.value)}
-                    className='w-full border border-gray-300 rounded-lg px-4 py-3 bg-gray-50 focus:ring-2 focus:ring-[#357AF3] focus:border-[#357AF3] transition-colors'
+                    className='w-full border border-gray-300 rounded-lg px-4 py-3 bg-gray-50 focus:ring-2 focus:ring-[#357AF3] focus:border-[#357AF3] transition-colors text-nav-text'
                   >
                     <option value="">{t('filters.client.all') || 'All Clients'}</option>
                     {/* Client options will be populated from API */}
                   </select>
                 </div>
                 <div>
-                  <label className='block text-sm font-medium text-gray-700 mb-2'>
+                  <label className='block text-subtitle text-gray-700 mb-2'>
                     {t('filters.dateRange.label') || 'Date Range'}
                   </label>
                   <select 
                     value={filters.dateRange}
                     onChange={(e) => handleFilterChange('dateRange', e.target.value)}
-                    className='w-full border border-gray-300 rounded-lg px-4 py-3 bg-gray-50 focus:ring-2 focus:ring-[#357AF3] focus:border-[#357AF3] transition-colors'
+                    className='w-full border border-gray-300 rounded-lg px-4 py-3 bg-gray-50 focus:ring-2 focus:ring-[#357AF3] focus:border-[#357AF3] transition-colors text-nav-text'
                   >
                     <option value="">{t('filters.dateRange.all') || 'All Dates'}</option>
                     <option value="last7Days">{t('filters.dateRanges.last7Days') || 'Last 7 days'}</option>
@@ -927,13 +927,13 @@ const QuotesPage = () => {
                   </select>
                 </div>
                 <div>
-                  <label className='block text-sm font-medium text-gray-700 mb-2'>
+                  <label className='block text-subtitle text-gray-700 mb-2'>
                     {t('filters.amount.label') || 'Amount'}
                   </label>
                   <select 
                     value={filters.amount}
                     onChange={(e) => handleFilterChange('amount', e.target.value)}
-                    className='w-full border border-gray-300 rounded-lg px-4 py-3 bg-gray-50 focus:ring-2 focus:ring-[#357AF3] focus:border-[#357AF3] transition-colors'
+                    className='w-full border border-gray-300 rounded-lg px-4 py-3 bg-gray-50 focus:ring-2 focus:ring-[#357AF3] focus:border-[#357AF3] transition-colors text-nav-text'
                   >
                     <option value="">{t('filters.amount.any') || 'Any Amount'}</option>
                     <option value="range1">{t('filters.amountRanges.range1') || '€0 - €5,000'}</option>
@@ -944,7 +944,7 @@ const QuotesPage = () => {
                 <div className='flex items-end'>
                   <button 
                     onClick={handleApplyFilters}
-                    className='w-full bg-[#357AF3] text-white px-6 py-3 rounded-lg flex items-center justify-center space-x-2 hover:bg-blue-700 font-semibold transition-colors'
+                    className='w-full bg-[#357AF3] text-white px-6 py-3 rounded-lg flex items-center justify-center space-x-2 hover:bg-blue-700 font-semibold transition-colors text-button-text'
                   >
                     <Filter className='w-5 h-5' />
                     <span>{t('filters.applyFilters') || 'Apply Filters'}</span>
@@ -957,13 +957,13 @@ const QuotesPage = () => {
             <div className='bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden mb-8'>
               <div className='px-6 py-4 border-b border-gray-200'>
                 <div className='flex justify-between items-center'>
-                  <h3 className='text-lg font-semibold text-gray-900'>{t('table.recentQuotes') || 'Recent Quotes'}</h3>
+                  <h3 className='text-section-title text-gray-900'>{t('table.recentQuotes') || 'Recent Quotes'}</h3>
                   <div className='relative'>
                     <Search className='h-4 w-4 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2' />
                     <input
                       type='text'
                       placeholder={t('table.searchPlaceholder') || 'Search quotes...'}
-                      className='pl-12 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 w-64 bg-white'
+                      className='pl-12 pr-4 py-2 border border-gray-300 rounded-lg text-nav-text focus:ring-2 focus:ring-blue-500 focus:border-blue-500 w-64 bg-white'
                       style={{ textIndent: '20px' }}
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
@@ -976,25 +976,25 @@ const QuotesPage = () => {
                 <table className='w-full'>
                   <thead className='bg-gray-50'>
                     <tr>
-                      <th className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
+                      <th className='px-6 py-3 text-left text-metric-small font-medium text-gray-500 uppercase tracking-wider'>
                         {t('table.headers.quote') || 'Quote'}
                       </th>
-                      <th className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
+                      <th className='px-6 py-3 text-left text-metric-small font-medium text-gray-500 uppercase tracking-wider'>
                         {t('table.headers.client') || 'Client'}
                       </th>
-                      <th className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
+                      <th className='px-6 py-3 text-left text-metric-small font-medium text-gray-500 uppercase tracking-wider'>
                         {t('table.headers.issueDate') || 'Issue Date'}
                       </th>
-                      <th className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
+                      <th className='px-6 py-3 text-left text-metric-small font-medium text-gray-500 uppercase tracking-wider'>
                         {t('table.headers.dueDate') || 'Due Date'}
                       </th>
-                      <th className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
+                      <th className='px-6 py-3 text-left text-metric-small font-medium text-gray-500 uppercase tracking-wider'>
                         {t('table.headers.amount') || 'Amount'}
                       </th>
-                      <th className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
+                      <th className='px-6 py-3 text-left text-metric-small font-medium text-gray-500 uppercase tracking-wider'>
                         {t('table.headers.status') || 'Status'}
                       </th>
-                      <th className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
+                      <th className='px-6 py-3 text-left text-metric-small font-medium text-gray-500 uppercase tracking-wider'>
                         {t('table.headers.actions') || 'Actions'}
                       </th>
                     </tr>
@@ -1005,37 +1005,37 @@ const QuotesPage = () => {
                         <td className='px-6 py-4 whitespace-nowrap'>
                           <button 
                             onClick={() => handleViewQuote(quote)}
-                            className='text-[#357AF3] hover:text-blue-600 font-medium text-sm'
+                            className='text-[#357AF3] hover:text-blue-600 font-medium text-nav-text'
                           >
                             {quote.quote_number}
                           </button>
                         </td>
                         <td className='px-6 py-4 whitespace-nowrap'>
                           <div className='flex items-center space-x-3'>
-                            <div className='w-8 h-8 bg-[#357AF3] rounded-full flex items-center justify-center text-white font-bold text-xs'>
+                            <div className='w-8 h-8 bg-[#357AF3] rounded-full flex items-center justify-center text-white font-bold text-metric-small'>
                               {quote.client.avatar}
                             </div>
                             <div>
-                              <div className='text-sm font-medium text-gray-900'>
+                              <div className='text-nav-text font-medium text-gray-900'>
                                 {quote.client.name}
                               </div>
-                              <div className='text-xs text-gray-500'>{quote.client.industry}</div>
+                              <div className='text-metric-small text-gray-500'>{quote.client.industry}</div>
                             </div>
                           </div>
                         </td>
-                        <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-900'>
+                        <td className='px-6 py-4 whitespace-nowrap text-nav-text text-gray-900'>
                           {formatDate(quote.issue_date)}
                         </td>
-                        <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-900'>
+                        <td className='px-6 py-4 whitespace-nowrap text-nav-text text-gray-900'>
                           {formatDate(quote.due_date)}
                         </td>
-                        <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900'>
+                        <td className='px-6 py-4 whitespace-nowrap text-nav-text font-medium text-gray-900'>
                           {formatCurrency(quote.amount)}
                         </td>
                         <td className='px-6 py-4 whitespace-nowrap'>
                           <QuoteStatusBadge status={quote.status} />
                         </td>
-                        <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-500'>
+                        <td className='px-6 py-4 whitespace-nowrap text-nav-text text-gray-500'>
                           <div className='flex items-center space-x-2'>
                             <button 
                               onClick={() => handleViewQuote(quote)}
@@ -1072,42 +1072,42 @@ const QuotesPage = () => {
               </div>
 
               {/* Pagination */}
-              <div className='px-6 py-4 border-t border-gray-200'>
-                <div className='flex items-center justify-between'>
-                  <div className='text-sm text-gray-700'>
-                    {t('table.pagination.showing') || 'Showing'} {indexOfFirstItem + 1} {t('table.pagination.to') || 'to'}{' '}
-                    {Math.min(indexOfLastItem, filteredQuotes.length)} {t('table.pagination.of') || 'of'} {filteredQuotes.length}{' '}
-                    {t('common.quotes') || 'quotes'}
-                  </div>
-                  <div className='flex items-center space-x-2'>
+              <div className='bg-white border border-gray-200 rounded-xl px-6 py-4 flex items-center justify-between shadow-sm'>
+                <div className='text-subtitle text-gray-700'>
+                  {t('pagination.showing', 'Showing {{start}} to {{end}} of {{total}} results', {
+                    start: indexOfFirstItem + 1,
+                    end: Math.min(indexOfLastItem, filteredQuotes.length),
+                    total: filteredQuotes.length
+                  })}
+                </div>
+                <div className='flex items-center space-x-2'>
+                  <button
+                    onClick={() => handlePageChange(currentPage - 1)}
+                    disabled={currentPage === 1}
+                    className='px-3 py-2 text-nav-text text-gray-500 hover:text-gray-700 disabled:opacity-50 disabled:cursor-not-allowed'
+                  >
+                    {t('pagination.previous') || 'Previous'}
+                  </button>
+                  {Array.from({ length: Math.ceil(filteredQuotes.length / itemsPerPage) }, (_, i) => (
                     <button
-                      onClick={() => handlePageChange(currentPage - 1)}
-                      disabled={currentPage === 1}
-                      className='px-3 py-1 border border-gray-300 rounded-md text-sm text-gray-500 hover:text-gray-700 disabled:opacity-50 disabled:cursor-not-allowed'
+                      key={i + 1}
+                      onClick={() => handlePageChange(i + 1)}
+                      className={`px-3 py-2 text-nav-text ${
+                        currentPage === i + 1
+                          ? 'bg-[#357AF3] text-white'
+                          : 'text-gray-500 hover:text-gray-700'
+                      } rounded-lg`}
                     >
-                      {t('table.pagination.previous') || 'Previous'}
+                      {i + 1}
                     </button>
-                    {[...Array(totalPages)].map((_, index) => (
-                      <button
-                        key={index + 1}
-                        onClick={() => handlePageChange(index + 1)}
-                        className={`px-3 py-1 rounded-md text-sm ${
-                          currentPage === index + 1
-                            ? 'bg-[#357AF3] text-white'
-                            : 'text-gray-500 hover:text-gray-700'
-                        }`}
-                      >
-                        {index + 1}
-                      </button>
-                    ))}
-                    <button
-                      onClick={() => handlePageChange(currentPage + 1)}
-                      disabled={currentPage === totalPages}
-                      className='px-3 py-1 border border-gray-300 rounded-md text-sm text-gray-500 hover:text-gray-700 disabled:opacity-50 disabled:cursor-not-allowed'
-                    >
-                      {t('table.pagination.next') || 'Next'}
-                    </button>
-                  </div>
+                  ))}
+                  <button
+                    onClick={() => handlePageChange(currentPage + 1)}
+                    disabled={currentPage === Math.ceil(filteredQuotes.length / itemsPerPage)}
+                    className='px-3 py-2 text-nav-text text-gray-500 hover:text-gray-700 disabled:opacity-50 disabled:cursor-not-allowed'
+                  >
+                    {t('pagination.next') || 'Next'}
+                  </button>
                 </div>
               </div>
             </div>
