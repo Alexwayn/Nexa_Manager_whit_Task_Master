@@ -319,7 +319,7 @@ export default function Inventory() {
                     Dashboard
                   </button>
                   <ChevronRightIcon className='h-5 w-5 text-gray-400' />
-                  <span className='text-gray-600 font-bold'>
+                  <span className='text-nav-text font-semibold text-gray-600'>
                     {safeT('breadcrumb.inventory', {}, 'Inventory')}
                   </span>
                 </div>
@@ -331,7 +331,7 @@ export default function Inventory() {
                     placeholder={safeT('searchPlaceholder', {}, 'Search products...')}
                     value={searchTerm}
                     onChange={e => setSearchTerm(e.target.value)}
-                    className='flex-1 h-5 text-gray-700 bg-transparent border-none focus:border-none focus:ring-0 focus:outline-none text-xs leading-tight font-light placeholder:text-xs placeholder:font-light'
+                    className='flex-1 h-5 text-gray-700 bg-transparent border-none focus:border-none focus:ring-0 focus:outline-none text-input-text leading-tight placeholder:text-input-text'
                   />
                 </div>
               </div>
@@ -390,7 +390,7 @@ export default function Inventory() {
                        </p>
                     </div>
                   </div>
-                  <div className='flex items-center gap-1 bg-green-500 text-white px-3 py-1.5 rounded-full text-xs font-semibold shadow-sm'>
+                  <div className='flex items-center gap-1 bg-green-500 text-white px-3 py-1.5 rounded-full text-badge font-semibold shadow-sm'>
                      <ArrowUpIcon className='w-3 h-3' />
                      +8.2%
                    </div>
@@ -401,7 +401,7 @@ export default function Inventory() {
                     style={{ width: '75%' }}
                   ></div>
                 </div>
-                <div className='flex justify-between text-xs text-blue-600 font-medium'>
+                <div className='flex justify-between text-badge text-blue-600 font-medium'>
                   <span>Target: ${(totalValue * 1.2).toLocaleString()}</span>
                   <span>75% of target</span>
                 </div>
@@ -423,7 +423,7 @@ export default function Inventory() {
                        </p>
                     </div>
                   </div>
-                  <div className='flex items-center gap-1 bg-red-500 text-white px-3 py-1.5 rounded-full text-xs font-semibold shadow-sm'>
+                  <div className='flex items-center gap-1 bg-red-500 text-white px-3 py-1.5 rounded-full text-badge font-semibold shadow-sm'>
                     <ExclamationTriangleIcon className='w-3 h-3' />
                     Alert
                   </div>
@@ -434,7 +434,7 @@ export default function Inventory() {
                     style={{ width: `${Math.min((lowStockItems / 10) * 100, 100)}%` }}
                   ></div>
                 </div>
-                <div className='flex justify-between text-xs text-red-600 font-medium'>
+                <div className='flex justify-between text-badge text-red-600 font-medium'>
                   <span>Critical: {Math.floor(lowStockItems * 0.3)}</span>
                   <span>Needs attention</span>
                 </div>
@@ -456,13 +456,13 @@ export default function Inventory() {
                        </p>
                     </div>
                   </div>
-                  <div className='flex items-center gap-1 bg-green-500 text-white px-3 py-1.5 rounded-full text-xs font-semibold shadow-sm'>
+                  <div className='flex items-center gap-1 bg-green-500 text-white px-3 py-1.5 rounded-full text-badge font-semibold shadow-sm'>
                      <ArrowPathIcon className='w-3 h-3' />
                      Ready
                    </div>
                 </div>
                 <div className='flex items-center gap-2 mb-2'>
-                  <span className='text-green-700 text-sm font-medium'>
+                  <span className='text-green-700 text-nav-text font-medium'>
                     Reorder Rate:
                   </span>
                   <span className='font-bold text-green-900'>{Math.min(Math.floor((needsReorderItems / 20) * 100), 100)}%</span>
@@ -473,7 +473,7 @@ export default function Inventory() {
                     ></div>
                   </div>
                 </div>
-                <div className='flex justify-between text-xs text-green-600 font-medium'>
+                <div className='flex justify-between text-badge text-green-600 font-medium'>
                   <span>{Math.min(Math.floor((needsReorderItems / 20) * 100), 100)}%</span>
                   <span>Reorder efficiency</span>
                 </div>
@@ -529,7 +529,7 @@ export default function Inventory() {
                       </div>
                       <input
                         type='text'
-                        className='block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 text-sm'
+                        className='block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 text-input-text'
                         placeholder={safeT('search.placeholder', {}, 'Search products...')}
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
@@ -539,7 +539,7 @@ export default function Inventory() {
                     <div className='flex items-center space-x-4 ml-4'>
                       {/* Filters Button */}
                       <button 
-                        className='flex items-center space-x-2 px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500'
+                        className='flex items-center space-x-2 px-4 py-2 border border-gray-300 rounded-md text-button-text font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500'
                         onClick={() => setShowFilters(!showFilters)}
                       >
                         <FunnelIcon className='h-4 w-4' />
@@ -547,10 +547,10 @@ export default function Inventory() {
                       </button>
                       
                       {/* Sort Dropdown */}
-                      <div className='flex items-center space-x-2 text-sm text-gray-600'>
+                      <div className='flex items-center space-x-2 text-nav-text text-gray-600'>
                         <span>{safeT('sort.label', {}, 'Sort by:')}</span>
                         <select 
-                          className='border border-gray-300 rounded-md px-3 py-2 text-sm text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
+                          className='border border-gray-300 rounded-md px-3 py-2 text-input-text text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
                           value={sortBy}
                           onChange={(e) => setSortBy(e.target.value)}
                         >
@@ -570,7 +570,7 @@ export default function Inventory() {
                     <div className='mt-4 pt-4 border-t border-gray-200'>
                       <div className='flex items-center space-x-4'>
                         <select 
-                          className='border border-gray-300 rounded-md px-3 py-2 text-sm text-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
+                          className='border border-gray-300 rounded-md px-3 py-2 text-input-text text-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
                           value={filters.category}
                           onChange={(e) => setFilters({...filters, category: e.target.value})}
                         >
@@ -580,7 +580,7 @@ export default function Inventory() {
                         </select>
 
                         <select 
-                          className='border border-gray-300 rounded-md px-3 py-2 text-sm text-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
+                          className='border border-gray-300 rounded-md px-3 py-2 text-input-text text-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
                           value={filters.location}
                           onChange={(e) => setFilters({...filters, location: e.target.value})}
                         >
@@ -590,7 +590,7 @@ export default function Inventory() {
                         </select>
 
                         <select 
-                          className='border border-gray-300 rounded-md px-3 py-2 text-sm text-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
+                          className='border border-gray-300 rounded-md px-3 py-2 text-input-text text-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
                           value={filters.stockStatus}
                           onChange={(e) => setFilters({...filters, stockStatus: e.target.value})}
                         >
@@ -603,7 +603,7 @@ export default function Inventory() {
                         {/* Clear Filters Button */}
                         {(filters.category || filters.location || filters.stockStatus) && (
                           <button
-                            className='px-3 py-2 text-sm font-medium text-red-600 hover:text-red-700 hover:bg-red-50 rounded-md transition-colors'
+                            className='px-3 py-2 text-button-text font-medium text-red-600 hover:text-red-700 hover:bg-red-50 rounded-md transition-colors'
                             onClick={() => setFilters({ category: '', location: '', stockStatus: '' })}
                           >
                             {safeT('filters.clearFilters', {}, 'Clear Filters')}
@@ -705,29 +705,29 @@ export default function Inventory() {
                                     </div>
                                   </div>
                                   <div className='ml-4'>
-                                    <div className='text-sm font-medium text-gray-900'>{item.name}</div>
-                                    <div className='text-sm text-gray-500'>{item.sku}</div>
+                                    <div className='text-table-cell font-medium text-gray-900'>{item.name}</div>
+                                    <div className='text-table-cell text-gray-500'>{item.sku}</div>
                                   </div>
                                 </div>
                               </td>
-                              <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-900'>
-                                <span className='inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800'>
+                              <td className='px-6 py-4 whitespace-nowrap text-table-cell text-gray-900'>
+                                <span className='inline-flex items-center px-2.5 py-0.5 rounded-full text-badge font-medium bg-blue-100 text-blue-800'>
                                   {item.itemCount} items
                                 </span>
                               </td>
-                              <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-900'>
+                              <td className='px-6 py-4 whitespace-nowrap text-table-cell text-gray-900'>
                                 <span className='font-medium'>{item.stock}</span>
                               </td>
-                              <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-900'>
+                              <td className='px-6 py-4 whitespace-nowrap text-table-cell text-gray-900'>
                                 ${item.totalValue.toFixed(2)}
                               </td>
-                              <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-500'>
+                              <td className='px-6 py-4 whitespace-nowrap text-table-cell text-gray-500'>
                                 <div className='flex items-center'>
                                   <ClockIcon className='h-4 w-4 mr-2' />
                                   {item.lastUpdated}
                                 </div>
                               </td>
-                              <td className='px-6 py-4 whitespace-nowrap text-right text-sm font-medium'>
+                              <td className='px-6 py-4 whitespace-nowrap text-right text-table-cell font-medium'>
                                 <button className='text-gray-500 hover:text-gray-700'>
                                   <EllipsisHorizontalIcon className='h-5 w-5' />
                                 </button>
@@ -743,29 +743,29 @@ export default function Inventory() {
                                     </div>
                                   </div>
                                   <div className='ml-4'>
-                                    <div className='text-sm font-medium text-gray-900'>{item.name}</div>
-                                    <div className='text-sm text-gray-500'>{item.sku}</div>
+                                    <div className='text-table-cell font-medium text-gray-900'>{item.name}</div>
+                                    <div className='text-table-cell text-gray-500'>{item.sku}</div>
                                   </div>
                                 </div>
                               </td>
-                              <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-900'>
-                                <span className='inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800'>
+                              <td className='px-6 py-4 whitespace-nowrap text-table-cell text-gray-900'>
+                                <span className='inline-flex items-center px-2.5 py-0.5 rounded-full text-badge font-medium bg-green-100 text-green-800'>
                                   {item.itemCount} items
                                 </span>
                               </td>
-                              <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-900'>
+                              <td className='px-6 py-4 whitespace-nowrap text-table-cell text-gray-900'>
                                 <span className='font-medium'>{item.stock}</span>
                               </td>
-                              <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-900'>
+                              <td className='px-6 py-4 whitespace-nowrap text-table-cell text-gray-900'>
                                 ${item.totalValue.toFixed(2)}
                               </td>
-                              <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-500'>
+                              <td className='px-6 py-4 whitespace-nowrap text-table-cell text-gray-500'>
                                 <div className='flex items-center'>
                                   <ClockIcon className='h-4 w-4 mr-2' />
                                   {item.lastUpdated}
                                 </div>
                               </td>
-                              <td className='px-6 py-4 whitespace-nowrap text-right text-sm font-medium'>
+                              <td className='px-6 py-4 whitespace-nowrap text-right text-table-cell font-medium'>
                                 <button className='text-gray-500 hover:text-gray-700'>
                                   <EllipsisHorizontalIcon className='h-5 w-5' />
                                 </button>
@@ -779,21 +779,21 @@ export default function Inventory() {
                                     <BuildingStorefrontIcon className='h-10 w-10 text-gray-300' />
                                   </div>
                                   <div className='ml-4'>
-                                    <div className='text-sm font-medium text-gray-900'>{item.name}</div>
-                                    <div className='text-sm text-gray-500'>{item.sku}</div>
+                                    <div className='text-table-cell font-medium text-gray-900'>{item.name}</div>
+                                    <div className='text-table-cell text-gray-500'>{item.sku}</div>
                                   </div>
                                 </div>
                               </td>
                               <td className='px-6 py-4 whitespace-nowrap'>
                                 <div className='flex items-center'>
                                   <TagIcon className='h-4 w-4 text-gray-400 mr-2' />
-                                  <span className='text-sm text-gray-800'>{item.category}</span>
+                                  <span className='text-table-cell text-gray-800'>{item.category}</span>
                                 </div>
                               </td>
                               <td className='px-6 py-4 whitespace-nowrap'>
                                 <div className='flex items-center'>
                                   <MapPinIcon className='h-4 w-4 text-gray-400 mr-2' />
-                                  <span className='text-sm text-gray-800'>{item.location}</span>
+                                  <span className='text-table-cell text-gray-800'>{item.location}</span>
                                 </div>
                               </td>
                               <td className='px-6 py-4 whitespace-nowrap'>
