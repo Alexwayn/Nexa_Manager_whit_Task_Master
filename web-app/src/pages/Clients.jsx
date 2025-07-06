@@ -87,27 +87,34 @@ const formatLastContact = (date, t) => {
 // Status Badge Component
 const StatusBadge = ({ status, t }) => {
   const getStatusStyles = (status) => {
-    switch (status?.toLowerCase()) {
+    switch (status) {
       case 'active':
-        return 'bg-green-100 text-green-800 border-green-200';
+        return 'bg-green-100 text-green-800';
       case 'pending':
-        return 'bg-yellow-100 text-yellow-800 border-yellow-200';
+        return 'bg-yellow-100 text-yellow-800';
       case 'inactive':
-        return 'bg-red-100 text-red-800 border-red-200';
+        return 'bg-red-100 text-red-800';
       default:
-        return 'bg-green-100 text-green-800 border-green-200';
+        return 'bg-green-100 text-green-800'; // Default to active
     }
   };
 
-  const displayStatus = status || 'active';
-  
+  const getStatusText = (status) => {
+    switch (status) {
+      case 'active':
+        return t('status.active', 'Active');
+      case 'pending':
+        return t('status.pending', 'Pending');
+      case 'inactive':
+        return t('status.inactive', 'Inactive');
+      default:
+        return t('status.active', 'Active');
+    }
+  };
+
   return (
-    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${getStatusStyles(displayStatus)}`}>
-      <div className={`w-1.5 h-1.5 rounded-full mr-1.5 ${
-        displayStatus === 'active' ? 'bg-green-500' : 
-        displayStatus === 'pending' ? 'bg-yellow-500' : 'bg-red-500'
-      }`}></div>
-      {t(`tabs.${displayStatus}`)}
+    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-metric-small font-medium ${getStatusStyles(status)}`}>
+      {getStatusText(status)}
     </span>
   );
 };
@@ -123,12 +130,12 @@ const ClientCard = ({ client, getDisplayName, getInitials, formatRevenue, format
       <div className="flex items-center mb-4">
         <div className="flex-shrink-0 h-12 w-12">
           <div className="h-12 w-12 rounded-full bg-blue-500 flex items-center justify-center">
-            <span className="text-sm font-medium text-white">{initials}</span>
+            <span className="text-nav-text font-medium text-white">{initials}</span>
           </div>
         </div>
         <div className="ml-4 flex-1 min-w-0">
-          <h3 className="text-lg font-medium text-gray-900 truncate">{displayName}</h3>
-          <p className="text-sm text-gray-500 truncate">{client.email}</p>
+          <h3 className="text-card-title text-gray-900 truncate">{displayName}</h3>
+          <p className="text-subtitle text-gray-500 truncate">{client.email}</p>
         </div>
         <div className="ml-2">
           <StatusBadge status={client.status} t={t} />
@@ -137,19 +144,19 @@ const ClientCard = ({ client, getDisplayName, getInitials, formatRevenue, format
 
       {/* Details */}
       <div className="space-y-3 mb-4">
-        <div className="flex justify-between text-sm">
+        <div className="flex justify-between text-nav-text">
           <span className="text-gray-500">{t('table.industry', 'Industry')}:</span>
           <span className="text-gray-900 font-medium">{client.industry || 'Technology'}</span>
         </div>
-        <div className="flex justify-between text-sm">
+        <div className="flex justify-between text-nav-text">
           <span className="text-gray-500">{t('table.location', 'Location')}:</span>
           <span className="text-gray-900">{client.city || client.location || 'San Francisco, CA'}</span>
         </div>
-        <div className="flex justify-between text-sm">
+        <div className="flex justify-between text-nav-text">
           <span className="text-gray-500">{t('table.revenue', 'Revenue')}:</span>
           <span className="text-gray-900 font-semibold">{formatRevenue(client.revenue || 0)}</span>
         </div>
-        <div className="flex justify-between text-sm">
+        <div className="flex justify-between text-nav-text">
           <span className="text-gray-500">{t('sort.lastContact')}:</span>
           <span className="text-gray-900">{formatLastContact(client.last_contact || client.created_at)}</span>
         </div>
@@ -182,7 +189,7 @@ const ClientCard = ({ client, getDisplayName, getInitials, formatRevenue, format
         </div>
         <div className="flex items-center space-x-1">
           <button 
-            className="px-3 py-1 text-xs font-medium text-blue-600 hover:text-blue-700 hover:bg-blue-50 rounded-md transition-colors"
+            className="px-3 py-1 text-button-text font-medium text-blue-600 hover:text-blue-700 hover:bg-blue-50 rounded-md transition-colors"
             onClick={() => onEdit(client)}
           >
             {t('actions.edit')}
@@ -234,12 +241,12 @@ const ClientStatistics = ({ clients, t, onAddClient, onExportList, onGenerateRep
 
   return (
     <div className="w-80 bg-white border-l border-gray-200 p-6">
-      <h2 className="text-lg font-semibold text-gray-900 mb-6">{t('statistics.title', 'Client Statistics')}</h2>
+      <h2 className="text-section-title text-gray-900 mb-6">{t('statistics.title', 'Client Statistics')}</h2>
       
       {/* Total Clients */}
       <div className="mb-6">
-        <div className="text-3xl font-bold text-gray-900">{stats.total}</div>
-        <div className="text-sm text-gray-500">{t('statistics.totalClients', 'Total Clients')}</div>
+        <div className="text-card-metric font-bold text-gray-900">{stats.total}</div>
+        <div className="text-subtitle text-gray-500">{t('statistics.totalClients', 'Total Clients')}</div>
         <div className="mt-2 h-2 bg-gray-200 rounded-full">
           <div className="h-2 bg-blue-500 rounded-full" style={{ width: '100%' }}></div>
         </div>
@@ -248,24 +255,24 @@ const ClientStatistics = ({ clients, t, onAddClient, onExportList, onGenerateRep
       {/* Status Breakdown */}
       <div className="space-y-4 mb-8">
         <div className="flex justify-between items-center">
-          <span className="text-sm text-gray-600">{t('statistics.activeClients', 'Active Clients')}</span>
-          <span className="text-sm font-semibold text-gray-900">{stats.active}</span>
+          <span className="text-subtitle text-gray-600">{t('statistics.activeClients', 'Active Clients')}</span>
+          <span className="text-nav-text font-semibold text-gray-900">{stats.active}</span>
         </div>
         <div className="h-2 bg-gray-200 rounded-full">
           <div className="h-2 bg-green-500 rounded-full" style={{ width: `${(stats.active / stats.total) * 100}%` }}></div>
         </div>
 
         <div className="flex justify-between items-center">
-          <span className="text-sm text-gray-600">{t('statistics.pendingClients', 'Pending Clients')}</span>
-          <span className="text-sm font-semibold text-gray-900">{stats.pending}</span>
+          <span className="text-subtitle text-gray-600">{t('statistics.pendingClients', 'Pending Clients')}</span>
+          <span className="text-nav-text font-semibold text-gray-900">{stats.pending}</span>
         </div>
         <div className="h-2 bg-gray-200 rounded-full">
           <div className="h-2 bg-yellow-500 rounded-full" style={{ width: `${(stats.pending / stats.total) * 100}%` }}></div>
         </div>
 
         <div className="flex justify-between items-center">
-          <span className="text-sm text-gray-600">{t('statistics.inactiveClients', 'Inactive Clients')}</span>
-          <span className="text-sm font-semibold text-gray-900">{stats.inactive}</span>
+          <span className="text-subtitle text-gray-600">{t('statistics.inactiveClients', 'Inactive Clients')}</span>
+          <span className="text-nav-text font-semibold text-gray-900">{stats.inactive}</span>
         </div>
         <div className="h-2 bg-gray-200 rounded-full">
           <div className="h-2 bg-red-500 rounded-full" style={{ width: `${(stats.inactive / stats.total) * 100}%` }}></div>
@@ -274,19 +281,19 @@ const ClientStatistics = ({ clients, t, onAddClient, onExportList, onGenerateRep
 
       {/* Industry Breakdown */}
       <div>
-        <h3 className="text-sm font-medium text-gray-900 mb-4">{t('statistics.industryBreakdown', 'Industry Breakdown')}</h3>
+        <h3 className="text-nav-text font-medium text-gray-900 mb-4">{t('statistics.industryBreakdown', 'Industry Breakdown')}</h3>
         <div className="space-y-3">
           {stats.industryBreakdown.map((industry, index) => (
             <div key={industry.name} className="flex items-center justify-between">
               <div className="flex items-center">
                 <div className={`w-3 h-3 rounded-full mr-3 ${getIndustryColor(index)}`}></div>
-                <span className="text-sm text-gray-600">
+                <span className="text-subtitle text-gray-600">
                   {t(`industry.${industry.name}`, industry.name)}
                 </span>
               </div>
               <div className="flex items-center space-x-2">
-                <span className="text-sm font-semibold text-gray-900">{industry.count}</span>
-                <span className="text-xs text-gray-500">{industry.percentage}%</span>
+                <span className="text-nav-text font-semibold text-gray-900">{industry.count}</span>
+                <span className="text-metric-small text-gray-500">{industry.percentage}%</span>
               </div>
             </div>
           ))}
@@ -297,21 +304,21 @@ const ClientStatistics = ({ clients, t, onAddClient, onExportList, onGenerateRep
       <div className="mt-8 space-y-3">
         <button 
           onClick={onAddClient}
-          className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors flex items-center justify-center"
+          className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg text-button-text font-medium hover:bg-blue-700 transition-colors flex items-center justify-center"
         >
           <UserGroupIcon className="w-4 h-4 mr-2" />
           {t('statistics.addNewClient', 'Add New Client')}
         </button>
         <button 
           onClick={onExportList}
-          className="w-full border border-gray-300 text-gray-700 py-2 px-4 rounded-lg text-sm font-medium hover:bg-gray-50 transition-colors flex items-center justify-center"
+          className="w-full border border-gray-300 text-gray-700 py-2 px-4 rounded-lg text-button-text font-medium hover:bg-gray-50 transition-colors flex items-center justify-center"
         >
           <ArrowDownTrayIcon className="w-4 h-4 mr-2" />
           {t('statistics.exportList', 'Export Client List')}
         </button>
         <button 
           onClick={onGenerateReport}
-          className="w-full border border-gray-300 text-gray-700 py-2 px-4 rounded-lg text-sm font-medium hover:bg-gray-50 transition-colors flex items-center justify-center"
+          className="w-full border border-gray-300 text-gray-700 py-2 px-4 rounded-lg text-button-text font-medium hover:bg-gray-50 transition-colors flex items-center justify-center"
         >
           <DocumentChartBarIcon className="w-4 h-4 mr-2" />
           {t('statistics.generateReport', 'Generate Report')}
@@ -785,13 +792,13 @@ function Clients() {
                 <div className='flex items-center space-x-2 text-base'>
                   <button 
                     onClick={() => navigate('/dashboard')}
-                    className='flex items-center space-x-1 text-blue-600 hover:text-blue-700 font-medium transition-colors'
+                    className='flex items-center space-x-1 text-blue-600 hover:text-blue-700 font-medium transition-colors text-nav-text'
                   >
                     <HomeIcon className="h-5 w-5" />
                     <span>{t('common.navigation.home', 'Dashboard')}</span>
                   </button>
                   <ChevronDownIcon className='h-5 w-5 text-gray-400 rotate-[-90deg]' />
-                  <span className="text-gray-600 font-bold">{t('breadcrumb')}</span>
+                  <span className="text-gray-600 font-bold text-nav-text">{t('breadcrumb')}</span>
                 </div>
               </div>
             </div>
@@ -802,7 +809,7 @@ function Clients() {
                 
                 {/* Header with title and controls */}
                 <div className='flex justify-between items-center mb-6'>
-                  <h1 className='text-2xl font-bold text-gray-900'>{t('title')}</h1>
+                  <h1 className='text-page-title text-gray-900'>{t('title')}</h1>
                   <div className="flex items-center space-x-3">
                     {/* Search Input */}
                     <div className="relative">
@@ -812,7 +819,7 @@ function Clients() {
                         placeholder={t('search.placeholder', 'Search clients...')}
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
-                        className="pl-12 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 w-64 bg-white"
+                        className="pl-12 pr-4 py-2 border border-gray-300 rounded-lg text-nav-text focus:ring-2 focus:ring-blue-500 focus:border-blue-500 w-64 bg-white"
                         style={{ textIndent: '20px' }}
                       />
                     </div>
@@ -845,7 +852,7 @@ function Clients() {
                     
                     <button
                       onClick={handleAddClient}
-                      className='bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center space-x-2 hover:bg-blue-700 transition-colors text-sm font-medium'
+                      className='bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center space-x-2 hover:bg-blue-700 transition-colors text-button-text font-medium'
                     >
                       <PlusIcon className='h-4 w-4' />
                       <span>{t('addClient')}</span>
@@ -860,7 +867,7 @@ function Clients() {
                       <button
                         key={tab.id}
                         onClick={() => setActiveTab(tab.id)}
-                        className={`py-2 px-1 border-b-2 font-medium text-sm whitespace-nowrap ${
+                        className={`py-2 px-1 border-b-2 font-medium text-nav-text whitespace-nowrap ${
                           activeTab === tab.id
                             ? 'border-blue-500 text-blue-600'
                             : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
@@ -879,7 +886,7 @@ function Clients() {
               <div className='flex items-center justify-between'>
                 <div className='flex items-center space-x-4'>
                   <button 
-                    className={`flex items-center space-x-2 px-3 py-2 border rounded-lg text-sm font-medium transition-colors ${
+                    className={`flex items-center space-x-2 px-3 py-2 border rounded-lg text-nav-text font-medium transition-colors ${
                       showFilters 
                         ? 'border-blue-500 text-blue-700 bg-blue-50' 
                         : 'border-gray-300 text-gray-700 hover:bg-gray-50'
@@ -893,7 +900,7 @@ function Clients() {
                   {showFilters && (
                     <>
                       <select 
-                        className='border border-gray-300 rounded-lg px-3 py-2 text-sm text-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
+                        className='border border-gray-300 rounded-lg px-3 py-2 text-nav-text text-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
                         value={filters.industry}
                         onChange={(e) => setFilters({...filters, industry: e.target.value})}
                       >
@@ -909,7 +916,7 @@ function Clients() {
                       </select>
 
                       <select 
-                        className='border border-gray-300 rounded-lg px-3 py-2 text-sm text-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
+                        className='border border-gray-300 rounded-lg px-3 py-2 text-nav-text text-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
                         value={filters.status}
                         onChange={(e) => setFilters({...filters, status: e.target.value})}
                       >
@@ -920,7 +927,7 @@ function Clients() {
                       </select>
 
                       <select 
-                        className='border border-gray-300 rounded-lg px-3 py-2 text-sm text-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
+                        className='border border-gray-300 rounded-lg px-3 py-2 text-nav-text text-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
                         value={filters.revenue}
                         onChange={(e) => setFilters({...filters, revenue: e.target.value})}
                       >
@@ -934,7 +941,7 @@ function Clients() {
                       {/* Clear Filters Button */}
                       {(filters.industry || filters.status || filters.revenue) && (
                         <button
-                          className='px-3 py-2 text-sm font-medium text-red-600 hover:text-red-700 hover:bg-red-50 rounded-lg transition-colors'
+                          className='px-3 py-2 text-nav-text font-medium text-red-600 hover:text-red-700 hover:bg-red-50 rounded-lg transition-colors'
                           onClick={() => setFilters({ industry: '', status: '', revenue: '' })}
                         >
                           {t('filters.clearFilters')}
@@ -945,13 +952,13 @@ function Clients() {
                 </div>
 
                 <div className='flex items-center space-x-4'>
-                  <button className='flex items-center space-x-2 px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-lg'>
+                  <button className='flex items-center space-x-2 px-3 py-2 text-nav-text font-medium text-gray-700 hover:bg-gray-50 rounded-lg'>
                     <ArrowsUpDownIcon className='h-4 w-4' />
                     <span>{t('sort.by')}:</span>
                   </button>
                   
                   <select 
-                    className='border border-gray-300 rounded-lg px-3 py-2 text-sm text-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
+                    className='border border-gray-300 rounded-lg px-3 py-2 text-nav-text text-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
                     value={sortBy}
                     onChange={(e) => setSortBy(e.target.value)}
                   >
@@ -967,7 +974,7 @@ function Clients() {
             {/* Content Area */}
             <div className='px-6 py-6'>
               {/* Results Info */}
-              <div className="mb-4 text-sm text-gray-600">
+              <div className="mb-4 text-subtitle text-gray-600">
                 {t('pagination.showing', 'Showing {{start}} to {{end}} of {{total}} results', {
                   start: Math.min(startIndex + 1, filteredAndSortedClients.length),
                   end: Math.min(startIndex + itemsPerPage, filteredAndSortedClients.length),
@@ -982,25 +989,25 @@ function Clients() {
                     <table className='min-w-full divide-y divide-gray-200'>
                       <thead className='bg-gray-50'>
                         <tr>
-                          <th className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
+                          <th className='px-6 py-3 text-left text-metric-small font-medium text-gray-500 uppercase tracking-wider'>
                             {t('table.company', 'Company')}
                           </th>
-                          <th className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
+                          <th className='px-6 py-3 text-left text-metric-small font-medium text-gray-500 uppercase tracking-wider'>
                             {t('table.industry', 'Industry')}
                           </th>
-                          <th className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
+                          <th className='px-6 py-3 text-left text-metric-small font-medium text-gray-500 uppercase tracking-wider'>
                             {t('table.status', 'Status')}
                           </th>
-                          <th className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
+                          <th className='px-6 py-3 text-left text-metric-small font-medium text-gray-500 uppercase tracking-wider'>
                             {t('table.location', 'Location')}
                           </th>
-                          <th className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
+                          <th className='px-6 py-3 text-left text-metric-small font-medium text-gray-500 uppercase tracking-wider'>
                             {t('table.lastContact', 'Last Contact')}
                           </th>
-                          <th className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
+                          <th className='px-6 py-3 text-left text-metric-small font-medium text-gray-500 uppercase tracking-wider'>
                             {t('table.revenue', 'Revenue')}
                           </th>
-                          <th className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
+                          <th className='px-6 py-3 text-left text-metric-small font-medium text-gray-500 uppercase tracking-wider'>
                             {t('table.actions', 'Actions')}
                           </th>
                         </tr>
@@ -1008,7 +1015,7 @@ function Clients() {
                       <tbody className='bg-white divide-y divide-gray-200'>
                         {currentPageClients.length === 0 ? (
                           <tr>
-                            <td colSpan="7" className="px-6 py-12 text-center text-gray-500">
+                            <td colSpan="7" className="px-6 py-12 text-center text-subtitle text-gray-500">
                               {t('empty.noClients', 'No clients found matching your criteria.')}
                             </td>
                           </tr>
@@ -1023,31 +1030,31 @@ function Clients() {
                                   <div className='flex items-center'>
                                     <div className='flex-shrink-0 h-10 w-10'>
                                       <div className='h-10 w-10 rounded-full bg-blue-500 flex items-center justify-center'>
-                                        <span className='text-sm font-medium text-white'>{initials}</span>
+                                        <span className='text-nav-text font-medium text-white'>{initials}</span>
                                       </div>
                                     </div>
                                     <div className='ml-4'>
-                                      <div className='text-sm font-medium text-gray-900'>{displayName}</div>
-                                      <div className='text-sm text-gray-500'>{client.email}</div>
+                                      <div className='text-nav-text font-medium text-gray-900'>{displayName}</div>
+                                      <div className='text-subtitle text-gray-500'>{client.email}</div>
                                     </div>
                                   </div>
                                 </td>
-                                <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-900'>
+                                <td className='px-6 py-4 whitespace-nowrap text-nav-text text-gray-900'>
                                   {client.industry || 'Technology'}
                                 </td>
                                 <td className='px-6 py-4 whitespace-nowrap'>
                                   <StatusBadge status={client.status} t={t} />
                                 </td>
-                                <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-900'>
+                                <td className='px-6 py-4 whitespace-nowrap text-nav-text text-gray-900'>
                                   {client.city || client.location || 'San Francisco, CA'}
                                 </td>
-                                <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-900'>
+                                <td className='px-6 py-4 whitespace-nowrap text-nav-text text-gray-900'>
                                   {formatLastContact(client.last_contact || client.created_at, t)}
                                 </td>
-                                <td className='px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-900'>
+                                <td className='px-6 py-4 whitespace-nowrap text-nav-text font-semibold text-gray-900'>
                                   {formatRevenue(client.revenue || 0)}
                                 </td>
-                                <td className='px-6 py-4 whitespace-nowrap text-sm font-medium'>
+                                <td className='px-6 py-4 whitespace-nowrap text-nav-text font-medium'>
                                   <div className='flex items-center space-x-2'>
                                     {client.phone && (
                                       <button 
@@ -1075,7 +1082,7 @@ function Clients() {
                                       <DocumentTextIcon className='h-4 w-4' />
                                     </button>
                                     <button 
-                                      className='text-blue-600 hover:text-blue-700'
+                                      className='text-blue-600 hover:text-blue-700 text-button-text'
                                       onClick={() => handleEditClient(client)}
                                     >
                                       {t('actions.edit')}
@@ -1105,21 +1112,21 @@ function Clients() {
                           <button
                             onClick={handlePreviousPage}
                             disabled={currentPage === 1}
-                            className='relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed'
+                            className='relative inline-flex items-center px-4 py-2 border border-gray-300 text-nav-text font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed'
                           >
                             {t('pagination.previous')}
                           </button>
                           <button
                             onClick={handleNextPage}
                             disabled={currentPage === totalPages}
-                            className='ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed'
+                            className='ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-nav-text font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed'
                           >
                             {t('pagination.next')}
                           </button>
                         </div>
                         <div className='hidden sm:flex-1 sm:flex sm:items-center sm:justify-between'>
                           <div>
-                            <p className='text-sm text-gray-700'>
+                            <p className='text-subtitle text-gray-700'>
                               {t('pagination.showing', 'Showing {{start}} to {{end}} of {{total}} results', {
                                 start: Math.min(startIndex + 1, filteredAndSortedClients.length),
                                 end: Math.min(startIndex + itemsPerPage, filteredAndSortedClients.length),
@@ -1132,17 +1139,17 @@ function Clients() {
                               <button
                                 onClick={handlePreviousPage}
                                 disabled={currentPage === 1}
-                                className='relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed'
+                                className='relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-nav-text font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed'
                               >
                                 <ChevronLeftIcon className='h-5 w-5' />
                               </button>
-                              <span className='relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700'>
+                              <span className='relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-nav-text font-medium text-gray-700'>
                                 {currentPage} / {totalPages}
                               </span>
                               <button
                                 onClick={handleNextPage}
                                 disabled={currentPage === totalPages}
-                                className='relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed'
+                                className='relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-nav-text font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed'
                               >
                                 <ChevronRightIcon className='h-5 w-5' />
                               </button>
