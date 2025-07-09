@@ -1,10 +1,10 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { 
-  PlusIcon, 
+import {
+  PlusIcon,
   TagIcon,
   DocumentArrowDownIcon,
-  ExclamationTriangleIcon
+  ExclamationTriangleIcon,
 } from '@heroicons/react/24/outline';
 
 const QuickActions = ({ onAddItem, onManageCategories, onExportInventory, onStockAlerts }) => {
@@ -29,7 +29,7 @@ const QuickActions = ({ onAddItem, onManageCategories, onExportInventory, onStoc
       hoverIconBg: 'bg-blue-600',
       textColor: 'text-blue-700',
       hoverTextColor: 'text-blue-800',
-      onClick: onAddItem
+      onClick: onAddItem,
     },
     {
       id: 2,
@@ -43,7 +43,7 @@ const QuickActions = ({ onAddItem, onManageCategories, onExportInventory, onStoc
       hoverIconBg: 'bg-amber-600',
       textColor: 'text-amber-700',
       hoverTextColor: 'text-amber-800',
-      onClick: onManageCategories
+      onClick: onManageCategories,
     },
     {
       id: 3,
@@ -57,7 +57,7 @@ const QuickActions = ({ onAddItem, onManageCategories, onExportInventory, onStoc
       hoverIconBg: 'bg-purple-600',
       textColor: 'text-purple-700',
       hoverTextColor: 'text-purple-800',
-      onClick: onExportInventory
+      onClick: onExportInventory,
     },
     {
       id: 4,
@@ -71,48 +71,54 @@ const QuickActions = ({ onAddItem, onManageCategories, onExportInventory, onStoc
       hoverIconBg: 'bg-red-600',
       textColor: 'text-red-700',
       hoverTextColor: 'text-red-800',
-      onClick: onStockAlerts
-    }
+      onClick: onStockAlerts,
+    },
   ];
 
   return (
-    <div className="bg-white rounded-none shadow-sm h-full flex flex-col">
+    <div className='bg-white rounded-none shadow-sm h-full flex flex-col'>
       {/* Header */}
-      <div className="px-6 pt-6 pb-6 border-b border-gray-200">
-        <h3 className="text-lg font-semibold text-gray-900">
+      <div className='px-6 pt-6 pb-6 border-b border-gray-200'>
+        <h3 className='text-lg font-semibold text-gray-900'>
           {safeT('quickActions.title', {}, 'Quick Actions')}
         </h3>
       </div>
 
       {/* Action Cards */}
-      <div className="p-6 flex-1 flex items-center">
-        <div className="grid grid-cols-2 gap-3 w-full">
-          {actions.map((action) => (
+      <div className='p-6 flex-1 flex items-center'>
+        <div className='grid grid-cols-2 gap-3 w-full'>
+          {actions.map(action => (
             <button
               key={action.id}
               onClick={action.onClick}
               className={`group relative overflow-hidden flex flex-col items-center p-4 rounded-xl transition-all duration-300 transform hover:scale-105 hover:shadow-lg min-h-[100px] text-white`}
               style={{
-                background: action.id === 1 ? 'linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%)' :
-                           action.id === 2 ? 'linear-gradient(135deg, #10b981 0%, #059669 100%)' :
-                           action.id === 3 ? 'linear-gradient(135deg, #eab308 0%, #ca8a04 100%)' :
-                           'linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)'
+                background:
+                  action.id === 1
+                    ? 'linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%)'
+                    : action.id === 2
+                      ? 'linear-gradient(135deg, #10b981 0%, #059669 100%)'
+                      : action.id === 3
+                        ? 'linear-gradient(135deg, #eab308 0%, #ca8a04 100%)'
+                        : 'linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)',
               }}
             >
               {/* Background Pattern */}
-              <div className="absolute inset-0 opacity-10">
-                <div className="absolute top-2 left-2 w-4 h-4 bg-white rounded-full"></div>
-                <div className="absolute top-8 right-4 w-2 h-2 bg-white rounded-full"></div>
-                <div className="absolute bottom-4 left-6 w-3 h-3 bg-white rounded-full"></div>
-                <div className="absolute bottom-2 right-2 w-5 h-5 bg-white rounded-full"></div>
+              <div className='absolute inset-0 opacity-10'>
+                <div className='absolute top-2 left-2 w-4 h-4 bg-white rounded-full'></div>
+                <div className='absolute top-8 right-4 w-2 h-2 bg-white rounded-full'></div>
+                <div className='absolute bottom-4 left-6 w-3 h-3 bg-white rounded-full'></div>
+                <div className='absolute bottom-2 right-2 w-5 h-5 bg-white rounded-full'></div>
               </div>
-              
+
               {/* Content */}
-              <div className="relative z-10 flex flex-col items-center gap-3">
-                <div className="bg-white bg-opacity-20 p-3 rounded-lg group-hover:bg-opacity-30 transition-all duration-300">
-                  <action.icon className="h-6 w-6 text-white" />
+              <div className='relative z-10 flex flex-col items-center gap-3'>
+                <div className='bg-white bg-opacity-20 p-3 rounded-lg group-hover:bg-opacity-30 transition-all duration-300'>
+                  <action.icon className='h-6 w-6 text-white' />
                 </div>
-                <span className="text-center text-sm font-medium leading-tight text-white">{action.title}</span>
+                <span className='text-center text-sm font-medium leading-tight text-white'>
+                  {action.title}
+                </span>
               </div>
             </button>
           ))}

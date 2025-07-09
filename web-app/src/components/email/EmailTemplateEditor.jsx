@@ -10,7 +10,7 @@ import {
   CheckCircleIcon,
   ExclamationTriangleIcon,
   SparklesIcon,
-  CloudArrowUpIcon
+  CloudArrowUpIcon,
 } from '@heroicons/react/24/outline';
 import emailTemplateService from '@lib/emailTemplateService';
 import EmailAttachmentManager from './EmailAttachmentManager';
@@ -19,7 +19,7 @@ import { useTranslation } from 'react-i18next';
 const EmailTemplateEditor = ({ template = null, onSave, onCancel }) => {
   const { t } = useTranslation('email');
   const quillRef = useRef(null);
-  
+
   const [formData, setFormData] = useState({
     id: null,
     name: '',
@@ -28,9 +28,9 @@ const EmailTemplateEditor = ({ template = null, onSave, onCancel }) => {
     htmlContent: '',
     category: 'custom',
     variables: [],
-    attachments: []
+    attachments: [],
   });
-  
+
   const [previewMode, setPreviewMode] = useState(false);
   const [showVariables, setShowVariables] = useState(false);
   const [validation, setValidation] = useState({ isValid: true, issues: [] });
@@ -47,7 +47,7 @@ const EmailTemplateEditor = ({ template = null, onSave, onCancel }) => {
         subject: template.subject || '',
         htmlContent: template.html_content || template.html || '',
         category: template.category || 'custom',
-        variables: template.variables || []
+        variables: template.variables || [],
       });
     }
   }, [template]);
@@ -69,7 +69,7 @@ const EmailTemplateEditor = ({ template = null, onSave, onCancel }) => {
     }
   }, [formData.htmlContent]);
 
-  const getSampleData = (variable) => {
+  const getSampleData = variable => {
     const samples = {
       client_name: 'John Smith',
       company_name: 'Nexa Manager',
@@ -88,49 +88,61 @@ const EmailTemplateEditor = ({ template = null, onSave, onCancel }) => {
       expiry_date: '2024-02-15',
       content: 'This is sample content for your email template.',
       subscriber_name: 'Jane Doe',
-      unsubscribe_link: 'https://nexamanager.com/unsubscribe'
+      unsubscribe_link: 'https://nexamanager.com/unsubscribe',
     };
     return samples[variable] || `{${variable}}`;
   };
 
   const quillModules = {
     toolbar: [
-      [{ 'header': [1, 2, 3, false] }],
+      [{ header: [1, 2, 3, false] }],
       ['bold', 'italic', 'underline', 'strike'],
-      [{ 'color': [] }, { 'background': [] }],
-      [{ 'align': [] }],
+      [{ color: [] }, { background: [] }],
+      [{ align: [] }],
       ['blockquote', 'code-block'],
-      [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+      [{ list: 'ordered' }, { list: 'bullet' }],
       ['link', 'image'],
-      [{ 'indent': '-1'}, { 'indent': '+1' }],
-      ['clean']
+      [{ indent: '-1' }, { indent: '+1' }],
+      ['clean'],
     ],
     clipboard: {
       matchVisual: false,
-    }
+    },
   };
 
   const quillFormats = [
-    'header', 'bold', 'italic', 'underline', 'strike',
-    'color', 'background', 'align', 'blockquote', 'code-block',
-    'list', 'bullet', 'link', 'image', 'indent'
+    'header',
+    'bold',
+    'italic',
+    'underline',
+    'strike',
+    'color',
+    'background',
+    'align',
+    'blockquote',
+    'code-block',
+    'list',
+    'bullet',
+    'link',
+    'image',
+    'indent',
   ];
 
-  const handleContentChange = (content) => {
+  const handleContentChange = content => {
     setFormData(prev => ({
       ...prev,
-      htmlContent: content
+      htmlContent: content,
     }));
   };
 
   const handleInputChange = (field, value) => {
     setFormData(prev => ({
       ...prev,
-      [field]: value
+      [field]: value,
     }));
   };
 
-  const insertVariable = (variable) => {
+  const insertVariable = variable => {
     const quill = quillRef.current?.getEditor();
     if (quill) {
       const range = quill.getSelection();
@@ -139,7 +151,7 @@ const EmailTemplateEditor = ({ template = null, onSave, onCancel }) => {
     }
   };
 
-  const loadPredefinedTemplate = (templateKey) => {
+  const loadPredefinedTemplate = templateKey => {
     const predefined = emailTemplateService.predefinedTemplates[templateKey];
     if (predefined) {
       setFormData(prev => ({
@@ -147,20 +159,20 @@ const EmailTemplateEditor = ({ template = null, onSave, onCancel }) => {
         name: predefined.name,
         description: predefined.description,
         htmlContent: predefined.html,
-        variables: predefined.variables
+        variables: predefined.variables,
       }));
     }
   };
 
   const renderPreview = () => {
     const rendered = emailTemplateService.renderTemplate(
-      { 
+      {
         subject: formData.subject,
-        html_content: formData.htmlContent 
-      }, 
-      testVariables
+        html_content: formData.htmlContent,
+      },
+      testVariables,
     );
-    
+
     if (rendered.success) {
       return rendered.data;
     }
@@ -179,10 +191,10 @@ const EmailTemplateEditor = ({ template = null, onSave, onCancel }) => {
       if (result.success) {
         onSave?.(result.data);
       } else {
-        alert(`Error saving template: ${result.error}`);
+        alert(`Error saving template: ${String(result?.error || 'Unknown error')}`);
       }
     } catch (error) {
-      alert(`Error saving template: ${error.message}`);
+      alert(`Error saving template: ${String(error?.message || error || 'Unknown error')}`);
     } finally {
       setLoading(false);
     }
@@ -191,26 +203,26 @@ const EmailTemplateEditor = ({ template = null, onSave, onCancel }) => {
   const previewData = renderPreview();
 
   return (
-    <div className="max-w-6xl mx-auto p-6 space-y-6">
+    <div className='max-w-6xl mx-auto p-6 space-y-6'>
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className='flex items-center justify-between'>
         <div>
-          <h2 className="text-2xl font-bold flex items-center">
-            <DocumentTextIcon className="h-6 w-6 mr-2" />
+          <h2 className='text-2xl font-bold flex items-center'>
+            <DocumentTextIcon className='h-6 w-6 mr-2' />
             {template?.id ? 'Edit Email Template' : 'Create Email Template'}
           </h2>
-          <p className="text-gray-600">
+          <p className='text-gray-600'>
             Design professional email templates with variables and WYSIWYG editing
           </p>
         </div>
-        <div className="flex space-x-2">
+        <div className='flex space-x-2'>
           <button
             onClick={() => setPreviewMode(!previewMode)}
             className={`px-4 py-2 rounded-lg flex items-center ${
               previewMode ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700'
             }`}
           >
-            <EyeIcon className="h-4 w-4 mr-2" />
+            <EyeIcon className='h-4 w-4 mr-2' />
             Preview
           </button>
           <button
@@ -219,120 +231,110 @@ const EmailTemplateEditor = ({ template = null, onSave, onCancel }) => {
               showVariables ? 'bg-green-600 text-white' : 'bg-gray-100 text-gray-700'
             }`}
           >
-            <CodeBracketIcon className="h-4 w-4 mr-2" />
+            <CodeBracketIcon className='h-4 w-4 mr-2' />
             Variables
           </button>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+      <div className='grid grid-cols-1 lg:grid-cols-4 gap-6'>
         {/* Left Panel - Template Info */}
-        <div className="lg:col-span-1 space-y-4">
+        <div className='lg:col-span-1 space-y-4'>
           {/* Basic Info */}
-          <div className="bg-white rounded-lg border p-4 space-y-4">
-            <h3 className="font-semibold text-gray-900">Template Information</h3>
-            
+          <div className='bg-white rounded-lg border p-4 space-y-4'>
+            <h3 className='font-semibold text-gray-900'>Template Information</h3>
+
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Name *
-              </label>
+              <label className='block text-sm font-medium text-gray-700 mb-1'>Name *</label>
               <input
-                type="text"
+                type='text'
                 value={formData.name}
-                onChange={(e) => handleInputChange('name', e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="Template name"
+                onChange={e => handleInputChange('name', e.target.value)}
+                className='w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500'
+                placeholder='Template name'
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Description
-              </label>
+              <label className='block text-sm font-medium text-gray-700 mb-1'>Description</label>
               <textarea
                 value={formData.description}
-                onChange={(e) => handleInputChange('description', e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                rows="3"
-                placeholder="Template description"
+                onChange={e => handleInputChange('description', e.target.value)}
+                className='w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500'
+                rows='3'
+                placeholder='Template description'
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Subject Line
-              </label>
+              <label className='block text-sm font-medium text-gray-700 mb-1'>Subject Line</label>
               <input
-                type="text"
+                type='text'
                 value={formData.subject}
-                onChange={(e) => handleInputChange('subject', e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="Email subject with {variables}"
+                onChange={e => handleInputChange('subject', e.target.value)}
+                className='w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500'
+                placeholder='Email subject with {variables}'
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Category
-              </label>
+              <label className='block text-sm font-medium text-gray-700 mb-1'>Category</label>
               <select
                 value={formData.category}
-                onChange={(e) => handleInputChange('category', e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                onChange={e => handleInputChange('category', e.target.value)}
+                className='w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500'
               >
-                <option value="custom">Custom</option>
-                <option value="invoice">Invoice</option>
-                <option value="reminder">Reminder</option>
-                <option value="newsletter">Newsletter</option>
-                <option value="marketing">Marketing</option>
+                <option value='custom'>Custom</option>
+                <option value='invoice'>Invoice</option>
+                <option value='reminder'>Reminder</option>
+                <option value='newsletter'>Newsletter</option>
+                <option value='marketing'>Marketing</option>
               </select>
             </div>
           </div>
 
           {/* Quick Templates */}
-          <div className="bg-white rounded-lg border p-4 space-y-3">
-            <h3 className="font-semibold text-gray-900 flex items-center">
-              <SparklesIcon className="h-4 w-4 mr-2" />
+          <div className='bg-white rounded-lg border p-4 space-y-3'>
+            <h3 className='font-semibold text-gray-900 flex items-center'>
+              <SparklesIcon className='h-4 w-4 mr-2' />
               Quick Start
             </h3>
             {Object.entries(emailTemplateService.predefinedTemplates).map(([key, template]) => (
               <button
                 key={key}
                 onClick={() => loadPredefinedTemplate(key)}
-                className="w-full text-left px-3 py-2 bg-gray-50 hover:bg-gray-100 rounded-md transition-colors"
+                className='w-full text-left px-3 py-2 bg-gray-50 hover:bg-gray-100 rounded-md transition-colors'
               >
-                <div className="font-medium text-sm">{template.name}</div>
-                <div className="text-xs text-gray-500">{template.description}</div>
+                <div className='font-medium text-sm'>{template.name}</div>
+                <div className='text-xs text-gray-500'>{template.description}</div>
               </button>
             ))}
           </div>
 
           {/* Attachments */}
-          <div className="bg-white rounded-lg border p-4 space-y-3">
-            <h3 className="font-semibold text-gray-900 flex items-center">
-              <CloudArrowUpIcon className="h-4 w-4 mr-2" />
+          <div className='bg-white rounded-lg border p-4 space-y-3'>
+            <h3 className='font-semibold text-gray-900 flex items-center'>
+              <CloudArrowUpIcon className='h-4 w-4 mr-2' />
               Template Attachments
             </h3>
-            <p className="text-sm text-gray-500">
+            <p className='text-sm text-gray-500'>
               Add default attachments that will be included with this template
             </p>
             <EmailAttachmentManager
               attachments={formData.attachments}
-              onAttachmentsChange={(attachments) => 
-                setFormData(prev => ({ ...prev, attachments }))
-              }
+              onAttachmentsChange={attachments => setFormData(prev => ({ ...prev, attachments }))}
               maxFiles={5}
             />
           </div>
 
           {/* Validation */}
           {validation.issues.length > 0 && (
-            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-              <h3 className="font-semibold text-yellow-800 flex items-center mb-2">
-                <ExclamationTriangleIcon className="h-4 w-4 mr-2" />
+            <div className='bg-yellow-50 border border-yellow-200 rounded-lg p-4'>
+              <h3 className='font-semibold text-yellow-800 flex items-center mb-2'>
+                <ExclamationTriangleIcon className='h-4 w-4 mr-2' />
                 Email Compatibility Issues
               </h3>
-              <ul className="text-sm text-yellow-700 space-y-1">
+              <ul className='text-sm text-yellow-700 space-y-1'>
                 {validation.issues.map((issue, index) => (
                   <li key={index}>• {issue}</li>
                 ))}
@@ -341,9 +343,9 @@ const EmailTemplateEditor = ({ template = null, onSave, onCancel }) => {
           )}
 
           {validation.isValid && formData.htmlContent && (
-            <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-              <div className="font-semibold text-green-800 flex items-center">
-                <CheckCircleIcon className="h-4 w-4 mr-2" />
+            <div className='bg-green-50 border border-green-200 rounded-lg p-4'>
+              <div className='font-semibold text-green-800 flex items-center'>
+                <CheckCircleIcon className='h-4 w-4 mr-2' />
                 Template is email-compatible
               </div>
             </div>
@@ -351,16 +353,16 @@ const EmailTemplateEditor = ({ template = null, onSave, onCancel }) => {
         </div>
 
         {/* Main Editor */}
-        <div className="lg:col-span-3">
+        <div className='lg:col-span-3'>
           {!previewMode ? (
-            <div className="bg-white rounded-lg border">
-              <div className="border-b p-4">
-                <h3 className="font-semibold text-gray-900">Email Content Editor</h3>
-                <p className="text-sm text-gray-500">
+            <div className='bg-white rounded-lg border'>
+              <div className='border-b p-4'>
+                <h3 className='font-semibold text-gray-900'>Email Content Editor</h3>
+                <p className='text-sm text-gray-500'>
                   Use the toolbar to format your email. Click "Variables" to insert placeholders.
                 </p>
               </div>
-              <div className="p-0">
+              <div className='p-0'>
                 <ReactQuill
                   ref={quillRef}
                   value={formData.htmlContent}
@@ -368,24 +370,24 @@ const EmailTemplateEditor = ({ template = null, onSave, onCancel }) => {
                   modules={quillModules}
                   formats={quillFormats}
                   style={{ height: '500px' }}
-                  placeholder="Start writing your email template..."
+                  placeholder='Start writing your email template...'
                 />
               </div>
             </div>
           ) : (
-            <div className="bg-white rounded-lg border">
-              <div className="border-b p-4 flex items-center justify-between">
+            <div className='bg-white rounded-lg border'>
+              <div className='border-b p-4 flex items-center justify-between'>
                 <div>
-                  <h3 className="font-semibold text-gray-900">Email Preview</h3>
-                  <p className="text-sm text-gray-500">Preview with sample data</p>
+                  <h3 className='font-semibold text-gray-900'>Email Preview</h3>
+                  <p className='text-sm text-gray-500'>Preview with sample data</p>
                 </div>
-                <div className="text-sm text-gray-500">
+                <div className='text-sm text-gray-500'>
                   Subject: {previewData.subject || 'No subject'}
                 </div>
               </div>
-              <div className="p-6 bg-gray-50">
-                <div 
-                  className="bg-white border rounded-lg p-4 max-w-2xl mx-auto"
+              <div className='p-6 bg-gray-50'>
+                <div
+                  className='bg-white border rounded-lg p-4 max-w-2xl mx-auto'
                   dangerouslySetInnerHTML={{ __html: previewData.htmlContent }}
                 />
               </div>
@@ -396,30 +398,28 @@ const EmailTemplateEditor = ({ template = null, onSave, onCancel }) => {
 
       {/* Variables Panel */}
       {showVariables && (
-        <div className="bg-white rounded-lg border p-4">
-          <h3 className="font-semibold text-gray-900 mb-4 flex items-center">
-            <CodeBracketIcon className="h-4 w-4 mr-2" />
+        <div className='bg-white rounded-lg border p-4'>
+          <h3 className='font-semibold text-gray-900 mb-4 flex items-center'>
+            <CodeBracketIcon className='h-4 w-4 mr-2' />
             Available Variables
           </h3>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-            {availableVariables.map((variable) => (
+          <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3'>
+            {availableVariables.map(variable => (
               <button
                 key={variable.name}
                 onClick={() => insertVariable(variable)}
-                className="text-left p-3 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors group"
+                className='text-left p-3 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors group'
               >
-                <div className="font-mono text-sm text-blue-600 font-medium">
+                <div className='font-mono text-sm text-blue-600 font-medium'>
                   {variable.placeholder}
                 </div>
-                <div className="text-xs text-gray-500 mt-1">
-                  {variable.description}
-                </div>
+                <div className='text-xs text-gray-500 mt-1'>{variable.description}</div>
               </button>
             ))}
           </div>
-          <div className="mt-4 p-3 bg-blue-50 rounded-lg">
-            <p className="text-sm text-blue-800">
-              <strong>Tip:</strong> Click any variable to insert it at your cursor position. 
+          <div className='mt-4 p-3 bg-blue-50 rounded-lg'>
+            <p className='text-sm text-blue-800'>
+              <strong>Tip:</strong> Click any variable to insert it at your cursor position.
               Variables will be replaced with actual data when the email is sent.
             </p>
           </div>
@@ -427,27 +427,27 @@ const EmailTemplateEditor = ({ template = null, onSave, onCancel }) => {
       )}
 
       {/* Actions */}
-      <div className="flex items-center justify-between border-t pt-4">
+      <div className='flex items-center justify-between border-t pt-4'>
         <button
           onClick={onCancel}
-          className="px-6 py-2 text-gray-600 hover:text-gray-800 transition-colors"
+          className='px-6 py-2 text-gray-600 hover:text-gray-800 transition-colors'
         >
           Cancel
         </button>
-        <div className="flex space-x-3">
+        <div className='flex space-x-3'>
           <button
             onClick={handleSave}
             disabled={loading || !formData.name.trim()}
-            className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center"
+            className='px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center'
           >
             {loading ? (
               <>
-                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                <div className='animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2'></div>
                 Saving...
               </>
             ) : (
               <>
-                <CloudArrowUpIcon className="h-4 w-4 mr-2" />
+                <CloudArrowUpIcon className='h-4 w-4 mr-2' />
                 Save Template
               </>
             )}
@@ -458,4 +458,4 @@ const EmailTemplateEditor = ({ template = null, onSave, onCancel }) => {
   );
 };
 
-export default EmailTemplateEditor; 
+export default EmailTemplateEditor;

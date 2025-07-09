@@ -150,7 +150,7 @@ export default function ReportsRefactored() {
       }
     } catch (err) {
       Logger.error('Export error:', err);
-      setError(`Errore nell'esportazione: ${err.message}`);
+      setError(`Errore nell'esportazione: ${String(err?.message || err || 'Unknown error')}`);
     } finally {
       setLoading(false);
     }

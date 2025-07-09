@@ -31,19 +31,19 @@ class ExpenseService {
           return uuid;
         }
       }
-      
+
       // Fallback per testing/development
       const fallbackClerkId = 'user_2yyhN4lw9ritLheD4CxN5RRMXUR';
       console.warn('expenseService: Usando Clerk ID fallback per development:', fallbackClerkId);
-      
+
       const uuid = convertClerkIdToUuid(fallbackClerkId);
       if (!uuid) {
         throw new Error(`Nessun mapping UUID trovato per Clerk ID fallback: ${fallbackClerkId}`);
       }
-      
+
       return uuid;
     } catch (error) {
-      Logger.error('Errore nell\'ottenere UUID utente:', error);
+      Logger.error("Errore nell'ottenere UUID utente:", error);
       throw error;
     }
   }
@@ -284,7 +284,7 @@ class ExpenseService {
         rowCount: data?.length,
         userUuid,
         startDate: startDate.toISOString(),
-        endDate: endDate.toISOString()
+        endDate: endDate.toISOString(),
       });
 
       // Handle null/undefined data
@@ -295,7 +295,8 @@ class ExpenseService {
         totalCount: expenses.length,
         averageAmount:
           expenses.length > 0
-            ? expenses.reduce((sum, expense) => sum + parseFloat(expense.amount || 0), 0) / expenses.length
+            ? expenses.reduce((sum, expense) => sum + parseFloat(expense.amount || 0), 0) /
+              expenses.length
             : 0,
         taxDeductibleAmount: expenses
           .filter(e => e.tax_deductible)
@@ -362,7 +363,7 @@ class ExpenseService {
         total: stats.totalAmount,
         count: stats.totalCount,
         average: stats.averageAmount,
-        categories: Object.keys(stats.byCategory).length
+        categories: Object.keys(stats.byCategory).length,
       });
 
       return stats;

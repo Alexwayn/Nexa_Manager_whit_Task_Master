@@ -55,13 +55,13 @@ const InvoicesPage = () => {
   const [error, setError] = useState(null);
   const [analytics, setAnalytics] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
-  
+
   // Filter states
   const [filters, setFilters] = useState({
     status: '',
     client: '',
     dateRange: '',
-    amount: ''
+    amount: '',
   });
 
   const dateInputRef = useRef(null);
@@ -78,9 +78,12 @@ const InvoicesPage = () => {
 
   // Close dropdown when clicking outside
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (activeDropdown && dropdownRefs.current[activeDropdown] && 
-          !dropdownRefs.current[activeDropdown].contains(event.target)) {
+    const handleClickOutside = event => {
+      if (
+        activeDropdown &&
+        dropdownRefs.current[activeDropdown] &&
+        !dropdownRefs.current[activeDropdown].contains(event.target)
+      ) {
         setActiveDropdown(null);
       }
     };
@@ -91,7 +94,7 @@ const InvoicesPage = () => {
     };
   }, [activeDropdown]);
 
-  const toggleDropdown = (dropdownId) => {
+  const toggleDropdown = dropdownId => {
     setActiveDropdown(activeDropdown === dropdownId ? null : dropdownId);
   };
 
@@ -100,51 +103,51 @@ const InvoicesPage = () => {
     {
       label: t('dropdownOptions.viewDetails', 'View Details'),
       icon: Eye,
-      action: () => navigate('/analytics')
+      action: () => navigate('/analytics'),
     },
     {
       label: t('dropdownOptions.exportReport', 'Export Report'),
       icon: Download,
-      action: () => console.log('Export payment status report')
+      action: () => console.log('Export payment status report'),
     },
     {
       label: t('dropdownOptions.refreshData', 'Refresh Data'),
       icon: ArrowUpRight,
-      action: () => window.location.reload()
-    }
+      action: () => window.location.reload(),
+    },
   ];
 
   const monthlyInvoicesOptions = [
     {
       label: t('dropdownOptions.viewAnalytics', 'View Analytics'),
       icon: TrendingUp,
-      action: () => navigate('/analytics')
+      action: () => navigate('/analytics'),
     },
     {
       label: t('dropdownOptions.exportChart', 'Export Chart'),
       icon: Download,
-      action: () => console.log('Export monthly invoices chart')
+      action: () => console.log('Export monthly invoices chart'),
     },
     {
       label: t('dropdownOptions.changeView', 'Change View'),
       icon: Calendar,
-      action: () => console.log('Change chart view')
-    }
+      action: () => console.log('Change chart view'),
+    },
   ];
 
   // Dropdown menu component
   const CardDropdownMenu = ({ dropdownId, options }) => (
-    <div className="relative" ref={el => dropdownRefs.current[dropdownId] = el}>
+    <div className='relative' ref={el => (dropdownRefs.current[dropdownId] = el)}>
       <button
         onClick={() => toggleDropdown(dropdownId)}
-        className="w-5 h-5 text-gray-400 hover:text-gray-600 cursor-pointer transition-colors"
-        aria-label="Card options"
+        className='w-5 h-5 text-gray-400 hover:text-gray-600 cursor-pointer transition-colors'
+        aria-label='Card options'
       >
-        <MoreHorizontal className="w-5 h-5" />
+        <MoreHorizontal className='w-5 h-5' />
       </button>
-      
+
       {activeDropdown === dropdownId && (
-        <div className="absolute right-0 top-6 w-48 bg-white rounded-md shadow-lg border border-gray-200 py-1 z-10">
+        <div className='absolute right-0 top-6 w-48 bg-white rounded-md shadow-lg border border-gray-200 py-1 z-10'>
           {options.map((option, index) => (
             <button
               key={index}
@@ -152,9 +155,9 @@ const InvoicesPage = () => {
                 option.action();
                 setActiveDropdown(null);
               }}
-              className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center space-x-2"
+              className='w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center space-x-2'
             >
-              {option.icon && <option.icon className="h-4 w-4" />}
+              {option.icon && <option.icon className='h-4 w-4' />}
               <span>{option.label}</span>
             </button>
           ))}
@@ -179,19 +182,19 @@ const InvoicesPage = () => {
       Logger.info('Loading invoices for user:', {
         clerkId: user.id,
         dbUserId,
-        userEmail: user.primaryEmailAddress?.emailAddress
+        userEmail: user.primaryEmailAddress?.emailAddress,
       });
 
       // Fetch invoices
       const invoicesResult = await InvoiceService.getInvoices(dbUserId, {
         limit: 100, // Get more invoices for better analytics
         sort_by: 'issue_date',
-        sort_order: 'desc'
+        sort_order: 'desc',
       });
 
       Logger.info('Invoices loaded successfully:', {
         count: invoicesResult.invoices.length,
-        pagination: invoicesResult.pagination
+        pagination: invoicesResult.pagination,
       });
 
       // Transform data for UI compatibility
@@ -205,19 +208,19 @@ const InvoicesPage = () => {
         issueDate: new Date(invoice.issue_date).toLocaleDateString('en-GB', {
           day: '2-digit',
           month: 'short',
-          year: 'numeric'
+          year: 'numeric',
         }),
         dueDate: new Date(invoice.due_date).toLocaleDateString('en-GB', {
           day: '2-digit',
           month: 'short',
-          year: 'numeric'
+          year: 'numeric',
         }),
         amount: new Intl.NumberFormat('en-US', {
           style: 'currency',
-          currency: invoice.currency || 'EUR'
+          currency: invoice.currency || 'EUR',
         }).format(invoice.total_amount),
         status: invoice.status,
-        rawData: invoice // Keep original data for actions
+        rawData: invoice, // Keep original data for actions
       }));
 
       setInvoices(transformedInvoices);
@@ -231,7 +234,6 @@ const InvoicesPage = () => {
       } else {
         Logger.warn('Failed to load analytics:', analyticsResult.error);
       }
-
     } catch (err) {
       Logger.error('Error loading invoices:', err);
       setError(err.message || 'An unexpected error occurred while loading invoices');
@@ -272,7 +274,7 @@ const InvoicesPage = () => {
     setIsInvoiceModalOpen(true);
   };
 
-  const handleEditInvoice = (invoice) => {
+  const handleEditInvoice = invoice => {
     setSelectedInvoice(invoice);
     setSelectedClient(null);
     setIsInvoiceModalOpen(true);
@@ -284,13 +286,13 @@ const InvoicesPage = () => {
     setSelectedClient(null);
   };
 
-  const handleInvoiceCreated = (newInvoice) => {
+  const handleInvoiceCreated = newInvoice => {
     Logger.info('New invoice created:', newInvoice);
     // Refresh the invoices list
     loadInvoices();
   };
 
-  const handleInvoiceUpdated = (updatedInvoice) => {
+  const handleInvoiceUpdated = updatedInvoice => {
     Logger.info('Invoice updated:', updatedInvoice);
     // Refresh the invoices list
     loadInvoices();
@@ -314,12 +316,12 @@ const InvoicesPage = () => {
     alert(t('actions.export') + ' - Coming soon!');
   };
 
-  const handleViewInvoice = (invoice) => {
+  const handleViewInvoice = invoice => {
     setSelectedInvoice(invoice);
     setIsViewInvoiceModalOpen(true);
   };
 
-  const handleDownloadInvoice = (invoice) => {
+  const handleDownloadInvoice = invoice => {
     // Generate and download professional PDF invoice
     try {
       const invoiceData = {
@@ -330,82 +332,86 @@ const InvoicesPage = () => {
         issueDate: invoice.issue_date,
         dueDate: invoice.due_date,
         status: invoice.status || 'pending',
-        items: invoice.items || []
+        items: invoice.items || [],
       };
-      
+
       // Create new PDF document
       const pdf = new jsPDF();
-      
+
       // Set font
       pdf.setFont('helvetica');
-      
+
       // Header
       pdf.setFontSize(24);
       pdf.setTextColor(0, 123, 255); // Blue color
       pdf.text('INVOICE', 105, 30, { align: 'center' });
-      
+
       pdf.setFontSize(14);
       pdf.setTextColor(100, 100, 100); // Gray color
       pdf.text(`#${invoiceData.number}`, 105, 40, { align: 'center' });
-      
+
       // Line under header
       pdf.setDrawColor(0, 123, 255);
       pdf.setLineWidth(1);
       pdf.line(20, 50, 190, 50);
-      
+
       // Invoice details section
       pdf.setFontSize(12);
       pdf.setTextColor(0, 0, 0); // Black color
-      
+
       // Bill To section
       pdf.setFont('helvetica', 'bold');
       pdf.text('Bill To:', 20, 70);
       pdf.setFont('helvetica', 'normal');
       pdf.text(invoiceData.client, 20, 80);
-      
+
       // Invoice details section
       pdf.setFont('helvetica', 'bold');
       pdf.text('Invoice Details:', 120, 70);
       pdf.setFont('helvetica', 'normal');
-      
-      const issueDate = invoiceData.issueDate ? new Date(invoiceData.issueDate).toLocaleDateString() : 'N/A';
-      const dueDate = invoiceData.dueDate ? new Date(invoiceData.dueDate).toLocaleDateString() : 'N/A';
-      
+
+      const issueDate = invoiceData.issueDate
+        ? new Date(invoiceData.issueDate).toLocaleDateString()
+        : 'N/A';
+      const dueDate = invoiceData.dueDate
+        ? new Date(invoiceData.dueDate).toLocaleDateString()
+        : 'N/A';
+
       pdf.text(`Issue Date: ${issueDate}`, 120, 80);
       pdf.text(`Due Date: ${dueDate}`, 120, 90);
       pdf.text(`Status: ${invoiceData.status.toUpperCase()}`, 120, 100);
-      
+
       // Items table header
       const tableStartY = 120;
       pdf.setFont('helvetica', 'bold');
       pdf.setFillColor(248, 249, 250); // Light gray background
       pdf.rect(20, tableStartY, 170, 10, 'F');
-      
+
       pdf.text('Description', 25, tableStartY + 7);
       pdf.text('Qty', 100, tableStartY + 7);
       pdf.text('Unit Price', 120, tableStartY + 7);
       pdf.text('Total', 160, tableStartY + 7);
-      
+
       // Table border
       pdf.setDrawColor(221, 221, 221);
       pdf.setLineWidth(0.5);
       pdf.rect(20, tableStartY, 170, 10);
-      
+
       // Items
       let currentY = tableStartY + 20;
       pdf.setFont('helvetica', 'normal');
-      
+
       if (invoiceData.items && invoiceData.items.length > 0) {
         invoiceData.items.forEach((item, index) => {
           const quantity = item.quantity || 1;
           const price = item.price || 0;
           const total = quantity * price;
-          
+
           pdf.text(item.description || 'Service/Product', 25, currentY);
           pdf.text(quantity.toString(), 100, currentY);
           pdf.text(`€{price.toFixed(2)}`, 120, currentY);
           pdf.text(`€{total.toFixed(2)}`, 160, currentY);
-          
+
           // Row border
           pdf.rect(20, currentY - 7, 170, 10);
           currentY += 15;
@@ -419,32 +425,40 @@ const InvoicesPage = () => {
         pdf.rect(20, currentY - 7, 170, 10);
         currentY += 15;
       }
-      
+
       // Total section
       currentY += 20;
       pdf.setFont('helvetica', 'bold');
       pdf.setFontSize(16);
       pdf.setTextColor(0, 123, 255);
       pdf.text(`Total: €{invoiceData.amount.toFixed(2)}`, 190, currentY, { align: 'right' });
-      
+
       // Footer
       pdf.setFontSize(10);
       pdf.setTextColor(100, 100, 100);
       pdf.text('Thank you for your business!', 105, 280, { align: 'center' });
-      
+
       // Save the PDF
       pdf.save(`invoice-${invoiceData.number}.pdf`);
-      
+
       // Show success message
-      alert(t('success.invoiceDownloaded', { defaultValue: 'Invoice PDF downloaded successfully!' }));
+      alert(
+        t('success.invoiceDownloaded', { defaultValue: 'Invoice PDF downloaded successfully!' }),
+      );
     } catch (error) {
       console.error('Error downloading invoice:', error);
       alert(t('error.downloadFailed', { defaultValue: 'Failed to download invoice PDF' }));
     }
   };
 
-  const handleDeleteInvoice = (invoice) => {
-    if (window.confirm(t('actions.confirmDelete', { defaultValue: 'Are you sure you want to delete this invoice?' }))) {
+  const handleDeleteInvoice = invoice => {
+    if (
+      window.confirm(
+        t('actions.confirmDelete', {
+          defaultValue: 'Are you sure you want to delete this invoice?',
+        }),
+      )
+    ) {
       // TODO: Implement delete invoice functionality
       alert(t('actions.delete', { defaultValue: 'Delete Invoice' }) + ' - Coming soon!');
     }
@@ -462,7 +476,7 @@ const InvoicesPage = () => {
       status: '',
       client: '',
       dateRange: '',
-      amount: ''
+      amount: '',
     };
     setFilters(clearedFilters);
     setFilteredInvoices(invoices);
@@ -475,24 +489,25 @@ const InvoicesPage = () => {
     // Filter by search term
     if (searchTerm && searchTerm.trim() !== '') {
       const searchLower = searchTerm.toLowerCase();
-      filtered = filtered.filter(invoice => 
-        invoice.id.toLowerCase().includes(searchLower) ||
-        invoice.client.name.toLowerCase().includes(searchLower) ||
-        invoice.status.toLowerCase().includes(searchLower)
+      filtered = filtered.filter(
+        invoice =>
+          invoice.id.toLowerCase().includes(searchLower) ||
+          invoice.client.name.toLowerCase().includes(searchLower) ||
+          invoice.status.toLowerCase().includes(searchLower),
       );
     }
 
     // Filter by status
     if (currentFilters.status && currentFilters.status !== '') {
-      filtered = filtered.filter(invoice => 
-        invoice.status.toLowerCase() === currentFilters.status.toLowerCase()
+      filtered = filtered.filter(
+        invoice => invoice.status.toLowerCase() === currentFilters.status.toLowerCase(),
       );
     }
 
     // Filter by client
     if (currentFilters.client && currentFilters.client !== '') {
-      filtered = filtered.filter(invoice => 
-        invoice.client.name.toLowerCase().includes(currentFilters.client.toLowerCase())
+      filtered = filtered.filter(invoice =>
+        invoice.client.name.toLowerCase().includes(currentFilters.client.toLowerCase()),
       );
     }
 
@@ -535,7 +550,9 @@ const InvoicesPage = () => {
       <div className='min-h-screen bg-[#F9FAFB] flex items-center justify-center'>
         <div className='text-center'>
           <XCircle className='h-12 w-12 text-red-500 mx-auto mb-4' />
-          <p className='text-red-600 mb-4'>{t('error.title')} {error}</p>
+          <p className='text-red-600 mb-4'>
+            {t('error.title')} {error}
+          </p>
           <button
             onClick={loadInvoices}
             className='bg-[#357AF3] text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors'
@@ -590,7 +607,9 @@ const InvoicesPage = () => {
       ];
     }
 
-    const totalOutstanding = (analytics.revenueAnalytics?.pendingRevenue || 0) + (analytics.revenueAnalytics?.overdueRevenue || 0);
+    const totalOutstanding =
+      (analytics.revenueAnalytics?.pendingRevenue || 0) +
+      (analytics.revenueAnalytics?.overdueRevenue || 0);
     const totalPaid = analytics.revenueAnalytics?.paidRevenue || 0;
     const overdueCount = analytics.statusDistribution?.overdue || 0;
     const paidCount = analytics.statusDistribution?.paid || 0;
@@ -599,7 +618,9 @@ const InvoicesPage = () => {
     return [
       {
         title: t('stats.totalOutstanding.title'),
-        amount: new Intl.NumberFormat('en-US', { style: 'currency', currency: 'EUR' }).format(totalOutstanding),
+        amount: new Intl.NumberFormat('en-US', { style: 'currency', currency: 'EUR' }).format(
+          totalOutstanding,
+        ),
         subtitle: t('stats.totalOutstanding.subtitle', { count: analytics.totalInvoices || 0 }),
         trend: { value: '0%', type: 'up', color: 'text-orange-600' },
         icon: DollarSign,
@@ -608,7 +629,9 @@ const InvoicesPage = () => {
       },
       {
         title: t('stats.paidThisMonth.title'),
-        amount: new Intl.NumberFormat('en-US', { style: 'currency', currency: 'EUR' }).format(totalPaid),
+        amount: new Intl.NumberFormat('en-US', { style: 'currency', currency: 'EUR' }).format(
+          totalPaid,
+        ),
         subtitle: t('stats.paidThisMonth.subtitle', { count: paidCount }),
         trend: { value: '0%', type: 'up', color: 'text-green-600' },
         icon: CheckCircle,
@@ -617,7 +640,9 @@ const InvoicesPage = () => {
       },
       {
         title: t('stats.overdue.title'),
-        amount: new Intl.NumberFormat('en-US', { style: 'currency', currency: 'EUR' }).format(analytics.revenueAnalytics?.overdueRevenue || 0),
+        amount: new Intl.NumberFormat('en-US', { style: 'currency', currency: 'EUR' }).format(
+          analytics.revenueAnalytics?.overdueRevenue || 0,
+        ),
         subtitle: t('stats.overdue.subtitle', { count: overdueCount }),
         trend: { value: '0%', type: 'up', color: 'text-red-600' },
         icon: XCircle,
@@ -671,10 +696,13 @@ const InvoicesPage = () => {
     return Object.values(clientTotals)
       .map(client => ({
         ...client,
-        amount: new Intl.NumberFormat('en-US', { style: 'currency', currency: 'EUR' }).format(client.totalAmount),
-        onTimePercentage: client.invoiceCount > 0
-          ? `${Math.round((client.paidCount / client.invoiceCount) * 100)}% ${t('status.paid')}`
-          : `0% ${t('status.paid')}`,
+        amount: new Intl.NumberFormat('en-US', { style: 'currency', currency: 'EUR' }).format(
+          client.totalAmount,
+        ),
+        onTimePercentage:
+          client.invoiceCount > 0
+            ? `${Math.round((client.paidCount / client.invoiceCount) * 100)}% ${t('status.paid')}`
+            : `0% ${t('status.paid')}`,
       }))
       .sort((a, b) => b.totalAmount - a.totalAmount)
       .slice(0, 4);
@@ -766,12 +794,12 @@ const InvoicesPage = () => {
       <div className='bg-blue-50 border-b border-gray-200 py-2 px-4 md:px-8'>
         <div className='flex items-center space-x-2 text-base'>
           <HomeIcon className='h-5 w-5 text-blue-600' />
-          <button 
-                onClick={() => navigate('/dashboard')}
-                className='text-blue-600 hover:text-blue-700 font-medium transition-colors'
-              >
-                Dashboard
-              </button>
+          <button
+            onClick={() => navigate('/dashboard')}
+            className='text-blue-600 hover:text-blue-700 font-medium transition-colors'
+          >
+            Dashboard
+          </button>
           <ChevronRightIcon className='h-5 w-5 text-gray-400' />
           <span className='text-gray-600 font-bold'>{t('breadcrumb')}</span>
         </div>
@@ -1020,10 +1048,11 @@ const InvoicesPage = () => {
             {/* Payment Status Chart - Redesigned */}
             <div className='bg-white rounded-xl border border-gray-200 p-6 shadow-sm'>
               <div className='flex justify-between items-center mb-6'>
-                <h3 className='text-section-title'>
-                  {t('analytics.paymentStatus.title')}
-                </h3>
-                <CardDropdownMenu dropdownId="paymentStatusOptions" options={paymentStatusOptions} />
+                <h3 className='text-section-title'>{t('analytics.paymentStatus.title')}</h3>
+                <CardDropdownMenu
+                  dropdownId='paymentStatusOptions'
+                  options={paymentStatusOptions}
+                />
               </div>
 
               {/* Enhanced Layout with Chart and Stats */}
@@ -1034,8 +1063,14 @@ const InvoicesPage = () => {
                     <div className='absolute inset-0 flex items-center justify-center'>
                       <div className='text-center'>
                         <div className='text-xl font-bold text-gray-900'>
-                          {analytics?.statusDistribution ?
-                            Math.round(((analytics.statusDistribution.paid || 0) / (analytics.totalInvoices || 1)) * 100) : 0}%
+                          {analytics?.statusDistribution
+                            ? Math.round(
+                                ((analytics.statusDistribution.paid || 0) /
+                                  (analytics.totalInvoices || 1)) *
+                                  100,
+                              )
+                            : 0}
+                          %
                         </div>
                         <div className='text-xs text-gray-500'>
                           {t('analytics.paymentStatus.paid')}
@@ -1090,8 +1125,13 @@ const InvoicesPage = () => {
                   <div className='text-center p-3 bg-green-50 rounded-lg border border-green-100'>
                     <div className='w-3 h-3 bg-green-500 rounded-full mx-auto mb-2'></div>
                     <div className='text-lg font-bold text-green-700'>
-                      {analytics?.statusDistribution && analytics.totalInvoices > 0 ?
-                        Math.round(((analytics.statusDistribution.paid || 0) / analytics.totalInvoices) * 100) : 0}%
+                      {analytics?.statusDistribution && analytics.totalInvoices > 0
+                        ? Math.round(
+                            ((analytics.statusDistribution.paid || 0) / analytics.totalInvoices) *
+                              100,
+                          )
+                        : 0}
+                      %
                     </div>
                     <div className='text-xs text-green-600 font-medium'>
                       {t('analytics.paymentStatus.paid')}
@@ -1100,8 +1140,13 @@ const InvoicesPage = () => {
                   <div className='text-center p-3 bg-amber-50 rounded-lg border border-amber-100'>
                     <div className='w-3 h-3 bg-amber-500 rounded-full mx-auto mb-2'></div>
                     <div className='text-lg font-bold text-amber-700'>
-                      {analytics?.statusDistribution && analytics.totalInvoices > 0 ?
-                        Math.round(((analytics.statusDistribution.sent || 0) / analytics.totalInvoices) * 100) : 0}%
+                      {analytics?.statusDistribution && analytics.totalInvoices > 0
+                        ? Math.round(
+                            ((analytics.statusDistribution.sent || 0) / analytics.totalInvoices) *
+                              100,
+                          )
+                        : 0}
+                      %
                     </div>
                     <div className='text-xs text-amber-600 font-medium'>
                       {t('analytics.paymentStatus.pending')}
@@ -1110,8 +1155,14 @@ const InvoicesPage = () => {
                   <div className='text-center p-3 bg-red-50 rounded-lg border border-red-100'>
                     <div className='w-3 h-3 bg-red-500 rounded-full mx-auto mb-2'></div>
                     <div className='text-lg font-bold text-red-700'>
-                      {analytics?.statusDistribution && analytics.totalInvoices > 0 ?
-                        Math.round(((analytics.statusDistribution.overdue || 0) / analytics.totalInvoices) * 100) : 0}%
+                      {analytics?.statusDistribution && analytics.totalInvoices > 0
+                        ? Math.round(
+                            ((analytics.statusDistribution.overdue || 0) /
+                              analytics.totalInvoices) *
+                              100,
+                          )
+                        : 0}
+                      %
                     </div>
                     <div className='text-xs text-red-600 font-medium'>
                       {t('analytics.paymentStatus.overdue')}
@@ -1125,14 +1176,15 @@ const InvoicesPage = () => {
             <div className='bg-white rounded-xl border border-gray-200 p-6 shadow-sm'>
               <div className='flex justify-between items-center mb-6'>
                 <div>
-                  <h3 className='text-section-title'>
-                    {t('analytics.monthlyInvoices.title')}
-                  </h3>
+                  <h3 className='text-section-title'>{t('analytics.monthlyInvoices.title')}</h3>
                   <p className='text-xs text-gray-500 mt-1'>
                     {t('analytics.monthlyInvoices.subtitle')}
                   </p>
                 </div>
-                <CardDropdownMenu dropdownId="monthlyInvoicesOptions" options={monthlyInvoicesOptions} />
+                <CardDropdownMenu
+                  dropdownId='monthlyInvoicesOptions'
+                  options={monthlyInvoicesOptions}
+                />
               </div>
 
               {/* Enhanced Bar Chart */}
@@ -1152,8 +1204,10 @@ const InvoicesPage = () => {
                         // Count invoices for this month
                         const monthInvoices = invoices.filter(invoice => {
                           const issueDate = new Date(invoice.issueDate);
-                          return issueDate.getFullYear() === date.getFullYear() &&
-                                 issueDate.getMonth() === date.getMonth();
+                          return (
+                            issueDate.getFullYear() === date.getFullYear() &&
+                            issueDate.getMonth() === date.getMonth()
+                          );
                         });
 
                         const created = monthInvoices.length;
@@ -1162,10 +1216,16 @@ const InvoicesPage = () => {
                         monthsData.push({ created, paid, month: monthName });
                       }
 
-                      const maxValue = Math.max(...monthsData.map(d => Math.max(d.created, d.paid)), 1);
+                      const maxValue = Math.max(
+                        ...monthsData.map(d => Math.max(d.created, d.paid)),
+                        1,
+                      );
 
                       return monthsData.map((data, index) => (
-                        <div key={index} className='flex flex-col items-center group cursor-pointer'>
+                        <div
+                          key={index}
+                          className='flex flex-col items-center group cursor-pointer'
+                        >
                           <div className='relative flex flex-col items-center space-y-0.5 mb-2'>
                             <div
                               className='bg-[#357AF3] rounded-sm transition-all duration-500 hover:bg-blue-700 group-hover:scale-110'
@@ -1179,7 +1239,7 @@ const InvoicesPage = () => {
                               className='bg-green-500 rounded-sm transition-all duration-500 hover:bg-green-600 group-hover:scale-110'
                               style={{
                                 width: '14px',
-                                height: `${Math.max((data.paid / maxValue) * 60, 2)}px`
+                                height: `${Math.max((data.paid / maxValue) * 60, 2)}px`,
                               }}
                               title={`${t('analytics.monthlyInvoices.paid')}: ${data.paid}`}
                             ></div>
@@ -1214,8 +1274,10 @@ const InvoicesPage = () => {
                         const currentYear = new Date().getFullYear();
                         return invoices.filter(invoice => {
                           const issueDate = new Date(invoice.issueDate);
-                          return issueDate.getMonth() === currentMonth &&
-                                 issueDate.getFullYear() === currentYear;
+                          return (
+                            issueDate.getMonth() === currentMonth &&
+                            issueDate.getFullYear() === currentYear
+                          );
                         }).length;
                       })()}
                     </div>
@@ -1230,10 +1292,8 @@ const InvoicesPage = () => {
             {/* Top Clients - Compact in Same Row */}
             <div className='bg-white rounded-xl border border-gray-200 p-6 shadow-sm'>
               <div className='flex justify-between items-center mb-6'>
-                <h3 className='text-section-title'>
-                  {t('analytics.topClients.title')}
-                </h3>
-                <button 
+                <h3 className='text-section-title'>{t('analytics.topClients.title')}</h3>
+                <button
                   onClick={handleViewAllClients}
                   className='text-[#357AF3] hover:text-blue-800 text-xs font-semibold'
                 >
@@ -1264,7 +1324,7 @@ const InvoicesPage = () => {
                         </button>
                       </div>
                     ))}
-                    <button 
+                    <button
                       onClick={handleViewAllClients}
                       className='w-full text-center text-[#357AF3] hover:text-blue-800 text-sm font-semibold py-2 border border-[#357AF3] rounded-lg hover:bg-blue-50 transition-colors'
                     >
@@ -1287,7 +1347,7 @@ const InvoicesPage = () => {
           <div className='bg-white rounded-xl border border-gray-200 p-8 mb-8 shadow-sm'>
             <div className='flex justify-between items-center mb-6'>
               <h3 className='text-section-title'>{t('filters.title')}</h3>
-              <button 
+              <button
                 onClick={clearAllFilters}
                 className='text-[#357AF3] hover:text-blue-800 text-sm font-semibold'
               >
@@ -1299,9 +1359,9 @@ const InvoicesPage = () => {
                 <label className='block text-sm font-medium text-gray-700 mb-2'>
                   {t('filters.status.label')}
                 </label>
-                <select 
+                <select
                   value={filters.status}
-                  onChange={(e) => handleFilterChange('status', e.target.value)}
+                  onChange={e => handleFilterChange('status', e.target.value)}
                   className='w-full border border-gray-300 rounded-lg px-4 py-3 bg-gray-50 focus:ring-2 focus:ring-[#357AF3] focus:border-[#357AF3] transition-colors'
                 >
                   <option value=''>{t('filters.status.all')}</option>
@@ -1318,7 +1378,7 @@ const InvoicesPage = () => {
                 <input
                   type='text'
                   value={filters.client}
-                  onChange={(e) => handleFilterChange('client', e.target.value)}
+                  onChange={e => handleFilterChange('client', e.target.value)}
                   placeholder={t('filters.client.all')}
                   className='w-full border border-gray-300 rounded-lg px-4 py-3 bg-gray-50 focus:ring-2 focus:ring-[#357AF3] focus:border-[#357AF3] transition-colors'
                 />
@@ -1332,7 +1392,7 @@ const InvoicesPage = () => {
                     ref={dateInputRef}
                     type='date'
                     value={filters.dateRange}
-                    onChange={(e) => handleFilterChange('dateRange', e.target.value)}
+                    onChange={e => handleFilterChange('dateRange', e.target.value)}
                     placeholder={t('filters.dateRange.placeholder')}
                     className='w-full border border-gray-300 rounded-lg px-4 py-3 text-gray-900 focus:ring-2 focus:ring-[#357AF3] focus:border-[#357AF3] transition-colors'
                   />
@@ -1342,16 +1402,16 @@ const InvoicesPage = () => {
                 <label className='block text-sm font-medium text-gray-700 mb-2'>
                   {t('filters.amount.label')}
                 </label>
-                <select 
+                <select
                   value={filters.amount}
-                  onChange={(e) => handleFilterChange('amount', e.target.value)}
+                  onChange={e => handleFilterChange('amount', e.target.value)}
                   className='w-full border border-gray-300 rounded-lg px-4 py-3 bg-gray-50 focus:ring-2 focus:ring-[#357AF3] focus:border-[#357AF3] transition-colors'
                 >
                   <option value=''>{t('filters.amount.any')}</option>
                 </select>
               </div>
               <div className='flex items-end'>
-                <button 
+                <button
                   onClick={handleApplyFilters}
                   className='w-full bg-[#357AF3] text-white px-6 py-3 rounded-lg flex items-center justify-center space-x-2 hover:bg-blue-700 font-semibold transition-colors'
                 >
@@ -1372,7 +1432,7 @@ const InvoicesPage = () => {
                   type='text'
                   placeholder='Search invoices...'
                   value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
+                  onChange={e => setSearchTerm(e.target.value)}
                   className='w-64 bg-white border border-gray-300 rounded-lg pl-12 pr-4 py-2 text-sm focus:ring-blue-500 focus:border-blue-500'
                   style={{ textIndent: '20px' }}
                 />
@@ -1419,7 +1479,7 @@ const InvoicesPage = () => {
                       <div className='font-bold text-gray-900'>{invoice.amount}</div>
                       <div>{getStatusBadge(invoice.status)}</div>
                       <div className='flex items-center space-x-2'>
-                        <button 
+                        <button
                           onClick={() => handleViewInvoice(invoice.rawData)}
                           className='p-2 hover:bg-gray-100 rounded-lg transition-colors'
                         >
@@ -1431,13 +1491,13 @@ const InvoicesPage = () => {
                         >
                           <Edit className='w-4 h-4 text-gray-500' />
                         </button>
-                        <button 
+                        <button
                           onClick={() => handleDownloadInvoice(invoice.rawData)}
                           className='p-2 hover:bg-gray-100 rounded-lg transition-colors'
                         >
                           <Download className='w-4 h-4 text-gray-500' />
                         </button>
-                        <button 
+                        <button
                           onClick={() => handleDeleteInvoice(invoice.rawData)}
                           className='p-2 hover:bg-gray-100 rounded-lg transition-colors'
                         >
@@ -1454,7 +1514,10 @@ const InvoicesPage = () => {
                     {t('table.noInvoices.title', 'No invoices found')}
                   </h3>
                   <p className='text-gray-500 mb-6'>
-                    {t('table.noInvoices.description', 'Get started by creating your first invoice.')}
+                    {t(
+                      'table.noInvoices.description',
+                      'Get started by creating your first invoice.',
+                    )}
                   </p>
                   <button
                     onClick={handleCreateInvoice}

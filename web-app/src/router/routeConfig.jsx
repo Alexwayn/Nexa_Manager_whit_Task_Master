@@ -156,8 +156,8 @@ export const mainRoutes = [
     category: 'reports',
     authConfig: {
       organizationRequired: true,
-      requiredPermissions: ['view_analytics']
-    }
+      requiredPermissions: ['view_analytics'],
+    },
   },
   {
     path: '/reports',
@@ -166,8 +166,8 @@ export const mainRoutes = [
     category: 'reports',
     authConfig: {
       organizationRequired: true,
-      requiredPermissions: ['view_analytics', 'access_reports']
-    }
+      requiredPermissions: ['view_analytics', 'access_reports'],
+    },
   },
   {
     path: '/documents',
@@ -218,8 +218,8 @@ export const mainRoutes = [
     category: 'account',
     authConfig: {
       adminOnly: true,
-      organizationRequired: true
-    }
+      organizationRequired: true,
+    },
   },
   {
     path: '/profile',

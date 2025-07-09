@@ -47,7 +47,10 @@ export const useSupabaseWithClerk = () => {
 
             if (token) {
               console.log('✅ [useSupabaseWithClerk] Using Clerk token for Supabase auth');
-              console.log('🔑 [useSupabaseWithClerk] Token preview:', token.substring(0, 50) + '...');
+              console.log(
+                '🔑 [useSupabaseWithClerk] Token preview:',
+                token.substring(0, 50) + '...',
+              );
 
               // Debug: decode and log JWT payload
               try {
@@ -77,13 +80,12 @@ export const useSupabaseWithClerk = () => {
  * Execute a Supabase query with Clerk authentication
  * This is a helper function that can be used outside of React components
  */
-export const executeWithClerkAuth = async (queryFunction) => {
+export const executeWithClerkAuth = async queryFunction => {
   try {
     console.log('🔍 [executeWithClerkAuth] Attempting to get Clerk token...');
 
     // Try to get the token from window.Clerk if available
     if (typeof window !== 'undefined' && window.Clerk?.session) {
-
       // Try with template name first
       console.log('🎯 [executeWithClerkAuth] Trying with template name: supabase');
       let token = await window.Clerk.session.getToken({ template: 'supabase' });
@@ -91,8 +93,12 @@ export const executeWithClerkAuth = async (queryFunction) => {
 
       // If no token, try with template ID
       if (!token) {
-        console.log('🎯 [executeWithClerkAuth] Trying with template ID: jtmp_2z5wvuHN0RtLnrZCMsUp0l5x0qc');
-        token = await window.Clerk.session.getToken({ template: 'jtmp_2z5wvuHN0RtLnrZCMsUp0l5x0qc' });
+        console.log(
+          '🎯 [executeWithClerkAuth] Trying with template ID: jtmp_2z5wvuHN0RtLnrZCMsUp0l5x0qc',
+        );
+        token = await window.Clerk.session.getToken({
+          template: 'jtmp_2z5wvuHN0RtLnrZCMsUp0l5x0qc',
+        });
         console.log('🎯 [executeWithClerkAuth] Token with ID:', token ? 'YES' : 'NO');
       }
 
@@ -127,7 +133,7 @@ export const executeWithClerkAuth = async (queryFunction) => {
     } else {
       console.warn('⚠️ [executeWithClerkAuth] No Clerk session available');
     }
-    
+
     // Fallback to regular client if no token available
     Logger.warn('No Clerk token available, using anonymous client');
     return await queryFunction(supabase);

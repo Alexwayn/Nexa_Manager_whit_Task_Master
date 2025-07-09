@@ -12,36 +12,36 @@ class EmailProviderService {
         endpoint: 'https://api.sendgrid.com/v3/mail/send',
         requiresAuth: true,
         authType: 'bearer',
-        limits: { daily: 40000, monthly: 1200000 }
+        limits: { daily: 40000, monthly: 1200000 },
       },
       ses: {
         name: 'Amazon SES',
         endpoint: 'https://email.{region}.amazonaws.com/',
         requiresAuth: true,
         authType: 'aws',
-        limits: { daily: 200, monthly: 1000000 }
+        limits: { daily: 200, monthly: 1000000 },
       },
       mailgun: {
         name: 'Mailgun',
         endpoint: 'https://api.mailgun.net/v3/{domain}/messages',
         requiresAuth: true,
         authType: 'basic',
-        limits: { daily: 300, monthly: 10000 }
+        limits: { daily: 300, monthly: 10000 },
       },
       postmark: {
         name: 'Postmark',
         endpoint: 'https://api.postmarkapp.com/email',
         requiresAuth: true,
         authType: 'token',
-        limits: { daily: 25000, monthly: 750000 }
+        limits: { daily: 25000, monthly: 750000 },
       },
       smtp: {
         name: 'Custom SMTP',
         endpoint: null,
         requiresAuth: true,
         authType: 'smtp',
-        limits: { daily: null, monthly: null }
-      }
+        limits: { daily: null, monthly: null },
+      },
     };
 
     this.activeProvider = this.getActiveProvider();
@@ -61,7 +61,7 @@ class EmailProviderService {
   async sendEmail(emailData) {
     try {
       const provider = this.activeProvider;
-      
+
       switch (provider) {
         case 'sendgrid':
           return await this.sendWithSendGrid(emailData);
@@ -81,7 +81,7 @@ class EmailProviderService {
       return {
         success: false,
         error: error.message,
-        provider: this.activeProvider
+        provider: this.activeProvider,
       };
     }
   }
@@ -100,23 +100,23 @@ class EmailProviderService {
         personalizations: [
           {
             to: [{ email: emailData.to, name: emailData.toName || '' }],
-            subject: emailData.subject
-          }
+            subject: emailData.subject,
+          },
         ],
         from: {
           email: emailData.from || import.meta.env.VITE_FROM_EMAIL || 'noreply@nexamanager.com',
-          name: emailData.fromName || import.meta.env.VITE_FROM_NAME || 'Nexa Manager'
+          name: emailData.fromName || import.meta.env.VITE_FROM_NAME || 'Nexa Manager',
         },
         content: [
           {
             type: 'text/plain',
-            value: emailData.text || this.htmlToText(emailData.html)
+            value: emailData.text || this.htmlToText(emailData.html),
           },
           {
             type: 'text/html',
-            value: emailData.html
-          }
-        ]
+            value: emailData.html,
+          },
+        ],
       };
 
       // Add attachments if present
@@ -125,7 +125,7 @@ class EmailProviderService {
           content: attachment.content,
           filename: attachment.filename,
           type: attachment.type || 'application/octet-stream',
-          disposition: 'attachment'
+          disposition: 'attachment',
         }));
       }
 
@@ -134,17 +134,17 @@ class EmailProviderService {
         payload.tracking_settings = {
           click_tracking: { enable: true },
           open_tracking: { enable: true },
-          subscription_tracking: { enable: false }
+          subscription_tracking: { enable: false },
         };
       }
 
       const response = await fetch(this.providers.sendgrid.endpoint, {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${apiKey}`,
-          'Content-Type': 'application/json'
+          Authorization: `Bearer ${apiKey}`,
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify(payload)
+        body: JSON.stringify(payload),
       });
 
       if (response.ok) {
@@ -152,7 +152,7 @@ class EmailProviderService {
         return {
           success: true,
           messageId,
-          provider: 'sendgrid'
+          provider: 'sendgrid',
         };
       } else {
         const error = await response.json();
@@ -163,7 +163,7 @@ class EmailProviderService {
       return {
         success: false,
         error: error.message,
-        provider: 'sendgrid'
+        provider: 'sendgrid',
       };
     }
   }
@@ -185,39 +185,41 @@ class EmailProviderService {
       const payload = {
         Source: emailData.from || import.meta.env.VITE_FROM_EMAIL || 'noreply@nexamanager.com',
         Destination: {
-          ToAddresses: [emailData.to]
+          ToAddresses: [emailData.to],
         },
         Message: {
           Subject: {
             Data: emailData.subject,
-            Charset: 'UTF-8'
+            Charset: 'UTF-8',
           },
           Body: {
             Text: {
               Data: emailData.text || this.htmlToText(emailData.html),
-              Charset: 'UTF-8'
+              Charset: 'UTF-8',
             },
             Html: {
               Data: emailData.html,
-              Charset: 'UTF-8'
-            }
-          }
-        }
+              Charset: 'UTF-8',
+            },
+          },
+        },
       };
 
       // Note: This is a mock implementation
       // In real implementation, you'd use AWS SDK v3 SESv2Client
-      return await this.sendWithMockProvider({
-        ...emailData,
-        provider: 'AWS SES'
-      }, null);
-
+      return await this.sendWithMockProvider(
+        {
+          ...emailData,
+          provider: 'AWS SES',
+        },
+        null,
+      );
     } catch (error) {
       Logger.error('AWS SES send error:', error);
       return {
         success: false,
         error: error.message,
-        provider: 'ses'
+        provider: 'ses',
       };
     }
   }
@@ -235,7 +237,10 @@ class EmailProviderService {
 
     try {
       const formData = new FormData();
-      formData.append('from', emailData.from || import.meta.env.VITE_FROM_EMAIL || 'noreply@nexamanager.com');
+      formData.append(
+        'from',
+        emailData.from || import.meta.env.VITE_FROM_EMAIL || 'noreply@nexamanager.com',
+      );
       formData.append('to', emailData.to);
       formData.append('subject', emailData.subject);
       formData.append('text', emailData.text || this.htmlToText(emailData.html));
@@ -251,9 +256,9 @@ class EmailProviderService {
       const response = await fetch(endpoint, {
         method: 'POST',
         headers: {
-          'Authorization': `Basic ${btoa(`api:${apiKey}`)}`
+          Authorization: `Basic ${btoa(`api:${apiKey}`)}`,
         },
-        body: formData
+        body: formData,
       });
 
       if (response.ok) {
@@ -261,7 +266,7 @@ class EmailProviderService {
         return {
           success: true,
           messageId: result.id,
-          provider: 'mailgun'
+          provider: 'mailgun',
         };
       } else {
         const error = await response.json();
@@ -272,7 +277,7 @@ class EmailProviderService {
       return {
         success: false,
         error: error.message,
-        provider: 'mailgun'
+        provider: 'mailgun',
       };
     }
   }
@@ -295,14 +300,14 @@ class EmailProviderService {
         TextBody: emailData.text || this.htmlToText(emailData.html),
         HtmlBody: emailData.html,
         TrackOpens: emailData.tracking !== false,
-        TrackLinks: emailData.tracking !== false ? 'HtmlAndText' : 'None'
+        TrackLinks: emailData.tracking !== false ? 'HtmlAndText' : 'None',
       };
 
       if (emailData.attachments && emailData.attachments.length > 0) {
         payload.Attachments = emailData.attachments.map(attachment => ({
           Name: attachment.filename,
           Content: attachment.content,
-          ContentType: attachment.type || 'application/octet-stream'
+          ContentType: attachment.type || 'application/octet-stream',
         }));
       }
 
@@ -310,9 +315,9 @@ class EmailProviderService {
         method: 'POST',
         headers: {
           'X-Postmark-Server-Token': serverToken,
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify(payload)
+        body: JSON.stringify(payload),
       });
 
       if (response.ok) {
@@ -320,7 +325,7 @@ class EmailProviderService {
         return {
           success: true,
           messageId: result.MessageID,
-          provider: 'postmark'
+          provider: 'postmark',
         };
       } else {
         const error = await response.json();
@@ -331,7 +336,7 @@ class EmailProviderService {
       return {
         success: false,
         error: error.message,
-        provider: 'postmark'
+        provider: 'postmark',
       };
     }
   }
@@ -342,10 +347,13 @@ class EmailProviderService {
   async sendWithSMTP(emailData) {
     // This would require a backend SMTP service
     // For now, we'll use the mock provider
-    return await this.sendWithMockProvider({
-      ...emailData,
-      provider: 'Custom SMTP'
-    }, 'SMTP integration requires backend service');
+    return await this.sendWithMockProvider(
+      {
+        ...emailData,
+        provider: 'Custom SMTP',
+      },
+      'SMTP integration requires backend service',
+    );
   }
 
   /**
@@ -365,26 +373,26 @@ class EmailProviderService {
       return {
         success: false,
         error: 'Mock provider: Simulated network error',
-        provider: 'mock'
+        provider: 'mock',
       };
     }
 
     const messageId = `mock_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+
     // Log the email for development
     Logger.info('Mock email sent:', {
       to: emailData.to,
       subject: emailData.subject,
       messageId,
       provider: emailData.provider || 'mock',
-      note: mockError || 'Simulated successful delivery'
+      note: mockError || 'Simulated successful delivery',
     });
 
     return {
       success: true,
       messageId,
       provider: emailData.provider || 'mock',
-      note: mockError ? `Warning: ${mockError}` : 'Email sent successfully'
+      note: mockError ? `Warning: ${mockError}` : 'Email sent successfully',
     };
   }
 
@@ -410,7 +418,7 @@ class EmailProviderService {
           </p>
         </div>
       `,
-      tracking: false
+      tracking: false,
     };
 
     if (provider) {
@@ -440,7 +448,7 @@ class EmailProviderService {
       active: target === this.activeProvider,
       configured: this.isProviderConfigured(target),
       limits: providerData.limits,
-      authType: providerData.authType
+      authType: providerData.authType,
     };
   }
 
@@ -452,7 +460,9 @@ class EmailProviderService {
       case 'sendgrid':
         return !!import.meta.env.VITE_SENDGRID_API_KEY;
       case 'ses':
-        return !!(import.meta.env.VITE_AWS_ACCESS_KEY_ID && import.meta.env.VITE_AWS_SECRET_ACCESS_KEY);
+        return !!(
+          import.meta.env.VITE_AWS_ACCESS_KEY_ID && import.meta.env.VITE_AWS_SECRET_ACCESS_KEY
+        );
       case 'mailgun':
         return !!(import.meta.env.VITE_MAILGUN_API_KEY && import.meta.env.VITE_MAILGUN_DOMAIN);
       case 'postmark':
@@ -470,7 +480,7 @@ class EmailProviderService {
   getAllProviders() {
     return Object.keys(this.providers).map(key => ({
       id: key,
-      ...this.getProviderInfo(key)
+      ...this.getProviderInfo(key),
     }));
   }
 
@@ -490,7 +500,7 @@ class EmailProviderService {
    */
   htmlToText(html) {
     if (!html) return '';
-    
+
     return html
       .replace(/<br\s*\/?>/gi, '\n')
       .replace(/<\/p>/gi, '\n\n')
@@ -525,14 +535,14 @@ class EmailProviderService {
    */
   getEstimatedDeliveryTime(provider = null) {
     const target = provider || this.activeProvider;
-    
+
     const deliveryTimes = {
       sendgrid: '1-5 minutes',
       ses: '1-3 minutes',
       mailgun: '1-5 minutes',
       postmark: '30 seconds - 2 minutes',
       smtp: '1-10 minutes',
-      mock: 'Instant (development)'
+      mock: 'Instant (development)',
     };
 
     return deliveryTimes[target] || 'Unknown';
@@ -543,14 +553,14 @@ class EmailProviderService {
    */
   getWebhookUrls() {
     const baseUrl = import.meta.env.VITE_BASE_URL || 'https://your-domain.com';
-    
+
     return {
       sendgrid: `${baseUrl}/api/webhooks/sendgrid`,
       postmark: `${baseUrl}/api/webhooks/postmark`,
       mailgun: `${baseUrl}/api/webhooks/mailgun`,
-      ses: `${baseUrl}/api/webhooks/ses`
+      ses: `${baseUrl}/api/webhooks/ses`,
     };
   }
 }
 
-export default new EmailProviderService(); 
+export default new EmailProviderService();

@@ -66,13 +66,13 @@ class PerformanceMonitor {
 
     try {
       // Monitor Core Web Vitals
-      const vitalsObserver = new PerformanceObserver((list) => {
+      const vitalsObserver = new PerformanceObserver(list => {
         for (const entry of list.getEntries()) {
           this.recordMetric({
             name: entry.name,
             value: (entry as any).value || entry.duration || 0,
             timestamp: Date.now(),
-            tags: { type: 'web-vital' }
+            tags: { type: 'web-vital' },
           });
         }
       });
@@ -81,7 +81,7 @@ class PerformanceMonitor {
       this.observers.push(vitalsObserver);
 
       // Monitor resource loading
-      const resourceObserver = new PerformanceObserver((list) => {
+      const resourceObserver = new PerformanceObserver(list => {
         for (const entry of list.getEntries()) {
           const resource = entry as PerformanceResourceTiming;
           this.recordMetric({
@@ -91,8 +91,8 @@ class PerformanceMonitor {
             tags: {
               type: 'resource',
               name: resource.name,
-              initiator: resource.initiatorType
-            }
+              initiator: resource.initiatorType,
+            },
           });
         }
       });
@@ -101,13 +101,13 @@ class PerformanceMonitor {
       this.observers.push(resourceObserver);
 
       // Monitor long tasks
-      const longTaskObserver = new PerformanceObserver((list) => {
+      const longTaskObserver = new PerformanceObserver(list => {
         for (const entry of list.getEntries()) {
           this.recordMetric({
             name: 'long-task',
             value: entry.duration,
             timestamp: Date.now(),
-            tags: { type: 'performance-issue' }
+            tags: { type: 'performance-issue' },
           });
         }
       });
@@ -127,7 +127,7 @@ class PerformanceMonitor {
 
     this.metrics.push({
       ...metric,
-      timestamp: metric.timestamp || Date.now()
+      timestamp: metric.timestamp || Date.now(),
     });
 
     // Keep only last 1000 metrics to prevent memory leaks
@@ -144,7 +144,7 @@ class PerformanceMonitor {
 
     this.componentMetrics.push({
       ...metric,
-      timestamp: metric.timestamp || Date.now()
+      timestamp: metric.timestamp || Date.now(),
     });
 
     if (this.componentMetrics.length > 500) {
@@ -160,7 +160,7 @@ class PerformanceMonitor {
 
     this.apiMetrics.push({
       ...metric,
-      timestamp: metric.timestamp || Date.now()
+      timestamp: metric.timestamp || Date.now(),
     });
 
     if (this.apiMetrics.length > 500) {
@@ -176,7 +176,7 @@ class PerformanceMonitor {
 
     this.userMetrics.push({
       ...metric,
-      timestamp: metric.timestamp || Date.now()
+      timestamp: metric.timestamp || Date.now(),
     });
 
     if (this.userMetrics.length > 300) {
@@ -187,23 +187,19 @@ class PerformanceMonitor {
   /**
    * Measure function execution time
    */
-  public measureFunction<T>(
-    name: string,
-    fn: () => T,
-    tags?: Record<string, string>
-  ): T {
+  public measureFunction<T>(name: string, fn: () => T, tags?: Record<string, string>): T {
     const start = performance.now();
     try {
       const result = fn();
       const duration = performance.now() - start;
-      
+
       this.recordMetric({
         name: `function-execution-${name}`,
         value: duration,
         timestamp: Date.now(),
-        tags: { ...tags, type: 'function-timing' }
+        tags: { ...tags, type: 'function-timing' },
       });
-      
+
       return result;
     } catch (error) {
       const duration = performance.now() - start;
@@ -211,7 +207,7 @@ class PerformanceMonitor {
         name: `function-error-${name}`,
         value: duration,
         timestamp: Date.now(),
-        tags: { ...tags, type: 'function-error' }
+        tags: { ...tags, type: 'function-error' },
       });
       throw error;
     }
@@ -223,20 +219,20 @@ class PerformanceMonitor {
   public async measureAsyncFunction<T>(
     name: string,
     fn: () => Promise<T>,
-    tags?: Record<string, string>
+    tags?: Record<string, string>,
   ): Promise<T> {
     const start = performance.now();
     try {
       const result = await fn();
       const duration = performance.now() - start;
-      
+
       this.recordMetric({
         name: `async-function-execution-${name}`,
         value: duration,
         timestamp: Date.now(),
-        tags: { ...tags, type: 'async-function-timing' }
+        tags: { ...tags, type: 'async-function-timing' },
       });
-      
+
       return result;
     } catch (error) {
       const duration = performance.now() - start;
@@ -244,7 +240,7 @@ class PerformanceMonitor {
         name: `async-function-error-${name}`,
         value: duration,
         timestamp: Date.now(),
-        tags: { ...tags, type: 'async-function-error' }
+        tags: { ...tags, type: 'async-function-error' },
       });
       throw error;
     }
@@ -255,7 +251,7 @@ class PerformanceMonitor {
    */
   public getCoreWebVitals(): Record<string, number> {
     const vitals: Record<string, number> = {};
-    
+
     // Largest Contentful Paint
     const lcpEntries = performance.getEntriesByType('largest-contentful-paint');
     if (lcpEntries.length > 0) {
@@ -287,9 +283,11 @@ class PerformanceMonitor {
     slowestAPICalls: APICallMetric[];
     coreWebVitals: Record<string, number>;
   } {
-    const avgRenderTime = this.componentMetrics.length > 0
-      ? this.componentMetrics.reduce((sum, m) => sum + m.renderTime, 0) / this.componentMetrics.length
-      : 0;
+    const avgRenderTime =
+      this.componentMetrics.length > 0
+        ? this.componentMetrics.reduce((sum, m) => sum + m.renderTime, 0) /
+          this.componentMetrics.length
+        : 0;
 
     const slowestComponents = [...this.componentMetrics]
       .sort((a, b) => b.renderTime - a.renderTime)
@@ -304,7 +302,7 @@ class PerformanceMonitor {
       avgRenderTime,
       slowestComponents,
       slowestAPICalls,
-      coreWebVitals: this.getCoreWebVitals()
+      coreWebVitals: this.getCoreWebVitals(),
     };
   }
 
@@ -321,7 +319,7 @@ class PerformanceMonitor {
       general: [...this.metrics],
       components: [...this.componentMetrics],
       api: [...this.apiMetrics],
-      user: [...this.userMetrics]
+      user: [...this.userMetrics],
     };
   }
 
@@ -383,15 +381,15 @@ export const performanceMonitor = PerformanceMonitor.getInstance();
 export function measurePerformance(_name: string, _tags?: Record<string, string>) {
   return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
     const originalMethod = descriptor.value;
-    
+
     descriptor.value = function (...args: any[]) {
       return performanceMonitor.measureFunction(
         `${target.constructor.name}.${propertyKey}`,
         () => originalMethod.apply(this, args),
-        _tags
+        _tags,
       );
     };
-    
+
     return descriptor;
   };
 }
@@ -399,15 +397,15 @@ export function measurePerformance(_name: string, _tags?: Record<string, string>
 export function measureAsyncPerformance(_name: string, _tags?: Record<string, string>) {
   return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
     const originalMethod = descriptor.value;
-    
+
     descriptor.value = async function (...args: any[]) {
       return performanceMonitor.measureAsyncFunction(
         `${target.constructor.name}.${propertyKey}`,
         () => originalMethod.apply(this, args),
-        _tags
+        _tags,
       );
     };
-    
+
     return descriptor;
   };
-} 
+}

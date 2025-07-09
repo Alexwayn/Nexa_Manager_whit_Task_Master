@@ -21,11 +21,11 @@ export class AccessibilityCI {
         criticalViolations: 0,
         seriousViolations: 0,
         moderateViolations: 5,
-        minorViolations: 10
+        minorViolations: 10,
       },
-      ...config
+      ...config,
     };
-    
+
     this.tester = new AccessibilityTester();
   }
 
@@ -45,11 +45,11 @@ export class AccessibilityCI {
         moderateViolations: 0,
         minorViolations: 0,
         passedTests: 0,
-        failedTests: 0
+        failedTests: 0,
       },
       pages: [],
       timestamp: new Date().toISOString(),
-      configuration: this.config
+      configuration: this.config,
     };
 
     for (const page of pages) {
@@ -57,27 +57,34 @@ export class AccessibilityCI {
         console.log(`Testing accessibility for: ${baseUrl}${page}`);
         const pageResult = await this.testPage(baseUrl, page);
         results.pages.push(pageResult);
-        
+
         // Update summary
         results.summary.totalViolations += pageResult.violations.length;
-        results.summary.criticalViolations += pageResult.violations.filter(v => v.impact === 'critical').length;
-        results.summary.seriousViolations += pageResult.violations.filter(v => v.impact === 'serious').length;
-        results.summary.moderateViolations += pageResult.violations.filter(v => v.impact === 'moderate').length;
-        results.summary.minorViolations += pageResult.violations.filter(v => v.impact === 'minor').length;
-        
+        results.summary.criticalViolations += pageResult.violations.filter(
+          v => v.impact === 'critical',
+        ).length;
+        results.summary.seriousViolations += pageResult.violations.filter(
+          v => v.impact === 'serious',
+        ).length;
+        results.summary.moderateViolations += pageResult.violations.filter(
+          v => v.impact === 'moderate',
+        ).length;
+        results.summary.minorViolations += pageResult.violations.filter(
+          v => v.impact === 'minor',
+        ).length;
+
         if (pageResult.violations.length === 0) {
           results.summary.passedTests++;
         } else {
           results.summary.failedTests++;
         }
-        
       } catch (error) {
-        console.error(`Error testing page ${page}:`, error);
+        console.error(`Error testing page ${page}:`, String(error?.message || error || 'Unknown error'));
         results.pages.push({
           url: `${baseUrl}${page}`,
           error: error.message,
           violations: [],
-          timestamp: new Date().toISOString()
+          timestamp: new Date().toISOString(),
         });
         results.summary.failedTests++;
       }
@@ -99,15 +106,15 @@ export class AccessibilityCI {
    */
   async testPage(baseUrl, page) {
     const fullUrl = `${baseUrl}${page}`;
-    
+
     // In a real CI environment, you'd use tools like:
     // - axe-core with Puppeteer/Playwright
     // - pa11y
     // - accessibility-checker
-    
+
     // For now, we'll simulate the test results
     const mockViolations = this.generateMockViolations(page);
-    
+
     return {
       url: fullUrl,
       page: page,
@@ -118,8 +125,8 @@ export class AccessibilityCI {
         colorContrast: await this.testColorContrast(),
         keyboardNavigation: await this.testKeyboardNavigation(),
         screenReader: await this.testScreenReader(),
-        focusManagement: await this.testFocusManagement()
-      }
+        focusManagement: await this.testFocusManagement(),
+      },
     };
   }
 
@@ -131,7 +138,7 @@ export class AccessibilityCI {
   generateMockViolations(page) {
     // This would be replaced with real axe-core results in production
     const violations = [];
-    
+
     if (page === '/') {
       violations.push({
         id: 'color-contrast',
@@ -143,12 +150,12 @@ export class AccessibilityCI {
           {
             html: '<button class="text-gray-400 bg-gray-100">Submit</button>',
             target: ['button.text-gray-400'],
-            failureSummary: 'Contrast ratio of 2.1:1 is less than the required 4.5:1'
-          }
-        ]
+            failureSummary: 'Contrast ratio of 2.1:1 is less than the required 4.5:1',
+          },
+        ],
       });
     }
-    
+
     return violations;
   }
 
@@ -168,9 +175,9 @@ export class AccessibilityCI {
           element: 'button.secondary',
           contrast: '2.8:1',
           required: '4.5:1',
-          recommendation: 'Darken text color or lighten background'
-        }
-      ]
+          recommendation: 'Darken text color or lighten background',
+        },
+      ],
     };
   }
 
@@ -185,7 +192,7 @@ export class AccessibilityCI {
       tabOrder: 'correct',
       trapFocus: true,
       escapeKey: true,
-      arrowNavigation: true
+      arrowNavigation: true,
     };
   }
 
@@ -199,7 +206,7 @@ export class AccessibilityCI {
       missingLabels: 0,
       improperHeadings: 0,
       missingLandmarks: 0,
-      ariaAttributes: 'valid'
+      ariaAttributes: 'valid',
     };
   }
 
@@ -213,7 +220,7 @@ export class AccessibilityCI {
       focusIndicators: true,
       focusTrapping: true,
       skipLinks: true,
-      initialFocus: true
+      initialFocus: true,
     };
   }
 
@@ -224,39 +231,39 @@ export class AccessibilityCI {
    */
   checkThresholds(summary) {
     const violations = [];
-    
+
     if (summary.criticalViolations > this.config.thresholds.criticalViolations) {
       violations.push({
         type: 'critical',
         found: summary.criticalViolations,
-        threshold: this.config.thresholds.criticalViolations
+        threshold: this.config.thresholds.criticalViolations,
       });
     }
-    
+
     if (summary.seriousViolations > this.config.thresholds.seriousViolations) {
       violations.push({
         type: 'serious',
         found: summary.seriousViolations,
-        threshold: this.config.thresholds.seriousViolations
+        threshold: this.config.thresholds.seriousViolations,
       });
     }
-    
+
     if (summary.moderateViolations > this.config.thresholds.moderateViolations) {
       violations.push({
         type: 'moderate',
         found: summary.moderateViolations,
-        threshold: this.config.thresholds.moderateViolations
+        threshold: this.config.thresholds.moderateViolations,
       });
     }
-    
+
     if (summary.minorViolations > this.config.thresholds.minorViolations) {
       violations.push({
         type: 'minor',
         found: summary.minorViolations,
-        threshold: this.config.thresholds.minorViolations
+        threshold: this.config.thresholds.minorViolations,
       });
     }
-    
+
     return violations;
   }
 
@@ -285,7 +292,7 @@ export class AccessibilityCI {
    */
   generateHTMLReport(results) {
     const { summary, pages } = results;
-    
+
     return `
 <!DOCTYPE html>
 <html lang="en">
@@ -317,22 +324,31 @@ export class AccessibilityCI {
     </div>
     
     <h2>Page Results</h2>
-    ${pages.map(page => `
+    ${pages
+      .map(
+        page => `
         <div class="page-result">
             <h3>${page.url}</h3>
-            ${page.violations.length === 0 ? 
-                '<p class="passed">✅ No accessibility violations found</p>' :
-                page.violations.map(violation => `
+            ${
+              page.violations.length === 0
+                ? '<p class="passed">✅ No accessibility violations found</p>'
+                : page.violations
+                    .map(
+                      violation => `
                     <div class="violation ${violation.impact}">
                         <h4>${violation.description}</h4>
                         <p><strong>Impact:</strong> ${violation.impact}</p>
                         <p><strong>Help:</strong> ${violation.help}</p>
                         <a href="${violation.helpUrl}" target="_blank">Learn more</a>
                     </div>
-                `).join('')
+                `,
+                    )
+                    .join('')
             }
         </div>
-    `).join('')}
+    `,
+      )
+      .join('')}
 </body>
 </html>`;
   }
@@ -344,7 +360,7 @@ export class AccessibilityCI {
    */
   generateXMLReport(results) {
     const { summary, pages } = results;
-    
+
     return `<?xml version="1.0" encoding="UTF-8"?>
 <accessibility-report timestamp="${results.timestamp}">
   <summary>
@@ -354,20 +370,28 @@ export class AccessibilityCI {
     <failed-tests>${summary.failedTests}</failed-tests>
   </summary>
   <pages>
-    ${pages.map(page => `
+    ${pages
+      .map(
+        page => `
     <page url="${page.url}">
       <violations count="${page.violations.length}">
-        ${page.violations.map(violation => `
+        ${page.violations
+          .map(
+            violation => `
         <violation impact="${violation.impact}">
           <id>${violation.id}</id>
           <description>${violation.description}</description>
           <help>${violation.help}</help>
           <help-url>${violation.helpUrl}</help-url>
         </violation>
-        `).join('')}
+        `,
+          )
+          .join('')}
       </violations>
     </page>
-    `).join('')}
+    `,
+      )
+      .join('')}
   </pages>
 </accessibility-report>`;
   }
@@ -381,7 +405,7 @@ export class AccessibilityCI {
     const {
       nodeVersion = '18',
       testCommand = 'npm run test:accessibility',
-      reportArtifact = 'accessibility-report'
+      reportArtifact = 'accessibility-report',
     } = config;
 
     return `name: Accessibility Testing
@@ -469,9 +493,9 @@ export class AccessibilityMonitor {
       alertThreshold: 1, // Alert on any violation
       webhookUrl: null,
       emailNotifications: false,
-      ...config
+      ...config,
     };
-    
+
     this.isMonitoring = false;
     this.violations = [];
     this.intervalId = null;
@@ -482,10 +506,10 @@ export class AccessibilityMonitor {
    */
   start() {
     if (this.isMonitoring) return;
-    
+
     this.isMonitoring = true;
     console.log('Starting accessibility monitoring...');
-    
+
     this.intervalId = setInterval(() => {
       this.checkAccessibility();
     }, this.config.interval);
@@ -496,10 +520,10 @@ export class AccessibilityMonitor {
    */
   stop() {
     if (!this.isMonitoring) return;
-    
+
     this.isMonitoring = false;
     console.log('Stopping accessibility monitoring...');
-    
+
     if (this.intervalId) {
       clearInterval(this.intervalId);
       this.intervalId = null;
@@ -513,11 +537,11 @@ export class AccessibilityMonitor {
     try {
       const tester = new AccessibilityTester();
       const results = await tester.runQuickAudit();
-      
+
       if (results.violations.length >= this.config.alertThreshold) {
         this.handleViolations(results.violations);
       }
-      
+
       this.violations = results.violations;
     } catch (error) {
       console.error('Accessibility monitoring error:', error);
@@ -530,13 +554,13 @@ export class AccessibilityMonitor {
    */
   handleViolations(violations) {
     const criticalViolations = violations.filter(v => v.impact === 'critical');
-    
+
     if (criticalViolations.length > 0) {
       this.sendAlert({
         type: 'critical',
         violations: criticalViolations,
         timestamp: new Date().toISOString(),
-        url: window.location.href
+        url: window.location.href,
       });
     }
   }
@@ -547,41 +571,46 @@ export class AccessibilityMonitor {
    */
   async sendAlert(alert) {
     console.warn('Accessibility Alert:', alert);
-    
+
     // Send webhook notification
     if (this.config.webhookUrl) {
       try {
         await fetch(this.config.webhookUrl, {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
           },
           body: JSON.stringify({
             text: `🚨 Critical accessibility violations detected`,
-            attachments: [{
-              color: 'danger',
-              fields: [{
-                title: 'Violations',
-                value: alert.violations.length,
-                short: true
-              }, {
-                title: 'URL',
-                value: alert.url,
-                short: true
-              }]
-            }]
-          })
+            attachments: [
+              {
+                color: 'danger',
+                fields: [
+                  {
+                    title: 'Violations',
+                    value: alert.violations.length,
+                    short: true,
+                  },
+                  {
+                    title: 'URL',
+                    value: alert.url,
+                    short: true,
+                  },
+                ],
+              },
+            ],
+          }),
         });
       } catch (error) {
         console.error('Failed to send webhook alert:', error);
       }
     }
-    
+
     // Show browser notification
     if ('Notification' in window && Notification.permission === 'granted') {
       new Notification('Accessibility Alert', {
         body: `${alert.violations.length} critical accessibility issues detected`,
-        icon: '/favicon.ico'
+        icon: '/favicon.ico',
       });
     }
   }
@@ -595,7 +624,7 @@ export class AccessibilityMonitor {
       isMonitoring: this.isMonitoring,
       violationCount: this.violations.length,
       lastCheck: new Date().toISOString(),
-      config: this.config
+      config: this.config,
     };
   }
 }
@@ -606,10 +635,10 @@ export const runAccessibilityTests = (baseUrl, pages, config) => {
   return ci.runTestSuite(baseUrl, pages);
 };
 
-export const startAccessibilityMonitoring = (config) => {
+export const startAccessibilityMonitoring = config => {
   const monitor = new AccessibilityMonitor(config);
   monitor.start();
   return monitor;
 };
 
-export default AccessibilityCI; 
+export default AccessibilityCI;

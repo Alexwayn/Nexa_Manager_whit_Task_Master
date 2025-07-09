@@ -14,19 +14,18 @@ const getCurrentUser = () => {
     if (window.Clerk?.user) {
       return window.Clerk.user;
     }
-    
+
     // Fallback: try to get from React context if available
     if (window.__CLERK_USER__) {
       return window.__CLERK_USER__;
     }
   }
-  
+
   Logger.warn('Clerk user not found');
   return null;
 };
 
 class IntegrationsService {
-  
   // ================================
   // API KEY MANAGEMENT
   // ================================
@@ -43,10 +42,12 @@ class IntegrationsService {
 
       // Generate the actual API key using JavaScript
       const timestamp = Date.now();
-      const randomHex = Array.from({length: 16}, () => Math.floor(Math.random() * 16).toString(16)).join('');
+      const randomHex = Array.from({ length: 16 }, () =>
+        Math.floor(Math.random() * 16).toString(16),
+      ).join('');
       const apiKey = `nxa_${timestamp}_${randomHex}`;
       const keyPrefix = apiKey.substring(0, 12) + '...'; // First 12 chars for display
-      
+
       // Simple hash for storage (in production, use proper crypto)
       const keyHash = btoa(apiKey);
 
@@ -63,7 +64,7 @@ class IntegrationsService {
           scopes: keyData.scopes || ['invoices', 'clients', 'payments'],
           rate_limit_requests: keyData.rateLimitRequests || 1000,
           expires_at: keyData.expiresAt,
-          ip_whitelist: keyData.ipWhitelist
+          ip_whitelist: keyData.ipWhitelist,
         })
         .select()
         .single();
@@ -79,7 +80,7 @@ class IntegrationsService {
         entityType: 'api_key',
         entityId: data.id,
         apiKeyName: keyData.name,
-        status: 'success'
+        status: 'success',
       });
 
       Logger.info('API key generated successfully', { keyId: data.id, name: keyData.name });
@@ -88,9 +89,8 @@ class IntegrationsService {
       return {
         ...data,
         key: apiKey, // Only returned once
-        created: true
+        created: true,
       };
-
     } catch (error) {
       Logger.error('Error generating API key:', error);
       throw error;
@@ -118,8 +118,8 @@ class IntegrationsService {
             created_at: new Date().toISOString(),
             last_used_at: null,
             rate_limit_requests: 1000,
-            expires_at: null
-          }
+            expires_at: null,
+          },
         ];
       }
 
@@ -144,14 +144,13 @@ class IntegrationsService {
             created_at: new Date().toISOString(),
             last_used_at: null,
             rate_limit_requests: 500,
-            expires_at: null
-          }
+            expires_at: null,
+          },
         ];
       }
 
       Logger.info('API keys retrieved successfully', { count: data?.length });
       return data || [];
-
     } catch (error) {
       Logger.error('Error retrieving API keys:', error);
       // Return empty array instead of throwing
@@ -176,7 +175,7 @@ class IntegrationsService {
           status: 'revoked',
           revoked_at: new Date().toISOString(),
           revoked_by: user.id,
-          revoked_reason: reason
+          revoked_reason: reason,
         })
         .eq('id', keyId)
         .eq('user_id', user.id)
@@ -195,12 +194,11 @@ class IntegrationsService {
         entityId: keyId,
         apiKeyName: data.name,
         status: 'success',
-        details: { reason }
+        details: { reason },
       });
 
       Logger.info('API key revoked successfully', { keyId, reason });
       return true;
-
     } catch (error) {
       Logger.error('Error revoking API key:', error);
       throw error;
@@ -243,7 +241,7 @@ class IntegrationsService {
             status: 'available',
             connected: false,
             lastSync: null,
-            configuration: {}
+            configuration: {},
           },
           paypal: {
             name: 'PayPal',
@@ -252,10 +250,10 @@ class IntegrationsService {
             status: 'available',
             connected: false,
             lastSync: null,
-            configuration: {}
-          }
+            configuration: {},
+          },
         },
-        'Accounting': {
+        Accounting: {
           quickbooks: {
             name: 'QuickBooks',
             description: 'Sync with QuickBooks accounting',
@@ -263,7 +261,7 @@ class IntegrationsService {
             status: 'available',
             connected: false,
             lastSync: null,
-            configuration: {}
+            configuration: {},
           },
           xero: {
             name: 'Xero',
@@ -272,10 +270,10 @@ class IntegrationsService {
             status: 'available',
             connected: false,
             lastSync: null,
-            configuration: {}
-          }
+            configuration: {},
+          },
         },
-        'Communication': {
+        Communication: {
           sendgrid: {
             name: 'SendGrid',
             description: 'Email delivery service',
@@ -283,7 +281,7 @@ class IntegrationsService {
             status: 'available',
             connected: false,
             lastSync: null,
-            configuration: {}
+            configuration: {},
           },
           slack: {
             name: 'Slack',
@@ -292,10 +290,10 @@ class IntegrationsService {
             status: 'available',
             connected: false,
             lastSync: null,
-            configuration: {}
-          }
+            configuration: {},
+          },
         },
-        'Storage': {
+        Storage: {
           googledrive: {
             name: 'Google Drive',
             description: 'Cloud file storage',
@@ -303,7 +301,7 @@ class IntegrationsService {
             status: 'available',
             connected: false,
             lastSync: null,
-            configuration: {}
+            configuration: {},
           },
           dropbox: {
             name: 'Dropbox',
@@ -312,9 +310,9 @@ class IntegrationsService {
             status: 'available',
             connected: false,
             lastSync: null,
-            configuration: {}
-          }
-        }
+            configuration: {},
+          },
+        },
       };
 
       // Merge user integrations if they exist
@@ -322,14 +320,14 @@ class IntegrationsService {
         userIntegrations.forEach(userIntegration => {
           const category = userIntegration.service_category;
           const service = userIntegration.service_name;
-          
+
           if (organizedIntegrations[category] && organizedIntegrations[category][service]) {
             organizedIntegrations[category][service] = {
               ...organizedIntegrations[category][service],
               connected: userIntegration.status === 'connected',
               status: userIntegration.status,
               lastSync: userIntegration.last_sync_at,
-              configuration: userIntegration.configuration || {}
+              configuration: userIntegration.configuration || {},
             };
           }
         });
@@ -337,7 +335,6 @@ class IntegrationsService {
 
       Logger.info('Integrations retrieved successfully');
       return organizedIntegrations;
-
     } catch (error) {
       Logger.error('Error retrieving integrations:', error);
       throw error;
@@ -369,7 +366,7 @@ class IntegrationsService {
           api_endpoint: connectionData.apiEndpoint || null,
           last_sync_at: new Date().toISOString(),
           sync_enabled: connectionData.enableSync || true,
-          sync_frequency: connectionData.syncFrequency || 'daily'
+          sync_frequency: connectionData.syncFrequency || 'daily',
         })
         .select()
         .single();
@@ -384,12 +381,11 @@ class IntegrationsService {
         activityType: 'integration_connected',
         entityType: 'integration',
         serviceName: serviceName,
-        status: 'success'
+        status: 'success',
       });
 
       Logger.info(`Successfully connected to ${serviceName}`);
       return data;
-
     } catch (error) {
       Logger.error(`Error connecting to ${serviceName}:`, error);
       throw error;
@@ -412,7 +408,7 @@ class IntegrationsService {
           status: 'disconnected',
           oauth_token: null,
           oauth_refresh_token: null,
-          last_sync_at: null
+          last_sync_at: null,
         })
         .eq('user_id', user.id)
         .eq('service_name', serviceName);
@@ -427,12 +423,11 @@ class IntegrationsService {
         activityType: 'integration_disconnected',
         entityType: 'integration',
         serviceName: serviceName,
-        status: 'success'
+        status: 'success',
       });
 
       Logger.info(`Successfully disconnected from ${serviceName}`);
       return true;
-
     } catch (error) {
       Logger.error(`Error disconnecting from ${serviceName}:`, error);
       throw error;
@@ -453,24 +448,22 @@ class IntegrationsService {
       const user = getCurrentUser();
       if (!user) return false;
 
-      const { error } = await supabase
-        .from('integration_activity')
-        .insert({
-          user_id: user.id,
-          organization_id: activityData.organizationId || null,
-          activity_type: activityData.activityType,
-          entity_type: activityData.entityType,
-          entity_id: activityData.entityId,
-          service_name: activityData.serviceName,
-          api_key_name: activityData.apiKeyName,
-          ip_address: '127.0.0.1', // Simplified for now
-          user_agent: navigator.userAgent || 'Unknown',
-          endpoint: activityData.endpoint,
-          method: activityData.method,
-          status: activityData.status,
-          details: activityData.details || {},
-          error_message: activityData.errorMessage
-        });
+      const { error } = await supabase.from('integration_activity').insert({
+        user_id: user.id,
+        organization_id: activityData.organizationId || null,
+        activity_type: activityData.activityType,
+        entity_type: activityData.entityType,
+        entity_id: activityData.entityId,
+        service_name: activityData.serviceName,
+        api_key_name: activityData.apiKeyName,
+        ip_address: '127.0.0.1', // Simplified for now
+        user_agent: navigator.userAgent || 'Unknown',
+        endpoint: activityData.endpoint,
+        method: activityData.method,
+        status: activityData.status,
+        details: activityData.details || {},
+        error_message: activityData.errorMessage,
+      });
 
       if (error) {
         Logger.warn('Error logging activity:', error);
@@ -478,7 +471,6 @@ class IntegrationsService {
       }
 
       return true;
-
     } catch (error) {
       Logger.warn('Error logging activity:', error);
       return false;
@@ -503,8 +495,8 @@ class IntegrationsService {
             entity_id: 'mock-1',
             status: 'success',
             created_at: new Date().toISOString(),
-            api_key_name: 'Development Key'
-          }
+            api_key_name: 'Development Key',
+          },
         ];
       }
 
@@ -534,7 +526,6 @@ class IntegrationsService {
       }
 
       return data || [];
-
     } catch (error) {
       Logger.error('Error retrieving activity history:', error);
       return []; // Return empty array instead of throwing
@@ -543,4 +534,4 @@ class IntegrationsService {
 }
 
 // Export singleton instance
-export default new IntegrationsService(); 
+export default new IntegrationsService();

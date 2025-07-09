@@ -33,7 +33,7 @@ ChartJS.register(
   Title,
   Tooltip,
   Legend,
-  Filler
+  Filler,
 );
 
 const AdvancedVisualizations = ({ analytics }) => {
@@ -42,9 +42,22 @@ const AdvancedVisualizations = ({ analytics }) => {
 
   // Heatmap data for seasonal analysis
   const heatmapData = useMemo(() => {
-    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const months = [
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
+    ];
     const weeks = ['Week 1', 'Week 2', 'Week 3', 'Week 4'];
-    
+
     // Generate sample heatmap data based on analytics
     const data = [];
     months.forEach((month, monthIndex) => {
@@ -52,17 +65,19 @@ const AdvancedVisualizations = ({ analytics }) => {
         const baseValue = analytics?.data?.revenueAnalytics?.totalRevenue || 50000;
         const seasonalFactor = Math.sin((monthIndex / 12) * 2 * Math.PI) * 0.3 + 1;
         const weeklyFactor = (4 - weekIndex) * 0.1 + 0.8;
-        const value = Math.round(baseValue * seasonalFactor * weeklyFactor * (Math.random() * 0.4 + 0.8));
-        
+        const value = Math.round(
+          baseValue * seasonalFactor * weeklyFactor * (Math.random() * 0.4 + 0.8),
+        );
+
         data.push({
           month,
           week,
           value,
-          intensity: Math.min(value / (baseValue * 1.5), 1)
+          intensity: Math.min(value / (baseValue * 1.5), 1),
         });
       });
     });
-    
+
     return data;
   }, [analytics]);
 
@@ -73,12 +88,12 @@ const AdvancedVisualizations = ({ analytics }) => {
       { name: 'Europe', revenue: 98000, clients: 38, growth: 8.3 },
       { name: 'Asia Pacific', revenue: 67000, clients: 22, growth: 15.7 },
       { name: 'Latin America', revenue: 34000, clients: 15, growth: 6.2 },
-      { name: 'Middle East & Africa', revenue: 23000, clients: 8, growth: 9.1 }
+      { name: 'Middle East & Africa', revenue: 23000, clients: 8, growth: 9.1 },
     ];
-    
+
     return regions.map(region => ({
       ...region,
-      percentage: (region.revenue / regions.reduce((sum, r) => sum + r.revenue, 0)) * 100
+      percentage: (region.revenue / regions.reduce((sum, r) => sum + r.revenue, 0)) * 100,
     }));
   }, []);
 
@@ -88,9 +103,9 @@ const AdvancedVisualizations = ({ analytics }) => {
       { period: 'Q1 2024', month0: 100, month1: 85, month2: 72, month3: 65 },
       { period: 'Q2 2024', month0: 100, month1: 88, month2: 76, month3: 68 },
       { period: 'Q3 2024', month0: 100, month1: 82, month2: 70, month3: 62 },
-      { period: 'Q4 2024', month0: 100, month1: 90, month2: 78, month3: null }
+      { period: 'Q4 2024', month0: 100, month1: 90, month2: 78, month3: null },
     ];
-    
+
     return {
       labels: ['Month 0', 'Month 1', 'Month 2', 'Month 3'],
       datasets: cohorts.map((cohort, index) => ({
@@ -98,8 +113,8 @@ const AdvancedVisualizations = ({ analytics }) => {
         data: [cohort.month0, cohort.month1, cohort.month2, cohort.month3],
         borderColor: `hsl(${index * 60}, 70%, 50%)`,
         backgroundColor: `hsl(${index * 60}, 70%, 50%, 0.1)`,
-        tension: 0.4
-      }))
+        tension: 0.4,
+      })),
     };
   }, []);
 
@@ -110,36 +125,57 @@ const AdvancedVisualizations = ({ analytics }) => {
       { name: 'Qualified', value: 750, color: '#10B981' },
       { name: 'Proposals', value: 400, color: '#F59E0B' },
       { name: 'Negotiations', value: 250, color: '#EF4444' },
-      { name: 'Closed Won', value: 150, color: '#8B5CF6' }
+      { name: 'Closed Won', value: 150, color: '#8B5CF6' },
     ];
-    
+
     return stages.map((stage, index) => ({
       ...stage,
       percentage: index === 0 ? 100 : (stage.value / stages[0].value) * 100,
-      conversionRate: index === 0 ? 100 : (stage.value / stages[index - 1].value) * 100
+      conversionRate: index === 0 ? 100 : (stage.value / stages[index - 1].value) * 100,
     }));
   }, []);
 
   // Correlation analysis data
   const correlationData = useMemo(() => {
-    const metrics = ['Revenue', 'Client Satisfaction', 'Response Time', 'Project Complexity', 'Team Size'];
-    const correlationMatrix = [
-      [1.00, 0.85, -0.32, 0.67, 0.45],
-      [0.85, 1.00, -0.28, 0.52, 0.38],
-      [-0.32, -0.28, 1.00, -0.15, -0.22],
-      [0.67, 0.52, -0.15, 1.00, 0.73],
-      [0.45, 0.38, -0.22, 0.73, 1.00]
+    const metrics = [
+      'Revenue',
+      'Client Satisfaction',
+      'Response Time',
+      'Project Complexity',
+      'Team Size',
     ];
-    
+    const correlationMatrix = [
+      [1.0, 0.85, -0.32, 0.67, 0.45],
+      [0.85, 1.0, -0.28, 0.52, 0.38],
+      [-0.32, -0.28, 1.0, -0.15, -0.22],
+      [0.67, 0.52, -0.15, 1.0, 0.73],
+      [0.45, 0.38, -0.22, 0.73, 1.0],
+    ];
+
     return { metrics, correlationMatrix };
   }, []);
 
   // Predictive analytics chart
   const predictiveData = useMemo(() => {
-    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    const historical = [45000, 52000, 48000, 55000, 61000, 58000, 65000, 62000, 68000, 72000, 69000, 75000];
+    const months = [
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
+    ];
+    const historical = [
+      45000, 52000, 48000, 55000, 61000, 58000, 65000, 62000, 68000, 72000, 69000, 75000,
+    ];
     const predicted = [78000, 82000, 85000, 88000, 92000, 95000];
-    
+
     return {
       labels: [...months, 'Jan+1', 'Feb+1', 'Mar+1', 'Apr+1', 'May+1', 'Jun+1'],
       datasets: [
@@ -148,7 +184,7 @@ const AdvancedVisualizations = ({ analytics }) => {
           data: [...historical, ...Array(6).fill(null)],
           borderColor: '#3B82F6',
           backgroundColor: '#3B82F6',
-          tension: 0.4
+          tension: 0.4,
         },
         {
           label: 'Predicted Revenue',
@@ -156,9 +192,9 @@ const AdvancedVisualizations = ({ analytics }) => {
           borderColor: '#10B981',
           backgroundColor: '#10B981',
           borderDash: [5, 5],
-          tension: 0.4
-        }
-      ]
+          tension: 0.4,
+        },
+      ],
     };
   }, []);
 
@@ -166,9 +202,13 @@ const AdvancedVisualizations = ({ analytics }) => {
     <div className='bg-white rounded-xl shadow-sm border border-gray-200 p-6'>
       <h3 className='text-lg font-semibold text-black mb-4'>Seasonal Revenue Heatmap</h3>
       <div className='grid grid-cols-12 gap-1 mb-4'>
-        {['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'].map(month => (
-          <div key={month} className='text-xs text-gray-600 text-center font-medium'>{month}</div>
-        ))}
+        {['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'].map(
+          month => (
+            <div key={month} className='text-xs text-gray-600 text-center font-medium'>
+              {month}
+            </div>
+          ),
+        )}
       </div>
       <div className='grid grid-cols-12 gap-1'>
         {heatmapData.map((cell, index) => (
@@ -177,7 +217,7 @@ const AdvancedVisualizations = ({ analytics }) => {
             className='aspect-square rounded flex items-center justify-center text-xs font-medium'
             style={{
               backgroundColor: `rgba(59, 130, 246, ${cell.intensity})`,
-              color: cell.intensity > 0.5 ? 'white' : '#1F2937'
+              color: cell.intensity > 0.5 ? 'white' : '#1F2937',
             }}
             title={`${cell.month} ${cell.week}: €${cell.value.toLocaleString()}`}
           >
@@ -206,9 +246,12 @@ const AdvancedVisualizations = ({ analytics }) => {
       <h3 className='text-lg font-semibold text-black mb-4'>Geographic Revenue Distribution</h3>
       <div className='space-y-4'>
         {geographicData.map((region, index) => (
-          <div key={region.name} className='flex items-center justify-between p-4 bg-gray-50 rounded-lg'>
+          <div
+            key={region.name}
+            className='flex items-center justify-between p-4 bg-gray-50 rounded-lg'
+          >
             <div className='flex items-center space-x-3'>
-              <div 
+              <div
                 className='w-4 h-4 rounded-full'
                 style={{ backgroundColor: `hsl(${index * 60}, 70%, 50%)` }}
               />
@@ -242,20 +285,20 @@ const AdvancedVisualizations = ({ analytics }) => {
               },
               title: {
                 display: true,
-                text: 'Client Retention Rate by Cohort'
-              }
+                text: 'Client Retention Rate by Cohort',
+              },
             },
             scales: {
               y: {
                 beginAtZero: true,
                 max: 100,
                 ticks: {
-                  callback: function(value) {
+                  callback: function (value) {
                     return value + '%';
-                  }
-                }
-              }
-            }
+                  },
+                },
+              },
+            },
           }}
         />
       </div>
@@ -268,12 +311,12 @@ const AdvancedVisualizations = ({ analytics }) => {
       <div className='space-y-2'>
         {funnelData.map((stage, index) => (
           <div key={stage.name} className='relative'>
-            <div 
+            <div
               className='h-12 flex items-center justify-between px-4 text-white font-medium rounded'
-              style={{ 
+              style={{
                 backgroundColor: stage.color,
                 width: `${stage.percentage}%`,
-                minWidth: '200px'
+                minWidth: '200px',
               }}
             >
               <span>{stage.name}</span>
@@ -311,13 +354,14 @@ const AdvancedVisualizations = ({ analytics }) => {
                 <td className='p-2 text-xs font-medium text-gray-600'>{metric}</td>
                 {correlationData.correlationMatrix[rowIndex].map((value, colIndex) => (
                   <td key={colIndex} className='p-2 text-center'>
-                    <div 
+                    <div
                       className='w-8 h-8 rounded flex items-center justify-center text-xs font-medium mx-auto'
                       style={{
-                        backgroundColor: value > 0 
-                          ? `rgba(34, 197, 94, ${Math.abs(value)})` 
-                          : `rgba(239, 68, 68, ${Math.abs(value)})`,
-                        color: Math.abs(value) > 0.5 ? 'white' : '#1F2937'
+                        backgroundColor:
+                          value > 0
+                            ? `rgba(34, 197, 94, ${Math.abs(value)})`
+                            : `rgba(239, 68, 68, ${Math.abs(value)})`,
+                        color: Math.abs(value) > 0.5 ? 'white' : '#1F2937',
                       }}
                     >
                       {value.toFixed(2)}
@@ -347,19 +391,19 @@ const AdvancedVisualizations = ({ analytics }) => {
               },
               title: {
                 display: true,
-                text: 'Historical vs Predicted Revenue'
-              }
+                text: 'Historical vs Predicted Revenue',
+              },
             },
             scales: {
               y: {
                 beginAtZero: true,
                 ticks: {
-                  callback: function(value) {
-                    return '€' + (value / 1000) + 'k';
-                  }
-                }
-              }
-            }
+                  callback: function (value) {
+                    return '€' + value / 1000 + 'k';
+                  },
+                },
+              },
+            },
           }}
         />
       </div>
@@ -376,11 +420,23 @@ const AdvancedVisualizations = ({ analytics }) => {
 
   const visualizations = {
     heatmap: { component: renderHeatmap, icon: CalendarIcon, title: 'Seasonal Heatmap' },
-    geographic: { component: renderGeographicMapping, icon: MapPinIcon, title: 'Geographic Mapping' },
+    geographic: {
+      component: renderGeographicMapping,
+      icon: MapPinIcon,
+      title: 'Geographic Mapping',
+    },
     cohort: { component: renderCohortAnalysis, icon: UsersIcon, title: 'Cohort Analysis' },
     funnel: { component: renderFunnelAnalysis, icon: FunnelIcon, title: 'Funnel Analysis' },
-    correlation: { component: renderCorrelationMatrix, icon: ChartBarIcon, title: 'Correlation Analysis' },
-    predictive: { component: renderPredictiveAnalytics, icon: TrendingUpIcon, title: 'Predictive Analytics' }
+    correlation: {
+      component: renderCorrelationMatrix,
+      icon: ChartBarIcon,
+      title: 'Correlation Analysis',
+    },
+    predictive: {
+      component: renderPredictiveAnalytics,
+      icon: TrendingUpIcon,
+      title: 'Predictive Analytics',
+    },
   };
 
   return (
@@ -407,9 +463,7 @@ const AdvancedVisualizations = ({ analytics }) => {
       </div>
 
       {/* Active Visualization */}
-      <div>
-        {visualizations[activeVisualization].component()}
-      </div>
+      <div>{visualizations[activeVisualization].component()}</div>
     </div>
   );
 };

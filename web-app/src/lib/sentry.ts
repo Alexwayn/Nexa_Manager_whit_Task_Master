@@ -20,7 +20,8 @@ export interface SentryConfig {
 
 export const sentryConfig: SentryConfig = {
   dsn: SENTRY_DSN,
-  environment: import.meta.env.VITE_SENTRY_ENVIRONMENT || (isProduction ? 'production' : 'development'),
+  environment:
+    import.meta.env.VITE_SENTRY_ENVIRONMENT || (isProduction ? 'production' : 'development'),
   tracesSampleRate: isProduction ? 0.1 : 1.0,
   replaysSessionSampleRate: isProduction ? 0.1 : 0.5,
   replaysOnErrorSampleRate: 1.0,
@@ -47,10 +48,10 @@ export const initSentry = (): void => {
       tracesSampleRate: sentryConfig.tracesSampleRate,
       maxBreadcrumbs: sentryConfig.maxBreadcrumbs,
       attachStacktrace: sentryConfig.attachStacktrace,
-      
+
       // Release information
       release: import.meta.env.VITE_APP_VERSION || '1.0.0',
-      
+
       // Performance monitoring
       beforeSend(event) {
         // Filter out development-only errors
@@ -63,23 +64,26 @@ export const initSentry = (): void => {
             return null;
           }
         }
-        
+
         // Remove sensitive data
         if (event.request?.url) {
           event.request.url = event.request.url.replace(/\/users\/\d+/g, '/users/[id]');
-          event.request.url = event.request.url.replace(/\/organizations\/\w+/g, '/organizations/[id]');
+          event.request.url = event.request.url.replace(
+            /\/organizations\/\w+/g,
+            '/organizations/[id]',
+          );
         }
-        
+
         return event;
       },
-      
+
       // Configure breadcrumb filtering
       beforeBreadcrumb(breadcrumb) {
         // Filter out noisy breadcrumbs in development
         if (isDevelopment && breadcrumb.category === 'console') {
           return null;
         }
-        
+
         return breadcrumb;
       },
     });
@@ -123,7 +127,7 @@ export const setSentryOrganization = (organization: {
   Sentry.setTag('organization.id', organization.id);
   Sentry.setTag('organization.name', organization.name);
   Sentry.setTag('organization.plan', organization.plan || 'unknown');
-  
+
   Sentry.setContext('organization', {
     id: organization.id,
     name: organization.name,
@@ -133,30 +137,30 @@ export const setSentryOrganization = (organization: {
 
 // Error capture with context
 export const captureError = (
-  error: Error, 
+  error: Error,
   context?: {
     component?: string;
     action?: string;
     userId?: string;
     organizationId?: string;
     extra?: Record<string, any>;
-  }
+  },
 ): string => {
   if (context) {
-    Sentry.withScope((scope) => {
+    Sentry.withScope(scope => {
       if (context.component) scope.setTag('component', context.component);
       if (context.action) scope.setTag('action', context.action);
       if (context.userId) scope.setTag('userId', context.userId);
       if (context.organizationId) scope.setTag('organizationId', context.organizationId);
       if (context.extra) scope.setContext('extra', context.extra);
-      
+
       scope.setLevel('error');
       Sentry.captureException(error);
     });
   } else {
     Sentry.captureException(error);
   }
-  
+
   return error.message;
 };
 
@@ -164,10 +168,10 @@ export const captureError = (
 export const captureMessage = (
   message: string,
   level: 'fatal' | 'error' | 'warning' | 'info' | 'debug' = 'info',
-  context?: Record<string, any>
+  context?: Record<string, any>,
 ): string => {
   if (context) {
-    Sentry.withScope((scope) => {
+    Sentry.withScope(scope => {
       scope.setContext('messageContext', context);
       scope.setLevel(level);
       Sentry.captureMessage(message);
@@ -175,7 +179,7 @@ export const captureMessage = (
   } else {
     Sentry.captureMessage(message, level);
   }
-  
+
   return message;
 };
 
@@ -184,7 +188,7 @@ export const addBreadcrumb = (
   message: string,
   category: string = 'custom',
   data?: Record<string, any>,
-  level: 'fatal' | 'error' | 'warning' | 'info' | 'debug' = 'info'
+  level: 'fatal' | 'error' | 'warning' | 'info' | 'debug' = 'info',
 ): void => {
   Sentry.addBreadcrumb({
     message,
@@ -208,20 +212,17 @@ export const sentryPerformance = {
         if (isDevelopment) {
           console.log(`Transaction completed: ${name} (${op})`);
         }
-      }
+      },
     };
   },
-  
+
   // Simple function timing wrapper
-  measureFunction: <T extends (...args: any[]) => any>(
-    fn: T,
-    name: string
-  ): T => {
+  measureFunction: <T extends (...args: any[]) => any>(fn: T, name: string): T => {
     return ((...args: any[]) => {
       const start = globalThis.performance?.now ? globalThis.performance.now() : Date.now();
       try {
         const result = fn(...args);
-        
+
         // Handle promise-based functions
         if (result && typeof result.then === 'function') {
           return result.finally(() => {
@@ -231,13 +232,13 @@ export const sentryPerformance = {
             }
           });
         }
-        
+
         // Handle synchronous functions
         const end = globalThis.performance?.now ? globalThis.performance.now() : Date.now();
         if (isDevelopment) {
           console.log(`Function ${name} took ${end - start}ms`);
         }
-        
+
         return result;
       } catch (error) {
         const end = globalThis.performance?.now ? globalThis.performance.now() : Date.now();
@@ -267,4 +268,4 @@ export default {
   sentryPerformance,
   SentryErrorBoundary,
   Sentry,
-}; 
+};

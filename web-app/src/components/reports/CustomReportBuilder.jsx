@@ -1,9 +1,9 @@
 import React, { useState, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { 
-  ArrowLeftIcon, 
-  DocumentChartBarIcon, 
-  ViewfinderCircleIcon, 
+import {
+  ArrowLeftIcon,
+  DocumentChartBarIcon,
+  ViewfinderCircleIcon,
   DocumentArrowDownIcon,
   PlusIcon,
   TrashIcon,
@@ -14,7 +14,7 @@ import {
   BookmarkIcon,
   FunnelIcon,
   CalendarIcon,
-  AdjustmentsHorizontalIcon
+  AdjustmentsHorizontalIcon,
 } from '@heroicons/react/24/outline';
 import {
   DndContext,
@@ -30,9 +30,7 @@ import {
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
-import {
-  useSortable,
-} from '@dnd-kit/sortable';
+import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { AVAILABLE_FIELDS, CHART_PRESETS } from '../../data/reportTemplates';
 
@@ -45,23 +43,23 @@ const CustomReportBuilder = ({ onBack, initialTemplate = null }) => {
     category: initialTemplate?.category || 'custom',
     type: initialTemplate?.type || 'detailed',
     format: initialTemplate?.format || 'mixed',
-    
+
     // Data Configuration
     selectedFields: initialTemplate?.selectedFields || [],
     filters: initialTemplate?.filters || [],
-    dateRange: initialTemplate?.dateRange || { 
+    dateRange: initialTemplate?.dateRange || {
       preset: 'this_month',
       start: '',
-      end: ''
+      end: '',
     },
     sorting: initialTemplate?.sorting || [],
-    
+
     // Layout Configuration
     sections: initialTemplate?.sections || [],
-    
+
     // Preview Data
     previewData: null,
-    isGenerating: false
+    isGenerating: false,
   });
 
   // Drag and drop sensors
@@ -69,7 +67,7 @@ const CustomReportBuilder = ({ onBack, initialTemplate = null }) => {
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
-    })
+    }),
   );
 
   // Steps configuration
@@ -77,7 +75,7 @@ const CustomReportBuilder = ({ onBack, initialTemplate = null }) => {
     { id: 1, name: 'Data Selection', icon: TableCellsIcon },
     { id: 2, name: 'Filters & Sorting', icon: FunnelIcon },
     { id: 3, name: 'Layout Design', icon: AdjustmentsHorizontalIcon },
-    { id: 4, name: 'Preview & Save', icon: EyeIcon }
+    { id: 4, name: 'Preview & Save', icon: EyeIcon },
   ];
 
   // Get all available fields from all categories
@@ -87,17 +85,17 @@ const CustomReportBuilder = ({ onBack, initialTemplate = null }) => {
   }, {});
 
   // Handle field selection
-  const handleFieldToggle = (field) => {
+  const handleFieldToggle = field => {
     setReportConfig(prev => ({
       ...prev,
       selectedFields: prev.selectedFields.find(f => f.id === field.id)
         ? prev.selectedFields.filter(f => f.id !== field.id)
-        : [...prev.selectedFields, field]
+        : [...prev.selectedFields, field],
     }));
   };
 
   // Handle drag and drop for layout sections
-  const handleDragEnd = (event) => {
+  const handleDragEnd = event => {
     const { active, over } = event;
 
     if (active.id !== over?.id) {
@@ -107,7 +105,7 @@ const CustomReportBuilder = ({ onBack, initialTemplate = null }) => {
 
         return {
           ...prev,
-          sections: arrayMove(prev.sections, oldIndex, newIndex)
+          sections: arrayMove(prev.sections, oldIndex, newIndex),
         };
       });
     }
@@ -120,11 +118,11 @@ const CustomReportBuilder = ({ onBack, initialTemplate = null }) => {
       field: '',
       operator: 'equals',
       value: '',
-      type: 'string'
+      type: 'string',
     };
     setReportConfig(prev => ({
       ...prev,
-      filters: [...prev.filters, newFilter]
+      filters: [...prev.filters, newFilter],
     }));
   };
 
@@ -132,53 +130,53 @@ const CustomReportBuilder = ({ onBack, initialTemplate = null }) => {
   const updateFilter = (filterId, updates) => {
     setReportConfig(prev => ({
       ...prev,
-      filters: prev.filters.map(filter => 
-        filter.id === filterId ? { ...filter, ...updates } : filter
-      )
+      filters: prev.filters.map(filter =>
+        filter.id === filterId ? { ...filter, ...updates } : filter,
+      ),
     }));
   };
 
   // Remove filter
-  const removeFilter = (filterId) => {
+  const removeFilter = filterId => {
     setReportConfig(prev => ({
       ...prev,
-      filters: prev.filters.filter(filter => filter.id !== filterId)
+      filters: prev.filters.filter(filter => filter.id !== filterId),
     }));
   };
 
   // Add section to layout
-  const addSection = (type) => {
+  const addSection = type => {
     const newSection = {
       id: Date.now(),
       title: `New ${type.charAt(0).toUpperCase() + type.slice(1)} Section`,
       type: type,
       order: reportConfig.sections.length + 1,
-      config: getDefaultSectionConfig(type)
+      config: getDefaultSectionConfig(type),
     };
-    
+
     setReportConfig(prev => ({
       ...prev,
-      sections: [...prev.sections, newSection]
+      sections: [...prev.sections, newSection],
     }));
   };
 
   // Get default configuration for section type
-  const getDefaultSectionConfig = (type) => {
+  const getDefaultSectionConfig = type => {
     switch (type) {
       case 'kpi':
         return { metrics: [] };
       case 'chart':
-        return { 
+        return {
           chartType: 'bar',
           xField: '',
           yField: '',
-          title: 'Chart Title'
+          title: 'Chart Title',
         };
       case 'table':
-        return { 
+        return {
           columns: reportConfig.selectedFields.slice(0, 5).map(f => f.id),
           sortBy: '',
-          sortDirection: 'asc'
+          sortDirection: 'asc',
         };
       default:
         return {};
@@ -188,14 +186,14 @@ const CustomReportBuilder = ({ onBack, initialTemplate = null }) => {
   // Generate preview data
   const generatePreview = async () => {
     setReportConfig(prev => ({ ...prev, isGenerating: true }));
-    
+
     // Simulate API call
     setTimeout(() => {
       const mockData = generateMockData();
       setReportConfig(prev => ({
         ...prev,
         previewData: mockData,
-        isGenerating: false
+        isGenerating: false,
       }));
     }, 1500);
   };
@@ -208,31 +206,33 @@ const CustomReportBuilder = ({ onBack, initialTemplate = null }) => {
       columns: reportConfig.selectedFields.length,
       sampleData: reportConfig.selectedFields.slice(0, 5).map(field => ({
         field: field.name,
-        sampleValue: getSampleValue(field.type)
-      }))
+        sampleValue: getSampleValue(field.type),
+      })),
     };
   };
 
-  const getSampleValue = (type) => {
+  const getSampleValue = type => {
     switch (type) {
-      case 'currency': return '€1,234.56';
-      case 'percentage': return '24.5%';
-      case 'date': return '2024-01-15';
-      case 'number': return '42';
-      case 'boolean': return 'Yes';
-      default: return 'Sample Value';
+      case 'currency':
+        return '€1,234.56';
+      case 'percentage':
+        return '24.5%';
+      case 'date':
+        return '2024-01-15';
+      case 'number':
+        return '42';
+      case 'boolean':
+        return 'Yes';
+      default:
+        return 'Sample Value';
     }
   };
 
   // Sortable Section Component
   const SortableSection = ({ section }) => {
-    const {
-      attributes,
-      listeners,
-      setNodeRef,
-      transform,
-      transition,
-    } = useSortable({ id: section.id });
+    const { attributes, listeners, setNodeRef, transform, transition } = useSortable({
+      id: section.id,
+    });
 
     const style = {
       transform: CSS.Transform.toString(transform),
@@ -249,15 +249,19 @@ const CustomReportBuilder = ({ onBack, initialTemplate = null }) => {
       >
         <div className='flex items-center justify-between mb-3'>
           <h4 className='font-medium text-gray-900'>{section.title}</h4>
-          <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-            section.type === 'kpi' ? 'bg-purple-100 text-purple-800' :
-            section.type === 'chart' ? 'bg-green-100 text-green-800' :
-            'bg-blue-100 text-blue-800'
-          }`}>
+          <span
+            className={`px-2 py-1 rounded-full text-xs font-medium ${
+              section.type === 'kpi'
+                ? 'bg-purple-100 text-purple-800'
+                : section.type === 'chart'
+                  ? 'bg-green-100 text-green-800'
+                  : 'bg-blue-100 text-blue-800'
+            }`}
+          >
             {section.type.toUpperCase()}
           </span>
         </div>
-        
+
         <div className='text-sm text-gray-600'>
           Section configuration options would go here based on type.
         </div>
@@ -295,9 +299,12 @@ const CustomReportBuilder = ({ onBack, initialTemplate = null }) => {
               </h4>
               <div className='grid grid-cols-1 md:grid-cols-2 gap-2'>
                 {fields.map(field => (
-                  <label key={field.id} className='flex items-center space-x-3 p-2 hover:bg-white rounded cursor-pointer transition-colors'>
-                    <input 
-                      type='checkbox' 
+                  <label
+                    key={field.id}
+                    className='flex items-center space-x-3 p-2 hover:bg-white rounded cursor-pointer transition-colors'
+                  >
+                    <input
+                      type='checkbox'
                       className='rounded border-gray-300 text-blue-600 focus:ring-blue-500'
                       checked={reportConfig.selectedFields.some(f => f.id === field.id)}
                       onChange={() => handleFieldToggle(field)}
@@ -325,7 +332,10 @@ const CustomReportBuilder = ({ onBack, initialTemplate = null }) => {
           {reportConfig.selectedFields.length > 0 ? (
             <div className='space-y-2'>
               {reportConfig.selectedFields.map(field => (
-                <div key={field.id} className='flex items-center justify-between bg-white p-2 rounded'>
+                <div
+                  key={field.id}
+                  className='flex items-center justify-between bg-white p-2 rounded'
+                >
                   <div>
                     <div className='text-sm font-medium text-gray-900'>{field.name}</div>
                     <div className='text-xs text-gray-500'>{field.type}</div>
@@ -340,7 +350,9 @@ const CustomReportBuilder = ({ onBack, initialTemplate = null }) => {
               ))}
             </div>
           ) : (
-            <p className='text-blue-600 text-sm'>No fields selected yet. Choose from the left panel.</p>
+            <p className='text-blue-600 text-sm'>
+              No fields selected yet. Choose from the left panel.
+            </p>
           )}
         </div>
       </div>
@@ -357,7 +369,7 @@ const CustomReportBuilder = ({ onBack, initialTemplate = null }) => {
           <input
             type='text'
             value={reportConfig.name}
-            onChange={(e) => setReportConfig(prev => ({ ...prev, name: e.target.value }))}
+            onChange={e => setReportConfig(prev => ({ ...prev, name: e.target.value }))}
             className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
             placeholder='Enter report name...'
           />
@@ -366,7 +378,7 @@ const CustomReportBuilder = ({ onBack, initialTemplate = null }) => {
           <label className='block text-sm font-medium text-gray-700 mb-2'>Category</label>
           <select
             value={reportConfig.category}
-            onChange={(e) => setReportConfig(prev => ({ ...prev, category: e.target.value }))}
+            onChange={e => setReportConfig(prev => ({ ...prev, category: e.target.value }))}
             className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
           >
             <option value='custom'>Custom</option>
@@ -387,10 +399,12 @@ const CustomReportBuilder = ({ onBack, initialTemplate = null }) => {
               <label className='block text-sm font-medium text-gray-700 mb-2'>Preset</label>
               <select
                 value={reportConfig.dateRange.preset}
-                onChange={(e) => setReportConfig(prev => ({
-                  ...prev,
-                  dateRange: { ...prev.dateRange, preset: e.target.value }
-                }))}
+                onChange={e =>
+                  setReportConfig(prev => ({
+                    ...prev,
+                    dateRange: { ...prev.dateRange, preset: e.target.value },
+                  }))
+                }
                 className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
               >
                 <option value='today'>Today</option>
@@ -411,10 +425,12 @@ const CustomReportBuilder = ({ onBack, initialTemplate = null }) => {
                   <input
                     type='date'
                     value={reportConfig.dateRange.start}
-                    onChange={(e) => setReportConfig(prev => ({
-                      ...prev,
-                      dateRange: { ...prev.dateRange, start: e.target.value }
-                    }))}
+                    onChange={e =>
+                      setReportConfig(prev => ({
+                        ...prev,
+                        dateRange: { ...prev.dateRange, start: e.target.value },
+                      }))
+                    }
                     className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
                   />
                 </div>
@@ -423,10 +439,12 @@ const CustomReportBuilder = ({ onBack, initialTemplate = null }) => {
                   <input
                     type='date'
                     value={reportConfig.dateRange.end}
-                    onChange={(e) => setReportConfig(prev => ({
-                      ...prev,
-                      dateRange: { ...prev.dateRange, end: e.target.value }
-                    }))}
+                    onChange={e =>
+                      setReportConfig(prev => ({
+                        ...prev,
+                        dateRange: { ...prev.dateRange, end: e.target.value },
+                      }))
+                    }
                     className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
                   />
                 </div>
@@ -448,24 +466,26 @@ const CustomReportBuilder = ({ onBack, initialTemplate = null }) => {
             Add Filter
           </button>
         </div>
-        
+
         <div className='space-y-3'>
           {reportConfig.filters.map(filter => (
             <div key={filter.id} className='bg-gray-50 rounded-lg p-4 flex items-center gap-4'>
               <select
                 value={filter.field}
-                onChange={(e) => updateFilter(filter.id, { field: e.target.value })}
+                onChange={e => updateFilter(filter.id, { field: e.target.value })}
                 className='flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
               >
                 <option value=''>Select Field</option>
                 {reportConfig.selectedFields.map(field => (
-                  <option key={field.id} value={field.id}>{field.name}</option>
+                  <option key={field.id} value={field.id}>
+                    {field.name}
+                  </option>
                 ))}
               </select>
-              
+
               <select
                 value={filter.operator}
-                onChange={(e) => updateFilter(filter.id, { operator: e.target.value })}
+                onChange={e => updateFilter(filter.id, { operator: e.target.value })}
                 className='px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
               >
                 <option value='equals'>Equals</option>
@@ -475,15 +495,15 @@ const CustomReportBuilder = ({ onBack, initialTemplate = null }) => {
                 <option value='less_than'>Less Than</option>
                 <option value='between'>Between</option>
               </select>
-              
+
               <input
                 type='text'
                 value={filter.value}
-                onChange={(e) => updateFilter(filter.id, { value: e.target.value })}
+                onChange={e => updateFilter(filter.id, { value: e.target.value })}
                 placeholder='Filter value...'
                 className='flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
               />
-              
+
               <button
                 onClick={() => removeFilter(filter.id)}
                 className='p-2 text-red-500 hover:text-red-700 transition-colors'
@@ -492,7 +512,7 @@ const CustomReportBuilder = ({ onBack, initialTemplate = null }) => {
               </button>
             </div>
           ))}
-          
+
           {reportConfig.filters.length === 0 && (
             <div className='text-center py-8 text-gray-500'>
               No filters added yet. Click "Add Filter" to create one.
@@ -533,25 +553,23 @@ const CustomReportBuilder = ({ onBack, initialTemplate = null }) => {
         </div>
       </div>
 
-      <DndContext
-        sensors={sensors}
-        collisionDetection={closestCenter}
-        onDragEnd={handleDragEnd}
-      >
+      <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
         <SortableContext
           items={reportConfig.sections.map(section => section.id)}
           strategy={verticalListSortingStrategy}
         >
           <div className='space-y-4'>
-            {reportConfig.sections.map((section) => (
+            {reportConfig.sections.map(section => (
               <SortableSection key={section.id} section={section} />
             ))}
-            
+
             {reportConfig.sections.length === 0 && (
               <div className='text-center py-12 bg-gray-50 rounded-lg border-2 border-dashed border-gray-300'>
                 <AdjustmentsHorizontalIcon className='h-12 w-12 text-gray-400 mx-auto mb-4' />
                 <h4 className='text-lg font-medium text-gray-900 mb-2'>No sections added yet</h4>
-                <p className='text-gray-600 mb-4'>Add KPI, chart, or table sections to build your report layout.</p>
+                <p className='text-gray-600 mb-4'>
+                  Add KPI, chart, or table sections to build your report layout.
+                </p>
               </div>
             )}
           </div>
@@ -565,7 +583,7 @@ const CustomReportBuilder = ({ onBack, initialTemplate = null }) => {
     <div className='space-y-8'>
       <div className='text-center'>
         <h3 className='text-lg font-semibold text-gray-900 mb-4'>Report Preview</h3>
-        
+
         {!reportConfig.previewData ? (
           <div className='bg-gray-50 rounded-lg p-8'>
             <DocumentChartBarIcon className='h-16 w-16 text-gray-400 mx-auto mb-4' />
@@ -586,19 +604,25 @@ const CustomReportBuilder = ({ onBack, initialTemplate = null }) => {
             <h4 className='font-medium text-gray-900 mb-4'>Preview Results</h4>
             <div className='grid grid-cols-1 md:grid-cols-3 gap-6 mb-6'>
               <div className='text-center p-4 bg-blue-50 rounded-lg'>
-                <div className='text-2xl font-bold text-blue-600'>{reportConfig.previewData.rows}</div>
+                <div className='text-2xl font-bold text-blue-600'>
+                  {reportConfig.previewData.rows}
+                </div>
                 <div className='text-sm text-blue-800'>Total Rows</div>
               </div>
               <div className='text-center p-4 bg-green-50 rounded-lg'>
-                <div className='text-2xl font-bold text-green-600'>{reportConfig.previewData.columns}</div>
+                <div className='text-2xl font-bold text-green-600'>
+                  {reportConfig.previewData.columns}
+                </div>
                 <div className='text-sm text-green-800'>Columns</div>
               </div>
               <div className='text-center p-4 bg-purple-50 rounded-lg'>
-                <div className='text-2xl font-bold text-purple-600'>{reportConfig.sections.length}</div>
+                <div className='text-2xl font-bold text-purple-600'>
+                  {reportConfig.sections.length}
+                </div>
                 <div className='text-sm text-purple-800'>Sections</div>
               </div>
             </div>
-            
+
             <div className='text-left'>
               <h5 className='font-medium text-gray-900 mb-2'>Sample Data Preview:</h5>
               <div className='bg-gray-50 rounded p-3 text-sm space-y-1'>
@@ -634,7 +658,10 @@ const CustomReportBuilder = ({ onBack, initialTemplate = null }) => {
   return (
     <div className='bg-white rounded-xl shadow-sm border border-gray-200 p-6'>
       {/* Header */}
-      <button onClick={onBack} className='flex items-center text-sm font-medium text-gray-600 hover:text-gray-900 mb-6 transition-colors'>
+      <button
+        onClick={onBack}
+        className='flex items-center text-sm font-medium text-gray-600 hover:text-gray-900 mb-6 transition-colors'
+      >
         <ArrowLeftIcon className='h-4 w-4 mr-2' />
         Back to Reports Dashboard
       </button>
@@ -642,7 +669,8 @@ const CustomReportBuilder = ({ onBack, initialTemplate = null }) => {
       <div className='mb-8'>
         <h2 className='text-2xl font-semibold text-gray-800'>Custom Report Builder</h2>
         <p className='mt-1 text-gray-600'>
-          Create a custom report by selecting data fields, applying filters, and designing the layout.
+          Create a custom report by selecting data fields, applying filters, and designing the
+          layout.
         </p>
       </div>
 
@@ -656,12 +684,14 @@ const CustomReportBuilder = ({ onBack, initialTemplate = null }) => {
                 key={step.id}
                 onClick={() => setCurrentStep(step.id)}
                 className={`flex items-center space-x-2 px-3 py-2 rounded-lg transition-colors ${
-                  currentStep === step.id 
-                    ? 'bg-blue-100 text-blue-800 font-medium' 
+                  currentStep === step.id
+                    ? 'bg-blue-100 text-blue-800 font-medium'
                     : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
                 }`}
               >
-                <Icon className={`h-5 w-5 ${currentStep === step.id ? 'text-blue-600' : 'text-gray-400'}`} />
+                <Icon
+                  className={`h-5 w-5 ${currentStep === step.id ? 'text-blue-600' : 'text-gray-400'}`}
+                />
                 <span>{step.name}</span>
               </button>
             );
@@ -670,9 +700,7 @@ const CustomReportBuilder = ({ onBack, initialTemplate = null }) => {
       </div>
 
       {/* Step Content */}
-      <div className='mb-8'>
-        {renderStepContent()}
-      </div>
+      <div className='mb-8'>{renderStepContent()}</div>
 
       {/* Navigation Buttons */}
       <div className='flex justify-between pt-6 border-t border-gray-200'>

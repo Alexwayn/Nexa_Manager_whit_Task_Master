@@ -51,10 +51,10 @@ i18n
       'voice',
     ],
     defaultNS: 'inventory',
-    
+
     // Preload namespaces
     preload: ['it'],
-    
+
     // Partials to load
     partialBundledLanguages: true,
 
@@ -81,7 +81,7 @@ i18n
     console.log('i18next initialized successfully');
     // Force Italian as default language
     localStorage.setItem('nexa-language', 'it');
-    
+
     // Explicitly load Italian inventory namespace
     return i18n.loadNamespaces(['inventory']).then(() => {
       return i18n.changeLanguage('it');

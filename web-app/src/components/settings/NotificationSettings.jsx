@@ -54,8 +54,8 @@ export default function NotificationSettings({ showNotification }) {
         enabled: true,
         start: '22:00',
         end: '08:00',
-      }
-    }
+      },
+    },
   });
 
   const [emailAddress, setEmailAddress] = useState('');
@@ -153,7 +153,7 @@ export default function NotificationSettings({ showNotification }) {
     }
   };
 
-  const sendTestNotification = async (channel) => {
+  const sendTestNotification = async channel => {
     setLoading(true);
     try {
       // Mock sending test notification
@@ -171,12 +171,18 @@ export default function NotificationSettings({ showNotification }) {
     {
       key: 'invoices',
       name: t('notifications.types.invoices', 'Invoices'),
-      description: t('notifications.types.invoicesDesc', 'New invoices, payment confirmations, overdue notices'),
+      description: t(
+        'notifications.types.invoicesDesc',
+        'New invoices, payment confirmations, overdue notices',
+      ),
     },
     {
       key: 'payments',
       name: t('notifications.types.payments', 'Payments'),
-      description: t('notifications.types.paymentsDesc', 'Payment received, failed payments, refunds'),
+      description: t(
+        'notifications.types.paymentsDesc',
+        'Payment received, failed payments, refunds',
+      ),
     },
     {
       key: 'quotes',
@@ -186,7 +192,10 @@ export default function NotificationSettings({ showNotification }) {
     {
       key: 'clients',
       name: t('notifications.types.clients', 'Clients'),
-      description: t('notifications.types.clientsDesc', 'New client registrations, profile updates'),
+      description: t(
+        'notifications.types.clientsDesc',
+        'New client registrations, profile updates',
+      ),
     },
     {
       key: 'reports',
@@ -196,26 +205,35 @@ export default function NotificationSettings({ showNotification }) {
     {
       key: 'security',
       name: t('notifications.types.security', 'Security'),
-      description: t('notifications.types.securityDesc', 'Login alerts, security updates, suspicious activity'),
+      description: t(
+        'notifications.types.securityDesc',
+        'Login alerts, security updates, suspicious activity',
+      ),
     },
     {
       key: 'marketing',
       name: t('notifications.types.marketing', 'Marketing'),
-      description: t('notifications.types.marketingDesc', 'Product updates, newsletters, promotional offers'),
+      description: t(
+        'notifications.types.marketingDesc',
+        'Product updates, newsletters, promotional offers',
+      ),
     },
     {
       key: 'systemUpdates',
       name: t('notifications.types.system', 'System Updates'),
-      description: t('notifications.types.systemDesc', 'Maintenance notices, feature announcements'),
+      description: t(
+        'notifications.types.systemDesc',
+        'Maintenance notices, feature announcements',
+      ),
     },
   ];
 
   // Don't render if not authenticated
   if (!isAuthenticated || !user) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <div className="text-center">
-          <p className="text-gray-500">Please sign in to access notification settings.</p>
+      <div className='flex items-center justify-center h-64'>
+        <div className='text-center'>
+          <p className='text-gray-500'>Please sign in to access notification settings.</p>
         </div>
       </div>
     );
@@ -223,55 +241,57 @@ export default function NotificationSettings({ showNotification }) {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+      <div className='flex items-center justify-center h-64'>
+        <div className='animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600'></div>
       </div>
     );
   }
 
   return (
-    <div className="space-y-8">
+    <div className='space-y-8'>
       {/* Header */}
       <div>
-        <h3 className="text-lg font-medium text-gray-900">{t('notifications.title', 'Notification Settings')}</h3>
-        <p className="mt-1 text-sm text-gray-600">
+        <h3 className='text-lg font-medium text-gray-900'>
+          {t('notifications.title', 'Notification Settings')}
+        </h3>
+        <p className='mt-1 text-sm text-gray-600'>
           {t('notifications.description', 'Choose how and when you want to receive notifications.')}
         </p>
       </div>
 
       {/* Contact Information */}
-      <div className="bg-white border border-gray-200 rounded-lg p-6">
-        <h4 className="text-sm font-medium text-gray-900 mb-4">
+      <div className='bg-white border border-gray-200 rounded-lg p-6'>
+        <h4 className='text-sm font-medium text-gray-900 mb-4'>
           {t('notifications.contact.title', 'Contact Information')}
         </h4>
-        <div className="space-y-4">
-          <div className="flex items-center space-x-3">
-            <EnvelopeIcon className="w-5 h-5 text-gray-400" />
-            <div className="flex-1">
-              <label className="block text-sm font-medium text-gray-700">
+        <div className='space-y-4'>
+          <div className='flex items-center space-x-3'>
+            <EnvelopeIcon className='w-5 h-5 text-gray-400' />
+            <div className='flex-1'>
+              <label className='block text-sm font-medium text-gray-700'>
                 {t('notifications.contact.email', 'Email Address')}
               </label>
-              <p className="text-sm text-gray-600">{emailAddress || 'No email address'}</p>
+              <p className='text-sm text-gray-600'>{emailAddress || 'No email address'}</p>
             </div>
-            <button 
+            <button
               onClick={() => sendTestNotification('email')}
-              className="text-sm text-blue-600 hover:text-blue-700 font-medium"
+              className='text-sm text-blue-600 hover:text-blue-700 font-medium'
             >
               {t('notifications.contact.testEmail', 'Test Email')}
             </button>
           </div>
-          
-          <div className="flex items-center space-x-3">
-            <DevicePhoneMobileIcon className="w-5 h-5 text-gray-400" />
-            <div className="flex-1">
-              <label className="block text-sm font-medium text-gray-700">
+
+          <div className='flex items-center space-x-3'>
+            <DevicePhoneMobileIcon className='w-5 h-5 text-gray-400' />
+            <div className='flex-1'>
+              <label className='block text-sm font-medium text-gray-700'>
                 {t('notifications.contact.phone', 'Phone Number')}
               </label>
-              <p className="text-sm text-gray-600">{phoneNumber || 'No phone number'}</p>
+              <p className='text-sm text-gray-600'>{phoneNumber || 'No phone number'}</p>
             </div>
-            <button 
+            <button
               onClick={() => sendTestNotification('SMS')}
-              className="text-sm text-blue-600 hover:text-blue-700 font-medium"
+              className='text-sm text-blue-600 hover:text-blue-700 font-medium'
             >
               {t('notifications.contact.testSMS', 'Test SMS')}
             </button>
@@ -280,74 +300,78 @@ export default function NotificationSettings({ showNotification }) {
       </div>
 
       {/* Notification Preferences */}
-      <div className="bg-white border border-gray-200 rounded-lg p-6">
-        <h4 className="text-sm font-medium text-gray-900 mb-4">
+      <div className='bg-white border border-gray-200 rounded-lg p-6'>
+        <h4 className='text-sm font-medium text-gray-900 mb-4'>
           {t('notifications.preferences.title', 'Notification Preferences')}
         </h4>
-        
-        <div className="overflow-x-auto">
-          <table className="min-w-full">
+
+        <div className='overflow-x-auto'>
+          <table className='min-w-full'>
             <thead>
-              <tr className="border-b border-gray-200">
-                <th className="text-left py-3 pr-4 text-sm font-medium text-gray-900">
+              <tr className='border-b border-gray-200'>
+                <th className='text-left py-3 pr-4 text-sm font-medium text-gray-900'>
                   {t('notifications.preferences.type', 'Notification Type')}
                 </th>
-                <th className="text-center py-3 px-2 text-sm font-medium text-gray-900">
-                  <EnvelopeIcon className="w-5 h-5 mx-auto" />
-                  <span className="sr-only">Email</span>
+                <th className='text-center py-3 px-2 text-sm font-medium text-gray-900'>
+                  <EnvelopeIcon className='w-5 h-5 mx-auto' />
+                  <span className='sr-only'>Email</span>
                 </th>
-                <th className="text-center py-3 px-2 text-sm font-medium text-gray-900">
-                  <DevicePhoneMobileIcon className="w-5 h-5 mx-auto" />
-                  <span className="sr-only">SMS</span>
+                <th className='text-center py-3 px-2 text-sm font-medium text-gray-900'>
+                  <DevicePhoneMobileIcon className='w-5 h-5 mx-auto' />
+                  <span className='sr-only'>SMS</span>
                 </th>
-                <th className="text-center py-3 px-2 text-sm font-medium text-gray-900">
-                  <BellIcon className="w-5 h-5 mx-auto" />
-                  <span className="sr-only">Push</span>
+                <th className='text-center py-3 px-2 text-sm font-medium text-gray-900'>
+                  <BellIcon className='w-5 h-5 mx-auto' />
+                  <span className='sr-only'>Push</span>
                 </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-200">
-              {notificationTypes.map((type) => (
-                <tr key={type.key} className="hover:bg-gray-50">
-                  <td className="py-4 pr-4">
+            <tbody className='divide-y divide-gray-200'>
+              {notificationTypes.map(type => (
+                <tr key={type.key} className='hover:bg-gray-50'>
+                  <td className='py-4 pr-4'>
                     <div>
-                      <p className="text-sm font-medium text-gray-900">{type.name}</p>
-                      <p className="text-xs text-gray-600">{type.description}</p>
+                      <p className='text-sm font-medium text-gray-900'>{type.name}</p>
+                      <p className='text-xs text-gray-600'>{type.description}</p>
                     </div>
                   </td>
-                  <td className="text-center py-4 px-2">
+                  <td className='text-center py-4 px-2'>
                     <button
-                      onClick={() => updatePreference('email', type.key, !preferences.email[type.key])}
-                      className="text-gray-400 hover:text-gray-600"
+                      onClick={() =>
+                        updatePreference('email', type.key, !preferences.email[type.key])
+                      }
+                      className='text-gray-400 hover:text-gray-600'
                     >
                       {preferences.email[type.key] ? (
-                        <CheckCircleIcon className="w-5 h-5 text-green-600" />
+                        <CheckCircleIcon className='w-5 h-5 text-green-600' />
                       ) : (
-                        <XCircleIcon className="w-5 h-5 text-gray-300" />
+                        <XCircleIcon className='w-5 h-5 text-gray-300' />
                       )}
                     </button>
                   </td>
-                  <td className="text-center py-4 px-2">
+                  <td className='text-center py-4 px-2'>
                     <button
                       onClick={() => updatePreference('sms', type.key, !preferences.sms[type.key])}
-                      className="text-gray-400 hover:text-gray-600"
+                      className='text-gray-400 hover:text-gray-600'
                     >
                       {preferences.sms[type.key] ? (
-                        <CheckCircleIcon className="w-5 h-5 text-green-600" />
+                        <CheckCircleIcon className='w-5 h-5 text-green-600' />
                       ) : (
-                        <XCircleIcon className="w-5 h-5 text-gray-300" />
+                        <XCircleIcon className='w-5 h-5 text-gray-300' />
                       )}
                     </button>
                   </td>
-                  <td className="text-center py-4 px-2">
+                  <td className='text-center py-4 px-2'>
                     <button
-                      onClick={() => updatePreference('push', type.key, !preferences.push[type.key])}
-                      className="text-gray-400 hover:text-gray-600"
+                      onClick={() =>
+                        updatePreference('push', type.key, !preferences.push[type.key])
+                      }
+                      className='text-gray-400 hover:text-gray-600'
                     >
                       {preferences.push[type.key] ? (
-                        <CheckCircleIcon className="w-5 h-5 text-green-600" />
+                        <CheckCircleIcon className='w-5 h-5 text-green-600' />
                       ) : (
-                        <XCircleIcon className="w-5 h-5 text-gray-300" />
+                        <XCircleIcon className='w-5 h-5 text-gray-300' />
                       )}
                     </button>
                   </td>
@@ -359,44 +383,49 @@ export default function NotificationSettings({ showNotification }) {
       </div>
 
       {/* Frequency Settings */}
-      <div className="bg-white border border-gray-200 rounded-lg p-6">
-        <div className="flex items-center space-x-3 mb-4">
-          <CogIcon className="w-6 h-6 text-blue-600" />
-          <h4 className="text-sm font-medium text-gray-900">
+      <div className='bg-white border border-gray-200 rounded-lg p-6'>
+        <div className='flex items-center space-x-3 mb-4'>
+          <CogIcon className='w-6 h-6 text-blue-600' />
+          <h4 className='text-sm font-medium text-gray-900'>
             {t('notifications.frequency.title', 'Frequency Settings')}
           </h4>
         </div>
 
-        <div className="space-y-6">
+        <div className='space-y-6'>
           {/* Digest Frequency */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className='block text-sm font-medium text-gray-700 mb-2'>
               {t('notifications.frequency.digest', 'Email Digest Frequency')}
             </label>
             <select
               value={preferences.frequency.digest}
-              onChange={(e) => updateFrequencyPreference('digest', e.target.value)}
-              className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              onChange={e => updateFrequencyPreference('digest', e.target.value)}
+              className='block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm'
             >
-              <option value="never">{t('notifications.frequency.never', 'Never')}</option>
-              <option value="daily">{t('notifications.frequency.daily', 'Daily')}</option>
-              <option value="weekly">{t('notifications.frequency.weekly', 'Weekly')}</option>
-              <option value="monthly">{t('notifications.frequency.monthly', 'Monthly')}</option>
+              <option value='never'>{t('notifications.frequency.never', 'Never')}</option>
+              <option value='daily'>{t('notifications.frequency.daily', 'Daily')}</option>
+              <option value='weekly'>{t('notifications.frequency.weekly', 'Weekly')}</option>
+              <option value='monthly'>{t('notifications.frequency.monthly', 'Monthly')}</option>
             </select>
           </div>
 
           {/* Reminders */}
-          <div className="flex items-center justify-between">
+          <div className='flex items-center justify-between'>
             <div>
-              <label className="text-sm font-medium text-gray-700">
+              <label className='text-sm font-medium text-gray-700'>
                 {t('notifications.frequency.reminders', 'Payment Reminders')}
               </label>
-              <p className="text-xs text-gray-600">
+              <p className='text-xs text-gray-600'>
                 {t('notifications.frequency.remindersDesc', 'Send reminders for overdue invoices')}
               </p>
             </div>
             <button
-              onClick={() => updateFrequencyPreference('reminders', preferences.frequency.reminders === 'enabled' ? 'disabled' : 'enabled')}
+              onClick={() =>
+                updateFrequencyPreference(
+                  'reminders',
+                  preferences.frequency.reminders === 'enabled' ? 'disabled' : 'enabled',
+                )
+              }
               className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
                 preferences.frequency.reminders === 'enabled' ? 'bg-blue-600' : 'bg-gray-200'
               }`}
@@ -411,17 +440,22 @@ export default function NotificationSettings({ showNotification }) {
 
           {/* Quiet Hours */}
           <div>
-            <div className="flex items-center justify-between mb-3">
+            <div className='flex items-center justify-between mb-3'>
               <div>
-                <label className="text-sm font-medium text-gray-700">
+                <label className='text-sm font-medium text-gray-700'>
                   {t('notifications.frequency.quietHours', 'Quiet Hours')}
                 </label>
-                <p className="text-xs text-gray-600">
-                  {t('notifications.frequency.quietHoursDesc', 'Disable notifications during these hours')}
+                <p className='text-xs text-gray-600'>
+                  {t(
+                    'notifications.frequency.quietHoursDesc',
+                    'Disable notifications during these hours',
+                  )}
                 </p>
               </div>
               <button
-                onClick={() => updateQuietHours('enabled', !preferences.frequency.quietHours.enabled)}
+                onClick={() =>
+                  updateQuietHours('enabled', !preferences.frequency.quietHours.enabled)
+                }
                 className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
                   preferences.frequency.quietHours.enabled ? 'bg-blue-600' : 'bg-gray-200'
                 }`}
@@ -435,27 +469,27 @@ export default function NotificationSettings({ showNotification }) {
             </div>
 
             {preferences.frequency.quietHours.enabled && (
-              <div className="grid grid-cols-2 gap-4">
+              <div className='grid grid-cols-2 gap-4'>
                 <div>
-                  <label className="block text-xs font-medium text-gray-700 mb-1">
+                  <label className='block text-xs font-medium text-gray-700 mb-1'>
                     {t('notifications.frequency.startTime', 'Start Time')}
                   </label>
                   <input
-                    type="time"
+                    type='time'
                     value={preferences.frequency.quietHours.start}
-                    onChange={(e) => updateQuietHours('start', e.target.value)}
-                    className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                    onChange={e => updateQuietHours('start', e.target.value)}
+                    className='block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm'
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-gray-700 mb-1">
+                  <label className='block text-xs font-medium text-gray-700 mb-1'>
                     {t('notifications.frequency.endTime', 'End Time')}
                   </label>
                   <input
-                    type="time"
+                    type='time'
                     value={preferences.frequency.quietHours.end}
-                    onChange={(e) => updateQuietHours('end', e.target.value)}
-                    className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                    onChange={e => updateQuietHours('end', e.target.value)}
+                    className='block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm'
                   />
                 </div>
               </div>

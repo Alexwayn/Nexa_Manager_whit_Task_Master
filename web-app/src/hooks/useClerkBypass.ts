@@ -1,4 +1,10 @@
-import { useAuth, useUser, useClerk, useOrganization, useOrganizationList } from '@clerk/clerk-react';
+import {
+  useAuth,
+  useUser,
+  useClerk,
+  useOrganization,
+  useOrganizationList,
+} from '@clerk/clerk-react';
 
 // Type definitions
 interface MockEmailAddress {
@@ -59,7 +65,8 @@ interface MockOrganizationList {
 
 // Check if we're in development mode
 const isDevelopment = import.meta.env.DEV;
-const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+const isLocalhost =
+  window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
 const shouldBypassClerk = isDevelopment && isLocalhost;
 
 // Mock data for development mode
@@ -69,19 +76,21 @@ const mockUser: MockUser = {
   lastName: 'User',
   fullName: 'Dev User',
   imageUrl: null,
-  emailAddresses: [{ 
-    id: 'dev-email-1',
-    emailAddress: 'dev@localhost.com',
-    verification: { status: 'verified' }
-  }],
+  emailAddresses: [
+    {
+      id: 'dev-email-1',
+      emailAddress: 'dev@localhost.com',
+      verification: { status: 'verified' },
+    },
+  ],
   primaryEmailAddress: {
     id: 'dev-email-1',
     emailAddress: 'dev@localhost.com',
-    verification: { status: 'verified' }
+    verification: { status: 'verified' },
   },
   unsafeMetadata: {
-    onboardingComplete: true
-  }
+    onboardingComplete: true,
+  },
 };
 
 const mockOrganization: MockOrganization = {
@@ -90,7 +99,7 @@ const mockOrganization: MockOrganization = {
   slug: 'dev-org',
   membersCount: 1,
   publicMetadata: {},
-  privateMetadata: {}
+  privateMetadata: {},
 };
 
 const mockAuth: MockAuth = {
@@ -98,7 +107,7 @@ const mockAuth: MockAuth = {
   isLoaded: true,
   user: mockUser,
   isAuthenticated: true,
-  loading: false
+  loading: false,
 };
 
 const mockClerk: MockClerk = {
@@ -108,13 +117,13 @@ const mockClerk: MockClerk = {
   },
   session: {
     id: 'dev-session-1',
-    user: mockUser
-  }
+    user: mockUser,
+  },
 };
 
 const mockOrganizationData: MockOrganizationData = {
   organization: mockOrganization,
-  isLoaded: true
+  isLoaded: true,
 };
 
 const mockOrganizationList: MockOrganizationList = {
@@ -123,7 +132,7 @@ const mockOrganizationList: MockOrganizationList = {
   setActive: async (): Promise<void> => {
     console.log('🚧 Mock setActive called in development mode');
     return Promise.resolve();
-  }
+  },
 };
 
 // Custom hooks that handle bypass automatically
@@ -168,4 +177,4 @@ export const useOrganizationListBypass = () => {
 };
 
 // Export bypass status for other components
-export const isClerkBypassed: boolean = shouldBypassClerk; 
+export const isClerkBypassed: boolean = shouldBypassClerk;

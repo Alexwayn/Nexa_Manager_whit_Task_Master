@@ -216,7 +216,7 @@ export const loadingManager = {
 // Error handling utilities
 export const errorHandler = {
   handle: (error: unknown, context: string = ''): string => {
-    Logger.error(`Error in ${context}:`, error);
+    Logger.error(`Error in ${context}:`, String(error?.message || error || 'Unknown error'));
     let message = t('ui.error.unexpected');
 
     if (error && typeof error === 'object') {
@@ -233,7 +233,7 @@ export const errorHandler = {
   },
 
   handleApiError: (error: ApiError, defaultMessage: string = t('ui.error.api')): void => {
-    Logger.error('API Error:', error);
+    Logger.error('API Error:', String(error?.message || error || 'Unknown error'));
     if (error?.response?.data?.message) notify.error(error.response.data.message);
     else if (error?.response?.data?.error) notify.error(error.response.data.error);
     else if (error?.message) notify.error(error.message);
@@ -241,7 +241,7 @@ export const errorHandler = {
   },
 
   handleSupabaseError: (error: SupabaseError, context: string = ''): string => {
-    Logger.error(`Supabase error in ${context}:`, error);
+    Logger.error(`Supabase error in ${context}:`, String(error?.message || error || 'Unknown error'));
     let message = t('ui.error.database');
 
     if (error?.message) {

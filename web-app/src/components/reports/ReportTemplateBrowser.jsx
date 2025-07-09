@@ -1,25 +1,22 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { 
-  ArrowLeftIcon, 
-  ChartBarIcon, 
-  UsersIcon, 
-  DocumentTextIcon, 
-  HeartIcon, 
+import {
+  ArrowLeftIcon,
+  ChartBarIcon,
+  UsersIcon,
+  DocumentTextIcon,
+  HeartIcon,
   CreditCardIcon,
   MagnifyingGlassIcon,
   FunnelIcon,
   StarIcon,
-  PlayIcon
+  PlayIcon,
 } from '@heroicons/react/24/outline';
-import { 
-  StarIcon as StarIconSolid,
-  HeartIcon as HeartIconSolid
-} from '@heroicons/react/24/solid';
-import { 
-  CORE_REPORT_TEMPLATES, 
-  getTemplatesByCategory, 
-  getAvailableCategories 
+import { StarIcon as StarIconSolid, HeartIcon as HeartIconSolid } from '@heroicons/react/24/solid';
+import {
+  CORE_REPORT_TEMPLATES,
+  getTemplatesByCategory,
+  getAvailableCategories,
 } from '../../data/reportTemplates';
 
 const ReportTemplateBrowser = ({ onBack, onSelectTemplate, onCreateCustom }) => {
@@ -35,7 +32,7 @@ const ReportTemplateBrowser = ({ onBack, onSelectTemplate, onCreateCustom }) => 
     UsersIcon: UsersIcon,
     DocumentTextIcon: DocumentTextIcon,
     HeartIcon: HeartIcon,
-    CreditCardIcon: CreditCardIcon
+    CreditCardIcon: CreditCardIcon,
   };
 
   // Color classes for template cards
@@ -44,26 +41,25 @@ const ReportTemplateBrowser = ({ onBack, onSelectTemplate, onCreateCustom }) => 
     green: 'border-green-200 bg-green-50 text-green-800',
     red: 'border-red-200 bg-red-50 text-red-800',
     purple: 'border-purple-200 bg-purple-50 text-purple-800',
-    orange: 'border-orange-200 bg-orange-50 text-orange-800'
+    orange: 'border-orange-200 bg-orange-50 text-orange-800',
   };
 
   // Filter templates based on category and search
   const filteredTemplates = CORE_REPORT_TEMPLATES.filter(template => {
     const matchesCategory = selectedCategory === 'all' || template.category === selectedCategory;
-    const matchesSearch = searchTerm === '' || 
+    const matchesSearch =
+      searchTerm === '' ||
       template.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       template.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
       template.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()));
-    
+
     return matchesCategory && matchesSearch;
   });
 
   // Handle favorite toggle
-  const toggleFavorite = (templateId) => {
-    setFavoriteTemplates(prev => 
-      prev.includes(templateId) 
-        ? prev.filter(id => id !== templateId)
-        : [...prev, templateId]
+  const toggleFavorite = templateId => {
+    setFavoriteTemplates(prev =>
+      prev.includes(templateId) ? prev.filter(id => id !== templateId) : [...prev, templateId],
     );
   };
 
@@ -74,12 +70,12 @@ const ReportTemplateBrowser = ({ onBack, onSelectTemplate, onCreateCustom }) => 
     return acc;
   }, {});
 
-  const getCategoryIcon = (category) => {
+  const getCategoryIcon = category => {
     const icons = {
       financial: ChartBarIcon,
       client: UsersIcon,
       tax: DocumentTextIcon,
-      operational: HeartIcon
+      operational: HeartIcon,
     };
     return icons[category] || ChartBarIcon;
   };
@@ -87,8 +83,8 @@ const ReportTemplateBrowser = ({ onBack, onSelectTemplate, onCreateCustom }) => 
   return (
     <div className='bg-white rounded-xl shadow-sm border border-gray-200 p-6'>
       {/* Header with back button */}
-      <button 
-        onClick={onBack} 
+      <button
+        onClick={onBack}
         className='flex items-center text-sm font-medium text-gray-600 hover:text-gray-900 mb-6 transition-colors'
       >
         <ArrowLeftIcon className='h-4 w-4 mr-2' />
@@ -112,7 +108,7 @@ const ReportTemplateBrowser = ({ onBack, onSelectTemplate, onCreateCustom }) => 
             type='text'
             placeholder='Search templates by name, description, or tags...'
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={e => setSearchTerm(e.target.value)}
             className='w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
           />
         </div>
@@ -121,7 +117,9 @@ const ReportTemplateBrowser = ({ onBack, onSelectTemplate, onCreateCustom }) => 
         <button
           onClick={() => setShowFilters(!showFilters)}
           className={`flex items-center px-4 py-2 border rounded-lg transition-colors ${
-            showFilters ? 'bg-blue-50 border-blue-300 text-blue-700' : 'border-gray-300 text-gray-700 hover:bg-gray-50'
+            showFilters
+              ? 'bg-blue-50 border-blue-300 text-blue-700'
+              : 'border-gray-300 text-gray-700 hover:bg-gray-50'
           }`}
         >
           <FunnelIcon className='h-5 w-5 mr-2' />
@@ -187,7 +185,7 @@ const ReportTemplateBrowser = ({ onBack, onSelectTemplate, onCreateCustom }) => 
         {filteredTemplates.map(template => {
           const Icon = iconMap[template.icon] || ChartBarIcon;
           const isFavorite = favoriteTemplates.includes(template.id);
-          
+
           return (
             <div
               key={template.id}
@@ -195,7 +193,7 @@ const ReportTemplateBrowser = ({ onBack, onSelectTemplate, onCreateCustom }) => 
             >
               {/* Favorite Button */}
               <button
-                onClick={(e) => {
+                onClick={e => {
                   e.stopPropagation();
                   toggleFavorite(template.id);
                 }}
@@ -217,15 +215,13 @@ const ReportTemplateBrowser = ({ onBack, onSelectTemplate, onCreateCustom }) => 
               <h3 className='text-lg font-semibold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors'>
                 {template.name}
               </h3>
-              
-              <p className='text-sm text-gray-600 mb-4 line-clamp-3'>
-                {template.description}
-              </p>
+
+              <p className='text-sm text-gray-600 mb-4 line-clamp-3'>{template.description}</p>
 
               {/* Tags */}
               <div className='flex flex-wrap gap-1 mb-4'>
                 {template.tags.slice(0, 3).map(tag => (
-                  <span 
+                  <span
                     key={tag}
                     className='px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded-full'
                   >
@@ -241,13 +237,19 @@ const ReportTemplateBrowser = ({ onBack, onSelectTemplate, onCreateCustom }) => 
 
               {/* Category Badge */}
               <div className='flex items-center justify-between'>
-                <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                  template.category === 'financial' ? 'bg-blue-100 text-blue-800' :
-                  template.category === 'client' ? 'bg-green-100 text-green-800' :
-                  template.category === 'tax' ? 'bg-red-100 text-red-800' :
-                  template.category === 'operational' ? 'bg-purple-100 text-purple-800' :
-                  'bg-gray-100 text-gray-800'
-                }`}>
+                <span
+                  className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                    template.category === 'financial'
+                      ? 'bg-blue-100 text-blue-800'
+                      : template.category === 'client'
+                        ? 'bg-green-100 text-green-800'
+                        : template.category === 'tax'
+                          ? 'bg-red-100 text-red-800'
+                          : template.category === 'operational'
+                            ? 'bg-purple-100 text-purple-800'
+                            : 'bg-gray-100 text-gray-800'
+                  }`}
+                >
                   {template.category}
                 </span>
 
@@ -271,10 +273,9 @@ const ReportTemplateBrowser = ({ onBack, onSelectTemplate, onCreateCustom }) => 
           <MagnifyingGlassIcon className='h-12 w-12 text-gray-400 mx-auto mb-4' />
           <h3 className='text-lg font-medium text-gray-900 mb-2'>No templates found</h3>
           <p className='text-gray-600 mb-4'>
-            {searchTerm 
+            {searchTerm
               ? `No templates match your search "${searchTerm}"`
-              : `No templates available in the ${selectedCategory} category`
-            }
+              : `No templates available in the ${selectedCategory} category`}
           </p>
           <div className='space-y-2'>
             <button
@@ -302,7 +303,9 @@ const ReportTemplateBrowser = ({ onBack, onSelectTemplate, onCreateCustom }) => 
         <div className='mt-8 pt-6 border-t border-gray-200'>
           <div className='flex flex-wrap justify-center gap-8 text-sm text-gray-600'>
             <div className='text-center'>
-              <div className='text-lg font-semibold text-gray-900'>{CORE_REPORT_TEMPLATES.length}</div>
+              <div className='text-lg font-semibold text-gray-900'>
+                {CORE_REPORT_TEMPLATES.length}
+              </div>
               <div>Total Templates</div>
             </div>
             <div className='text-center'>
@@ -320,4 +323,4 @@ const ReportTemplateBrowser = ({ onBack, onSelectTemplate, onCreateCustom }) => 
   );
 };
 
-export default ReportTemplateBrowser; 
+export default ReportTemplateBrowser;

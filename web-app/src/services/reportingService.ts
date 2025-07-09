@@ -2,15 +2,12 @@
 // Task 71.2: Data Architecture Implementation
 
 import { supabase } from '../lib/supabaseClient';
-import { 
-  DateRange
-} from '../types/reports';
+import { DateRange } from '../types/reports';
 
 /**
  * Service for accessing reporting views and generating business intelligence
  */
 export class ReportingService {
-  
   // =====================================================
   // FINANCIAL REPORTING METHODS
   // =====================================================
@@ -19,25 +16,20 @@ export class ReportingService {
    * Get revenue summary for a user with optional date filtering
    */
   async getRevenueSummary(
-    userId: string, 
+    userId: string,
     dateRange?: DateRange,
-    groupBy: 'month' | 'year' = 'month'
+    groupBy: 'month' | 'year' = 'month',
   ) {
-    let query = supabase
-      .from('v_revenue_summary')
-      .select('*')
-      .eq('user_id', userId);
+    let query = supabase.from('v_revenue_summary').select('*').eq('user_id', userId);
 
     if (dateRange) {
-      query = query
-        .gte('month_start', dateRange.start)
-        .lte('month_start', dateRange.end);
+      query = query.gte('month_start', dateRange.start).lte('month_start', dateRange.end);
     }
 
     query = query.order(groupBy === 'month' ? 'month_start' : 'year_start', { ascending: false });
 
     const { data, error } = await query;
-    
+
     if (error) {
       console.error('Error fetching revenue summary:', error);
       throw error;
@@ -49,20 +41,11 @@ export class ReportingService {
   /**
    * Get expense summary with category breakdown
    */
-  async getExpenseSummary(
-    userId: string,
-    dateRange?: DateRange,
-    category?: string
-  ) {
-    let query = supabase
-      .from('v_expense_summary')
-      .select('*')
-      .eq('user_id', userId);
+  async getExpenseSummary(userId: string, dateRange?: DateRange, category?: string) {
+    let query = supabase.from('v_expense_summary').select('*').eq('user_id', userId);
 
     if (dateRange) {
-      query = query
-        .gte('month_start', dateRange.start)
-        .lte('month_start', dateRange.end);
+      query = query.gte('month_start', dateRange.start).lte('month_start', dateRange.end);
     }
 
     if (category) {
@@ -72,7 +55,7 @@ export class ReportingService {
     query = query.order('month_start', { ascending: false });
 
     const { data, error } = await query;
-    
+
     if (error) {
       console.error('Error fetching expense summary:', error);
       throw error;
@@ -84,25 +67,17 @@ export class ReportingService {
   /**
    * Get comprehensive profit and loss data
    */
-  async getProfitLoss(
-    userId: string,
-    dateRange?: DateRange
-  ) {
-    let query = supabase
-      .from('v_profit_loss')
-      .select('*')
-      .eq('user_id', userId);
+  async getProfitLoss(userId: string, dateRange?: DateRange) {
+    let query = supabase.from('v_profit_loss').select('*').eq('user_id', userId);
 
     if (dateRange) {
-      query = query
-        .gte('period_start', dateRange.start)
-        .lte('period_start', dateRange.end);
+      query = query.gte('period_start', dateRange.start).lte('period_start', dateRange.end);
     }
 
     query = query.order('period_start', { ascending: false });
 
     const { data, error } = await query;
-    
+
     if (error) {
       console.error('Error fetching profit/loss data:', error);
       throw error;
@@ -114,15 +89,8 @@ export class ReportingService {
   /**
    * Get Italian VAT (IVA) summary for tax compliance
    */
-  async getIVASummary(
-    userId: string,
-    taxYear?: number,
-    taxQuarter?: number
-  ) {
-    let query = supabase
-      .from('v_iva_summary')
-      .select('*')
-      .eq('user_id', userId);
+  async getIVASummary(userId: string, taxYear?: number, taxQuarter?: number) {
+    let query = supabase.from('v_iva_summary').select('*').eq('user_id', userId);
 
     if (taxYear) {
       query = query.eq('tax_year', taxYear);
@@ -135,7 +103,7 @@ export class ReportingService {
     query = query.order('quarter_start', { ascending: false });
 
     const { data, error } = await query;
-    
+
     if (error) {
       console.error('Error fetching IVA summary:', error);
       throw error;
@@ -147,15 +115,8 @@ export class ReportingService {
   /**
    * Get tax deductible expenses summary
    */
-  async getTaxDeductibleSummary(
-    userId: string,
-    taxYear?: number,
-    category?: string
-  ) {
-    let query = supabase
-      .from('v_tax_deductible_summary')
-      .select('*')
-      .eq('user_id', userId);
+  async getTaxDeductibleSummary(userId: string, taxYear?: number, category?: string) {
+    let query = supabase.from('v_tax_deductible_summary').select('*').eq('user_id', userId);
 
     if (taxYear) {
       query = query.eq('tax_year', taxYear);
@@ -166,7 +127,7 @@ export class ReportingService {
     }
 
     const { data, error } = await query;
-    
+
     if (error) {
       console.error('Error fetching tax deductible summary:', error);
       throw error;
@@ -182,14 +143,8 @@ export class ReportingService {
   /**
    * Get individual client revenue and analytics
    */
-  async getClientRevenue(
-    userId: string,
-    clientId?: string
-  ) {
-    let query = supabase
-      .from('v_client_revenue')
-      .select('*')
-      .eq('user_id', userId);
+  async getClientRevenue(userId: string, clientId?: string) {
+    let query = supabase.from('v_client_revenue').select('*').eq('user_id', userId);
 
     if (clientId) {
       query = query.eq('client_id', clientId);
@@ -198,7 +153,7 @@ export class ReportingService {
     query = query.order('total_revenue', { ascending: false });
 
     const { data, error } = await query;
-    
+
     if (error) {
       console.error('Error fetching client revenue:', error);
       throw error;
@@ -216,7 +171,7 @@ export class ReportingService {
       .select('*')
       .eq('user_id', userId)
       .single();
-    
+
     if (error) {
       console.error('Error fetching client portfolio:', error);
       throw error;
@@ -231,23 +186,18 @@ export class ReportingService {
   async getTopClients(
     userId: string,
     limit: number = 10,
-    status?: 'active' | 'inactive' | 'dormant'
+    status?: 'active' | 'inactive' | 'dormant',
   ) {
-    let query = supabase
-      .from('v_client_revenue')
-      .select('*')
-      .eq('user_id', userId);
+    let query = supabase.from('v_client_revenue').select('*').eq('user_id', userId);
 
     if (status) {
       query = query.eq('client_status', status);
     }
 
-    query = query
-      .order('total_revenue', { ascending: false })
-      .limit(limit);
+    query = query.order('total_revenue', { ascending: false }).limit(limit);
 
     const { data, error } = await query;
-    
+
     if (error) {
       console.error('Error fetching top clients:', error);
       throw error;
@@ -263,25 +213,17 @@ export class ReportingService {
   /**
    * Get monthly business performance with growth metrics
    */
-  async getMonthlyPerformance(
-    userId: string,
-    dateRange?: DateRange
-  ) {
-    let query = supabase
-      .from('v_monthly_performance')
-      .select('*')
-      .eq('user_id', userId);
+  async getMonthlyPerformance(userId: string, dateRange?: DateRange) {
+    let query = supabase.from('v_monthly_performance').select('*').eq('user_id', userId);
 
     if (dateRange) {
-      query = query
-        .gte('period_start', dateRange.start)
-        .lte('period_start', dateRange.end);
+      query = query.gte('period_start', dateRange.start).lte('period_start', dateRange.end);
     }
 
     query = query.order('period_start', { ascending: false });
 
     const { data, error } = await query;
-    
+
     if (error) {
       console.error('Error fetching monthly performance:', error);
       throw error;
@@ -299,7 +241,7 @@ export class ReportingService {
       .select('*')
       .eq('user_id', userId)
       .single();
-    
+
     if (error) {
       console.error('Error fetching business health:', error);
       throw error;
@@ -319,15 +261,15 @@ export class ReportingService {
     try {
       // Get latest business health data
       const businessHealth = await this.getBusinessHealth(userId);
-      
+
       // Get current month performance
       const currentMonth = new Date();
       const monthStart = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), 1);
       const monthEnd = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 0);
-      
+
       const currentPerformance = await this.getMonthlyPerformance(userId, {
         start: monthStart.toISOString().split('T')[0],
-        end: monthEnd.toISOString().split('T')[0]
+        end: monthEnd.toISOString().split('T')[0],
       });
 
       // Get client portfolio data
@@ -346,9 +288,10 @@ export class ReportingService {
         // Client KPIs
         totalClients: clientPortfolio?.total_clients || 0,
         activeClients: clientPortfolio?.active_clients || 0,
-        clientRetentionRate: clientPortfolio?.active_clients && clientPortfolio?.total_clients 
-          ? (clientPortfolio.active_clients / clientPortfolio.total_clients) * 100 
-          : 0,
+        clientRetentionRate:
+          clientPortfolio?.active_clients && clientPortfolio?.total_clients
+            ? (clientPortfolio.active_clients / clientPortfolio.total_clients) * 100
+            : 0,
         avgClientValue: clientPortfolio?.avg_client_revenue || 0,
         avgPaymentDelay: clientPortfolio?.portfolio_avg_payment_delay || 0,
 
@@ -362,8 +305,8 @@ export class ReportingService {
         calculatedAt: new Date().toISOString(),
         period: {
           start: monthStart.toISOString(),
-          end: monthEnd.toISOString()
-        }
+          end: monthEnd.toISOString(),
+        },
       };
 
       return kpis;
@@ -380,27 +323,31 @@ export class ReportingService {
     userId: string,
     metric: 'revenue' | 'profit' | 'clients' | 'invoices',
     dateRange: DateRange,
-    _interval: 'daily' | 'weekly' | 'monthly' = 'monthly'
+    _interval: 'daily' | 'weekly' | 'monthly' = 'monthly',
   ) {
     try {
       let data;
-      
+
       switch (metric) {
         case 'revenue':
           data = await this.getRevenueSummary(userId, dateRange, 'month');
-          return data?.map(d => ({
-            date: d.month_start,
-            value: d.total_revenue,
-            label: 'Revenue'
-          })) || [];
+          return (
+            data?.map(d => ({
+              date: d.month_start,
+              value: d.total_revenue,
+              label: 'Revenue',
+            })) || []
+          );
 
         case 'profit':
           data = await this.getProfitLoss(userId, dateRange);
-          return data?.map(d => ({
-            date: d.period_start,
-            value: d.net_profit,
-            label: 'Net Profit'
-          })) || [];
+          return (
+            data?.map(d => ({
+              date: d.period_start,
+              value: d.net_profit,
+              label: 'Net Profit',
+            })) || []
+          );
 
         case 'clients':
           // This would require a more complex query across time periods
@@ -409,11 +356,13 @@ export class ReportingService {
 
         case 'invoices':
           data = await this.getRevenueSummary(userId, dateRange, 'month');
-          return data?.map(d => ({
-            date: d.month_start,
-            value: d.invoice_count,
-            label: 'Invoices'
-          })) || [];
+          return (
+            data?.map(d => ({
+              date: d.month_start,
+              value: d.invoice_count,
+              label: 'Invoices',
+            })) || []
+          );
 
         default:
           return [];
@@ -431,42 +380,40 @@ export class ReportingService {
   /**
    * Get expense categories with totals
    */
-  async getExpenseCategories(
-    userId: string,
-    dateRange?: DateRange
-  ) {
+  async getExpenseCategories(userId: string, dateRange?: DateRange) {
     let query = supabase
       .from('v_expense_summary')
       .select('category, total_expenses, deductible_amount')
       .eq('user_id', userId);
 
     if (dateRange) {
-      query = query
-        .gte('month_start', dateRange.start)
-        .lte('month_start', dateRange.end);
+      query = query.gte('month_start', dateRange.start).lte('month_start', dateRange.end);
     }
 
     const { data, error } = await query;
-    
+
     if (error) {
       console.error('Error fetching expense categories:', error);
       throw error;
     }
 
     // Aggregate by category
-    const categoryTotals = data?.reduce((acc, item) => {
-      const category = item.category || 'Uncategorized';
-      if (!acc[category]) {
-        acc[category] = {
-          category,
-          total_expenses: 0,
-          deductible_amount: 0
-        };
-      }
-      acc[category].total_expenses += item.total_expenses || 0;
-      acc[category].deductible_amount += item.deductible_amount || 0;
-      return acc;
-    }, {} as Record<string, any>);
+    const categoryTotals = data?.reduce(
+      (acc, item) => {
+        const category = item.category || 'Uncategorized';
+        if (!acc[category]) {
+          acc[category] = {
+            category,
+            total_expenses: 0,
+            deductible_amount: 0,
+          };
+        }
+        acc[category].total_expenses += item.total_expenses || 0;
+        acc[category].deductible_amount += item.deductible_amount || 0;
+        return acc;
+      },
+      {} as Record<string, any>,
+    );
 
     return Object.values(categoryTotals || {});
   }
@@ -474,40 +421,37 @@ export class ReportingService {
   /**
    * Get revenue by client for pie charts
    */
-  async getRevenueByClient(
-    userId: string,
-    limit: number = 10,
-    includeOthers: boolean = true
-  ) {
+  async getRevenueByClient(userId: string, limit: number = 10, includeOthers: boolean = true) {
     const clients = await this.getTopClients(userId, limit);
-    
+
     if (!clients) return [];
 
     let result = clients.map(client => ({
       name: client.client_name,
       value: client.total_revenue,
-      percentage: 0 // Will be calculated below
+      percentage: 0, // Will be calculated below
     }));
 
     // Calculate percentages
     const totalRevenue = result.reduce((sum, item) => sum + item.value, 0);
     result = result.map(item => ({
       ...item,
-      percentage: totalRevenue > 0 ? (item.value / totalRevenue) * 100 : 0
+      percentage: totalRevenue > 0 ? (item.value / totalRevenue) * 100 : 0,
     }));
 
     // Add "Others" category if requested and there are more clients
     if (includeOthers) {
       const allClients = await this.getClientRevenue(userId);
       const topClientsRevenue = result.reduce((sum, item) => sum + item.value, 0);
-      const totalAllRevenue = allClients?.reduce((sum, client) => sum + client.total_revenue, 0) || 0;
+      const totalAllRevenue =
+        allClients?.reduce((sum, client) => sum + client.total_revenue, 0) || 0;
       const othersRevenue = totalAllRevenue - topClientsRevenue;
 
       if (othersRevenue > 0) {
         result.push({
           name: 'Others',
           value: othersRevenue,
-          percentage: totalAllRevenue > 0 ? (othersRevenue / totalAllRevenue) * 100 : 0
+          percentage: totalAllRevenue > 0 ? (othersRevenue / totalAllRevenue) * 100 : 0,
         });
       }
     }
@@ -518,15 +462,11 @@ export class ReportingService {
   /**
    * Compare periods for growth analysis
    */
-  async comparePeriods(
-    userId: string,
-    currentPeriod: DateRange,
-    previousPeriod: DateRange
-  ) {
+  async comparePeriods(userId: string, currentPeriod: DateRange, previousPeriod: DateRange) {
     try {
       const [currentData, previousData] = await Promise.all([
         this.getProfitLoss(userId, currentPeriod),
-        this.getProfitLoss(userId, previousPeriod)
+        this.getProfitLoss(userId, previousPeriod),
       ]);
 
       const currentTotals = this.aggregatePeriodData(currentData);
@@ -538,8 +478,8 @@ export class ReportingService {
         growth: {
           revenue: this.calculateGrowthRate(currentTotals.revenue, previousTotals.revenue),
           profit: this.calculateGrowthRate(currentTotals.profit, previousTotals.profit),
-          expenses: this.calculateGrowthRate(currentTotals.expenses, previousTotals.expenses)
-        }
+          expenses: this.calculateGrowthRate(currentTotals.expenses, previousTotals.expenses),
+        },
       };
     } catch (error) {
       console.error('Error comparing periods:', error);
@@ -555,14 +495,16 @@ export class ReportingService {
    * Aggregate period data for comparisons
    */
   private aggregatePeriodData(data: any[]) {
-    return data?.reduce(
-      (acc, item) => ({
-        revenue: acc.revenue + (item.total_revenue || 0),
-        profit: acc.profit + (item.net_profit || 0),
-        expenses: acc.expenses + (item.total_expenses || 0)
-      }),
-      { revenue: 0, profit: 0, expenses: 0 }
-    ) || { revenue: 0, profit: 0, expenses: 0 };
+    return (
+      data?.reduce(
+        (acc, item) => ({
+          revenue: acc.revenue + (item.total_revenue || 0),
+          profit: acc.profit + (item.net_profit || 0),
+          expenses: acc.expenses + (item.total_expenses || 0),
+        }),
+        { revenue: 0, profit: 0, expenses: 0 },
+      ) || { revenue: 0, profit: 0, expenses: 0 }
+    );
   }
 
   /**
@@ -582,31 +524,35 @@ export class ReportingService {
     const currentMonth = now.getMonth();
 
     return {
-      'this_month': {
+      this_month: {
         start: new Date(currentYear, currentMonth, 1).toISOString().split('T')[0],
         end: new Date(currentYear, currentMonth + 1, 0).toISOString().split('T')[0],
-        preset: 'this_month'
+        preset: 'this_month',
       },
-      'last_month': {
+      last_month: {
         start: new Date(currentYear, currentMonth - 1, 1).toISOString().split('T')[0],
         end: new Date(currentYear, currentMonth, 0).toISOString().split('T')[0],
-        preset: 'last_month'
+        preset: 'last_month',
       },
-      'this_quarter': {
-        start: new Date(currentYear, Math.floor(currentMonth / 3) * 3, 1).toISOString().split('T')[0],
-        end: new Date(currentYear, Math.floor(currentMonth / 3) * 3 + 3, 0).toISOString().split('T')[0],
-        preset: 'this_quarter'
+      this_quarter: {
+        start: new Date(currentYear, Math.floor(currentMonth / 3) * 3, 1)
+          .toISOString()
+          .split('T')[0],
+        end: new Date(currentYear, Math.floor(currentMonth / 3) * 3 + 3, 0)
+          .toISOString()
+          .split('T')[0],
+        preset: 'this_quarter',
       },
-      'this_year': {
+      this_year: {
         start: new Date(currentYear, 0, 1).toISOString().split('T')[0],
         end: new Date(currentYear, 11, 31).toISOString().split('T')[0],
-        preset: 'this_year'
+        preset: 'this_year',
       },
-      'last_year': {
+      last_year: {
         start: new Date(currentYear - 1, 0, 1).toISOString().split('T')[0],
         end: new Date(currentYear - 1, 11, 31).toISOString().split('T')[0],
-        preset: 'last_year'
-      }
+        preset: 'last_year',
+      },
     };
   }
 
@@ -616,7 +562,7 @@ export class ReportingService {
   async refreshCache(): Promise<string> {
     try {
       const { data, error } = await supabase.rpc('refresh_reporting_cache');
-      
+
       if (error) {
         console.error('Error refreshing cache:', error);
         throw error;
@@ -631,4 +577,4 @@ export class ReportingService {
 }
 
 // Export singleton instance
-export const reportingService = new ReportingService(); 
+export const reportingService = new ReportingService();

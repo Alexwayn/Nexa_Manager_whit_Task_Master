@@ -2,9 +2,7 @@ import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { useAuthBypass as useAuth } from '@hooks/useClerkBypass';
-import {
-  InformationCircleIcon,
-} from '@heroicons/react/24/outline';
+import { InformationCircleIcon } from '@heroicons/react/24/outline';
 import nexaLogo from '@assets/logo_nexa.png';
 import ErrorBoundary from '../components/common/ErrorBoundary';
 
@@ -35,11 +33,10 @@ export default function ResetPassword() {
           <div className='mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-blue-100 mb-4'>
             <InformationCircleIcon className='h-6 w-6 text-blue-600' />
           </div>
-          <h2 className='text-xl font-semibold text-gray-900 mb-2'>
-            Password Reset
-          </h2>
+          <h2 className='text-xl font-semibold text-gray-900 mb-2'>Password Reset</h2>
           <p className='text-gray-600 mb-6'>
-            Password resets are now handled through our secure login page. You'll be redirected automatically.
+            Password resets are now handled through our secure login page. You'll be redirected
+            automatically.
           </p>
           <p className='text-sm text-gray-500 mb-6'>
             Use the "Forgot password?" link on the login page to reset your password.

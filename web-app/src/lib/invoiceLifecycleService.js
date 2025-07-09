@@ -54,7 +54,7 @@ export class InvoiceLifecycleService {
       const { data: invoices, error } = await query;
 
       if (error) {
-        throw new Error(`Failed to fetch invoices: ${error.message}`);
+        throw new Error(`Failed to fetch invoices: ${String(error?.message || error || 'Unknown error')}`);
       }
 
       Logger.log(`Processing ${invoices.length} invoices...`);
@@ -78,7 +78,7 @@ export class InvoiceLifecycleService {
             results.reminders++;
           }
         } catch (error) {
-          Logger.error(`Error processing invoice ${invoice.id}:`, error);
+          Logger.error(`Error processing invoice ${invoice.id}:`, String(error?.message || error || 'Unknown error'));
           results.errors.push({
             invoiceId: invoice.id,
             invoiceNumber: invoice.invoice_number,
@@ -160,7 +160,7 @@ export class InvoiceLifecycleService {
 
       return result;
     } catch (error) {
-      Logger.error(`Error processing invoice status for ${invoice.id}:`, error);
+      Logger.error(`Error processing invoice status for ${invoice.id}:`, String(error?.message || error || 'Unknown error'));
       throw error;
     }
   }
@@ -188,7 +188,7 @@ export class InvoiceLifecycleService {
         .single();
 
       if (error) {
-        throw new Error(`Failed to update invoice status: ${error.message}`);
+        throw new Error(`Failed to update invoice status: ${String(error?.message || error || 'Unknown error')}`);
       }
 
       // Update calendar event if exists

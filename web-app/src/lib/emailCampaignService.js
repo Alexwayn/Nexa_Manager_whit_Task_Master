@@ -31,11 +31,11 @@ class EmailCampaignService {
           track_opens: campaignData.trackOpens !== false,
           track_clicks: campaignData.trackClicks !== false,
           batch_size: campaignData.batchSize || this.maxBatchSize,
-          send_delay: campaignData.sendDelay || this.sendDelay
+          send_delay: campaignData.sendDelay || this.sendDelay,
         },
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
-        organization_id: campaignData.organizationId || 'default'
+        organization_id: campaignData.organizationId || 'default',
       };
 
       const { data, error } = await supabase
@@ -49,13 +49,13 @@ class EmailCampaignService {
       return {
         success: true,
         data,
-        message: 'Campaign created successfully'
+        message: 'Campaign created successfully',
       };
     } catch (error) {
       Logger.error('Error creating email campaign:', error);
       return {
         success: false,
-        error: error.message
+        error: error.message,
       };
     }
   }
@@ -67,13 +67,15 @@ class EmailCampaignService {
     try {
       let query = supabase
         .from('email_campaigns')
-        .select(`
+        .select(
+          `
           *,
           email_templates (
             name,
             description
           )
-        `)
+        `,
+        )
         .eq('organization_id', organizationId)
         .order('created_at', { ascending: false });
 
@@ -87,14 +89,14 @@ class EmailCampaignService {
 
       return {
         success: true,
-        data: data || []
+        data: data || [],
       };
     } catch (error) {
       Logger.error('Error fetching campaigns:', error);
       return {
         success: false,
         error: error.message,
-        data: []
+        data: [],
       };
     }
   }
@@ -107,7 +109,8 @@ class EmailCampaignService {
       // Get campaign data
       const { data: campaign, error: campaignError } = await supabase
         .from('email_campaigns')
-        .select(`
+        .select(
+          `
           *,
           email_templates (
             name,
@@ -115,7 +118,8 @@ class EmailCampaignService {
             html_content,
             subject
           )
-        `)
+        `,
+        )
         .eq('id', campaignId)
         .single();
 
@@ -128,14 +132,14 @@ class EmailCampaignService {
         success: true,
         data: {
           ...campaign,
-          stats: stats.data
-        }
+          stats: stats.data,
+        },
       };
     } catch (error) {
       Logger.error('Error fetching campaign details:', error);
       return {
         success: false,
-        error: error.message
+        error: error.message,
       };
     }
   }
@@ -147,7 +151,7 @@ class EmailCampaignService {
     try {
       const updateData = {
         ...updates,
-        updated_at: new Date().toISOString()
+        updated_at: new Date().toISOString(),
       };
 
       const { data, error } = await supabase
@@ -162,13 +166,13 @@ class EmailCampaignService {
       return {
         success: true,
         data,
-        message: 'Campaign updated successfully'
+        message: 'Campaign updated successfully',
       };
     } catch (error) {
       Logger.error('Error updating campaign:', error);
       return {
         success: false,
-        error: error.message
+        error: error.message,
       };
     }
   }
@@ -188,33 +192,27 @@ class EmailCampaignService {
       if (campaign?.status === 'sent' || campaign?.status === 'sending') {
         return {
           success: false,
-          error: 'Cannot delete campaigns that have been sent or are being sent'
+          error: 'Cannot delete campaigns that have been sent or are being sent',
         };
       }
 
       // Delete campaign logs first
-      await supabase
-        .from('email_campaign_logs')
-        .delete()
-        .eq('campaign_id', campaignId);
+      await supabase.from('email_campaign_logs').delete().eq('campaign_id', campaignId);
 
       // Delete campaign
-      const { error } = await supabase
-        .from('email_campaigns')
-        .delete()
-        .eq('id', campaignId);
+      const { error } = await supabase.from('email_campaigns').delete().eq('id', campaignId);
 
       if (error) throw error;
 
       return {
         success: true,
-        message: 'Campaign deleted successfully'
+        message: 'Campaign deleted successfully',
       };
     } catch (error) {
       Logger.error('Error deleting campaign:', error);
       return {
         success: false,
-        error: error.message
+        error: error.message,
       };
     }
   }
@@ -237,30 +235,30 @@ class EmailCampaignService {
       if (!validation.isValid) {
         return {
           success: false,
-          error: `Campaign validation failed: ${validation.errors.join(', ')}`
+          error: `Campaign validation failed: ${validation.errors.join(', ')}`,
         };
       }
 
       // Update campaign status
       await this.updateCampaign(campaignId, {
         status: options.scheduled ? 'scheduled' : 'sending',
-        sent_at: options.scheduled ? null : new Date().toISOString()
+        sent_at: options.scheduled ? null : new Date().toISOString(),
       });
 
       if (options.scheduled) {
         return {
           success: true,
-          message: 'Campaign scheduled successfully'
+          message: 'Campaign scheduled successfully',
         };
       }
 
       // Send immediately
       const sendResult = await this.processCampaignSending(campaign);
-      
+
       // Update final status
       await this.updateCampaign(campaignId, {
         status: sendResult.success ? 'sent' : 'failed',
-        completed_at: new Date().toISOString()
+        completed_at: new Date().toISOString(),
       });
 
       return sendResult;
@@ -269,7 +267,7 @@ class EmailCampaignService {
       await this.updateCampaign(campaignId, { status: 'failed' });
       return {
         success: false,
-        error: error.message
+        error: error.message,
       };
     }
   }
@@ -300,13 +298,13 @@ class EmailCampaignService {
       // Process recipients in batches
       for (let i = 0; i < recipients.length; i += batchSize) {
         const batch = recipients.slice(i, i + batchSize);
-        
-        const batchPromises = batch.map(recipient => 
-          this.sendSingleEmail(campaign, template, recipient, variables)
+
+        const batchPromises = batch.map(recipient =>
+          this.sendSingleEmail(campaign, template, recipient, variables),
         );
 
         const batchResults = await Promise.allSettled(batchPromises);
-        
+
         // Count results
         batchResults.forEach(result => {
           if (result.status === 'fulfilled' && result.value.success) {
@@ -327,15 +325,15 @@ class EmailCampaignService {
         data: {
           totalSent,
           totalFailed,
-          totalRecipients: recipients.length
+          totalRecipients: recipients.length,
         },
-        message: `Campaign completed: ${totalSent} sent, ${totalFailed} failed`
+        message: `Campaign completed: ${totalSent} sent, ${totalFailed} failed`,
       };
     } catch (error) {
       Logger.error('Error processing campaign sending:', error);
       return {
         success: false,
-        error: error.message
+        error: error.message,
       };
     }
   }
@@ -350,7 +348,7 @@ class EmailCampaignService {
         ...globalVariables,
         ...recipient.variables,
         recipient_email: recipient.email,
-        recipient_name: recipient.name || recipient.email
+        recipient_name: recipient.name || recipient.email,
       };
 
       // Add tracking pixels if enabled
@@ -365,10 +363,13 @@ class EmailCampaignService {
       }
 
       // Render template with variables
-      const rendered = emailTemplateService.renderTemplate({
-        subject: campaign.subject || template.subject,
-        html_content: htmlContent
-      }, emailVariables);
+      const rendered = emailTemplateService.renderTemplate(
+        {
+          subject: campaign.subject || template.subject,
+          html_content: htmlContent,
+        },
+        emailVariables,
+      );
 
       if (!rendered.success) {
         throw new Error(`Template rendering failed: ${rendered.error}`);
@@ -380,24 +381,24 @@ class EmailCampaignService {
         subject: rendered.data.subject,
         html: rendered.data.htmlContent,
         text: rendered.data.textContent,
-        campaignId: campaign.id
+        campaignId: campaign.id,
       });
 
       // Log the result
       await this.logEmailSend(campaign.id, recipient.email, emailResult.success, {
         messageId: emailResult.messageId,
-        error: emailResult.error
+        error: emailResult.error,
       });
 
       return emailResult;
     } catch (error) {
       Logger.error('Error sending single campaign email:', error);
       await this.logEmailSend(campaign.id, recipient.email, false, {
-        error: error.message
+        error: error.message,
       });
       return {
         success: false,
-        error: error.message
+        error: error.message,
       };
     }
   }
@@ -406,12 +407,14 @@ class EmailCampaignService {
    * Generate tracking pixel URL
    */
   generateTrackingPixel(campaignId, recipientEmail) {
-    const trackingData = btoa(JSON.stringify({
-      campaignId,
-      email: recipientEmail,
-      type: 'open',
-      timestamp: Date.now()
-    }));
+    const trackingData = btoa(
+      JSON.stringify({
+        campaignId,
+        email: recipientEmail,
+        type: 'open',
+        timestamp: Date.now(),
+      }),
+    );
 
     return `${this.baseTrackingUrl}/api/email-tracking/pixel?data=${trackingData}`;
   }
@@ -421,12 +424,12 @@ class EmailCampaignService {
    */
   addTrackingPixel(htmlContent, trackingPixelUrl) {
     const trackingPixel = `<img src="${trackingPixelUrl}" width="1" height="1" style="display:none;" alt="" />`;
-    
+
     // Try to add just before closing body tag
     if (htmlContent.includes('</body>')) {
       return htmlContent.replace('</body>', `${trackingPixel}</body>`);
     }
-    
+
     // Otherwise add at the end
     return htmlContent + trackingPixel;
   }
@@ -443,18 +446,20 @@ class EmailCampaignService {
           return match;
         }
 
-        const trackingData = btoa(JSON.stringify({
-          campaignId,
-          email: recipientEmail,
-          type: 'click',
-          originalUrl,
-          timestamp: Date.now()
-        }));
+        const trackingData = btoa(
+          JSON.stringify({
+            campaignId,
+            email: recipientEmail,
+            type: 'click',
+            originalUrl,
+            timestamp: Date.now(),
+          }),
+        );
 
         const trackingUrl = `${this.baseTrackingUrl}/api/email-tracking/click?data=${trackingData}`;
-        
+
         return `<a ${attributes.replace(/href=["'][^"']+["']/, `href="${trackingUrl}"`)}`;
-      }
+      },
     );
   }
 
@@ -463,15 +468,13 @@ class EmailCampaignService {
    */
   async logEmailSend(campaignId, recipientEmail, success, metadata = {}) {
     try {
-      await supabase
-        .from('email_campaign_logs')
-        .insert({
-          campaign_id: campaignId,
-          recipient_email: recipientEmail,
-          status: success ? 'sent' : 'failed',
-          metadata,
-          created_at: new Date().toISOString()
-        });
+      await supabase.from('email_campaign_logs').insert({
+        campaign_id: campaignId,
+        recipient_email: recipientEmail,
+        status: success ? 'sent' : 'failed',
+        metadata,
+        created_at: new Date().toISOString(),
+      });
     } catch (error) {
       Logger.error('Error logging email send:', error);
     }
@@ -496,7 +499,8 @@ class EmailCampaignService {
         .select('event_type, created_at')
         .eq('campaign_id', campaignId);
 
-      if (trackingError && trackingError.code !== 'PGRST116') { // Ignore if table doesn't exist
+      if (trackingError && trackingError.code !== 'PGRST116') {
+        // Ignore if table doesn't exist
         throw trackingError;
       }
 
@@ -506,19 +510,25 @@ class EmailCampaignService {
         failed: logs.filter(log => log.status === 'failed').length,
         opens: tracking ? tracking.filter(t => t.event_type === 'open').length : 0,
         clicks: tracking ? tracking.filter(t => t.event_type === 'click').length : 0,
-        unique_opens: tracking ? new Set(tracking.filter(t => t.event_type === 'open').map(t => t.recipient_email)).size : 0,
-        unique_clicks: tracking ? new Set(tracking.filter(t => t.event_type === 'click').map(t => t.recipient_email)).size : 0
+        unique_opens: tracking
+          ? new Set(tracking.filter(t => t.event_type === 'open').map(t => t.recipient_email)).size
+          : 0,
+        unique_clicks: tracking
+          ? new Set(tracking.filter(t => t.event_type === 'click').map(t => t.recipient_email)).size
+          : 0,
       };
 
       // Calculate rates
-      stats.delivery_rate = stats.total_recipients > 0 ? (stats.sent / stats.total_recipients * 100).toFixed(2) : 0;
-      stats.open_rate = stats.sent > 0 ? (stats.unique_opens / stats.sent * 100).toFixed(2) : 0;
-      stats.click_rate = stats.sent > 0 ? (stats.unique_clicks / stats.sent * 100).toFixed(2) : 0;
-      stats.click_through_rate = stats.unique_opens > 0 ? (stats.unique_clicks / stats.unique_opens * 100).toFixed(2) : 0;
+      stats.delivery_rate =
+        stats.total_recipients > 0 ? ((stats.sent / stats.total_recipients) * 100).toFixed(2) : 0;
+      stats.open_rate = stats.sent > 0 ? ((stats.unique_opens / stats.sent) * 100).toFixed(2) : 0;
+      stats.click_rate = stats.sent > 0 ? ((stats.unique_clicks / stats.sent) * 100).toFixed(2) : 0;
+      stats.click_through_rate =
+        stats.unique_opens > 0 ? ((stats.unique_clicks / stats.unique_opens) * 100).toFixed(2) : 0;
 
       return {
         success: true,
-        data: stats
+        data: stats,
       };
     } catch (error) {
       Logger.error('Error getting campaign stats:', error);
@@ -536,8 +546,8 @@ class EmailCampaignService {
           delivery_rate: 0,
           open_rate: 0,
           click_rate: 0,
-          click_through_rate: 0
-        }
+          click_through_rate: 0,
+        },
       };
     }
   }
@@ -577,7 +587,7 @@ class EmailCampaignService {
 
     return {
       isValid: errors.length === 0,
-      errors
+      errors,
     };
   }
 
@@ -614,20 +624,20 @@ class EmailCampaignService {
           client_name: client.name,
           client_email: client.email,
           client_phone: client.phone || '',
-          client_company: client.company || ''
-        }
+          client_company: client.company || '',
+        },
       }));
 
       return {
         success: true,
-        data: recipients
+        data: recipients,
       };
     } catch (error) {
       Logger.error('Error getting clients as recipients:', error);
       return {
         success: false,
         error: error.message,
-        data: []
+        data: [],
       };
     }
   }
@@ -639,7 +649,7 @@ class EmailCampaignService {
     try {
       const lines = csvContent.trim().split('\n');
       const headers = lines[0].split(',').map(h => h.trim().toLowerCase());
-      
+
       const emailIndex = headers.findIndex(h => h.includes('email'));
       const nameIndex = headers.findIndex(h => h.includes('name'));
 
@@ -653,7 +663,7 @@ class EmailCampaignService {
       for (let i = 1; i < lines.length; i++) {
         const values = lines[i].split(',').map(v => v.trim());
         const email = values[emailIndex];
-        
+
         if (!email) continue;
 
         if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
@@ -664,7 +674,7 @@ class EmailCampaignService {
         const recipient = {
           email,
           name: nameIndex >= 0 ? values[nameIndex] : email,
-          variables: {}
+          variables: {},
         };
 
         // Map other columns as variables
@@ -680,14 +690,14 @@ class EmailCampaignService {
       return {
         success: true,
         data: recipients,
-        errors: errors.length > 0 ? errors : null
+        errors: errors.length > 0 ? errors : null,
       };
     } catch (error) {
       Logger.error('Error importing recipients from CSV:', error);
       return {
         success: false,
         error: error.message,
-        data: []
+        data: [],
       };
     }
   }
@@ -729,17 +739,17 @@ class EmailCampaignService {
 
       return {
         success: true,
-        data: data || []
+        data: data || [],
       };
     } catch (error) {
       Logger.error('Error getting campaign logs:', error);
       return {
         success: false,
         error: error.message,
-        data: []
+        data: [],
       };
     }
   }
 }
 
-export default new EmailCampaignService(); 
+export default new EmailCampaignService();

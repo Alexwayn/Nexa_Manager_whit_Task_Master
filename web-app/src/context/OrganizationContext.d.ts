@@ -6,18 +6,18 @@ export interface OrganizationContextType {
   organizationList: any[];
   isLoaded: boolean;
   isInitialized: boolean;
-  
+
   // Organization management
   switchOrganization: (organizationId: string) => Promise<void>;
   createOrganization: (name: string, slug: string) => Promise<void>;
   getCurrentOrganizationId: () => string | null;
-  
+
   // Role management
   hasRole: (role: string) => boolean;
   isAdmin: () => boolean;
   isMember: () => boolean;
   getUserRole: () => string | null;
-  
+
   // Helper flags
   hasMultipleOrganizations: boolean;
   needsOrganizationSelection: boolean;
@@ -30,4 +30,4 @@ export interface OrganizationProviderProps {
   children: ReactNode;
 }
 
-export const OrganizationProvider: React.FC<OrganizationProviderProps>; 
+export const OrganizationProvider: React.FC<OrganizationProviderProps>;

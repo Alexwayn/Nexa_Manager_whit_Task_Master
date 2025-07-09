@@ -283,10 +283,10 @@ const AdvancedFinancialAnalytics = ({ data }) => {
       </div>
 
       {/* Tab Navigation */}
-      <div className="mb-6">
-        <div className="border-b border-gray-200 dark:border-gray-700">
-          <nav className="-mb-px flex space-x-8">
-            {tabs.map((tab) => (
+      <div className='mb-6'>
+        <div className='border-b border-gray-200 dark:border-gray-700'>
+          <nav className='-mb-px flex space-x-8'>
+            {tabs.map(tab => (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
@@ -297,8 +297,8 @@ const AdvancedFinancialAnalytics = ({ data }) => {
                 }`}
               >
                 <div>
-                  <div className="font-medium">{tab.name}</div>
-                  <div className="text-xs text-gray-500 dark:text-gray-400">{tab.description}</div>
+                  <div className='font-medium'>{tab.name}</div>
+                  <div className='text-xs text-gray-500 dark:text-gray-400'>{tab.description}</div>
                 </div>
               </button>
             ))}
@@ -329,11 +329,11 @@ const AdvancedFinancialAnalytics = ({ data }) => {
       )}
 
       {activeTab === 'interactive' && (
-        <InteractiveFinancialCharts 
+        <InteractiveFinancialCharts
           data={data}
           period={period}
           onPeriodChange={setPeriod}
-          className="mb-6"
+          className='mb-6'
         />
       )}
 

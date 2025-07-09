@@ -28,12 +28,12 @@ fetch('/locales/it/inventory.json')
   .catch(error => console.error('Errore caricamento traduzioni:', error));
 
 // 4. Funzione per forzare il cambio lingua
-window.forceItalian = function() {
+window.forceItalian = function () {
   console.log('Forzando lingua italiana...');
-  
+
   // Imposta localStorage
   localStorage.setItem('nexa-language', 'it');
-  
+
   // Se i18n è disponibile, cambia lingua
   if (window.i18n) {
     window.i18n.changeLanguage('it').then(() => {
@@ -48,7 +48,7 @@ window.forceItalian = function() {
 };
 
 // 5. Verifica traduzioni specifiche del ReorderModal
-window.checkReorderTranslations = function() {
+window.checkReorderTranslations = function () {
   if (window.i18n && window.i18n.t) {
     console.log('=== TRADUZIONI REORDER ===');
     console.log('reorder.title:', window.i18n.t('reorder.title', { ns: 'inventory' }));

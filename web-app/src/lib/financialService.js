@@ -27,7 +27,7 @@ class FinancialService {
   async getFinancialOverview(period = 'month', startDate = null, endDate = null) {
     try {
       Logger.info('financialService.getFinancialOverview: Inizio recupero dati finanziari');
-      
+
       // Get statistics for income and expenses in parallel
       const [incomeResult, expenseResult] = await Promise.all([
         this.incomeService.getIncomeStats(),
@@ -36,7 +36,7 @@ class FinancialService {
 
       Logger.info('financialService.getFinancialOverview: Dati ricevuti', {
         income: incomeResult,
-        expense: expenseResult
+        expense: expenseResult,
       });
 
       // I servizi ora restituiscono direttamente i dati, non più wrapped in { success, data }
@@ -67,9 +67,14 @@ class FinancialService {
         netProfit: (income?.totalAmount || 0) - (expense?.totalAmount || 0),
         profitMargin:
           (income?.totalAmount || 0) > 0
-            ? (((income?.totalAmount || 0) - (expense?.totalAmount || 0)) / (income?.totalAmount || 0)) * 100
+            ? (((income?.totalAmount || 0) - (expense?.totalAmount || 0)) /
+                (income?.totalAmount || 0)) *
+              100
             : 0,
-        expenseRatio: (income?.totalAmount || 0) > 0 ? ((expense?.totalAmount || 0) / (income?.totalAmount || 0)) * 100 : 0,
+        expenseRatio:
+          (income?.totalAmount || 0) > 0
+            ? ((expense?.totalAmount || 0) / (income?.totalAmount || 0)) * 100
+            : 0,
         cashFlow: [],
       };
 

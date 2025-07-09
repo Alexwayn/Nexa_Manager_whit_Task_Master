@@ -1,21 +1,19 @@
 // Font loading optimization utility for Plus Jakarta Sans
 export const preloadFonts = (): void => {
   try {
-    const fonts: string[] = [
-      'Plus+Jakarta+Sans:wght@200;300;400;500;600;700;800'
-    ];
+    const fonts: string[] = ['Plus+Jakarta+Sans:wght@200;300;400;500;600;700;800'];
 
     fonts.forEach((font: string) => {
       const link: HTMLLinkElement = document.createElement('link');
       link.rel = 'stylesheet';
       link.href = `https://fonts.googleapis.com/css2?family=${font}&display=swap`;
       link.crossOrigin = 'anonymous';
-      
+
       // Gestione errori per CSP
       link.onerror = () => {
         console.warn('Font loading blocked by CSP, using fallback fonts');
       };
-      
+
       document.head.appendChild(link);
     });
   } catch (error) {
@@ -54,22 +52,24 @@ export const initFontLoading = (): void => {
   try {
     // Preload critical fonts
     preloadFonts();
-    
+
     // Optimize font display
     optimizeFontDisplay();
-    
+
     // Add font loading class to body for progressive enhancement
     if (document.fonts && document.fonts.ready) {
-      document.fonts.ready.then(() => {
-        document.body.classList.add('fonts-loaded');
-        console.log('✅ Fonts loaded successfully');
-      }).catch((error) => {
-        console.warn('Font loading promise failed:', error);
-        // Fallback: add class anyway after timeout
-        setTimeout(() => {
+      document.fonts.ready
+        .then(() => {
           document.body.classList.add('fonts-loaded');
-        }, 1000);
-      });
+          console.log('✅ Fonts loaded successfully');
+        })
+        .catch(error => {
+          console.warn('Font loading promise failed:', error);
+          // Fallback: add class anyway after timeout
+          setTimeout(() => {
+            document.body.classList.add('fonts-loaded');
+          }, 1000);
+        });
     } else {
       // Fallback per browser che non supportano document.fonts
       setTimeout(() => {
@@ -79,4 +79,4 @@ export const initFontLoading = (): void => {
   } catch (error) {
     console.warn('Font initialization failed:', error);
   }
-}; 
+};

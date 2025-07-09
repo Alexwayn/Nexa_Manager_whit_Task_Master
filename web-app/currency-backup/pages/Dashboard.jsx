@@ -53,22 +53,24 @@ const Dashboard = () => {
   const { user } = useUser();
   const navigate = useNavigate();
   const { t } = useTranslation('dashboard');
-  
-
 
   // Date range for data filtering
   const { dateRange } = useDateRange();
 
   // Trasforma dateRange per essere compatibile con useRealtimeDashboard
-  const realtimeDateRange = useMemo(() => ({
-    start: dateRange.startDate,
-    end: dateRange.endDate
-  }), [dateRange.startDate, dateRange.endDate]);
-  
-  const { dashboardData, loading: dashboardLoading, error: dashboardError } = useRealtimeDashboard(
-    realtimeDateRange, 
-    true
+  const realtimeDateRange = useMemo(
+    () => ({
+      start: dateRange.startDate,
+      end: dateRange.endDate,
+    }),
+    [dateRange.startDate, dateRange.endDate],
   );
+
+  const {
+    dashboardData,
+    loading: dashboardLoading,
+    error: dashboardError,
+  } = useRealtimeDashboard(realtimeDateRange, true);
 
   // ALL HOOKS AND STATES MUST BE DECLARED BEFORE ANY CONDITIONAL RETURNS
   const [notifications, setNotifications] = useState([]);
@@ -83,9 +85,12 @@ const Dashboard = () => {
 
   // Close dropdown when clicking outside
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (activeDropdown && dropdownRefs.current[activeDropdown] && 
-          !dropdownRefs.current[activeDropdown].contains(event.target)) {
+    const handleClickOutside = event => {
+      if (
+        activeDropdown &&
+        dropdownRefs.current[activeDropdown] &&
+        !dropdownRefs.current[activeDropdown].contains(event.target)
+      ) {
         setActiveDropdown(null);
       }
     };
@@ -96,12 +101,12 @@ const Dashboard = () => {
     };
   }, [activeDropdown]);
 
-  const toggleDropdown = (dropdownId) => {
+  const toggleDropdown = dropdownId => {
     setActiveDropdown(activeDropdown === dropdownId ? null : dropdownId);
   };
 
   // Handle period change
-  const handlePeriodChange = (period) => {
+  const handlePeriodChange = period => {
     setSelectedPeriod(period);
     // Here you can add logic to refresh data based on the selected period
     console.log('Period changed to:', period);
@@ -109,17 +114,17 @@ const Dashboard = () => {
 
   // Dropdown menu component
   const CardDropdownMenu = ({ dropdownId, options }) => (
-    <div className="relative" ref={el => dropdownRefs.current[dropdownId] = el}>
+    <div className='relative' ref={el => (dropdownRefs.current[dropdownId] = el)}>
       <button
         onClick={() => toggleDropdown(dropdownId)}
-        className="h-5 w-5 text-gray-400 hover:text-gray-600 cursor-pointer transition-colors"
-        aria-label="Card options"
+        className='h-5 w-5 text-gray-400 hover:text-gray-600 cursor-pointer transition-colors'
+        aria-label='Card options'
       >
-        <MoreHorizontal className="h-5 w-5" />
+        <MoreHorizontal className='h-5 w-5' />
       </button>
-      
+
       {activeDropdown === dropdownId && (
-        <div className="absolute right-0 top-6 w-48 bg-white rounded-md shadow-lg border border-gray-200 py-1 z-10">
+        <div className='absolute right-0 top-6 w-48 bg-white rounded-md shadow-lg border border-gray-200 py-1 z-10'>
           {options.map((option, index) => (
             <button
               key={index}
@@ -127,9 +132,9 @@ const Dashboard = () => {
                 option.action();
                 setActiveDropdown(null);
               }}
-              className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center space-x-2"
+              className='w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center space-x-2'
             >
-              {option.icon && <option.icon className="h-4 w-4" />}
+              {option.icon && <option.icon className='h-4 w-4' />}
               <span>{option.label}</span>
             </button>
           ))}
@@ -148,9 +153,9 @@ const Dashboard = () => {
         const clientsResult = await clientService.getClients({
           limit: 4,
           sortBy: 'created_at',
-          ascending: false
+          ascending: false,
         });
-        
+
         if (clientsResult.data && clientsResult.data.length > 0) {
           const formattedClients = clientsResult.data.map(client => ({
             id: client.id,
@@ -167,10 +172,9 @@ const Dashboard = () => {
         // Load upcoming events from database (if events table exists)
         // For now, we'll leave this empty since we need to check if events table has data
         setUpcomingWork([]);
-        
+
         // Load recent notifications (for now, we'll leave this empty)
         setNotifications([]);
-
       } catch (error) {
         console.error('Error loading dashboard data:', error);
       }
@@ -178,8 +182,6 @@ const Dashboard = () => {
 
     loadRealData();
   }, [isSignedIn, user]);
-
-
 
   // Generic filter function
   const filterByTerm = (items, fields) => {
@@ -191,21 +193,11 @@ const Dashboard = () => {
   };
 
   // Filters for each category
-  const filteredClients = filterByTerm(recentClients, [
-    'name',
-    'industry',
-    'lastInvoice',
-  ]);
+  const filteredClients = filterByTerm(recentClients, ['name', 'industry', 'lastInvoice']);
 
-  const filteredNotifications = filterByTerm(notifications, [
-    'title',
-    'message',
-  ]);
+  const filteredNotifications = filterByTerm(notifications, ['title', 'message']);
 
-  const filteredUpcomingWork = filterByTerm(upcomingWork, [
-    'title',
-    'client',
-  ]);
+  const filteredUpcomingWork = filterByTerm(upcomingWork, ['title', 'client']);
 
   // Navigation handlers
   const handleViewAllClients = () => navigate('/clients');
@@ -226,54 +218,54 @@ const Dashboard = () => {
     {
       label: t('dropdownOptions.viewDetails'),
       icon: Eye,
-      action: () => navigate('/analytics')
+      action: () => navigate('/analytics'),
     },
     {
       label: t('dropdownOptions.exportReport'),
       icon: Download,
-      action: () => console.log('Export business health report')
+      action: () => console.log('Export business health report'),
     },
     {
       label: t('dropdownOptions.refreshData'),
       icon: RefreshCw,
-      action: () => window.location.reload()
-    }
+      action: () => window.location.reload(),
+    },
   ];
 
   const revenueStreamOptions = [
     {
       label: t('dropdownOptions.viewAnalytics'),
       icon: BarChart3,
-      action: () => navigate('/analytics')
+      action: () => navigate('/analytics'),
     },
     {
       label: t('dropdownOptions.revenueSettings'),
       icon: Settings,
-      action: () => navigate('/settings')
+      action: () => navigate('/settings'),
     },
     {
       label: t('dropdownOptions.exportData'),
       icon: Download,
-      action: () => console.log('Export revenue data')
-    }
+      action: () => console.log('Export revenue data'),
+    },
   ];
 
   const invoiceTrackerOptions = [
     {
       label: t('dropdownOptions.viewAllInvoices'),
       icon: FileText,
-      action: () => navigate('/invoices')
+      action: () => navigate('/invoices'),
     },
     {
       label: t('dropdownOptions.createInvoice'),
       icon: Plus,
-      action: () => navigate('/invoices?action=new')
+      action: () => navigate('/invoices?action=new'),
     },
     {
       label: t('dropdownOptions.invoiceSettings'),
       icon: Settings,
-      action: () => navigate('/settings')
-    }
+      action: () => navigate('/settings'),
+    },
   ];
 
   // Get real data for Classic View
@@ -281,7 +273,7 @@ const Dashboard = () => {
     // DEBUG: Vediamo cosa contiene dashboardData
     console.log('🔍 DEBUG Classic View - dashboardData:', dashboardData);
     console.log('🔍 DEBUG Classic View - dashboardLoading:', dashboardLoading);
-    
+
     if (dashboardLoading || !dashboardData) {
       console.log('⚠️ Classic View: Usando dati di fallback');
       return {
@@ -299,7 +291,7 @@ const Dashboard = () => {
         upcomingEvents: {
           count: '0',
           period: 'questa settimana', // Removed translation reference
-        }
+        },
       };
     }
 
@@ -307,28 +299,32 @@ const Dashboard = () => {
     const kpis = dashboardData.kpis || {};
     const clients = dashboardData.clients || {};
     const trends = dashboardData.trends || {};
-    
+
     console.log('💰 Classic View - kpis data:', kpis);
     console.log('👥 Classic View - clients data:', clients);
     console.log('📈 Classic View - trends data:', trends);
-    
+
     // Calculate revenue data - USA STRUTTURA CORRETTA
     const currentRevenue = kpis.totalRevenue || 0;
     const currentExpenses = kpis.totalExpenses || 0;
     const revenueGrowth = trends.revenue ? `+${trends.revenue}%` : '+0%';
 
-    // Calculate client data - USA STRUTTURA CORRETTA  
+    // Calculate client data - USA STRUTTURA CORRETTA
     const activeClientsCount = clients.active || 0;
     const totalClientsCount = clients.total || 0;
     const clientGrowth = trends.clients ? `+${trends.clients}%` : '+0%'; // Use real data instead of hardcoded
 
     // Business health score based on real data
-    const businessHealthScore = Math.min(100, Math.max(0, 
-      ((currentRevenue > 0 ? 30 : 0) + 
-       (activeClientsCount > 0 ? 25 : 0) + 
-       (revenueGrowth.includes('+') ? 25 : 0) + 
-       (clientGrowth.includes('+') ? 20 : 0))
-    ));
+    const businessHealthScore = Math.min(
+      100,
+      Math.max(
+        0,
+        (currentRevenue > 0 ? 30 : 0) +
+          (activeClientsCount > 0 ? 25 : 0) +
+          (revenueGrowth.includes('+') ? 25 : 0) +
+          (clientGrowth.includes('+') ? 20 : 0),
+      ),
+    );
 
     const result = {
       businessHealthScore,
@@ -345,9 +341,9 @@ const Dashboard = () => {
       upcomingEvents: {
         count: (dashboardData.calendar?.upcomingEvents || 0).toString(),
         period: t('values.upcomingEventsPeriod'),
-      }
+      },
     };
-    
+
     console.log('✅ Classic View - Final result:', result);
     return result;
   };
@@ -382,14 +378,12 @@ const Dashboard = () => {
   return (
     <ErrorBoundary>
       <div className='min-h-screen bg-gray-50'>
-
-
         {/* Loading State */}
         {dashboardLoading && (
-          <div className="fixed top-20 right-4 z-40 bg-blue-100 text-blue-800 px-4 py-2 rounded-lg shadow-sm">
-            <div className="flex items-center space-x-2">
-              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600"></div>
-              <span className="text-sm">Caricamento dati...</span>
+          <div className='fixed top-20 right-4 z-40 bg-blue-100 text-blue-800 px-4 py-2 rounded-lg shadow-sm'>
+            <div className='flex items-center space-x-2'>
+              <div className='animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600'></div>
+              <span className='text-sm'>Caricamento dati...</span>
             </div>
           </div>
         )}
@@ -479,7 +473,7 @@ const Dashboard = () => {
               </div>
             </div>
           </nav>
-          
+
           <div className='space-y-6 px-4 md:px-8 py-6'>
             {/* Dashboard Title */}
             <div className='mb-8'>
@@ -492,10 +486,11 @@ const Dashboard = () => {
               {/* Business Health */}
               <div className='bg-white rounded-xl shadow-sm p-6'>
                 <div className='flex items-center justify-between mb-6'>
-                  <h3 className='text-section-title text-gray-900'>
-                    {t('businessHealth.title')}
-                  </h3>
-                  <CardDropdownMenu dropdownId="businessHealthOptions" options={businessHealthOptions} />
+                  <h3 className='text-section-title text-gray-900'>{t('businessHealth.title')}</h3>
+                  <CardDropdownMenu
+                    dropdownId='businessHealthOptions'
+                    options={businessHealthOptions}
+                  />
                 </div>
 
                 <div className='flex flex-col items-center mb-8'>
@@ -515,9 +510,7 @@ const Dashboard = () => {
                       />
                     </svg>
                     <div className='absolute inset-0 flex flex-col items-center justify-center'>
-                      <span className='text-card-metric text-blue-600'>
-                        {businessHealthScore}
-                      </span>
+                      <span className='text-card-metric text-blue-600'>{businessHealthScore}</span>
                       <span className='text-gray-500 text-sm'>{t('businessHealth.outOf100')}</span>
                     </div>
                   </div>
@@ -555,10 +548,11 @@ const Dashboard = () => {
               {/* Revenue Streams */}
               <div className='bg-white rounded-xl shadow-sm p-6'>
                 <div className='flex items-center justify-between mb-6'>
-                  <h3 className='text-section-title text-gray-900'>
-                    {t('revenueStreams.title')}
-                  </h3>
-                  <CardDropdownMenu dropdownId="revenueStreamOptions" options={revenueStreamOptions} />
+                  <h3 className='text-section-title text-gray-900'>{t('revenueStreams.title')}</h3>
+                  <CardDropdownMenu
+                    dropdownId='revenueStreamOptions'
+                    options={revenueStreamOptions}
+                  />
                 </div>
 
                 {dashboardData?.revenueStreams ? (
@@ -587,7 +581,7 @@ const Dashboard = () => {
                       {dashboardData.revenueStreams.categories?.map((category, index) => (
                         <div key={index} className='flex items-center justify-between'>
                           <div className='flex items-center space-x-2'>
-                            <div 
+                            <div
                               className='w-3 h-3 rounded-full'
                               style={{ backgroundColor: category.color }}
                             ></div>
@@ -607,7 +601,9 @@ const Dashboard = () => {
                     <div className='text-center'>
                       <PieChart className='h-12 w-12 text-gray-300 mx-auto mb-3' />
                       <p className='text-gray-500 text-sm'>{t('revenueStreams.noDataAvailable')}</p>
-                      <p className='text-gray-400 text-xs mt-1'>{t('revenueStreams.connectDataSource')}</p>
+                      <p className='text-gray-400 text-xs mt-1'>
+                        {t('revenueStreams.connectDataSource')}
+                      </p>
                     </div>
                   </div>
                 )}
@@ -616,10 +612,11 @@ const Dashboard = () => {
               {/* Invoice Tracker */}
               <div className='bg-white rounded-xl shadow-sm p-6'>
                 <div className='flex items-center justify-between mb-6'>
-                  <h3 className='text-section-title text-gray-900'>
-                    {t('invoiceTracker.title')}
-                  </h3>
-                  <CardDropdownMenu dropdownId="invoiceTrackerOptions" options={invoiceTrackerOptions} />
+                  <h3 className='text-section-title text-gray-900'>{t('invoiceTracker.title')}</h3>
+                  <CardDropdownMenu
+                    dropdownId='invoiceTrackerOptions'
+                    options={invoiceTrackerOptions}
+                  />
                 </div>
 
                 {/* Progress Bar for Paid vs Outstanding */}
@@ -627,14 +624,18 @@ const Dashboard = () => {
                   {dashboardData?.invoiceData ? (
                     <>
                       <div className='flex items-center justify-between mb-2'>
-                        <span className='text-subtitle text-gray-600'>{t('invoiceTracker.paid')}</span>
-                        <span className='text-subtitle text-gray-600'>{t('invoiceTracker.outstanding')}</span>
+                        <span className='text-subtitle text-gray-600'>
+                          {t('invoiceTracker.paid')}
+                        </span>
+                        <span className='text-subtitle text-gray-600'>
+                          {t('invoiceTracker.outstanding')}
+                        </span>
                       </div>
                       <div className='w-full bg-gray-200 rounded-full h-4 mb-2'>
-                        <div 
-                          className='bg-green-600 h-4 rounded-full' 
+                        <div
+                          className='bg-green-600 h-4 rounded-full'
                           style={{
-                            width: `${dashboardData.invoiceData.paidPercentage || 0}%`
+                            width: `${dashboardData.invoiceData.paidPercentage || 0}%`,
                           }}
                         ></div>
                       </div>
@@ -643,13 +644,17 @@ const Dashboard = () => {
                           <div className='text-card-metric text-green-600'>
                             €{dashboardData.invoiceData.totalPaid?.toLocaleString() || '0'}
                           </div>
-                          <div className='text-metric-small text-gray-500'>{t('invoiceTracker.totalPaid')}</div>
+                          <div className='text-metric-small text-gray-500'>
+                            {t('invoiceTracker.totalPaid')}
+                          </div>
                         </div>
                         <div className='text-right'>
                           <div className='text-card-metric text-orange-600'>
                             €{dashboardData.invoiceData.totalOutstanding?.toLocaleString() || '0'}
                           </div>
-                          <div className='text-metric-small text-gray-500'>{t('invoiceTracker.totalOutstanding')}</div>
+                          <div className='text-metric-small text-gray-500'>
+                            {t('invoiceTracker.totalOutstanding')}
+                          </div>
                         </div>
                       </div>
                     </>
@@ -657,8 +662,12 @@ const Dashboard = () => {
                     <div className='flex items-center justify-center h-32 bg-gray-50 rounded-lg'>
                       <div className='text-center'>
                         <FileText className='h-8 w-8 text-gray-300 mx-auto mb-2' />
-                        <p className='text-subtitle text-gray-500'>{t('invoiceTracker.noDataAvailable')}</p>
-                        <p className='text-metric-small text-gray-400 mt-1'>{t('invoiceTracker.connectDataSource')}</p>
+                        <p className='text-subtitle text-gray-500'>
+                          {t('invoiceTracker.noDataAvailable')}
+                        </p>
+                        <p className='text-metric-small text-gray-400 mt-1'>
+                          {t('invoiceTracker.connectDataSource')}
+                        </p>
                       </div>
                     </div>
                   )}
@@ -667,9 +676,7 @@ const Dashboard = () => {
 
               {/* Quick Actions */}
               <div className='bg-white rounded-xl shadow-sm p-6'>
-                <h3 className='text-section-title text-gray-900 mb-6'>
-                  {t('quickActions.title')}
-                </h3>
+                <h3 className='text-section-title text-gray-900 mb-6'>{t('quickActions.title')}</h3>
 
                 <div className='grid grid-cols-2 gap-3'>
                   <button
@@ -718,35 +725,33 @@ const Dashboard = () => {
             {/* Revenue Overview Chart */}
             <div className='bg-white rounded-xl shadow-sm p-6'>
               <div className='flex items-center justify-between mb-6'>
-                <h3 className='text-section-title text-gray-900'>
-                  {t('revenueOverview.title')}
-                </h3>
+                <h3 className='text-section-title text-gray-900'>{t('revenueOverview.title')}</h3>
                 <div className='flex items-center space-x-2'>
-                  <button 
+                  <button
                     onClick={() => handlePeriodChange('monthly')}
                     className={`px-3 py-1 text-nav-text rounded-full transition-colors ${
-                      selectedPeriod === 'monthly' 
-                        ? 'bg-blue-100 text-blue-600' 
+                      selectedPeriod === 'monthly'
+                        ? 'bg-blue-100 text-blue-600'
                         : 'text-gray-500 hover:bg-gray-100'
                     }`}
                   >
                     {t('revenueOverview.monthly')}
                   </button>
-                  <button 
+                  <button
                     onClick={() => handlePeriodChange('quarterly')}
                     className={`px-3 py-1 text-nav-text rounded-full transition-colors ${
-                      selectedPeriod === 'quarterly' 
-                        ? 'bg-blue-100 text-blue-600' 
+                      selectedPeriod === 'quarterly'
+                        ? 'bg-blue-100 text-blue-600'
                         : 'text-gray-500 hover:bg-gray-100'
                     }`}
                   >
                     {t('revenueOverview.quarterly')}
                   </button>
-                  <button 
+                  <button
                     onClick={() => handlePeriodChange('yearly')}
                     className={`px-3 py-1 text-nav-text rounded-full transition-colors ${
-                      selectedPeriod === 'yearly' 
-                        ? 'bg-blue-100 text-blue-600' 
+                      selectedPeriod === 'yearly'
+                        ? 'bg-blue-100 text-blue-600'
                         : 'text-gray-500 hover:bg-gray-100'
                     }`}
                   >
@@ -761,20 +766,28 @@ const Dashboard = () => {
                   <svg className='w-full h-full' viewBox='0 0 800 300' preserveAspectRatio='none'>
                     <defs>
                       <linearGradient id='revenueGradient' x1='0%' y1='0%' x2='0%' y2='100%'>
-                        <stop offset='0%' stopColor='#3B82F6' stopOpacity='0.3'/>
-                        <stop offset='100%' stopColor='#3B82F6' stopOpacity='0.1'/>
+                        <stop offset='0%' stopColor='#3B82F6' stopOpacity='0.3' />
+                        <stop offset='100%' stopColor='#3B82F6' stopOpacity='0.1' />
                       </linearGradient>
                       <linearGradient id='transactionGradient' x1='0%' y1='0%' x2='0%' y2='100%'>
-                        <stop offset='0%' stopColor='#10B981' stopOpacity='0.2'/>
-                        <stop offset='100%' stopColor='#10B981' stopOpacity='0.05'/>
+                        <stop offset='0%' stopColor='#10B981' stopOpacity='0.2' />
+                        <stop offset='100%' stopColor='#10B981' stopOpacity='0.05' />
                       </linearGradient>
                     </defs>
-                    
+
                     {/* Grid lines */}
                     {[0, 1, 2, 3, 4].map(i => (
-                      <line key={i} x1='50' y1={60 * i + 20} x2='750' y2={60 * i + 20} stroke='#E5E7EB' strokeWidth='1'/>
+                      <line
+                        key={i}
+                        x1='50'
+                        y1={60 * i + 20}
+                        x2='750'
+                        y2={60 * i + 20}
+                        stroke='#E5E7EB'
+                        strokeWidth='1'
+                      />
                     ))}
-                    
+
                     {/* Chart will be populated with real data when available */}
                     <text x='400' y='150' fill='#6B7280' fontSize='14' textAnchor='middle'>
                       {t('revenueOverview.noDataAvailable')}
@@ -784,21 +797,29 @@ const Dashboard = () => {
                   <div className='flex items-center justify-center h-full bg-gray-50 rounded-lg'>
                     <div className='text-center'>
                       <BarChart3 className='h-12 w-12 text-gray-300 mx-auto mb-3' />
-                      <p className='text-subtitle text-gray-500'>{t('revenueOverview.noDataMessage')}</p>
-                      <p className='text-metric-small text-gray-400 mt-1'>{t('revenueOverview.connectDataSource')}</p>
+                      <p className='text-subtitle text-gray-500'>
+                        {t('revenueOverview.noDataMessage')}
+                      </p>
+                      <p className='text-metric-small text-gray-400 mt-1'>
+                        {t('revenueOverview.connectDataSource')}
+                      </p>
                     </div>
                   </div>
                 )}
-                
+
                 {/* Chart Legend */}
                 <div className='absolute bottom-4 left-1/2 transform -translate-x-1/2 flex items-center space-x-6'>
                   <div className='flex items-center space-x-2'>
                     <div className='w-3 h-3 bg-blue-500 rounded-full'></div>
-                    <span className='text-subtitle text-gray-600'>{t('revenueOverview.revenue')}</span>
+                    <span className='text-subtitle text-gray-600'>
+                      {t('revenueOverview.revenue')}
+                    </span>
                   </div>
                   <div className='flex items-center space-x-2'>
                     <div className='w-3 h-3 bg-green-500 rounded-full'></div>
-                    <span className='text-subtitle text-gray-600'>{t('revenueOverview.transactions')}</span>
+                    <span className='text-subtitle text-gray-600'>
+                      {t('revenueOverview.transactions')}
+                    </span>
                   </div>
                 </div>
               </div>
@@ -811,9 +832,7 @@ const Dashboard = () => {
               {/* Recent Clients */}
               <div className='bg-white rounded-xl shadow-sm p-6'>
                 <div className='flex items-center justify-between mb-6'>
-                  <h3 className='text-section-title text-gray-900'>
-                    {t('recentClients.title')}
-                  </h3>
+                  <h3 className='text-section-title text-gray-900'>{t('recentClients.title')}</h3>
                   <button
                     onClick={handleViewAllClients}
                     className='text-blue-600 text-nav-text hover:text-blue-800'
@@ -825,27 +844,29 @@ const Dashboard = () => {
                 <div className='space-y-4'>
                   {recentClients.length > 0 ? (
                     recentClients.map((client, index) => (
-                    <div
-                      key={client.id}
-                      className='flex items-center space-x-3 p-3 hover:bg-gray-50 rounded-lg cursor-pointer transition-colors'
-                      onClick={() => handleViewDetails(client.id)}
-                    >
                       <div
-                        className={`w-10 h-10 ${getAvatarColor(index)} rounded-full flex items-center justify-center text-white font-medium text-nav-text`}
+                        key={client.id}
+                        className='flex items-center space-x-3 p-3 hover:bg-gray-50 rounded-lg cursor-pointer transition-colors'
+                        onClick={() => handleViewDetails(client.id)}
                       >
-                        {client.initials}
-                      </div>
-                      <div className='flex-1 min-w-0'>
-                        <div className='flex items-center space-x-2'>
-                          <h4 className='text-card-title text-gray-900 truncate'>{client.name}</h4>
-                          <div
-                            className={`w-2 h-2 ${getStatusColor(client.status)} rounded-full`}
-                          ></div>
+                        <div
+                          className={`w-10 h-10 ${getAvatarColor(index)} rounded-full flex items-center justify-center text-white font-medium text-nav-text`}
+                        >
+                          {client.initials}
                         </div>
-                        <p className='text-subtitle text-gray-500 truncate'>{client.industry}</p>
-                        <p className='text-metric-small text-gray-400'>{client.lastContact}</p>
+                        <div className='flex-1 min-w-0'>
+                          <div className='flex items-center space-x-2'>
+                            <h4 className='text-card-title text-gray-900 truncate'>
+                              {client.name}
+                            </h4>
+                            <div
+                              className={`w-2 h-2 ${getStatusColor(client.status)} rounded-full`}
+                            ></div>
+                          </div>
+                          <p className='text-subtitle text-gray-500 truncate'>{client.industry}</p>
+                          <p className='text-metric-small text-gray-400'>{client.lastContact}</p>
+                        </div>
                       </div>
-                    </div>
                     ))
                   ) : (
                     <div className='text-center py-8'>
@@ -877,23 +898,27 @@ const Dashboard = () => {
                 <div className='space-y-4'>
                   {upcomingWork.length > 0 ? (
                     upcomingWork.map(work => {
-                    const IconComponent = work.icon;
-                    return (
-                      <div key={work.id} className='flex items-start space-x-3'>
-                        <div className={`${work.color} p-2 rounded-lg flex-shrink-0`}>
-                          <IconComponent className='h-4 w-4 text-white' />
-                        </div>
-                        <div className='flex-1 min-w-0'>
-                          <h4 className='text-card-title text-gray-900'>{work.title}</h4>
-                          <p className='text-metric-small text-gray-500 truncate'>{work.client}</p>
-                          <div className='flex items-center space-x-2 mt-1'>
-                            <span className='text-metric-small text-gray-400'>{work.time}</span>
-                            <span className='text-metric-small text-gray-400'>•</span>
-                            <span className='text-metric-small text-gray-400'>{work.duration}</span>
+                      const IconComponent = work.icon;
+                      return (
+                        <div key={work.id} className='flex items-start space-x-3'>
+                          <div className={`${work.color} p-2 rounded-lg flex-shrink-0`}>
+                            <IconComponent className='h-4 w-4 text-white' />
+                          </div>
+                          <div className='flex-1 min-w-0'>
+                            <h4 className='text-card-title text-gray-900'>{work.title}</h4>
+                            <p className='text-metric-small text-gray-500 truncate'>
+                              {work.client}
+                            </p>
+                            <div className='flex items-center space-x-2 mt-1'>
+                              <span className='text-metric-small text-gray-400'>{work.time}</span>
+                              <span className='text-metric-small text-gray-400'>•</span>
+                              <span className='text-metric-small text-gray-400'>
+                                {work.duration}
+                              </span>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    );
+                      );
                     })
                   ) : (
                     <div className='text-center py-8'>
@@ -937,34 +962,38 @@ const Dashboard = () => {
                 <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
                   {notifications.length > 0 ? (
                     notifications.map(notification => {
-                    const IconComponent = notification.icon;
-                    return (
-                      <div
-                        key={notification.id}
-                        className='bg-gray-50 rounded-lg p-4 hover:bg-gray-100 transition-colors cursor-pointer'
-                      >
-                        <div className='flex items-start space-x-3'>
-                          <div className={`${notification.color} p-2 rounded-full flex-shrink-0`}>
-                            <IconComponent className='h-4 w-4 text-white' />
-                          </div>
-                          <div className='flex-1 min-w-0'>
-                            <h4 className='text-card-title text-gray-900 truncate'>
-                              {notification.title}
-                            </h4>
-                            <p className='text-subtitle text-gray-500 line-clamp-2'>
-                              {notification.message}
-                            </p>
-                            <p className='text-metric-small text-gray-400 mt-2'>{notification.time}</p>
+                      const IconComponent = notification.icon;
+                      return (
+                        <div
+                          key={notification.id}
+                          className='bg-gray-50 rounded-lg p-4 hover:bg-gray-100 transition-colors cursor-pointer'
+                        >
+                          <div className='flex items-start space-x-3'>
+                            <div className={`${notification.color} p-2 rounded-full flex-shrink-0`}>
+                              <IconComponent className='h-4 w-4 text-white' />
+                            </div>
+                            <div className='flex-1 min-w-0'>
+                              <h4 className='text-card-title text-gray-900 truncate'>
+                                {notification.title}
+                              </h4>
+                              <p className='text-subtitle text-gray-500 line-clamp-2'>
+                                {notification.message}
+                              </p>
+                              <p className='text-metric-small text-gray-400 mt-2'>
+                                {notification.time}
+                              </p>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    );
+                      );
                     })
                   ) : (
                     <div className='text-center py-8 col-span-full'>
                       <Bell className='h-12 w-12 text-gray-300 mx-auto mb-3' />
                       <p className='text-subtitle text-gray-500'>Nessuna notifica recente</p>
-                      <p className='text-metric-small text-gray-400 mt-1'>Le notifiche appariranno qui quando avrai attività</p>
+                      <p className='text-metric-small text-gray-400 mt-1'>
+                        Le notifiche appariranno qui quando avrai attività
+                      </p>
                     </div>
                   )}
                 </div>
@@ -973,28 +1002,26 @@ const Dashboard = () => {
                 <div className='mt-6 pt-6 border-t border-gray-100'>
                   <div className='grid grid-cols-3 gap-4 text-center'>
                     <div>
-                      <div className='text-card-metric text-blue-600'>
-                        0
+                      <div className='text-card-metric text-blue-600'>0</div>
+                      <div className='text-metric-small text-gray-500'>
+                        {t('performance.unread')}
                       </div>
-                      <div className='text-metric-small text-gray-500'>{t('performance.unread')}</div>
                     </div>
                     <div>
-                      <div className='text-card-metric text-green-600'>
-                        0
+                      <div className='text-card-metric text-green-600'>0</div>
+                      <div className='text-metric-small text-gray-500'>
+                        {t('performance.thisWeek')}
                       </div>
-                      <div className='text-metric-small text-gray-500'>{t('performance.thisWeek')}</div>
                     </div>
                     <div>
-                      <div className='text-card-metric text-gray-600'>
-                        {notifications.length}
+                      <div className='text-card-metric text-gray-600'>{notifications.length}</div>
+                      <div className='text-metric-small text-gray-500'>
+                        {t('performance.total')}
                       </div>
-                      <div className='text-metric-small text-gray-500'>{t('performance.total')}</div>
                     </div>
                   </div>
                 </div>
               </div>
-
-
 
               {/* Performance - KPI Summary */}
               <div className='bg-white rounded-xl shadow-sm p-6'>
@@ -1008,16 +1035,16 @@ const Dashboard = () => {
                 <div className='space-y-6'>
                   <div className='border-b border-gray-100 pb-4'>
                     <div className='flex items-center justify-between mb-2'>
-                      <span className='text-subtitle text-gray-500'>{t('performance.monthlyRevenue')}</span>
+                      <span className='text-subtitle text-gray-500'>
+                        {t('performance.monthlyRevenue')}
+                      </span>
                       <span className='text-green-600 text-nav-text font-medium flex items-center'>
                         <ArrowUpRight className='h-4 w-4 mr-1' />
                         {revenueData.growth}
                       </span>
                     </div>
                     <div className='flex items-center justify-between'>
-                      <span className='text-card-metric text-gray-900'>
-                        {revenueData.monthly}
-                      </span>
+                      <span className='text-card-metric text-gray-900'>{revenueData.monthly}</span>
                       <span className='text-metric-small text-gray-500'>
                         {t('performance.vs')} {revenueData.lastMonth}
                       </span>
@@ -1026,7 +1053,9 @@ const Dashboard = () => {
 
                   <div className='border-b border-gray-100 pb-4'>
                     <div className='flex items-center justify-between mb-2'>
-                      <span className='text-subtitle text-gray-500'>{t('performance.activeClients')}</span>
+                      <span className='text-subtitle text-gray-500'>
+                        {t('performance.activeClients')}
+                      </span>
                       <span className='text-green-600 text-nav-text font-medium flex items-center'>
                         <ArrowUpRight className='h-4 w-4 mr-1' />
                         {clientData.growth}
@@ -1041,17 +1070,21 @@ const Dashboard = () => {
                   </div>
 
                   <div className='border-b border-gray-100 pb-4'>
-                    <div className='text-subtitle text-gray-500 mb-2'>{t('performance.upcomingEvents')}</div>
+                    <div className='text-subtitle text-gray-500 mb-2'>
+                      {t('performance.upcomingEvents')}
+                    </div>
                     <div className='flex items-center justify-between'>
-                      <span className='text-card-metric text-gray-900'>
-                        {upcomingEvents.count}
+                      <span className='text-card-metric text-gray-900'>{upcomingEvents.count}</span>
+                      <span className='text-metric-small text-gray-500'>
+                        {upcomingEvents.period}
                       </span>
-                      <span className='text-metric-small text-gray-500'>{upcomingEvents.period}</span>
                     </div>
                   </div>
 
                   <div>
-                    <div className='text-subtitle text-gray-500 mb-2'>{t('performance.conversionRate')}</div>
+                    <div className='text-subtitle text-gray-500 mb-2'>
+                      {t('performance.conversionRate')}
+                    </div>
                     <div className='flex items-center justify-between'>
                       <span className='text-card-metric text-gray-900'>0%</span>
                       <span className='text-metric-small text-gray-600 flex items-center'>

@@ -40,59 +40,62 @@ export default function SettingsLayout() {
 
   // Settings tabs configuration
   const tabs = [
-    { 
-      name: t('tabs.profile'), 
-      icon: UserCircleIcon, 
+    {
+      name: t('tabs.profile'),
+      icon: UserCircleIcon,
       component: ProfileSettings,
-      description: t('tabDescriptions.profile', 'Manage your personal information and preferences')
+      description: t('tabDescriptions.profile', 'Manage your personal information and preferences'),
     },
-    { 
-      name: t('tabs.security'), 
-      icon: ShieldCheckIcon, 
+    {
+      name: t('tabs.security'),
+      icon: ShieldCheckIcon,
       component: SecuritySettings,
-      description: t('tabDescriptions.security', 'Configure account security and access controls')
+      description: t('tabDescriptions.security', 'Configure account security and access controls'),
     },
-    { 
-      name: t('tabs.notifications'), 
-      icon: BellIcon, 
+    {
+      name: t('tabs.notifications'),
+      icon: BellIcon,
       component: NotificationSettingsFallback,
-      description: t('tabDescriptions.notifications', 'Set up your notification preferences')
+      description: t('tabDescriptions.notifications', 'Set up your notification preferences'),
     },
-    { 
-      name: t('tabs.company'), 
-      icon: BuildingOfficeIcon, 
+    {
+      name: t('tabs.company'),
+      icon: BuildingOfficeIcon,
       component: CompanySettingsFallback,
-      description: t('tabDescriptions.company', 'Manage company information and branding')
+      description: t('tabDescriptions.company', 'Manage company information and branding'),
     },
-    { 
-      name: t('tabs.billing'), 
-      icon: CreditCardIcon, 
+    {
+      name: t('tabs.billing'),
+      icon: CreditCardIcon,
       component: BillingSettingsFallback,
-      description: t('tabDescriptions.billing', 'Configure billing and invoice settings')
+      description: t('tabDescriptions.billing', 'Configure billing and invoice settings'),
     },
-    { 
-      name: t('tabs.email'), 
-      icon: EnvelopeIcon, 
+    {
+      name: t('tabs.email'),
+      icon: EnvelopeIcon,
       component: EmailSettingsFallback,
-      description: t('tabDescriptions.email', 'Manage email templates and settings')
+      description: t('tabDescriptions.email', 'Manage email templates and settings'),
     },
-    { 
-      name: t('tabs.integrations'), 
-      icon: CogIcon, 
+    {
+      name: t('tabs.integrations'),
+      icon: CogIcon,
       component: IntegrationsSettings,
-      description: t('tabDescriptions.integrations', 'Connect and manage third-party services')
+      description: t('tabDescriptions.integrations', 'Connect and manage third-party services'),
     },
-    { 
-      name: t('tabs.accessibility'), 
-      icon: EyeIcon, 
+    {
+      name: t('tabs.accessibility'),
+      icon: EyeIcon,
       component: AccessibilitySettings,
-      description: t('tabDescriptions.accessibility', 'Monitor and improve accessibility compliance')
+      description: t(
+        'tabDescriptions.accessibility',
+        'Monitor and improve accessibility compliance',
+      ),
     },
-    { 
-      name: t('tabs.backup'), 
-      icon: DocumentArrowDownIcon, 
+    {
+      name: t('tabs.backup'),
+      icon: DocumentArrowDownIcon,
       component: BackupSettings,
-      description: t('tabDescriptions.backup', 'Backup and restore your data')
+      description: t('tabDescriptions.backup', 'Backup and restore your data'),
     },
   ];
 
@@ -106,15 +109,11 @@ export default function SettingsLayout() {
   // Show loading while authentication is initializing
   if (shouldShowLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <h2 className="text-lg text-gray-600">
-            {t('common.loading', 'Loading...')}
-          </h2>
-          <p className="text-sm text-gray-500 mt-2">
-            Initializing authentication...
-          </p>
+      <div className='min-h-screen flex items-center justify-center'>
+        <div className='text-center'>
+          <div className='animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4'></div>
+          <h2 className='text-lg text-gray-600'>{t('common.loading', 'Loading...')}</h2>
+          <p className='text-sm text-gray-500 mt-2'>Initializing authentication...</p>
         </div>
       </div>
     );
@@ -123,12 +122,12 @@ export default function SettingsLayout() {
   // Show sign-in prompt if not authenticated
   if (shouldShowAuth) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">
+      <div className='min-h-screen flex items-center justify-center'>
+        <div className='text-center'>
+          <h2 className='text-2xl font-bold text-gray-900 mb-4'>
             {t('common.pleaseSignIn', 'Please sign in to access settings')}
           </h2>
-          <p className="text-gray-600">
+          <p className='text-gray-600'>
             Please ensure you are logged in to access the settings page.
           </p>
         </div>
@@ -137,12 +136,12 @@ export default function SettingsLayout() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className='min-h-screen bg-gray-50'>
+      <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8'>
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">{t('title')}</h1>
-          <p className="mt-2 text-lg text-gray-600">{t('subtitle')}</p>
+        <div className='mb-8'>
+          <h1 className='text-3xl font-bold text-gray-900'>{t('title')}</h1>
+          <p className='mt-2 text-lg text-gray-600'>{t('subtitle')}</p>
         </div>
 
         {/* Notification */}
@@ -154,17 +153,16 @@ export default function SettingsLayout() {
                 : 'bg-red-50 text-red-800 border border-red-200'
             }`}
           >
-            <div className="flex">
-              <div className="ml-3">
-                <p className="text-sm font-medium">{notification.message}</p>
+            <div className='flex'>
+              <div className='ml-3'>
+                <p className='text-sm font-medium'>{notification.message}</p>
               </div>
-              <div className="ml-auto pl-3">
+              <div className='ml-auto pl-3'>
                 <button
                   onClick={() => setNotification({ show: false, message: '', type: 'success' })}
-                  className="text-gray-400 hover:text-gray-600"
+                  className='text-gray-400 hover:text-gray-600'
                 >
-                  <span className="sr-only">Dismiss</span>
-                  ×
+                  <span className='sr-only'>Dismiss</span>×
                 </button>
               </div>
             </div>
@@ -172,11 +170,11 @@ export default function SettingsLayout() {
         )}
 
         {/* Settings Content */}
-        <div className="bg-white shadow-lg rounded-lg overflow-hidden">
+        <div className='bg-white shadow-lg rounded-lg overflow-hidden'>
           <Tab.Group selectedIndex={activeTab} onChange={setActiveTab}>
             {/* Mobile Tab Navigation */}
-            <div className="block lg:hidden border-b border-gray-200">
-              <Tab.List className="flex overflow-x-auto scrollbar-hide bg-gray-50">
+            <div className='block lg:hidden border-b border-gray-200'>
+              <Tab.List className='flex overflow-x-auto scrollbar-hide bg-gray-50'>
                 {tabs.map((tab, idx) => (
                   <Tab
                     key={tab.name}
@@ -188,9 +186,9 @@ export default function SettingsLayout() {
                       }`
                     }
                   >
-                    <div className="flex items-center space-x-2">
-                      <tab.icon className="w-4 h-4" />
-                      <span className="whitespace-nowrap">{tab.name}</span>
+                    <div className='flex items-center space-x-2'>
+                      <tab.icon className='w-4 h-4' />
+                      <span className='whitespace-nowrap'>{tab.name}</span>
                     </div>
                   </Tab>
                 ))}
@@ -198,9 +196,9 @@ export default function SettingsLayout() {
             </div>
 
             {/* Desktop Tab Navigation */}
-            <div className="hidden lg:flex">
-              <div className="w-64 bg-gray-50 p-6 border-r border-gray-200">
-                <Tab.List className="flex flex-col space-y-2">
+            <div className='hidden lg:flex'>
+              <div className='w-64 bg-gray-50 p-6 border-r border-gray-200'>
+                <Tab.List className='flex flex-col space-y-2'>
                   {tabs.map((tab, idx) => (
                     <Tab
                       key={tab.name}
@@ -212,11 +210,11 @@ export default function SettingsLayout() {
                         }`
                       }
                     >
-                      <div className="flex items-center space-x-3">
-                        <tab.icon className="w-5 h-5" />
+                      <div className='flex items-center space-x-3'>
+                        <tab.icon className='w-5 h-5' />
                         <div>
-                          <div className="font-medium">{tab.name}</div>
-                          <div className="text-xs opacity-75 mt-1">{tab.description}</div>
+                          <div className='font-medium'>{tab.name}</div>
+                          <div className='text-xs opacity-75 mt-1'>{tab.description}</div>
                         </div>
                       </div>
                     </Tab>
@@ -225,15 +223,12 @@ export default function SettingsLayout() {
               </div>
 
               {/* Desktop Content Area */}
-              <div className="flex-1">
+              <div className='flex-1'>
                 <Tab.Panels>
                   {tabs.map((tab, idx) => {
                     const TabComponent = tab.component;
                     return (
-                      <Tab.Panel
-                        key={idx}
-                        className="p-6 focus:outline-none"
-                      >
+                      <Tab.Panel key={idx} className='p-6 focus:outline-none'>
                         <TabComponent showNotification={showNotification} />
                       </Tab.Panel>
                     );
@@ -243,15 +238,12 @@ export default function SettingsLayout() {
             </div>
 
             {/* Mobile Content Area */}
-            <div className="block lg:hidden">
+            <div className='block lg:hidden'>
               <Tab.Panels>
                 {tabs.map((tab, idx) => {
                   const TabComponent = tab.component;
                   return (
-                    <Tab.Panel
-                      key={idx}
-                      className="p-4 focus:outline-none"
-                    >
+                    <Tab.Panel key={idx} className='p-4 focus:outline-none'>
                       <TabComponent showNotification={showNotification} />
                     </Tab.Panel>
                   );
@@ -264,4 +256,4 @@ export default function SettingsLayout() {
       <Footer />
     </div>
   );
-} 
+}

@@ -66,8 +66,8 @@ class AccessibilityTester {
         'keyboard-navigation': { enabled: true },
         'focus-management': { enabled: true },
         'aria-labels': { enabled: true },
-        'semantic-html': { enabled: true }
-      }
+        'semantic-html': { enabled: true },
+      },
     };
     this.initializeAxe();
   }
@@ -88,7 +88,7 @@ class AccessibilityTester {
     // Configure axe with basic settings
     try {
       axe.configure({
-        rules: []
+        rules: [],
       });
     } catch (error) {
       console.warn('Failed to configure axe:', error);
@@ -100,7 +100,7 @@ class AccessibilityTester {
    */
   public async runAudit(
     element?: Element | Document,
-    options?: Partial<AccessibilityConfig>
+    options?: Partial<AccessibilityConfig>,
   ): Promise<AccessibilityReport> {
     if (!this.isEnabled || typeof window === 'undefined') {
       throw new Error('Accessibility testing is not available');
@@ -121,29 +121,27 @@ class AccessibilityTester {
   /**
    * Process axe results into our report format
    */
-  private processResults(
-    results: AxeResults,
-    config: AccessibilityConfig
-  ): AccessibilityReport {
+  private processResults(results: AxeResults, config: AccessibilityConfig): AccessibilityReport {
     const processIssues = (issues: Result[]): AccessibilityIssue[] => {
       return issues
-        .filter(issue => 
-          !issue.impact || config.includedImpacts.includes(issue.impact)
-        )
-        .map(issue => ({
-          id: issue.id,
-          impact: issue.impact || 'minor',
-          help: issue.help,
-          helpUrl: issue.helpUrl,
-          description: issue.description,
-          tags: issue.tags,
-          nodes: issue.nodes.map(node => ({
-            target: Array.isArray(node.target) ? node.target : [JSON.stringify(node.target)],
-            html: node.html,
-            failureSummary: node.failureSummary,
-            impact: node.impact as 'minor' | 'moderate' | 'serious' | 'critical' | undefined
-          }))
-        } as AccessibilityIssue));
+        .filter(issue => !issue.impact || config.includedImpacts.includes(issue.impact))
+        .map(
+          issue =>
+            ({
+              id: issue.id,
+              impact: issue.impact || 'minor',
+              help: issue.help,
+              helpUrl: issue.helpUrl,
+              description: issue.description,
+              tags: issue.tags,
+              nodes: issue.nodes.map(node => ({
+                target: Array.isArray(node.target) ? node.target : [JSON.stringify(node.target)],
+                html: node.html,
+                failureSummary: node.failureSummary,
+                impact: node.impact as 'minor' | 'moderate' | 'serious' | 'critical' | undefined,
+              })),
+            }) as AccessibilityIssue,
+        );
     };
 
     const violations = processIssues(results.violations);
@@ -156,7 +154,7 @@ class AccessibilityTester {
       minor: 0,
       moderate: 0,
       serious: 0,
-      critical: 0
+      critical: 0,
     };
 
     violations.forEach(violation => {
@@ -175,8 +173,8 @@ class AccessibilityTester {
         passCount: passes.length,
         incompleteCount: incomplete.length,
         inapplicableCount: inapplicable.length,
-        impactSummary
-      }
+        impactSummary,
+      },
     };
   }
 
@@ -186,23 +184,28 @@ class AccessibilityTester {
   public calculateAccessibilityScore(report: AccessibilityReport): number {
     const { violationCount, passCount, incompleteCount } = report.summary;
     const total = violationCount + passCount + incompleteCount;
-    
+
     if (total === 0) return 100;
 
     // Weight violations by impact
     const violationWeight = report.violations.reduce((weight, violation) => {
       switch (violation.impact) {
-        case 'critical': return weight + 4;
-        case 'serious': return weight + 3;
-        case 'moderate': return weight + 2;
-        case 'minor': return weight + 1;
-        default: return weight + 1;
+        case 'critical':
+          return weight + 4;
+        case 'serious':
+          return weight + 3;
+        case 'moderate':
+          return weight + 2;
+        case 'minor':
+          return weight + 1;
+        default:
+          return weight + 1;
       }
     }, 0);
 
     const maxPossibleWeight = total * 4; // Assuming all could be critical
     const score = Math.max(0, Math.round((1 - violationWeight / maxPossibleWeight) * 100));
-    
+
     return score;
   }
 
@@ -268,7 +271,7 @@ class AccessibilityTester {
    */
   private async checkKeyboardNavigation(): Promise<boolean> {
     const focusableElements = document.querySelectorAll(
-      'a[href], button, textarea, input[type="text"], input[type="radio"], input[type="checkbox"], select'
+      'a[href], button, textarea, input[type="text"], input[type="radio"], input[type="checkbox"], select',
     );
 
     let hasTabIndex = true;
@@ -291,9 +294,10 @@ class AccessibilityTester {
 
     // Check if focus is visible
     const computedStyle = window.getComputedStyle(activeElement);
-    const hasFocusOutline = computedStyle.outline !== 'none' || 
-                           computedStyle.outlineWidth !== '0px' ||
-                           computedStyle.boxShadow.includes('focus');
+    const hasFocusOutline =
+      computedStyle.outline !== 'none' ||
+      computedStyle.outlineWidth !== '0px' ||
+      computedStyle.boxShadow.includes('focus');
 
     return hasFocusOutline;
   }
@@ -312,15 +316,16 @@ class AccessibilityTester {
    */
   private async checkAriaLabels(): Promise<boolean> {
     const elementsNeedingLabels = document.querySelectorAll(
-      'input:not([type="hidden"]), select, textarea, button'
+      'input:not([type="hidden"]), select, textarea, button',
     );
 
     let hasProperLabels = true;
     elementsNeedingLabels.forEach(element => {
-      const hasLabel = element.getAttribute('aria-label') ||
-                      element.getAttribute('aria-labelledby') ||
-                      document.querySelector(`label[for="${element.id}"]`);
-      
+      const hasLabel =
+        element.getAttribute('aria-label') ||
+        element.getAttribute('aria-labelledby') ||
+        document.querySelector(`label[for="${element.id}"]`);
+
       if (!hasLabel) {
         hasProperLabels = false;
       }
@@ -336,7 +341,7 @@ class AccessibilityTester {
     const hasMain = document.querySelector('main') !== null;
     const hasNav = document.querySelector('nav') !== null;
     const hasHeadings = document.querySelector('h1, h2, h3, h4, h5, h6') !== null;
-    
+
     return hasMain && hasNav && hasHeadings;
   }
 
@@ -351,12 +356,12 @@ class AccessibilityTester {
         const report = await this.runAudit();
         if (report.summary.violationCount > 0) {
           console.warn('🚨 Accessibility violations detected:', report.summary);
-          
+
           // Log critical and serious violations
           const criticalViolations = report.violations.filter(
-            v => v.impact === 'critical' || v.impact === 'serious'
+            v => v.impact === 'critical' || v.impact === 'serious',
           );
-          
+
           if (criticalViolations.length > 0) {
             console.error('Critical accessibility issues:', criticalViolations);
           }
@@ -376,13 +381,17 @@ class AccessibilityTester {
     report.violations.forEach(violation => {
       switch (violation.id) {
         case 'color-contrast':
-          recommendations.push('Increase color contrast ratio to meet WCAG AA standards (4.5:1 for normal text)');
+          recommendations.push(
+            'Increase color contrast ratio to meet WCAG AA standards (4.5:1 for normal text)',
+          );
           break;
         case 'keyboard-navigation':
           recommendations.push('Ensure all interactive elements are keyboard accessible');
           break;
         case 'aria-label':
-          recommendations.push('Add descriptive ARIA labels to form controls and interactive elements');
+          recommendations.push(
+            'Add descriptive ARIA labels to form controls and interactive elements',
+          );
           break;
         case 'heading-order':
           recommendations.push('Use proper heading hierarchy (h1 → h2 → h3, etc.)');
@@ -425,7 +434,7 @@ class AccessibilityTester {
   } {
     return {
       config: this.config,
-      isEnabled: this.isEnabled
+      isEnabled: this.isEnabled,
     };
   }
 }
@@ -434,7 +443,7 @@ class AccessibilityTester {
 export const accessibilityTester = AccessibilityTester.getInstance();
 
 // Types and enums
-export type AccessibilityFeature = 
+export type AccessibilityFeature =
   | 'keyboard-navigation'
   | 'focus-management'
   | 'color-contrast'
@@ -444,7 +453,7 @@ export type AccessibilityFeature =
 // React hook for accessibility testing
 export function useAccessibilityTest(
   elementRef?: React.RefObject<Element>,
-  config?: Partial<AccessibilityConfig>
+  config?: Partial<AccessibilityConfig>,
 ) {
   const [report, setReport] = React.useState<AccessibilityReport | null>(null);
   const [isLoading, setIsLoading] = React.useState(false);
@@ -483,21 +492,19 @@ export function useAccessibilityTest(
     recommendations,
     isLoading,
     error,
-    runTest
+    runTest,
   };
 }
 
 // Utility function for testing components
 export async function testComponentAccessibility(
   _component: React.ReactElement,
-  _config?: Partial<AccessibilityConfig>
+  _config?: Partial<AccessibilityConfig>,
 ): Promise<AccessibilityReport> {
   // This would be used in Jest tests with react-testing-library
   // Implementation depends on testing environment
   throw new Error('Component testing requires Jest environment setup');
 }
-
-/* eslint-disable @typescript-eslint/no-explicit-any */
 
 /**
  * Accessibility testing and improvement utilities
@@ -530,49 +537,51 @@ export interface PageAccessibilityReport {
 export function testInteractiveElement(element: HTMLElement): AccessibilityTestResult {
   const issues: string[] = [];
   const suggestions: string[] = [];
-  
+
   // Check for proper ARIA attributes
   if (element.tagName === 'BUTTON' || element.getAttribute('role') === 'button') {
     if (!element.getAttribute('aria-label') && !element.textContent?.trim()) {
       issues.push('Button without accessible name');
       suggestions.push('Add aria-label or visible text content');
     }
-    
+
     if (element.hasAttribute('aria-expanded') && !element.getAttribute('aria-controls')) {
       issues.push('Expandable button without aria-controls');
       suggestions.push('Add aria-controls pointing to controlled element');
     }
   }
-  
+
   // Check for form inputs
   if (['INPUT', 'SELECT', 'TEXTAREA'].includes(element.tagName)) {
     const input = element as HTMLInputElement;
     const label = document.querySelector(`label[for="${input.id}"]`);
-    
+
     if (!label && !input.getAttribute('aria-label') && !input.getAttribute('aria-labelledby')) {
       issues.push('Form input without proper label');
       suggestions.push('Add associated label element or aria-label');
     }
-    
+
     if (input.hasAttribute('required') && !input.getAttribute('aria-required')) {
       suggestions.push('Add aria-required="true" for required fields');
     }
-    
+
     if (input.getAttribute('aria-invalid') === 'true' && !input.getAttribute('aria-describedby')) {
       issues.push('Invalid input without error description');
       suggestions.push('Add aria-describedby pointing to error message');
     }
   }
-  
+
   // Check for keyboard accessibility
-  const isInteractive = element.matches('button, input, select, textarea, a[href], [tabindex], [role="button"], [role="link"], [role="tab"]');
+  const isInteractive = element.matches(
+    'button, input, select, textarea, a[href], [tabindex], [role="button"], [role="link"], [role="tab"]',
+  );
   if (isInteractive) {
     const tabindex = element.getAttribute('tabindex');
     if (tabindex && parseInt(tabindex) > 0) {
       issues.push('Positive tabindex detected');
       suggestions.push('Use tabindex="0" or remove tabindex for natural tab order');
     }
-    
+
     if (!element.matches(':focus-visible')) {
       // Check if focus styles are defined
       const styles = getComputedStyle(element);
@@ -582,20 +591,20 @@ export function testInteractiveElement(element: HTMLElement): AccessibilityTestR
       }
     }
   }
-  
+
   // Check for semantic markup
   if (element.getAttribute('role') === 'heading' && !element.getAttribute('aria-level')) {
     suggestions.push('Add aria-level for heading roles');
   }
-  
+
   // Calculate score (0-100)
-  const score = Math.max(0, 100 - (issues.length * 20) - (suggestions.length * 10));
-  
+  const score = Math.max(0, 100 - issues.length * 20 - suggestions.length * 10);
+
   return {
     element,
     issues,
     suggestions,
-    score
+    score,
   };
 }
 
@@ -604,22 +613,22 @@ export function testInteractiveElement(element: HTMLElement): AccessibilityTestR
  */
 export function auditPageAccessibility(): PageAccessibilityReport {
   const interactiveElements = document.querySelectorAll(
-    'button, input, select, textarea, a[href], [tabindex], [role="button"], [role="link"], [role="tab"], [role="menuitem"]'
+    'button, input, select, textarea, a[href], [tabindex], [role="button"], [role="link"], [role="tab"], [role="menuitem"]',
   ) as NodeListOf<HTMLElement>;
-  
+
   const results: AccessibilityTestResult[] = [];
   let totalIssues = 0;
   let missingLabels = 0;
   let noKeyboardAccess = 0;
   let poorContrast = 0;
   let missingLandmarks = 0;
-  
+
   // Test each interactive element
   interactiveElements.forEach(element => {
     const result = testInteractiveElement(element);
     results.push(result);
     totalIssues += result.issues.length;
-    
+
     // Categorize issues
     result.issues.forEach(issue => {
       if (issue.includes('label') || issue.includes('accessible name')) {
@@ -633,7 +642,7 @@ export function auditPageAccessibility(): PageAccessibilityReport {
       }
     });
   });
-  
+
   // Check for landmark regions
   const landmarks = ['main', 'nav', 'aside', 'footer', 'header'];
   landmarks.forEach(landmark => {
@@ -641,22 +650,25 @@ export function auditPageAccessibility(): PageAccessibilityReport {
       missingLandmarks++;
     }
   });
-  
+
   // Check for heading hierarchy
   const headings = document.querySelectorAll('h1, h2, h3, h4, h5, h6, [role="heading"]');
   let previousLevel = 0;
   headings.forEach(heading => {
-    const level = heading.tagName ? parseInt(heading.tagName.slice(1)) : parseInt(heading.getAttribute('aria-level') || '1');
+    const level = heading.tagName
+      ? parseInt(heading.tagName.slice(1))
+      : parseInt(heading.getAttribute('aria-level') || '1');
     if (level > previousLevel + 1) {
       totalIssues++;
     }
     previousLevel = level;
   });
-  
-  const overallScore = results.length > 0 
-    ? Math.round(results.reduce((sum, result) => sum + result.score, 0) / results.length)
-    : 100;
-  
+
+  const overallScore =
+    results.length > 0
+      ? Math.round(results.reduce((sum, result) => sum + result.score, 0) / results.length)
+      : 100;
+
   return {
     overallScore,
     totalElements: results.length,
@@ -666,32 +678,35 @@ export function auditPageAccessibility(): PageAccessibilityReport {
       missingLabels,
       noKeyboardAccess,
       poorContrast,
-      missingLandmarks
-    }
+      missingLandmarks,
+    },
   };
 }
 
 /**
  * Adds ARIA attributes to improve accessibility
  */
-export function enhanceElementAccessibility(element: HTMLElement, options: {
-  label?: string;
-  description?: string;
-  expanded?: boolean;
-  controls?: string;
-  live?: 'polite' | 'assertive' | 'off';
-  role?: string;
-}): void {
+export function enhanceElementAccessibility(
+  element: HTMLElement,
+  options: {
+    label?: string;
+    description?: string;
+    expanded?: boolean;
+    controls?: string;
+    live?: 'polite' | 'assertive' | 'off';
+    role?: string;
+  },
+): void {
   const { label, description, expanded, controls, live, role } = options;
-  
+
   if (label) {
     element.setAttribute('aria-label', label);
   }
-  
+
   if (description) {
     const descId = `desc-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
     let descElement = document.getElementById(descId);
-    
+
     if (!descElement) {
       descElement = document.createElement('div');
       descElement.id = descId;
@@ -699,22 +714,22 @@ export function enhanceElementAccessibility(element: HTMLElement, options: {
       descElement.textContent = description;
       element.parentNode?.appendChild(descElement);
     }
-    
+
     element.setAttribute('aria-describedby', descId);
   }
-  
+
   if (typeof expanded === 'boolean') {
     element.setAttribute('aria-expanded', expanded.toString());
   }
-  
+
   if (controls) {
     element.setAttribute('aria-controls', controls);
   }
-  
+
   if (live) {
     element.setAttribute('aria-live', live);
   }
-  
+
   if (role) {
     element.setAttribute('role', role);
   }
@@ -728,7 +743,7 @@ export function addSkipLinks(): void {
   if (document.querySelector('.skip-links')) {
     return;
   }
-  
+
   const skipLinks = document.createElement('div');
   skipLinks.className = 'skip-links';
   skipLinks.innerHTML = `
@@ -736,7 +751,7 @@ export function addSkipLinks(): void {
     <a href="#navigation" class="skip-link">Skip to navigation</a>
     <a href="#search" class="skip-link">Skip to search</a>
   `;
-  
+
   // Insert at the beginning of body
   document.body.insertBefore(skipLinks, document.body.firstChild);
 }
@@ -747,33 +762,36 @@ export function addSkipLinks(): void {
 export function validateHeadingHierarchy(): string[] {
   const issues: string[] = [];
   const headings = document.querySelectorAll('h1, h2, h3, h4, h5, h6, [role="heading"]');
-  
+
   let previousLevel = 0;
   headings.forEach((heading, index) => {
-    const level = heading.tagName 
-      ? parseInt(heading.tagName.slice(1)) 
+    const level = heading.tagName
+      ? parseInt(heading.tagName.slice(1))
       : parseInt(heading.getAttribute('aria-level') || '1');
-    
+
     if (index === 0 && level !== 1) {
       issues.push('Page should start with h1');
     }
-    
+
     if (level > previousLevel + 1) {
       issues.push(`Heading level jumps from h${previousLevel} to h${level}`);
     }
-    
+
     previousLevel = level;
   });
-  
+
   return issues;
 }
 
 /**
  * Creates live region for dynamic content announcements
  */
-export function createLiveRegion(id: string, politeness: 'polite' | 'assertive' = 'polite'): HTMLElement {
+export function createLiveRegion(
+  id: string,
+  politeness: 'polite' | 'assertive' = 'polite',
+): HTMLElement {
   let liveRegion = document.getElementById(id);
-  
+
   if (!liveRegion) {
     liveRegion = document.createElement('div');
     liveRegion.id = id;
@@ -782,17 +800,20 @@ export function createLiveRegion(id: string, politeness: 'polite' | 'assertive' 
     liveRegion.setAttribute('aria-atomic', 'true');
     document.body.appendChild(liveRegion);
   }
-  
+
   return liveRegion;
 }
 
 /**
  * Announces content to screen readers
  */
-export function announceToScreenReader(message: string, politeness: 'polite' | 'assertive' = 'polite'): void {
+export function announceToScreenReader(
+  message: string,
+  politeness: 'polite' | 'assertive' = 'polite',
+): void {
   const liveRegion = createLiveRegion('accessibility-announcements', politeness);
   liveRegion.textContent = message;
-  
+
   // Clear after announcement
   setTimeout(() => {
     liveRegion.textContent = '';
@@ -802,19 +823,23 @@ export function announceToScreenReader(message: string, politeness: 'polite' | '
 /**
  * Checks color contrast ratio
  */
-export function checkColorContrast(_element: HTMLElement): { ratio: number; passes: boolean; level: string } {
+export function checkColorContrast(_element: HTMLElement): {
+  ratio: number;
+  passes: boolean;
+  level: string;
+} {
   // Note: This is a simplified implementation
   // In a real implementation, we would parse colors from getComputedStyle(element)
   // const styles = getComputedStyle(element);
-  
+
   // Simple contrast calculation (would need more sophisticated implementation)
   // This is a placeholder - real implementation would parse RGB values and calculate luminance
   const ratio = 4.5; // Placeholder value
-  
+
   return {
     ratio,
     passes: ratio >= 4.5,
-    level: ratio >= 7 ? 'AAA' : ratio >= 4.5 ? 'AA' : 'Fail'
+    level: ratio >= 7 ? 'AAA' : ratio >= 4.5 ? 'AA' : 'Fail',
   };
 }
 
@@ -826,5 +851,5 @@ export default {
   validateHeadingHierarchy,
   createLiveRegion,
   announceToScreenReader,
-  checkColorContrast
-}; 
+  checkColorContrast,
+};

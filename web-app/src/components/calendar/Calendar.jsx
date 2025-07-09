@@ -205,7 +205,7 @@ const Calendar = () => {
     monthsObj.november || 'November',
     monthsObj.december || 'December',
   ];
-  
+
   const daysShortObj = safeT('daysShort', { returnObjects: true }) || {};
   const weekDays = [
     daysShortObj.sunday || 'Sun',

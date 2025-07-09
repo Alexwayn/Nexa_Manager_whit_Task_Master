@@ -1,6 +1,12 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { DocumentTextIcon, PlusCircleIcon, ClockIcon, CogIcon, RectangleStackIcon } from '@heroicons/react/24/outline';
+import {
+  DocumentTextIcon,
+  PlusCircleIcon,
+  ClockIcon,
+  CogIcon,
+  RectangleStackIcon,
+} from '@heroicons/react/24/outline';
 import CustomReportBuilder from './CustomReportBuilder';
 import ReportViewer from './ReportViewer';
 import ScheduledReports from './ScheduledReports';
@@ -9,11 +15,11 @@ import ReportTemplateBrowser from './ReportTemplateBrowser';
 
 const ReportsDashboard = () => {
   const { t } = useTranslation();
-  const [currentView, setCurrentView] = useState('dashboard'); 
+  const [currentView, setCurrentView] = useState('dashboard');
   const [selectedTemplate, setSelectedTemplate] = useState(null);
 
   // Handle template selection from browser
-  const handleSelectTemplate = (template) => {
+  const handleSelectTemplate = template => {
     setSelectedTemplate(template);
     setCurrentView('customReportBuilder');
   };
@@ -28,7 +34,9 @@ const ReportsDashboard = () => {
     <div className='space-y-8'>
       <div>
         <h2 className='text-2xl font-semibold text-gray-800'>Reports & Insights</h2>
-        <p className='mt-2 text-gray-600'>Manage, create, and schedule your business reports with professional templates.</p>
+        <p className='mt-2 text-gray-600'>
+          Manage, create, and schedule your business reports with professional templates.
+        </p>
       </div>
 
       {/* Quick Stats Row */}
@@ -58,8 +66,10 @@ const ReportsDashboard = () => {
             <RectangleStackIcon className='h-8 w-8 text-white' />
           </div>
           <h3 className='text-lg font-semibold text-gray-900'>Report Templates</h3>
-          <p className='text-sm text-gray-500 mt-1 mb-4'>Browse and use professional report templates.</p>
-          <button 
+          <p className='text-sm text-gray-500 mt-1 mb-4'>
+            Browse and use professional report templates.
+          </p>
+          <button
             onClick={() => setCurrentView('templateBrowser')}
             className='mt-auto bg-gradient-to-r from-blue-500 to-purple-600 text-white px-4 py-2 rounded-lg hover:from-blue-600 hover:to-purple-700 transition-all duration-300 font-medium'
           >
@@ -73,8 +83,10 @@ const ReportsDashboard = () => {
             <DocumentTextIcon className='h-8 w-8 text-blue-600' />
           </div>
           <h3 className='text-lg font-semibold text-gray-900'>View Reports</h3>
-          <p className='text-sm text-gray-500 mt-1 mb-4'>Access your saved and generated reports.</p>
-          <button 
+          <p className='text-sm text-gray-500 mt-1 mb-4'>
+            Access your saved and generated reports.
+          </p>
+          <button
             onClick={() => setCurrentView('reportViewer')}
             className='mt-auto bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors font-medium'
           >
@@ -88,8 +100,10 @@ const ReportsDashboard = () => {
             <PlusCircleIcon className='h-8 w-8 text-green-600' />
           </div>
           <h3 className='text-lg font-semibold text-gray-900'>Custom Builder</h3>
-          <p className='text-sm text-gray-500 mt-1 mb-4'>Build a completely custom report from scratch.</p>
-          <button 
+          <p className='text-sm text-gray-500 mt-1 mb-4'>
+            Build a completely custom report from scratch.
+          </p>
+          <button
             onClick={handleCreateCustom}
             className='mt-auto bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors font-medium'
           >
@@ -104,7 +118,7 @@ const ReportsDashboard = () => {
           </div>
           <h3 className='text-lg font-semibold text-gray-900'>Scheduled Reports</h3>
           <p className='text-sm text-gray-500 mt-1 mb-4'>Manage automated report schedules.</p>
-          <button 
+          <button
             onClick={() => setCurrentView('scheduledReports')}
             className='mt-auto bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600 transition-colors font-medium'
           >
@@ -118,8 +132,10 @@ const ReportsDashboard = () => {
             <CogIcon className='h-8 w-8 text-gray-600' />
           </div>
           <h3 className='text-lg font-semibold text-gray-900'>Settings</h3>
-          <p className='text-sm text-gray-500 mt-1 mb-4'>Configure reporting options and preferences.</p>
-          <button 
+          <p className='text-sm text-gray-500 mt-1 mb-4'>
+            Configure reporting options and preferences.
+          </p>
+          <button
             onClick={() => setCurrentView('reportSettings')}
             className='mt-auto bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition-colors font-medium'
           >
@@ -135,14 +151,14 @@ const ReportsDashboard = () => {
             <h3 className='text-lg font-semibold text-gray-900'>Featured Templates</h3>
             <p className='text-sm text-gray-600'>Popular report templates ready to use</p>
           </div>
-          <button 
+          <button
             onClick={() => setCurrentView('templateBrowser')}
             className='text-blue-600 hover:text-blue-800 font-medium text-sm'
           >
             View All Templates →
           </button>
         </div>
-        
+
         <div className='grid grid-cols-1 md:grid-cols-3 gap-4'>
           <div className='bg-white rounded-lg p-4 border border-gray-200 hover:shadow-md transition-shadow'>
             <div className='flex items-center mb-2'>
@@ -155,8 +171,10 @@ const ReportsDashboard = () => {
               </div>
             </div>
             <div className='flex items-center justify-between'>
-              <span className='text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full'>Financial</span>
-              <button 
+              <span className='text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full'>
+                Financial
+              </span>
+              <button
                 onClick={() => setCurrentView('templateBrowser')}
                 className='text-blue-600 hover:text-blue-800 text-xs font-medium'
               >
@@ -176,8 +194,10 @@ const ReportsDashboard = () => {
               </div>
             </div>
             <div className='flex items-center justify-between'>
-              <span className='text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full'>Client</span>
-              <button 
+              <span className='text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full'>
+                Client
+              </span>
+              <button
                 onClick={() => setCurrentView('templateBrowser')}
                 className='text-green-600 hover:text-green-800 text-xs font-medium'
               >
@@ -198,7 +218,7 @@ const ReportsDashboard = () => {
             </div>
             <div className='flex items-center justify-between'>
               <span className='text-xs bg-red-100 text-red-800 px-2 py-1 rounded-full'>Tax</span>
-              <button 
+              <button
                 onClick={() => setCurrentView('templateBrowser')}
                 className='text-red-600 hover:text-red-800 text-xs font-medium'
               >
@@ -215,15 +235,15 @@ const ReportsDashboard = () => {
     <div>
       {currentView === 'dashboard' && renderDashboard()}
       {currentView === 'templateBrowser' && (
-        <ReportTemplateBrowser 
-          onBack={() => setCurrentView('dashboard')} 
+        <ReportTemplateBrowser
+          onBack={() => setCurrentView('dashboard')}
           onSelectTemplate={handleSelectTemplate}
           onCreateCustom={handleCreateCustom}
         />
       )}
       {currentView === 'customReportBuilder' && (
-        <CustomReportBuilder 
-          onBack={() => setCurrentView('dashboard')} 
+        <CustomReportBuilder
+          onBack={() => setCurrentView('dashboard')}
           initialTemplate={selectedTemplate}
         />
       )}
@@ -237,7 +257,7 @@ const ReportsDashboard = () => {
         <ReportSettings onBack={() => setCurrentView('dashboard')} />
       )}
     </div>
-  )
+  );
 };
 
 export default ReportsDashboard;

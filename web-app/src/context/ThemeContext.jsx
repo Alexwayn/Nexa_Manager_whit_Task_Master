@@ -45,7 +45,7 @@ export const ThemeProvider = ({ children }) => {
     const savedReducedMotion = localStorage.getItem('nexa-reduced-motion') === 'true';
     const savedColorBlindness = localStorage.getItem('nexa-color-blindness-mode');
     const savedFontSize = localStorage.getItem('nexa-font-size') || 'medium';
-    
+
     const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches
       ? 'dark'
       : 'light';
@@ -95,7 +95,11 @@ export const ThemeProvider = ({ children }) => {
       root.classList.add(`color-blind-${colorBlindnessMode}`);
     } else {
       // Remove all color blindness classes
-      root.classList.remove('color-blind-protanopia', 'color-blind-deuteranopia', 'color-blind-tritanopia');
+      root.classList.remove(
+        'color-blind-protanopia',
+        'color-blind-deuteranopia',
+        'color-blind-tritanopia',
+      );
     }
 
     // Apply font size
@@ -141,11 +145,11 @@ export const ThemeProvider = ({ children }) => {
     setReducedMotion(prev => !prev);
   };
 
-  const setColorBlindnessSimulation = (mode) => {
+  const setColorBlindnessSimulation = mode => {
     setColorBlindnessMode(mode === colorBlindnessMode ? null : mode);
   };
 
-  const changeFontSize = (size) => {
+  const changeFontSize = size => {
     const sizes = ['small', 'medium', 'large', 'xlarge'];
     if (sizes.includes(size)) {
       setFontSize(size);
@@ -182,19 +186,19 @@ export const ThemeProvider = ({ children }) => {
     const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
     const highContrastQuery = window.matchMedia('(prefers-contrast: high)');
 
-    const handleThemeChange = (e) => {
+    const handleThemeChange = e => {
       if (!localStorage.getItem('nexa-theme')) {
         setTheme(e.matches ? 'dark' : 'light');
       }
     };
 
-    const handleReducedMotionChange = (e) => {
+    const handleReducedMotionChange = e => {
       if (!localStorage.getItem('nexa-reduced-motion')) {
         setReducedMotion(e.matches);
       }
     };
 
-    const handleHighContrastChange = (e) => {
+    const handleHighContrastChange = e => {
       if (!localStorage.getItem('nexa-high-contrast')) {
         setHighContrast(e.matches);
       }
@@ -221,7 +225,7 @@ export const ThemeProvider = ({ children }) => {
     setDarkTheme,
     setAutoTheme,
     isLoading,
-    
+
     // Accessibility features
     highContrast,
     toggleHighContrast,
@@ -234,9 +238,10 @@ export const ThemeProvider = ({ children }) => {
     increaseFontSize,
     decreaseFontSize,
     resetAccessibilitySettings,
-    
+
     // Computed accessibility state
-    isAccessibilityModeActive: highContrast || reducedMotion || colorBlindnessMode || fontSize !== 'medium'
+    isAccessibilityModeActive:
+      highContrast || reducedMotion || colorBlindnessMode || fontSize !== 'medium',
   };
 
   return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
@@ -271,8 +276,8 @@ export const themes = {
       focusColor: '#2563eb',
       errorColor: '#dc2626',
       successColor: '#16a34a',
-      warningColor: '#d97706'
-    }
+      warningColor: '#d97706',
+    },
   },
   dark: {
     name: t('theme.dark.name'),
@@ -290,8 +295,8 @@ export const themes = {
       focusColor: '#60a5fa',
       errorColor: '#f87171',
       successColor: '#4ade80',
-      warningColor: '#fbbf24'
-    }
+      warningColor: '#fbbf24',
+    },
   },
   highContrast: {
     name: t('theme.highContrast.name'),
@@ -309,9 +314,9 @@ export const themes = {
       focusColor: '#000000',
       errorColor: '#cc0000',
       successColor: '#008000',
-      warningColor: '#ff8800'
-    }
-  }
+      warningColor: '#ff8800',
+    },
+  },
 };
 
 // Font size configurations
@@ -319,39 +324,39 @@ export const fontSizes = {
   small: {
     name: 'Small',
     scale: 0.875,
-    className: 'font-small'
+    className: 'font-small',
   },
   medium: {
     name: 'Medium',
     scale: 1,
-    className: 'font-medium'
+    className: 'font-medium',
   },
   large: {
     name: 'Large',
     scale: 1.125,
-    className: 'font-large'
+    className: 'font-large',
   },
   xlarge: {
     name: 'Extra Large',
     scale: 1.25,
-    className: 'font-xlarge'
-  }
+    className: 'font-xlarge',
+  },
 };
 
 // Color blindness simulation modes
 export const colorBlindnessModes = {
   protanopia: {
     name: 'Protanopia (Red-Blind)',
-    description: 'Difficulty distinguishing between red and green'
+    description: 'Difficulty distinguishing between red and green',
   },
   deuteranopia: {
     name: 'Deuteranopia (Green-Blind)',
-    description: 'Difficulty distinguishing between red and green'
+    description: 'Difficulty distinguishing between red and green',
   },
   tritanopia: {
     name: 'Tritanopia (Blue-Blind)',
-    description: 'Difficulty distinguishing between blue and yellow'
-  }
+    description: 'Difficulty distinguishing between blue and yellow',
+  },
 };
 
 // Theme utility functions
@@ -360,17 +365,17 @@ export const getThemeColors = (theme, accessibility = {}) => {
   return {
     ...baseTheme.colors,
     ...baseTheme.accessibility,
-    ...accessibility
+    ...accessibility,
   };
 };
 
 export const getAccessibilityClass = (highContrast, reducedMotion, fontSize) => {
   const classes = [];
-  
+
   if (highContrast) classes.push('high-contrast');
   if (reducedMotion) classes.push('reduce-motion');
   if (fontSize !== 'medium') classes.push(`font-${fontSize}`);
-  
+
   return classes.join(' ');
 };
 

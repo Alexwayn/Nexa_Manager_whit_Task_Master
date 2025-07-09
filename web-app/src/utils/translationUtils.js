@@ -17,29 +17,30 @@ const loadingPromises = new Map();
 export const loadNamespace = async (namespace, language = null) => {
   const lng = language || i18n.language;
   const key = `${lng}:${namespace}`;
-  
+
   // Return existing promise if already loading
   if (loadingPromises.has(key)) {
     return loadingPromises.get(key);
   }
-  
+
   // Return immediately if already loaded
   if (loadedNamespaces.has(key)) {
     return Promise.resolve();
   }
-  
+
   // Create loading promise
-  const loadingPromise = i18n.loadNamespaces(namespace)
+  const loadingPromise = i18n
+    .loadNamespaces(namespace)
     .then(() => {
       loadedNamespaces.add(key);
       loadingPromises.delete(key);
     })
-    .catch((error) => {
-      console.error(`Failed to load namespace ${namespace} for language ${lng}:`, error);
+    .catch(error => {
+      console.error(`Failed to load namespace ${namespace} for language ${lng}:`, String(error?.message || error || 'Unknown error'));
       loadingPromises.delete(key);
       throw error;
     });
-  
+
   loadingPromises.set(key, loadingPromise);
   return loadingPromise;
 };
@@ -73,27 +74,27 @@ export const isNamespaceLoaded = (namespace, language = null) => {
  * @returns {string|object} Translated text or loading indicator
  */
 export const translateWithFallback = (key, options = {}) => {
-  const { 
-    defaultValue = key, 
-    fallbackKey = null, 
-    loadingText = 'Loading...', 
+  const {
+    defaultValue = key,
+    fallbackKey = null,
+    loadingText = 'Loading...',
     namespace = null,
-    ...restOptions 
+    ...restOptions
   } = options;
-  
+
   // Check if namespace is loaded
   if (namespace && !isNamespaceLoaded(namespace)) {
     return loadingText;
   }
-  
+
   // Try primary translation
   const translation = i18n.t(key, { ...restOptions, defaultValue: null });
-  
+
   // Return translation if found and not the key itself
   if (translation && translation !== key) {
     return translation;
   }
-  
+
   // Try fallback key if provided
   if (fallbackKey) {
     const fallbackTranslation = i18n.t(fallbackKey, { ...restOptions, defaultValue: null });
@@ -101,7 +102,7 @@ export const translateWithFallback = (key, options = {}) => {
       return fallbackTranslation;
     }
   }
-  
+
   // Return default value
   return defaultValue;
 };
@@ -117,18 +118,18 @@ export const validateTranslations = (namespace, requiredKeys, language = null) =
   const lng = language || i18n.language;
   const missing = [];
   const found = [];
-  
+
   requiredKeys.forEach(key => {
     const fullKey = namespace ? `${namespace}:${key}` : key;
     const translation = i18n.t(fullKey, { lng, defaultValue: null });
-    
+
     if (!translation || translation === fullKey || translation === key) {
       missing.push(key);
     } else {
       found.push(key);
     }
   });
-  
+
   return {
     namespace,
     language: lng,
@@ -137,7 +138,7 @@ export const validateTranslations = (namespace, requiredKeys, language = null) =
     missing: missing.length,
     missingKeys: missing,
     foundKeys: found,
-    coverage: ((found.length / requiredKeys.length) * 100).toFixed(2)
+    coverage: ((found.length / requiredKeys.length) * 100).toFixed(2),
   };
 };
 
@@ -159,17 +160,17 @@ export const getMissingTranslations = (targetLanguage, referenceLanguage = 'en')
   const missing = {};
   const referenceData = i18n.store.data[referenceLanguage] || {};
   const targetData = i18n.store.data[targetLanguage] || {};
-  
+
   Object.keys(referenceData).forEach(namespace => {
     const refNsData = referenceData[namespace] || {};
     const targetNsData = targetData[namespace] || {};
-    
+
     missing[namespace] = {};
-    
+
     const findMissingKeys = (refObj, targetObj, path = '') => {
       Object.keys(refObj).forEach(key => {
         const currentPath = path ? `${path}.${key}` : key;
-        
+
         if (typeof refObj[key] === 'object' && !Array.isArray(refObj[key])) {
           findMissingKeys(refObj[key], targetObj[key] || {}, currentPath);
         } else if (!(key in targetObj)) {
@@ -177,15 +178,15 @@ export const getMissingTranslations = (targetLanguage, referenceLanguage = 'en')
         }
       });
     };
-    
+
     findMissingKeys(refNsData, targetNsData);
-    
+
     // Remove namespace if no missing keys
     if (Object.keys(missing[namespace]).length === 0) {
       delete missing[namespace];
     }
   });
-  
+
   return missing;
 };
 
@@ -194,30 +195,30 @@ export const getMissingTranslations = (targetLanguage, referenceLanguage = 'en')
  * @param {string[]} componentNames - Array of component names that need translations
  * @returns {Promise} Promise that resolves when all component translations are loaded
  */
-export const preloadComponentTranslations = async (componentNames) => {
+export const preloadComponentTranslations = async componentNames => {
   const namespaceMap = {
     // Map component names to their required namespaces
-    'Dashboard': ['dashboard', 'common', 'navigation'],
-    'Invoices': ['invoices', 'common', 'forms', 'buttons'],
-    'Clients': ['clients', 'common', 'forms', 'buttons'],
-    'Calendar': ['calendar', 'common', 'forms', 'buttons'],
-    'Reports': ['reports', 'analytics', 'common', 'buttons'],
-    'Settings': ['settings', 'common', 'forms', 'buttons'],
-    'Analytics': ['analytics', 'reports', 'common', 'buttons'],
-    'Documents': ['documents', 'common', 'forms', 'buttons'],
-    'Email': ['email', 'common', 'forms', 'buttons'],
-    'Quotes': ['quotes', 'common', 'forms', 'buttons'],
-    'Inventory': ['inventory', 'common', 'forms', 'buttons'],
-    'Transactions': ['transactions', 'common', 'forms', 'buttons']
+    Dashboard: ['dashboard', 'common', 'navigation'],
+    Invoices: ['invoices', 'common', 'forms', 'buttons'],
+    Clients: ['clients', 'common', 'forms', 'buttons'],
+    Calendar: ['calendar', 'common', 'forms', 'buttons'],
+    Reports: ['reports', 'analytics', 'common', 'buttons'],
+    Settings: ['settings', 'common', 'forms', 'buttons'],
+    Analytics: ['analytics', 'reports', 'common', 'buttons'],
+    Documents: ['documents', 'common', 'forms', 'buttons'],
+    Email: ['email', 'common', 'forms', 'buttons'],
+    Quotes: ['quotes', 'common', 'forms', 'buttons'],
+    Inventory: ['inventory', 'common', 'forms', 'buttons'],
+    Transactions: ['transactions', 'common', 'forms', 'buttons'],
   };
-  
+
   const namespacesToLoad = new Set();
-  
+
   componentNames.forEach(componentName => {
     const namespaces = namespaceMap[componentName] || [componentName.toLowerCase()];
     namespaces.forEach(ns => namespacesToLoad.add(ns));
   });
-  
+
   return loadNamespaces([...namespacesToLoad]);
 };
 
@@ -230,18 +231,18 @@ export const preloadComponentTranslations = async (componentNames) => {
  */
 export const formatTranslation = (key, values = {}, options = {}) => {
   const translation = translateWithFallback(key, options);
-  
+
   if (!values || Object.keys(values).length === 0) {
     return translation;
   }
-  
+
   // Support for complex formatting
   let formatted = translation;
-  
+
   Object.keys(values).forEach(placeholder => {
     const value = values[placeholder];
     const regex = new RegExp(`{{\\s*${placeholder}\\s*}}`, 'g');
-    
+
     if (typeof value === 'number') {
       // Format numbers based on locale
       const formatted_value = new Intl.NumberFormat(i18n.language).format(value);
@@ -254,7 +255,7 @@ export const formatTranslation = (key, values = {}, options = {}) => {
       formatted = formatted.replace(regex, String(value));
     }
   });
-  
+
   return formatted;
 };
 
@@ -264,14 +265,17 @@ export const formatTranslation = (key, values = {}, options = {}) => {
  * @param {string[]} preloadNamespaces - Namespaces to preload (default: common ones)
  * @returns {Promise} Promise that resolves when language is switched and namespaces loaded
  */
-export const switchLanguage = async (language, preloadNamespaces = ['common', 'navigation', 'forms', 'buttons']) => {
+export const switchLanguage = async (
+  language,
+  preloadNamespaces = ['common', 'navigation', 'forms', 'buttons'],
+) => {
   try {
     await i18n.changeLanguage(language);
     await loadNamespaces(preloadNamespaces, language);
-    
+
     // Store language preference
     localStorage.setItem('nexa-language', language);
-    
+
     return language;
   } catch (error) {
     console.error('Failed to switch language:', error);
@@ -284,21 +288,21 @@ export const switchLanguage = async (language, preloadNamespaces = ['common', 'n
  * @param {string} namespace - Default namespace for the hook
  * @returns {object} Translation hook object
  */
-export const createTranslationHook = (namespace) => {
+export const createTranslationHook = namespace => {
   return {
     t: (key, options = {}) => {
       const fullKey = key.includes(':') ? key : `${namespace}:${key}`;
       return translateWithFallback(fullKey, options);
     },
-    
+
     isLoaded: () => isNamespaceLoaded(namespace),
-    
+
     load: () => loadNamespace(namespace),
-    
+
     format: (key, values, options = {}) => {
       const fullKey = key.includes(':') ? key : `${namespace}:${key}`;
       return formatTranslation(fullKey, values, options);
-    }
+    },
   };
 };
 
@@ -314,5 +318,5 @@ export default {
   preloadComponentTranslations,
   formatTranslation,
   switchLanguage,
-  createTranslationHook
-}; 
+  createTranslationHook,
+};

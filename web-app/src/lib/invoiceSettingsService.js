@@ -637,4 +637,4 @@ export class InvoiceSettingsService {
   }
 }
 
-export default InvoiceSettingsService; 
+export default InvoiceSettingsService;

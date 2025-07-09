@@ -50,7 +50,7 @@ export class RealtimeService {
           try {
             callback(payload);
           } catch (callbackError) {
-            Logger.error(`Error in subscription callback for ${table}:`, callbackError);
+            Logger.error(`Error in subscription callback for ${table}:`, String(callbackError?.message || callbackError || 'Unknown error'));
           }
         },
       );
@@ -61,7 +61,7 @@ export class RealtimeService {
         if (status === 'SUBSCRIBED') {
           Logger.info(`Successfully subscribed to ${table} changes`);
         } else if (status === 'CHANNEL_ERROR') {
-          Logger.error(`Channel error for ${table} subscription`);
+          Logger.error(`Channel error for ${table} subscription`, 'Channel error occurred');
         }
       });
 
@@ -70,7 +70,7 @@ export class RealtimeService {
 
       return channel;
     } catch (error) {
-      Logger.error(`Unable to subscribe to ${table} changes:`, error);
+      Logger.error(`Unable to subscribe to ${table} changes:`, String(error?.message || error || 'Unknown error'));
       return null;
     }
   }
@@ -94,7 +94,7 @@ export class RealtimeService {
         Logger.info(`Successfully unsubscribed from ${subscriptionKey}`);
         return true;
       } catch (error) {
-        Logger.error(`Error unsubscribing from ${subscriptionKey}:`, error);
+        Logger.error(`Error unsubscribing from ${subscriptionKey}:`, String(error?.message || error || 'Unknown error'));
         return false;
       }
     }
@@ -169,7 +169,7 @@ export class RealtimeService {
           Logger.info(`Subscribed to ${table} changes for user ${userId}`);
         }
       } catch (error) {
-        Logger.error(`Failed to subscribe to ${table} for user ${userId}:`, error);
+        Logger.error(`Failed to subscribe to ${table} for user ${userId}:`, String(error?.message || error || 'Unknown error'));
       }
     });
 
@@ -313,7 +313,7 @@ export class RealtimeService {
         `Created ${subscriptions.length} financial data subscriptions for user ${userId}`,
       );
     } catch (error) {
-      Logger.error(`Error creating financial data subscriptions for user ${userId}:`, error);
+      Logger.error(`Error creating financial data subscriptions for user ${userId}:`, String(error?.message || error || 'Unknown error'));
     }
 
     return subscriptions;

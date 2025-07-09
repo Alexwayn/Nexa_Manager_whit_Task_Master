@@ -5,14 +5,11 @@ import Logger from '@utils/Logger';
 // Use these functions to verify that performance optimizations are working correctly
 
 // Environment helpers for performance testing
-export const isDevelopment = () => 
-  import.meta.env.MODE === 'development';
+export const isDevelopment = () => import.meta.env.MODE === 'development';
 
-export const isProduction = () => 
-  import.meta.env.MODE === 'production';
+export const isProduction = () => import.meta.env.MODE === 'production';
 
-export const isTest = () => 
-  import.meta.env.MODE === 'test';
+export const isTest = () => import.meta.env.MODE === 'test';
 
 /**
  * Simulate component error for testing error boundaries

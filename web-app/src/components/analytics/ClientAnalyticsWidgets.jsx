@@ -801,7 +801,8 @@ const ClientAnalyticsWidgets = ({ dateRange, onDrillDown, className = "" }) => {
         </div>
       )}
       
-      {/* Phase 2: Retention Analytics View */}
+      {/* 
+      // Phase 2: Retention Analytics View 
       {activeView === 'retention' && (
         <div className="space-y-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-6">
@@ -856,7 +857,7 @@ const ClientAnalyticsWidgets = ({ dateRange, onDrillDown, className = "" }) => {
         </div>
       )}
       
-      {/* Phase 2: Behavior Analytics View */}
+      // Phase 2: Behavior Analytics View
       {activeView === 'behavior' && (
         <div className="space-y-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -893,7 +894,7 @@ const ClientAnalyticsWidgets = ({ dateRange, onDrillDown, className = "" }) => {
         </div>
       )}
       
-      {/* Phase 2: Predictive Insights View */}
+      // Phase 2: Predictive Insights View
       {activeView === 'insights' && (
         <div className="space-y-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -944,9 +945,7 @@ const ClientAnalyticsWidgets = ({ dateRange, onDrillDown, className = "" }) => {
             </div>
           </div>
         </div>
-      )}
-      
-      </div>
+      )}      */}
     </div>
   );
 };

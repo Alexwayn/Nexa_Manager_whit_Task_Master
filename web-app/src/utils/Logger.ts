@@ -22,7 +22,7 @@ class Logger {
 
     // Environment detection - simplified for browser use
     let isDevelopment = false;
-    
+
     // Use Vite's import.meta.env for browser environment
     try {
       isDevelopment = import.meta.env.MODE === 'development';

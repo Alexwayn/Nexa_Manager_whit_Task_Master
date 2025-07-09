@@ -10,7 +10,7 @@ export function useClerkAuth() {
   const [authState, setAuthState] = useState({
     isLoaded: false,
     isSignedIn: false,
-    isReady: false
+    isReady: false,
   });
 
   useEffect(() => {
@@ -19,7 +19,7 @@ export function useClerkAuth() {
       ...prev,
       isLoaded: isLoaded || false,
       isSignedIn: isSignedIn || false,
-      isReady: isLoaded || false
+      isReady: isLoaded || false,
     }));
   }, [isLoaded, isSignedIn]);
 
@@ -28,7 +28,7 @@ export function useClerkAuth() {
     const timer = setTimeout(() => {
       setAuthState(prev => ({
         ...prev,
-        isReady: true
+        isReady: true,
       }));
     }, 2000);
 
@@ -43,6 +43,6 @@ export function useClerkAuth() {
     // Helper methods
     isAuthenticated: authState.isReady && authState.isSignedIn,
     shouldShowAuth: authState.isReady && !authState.isSignedIn,
-    shouldShowLoading: !authState.isReady
+    shouldShowLoading: !authState.isReady,
   };
-} 
+}

@@ -15,7 +15,7 @@ class EmailSignatureService {
     <div>📞 {phone}</div>
   </div>
 </div>`,
-        variables: ['name', 'title', 'company', 'email', 'phone']
+        variables: ['name', 'title', 'company', 'email', 'phone'],
       },
       professional: {
         name: 'Professional',
@@ -32,8 +32,8 @@ class EmailSignatureService {
     </td>
   </tr>
 </table>`,
-        variables: ['name', 'title', 'company', 'email', 'phone']
-      }
+        variables: ['name', 'title', 'company', 'email', 'phone'],
+      },
     };
   }
 
@@ -50,23 +50,23 @@ class EmailSignatureService {
             title: 'Developer',
             company: 'Tech Corp',
             email: 'john@techcorp.com',
-            phone: '+1 234 567 8900'
+            phone: '+1 234 567 8900',
           },
           is_default: true,
           template_type: 'professional',
-          created_at: new Date().toISOString()
-        }
+          created_at: new Date().toISOString(),
+        },
       ];
 
       return {
         success: true,
-        data: mockSignatures
+        data: mockSignatures,
       };
     } catch (error) {
       Logger.error('Failed to get signatures', { error: error.message });
       return {
         success: false,
-        error: error.message
+        error: error.message,
       };
     }
   }
@@ -77,23 +77,23 @@ class EmailSignatureService {
         id: Date.now(),
         ...signatureData,
         created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString()
+        updated_at: new Date().toISOString(),
       };
 
-      Logger.info('Signature created successfully', { 
-        signatureId: signature.id, 
-        name: signature.name 
+      Logger.info('Signature created successfully', {
+        signatureId: signature.id,
+        name: signature.name,
       });
 
       return {
         success: true,
-        data: signature
+        data: signature,
       };
     } catch (error) {
       Logger.error('Failed to create signature', { error: error.message });
       return {
         success: false,
-        error: error.message
+        error: error.message,
       };
     }
   }
@@ -127,10 +127,10 @@ class EmailSignatureService {
         id: key,
         name: template.name,
         variables: template.variables,
-        html: template.html
-      }))
+        html: template.html,
+      })),
     };
   }
 }
 
-export default new EmailSignatureService(); 
+export default new EmailSignatureService();

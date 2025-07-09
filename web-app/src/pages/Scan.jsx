@@ -125,7 +125,7 @@ export default function Scan() {
       <div className='bg-blue-50 border-b border-gray-200 py-2 px-4 md:px-8'>
         <div className='flex items-center space-x-2 text-sm text-gray-600'>
           <HomeIcon className='h-4 w-4 text-gray-500' />
-          <button 
+          <button
             onClick={() => navigate('/dashboard')}
             className='text-blue-600 hover:text-blue-700 font-medium transition-colors'
           >

@@ -19,8 +19,6 @@ class BusinessService {
    */
   async createBusinessProfile(businessData) {
     try {
-
-
       // Validate required fields
       const validationError = this.validateBusinessData(businessData);
       if (validationError) {
@@ -121,13 +119,8 @@ class BusinessService {
       // Prepare data for database
       const dbData = this.prepareBusinessDataForDB(businessData, true);
 
-      const { data, error } = await executeWithClerkAuth((supabase) =>
-        supabase
-          .from(this.tableName)
-          .update(dbData)
-          .eq('id', profileId)
-          .select()
-          .single()
+      const { data, error } = await executeWithClerkAuth(supabase =>
+        supabase.from(this.tableName).update(dbData).eq('id', profileId).select().single(),
       );
 
       if (error) {
@@ -204,11 +197,8 @@ class BusinessService {
    */
   async deleteBusinessProfile(profileId) {
     try {
-      const { error } = await executeWithClerkAuth((supabase) =>
-        supabase
-          .from(this.tableName)
-          .delete()
-          .eq('id', profileId)
+      const { error } = await executeWithClerkAuth(supabase =>
+        supabase.from(this.tableName).delete().eq('id', profileId),
       );
 
       if (error) {
@@ -239,12 +229,7 @@ class BusinessService {
    * @returns {string|null} Validation error message or null if valid.
    */
   validateBusinessData(businessData, isUpdate = false) {
-    const requiredFields = [
-      'user_id',
-      'company_name',
-      'business_type',
-      'industry',
-    ];
+    const requiredFields = ['user_id', 'company_name', 'business_type', 'industry'];
 
     // Check required fields
     for (const field of requiredFields) {
@@ -328,7 +313,7 @@ class BusinessService {
   async getBusinessStats(userId) {
     try {
       const profile = await this.getBusinessProfileByUserId(userId);
-      
+
       if (!profile.data) {
         return {
           data: null,
@@ -362,16 +347,9 @@ class BusinessService {
    * @returns {boolean} Whether the profile is complete.
    */
   isProfileComplete(profile) {
-    const requiredFields = [
-      'company_name',
-      'business_type',
-      'industry',
-      'phone',
-    ];
+    const requiredFields = ['company_name', 'business_type', 'industry', 'phone'];
 
-    return requiredFields.every(field => 
-      profile[field] && profile[field].toString().trim() !== ''
-    );
+    return requiredFields.every(field => profile[field] && profile[field].toString().trim() !== '');
   }
 
   /**
@@ -392,8 +370,8 @@ class BusinessService {
       'description',
     ];
 
-    const completedFields = allFields.filter(field => 
-      profile[field] && profile[field].toString().trim() !== ''
+    const completedFields = allFields.filter(
+      field => profile[field] && profile[field].toString().trim() !== '',
     );
 
     return Math.round((completedFields.length / allFields.length) * 100);
@@ -403,4 +381,4 @@ class BusinessService {
 // Create and export a singleton instance
 const businessService = new BusinessService();
 export { businessService };
-export default businessService; 
+export default businessService;

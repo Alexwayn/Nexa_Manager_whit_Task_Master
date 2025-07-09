@@ -144,9 +144,7 @@ export default function Calendar() {
       setCurrentDate(day);
     } else {
       // When clicking from main calendar, show modal
-      const dayEvents = filteredEvents.filter(
-        event => isSameDay(new Date(event.date), day)
-      );
+      const dayEvents = filteredEvents.filter(event => isSameDay(new Date(event.date), day));
       setSelectedDayEvents(dayEvents);
       setClickedDate(day);
       setShowDayEventsModal(true);
@@ -154,29 +152,27 @@ export default function Calendar() {
   };
 
   // Get unique event types for a specific day with their colors
-  const getEventTypesForDay = (day) => {
-    const dayEvents = filteredEvents.filter(
-      event => isSameDay(new Date(event.date), day)
-    );
-    
+  const getEventTypesForDay = day => {
+    const dayEvents = filteredEvents.filter(event => isSameDay(new Date(event.date), day));
+
     const eventTypeColors = {
-      'appointment': 'bg-blue-500',
-      'quote': 'bg-purple-500', 
-      'invoice': 'bg-green-500',
-      'income': 'bg-emerald-500',
-      'expense': 'bg-red-500',
-      'reminder': 'bg-orange-500',
-      'meetings': 'bg-blue-500',
-      'presentations': 'bg-purple-500',
-      'invoices': 'bg-green-500',
-      'calls': 'bg-orange-500',
-      'reviews': 'bg-red-500'
+      appointment: 'bg-blue-500',
+      quote: 'bg-purple-500',
+      invoice: 'bg-green-500',
+      income: 'bg-emerald-500',
+      expense: 'bg-red-500',
+      reminder: 'bg-orange-500',
+      meetings: 'bg-blue-500',
+      presentations: 'bg-purple-500',
+      invoices: 'bg-green-500',
+      calls: 'bg-orange-500',
+      reviews: 'bg-red-500',
     };
-    
+
     const uniqueTypes = [...new Set(dayEvents.map(event => event.type))];
     return uniqueTypes.map(type => ({
       type,
-      color: eventTypeColors[type] || 'bg-gray-500'
+      color: eventTypeColors[type] || 'bg-gray-500',
     }));
   };
 
@@ -190,21 +186,21 @@ export default function Calendar() {
         setNewEvent(prev => ({
           ...prev,
           type: EVENT_TYPES.APPOINTMENT,
-          title: ''
+          title: '',
         }));
         break;
       case 'task':
         setNewEvent(prev => ({
           ...prev,
           type: EVENT_TYPES.REMINDER,
-          title: ''
+          title: '',
         }));
         break;
       case 'meeting':
         setNewEvent(prev => ({
           ...prev,
           type: EVENT_TYPES.APPOINTMENT,
-          title: ''
+          title: '',
         }));
         break;
       default:
@@ -283,8 +279,6 @@ export default function Calendar() {
     }
   };
 
-
-
   // Navigation functions for main calendar
   const handlePrev = () => {
     const newDate = new Date(selectedDate);
@@ -342,7 +336,8 @@ export default function Calendar() {
       // Load events using authenticated client
       const { data: eventsData, error } = await supabase
         .from('events')
-        .select(`
+        .select(
+          `
           id,
           title,
           type,
@@ -358,7 +353,8 @@ export default function Calendar() {
           color,
           created_at,
           updated_at
-        `)
+        `,
+        )
         .eq('user_id', user.id)
         .gte('date', startOfCurrentMonth)
         .lte('date', endOfCurrentMonth)
@@ -399,7 +395,7 @@ export default function Calendar() {
   };
 
   // Get color based on event type
-  const getEventTypeColor = (type) => {
+  const getEventTypeColor = type => {
     const colorMap = {
       [EVENT_TYPES.APPOINTMENT]: 'bg-blue-500',
       [EVENT_TYPES.QUOTE]: 'bg-purple-500',
@@ -407,60 +403,56 @@ export default function Calendar() {
       [EVENT_TYPES.INCOME]: 'bg-green-500',
       [EVENT_TYPES.EXPENSE]: 'bg-yellow-500',
       [EVENT_TYPES.REMINDER]: 'bg-gray-500',
-      'meeting': 'bg-blue-500',
-      'meetings': 'bg-blue-500',
-      'call': 'bg-green-500',
-      'calls': 'bg-orange-500',
-      'presentation': 'bg-purple-500',
-      'presentations': 'bg-purple-500',
-      'review': 'bg-yellow-500',
-      'reviews': 'bg-red-500',
-      'event': 'bg-indigo-500',
-      'training': 'bg-teal-500',
+      meeting: 'bg-blue-500',
+      meetings: 'bg-blue-500',
+      call: 'bg-green-500',
+      calls: 'bg-orange-500',
+      presentation: 'bg-purple-500',
+      presentations: 'bg-purple-500',
+      review: 'bg-yellow-500',
+      reviews: 'bg-red-500',
+      event: 'bg-indigo-500',
+      training: 'bg-teal-500',
     };
     return colorMap[type] || 'bg-gray-500';
   };
 
   // Map filter keys to event types
-  const getEventTypesForFilter = (filterKey) => {
+  const getEventTypesForFilter = filterKey => {
     const filterMap = {
       // UI Filters -> Event Types
-      'meetings': [EVENT_TYPES.APPOINTMENT, 'meeting', 'meetings'],
-      'presentations': [EVENT_TYPES.QUOTE, 'presentation', 'presentations'],
-      'invoices': [EVENT_TYPES.INVOICE, 'invoice', 'invoices'],
-      'calls': [EVENT_TYPES.REMINDER, 'call', 'calls'],
-      'reviews': [EVENT_TYPES.INCOME, EVENT_TYPES.EXPENSE, 'review', 'reviews'],
-      
+      meetings: [EVENT_TYPES.APPOINTMENT, 'meeting', 'meetings'],
+      presentations: [EVENT_TYPES.QUOTE, 'presentation', 'presentations'],
+      invoices: [EVENT_TYPES.INVOICE, 'invoice', 'invoices'],
+      calls: [EVENT_TYPES.REMINDER, 'call', 'calls'],
+      reviews: [EVENT_TYPES.INCOME, EVENT_TYPES.EXPENSE, 'review', 'reviews'],
+
       // Direct Event Type Filters (for compatibility)
-      'appointment': [EVENT_TYPES.APPOINTMENT],
-      'quote': [EVENT_TYPES.QUOTE],
-      'invoice': [EVENT_TYPES.INVOICE],
-      'income': [EVENT_TYPES.INCOME],
-      'expense': [EVENT_TYPES.EXPENSE],
-      'reminder': [EVENT_TYPES.REMINDER],
+      appointment: [EVENT_TYPES.APPOINTMENT],
+      quote: [EVENT_TYPES.QUOTE],
+      invoice: [EVENT_TYPES.INVOICE],
+      income: [EVENT_TYPES.INCOME],
+      expense: [EVENT_TYPES.EXPENSE],
+      reminder: [EVENT_TYPES.REMINDER],
     };
     return filterMap[filterKey] || [];
   };
 
   // Filter events based on active filters
-  const filterEvents = (events) => {
+  const filterEvents = events => {
     // Get all active filter keys
     const activeFilters = Object.keys(filters).filter(key => filters[key]);
-    
+
     // If no filters are active, show all events
     if (activeFilters.length === 0) {
       return events;
     }
 
     // Get all event types that should be visible based on active filters
-    const visibleEventTypes = activeFilters.flatMap(filterKey => 
-      getEventTypesForFilter(filterKey)
-    );
+    const visibleEventTypes = activeFilters.flatMap(filterKey => getEventTypesForFilter(filterKey));
 
     // Filter events that match any of the visible types
-    return events.filter(event => 
-      visibleEventTypes.includes(event.type)
-    );
+    return events.filter(event => visibleEventTypes.includes(event.type));
   };
 
   useEffect(() => {
@@ -474,12 +466,12 @@ export default function Calendar() {
   }, [events, filters]);
 
   // Handle saving new event
-  const handleSaveEvent = async (e) => {
+  const handleSaveEvent = async e => {
     e.preventDefault();
 
     // Check if user is authenticated
     if (!user?.id) {
-      alert("Devi essere autenticato per creare eventi.");
+      alert('Devi essere autenticato per creare eventi.');
       return;
     }
 
@@ -510,9 +502,11 @@ export default function Calendar() {
       if (error) {
         Logger.error('Error creating event:', error);
         if (error.code === '42501') {
-          alert("Errore di autorizzazione. Potrebbe essere necessario configurare l'integrazione Clerk-Supabase. Per ora, disabilita temporaneamente RLS sulla tabella events.");
+          alert(
+            "Errore di autorizzazione. Potrebbe essere necessario configurare l'integrazione Clerk-Supabase. Per ora, disabilita temporaneamente RLS sulla tabella events.",
+          );
         } else {
-          alert(`Errore durante la creazione dell'evento: ${error.message}`);
+          alert(`Errore durante la creazione dell'evento: ${String(error?.message || error || 'Unknown error')}`);
         }
         return;
       }
@@ -549,7 +543,7 @@ export default function Calendar() {
         <div className='flex items-center justify-between'>
           <div className='flex items-center space-x-2 text-base'>
             <HomeIcon className='h-5 w-5 text-blue-600' />
-            <button 
+            <button
               onClick={() => navigate('/dashboard')}
               className='text-blue-600 hover:text-blue-700 font-medium transition-colors'
             >
@@ -626,7 +620,7 @@ export default function Calendar() {
                     {format(day, 'd')}
                     {/* Event type dots */}
                     {eventTypes.length > 0 && (
-                      <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 flex space-x-0.5">
+                      <div className='absolute bottom-0 left-1/2 transform -translate-x-1/2 flex space-x-0.5'>
                         {eventTypes.slice(0, 3).map((eventType, idx) => (
                           <div
                             key={idx}
@@ -634,7 +628,7 @@ export default function Calendar() {
                           />
                         ))}
                         {eventTypes.length > 3 && (
-                          <div className="w-1.5 h-1.5 rounded-full bg-gray-400" />
+                          <div className='w-1.5 h-1.5 rounded-full bg-gray-400' />
                         )}
                       </div>
                     )}
@@ -716,8 +710,6 @@ export default function Calendar() {
               </div>
             </div>
           </div>
-
-
         </div>
 
         {/* Main Calendar Area */}
@@ -798,8 +790,8 @@ export default function Calendar() {
                 {/* Calendar Grid */}
                 <div className='grid grid-cols-7 gap-px bg-gray-200 rounded-lg overflow-hidden'>
                   {monthDays.map((day, index) => {
-                    const dayEvents = filteredEvents.filter(
-                      event => isSameDay(new Date(event.date), day),
+                    const dayEvents = filteredEvents.filter(event =>
+                      isSameDay(new Date(event.date), day),
                     );
                     const eventTypes = getEventTypesForDay(day);
 
@@ -811,7 +803,7 @@ export default function Calendar() {
                         }`}
                         onClick={() => handleDayClick(day)}
                       >
-                        <div className="flex items-center justify-between mb-2">
+                        <div className='flex items-center justify-between mb-2'>
                           <div
                             className={`text-nav-text font-medium ${
                               isSameDay(day, new Date()) ? 'text-blue-600' : 'text-gray-900'
@@ -821,7 +813,7 @@ export default function Calendar() {
                           </div>
                           {/* Event type dots for main calendar */}
                           {eventTypes.length > 0 && (
-                            <div className="flex space-x-1">
+                            <div className='flex space-x-1'>
                               {eventTypes.slice(0, 4).map((eventType, idx) => (
                                 <div
                                   key={idx}
@@ -830,7 +822,10 @@ export default function Calendar() {
                                 />
                               ))}
                               {eventTypes.length > 4 && (
-                                <div className="w-2 h-2 rounded-full bg-gray-400" title="More types" />
+                                <div
+                                  className='w-2 h-2 rounded-full bg-gray-400'
+                                  title='More types'
+                                />
                               )}
                             </div>
                           )}
@@ -840,7 +835,7 @@ export default function Calendar() {
                           {dayEvents.slice(0, 3).map(event => (
                             <div
                               key={event.id}
-                              onClick={(e) => {
+                              onClick={e => {
                                 e.stopPropagation();
                                 setSelectedEvent(event);
                               }}
@@ -869,34 +864,43 @@ export default function Calendar() {
                   {/* Time column */}
                   <div className='bg-gray-50'>
                     <div className='p-3 text-center border-b border-gray-200'>
-                      <span className='text-nav-text font-medium text-gray-700'>{t('calendar:time')}</span>
+                      <span className='text-nav-text font-medium text-gray-700'>
+                        {t('calendar:time')}
+                      </span>
                     </div>
                     {Array.from({ length: 24 }, (_, i) => (
-                      <div key={i} className='p-2 text-metric-small text-gray-500 border-b border-gray-200 h-16'>
+                      <div
+                        key={i}
+                        className='p-2 text-metric-small text-gray-500 border-b border-gray-200 h-16'
+                      >
                         {`${i.toString().padStart(2, '0')}:00`}
                       </div>
                     ))}
                   </div>
-                  
+
                   {/* Week days */}
                   {Array.from({ length: 7 }, (_, dayIndex) => {
                     const day = new Date(selectedDate);
                     day.setDate(day.getDate() - day.getDay() + dayIndex);
-                    const dayEvents = filteredEvents.filter(
-                      event => isSameDay(new Date(event.date), day),
+                    const dayEvents = filteredEvents.filter(event =>
+                      isSameDay(new Date(event.date), day),
                     );
-                    
+
                     return (
                       <div key={dayIndex} className='bg-white'>
                         <div className='p-3 text-center border-b border-gray-200'>
-                          <div className={`text-nav-text font-medium ${
-                            isSameDay(day, new Date()) ? 'text-blue-600' : 'text-gray-700'
-                          }`}>
+                          <div
+                            className={`text-nav-text font-medium ${
+                              isSameDay(day, new Date()) ? 'text-blue-600' : 'text-gray-700'
+                            }`}
+                          >
                             {format(day, 'EEE', { locale: it })}
                           </div>
-                          <div className={`text-card-title font-semibold ${
-                            isSameDay(day, new Date()) ? 'text-blue-600' : 'text-gray-900'
-                          }`}>
+                          <div
+                            className={`text-card-title font-semibold ${
+                              isSameDay(day, new Date()) ? 'text-blue-600' : 'text-gray-900'
+                            }`}
+                          >
                             {format(day, 'd')}
                           </div>
                         </div>
@@ -955,14 +959,18 @@ export default function Calendar() {
                       </div>
                     ))}
                   </div>
-                  
+
                   {/* Events summary */}
                   <div className='bg-white rounded-lg border border-gray-200'>
                     <div className='p-4 border-b border-gray-200'>
                       <h3 className='text-card-title text-gray-900'>
-                        {t('calendar:events')} ({filteredEvents.filter(event => 
-                          isSameDay(new Date(event.date), selectedDate)
-                        ).length})
+                        {t('calendar:events')} (
+                        {
+                          filteredEvents.filter(event =>
+                            isSameDay(new Date(event.date), selectedDate),
+                          ).length
+                        }
+                        )
                       </h3>
                     </div>
                     <div className='p-4 space-y-3'>
@@ -976,7 +984,9 @@ export default function Calendar() {
                           >
                             <div className='flex items-center justify-between'>
                               <h4 className='text-card-title text-gray-900'>{event.title}</h4>
-                              <span className={`px-2 py-1 rounded text-metric-small ${event.color} text-white`}>
+                              <span
+                                className={`px-2 py-1 rounded text-metric-small ${event.color} text-white`}
+                              >
                                 {event.type}
                               </span>
                             </div>
@@ -984,9 +994,8 @@ export default function Calendar() {
                             <p className='text-metric-small text-gray-500 mt-1'>{event.time}</p>
                           </div>
                         ))}
-                      {filteredEvents.filter(event => 
-                        isSameDay(new Date(event.date), selectedDate)
-                      ).length === 0 && (
+                      {filteredEvents.filter(event => isSameDay(new Date(event.date), selectedDate))
+                        .length === 0 && (
                         <p className='text-subtitle text-gray-500 text-center py-8'>
                           {t('calendar:noEvents', 'No events for this day')}
                         </p>
@@ -1002,7 +1011,9 @@ export default function Calendar() {
               <div className='p-6'>
                 <div className='bg-white rounded-lg border border-gray-200'>
                   <div className='p-4 border-b border-gray-200'>
-                    <h3 className='text-section-title text-gray-900'>{t('calendar:upcomingEvents')}</h3>
+                    <h3 className='text-section-title text-gray-900'>
+                      {t('calendar:upcomingEvents')}
+                    </h3>
                   </div>
                   <div className='divide-y divide-gray-200'>
                     {filteredEvents.length > 0 ? (
@@ -1021,7 +1032,9 @@ export default function Calendar() {
                               </div>
                             </div>
                             <div className='text-right'>
-                              <p className='text-nav-text text-gray-900'>{format(new Date(event.date), 'MMM d, yyyy', { locale: it })}</p>
+                              <p className='text-nav-text text-gray-900'>
+                                {format(new Date(event.date), 'MMM d, yyyy', { locale: it })}
+                              </p>
                               <p className='text-metric-small text-gray-500'>{event.time}</p>
                             </div>
                           </div>
@@ -1029,7 +1042,9 @@ export default function Calendar() {
                       ))
                     ) : (
                       <div className='p-8 text-center'>
-                        <p className='text-subtitle text-gray-500'>{t('calendar:noEvents', 'No events found')}</p>
+                        <p className='text-subtitle text-gray-500'>
+                          {t('calendar:noEvents', 'No events found')}
+                        </p>
                       </div>
                     )}
                   </div>
@@ -1174,7 +1189,9 @@ export default function Calendar() {
                   <div className='absolute bottom-2 right-2 w-5 h-5 bg-white rounded-full'></div>
                 </div>
                 <Plus className='h-8 w-8 relative z-10 group-hover:scale-110 transition-transform duration-300' />
-                <span className='text-sm font-semibold relative z-10 text-center leading-tight'>{t('calendar:quickActionLabels.newEvent')}</span>
+                <span className='text-sm font-semibold relative z-10 text-center leading-tight'>
+                  {t('calendar:quickActionLabels.newEvent')}
+                </span>
               </button>
 
               <button
@@ -1191,7 +1208,9 @@ export default function Calendar() {
                   <div className='absolute bottom-2 right-4 w-6 h-6 bg-white rounded-full'></div>
                 </div>
                 <Clock className='h-8 w-8 relative z-10 group-hover:scale-110 transition-transform duration-300' />
-                <span className='text-sm font-semibold relative z-10 text-center leading-tight'>{t('calendar:quickActionLabels.schedule')}</span>
+                <span className='text-sm font-semibold relative z-10 text-center leading-tight'>
+                  {t('calendar:quickActionLabels.schedule')}
+                </span>
               </button>
 
               <button
@@ -1208,7 +1227,9 @@ export default function Calendar() {
                   <div className='absolute bottom-2 right-3 w-4 h-4 bg-white rounded-full'></div>
                 </div>
                 <CheckSquare className='h-8 w-8 relative z-10 group-hover:scale-110 transition-transform duration-300' />
-                <span className='text-sm font-semibold relative z-10 text-center leading-tight'>{t('calendar:quickActionLabels.tasks')}</span>
+                <span className='text-sm font-semibold relative z-10 text-center leading-tight'>
+                  {t('calendar:quickActionLabels.tasks')}
+                </span>
               </button>
 
               <button
@@ -1225,7 +1246,9 @@ export default function Calendar() {
                   <div className='absolute bottom-6 right-6 w-2 h-2 bg-white rounded-full'></div>
                 </div>
                 <Users className='h-8 w-8 relative z-10 group-hover:scale-110 transition-transform duration-300' />
-                <span className='text-sm font-semibold relative z-10 text-center leading-tight'>{t('calendar:quickActionLabels.meetings')}</span>
+                <span className='text-sm font-semibold relative z-10 text-center leading-tight'>
+                  {t('calendar:quickActionLabels.meetings')}
+                </span>
               </button>
             </div>
           </div>
@@ -1330,7 +1353,7 @@ export default function Calendar() {
                   <input
                     type='text'
                     value={newEvent.title}
-                    onChange={(e) => setNewEvent({...newEvent, title: e.target.value})}
+                    onChange={e => setNewEvent({ ...newEvent, title: e.target.value })}
                     className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent'
                     placeholder={getTitlePlaceholder()}
                     required
@@ -1345,7 +1368,7 @@ export default function Calendar() {
                     <input
                       type='date'
                       value={newEvent.date}
-                      onChange={(e) => setNewEvent({...newEvent, date: e.target.value})}
+                      onChange={e => setNewEvent({ ...newEvent, date: e.target.value })}
                       className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent'
                       required
                     />
@@ -1357,7 +1380,7 @@ export default function Calendar() {
                     <input
                       type='time'
                       value={newEvent.start_time}
-                      onChange={(e) => setNewEvent({...newEvent, start_time: e.target.value})}
+                      onChange={e => setNewEvent({ ...newEvent, start_time: e.target.value })}
                       className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent'
                     />
                   </div>
@@ -1370,7 +1393,7 @@ export default function Calendar() {
                   <input
                     type='text'
                     value={newEvent.location}
-                    onChange={(e) => setNewEvent({...newEvent, location: e.target.value})}
+                    onChange={e => setNewEvent({ ...newEvent, location: e.target.value })}
                     className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent'
                     placeholder={t('calendar:form.placeholders.location')}
                   />
@@ -1382,30 +1405,50 @@ export default function Calendar() {
                   </label>
                   <select
                     value={newEvent.type}
-                    onChange={(e) => setNewEvent({...newEvent, type: e.target.value})}
+                    onChange={e => setNewEvent({ ...newEvent, type: e.target.value })}
                     className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent'
                   >
                     {eventModalType === 'task' ? (
                       <>
-                        <option value={EVENT_TYPES.REMINDER}>{t('calendar:form.options.task.reminder')}</option>
-                        <option value={EVENT_TYPES.APPOINTMENT}>{t('calendar:form.options.task.deadline')}</option>
+                        <option value={EVENT_TYPES.REMINDER}>
+                          {t('calendar:form.options.task.reminder')}
+                        </option>
+                        <option value={EVENT_TYPES.APPOINTMENT}>
+                          {t('calendar:form.options.task.deadline')}
+                        </option>
                       </>
                     ) : eventModalType === 'meeting' ? (
                       <>
-                        <option value={EVENT_TYPES.APPOINTMENT}>{t('calendar:form.options.meeting.meeting')}</option>
-                        <option value={EVENT_TYPES.QUOTE}>{t('calendar:form.options.meeting.presentation')}</option>
+                        <option value={EVENT_TYPES.APPOINTMENT}>
+                          {t('calendar:form.options.meeting.meeting')}
+                        </option>
+                        <option value={EVENT_TYPES.QUOTE}>
+                          {t('calendar:form.options.meeting.presentation')}
+                        </option>
                       </>
                     ) : eventModalType === 'schedule' ? (
                       <>
-                        <option value={EVENT_TYPES.APPOINTMENT}>{t('calendar:form.options.schedule.appointment')}</option>
-                        <option value={EVENT_TYPES.QUOTE}>{t('calendar:form.options.schedule.consultation')}</option>
+                        <option value={EVENT_TYPES.APPOINTMENT}>
+                          {t('calendar:form.options.schedule.appointment')}
+                        </option>
+                        <option value={EVENT_TYPES.QUOTE}>
+                          {t('calendar:form.options.schedule.consultation')}
+                        </option>
                       </>
                     ) : (
                       <>
-                        <option value={EVENT_TYPES.APPOINTMENT}>{t('calendar:form.options.event.appointment')}</option>
-                        <option value={EVENT_TYPES.QUOTE}>{t('calendar:form.options.event.quote')}</option>
-                        <option value={EVENT_TYPES.INVOICE}>{t('calendar:form.options.event.invoice')}</option>
-                        <option value={EVENT_TYPES.REMINDER}>{t('calendar:form.options.event.reminder')}</option>
+                        <option value={EVENT_TYPES.APPOINTMENT}>
+                          {t('calendar:form.options.event.appointment')}
+                        </option>
+                        <option value={EVENT_TYPES.QUOTE}>
+                          {t('calendar:form.options.event.quote')}
+                        </option>
+                        <option value={EVENT_TYPES.INVOICE}>
+                          {t('calendar:form.options.event.invoice')}
+                        </option>
+                        <option value={EVENT_TYPES.REMINDER}>
+                          {t('calendar:form.options.event.reminder')}
+                        </option>
                       </>
                     )}
                   </select>
@@ -1418,7 +1461,7 @@ export default function Calendar() {
                   <textarea
                     rows={4}
                     value={newEvent.description}
-                    onChange={(e) => setNewEvent({...newEvent, description: e.target.value})}
+                    onChange={e => setNewEvent({ ...newEvent, description: e.target.value })}
                     className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent'
                     placeholder={t('calendar:form.placeholders.description')}
                   />
@@ -1465,7 +1508,8 @@ export default function Calendar() {
           <div className='bg-white rounded-lg p-6 w-full max-w-md mx-4 max-h-[80vh] overflow-y-auto'>
             <div className='flex items-center justify-between mb-4'>
               <h2 className='text-xl font-semibold text-gray-900'>
-                {t('calendar:dayEvents.title')} - {clickedDate && format(clickedDate, 'MMMM d, yyyy', { locale: it })}
+                {t('calendar:dayEvents.title')} -{' '}
+                {clickedDate && format(clickedDate, 'MMMM d, yyyy', { locale: it })}
               </h2>
               <button
                 onClick={() => setShowDayEventsModal(false)}
@@ -1489,9 +1533,7 @@ export default function Calendar() {
                         className='flex items-center space-x-2 bg-white px-3 py-1 rounded-full border'
                       >
                         <div className={`w-3 h-3 rounded-full ${eventType.color}`}></div>
-                        <span className='text-sm text-gray-700 capitalize'>
-                          {eventType.type}
-                        </span>
+                        <span className='text-sm text-gray-700 capitalize'>{eventType.type}</span>
                       </div>
                     ))}
                   </div>
@@ -1539,9 +1581,7 @@ export default function Calendar() {
             ) : (
               <div className='text-center py-8'>
                 <CalendarIcon className='h-12 w-12 text-gray-400 mx-auto mb-4' />
-                <p className='text-gray-500'>
-                  {t('calendar:dayEvents.noEvents')}
-                </p>
+                <p className='text-gray-500'>{t('calendar:dayEvents.noEvents')}</p>
               </div>
             )}
 

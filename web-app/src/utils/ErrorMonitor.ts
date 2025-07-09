@@ -32,14 +32,14 @@ export enum ErrorType {
   PERMISSION = 'permission',
   VALIDATION = 'validation',
   BUSINESS_LOGIC = 'business_logic',
-  UNKNOWN = 'unknown'
+  UNKNOWN = 'unknown',
 }
 
 export enum ErrorSeverity {
   LOW = 'low',
   MEDIUM = 'medium',
   HIGH = 'high',
-  CRITICAL = 'critical'
+  CRITICAL = 'critical',
 }
 
 interface BrowserInfo {
@@ -98,29 +98,29 @@ class ErrorMonitor {
     if (typeof window === 'undefined') return;
 
     // Handle uncaught JavaScript errors
-    window.addEventListener('error', (event) => {
+    window.addEventListener('error', event => {
       this.captureError({
         message: event.message,
         stack: event.error?.stack,
         type: ErrorType.JAVASCRIPT,
         severity: ErrorSeverity.HIGH,
-        additionalData: { 
+        additionalData: {
           filename: event.filename,
           lineno: event.lineno,
           colno: event.colno,
-          error: event.error?.toString()
-        }
+          error: event.error?.toString(),
+        },
       });
     });
 
     // Handle unhandled promise rejections
-    window.addEventListener('unhandledrejection', (event) => {
+    window.addEventListener('unhandledrejection', event => {
       this.captureError({
         message: `Unhandled promise rejection: ${event.reason}`,
         stack: event.reason?.stack,
         type: ErrorType.PROMISE_REJECTION,
         severity: ErrorSeverity.HIGH,
-        additionalData: { reason: event.reason }
+        additionalData: { reason: event.reason },
       });
     });
 
@@ -130,7 +130,7 @@ class ErrorMonitor {
         message: 'Network connection lost',
         type: ErrorType.NETWORK,
         severity: ErrorSeverity.MEDIUM,
-        additionalData: { networkStatus: 'offline' }
+        additionalData: { networkStatus: 'offline' },
       });
     });
   }
@@ -158,10 +158,10 @@ class ErrorMonitor {
       componentStack: errorData.componentStack,
       additionalData: {
         ...errorData,
-        context: this.errorContext
+        context: this.errorContext,
       },
       browserInfo,
-      networkInfo
+      networkInfo,
     };
 
     this.errors.push(errorReport);
@@ -191,7 +191,7 @@ class ErrorMonitor {
     error: Error,
     componentName: string,
     props?: Record<string, any>,
-    state?: Record<string, any>
+    state?: Record<string, any>,
   ): string {
     return this.captureError({
       message: `Component error in ${componentName}: ${error.message}`,
@@ -202,8 +202,8 @@ class ErrorMonitor {
       additionalData: {
         componentName,
         props: this.sanitizeData(props),
-        state: this.sanitizeData(state)
-      }
+        state: this.sanitizeData(state),
+      },
     });
   }
 
@@ -215,10 +215,10 @@ class ErrorMonitor {
     method: string,
     status: number,
     response?: any,
-    requestData?: any
+    requestData?: any,
   ): string {
     const severity = status >= 500 ? ErrorSeverity.HIGH : ErrorSeverity.MEDIUM;
-    
+
     return this.captureError({
       message: `API Error: ${method} ${endpoint} (${status})`,
       type: ErrorType.API,
@@ -228,8 +228,8 @@ class ErrorMonitor {
         method,
         status,
         response: this.sanitizeData(response),
-        requestData: this.sanitizeData(requestData)
-      }
+        requestData: this.sanitizeData(requestData),
+      },
     });
   }
 
@@ -241,19 +241,14 @@ class ErrorMonitor {
       message: `Authentication Error: ${message}`,
       type: ErrorType.AUTHENTICATION,
       severity: ErrorSeverity.HIGH,
-      additionalData
+      additionalData,
     });
   }
 
   /**
    * Capture validation errors
    */
-  public captureValidationError(
-    field: string,
-    value: any,
-    rule: string,
-    message: string
-  ): string {
+  public captureValidationError(field: string, value: any, rule: string, message: string): string {
     return this.captureError({
       message: `Validation Error: ${message}`,
       type: ErrorType.VALIDATION,
@@ -261,8 +256,8 @@ class ErrorMonitor {
       additionalData: {
         field,
         value: this.sanitizeData(value),
-        rule
-      }
+        rule,
+      },
     });
   }
 
@@ -325,7 +320,7 @@ class ErrorMonitor {
       cookieEnabled,
       onLine,
       screenResolution: `${screen.width}x${screen.height}`,
-      viewport: `${window.innerWidth}x${window.innerHeight}`
+      viewport: `${window.innerWidth}x${window.innerHeight}`,
     };
   }
 
@@ -339,7 +334,7 @@ class ErrorMonitor {
         effectiveType: connection.effectiveType,
         downlink: connection.downlink,
         rtt: connection.rtt,
-        saveData: connection.saveData
+        saveData: connection.saveData,
       };
     }
     return undefined;
@@ -363,9 +358,9 @@ class ErrorMonitor {
    */
   private sanitizeData(data: any): any {
     if (!data) return data;
-    
+
     const sensitiveKeys = ['password', 'token', 'api_key', 'secret', 'auth', 'credential'];
-    
+
     if (typeof data === 'object' && data !== null) {
       const sanitized = { ...data };
       for (const key in sanitized) {
@@ -377,7 +372,7 @@ class ErrorMonitor {
       }
       return sanitized;
     }
-    
+
     return data;
   }
 
@@ -386,21 +381,21 @@ class ErrorMonitor {
    */
   private logErrorToConsole(error: ErrorReport): void {
     const style = this.getConsoleStyle(error.severity);
-    
+
     console.group(`%c🚨 Error ${error.id} - ${error.severity.toUpperCase()}`, style);
     console.error('Message:', error.message);
     console.error('Type:', error.type);
     console.error('Timestamp:', new Date(error.timestamp).toISOString());
     console.error('URL:', error.url);
-    
+
     if (error.stack) {
       console.error('Stack:', error.stack);
     }
-    
+
     if (error.additionalData) {
       console.error('Additional Data:', error.additionalData);
     }
-    
+
     console.groupEnd();
   }
 
@@ -432,9 +427,9 @@ class ErrorMonitor {
       await fetch(this.reportingEndpoint, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify(error)
+        body: JSON.stringify(error),
       });
     } catch (reportingError) {
       console.warn('Failed to report error to external service:', reportingError);
@@ -466,7 +461,7 @@ class ErrorMonitor {
     errorRate: number;
   } {
     const now = Date.now();
-    const oneHourAgo = now - (60 * 60 * 1000);
+    const oneHourAgo = now - 60 * 60 * 1000;
     const recentErrors = this.errors.filter(error => error.timestamp > oneHourAgo);
 
     const errorsByType: Record<string, number> = {};
@@ -482,7 +477,7 @@ class ErrorMonitor {
       errorsByType,
       errorsBySeverity,
       recentErrors: recentErrors.slice(-10),
-      errorRate: recentErrors.length / 60 // errors per minute in last hour
+      errorRate: recentErrors.length / 60, // errors per minute in last hour
     };
   }
 
@@ -520,7 +515,7 @@ class ErrorMonitor {
   public setUserId(userId: string): void {
     this.errorContext.metadata = {
       ...this.errorContext.metadata,
-      userId
+      userId,
     };
   }
 }
@@ -545,12 +540,7 @@ export function createErrorBoundary(fallback: React.ComponentType<{ errorId: str
     }
 
     static getDerivedStateFromError(error: Error): ErrorBoundaryState {
-      const errorId = errorMonitor.captureComponentError(
-        error,
-        'ErrorBoundary',
-        {},
-        {}
-      );
+      const errorId = errorMonitor.captureComponentError(error, 'ErrorBoundary', {}, {});
       return { hasError: true, errorId };
     }
 
@@ -559,7 +549,7 @@ export function createErrorBoundary(fallback: React.ComponentType<{ errorId: str
         error,
         'ErrorBoundary',
         {},
-        { componentStack: errorInfo.componentStack }
+        { componentStack: errorInfo.componentStack },
       );
     }
 
@@ -574,10 +564,7 @@ export function createErrorBoundary(fallback: React.ComponentType<{ errorId: str
 }
 
 // Utility functions for common error scenarios
-export function withErrorHandling<T extends (...args: any[]) => any>(
-  fn: T,
-  context?: string
-): T {
+export function withErrorHandling<T extends (...args: any[]) => any>(fn: T, context?: string): T {
   return ((...args: any[]) => {
     try {
       const result = fn(...args);
@@ -588,7 +575,7 @@ export function withErrorHandling<T extends (...args: any[]) => any>(
             stack: error.stack,
             type: ErrorType.JAVASCRIPT,
             severity: ErrorSeverity.MEDIUM,
-            additionalData: { context, args: args.slice(0, 2) } // Limit args to prevent large data
+            additionalData: { context, args: args.slice(0, 2) }, // Limit args to prevent large data
           });
           throw error;
         });
@@ -600,9 +587,9 @@ export function withErrorHandling<T extends (...args: any[]) => any>(
         stack: (error as Error).stack,
         type: ErrorType.JAVASCRIPT,
         severity: ErrorSeverity.MEDIUM,
-        additionalData: { context, args: args.slice(0, 2) }
+        additionalData: { context, args: args.slice(0, 2) },
       });
       throw error;
     }
   }) as T;
-} 
+}

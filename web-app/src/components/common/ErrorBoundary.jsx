@@ -11,11 +11,18 @@ import { captureError, addBreadcrumb, Sentry } from '@lib/sentry';
 const ErrorFallback = ({ error, resetErrorBoundary }) => {
   // Log error to console for development
   if (import.meta.env.DEV) {
-    console.error('Error caught by boundary:', error);
+    const errorMessage = typeof error?.message === 'string' ? error.message : String(error?.message || 'Unknown error');
+    const errorStack = typeof error?.stack === 'string' ? error.stack : String(error?.stack || 'No stack trace');
+    const errorName = typeof error?.name === 'string' ? error.name : String(error?.name || 'Error');
+    
+    console.error('Error caught by boundary:', errorMessage);
+    console.error('Stack trace:', errorStack);
+    console.error('Error name:', errorName);
   }
 
   const getErrorMessage = error => {
-    if (error?.message?.includes('ChunkLoadError') || error?.message?.includes('Loading chunk')) {
+    const safeErrorMessage = typeof error?.message === 'string' ? error.message : String(error?.message || '');
+    if (safeErrorMessage.includes('ChunkLoadError') || safeErrorMessage.includes('Loading chunk')) {
       return {
         title: 'Update Available',
         message:
@@ -25,7 +32,7 @@ const ErrorFallback = ({ error, resetErrorBoundary }) => {
       };
     }
 
-    if (error?.message?.includes('Network Error') || error?.message?.includes('fetch')) {
+    if (safeErrorMessage.includes('Network Error') || safeErrorMessage.includes('fetch')) {
       return {
         title: 'Connection Error',
         message:
@@ -62,7 +69,9 @@ const ErrorFallback = ({ error, resetErrorBoundary }) => {
                 Show error details (Development)
               </summary>
               <pre className='mt-2 text-xs bg-gray-100 dark:bg-gray-800 p-3 rounded overflow-auto text-red-600 dark:text-red-400'>
-                {error?.stack || error?.message || 'Unknown error'}
+                {(typeof error?.stack === 'string' ? error.stack : String(error?.stack || '')) || 
+                 (typeof error?.message === 'string' ? error.message : String(error?.message || '')) || 
+                 'Unknown error'}
               </pre>
             </details>
           )}
@@ -93,17 +102,25 @@ const ErrorFallback = ({ error, resetErrorBoundary }) => {
  * Enhanced error logging function with Sentry integration
  */
 const onError = (error, errorInfo) => {
-  console.error('Error boundary caught an error:', error, errorInfo);
+  const errorMessage = typeof error?.message === 'string' ? error.message : String(error?.message || 'Unknown error');
+  const errorStack = typeof error?.stack === 'string' ? error.stack : String(error?.stack || 'No stack trace');
+  const errorName = typeof error?.name === 'string' ? error.name : String(error?.name || 'Error');
+  const componentStack = typeof errorInfo?.componentStack === 'string' ? errorInfo.componentStack : String(errorInfo?.componentStack || 'No component stack');
+  
+  console.error('Error boundary caught an error:', errorMessage);
+  console.error('Stack trace:', errorStack);
+  console.error('Error name:', errorName);
+  console.error('Component stack:', componentStack);
 
   // Add breadcrumb for error boundary activation
   addBreadcrumb(
-    'Error boundary triggered', 
-    'error', 
+    'Error boundary triggered',
+    'error',
     {
-      errorMessage: error.message,
-      componentStack: errorInfo?.componentStack?.split('\n')[1] || 'Unknown component'
+      errorMessage: errorMessage,
+      componentStack: errorInfo?.componentStack?.split('\n')[1] || 'Unknown component',
     },
-    'error'
+    'error',
   );
 
   // Capture error with Sentry including component stack trace
@@ -117,16 +134,16 @@ const onError = (error, errorInfo) => {
       userAgent: navigator.userAgent,
       url: window.location.href,
       referrer: document.referrer,
-    }
+    },
   });
 
   // Log to console for debugging
-  Logger.error('Error boundary caught error', {
-    error: error.message,
-    stack: error.stack,
-    componentStack: errorInfo?.componentStack,
-    sentryEventId: eventId,
-  });
+  Logger.error('Error boundary caught error', 
+    `Error: ${String(errorMessage)}`,
+    `Stack: ${String(errorStack)}`,
+    `Component Stack: ${String(componentStack)}`,
+    `Sentry Event ID: ${String(eventId)}`
+  );
 
   // In development, also log component stack for debugging
   if (import.meta.env.DEV && errorInfo?.componentStack) {
@@ -139,31 +156,29 @@ const onError = (error, errorInfo) => {
 /**
  * Enhanced Error Boundary component with Sentry integration
  */
-const ErrorBoundary = ({ 
-  children, 
+const ErrorBoundary = ({
+  children,
   fallback: CustomFallback,
   onError: customOnError,
   component = 'Unknown',
   isolateErrors = false,
 }) => {
-  const handleError = React.useCallback((error, errorInfo) => {
-    // Call our enhanced error handler
-    onError(error, errorInfo);
+  const handleError = React.useCallback(
+    (error, errorInfo) => {
+      // Call our enhanced error handler
+      onError(error, errorInfo);
 
-    // Call custom error handler if provided
-    if (customOnError) {
-      customOnError(error, errorInfo);
-    }
-  }, [customOnError]);
+      // Call custom error handler if provided
+      if (customOnError) {
+        customOnError(error, errorInfo);
+      }
+    },
+    [customOnError],
+  );
 
   const handleReset = React.useCallback(() => {
     // Add breadcrumb for error boundary reset
-    addBreadcrumb(
-      'Error boundary reset',
-      'user_action',
-      { component },
-      'info'
-    );
+    addBreadcrumb('Error boundary reset', 'user_action', { component }, 'info');
 
     // Clear any error state if needed
     if (import.meta.env.DEV) {
@@ -189,32 +204,30 @@ export default ErrorBoundary;
  * Higher-order component for wrapping components with error boundaries
  */
 export const withErrorBoundary = (Component, options = {}) => {
-  const {
-    customFallback,
-    componentName,
-    isolateErrors = false,
-    captureProps = false,
-  } = options;
+  const { customFallback, componentName, isolateErrors = false, captureProps = false } = options;
 
   const WrappedComponent = props => {
     const displayName = componentName || Component.displayName || Component.name || 'Component';
 
     // Custom error handler that captures component props if enabled
-    const handleError = React.useCallback((error, errorInfo) => {
-      const extraContext = {
-        component: displayName,
-        ...(captureProps && { props: JSON.stringify(props, null, 2) }),
-      };
+    const handleError = React.useCallback(
+      (error, errorInfo) => {
+        const extraContext = {
+          component: displayName,
+          ...(captureProps && { props: JSON.stringify(props, null, 2) }),
+        };
 
-      captureError(error, {
-        component: displayName,
-        action: 'component_error',
-        extra: extraContext,
-      });
-    }, [props, displayName, captureProps]);
+        captureError(error, {
+          component: displayName,
+          action: 'component_error',
+          extra: extraContext,
+        });
+      },
+      [props, displayName, captureProps],
+    );
 
     return (
-      <ErrorBoundary 
+      <ErrorBoundary
         fallback={customFallback}
         component={displayName}
         onError={handleError}
@@ -242,11 +255,12 @@ export const useErrorHandler = () => {
     });
 
     // Add breadcrumb
+    const safeErrorMessage = typeof error?.message === 'string' ? error.message : String(error?.message || 'Unknown error');
     addBreadcrumb(
       'Manual error triggered',
       'error',
-      { errorMessage: error.message, ...context },
-      'error'
+      { errorMessage: safeErrorMessage, ...context },
+      'error',
     );
 
     // Throw to trigger error boundary

@@ -40,7 +40,7 @@ export default function Transactions() {
   const [recurringItems, setRecurringItems] = useState([]);
 
   // Handle period change
-  const handlePeriodChange = (period) => {
+  const handlePeriodChange = period => {
     setSelectedPeriod(period);
     setDateMenuOpen(false);
     // Here you can add logic to fetch data for the selected period
@@ -54,9 +54,18 @@ export default function Transactions() {
     const csvContent = [
       ['Date', 'Type', 'Category', 'Description', 'Amount', 'Status'],
       ...incomeTransactions.map(t => [t.date, 'Income', t.category, t.client, t.amount, t.status]),
-      ...expenseTransactions.map(t => [t.date, 'Expense', t.category, t.vendor, t.amount, t.status])
-    ].map(row => row.join(',')).join('\n');
-    
+      ...expenseTransactions.map(t => [
+        t.date,
+        'Expense',
+        t.category,
+        t.vendor,
+        t.amount,
+        t.status,
+      ]),
+    ]
+      .map(row => row.join(','))
+      .join('\n');
+
     // Create and download file
     const blob = new Blob([csvContent], { type: 'text/csv' });
     const url = window.URL.createObjectURL(blob);
@@ -103,10 +112,12 @@ export default function Transactions() {
   };
 
   const handleExportIncomeData = () => {
-    const csvContent = incomeTransactions.map(t => 
-      `${t.date},${t.category},${t.client},${t.amount},${t.status}`
-    ).join('\n');
-    const blob = new Blob([`Date,Category,Client,Amount,Status\n${csvContent}`], { type: 'text/csv' });
+    const csvContent = incomeTransactions
+      .map(t => `${t.date},${t.category},${t.client},${t.amount},${t.status}`)
+      .join('\n');
+    const blob = new Blob([`Date,Category,Client,Amount,Status\n${csvContent}`], {
+      type: 'text/csv',
+    });
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
@@ -119,10 +130,12 @@ export default function Transactions() {
   };
 
   const handleExportExpenseData = () => {
-    const csvContent = expenseTransactions.map(t => 
-      `${t.date},${t.category},${t.vendor},${t.amount},${t.status}`
-    ).join('\n');
-    const blob = new Blob([`Date,Category,Vendor,Amount,Status\n${csvContent}`], { type: 'text/csv' });
+    const csvContent = expenseTransactions
+      .map(t => `${t.date},${t.category},${t.vendor},${t.amount},${t.status}`)
+      .join('\n');
+    const blob = new Blob([`Date,Category,Vendor,Amount,Status\n${csvContent}`], {
+      type: 'text/csv',
+    });
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
@@ -144,10 +157,8 @@ export default function Transactions() {
   };
 
   const handleUpdateBudget = (categoryId, newBudget) => {
-    setBudgetCategories(prev => 
-      prev.map(cat => 
-        cat.id === categoryId ? { ...cat, budget: newBudget } : cat
-      )
+    setBudgetCategories(prev =>
+      prev.map(cat => (cat.id === categoryId ? { ...cat, budget: newBudget } : cat)),
     );
   };
 
@@ -160,7 +171,7 @@ export default function Transactions() {
       id: budgetCategories.length + 1,
       name: 'New Category',
       budget: 1000,
-      spent: 0
+      spent: 0,
     };
     setBudgetCategories(prev => [...prev, newCategory]);
   };
@@ -196,26 +207,24 @@ export default function Transactions() {
       amount: 0,
       frequency: 'Monthly',
       category: 'Other',
-      nextDate: new Date().toISOString().split('T')[0]
+      nextDate: new Date().toISOString().split('T')[0],
     };
     setRecurringItems(prev => [...prev, newItem]);
   };
 
   const handleUpdateRecurringItem = (itemId, field, value) => {
-    setRecurringItems(prev => 
-      prev.map(item => 
-        item.id === itemId ? { ...item, [field]: value } : item
-      )
+    setRecurringItems(prev =>
+      prev.map(item => (item.id === itemId ? { ...item, [field]: value } : item)),
     );
   };
 
-  const handleDeleteRecurringItem = (itemId) => {
+  const handleDeleteRecurringItem = itemId => {
     setRecurringItems(prev => prev.filter(item => item.id !== itemId));
   };
 
   // Close menus when clicking outside
   useEffect(() => {
-    const handleClickOutside = (event) => {
+    const handleClickOutside = event => {
       if (budgetProgressMenuOpen) {
         const menuElement = document.querySelector('.budget-progress-menu');
         if (menuElement && !menuElement.contains(event.target)) {
@@ -241,21 +250,35 @@ export default function Transactions() {
         }
       }
       if (budgetPerformanceMenuOpen) {
-        const budgetPerformanceMenuElement = document.querySelector('.budget-performance-menu-container');
+        const budgetPerformanceMenuElement = document.querySelector(
+          '.budget-performance-menu-container',
+        );
         if (budgetPerformanceMenuElement && !budgetPerformanceMenuElement.contains(event.target)) {
           setBudgetPerformanceMenuOpen(false);
         }
       }
     };
 
-    if (budgetProgressMenuOpen || dateMenuOpen || incomeMenuOpen || expenseMenuOpen || budgetPerformanceMenuOpen) {
+    if (
+      budgetProgressMenuOpen ||
+      dateMenuOpen ||
+      incomeMenuOpen ||
+      expenseMenuOpen ||
+      budgetPerformanceMenuOpen
+    ) {
       document.addEventListener('mousedown', handleClickOutside);
     }
-    
+
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [budgetProgressMenuOpen, dateMenuOpen, incomeMenuOpen, expenseMenuOpen, budgetPerformanceMenuOpen]);
+  }, [
+    budgetProgressMenuOpen,
+    dateMenuOpen,
+    incomeMenuOpen,
+    expenseMenuOpen,
+    budgetPerformanceMenuOpen,
+  ]);
 
   // Safe translation function that handles loading state and interpolation
   const safeT = (key, options = {}, fallback = key) => {
@@ -308,14 +331,16 @@ export default function Transactions() {
           <div className='bg-blue-50 border-b border-gray-200 py-2 px-4 md:px-8'>
             <nav className='flex items-center space-x-2 text-base'>
               <HomeIcon className='h-5 w-5 text-blue-600' />
-              <button 
+              <button
                 onClick={() => navigate('/dashboard')}
                 className='text-blue-600 hover:text-blue-700 font-medium transition-colors'
               >
                 Dashboard
               </button>
               <ChevronRightIcon className='h-5 w-5 text-gray-400' />
-              <span className='text-gray-600 font-bold'>{safeT('breadcrumb', {}, 'Income & Expenses')}</span>
+              <span className='text-gray-600 font-bold'>
+                {safeT('breadcrumb', {}, 'Income & Expenses')}
+              </span>
             </nav>
           </div>
 
@@ -329,29 +354,31 @@ export default function Transactions() {
               <div className='flex items-center gap-3'>
                 {/* Date Selector */}
                 <div className='relative date-menu-container'>
-                  <button 
+                  <button
                     onClick={() => setDateMenuOpen(!dateMenuOpen)}
                     className='flex items-center gap-2 border border-gray-300 rounded-md px-3 py-2 hover:bg-gray-50 transition-colors'
                   >
                     <CalendarIcon className='w-4 h-4 text-gray-600' />
-                    <span className='text-nav-text text-gray-700'>{safeT(`period.${selectedPeriod.toLowerCase()}`, {}, selectedPeriod)}</span>
+                    <span className='text-nav-text text-gray-700'>
+                      {safeT(`period.${selectedPeriod.toLowerCase()}`, {}, selectedPeriod)}
+                    </span>
                     <ChevronDownIcon className='w-4 h-4 text-gray-600' />
                   </button>
                   {dateMenuOpen && (
                     <div className='absolute top-full left-0 mt-1 bg-white border border-gray-200 rounded-md shadow-lg z-10 min-w-full'>
-                      <button 
+                      <button
                         onClick={() => handlePeriodChange('Monthly')}
                         className='block w-full text-left px-4 py-2 text-nav-text text-gray-700 hover:bg-gray-50'
                       >
                         {safeT('period.monthly', {}, 'Monthly')}
                       </button>
-                      <button 
+                      <button
                         onClick={() => handlePeriodChange('Quarterly')}
                         className='block w-full text-left px-4 py-2 text-nav-text text-gray-700 hover:bg-gray-50'
                       >
                         {safeT('period.quarterly', {}, 'Quarterly')}
                       </button>
-                      <button 
+                      <button
                         onClick={() => handlePeriodChange('Yearly')}
                         className='block w-full text-left px-4 py-2 text-nav-text text-gray-700 hover:bg-gray-50'
                       >
@@ -361,7 +388,7 @@ export default function Transactions() {
                   )}
                 </div>
                 {/* Export Button */}
-                <button 
+                <button
                   onClick={handleExport}
                   className='bg-blue-600 text-white px-4 py-2 rounded-md flex items-center gap-2 hover:bg-blue-700 transition-colors'
                 >
@@ -484,33 +511,35 @@ export default function Transactions() {
               {/* Income vs Expenses Chart */}
               <div className='col-span-2 bg-white rounded-xl shadow-lg p-6 border border-gray-100'>
                 <div className='flex items-center justify-between mb-6'>
-                  <h3 className='text-section-title text-gray-800'>{safeT('charts.incomeVsExpenses', {}, 'Income vs Expenses')}</h3>
+                  <h3 className='text-section-title text-gray-800'>
+                    {safeT('charts.incomeVsExpenses', {}, 'Income vs Expenses')}
+                  </h3>
                   <div className='flex items-center gap-2 bg-gray-50 p-1 rounded-lg'>
-                    <button 
+                    <button
                       onClick={() => handlePeriodChange('Monthly')}
                       className={`px-3 py-1.5 rounded-md text-nav-text shadow-sm transition-colors ${
-                        selectedPeriod === 'Monthly' 
-                          ? 'bg-blue-500 text-white' 
+                        selectedPeriod === 'Monthly'
+                          ? 'bg-blue-500 text-white'
                           : 'text-gray-500 hover:text-gray-700'
                       }`}
                     >
                       {safeT('period.monthly', {}, 'Monthly')}
                     </button>
-                    <button 
+                    <button
                       onClick={() => handlePeriodChange('Quarterly')}
                       className={`px-3 py-1.5 text-nav-text transition-colors ${
-                        selectedPeriod === 'Quarterly' 
-                          ? 'bg-blue-500 text-white rounded-md shadow-sm' 
+                        selectedPeriod === 'Quarterly'
+                          ? 'bg-blue-500 text-white rounded-md shadow-sm'
                           : 'text-gray-500 hover:text-gray-700'
                       }`}
                     >
                       {safeT('period.quarterly', {}, 'Quarterly')}
                     </button>
-                    <button 
+                    <button
                       onClick={() => handlePeriodChange('Yearly')}
                       className={`px-3 py-1.5 text-nav-text transition-colors ${
-                        selectedPeriod === 'Yearly' 
-                          ? 'bg-blue-500 text-white rounded-md shadow-sm' 
+                        selectedPeriod === 'Yearly'
+                          ? 'bg-blue-500 text-white rounded-md shadow-sm'
                           : 'text-gray-500 hover:text-gray-700'
                       }`}
                     >
@@ -566,11 +595,15 @@ export default function Transactions() {
                 <div className='flex items-center justify-center gap-8 bg-gray-50 rounded-lg p-3'>
                   <div className='flex items-center gap-2'>
                     <div className='w-4 h-4 bg-gradient-to-r from-blue-600 to-blue-400 rounded shadow-sm'></div>
-                    <span className='text-blue-600 font-medium text-sm'>{safeT('charts.income', {}, 'Income')}</span>
+                    <span className='text-blue-600 font-medium text-sm'>
+                      {safeT('charts.income', {}, 'Income')}
+                    </span>
                   </div>
                   <div className='flex items-center gap-2'>
                     <div className='w-4 h-4 bg-gradient-to-r from-red-500 to-red-400 rounded shadow-sm'></div>
-                    <span className='text-red-500 font-medium text-sm'>{safeT('charts.expenses', {}, 'Expenses')}</span>
+                    <span className='text-red-500 font-medium text-sm'>
+                      {safeT('charts.expenses', {}, 'Expenses')}
+                    </span>
                   </div>
                 </div>
               </div>
@@ -578,11 +611,16 @@ export default function Transactions() {
               {/* Budget Progress */}
               <div className='col-span-2 bg-white rounded-xl shadow-lg p-6 border border-gray-100'>
                 <div className='flex items-center justify-between mb-6'>
-                  <h3 className='text-section-title text-gray-800'>{safeT('charts.budgetProgress', {}, 'Budget Progress')}</h3>
+                  <h3 className='text-section-title text-gray-800'>
+                    {safeT('charts.budgetProgress', {}, 'Budget Progress')}
+                  </h3>
                   <div className='relative budget-progress-menu'>
-                    <button 
+                    <button
                       onClick={() => {
-                        console.log('Budget menu button clicked, current state:', budgetProgressMenuOpen);
+                        console.log(
+                          'Budget menu button clicked, current state:',
+                          budgetProgressMenuOpen,
+                        );
                         setBudgetProgressMenuOpen(!budgetProgressMenuOpen);
                       }}
                       className='p-1 hover:bg-gray-100 rounded-full transition-colors'
@@ -591,7 +629,7 @@ export default function Transactions() {
                     </button>
                     {budgetProgressMenuOpen && (
                       <div className='absolute right-0 top-8 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-10'>
-                        <button 
+                        <button
                           onClick={() => {
                             setBudgetProgressMenuOpen(false);
                             handleAdjustBudget();
@@ -601,7 +639,7 @@ export default function Transactions() {
                           <ChartBarIcon className='w-4 h-4' />
                           {safeT('quickActions.adjustBudget', {}, 'Adjust Budget')}
                         </button>
-                        <button 
+                        <button
                           onClick={() => {
                             setBudgetProgressMenuOpen(false);
                             console.log('Export budget report');
@@ -611,7 +649,7 @@ export default function Transactions() {
                           <DocumentArrowDownIcon className='w-4 h-4' />
                           Export Budget Report
                         </button>
-                        <button 
+                        <button
                           onClick={() => {
                             setBudgetProgressMenuOpen(false);
                             console.log('Reset budget period');
@@ -627,7 +665,9 @@ export default function Transactions() {
                 </div>
                 <div className='grid grid-cols-2 gap-6 mb-6'>
                   <div className='text-center'>
-                    <p className='text-card-title text-blue-600 mb-3'>{safeT('summary.income', {}, 'Income')}</p>
+                    <p className='text-card-title text-blue-600 mb-3'>
+                      {safeT('summary.income', {}, 'Income')}
+                    </p>
                     <div className='w-28 h-28 mx-auto mb-3 relative'>
                       {/* Background Circle */}
                       <svg className='w-full h-full transform -rotate-90' viewBox='0 0 100 100'>
@@ -667,10 +707,14 @@ export default function Transactions() {
                     <p className='text-card-metric text-blue-900'>
                       €{financialData.totalIncome.toLocaleString()}
                     </p>
-                    <p className='text-subtitle text-blue-600'>{safeT('budgetInfo.of', { amount: '0' }, 'of €0')}</p>
+                    <p className='text-subtitle text-blue-600'>
+                      {safeT('budgetInfo.of', { amount: '0' }, 'of €0')}
+                    </p>
                   </div>
                   <div className='text-center'>
-                    <p className='text-card-title text-red-600 mb-3'>{safeT('summary.expenses', {}, 'Expenses')}</p>
+                    <p className='text-card-title text-red-600 mb-3'>
+                      {safeT('summary.expenses', {}, 'Expenses')}
+                    </p>
                     <div className='w-28 h-28 mx-auto mb-3 relative'>
                       {/* Background Circle */}
                       <svg className='w-full h-full transform -rotate-90' viewBox='0 0 100 100'>
@@ -710,26 +754,38 @@ export default function Transactions() {
                     <p className='text-card-metric text-red-900'>
                       €{financialData.totalExpenses.toLocaleString()}
                     </p>
-                    <p className='text-subtitle text-red-600'>{safeT('budgetInfo.of', { amount: '0' }, 'of €0')}</p>
+                    <p className='text-subtitle text-red-600'>
+                      {safeT('budgetInfo.of', { amount: '0' }, 'of €0')}
+                    </p>
                   </div>
                 </div>
                 <div className='border-t border-gray-100 pt-4 space-y-3 bg-gray-50 rounded-lg p-4'>
                   <div className='flex justify-between text-sm'>
-                    <span className='text-gray-600 font-medium'>{safeT('budgetInfo.budgetPeriod', {}, 'Budget Period:')}</span>
-                    <span className='font-semibold text-gray-800'>{safeT('budgetInfo.noPeriod', {}, 'No period set')}</span>
+                    <span className='text-gray-600 font-medium'>
+                      {safeT('budgetInfo.budgetPeriod', {}, 'Budget Period:')}
+                    </span>
+                    <span className='font-semibold text-gray-800'>
+                      {safeT('budgetInfo.noPeriod', {}, 'No period set')}
+                    </span>
                   </div>
                   <div className='flex justify-between text-sm'>
-                    <span className='text-gray-600 font-medium'>{safeT('budgetInfo.remainingDays', {}, 'Remaining Days:')}</span>
-                    <span className='font-semibold text-orange-600'>{safeT('budgetInfo.noDays', {}, '0 days')}</span>
+                    <span className='text-gray-600 font-medium'>
+                      {safeT('budgetInfo.remainingDays', {}, 'Remaining Days:')}
+                    </span>
+                    <span className='font-semibold text-orange-600'>
+                      {safeT('budgetInfo.noDays', {}, '0 days')}
+                    </span>
                   </div>
                 </div>
               </div>
 
               {/* Quick Actions */}
               <div className='col-span-2 bg-white rounded-xl shadow-sm p-6'>
-                <h3 className='text-section-title mb-4'>{safeT('quickActions.title', {}, 'Quick Actions')}</h3>
+                <h3 className='text-section-title mb-4'>
+                  {safeT('quickActions.title', {}, 'Quick Actions')}
+                </h3>
                 <div className='grid grid-cols-2 gap-4 mb-6'>
-                  <button 
+                  <button
                     onClick={handleAdjustBudget}
                     className='relative overflow-hidden bg-gradient-to-br from-blue-600 to-blue-700 text-white p-6 rounded-xl flex flex-col items-center gap-3 hover:from-blue-700 hover:to-blue-800 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl group'
                     style={{
@@ -743,9 +799,11 @@ export default function Transactions() {
                       <div className='absolute bottom-2 right-2 w-5 h-5 bg-white rounded-full'></div>
                     </div>
                     <ChartBarIcon className='w-8 h-8 relative z-10 group-hover:scale-110 transition-transform duration-300' />
-                    <span className='text-sm font-semibold relative z-10 text-center leading-tight'>{safeT('quickActions.adjustBudget', {}, 'Adjust Budget')}</span>
+                    <span className='text-sm font-semibold relative z-10 text-center leading-tight'>
+                      {safeT('quickActions.adjustBudget', {}, 'Adjust Budget')}
+                    </span>
                   </button>
-                  <button 
+                  <button
                     onClick={handleFinancialReport}
                     className='relative overflow-hidden bg-gradient-to-br from-green-500 to-green-600 text-white p-6 rounded-xl flex flex-col items-center gap-3 hover:from-green-600 hover:to-green-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl group'
                     style={{
@@ -759,9 +817,11 @@ export default function Transactions() {
                       <div className='absolute bottom-2 right-4 w-6 h-6 bg-white rounded-full'></div>
                     </div>
                     <DocumentTextIcon className='w-8 h-8 relative z-10 group-hover:scale-110 transition-transform duration-300' />
-                    <span className='text-sm font-semibold relative z-10 text-center leading-tight'>{safeT('quickActions.financialReport', {}, 'Financial Report')}</span>
+                    <span className='text-sm font-semibold relative z-10 text-center leading-tight'>
+                      {safeT('quickActions.financialReport', {}, 'Financial Report')}
+                    </span>
                   </button>
-                  <button 
+                  <button
                     onClick={handleForecastTool}
                     className='relative overflow-hidden bg-gradient-to-br from-yellow-500 to-yellow-600 text-white p-6 rounded-xl flex flex-col items-center gap-3 hover:from-yellow-600 hover:to-yellow-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl group'
                     style={{
@@ -775,9 +835,11 @@ export default function Transactions() {
                       <div className='absolute bottom-6 right-6 w-2 h-2 bg-white rounded-full'></div>
                     </div>
                     <ChartBarIcon className='w-8 h-8 relative z-10 group-hover:scale-110 transition-transform duration-300' />
-                    <span className='text-sm font-semibold relative z-10 text-center leading-tight'>{safeT('quickActions.forecastTool', {}, 'Forecast Tool')}</span>
+                    <span className='text-sm font-semibold relative z-10 text-center leading-tight'>
+                      {safeT('quickActions.forecastTool', {}, 'Forecast Tool')}
+                    </span>
                   </button>
-                  <button 
+                  <button
                     onClick={handleRecurringItems}
                     className='relative overflow-hidden bg-gradient-to-br from-purple-500 to-purple-600 text-white p-6 rounded-xl flex flex-col items-center gap-3 hover:from-purple-600 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl group'
                     style={{
@@ -791,13 +853,17 @@ export default function Transactions() {
                       <div className='absolute bottom-2 right-3 w-4 h-4 bg-white rounded-full'></div>
                     </div>
                     <CalendarIcon className='w-8 h-8 relative z-10 group-hover:scale-110 transition-transform duration-300' />
-                    <span className='text-sm font-semibold relative z-10 text-center leading-tight'>{safeT('quickActions.recurringItems', {}, 'Recurring Items')}</span>
+                    <span className='text-sm font-semibold relative z-10 text-center leading-tight'>
+                      {safeT('quickActions.recurringItems', {}, 'Recurring Items')}
+                    </span>
                   </button>
                 </div>
 
                 {/* Upcoming Tasks */}
                 <div className='bg-gray-50 rounded-lg p-4'>
-                  <h4 className='text-card-title mb-3'>{safeT('upcomingTasks.title', {}, 'Upcoming Financial Tasks')}</h4>
+                  <h4 className='text-card-title mb-3'>
+                    {safeT('upcomingTasks.title', {}, 'Upcoming Financial Tasks')}
+                  </h4>
                   <div className='space-y-2 text-sm'>
                     <div className='text-gray-500 text-center py-4'>
                       {safeT('upcomingTasks.noTasks', {}, 'No upcoming tasks')}
@@ -817,7 +883,7 @@ export default function Transactions() {
                   </h3>
                   <div className='flex items-center gap-3'>
                     <div className='relative income-menu-container'>
-                      <button 
+                      <button
                         onClick={handleIncomeMenuToggle}
                         className='p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-full transition-colors'
                       >
@@ -825,19 +891,29 @@ export default function Transactions() {
                       </button>
                       {incomeMenuOpen && (
                         <div className='absolute right-0 top-full mt-1 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-10'>
-                          <button 
+                          <button
                             onClick={handleExportIncomeData}
                             className='w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-2'
                           >
-                            <svg className='w-4 h-4' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                              <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z' />
+                            <svg
+                              className='w-4 h-4'
+                              fill='none'
+                              stroke='currentColor'
+                              viewBox='0 0 24 24'
+                            >
+                              <path
+                                strokeLinecap='round'
+                                strokeLinejoin='round'
+                                strokeWidth={2}
+                                d='M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z'
+                              />
                             </svg>
                             {safeT('actions.exportIncomeData', {}, 'Export Income Data')}
                           </button>
                         </div>
                       )}
                     </div>
-                    <button 
+                    <button
                       onClick={handleAddIncome}
                       className='bg-blue-600 text-white px-4 py-2 rounded-lg text-button-text flex items-center gap-2 hover:bg-blue-700 transition-colors shadow-sm'
                     >
@@ -900,7 +976,7 @@ export default function Transactions() {
                   </h3>
                   <div className='flex items-center gap-3'>
                     <div className='relative expense-menu-container'>
-                      <button 
+                      <button
                         onClick={handleExpenseMenuToggle}
                         className='p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-full transition-colors'
                       >
@@ -908,19 +984,29 @@ export default function Transactions() {
                       </button>
                       {expenseMenuOpen && (
                         <div className='absolute right-0 top-full mt-1 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-10'>
-                          <button 
+                          <button
                             onClick={handleExportExpenseData}
                             className='w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-2'
                           >
-                            <svg className='w-4 h-4' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                              <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z' />
+                            <svg
+                              className='w-4 h-4'
+                              fill='none'
+                              stroke='currentColor'
+                              viewBox='0 0 24 24'
+                            >
+                              <path
+                                strokeLinecap='round'
+                                strokeLinejoin='round'
+                                strokeWidth={2}
+                                d='M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z'
+                              />
                             </svg>
                             {safeT('actions.exportExpenseData', {}, 'Export Expense Data')}
                           </button>
                         </div>
                       )}
                     </div>
-                    <button 
+                    <button
                       onClick={handleAddExpense}
                       className='bg-red-500 text-white px-4 py-2 rounded-lg text-button-text flex items-center gap-2 hover:bg-red-600 transition-colors shadow-sm'
                     >
@@ -997,10 +1083,22 @@ export default function Transactions() {
                           }}
                           className='w-full px-4 py-3 text-left text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-all duration-200 flex items-center gap-3 group'
                         >
-                          <svg className='w-4 h-4 text-gray-400 group-hover:text-blue-600 transition-colors' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                            <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z' />
+                          <svg
+                            className='w-4 h-4 text-gray-400 group-hover:text-blue-600 transition-colors'
+                            fill='none'
+                            stroke='currentColor'
+                            viewBox='0 0 24 24'
+                          >
+                            <path
+                              strokeLinecap='round'
+                              strokeLinejoin='round'
+                              strokeWidth={2}
+                              d='M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z'
+                            />
                           </svg>
-                          <span className='font-medium'>{safeT('actions.exportBudgetData', {}, 'Export Budget Data')}</span>
+                          <span className='font-medium'>
+                            {safeT('actions.exportBudgetData', {}, 'Export Budget Data')}
+                          </span>
                         </button>
                         <button
                           onClick={() => {
@@ -1009,10 +1107,22 @@ export default function Transactions() {
                           }}
                           className='w-full px-4 py-3 text-left text-sm text-gray-700 hover:bg-green-50 hover:text-green-700 transition-all duration-200 flex items-center gap-3 group'
                         >
-                          <svg className='w-4 h-4 text-gray-400 group-hover:text-green-600 transition-colors' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                            <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z' />
+                          <svg
+                            className='w-4 h-4 text-gray-400 group-hover:text-green-600 transition-colors'
+                            fill='none'
+                            stroke='currentColor'
+                            viewBox='0 0 24 24'
+                          >
+                            <path
+                              strokeLinecap='round'
+                              strokeLinejoin='round'
+                              strokeWidth={2}
+                              d='M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z'
+                            />
                           </svg>
-                          <span className='font-medium'>{safeT('actions.viewAnalytics', {}, 'View Analytics')}</span>
+                          <span className='font-medium'>
+                            {safeT('actions.viewAnalytics', {}, 'View Analytics')}
+                          </span>
                         </button>
                       </div>
                     )}
@@ -1065,7 +1175,7 @@ export default function Transactions() {
                       </div>
                     </div>
                   ))}
-                  <button 
+                  <button
                     onClick={handleAddBudgetCategory}
                     className='w-full border-2 border-dashed border-gray-300 rounded-xl py-4 flex items-center justify-center gap-3 text-gray-600 hover:border-blue-400 hover:text-blue-600 hover:bg-blue-50 transition-all duration-200 group font-medium'
                   >
@@ -1080,7 +1190,9 @@ export default function Transactions() {
               {/* Cash Flow Forecast */}
               <div className='bg-white rounded-xl shadow-sm p-6'>
                 <div className='flex items-center justify-between mb-4'>
-                  <h3 className='text-section-title'>{safeT('cashFlow.title', {}, 'Cash Flow Forecast')}</h3>
+                  <h3 className='text-section-title'>
+                    {safeT('cashFlow.title', {}, 'Cash Flow Forecast')}
+                  </h3>
                   <div className='bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-caption'>
                     {safeT('cashFlow.next90Days', {}, 'Next 90 Days')}
                   </div>
@@ -1095,7 +1207,7 @@ export default function Transactions() {
                     <span>15000</span>
                     <span>0</span>
                   </div>
-                  
+
                   {/* Chart area */}
                   <div className='ml-12 mr-4 h-full relative'>
                     {/* Grid lines */}
@@ -1108,7 +1220,7 @@ export default function Transactions() {
                         <div className='border-t border-gray-200'></div>
                       </div>
                     </div>
-                    
+
                     {/* Line chart */}
                     <svg className='w-full h-full' viewBox='0 0 400 160' preserveAspectRatio='none'>
                       <defs>
@@ -1125,16 +1237,22 @@ export default function Transactions() {
                         </linearGradient>
                         {/* Drop shadow filter */}
                         <filter id='dropshadow' x='-20%' y='-20%' width='140%' height='140%'>
-                          <feDropShadow dx='0' dy='2' stdDeviation='3' floodColor='#3B82F6' floodOpacity='0.2'/>
+                          <feDropShadow
+                            dx='0'
+                            dy='2'
+                            stdDeviation='3'
+                            floodColor='#3B82F6'
+                            floodOpacity='0.2'
+                          />
                         </filter>
                       </defs>
-                      
+
                       {/* Area under the curve */}
                       <path
                         d='M 20,80 Q 60,70 100,60 Q 140,65 180,70 Q 220,60 260,50 Q 300,55 340,60 Q 360,65 380,70 L 380,160 L 20,160 Z'
                         fill='url(#areaGradient)'
                       />
-                      
+
                       {/* Smooth curved line */}
                       <path
                         d='M 20,80 Q 60,70 100,60 Q 140,65 180,70 Q 220,60 260,50 Q 300,55 340,60 Q 360,65 380,70'
@@ -1148,18 +1266,72 @@ export default function Transactions() {
                         style={{
                           strokeDasharray: '1000',
                           strokeDashoffset: '1000',
-                          animation: 'drawLine 2s ease-in-out forwards'
+                          animation: 'drawLine 2s ease-in-out forwards',
                         }}
                       />
-                      
+
                       {/* Enhanced data points with glow effect */}
-                      <circle cx='20' cy='80' r='5' fill='#FFFFFF' stroke='#3B82F6' strokeWidth='3' filter='url(#dropshadow)' className='animate-pulse' />
-                      <circle cx='100' cy='60' r='5' fill='#FFFFFF' stroke='#1D4ED8' strokeWidth='3' filter='url(#dropshadow)' className='animate-pulse' />
-                      <circle cx='180' cy='70' r='5' fill='#FFFFFF' stroke='#2563EB' strokeWidth='3' filter='url(#dropshadow)' className='animate-pulse' />
-                      <circle cx='260' cy='50' r='5' fill='#FFFFFF' stroke='#1D4ED8' strokeWidth='3' filter='url(#dropshadow)' className='animate-pulse' />
-                      <circle cx='340' cy='60' r='5' fill='#FFFFFF' stroke='#3B82F6' strokeWidth='3' filter='url(#dropshadow)' className='animate-pulse' />
-                      <circle cx='380' cy='70' r='5' fill='#FFFFFF' stroke='#2563EB' strokeWidth='3' filter='url(#dropshadow)' className='animate-pulse' />
-                      
+                      <circle
+                        cx='20'
+                        cy='80'
+                        r='5'
+                        fill='#FFFFFF'
+                        stroke='#3B82F6'
+                        strokeWidth='3'
+                        filter='url(#dropshadow)'
+                        className='animate-pulse'
+                      />
+                      <circle
+                        cx='100'
+                        cy='60'
+                        r='5'
+                        fill='#FFFFFF'
+                        stroke='#1D4ED8'
+                        strokeWidth='3'
+                        filter='url(#dropshadow)'
+                        className='animate-pulse'
+                      />
+                      <circle
+                        cx='180'
+                        cy='70'
+                        r='5'
+                        fill='#FFFFFF'
+                        stroke='#2563EB'
+                        strokeWidth='3'
+                        filter='url(#dropshadow)'
+                        className='animate-pulse'
+                      />
+                      <circle
+                        cx='260'
+                        cy='50'
+                        r='5'
+                        fill='#FFFFFF'
+                        stroke='#1D4ED8'
+                        strokeWidth='3'
+                        filter='url(#dropshadow)'
+                        className='animate-pulse'
+                      />
+                      <circle
+                        cx='340'
+                        cy='60'
+                        r='5'
+                        fill='#FFFFFF'
+                        stroke='#3B82F6'
+                        strokeWidth='3'
+                        filter='url(#dropshadow)'
+                        className='animate-pulse'
+                      />
+                      <circle
+                        cx='380'
+                        cy='70'
+                        r='5'
+                        fill='#FFFFFF'
+                        stroke='#2563EB'
+                        strokeWidth='3'
+                        filter='url(#dropshadow)'
+                        className='animate-pulse'
+                      />
+
                       {/* Inner circles for data points */}
                       <circle cx='20' cy='80' r='2' fill='#3B82F6' />
                       <circle cx='100' cy='60' r='2' fill='#1D4ED8' />
@@ -1169,7 +1341,7 @@ export default function Transactions() {
                       <circle cx='380' cy='70' r='2' fill='#2563EB' />
                     </svg>
                   </div>
-                  
+
                   {/* X-axis labels */}
                   <div className='absolute bottom-0 left-12 right-4 flex justify-between text-caption text-gray-400 pb-2'>
                     <span>Jun 30</span>
@@ -1181,11 +1353,15 @@ export default function Transactions() {
                 </div>
                 <div className='border-t border-gray-100 pt-4 space-y-2'>
                   <div className='flex justify-between'>
-                    <span className='text-gray-500'>{safeT('cashFlow.currentBalance', {}, 'Current Balance:')}</span>
+                    <span className='text-gray-500'>
+                      {safeT('cashFlow.currentBalance', {}, 'Current Balance:')}
+                    </span>
                     <span className='font-medium'>€0</span>
                   </div>
                   <div className='flex justify-between'>
-                    <span className='text-gray-500'>{safeT('cashFlow.projected', {}, 'Projected (Aug 30):')}</span>
+                    <span className='text-gray-500'>
+                      {safeT('cashFlow.projected', {}, 'Projected (Aug 30):')}
+                    </span>
                     <span className='font-medium'>€0</span>
                   </div>
                 </div>
@@ -1215,61 +1391,81 @@ export default function Transactions() {
               </div>
 
               {/* Modal Content */}
-               <div className='p-6'>
-                 <div className='grid grid-cols-2 gap-6 mb-6'>
-                   {/* Summary Stats */}
-                   <div className='space-y-4'>
-                     <h3 className='text-section-title text-gray-800'>{safeT('financialReportModal.summary', {}, 'Summary')}</h3>
-                     <div className='space-y-3'>
-                       <div className='flex justify-between p-3 bg-blue-50 rounded-lg'>
-                         <span className='text-blue-700'>{safeT('financialReportModal.totalIncome', {}, 'Total Income')}</span>
-                         <span className='font-bold text-blue-900'>€{financialData.totalIncome.toLocaleString()}</span>
-                       </div>
-                       <div className='flex justify-between p-3 bg-red-50 rounded-lg'>
-                         <span className='text-red-700'>{safeT('financialReportModal.totalExpenses', {}, 'Total Expenses')}</span>
-                         <span className='font-bold text-red-900'>€{financialData.totalExpenses.toLocaleString()}</span>
-                       </div>
-                       <div className='flex justify-between p-3 bg-green-50 rounded-lg'>
-                         <span className='text-green-700'>{safeT('financialReportModal.netProfit', {}, 'Net Profit')}</span>
-                         <span className='font-bold text-green-900'>€{financialData.netProfit.toLocaleString()}</span>
-                       </div>
-                     </div>
-                   </div>
- 
-                   {/* Report Options */}
-                   <div className='space-y-4'>
-                     <h3 className='text-section-title text-gray-800'>{safeT('financialReportModal.reportOptions', {}, 'Report Options')}</h3>
-                     <div className='space-y-3'>
-                       <button className='w-full p-3 text-left border border-gray-300 rounded-lg hover:bg-gray-50'>
-                         {safeT('financialReportModal.monthlyProfitLoss', {}, 'Monthly Profit & Loss')}
-                       </button>
-                       <button className='w-full p-3 text-left border border-gray-300 rounded-lg hover:bg-gray-50'>
-                         {safeT('financialReportModal.cashFlowStatement', {}, 'Cash Flow Statement')}
-                       </button>
-                       <button className='w-full p-3 text-left border border-gray-300 rounded-lg hover:bg-gray-50'>
-                         {safeT('financialReportModal.budgetVsActual', {}, 'Budget vs Actual')}
-                       </button>
-                       <button className='w-full p-3 text-left border border-gray-300 rounded-lg hover:bg-gray-50'>
-                         {safeT('financialReportModal.taxSummary', {}, 'Tax Summary')}
-                       </button>
-                     </div>
-                   </div>
-                 </div>
- 
-                 {/* Modal Footer */}
-                 <div className='flex items-center justify-end gap-3 pt-6 border-t border-gray-200'>
-                   <button
-                     onClick={handleCloseFinancialReportModal}
-                     className='px-4 py-2 text-gray-600 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors'
-                   >
-                     {safeT('financialReportModal.close', {}, 'Close')}
-                   </button>
-                   <button className='px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors flex items-center gap-2'>
-                     <DocumentArrowDownIcon className='w-4 h-4' />
-                     {safeT('financialReportModal.generateReport', {}, 'Generate Report')}
-                   </button>
-                 </div>
-               </div>
+              <div className='p-6'>
+                <div className='grid grid-cols-2 gap-6 mb-6'>
+                  {/* Summary Stats */}
+                  <div className='space-y-4'>
+                    <h3 className='text-section-title text-gray-800'>
+                      {safeT('financialReportModal.summary', {}, 'Summary')}
+                    </h3>
+                    <div className='space-y-3'>
+                      <div className='flex justify-between p-3 bg-blue-50 rounded-lg'>
+                        <span className='text-blue-700'>
+                          {safeT('financialReportModal.totalIncome', {}, 'Total Income')}
+                        </span>
+                        <span className='font-bold text-blue-900'>
+                          €{financialData.totalIncome.toLocaleString()}
+                        </span>
+                      </div>
+                      <div className='flex justify-between p-3 bg-red-50 rounded-lg'>
+                        <span className='text-red-700'>
+                          {safeT('financialReportModal.totalExpenses', {}, 'Total Expenses')}
+                        </span>
+                        <span className='font-bold text-red-900'>
+                          €{financialData.totalExpenses.toLocaleString()}
+                        </span>
+                      </div>
+                      <div className='flex justify-between p-3 bg-green-50 rounded-lg'>
+                        <span className='text-green-700'>
+                          {safeT('financialReportModal.netProfit', {}, 'Net Profit')}
+                        </span>
+                        <span className='font-bold text-green-900'>
+                          €{financialData.netProfit.toLocaleString()}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Report Options */}
+                  <div className='space-y-4'>
+                    <h3 className='text-section-title text-gray-800'>
+                      {safeT('financialReportModal.reportOptions', {}, 'Report Options')}
+                    </h3>
+                    <div className='space-y-3'>
+                      <button className='w-full p-3 text-left border border-gray-300 rounded-lg hover:bg-gray-50'>
+                        {safeT(
+                          'financialReportModal.monthlyProfitLoss',
+                          {},
+                          'Monthly Profit & Loss',
+                        )}
+                      </button>
+                      <button className='w-full p-3 text-left border border-gray-300 rounded-lg hover:bg-gray-50'>
+                        {safeT('financialReportModal.cashFlowStatement', {}, 'Cash Flow Statement')}
+                      </button>
+                      <button className='w-full p-3 text-left border border-gray-300 rounded-lg hover:bg-gray-50'>
+                        {safeT('financialReportModal.budgetVsActual', {}, 'Budget vs Actual')}
+                      </button>
+                      <button className='w-full p-3 text-left border border-gray-300 rounded-lg hover:bg-gray-50'>
+                        {safeT('financialReportModal.taxSummary', {}, 'Tax Summary')}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Modal Footer */}
+                <div className='flex items-center justify-end gap-3 pt-6 border-t border-gray-200'>
+                  <button
+                    onClick={handleCloseFinancialReportModal}
+                    className='px-4 py-2 text-gray-600 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors'
+                  >
+                    {safeT('financialReportModal.close', {}, 'Close')}
+                  </button>
+                  <button className='px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors flex items-center gap-2'>
+                    <DocumentArrowDownIcon className='w-4 h-4' />
+                    {safeT('financialReportModal.generateReport', {}, 'Generate Report')}
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         )}
@@ -1296,7 +1492,9 @@ export default function Transactions() {
                 <div className='space-y-6'>
                   {/* Forecast Period */}
                   <div>
-                    <label className='block text-body font-medium text-gray-700 mb-2'>{safeT('forecastModal.forecastPeriod', {}, 'Forecast Period')}</label>
+                    <label className='block text-body font-medium text-gray-700 mb-2'>
+                      {safeT('forecastModal.forecastPeriod', {}, 'Forecast Period')}
+                    </label>
                     <select className='w-full border border-gray-300 rounded px-3 py-2 text-body focus:border-blue-500 focus:outline-none'>
                       <option>{safeT('forecastModal.next3Months', {}, 'Next 3 Months')}</option>
                       <option>{safeT('forecastModal.next6Months', {}, 'Next 6 Months')}</option>
@@ -1306,18 +1504,26 @@ export default function Transactions() {
 
                   {/* Forecast Results */}
                   <div className='bg-gray-50 rounded-lg p-4'>
-                    <h3 className='text-section-title text-gray-800 mb-4'>{safeT('forecastModal.projectedResults', {}, 'Projected Results')}</h3>
+                    <h3 className='text-section-title text-gray-800 mb-4'>
+                      {safeT('forecastModal.projectedResults', {}, 'Projected Results')}
+                    </h3>
                     <div className='grid grid-cols-3 gap-4'>
                       <div className='text-center p-3 bg-white rounded-lg'>
-                        <p className='text-sm text-gray-600'>{safeT('forecastModal.projectedIncome', {}, 'Projected Income')}</p>
+                        <p className='text-sm text-gray-600'>
+                          {safeT('forecastModal.projectedIncome', {}, 'Projected Income')}
+                        </p>
                         <p className='text-xl font-bold text-blue-600'>€0</p>
                       </div>
                       <div className='text-center p-3 bg-white rounded-lg'>
-                        <p className='text-sm text-gray-600'>{safeT('forecastModal.projectedExpenses', {}, 'Projected Expenses')}</p>
+                        <p className='text-sm text-gray-600'>
+                          {safeT('forecastModal.projectedExpenses', {}, 'Projected Expenses')}
+                        </p>
                         <p className='text-xl font-bold text-red-600'>€0</p>
                       </div>
                       <div className='text-center p-3 bg-white rounded-lg'>
-                        <p className='text-sm text-gray-600'>{safeT('forecastModal.projectedProfit', {}, 'Projected Profit')}</p>
+                        <p className='text-sm text-gray-600'>
+                          {safeT('forecastModal.projectedProfit', {}, 'Projected Profit')}
+                        </p>
                         <p className='text-xl font-bold text-green-600'>€0</p>
                       </div>
                     </div>
@@ -1325,15 +1531,35 @@ export default function Transactions() {
 
                   {/* Assumptions */}
                   <div>
-                    <h3 className='text-section-title text-gray-800 mb-3'>{safeT('forecastModal.forecastAssumptions', {}, 'Forecast Assumptions')}</h3>
+                    <h3 className='text-section-title text-gray-800 mb-3'>
+                      {safeT('forecastModal.forecastAssumptions', {}, 'Forecast Assumptions')}
+                    </h3>
                     <div className='space-y-3'>
                       <div className='flex items-center justify-between p-3 border border-gray-200 rounded-lg'>
-                        <span>{safeT('forecastModal.monthlyIncomeGrowth', {}, 'Monthly Income Growth')}</span>
-                        <input type='number' defaultValue='0' className='w-20 text-right border border-gray-300 rounded px-2 py-1' />%
+                        <span>
+                          {safeT('forecastModal.monthlyIncomeGrowth', {}, 'Monthly Income Growth')}
+                        </span>
+                        <input
+                          type='number'
+                          defaultValue='0'
+                          className='w-20 text-right border border-gray-300 rounded px-2 py-1'
+                        />
+                        %
                       </div>
                       <div className='flex items-center justify-between p-3 border border-gray-200 rounded-lg'>
-                        <span>{safeT('forecastModal.monthlyExpenseGrowth', {}, 'Monthly Expense Growth')}</span>
-                        <input type='number' defaultValue='0' className='w-20 text-right border border-gray-300 rounded px-2 py-1' />%
+                        <span>
+                          {safeT(
+                            'forecastModal.monthlyExpenseGrowth',
+                            {},
+                            'Monthly Expense Growth',
+                          )}
+                        </span>
+                        <input
+                          type='number'
+                          defaultValue='0'
+                          className='w-20 text-right border border-gray-300 rounded px-2 py-1'
+                        />
+                        %
                       </div>
                     </div>
                   </div>
@@ -1376,32 +1602,48 @@ export default function Transactions() {
               {/* Modal Content */}
               <div className='p-6'>
                 <div className='space-y-4 mb-6'>
-                  {recurringItems.map((item) => (
+                  {recurringItems.map(item => (
                     <div key={item.id} className='border border-gray-200 rounded-lg p-4'>
                       <div className='grid grid-cols-5 gap-4 items-center'>
                         <div>
-                          <label className='block text-caption text-gray-500 mb-1'>{safeT('recurringModal.name', {}, 'Name')}</label>
+                          <label className='block text-caption text-gray-500 mb-1'>
+                            {safeT('recurringModal.name', {}, 'Name')}
+                          </label>
                           <input
                             type='text'
                             value={item.name}
-                            onChange={(e) => handleUpdateRecurringItem(item.id, 'name', e.target.value)}
+                            onChange={e =>
+                              handleUpdateRecurringItem(item.id, 'name', e.target.value)
+                            }
                             className='w-full border border-gray-300 rounded px-2 py-1 text-body focus:border-blue-500 focus:outline-none'
                           />
                         </div>
                         <div>
-                          <label className='block text-caption text-gray-500 mb-1'>{safeT('recurringModal.amount', {}, 'Amount')}</label>
+                          <label className='block text-caption text-gray-500 mb-1'>
+                            {safeT('recurringModal.amount', {}, 'Amount')}
+                          </label>
                           <input
                             type='number'
                             value={item.amount}
-                            onChange={(e) => handleUpdateRecurringItem(item.id, 'amount', parseFloat(e.target.value) || 0)}
+                            onChange={e =>
+                              handleUpdateRecurringItem(
+                                item.id,
+                                'amount',
+                                parseFloat(e.target.value) || 0,
+                              )
+                            }
                             className='w-full border border-gray-300 rounded px-2 py-1 text-body focus:border-blue-500 focus:outline-none'
                           />
                         </div>
                         <div>
-                          <label className='block text-caption text-gray-500 mb-1'>{safeT('recurringModal.frequency', {}, 'Frequency')}</label>
+                          <label className='block text-caption text-gray-500 mb-1'>
+                            {safeT('recurringModal.frequency', {}, 'Frequency')}
+                          </label>
                           <select
                             value={item.frequency}
-                            onChange={(e) => handleUpdateRecurringItem(item.id, 'frequency', e.target.value)}
+                            onChange={e =>
+                              handleUpdateRecurringItem(item.id, 'frequency', e.target.value)
+                            }
                             className='w-full border border-gray-300 rounded px-2 py-1 text-body focus:border-blue-500 focus:outline-none'
                           >
                             <option>{safeT('recurringModal.weekly', {}, 'Weekly')}</option>
@@ -1411,11 +1653,15 @@ export default function Transactions() {
                           </select>
                         </div>
                         <div>
-                          <label className='block text-caption text-gray-500 mb-1'>{safeT('recurringModal.nextDate', {}, 'Next Date')}</label>
+                          <label className='block text-caption text-gray-500 mb-1'>
+                            {safeT('recurringModal.nextDate', {}, 'Next Date')}
+                          </label>
                           <input
                             type='date'
                             value={item.nextDate}
-                            onChange={(e) => handleUpdateRecurringItem(item.id, 'nextDate', e.target.value)}
+                            onChange={e =>
+                              handleUpdateRecurringItem(item.id, 'nextDate', e.target.value)
+                            }
                             className='w-full border border-gray-300 rounded px-2 py-1 text-body focus:border-blue-500 focus:outline-none'
                           />
                         </div>
@@ -1472,7 +1718,9 @@ export default function Transactions() {
                     <h2 className='text-page-title text-gray-900'>
                       {safeT('incomeModal.title', {}, 'Add Income Transaction')}
                     </h2>
-                    <p className='text-body text-gray-600 mt-1'>{safeT('incomeModal.description', {}, 'Record a new income transaction')}</p>
+                    <p className='text-body text-gray-600 mt-1'>
+                      {safeT('incomeModal.description', {}, 'Record a new income transaction')}
+                    </p>
                   </div>
                 </div>
                 <button
@@ -1501,10 +1749,16 @@ export default function Transactions() {
                       {safeT('incomeModal.category', {}, 'Category')}
                     </label>
                     <select className='w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all'>
-                      <option value=''>{safeT('incomeModal.selectCategory', {}, 'Select category')}</option>
-                      <option value='consulting'>{safeT('income.category.consulting', {}, 'Consulting')}</option>
+                      <option value=''>
+                        {safeT('incomeModal.selectCategory', {}, 'Select category')}
+                      </option>
+                      <option value='consulting'>
+                        {safeT('income.category.consulting', {}, 'Consulting')}
+                      </option>
                       <option value='sales'>{safeT('income.category.sales', {}, 'Sales')}</option>
-                      <option value='investment'>{safeT('income.category.investment', {}, 'Investment')}</option>
+                      <option value='investment'>
+                        {safeT('income.category.investment', {}, 'Investment')}
+                      </option>
                       <option value='other'>{safeT('income.category.other', {}, 'Other')}</option>
                     </select>
                   </div>
@@ -1533,7 +1787,11 @@ export default function Transactions() {
                     </label>
                     <textarea
                       rows='3'
-                      placeholder={safeT('incomeModal.descriptionPlaceholder', {}, 'Enter description (optional)')}
+                      placeholder={safeT(
+                        'incomeModal.descriptionPlaceholder',
+                        {},
+                        'Enter description (optional)',
+                      )}
                       className='w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all resize-none'
                     ></textarea>
                   </div>
@@ -1573,7 +1831,9 @@ export default function Transactions() {
                     <h2 className='text-page-title text-gray-900'>
                       {safeT('expenseModal.title', {}, 'Add Expense Transaction')}
                     </h2>
-                    <p className='text-body text-gray-600 mt-1'>{safeT('expenseModal.description', {}, 'Record a new expense transaction')}</p>
+                    <p className='text-body text-gray-600 mt-1'>
+                      {safeT('expenseModal.description', {}, 'Record a new expense transaction')}
+                    </p>
                   </div>
                 </div>
                 <button
@@ -1602,11 +1862,21 @@ export default function Transactions() {
                       {safeT('expenseModal.category', {}, 'Category')}
                     </label>
                     <select className='w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none transition-all'>
-                      <option value=''>{safeT('expenseModal.selectCategory', {}, 'Select category')}</option>
-                      <option value='marketing'>{safeT('expenses.category.marketing', {}, 'Marketing')}</option>
-                      <option value='operations'>{safeT('expenses.category.operations', {}, 'Operations')}</option>
-                      <option value='travel'>{safeT('expenses.category.travel', {}, 'Travel')}</option>
-                      <option value='equipment'>{safeT('expenses.category.equipment', {}, 'Equipment')}</option>
+                      <option value=''>
+                        {safeT('expenseModal.selectCategory', {}, 'Select category')}
+                      </option>
+                      <option value='marketing'>
+                        {safeT('expenses.category.marketing', {}, 'Marketing')}
+                      </option>
+                      <option value='operations'>
+                        {safeT('expenses.category.operations', {}, 'Operations')}
+                      </option>
+                      <option value='travel'>
+                        {safeT('expenses.category.travel', {}, 'Travel')}
+                      </option>
+                      <option value='equipment'>
+                        {safeT('expenses.category.equipment', {}, 'Equipment')}
+                      </option>
                       <option value='other'>{safeT('expenses.category.other', {}, 'Other')}</option>
                     </select>
                   </div>
@@ -1635,7 +1905,11 @@ export default function Transactions() {
                     </label>
                     <textarea
                       rows='3'
-                      placeholder={safeT('expenseModal.descriptionPlaceholder', {}, 'Enter description (optional)')}
+                      placeholder={safeT(
+                        'expenseModal.descriptionPlaceholder',
+                        {},
+                        'Enter description (optional)',
+                      )}
                       className='w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none transition-all resize-none'
                     ></textarea>
                   </div>
@@ -1669,15 +1943,31 @@ export default function Transactions() {
               <div className='flex items-center justify-between p-6 bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-gray-200'>
                 <div className='flex items-center gap-3'>
                   <div className='w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center'>
-                    <svg className='w-5 h-5 text-blue-600' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                      <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z' />
+                    <svg
+                      className='w-5 h-5 text-blue-600'
+                      fill='none'
+                      stroke='currentColor'
+                      viewBox='0 0 24 24'
+                    >
+                      <path
+                        strokeLinecap='round'
+                        strokeLinejoin='round'
+                        strokeWidth={2}
+                        d='M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z'
+                      />
                     </svg>
                   </div>
                   <div>
                     <h2 className='text-page-title text-gray-900'>
                       {safeT('budgetModal.title', {}, 'Adjust Budget Categories')}
                     </h2>
-                    <p className='text-body text-gray-600 mt-1'>{safeT('budgetModal.description', {}, 'Manage your budget allocations and track spending')}</p>
+                    <p className='text-body text-gray-600 mt-1'>
+                      {safeT(
+                        'budgetModal.description',
+                        {},
+                        'Manage your budget allocations and track spending',
+                      )}
+                    </p>
                   </div>
                 </div>
                 <button
@@ -1691,24 +1981,27 @@ export default function Transactions() {
               {/* Modal Content */}
               <div className='p-6 overflow-y-auto max-h-[calc(90vh-140px)]'>
                 <div className='space-y-6 mb-8'>
-                  {budgetCategories.map((category) => {
+                  {budgetCategories.map(category => {
                     const spentPercentage = (category.spent / category.budget) * 100;
                     const isOverBudget = spentPercentage > 100;
                     const remaining = category.budget - category.spent;
-                    
+
                     return (
-                      <div key={category.id} className='bg-white border border-gray-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow duration-200'>
+                      <div
+                        key={category.id}
+                        className='bg-white border border-gray-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow duration-200'
+                      >
                         {/* Category Header */}
                         <div className='flex items-center justify-between mb-4'>
                           <div className='flex-1'>
                             <input
                               type='text'
                               value={category.name}
-                              onChange={(e) => {
-                                setBudgetCategories(prev => 
-                                  prev.map(cat => 
-                                    cat.id === category.id ? { ...cat, name: e.target.value } : cat
-                                  )
+                              onChange={e => {
+                                setBudgetCategories(prev =>
+                                  prev.map(cat =>
+                                    cat.id === category.id ? { ...cat, name: e.target.value } : cat,
+                                  ),
                                 );
                               }}
                               className='text-lg font-semibold text-gray-900 bg-transparent border-none outline-none focus:bg-gray-50 px-3 py-2 rounded-lg transition-colors w-full'
@@ -1723,61 +2016,82 @@ export default function Transactions() {
                                 <input
                                   type='number'
                                   value={category.budget}
-                                  onChange={(e) => handleUpdateBudget(category.id, parseInt(e.target.value) || 0)}
+                                  onChange={e =>
+                                    handleUpdateBudget(category.id, parseInt(e.target.value) || 0)
+                                  }
                                   className='w-24 text-right text-lg font-semibold border border-gray-300 rounded-lg px-3 py-2 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 focus:outline-none transition-all'
                                 />
                               </div>
                             </div>
                           </div>
                         </div>
-                        
+
                         {/* Budget Overview */}
                         <div className='grid grid-cols-3 gap-4 mb-4'>
                           <div className='text-center p-3 bg-gray-50 rounded-lg'>
-                            <div className='text-caption text-gray-500 uppercase tracking-wide mb-1'>Spent</div>
-                            <div className='text-lg font-bold text-gray-900'>€{category.spent.toLocaleString()}</div>
+                            <div className='text-caption text-gray-500 uppercase tracking-wide mb-1'>
+                              Spent
+                            </div>
+                            <div className='text-lg font-bold text-gray-900'>
+                              €{category.spent.toLocaleString()}
+                            </div>
                           </div>
                           <div className='text-center p-3 bg-blue-50 rounded-lg'>
-                            <div className='text-caption text-blue-600 uppercase tracking-wide mb-1'>Budget</div>
-                            <div className='text-lg font-bold text-blue-700'>€{category.budget.toLocaleString()}</div>
+                            <div className='text-caption text-blue-600 uppercase tracking-wide mb-1'>
+                              Budget
+                            </div>
+                            <div className='text-lg font-bold text-blue-700'>
+                              €{category.budget.toLocaleString()}
+                            </div>
                           </div>
-                          <div className={`text-center p-3 rounded-lg ${
-                            isOverBudget ? 'bg-red-50' : 'bg-green-50'
-                          }`}>
-                            <div className={`text-caption uppercase tracking-wide mb-1 ${
-                              isOverBudget ? 'text-red-600' : 'text-green-600'
-                            }`}>
+                          <div
+                            className={`text-center p-3 rounded-lg ${
+                              isOverBudget ? 'bg-red-50' : 'bg-green-50'
+                            }`}
+                          >
+                            <div
+                              className={`text-caption uppercase tracking-wide mb-1 ${
+                                isOverBudget ? 'text-red-600' : 'text-green-600'
+                              }`}
+                            >
                               {isOverBudget ? 'Over' : 'Remaining'}
                             </div>
-                            <div className={`text-lg font-bold ${
-                              isOverBudget ? 'text-red-700' : 'text-green-700'
-                            }`}>
+                            <div
+                              className={`text-lg font-bold ${
+                                isOverBudget ? 'text-red-700' : 'text-green-700'
+                              }`}
+                            >
                               €{Math.abs(remaining).toLocaleString()}
                             </div>
                           </div>
                         </div>
-                        
+
                         {/* Enhanced Progress Bar */}
                         <div className='mb-4'>
                           <div className='flex justify-between items-center mb-2'>
                             <span className='text-body font-medium text-gray-700'>
-                              {safeT('budgetModal.progress', {}, 'Progress')}: {spentPercentage.toFixed(1)}%
+                              {safeT('budgetModal.progress', {}, 'Progress')}:{' '}
+                              {spentPercentage.toFixed(1)}%
                             </span>
-                            <span className={`text-body font-semibold px-2 py-1 rounded-full ${
-                              isOverBudget 
-                                ? 'bg-red-100 text-red-700' 
-                                : spentPercentage > 80 
-                                  ? 'bg-yellow-100 text-yellow-700'
-                                  : 'bg-green-100 text-green-700'
-                            }`}>
-                              {isOverBudget ? safeT('budgetModal.overBudget', {}, 'over budget') : safeT('budgetModal.ofBudget', {}, 'of budget')}
+                            <span
+                              className={`text-body font-semibold px-2 py-1 rounded-full ${
+                                isOverBudget
+                                  ? 'bg-red-100 text-red-700'
+                                  : spentPercentage > 80
+                                    ? 'bg-yellow-100 text-yellow-700'
+                                    : 'bg-green-100 text-green-700'
+                              }`}
+                            >
+                              {isOverBudget
+                                ? safeT('budgetModal.overBudget', {}, 'over budget')
+                                : safeT('budgetModal.ofBudget', {}, 'of budget')}
                             </span>
                           </div>
                           <div className='w-full bg-gray-200 rounded-full h-4 overflow-hidden'>
                             <div
                               className={`h-4 rounded-full transition-all duration-500 ease-out relative ${
-                                isOverBudget 
-                                  ? 'bg-gradient-to-r from-red-500 to-red-600' 
+                                isOverBudget
+                                  ? 'bg-gradient-to-r from-red-500 to-red-600'
                                   : spentPercentage > 80
                                     ? 'bg-gradient-to-r from-yellow-400 to-yellow-500'
                                     : 'bg-gradient-to-r from-blue-500 to-blue-600'
@@ -1793,30 +2107,34 @@ export default function Transactions() {
                             )}
                           </div>
                         </div>
-                        
+
                         {/* Status Indicators */}
                         <div className='flex justify-between items-center'>
                           <div className='flex items-center gap-2'>
-                            <div className={`w-3 h-3 rounded-full ${
-                              isOverBudget 
-                                ? 'bg-red-500' 
-                                : spentPercentage > 80 
-                                  ? 'bg-yellow-500'
-                                  : 'bg-green-500'
-                            }`}></div>
+                            <div
+                              className={`w-3 h-3 rounded-full ${
+                                isOverBudget
+                                  ? 'bg-red-500'
+                                  : spentPercentage > 80
+                                    ? 'bg-yellow-500'
+                                    : 'bg-green-500'
+                              }`}
+                            ></div>
                             <span className='text-body text-gray-600'>
-                              {isOverBudget 
+                              {isOverBudget
                                 ? safeT('budgetModal.overBudget', {}, 'Budget exceeded')
-                                : spentPercentage > 80 
+                                : spentPercentage > 80
                                   ? safeT('budgetModal.approachingLimit', {}, 'Approaching limit')
-                                  : safeT('budgetModal.onTrack', {}, 'On track')
-                              }
+                                  : safeT('budgetModal.onTrack', {}, 'On track')}
                             </span>
                           </div>
-                          <span className={`text-body font-medium ${
-                            isOverBudget ? 'text-red-600' : 'text-green-600'
-                          }`}>
-                            {isOverBudget ? '-' : '+'}€{Math.abs(remaining).toLocaleString()} {safeT('budgetModal.remaining', {}, 'remaining')}
+                          <span
+                            className={`text-body font-medium ${
+                              isOverBudget ? 'text-red-600' : 'text-green-600'
+                            }`}
+                          >
+                            {isOverBudget ? '-' : '+'}€{Math.abs(remaining).toLocaleString()}{' '}
+                            {safeT('budgetModal.remaining', {}, 'remaining')}
                           </span>
                         </div>
                       </div>
@@ -1832,13 +2150,16 @@ export default function Transactions() {
                   <div className='w-8 h-8 border-2 border-current rounded-full flex items-center justify-center group-hover:scale-110 transition-transform'>
                     <PlusIcon className='w-4 h-4' />
                   </div>
-                  <span className='font-medium'>{safeT('budgetModal.addCategory', {}, 'Add New Budget Category')}</span>
+                  <span className='font-medium'>
+                    {safeT('budgetModal.addCategory', {}, 'Add New Budget Category')}
+                  </span>
                 </button>
 
                 {/* Modal Footer */}
                 <div className='flex items-center justify-between mt-8 pt-6 border-t border-gray-200'>
                   <div className='text-body text-gray-500'>
-                    {safeT('budgetModal.totalBudget', {}, 'Total Budget')}: <span className='font-semibold text-gray-700'>
+                    {safeT('budgetModal.totalBudget', {}, 'Total Budget')}:{' '}
+                    <span className='font-semibold text-gray-700'>
                       €{budgetCategories.reduce((sum, cat) => sum + cat.budget, 0).toLocaleString()}
                     </span>
                   </div>

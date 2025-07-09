@@ -10,15 +10,15 @@ export class QuoteApprovalService {
    * Valid quote status transitions
    */
   static VALID_TRANSITIONS = {
-    'draft': ['sent', 'cancelled'],
-    'sent': ['viewed', 'accepted', 'rejected', 'expired', 'revision_requested'],
-    'viewed': ['accepted', 'rejected', 'expired', 'revision_requested'],
-    'accepted': ['converted', 'cancelled'],
-    'rejected': ['revision_requested', 'cancelled'],
-    'expired': ['sent', 'cancelled'],
-    'converted': [],
-    'cancelled': [],
-    'revision_requested': ['draft', 'sent']
+    draft: ['sent', 'cancelled'],
+    sent: ['viewed', 'accepted', 'rejected', 'expired', 'revision_requested'],
+    viewed: ['accepted', 'rejected', 'expired', 'revision_requested'],
+    accepted: ['converted', 'cancelled'],
+    rejected: ['revision_requested', 'cancelled'],
+    expired: ['sent', 'cancelled'],
+    converted: [],
+    cancelled: [],
+    revision_requested: ['draft', 'sent'],
   };
 
   /**
@@ -64,7 +64,7 @@ export class QuoteApprovalService {
       // Update quote status
       const updateData = {
         status: newStatus,
-        updated_at: new Date().toISOString()
+        updated_at: new Date().toISOString(),
       };
 
       // Add special handling for specific statuses
@@ -95,13 +95,13 @@ export class QuoteApprovalService {
       // Record status change in history
       await this.recordStatusChange(quoteId, currentQuote.status, newStatus, userId, {
         notes,
-        automated
+        automated,
       });
 
       // Track analytics event
       await this.trackQuoteEvent(quoteId, `status_changed_to_${newStatus}`, {
         previous_status: currentQuote.status,
-        automated
+        automated,
       });
 
       // Handle status-specific actions
@@ -123,7 +123,7 @@ export class QuoteApprovalService {
   static validateStatusTransition(currentStatus, newStatus) {
     if (!currentStatus || !newStatus) return false;
     if (currentStatus === newStatus) return true;
-    
+
     const allowedTransitions = this.VALID_TRANSITIONS[currentStatus] || [];
     return allowedTransitions.includes(newStatus);
   }
@@ -149,16 +149,16 @@ export class QuoteApprovalService {
     try {
       const { notes, automated = false } = options;
 
-      const { error } = await supabase
-        .from('quote_status_history')
-        .insert([{
+      const { error } = await supabase.from('quote_status_history').insert([
+        {
           quote_id: quoteId,
           old_status: oldStatus,
           new_status: newStatus,
           changed_by: userId,
           notes: notes || null,
-          automated
-        }]);
+          automated,
+        },
+      ]);
 
       if (error) {
         Logger.error('Failed to record status change:', error);
@@ -203,7 +203,7 @@ export class QuoteApprovalService {
   static async handleQuoteSent(quote, userId) {
     // Add system comment
     await this.addSystemComment(quote.id, 'Quote sent to client for review');
-    
+
     // TODO: Send email notification to client
     // TODO: Schedule expiry reminder
   }
@@ -214,7 +214,7 @@ export class QuoteApprovalService {
   static async handleQuoteAccepted(quote, userId) {
     // Add system comment
     await this.addSystemComment(quote.id, 'Quote accepted by client');
-    
+
     // TODO: Send notification to user
     // TODO: Create approval record if needed
   }
@@ -225,7 +225,7 @@ export class QuoteApprovalService {
   static async handleQuoteRejected(quote, userId) {
     // Add system comment
     await this.addSystemComment(quote.id, 'Quote rejected by client');
-    
+
     // TODO: Send notification to user
   }
 
@@ -235,7 +235,7 @@ export class QuoteApprovalService {
   static async handleQuoteExpired(quote, userId) {
     // Add system comment
     await this.addSystemComment(quote.id, 'Quote expired automatically');
-    
+
     // TODO: Send expiry notification
   }
 
@@ -246,15 +246,15 @@ export class QuoteApprovalService {
    */
   static async addSystemComment(quoteId, message) {
     try {
-      const { error } = await supabase
-        .from('quote_comments')
-        .insert([{
+      const { error } = await supabase.from('quote_comments').insert([
+        {
           quote_id: quoteId,
           user_id: null, // System comment
           comment: message,
           is_internal: true,
-          is_system_generated: true
-        }]);
+          is_system_generated: true,
+        },
+      ]);
 
       if (error) {
         Logger.error('Failed to add system comment:', error);
@@ -272,13 +272,13 @@ export class QuoteApprovalService {
    */
   static async trackQuoteEvent(quoteId, eventType, metadata = {}) {
     try {
-      const { error } = await supabase
-        .from('quote_analytics')
-        .insert([{
+      const { error } = await supabase.from('quote_analytics').insert([
+        {
           quote_id: quoteId,
           event_type: eventType,
-          tracked_at: new Date().toISOString()
-        }]);
+          tracked_at: new Date().toISOString(),
+        },
+      ]);
 
       if (error) {
         Logger.error('Failed to track quote event:', error);
@@ -298,10 +298,12 @@ export class QuoteApprovalService {
     try {
       const { data, error } = await supabase
         .from('quote_status_history')
-        .select(`
+        .select(
+          `
           *,
           changed_by_user:auth.users!changed_by(email)
-        `)
+        `,
+        )
         .eq('quote_id', quoteId)
         .order('changed_at', { ascending: false });
 
@@ -332,14 +334,14 @@ export class QuoteApprovalService {
         signer_email: signerInfo.email,
         signer_ip: signerInfo.ip,
         signed_at: new Date().toISOString(),
-        signature_method: signatureData.method || 'digital_pad'
+        signature_method: signatureData.method || 'digital_pad',
       };
 
       const { data: updatedQuote, error } = await supabase
         .from('quotes')
         .update({
           digital_signature: signatureRecord,
-          signature_date: new Date().toISOString()
+          signature_date: new Date().toISOString(),
         })
         .eq('id', quoteId)
         .eq('user_id', userId)
@@ -353,11 +355,14 @@ export class QuoteApprovalService {
       // Track signature event
       await this.trackQuoteEvent(quoteId, 'signature_captured', {
         signer_name: signerInfo.name,
-        signature_method: signatureData.method
+        signature_method: signatureData.method,
       });
 
       // Add system comment
-      await this.addSystemComment(quoteId, `Digital signature captured from ${signerInfo.name || 'client'}`);
+      await this.addSystemComment(
+        quoteId,
+        `Digital signature captured from ${signerInfo.name || 'client'}`,
+      );
 
       return updatedQuote;
     } catch (error) {
@@ -375,13 +380,15 @@ export class QuoteApprovalService {
   static async generateApprovalLink(quoteId, userId) {
     try {
       // Generate a secure token for the quote
-      const token = btoa(JSON.stringify({
-        quoteId,
-        userId,
-        timestamp: Date.now(),
-        // Add some randomness for security
-        nonce: Math.random().toString(36).substring(7)
-      }));
+      const token = btoa(
+        JSON.stringify({
+          quoteId,
+          userId,
+          timestamp: Date.now(),
+          // Add some randomness for security
+          nonce: Math.random().toString(36).substring(7),
+        }),
+      );
 
       // Return the client approval URL
       const baseUrl = window.location.origin;
@@ -414,13 +421,13 @@ export class QuoteApprovalService {
       }
 
       const expiredIds = [];
-      
+
       // Update each expired quote
       for (const quote of expiredQuotes || []) {
         try {
           await this.updateQuoteStatus(quote.id, userId, 'expired', {
             automated: true,
-            notes: 'Automatically expired due to acceptance deadline'
+            notes: 'Automatically expired due to acceptance deadline',
           });
           expiredIds.push(quote.id);
         } catch (error) {
@@ -459,4 +466,4 @@ export class QuoteApprovalService {
       throw error;
     }
   }
-} 
+}

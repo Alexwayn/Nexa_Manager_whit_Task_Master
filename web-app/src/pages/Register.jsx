@@ -33,47 +33,47 @@ const Register = () => {
     {
       icon: ChartBarIcon,
       title: 'Analytics Avanzate',
-      description: 'Dashboard real-time e insights predittivi'
+      description: 'Dashboard real-time e insights predittivi',
     },
     {
       icon: DocumentTextIcon,
       title: 'Gestione Documenti',
-      description: 'OCR intelligente e archiviazione cloud sicura'
+      description: 'OCR intelligente e archiviazione cloud sicura',
     },
     {
       icon: ShieldCheckIcon,
       title: 'Sicurezza Enterprise',
-      description: 'Crittografia end-to-end e backup automatici'
+      description: 'Crittografia end-to-end e backup automatici',
     },
     {
       icon: CloudIcon,
       title: 'Cloud-Native',
-      description: 'Accesso ovunque, sincronizzazione istantanea'
+      description: 'Accesso ovunque, sincronizzazione istantanea',
     },
     {
       icon: CurrencyEuroIcon,
       title: 'Conformità Fiscale',
-      description: 'Sempre aggiornato con le normative UE'
+      description: 'Sempre aggiornato con le normative UE',
     },
     {
       icon: UserGroupIcon,
       title: 'Multi-Utente',
-      description: 'Collaborazione team con controlli granulari'
-    }
+      description: 'Collaborazione team con controlli granulari',
+    },
   ];
 
   // Pricing plans
   const plans = [
     { users: '1-5 utenti', price: '€29/mese' },
     { users: '6-20 utenti', price: '€79/mese' },
-    { users: '20+ utenti', price: 'Contattaci' }
+    { users: '20+ utenti', price: 'Contattaci' },
   ];
 
   const stats = [
     { value: '10K+', label: 'Aziende Attive' },
     { value: '99.9%', label: 'Uptime' },
     { value: '24/7', label: 'Supporto' },
-    { value: 'GDPR', label: 'Compliant' }
+    { value: 'GDPR', label: 'Compliant' },
   ];
 
   return (
@@ -96,14 +96,15 @@ const Register = () => {
               <div className='flex items-center mb-12'>
                 <img src={nexaLogo} alt='NexaManager' className='h-10' />
               </div>
-              
+
               <h1 className='text-4xl font-light text-white mb-4'>
                 NexaManager Gestione Aziendale
                 <span className='block text-5xl font-semibold mt-2'>Intelligente</span>
               </h1>
-              
+
               <p className='text-blue-100 text-lg font-light leading-relaxed max-w-md'>
-                La piattaforma all-in-one per digitalizzare e ottimizzare ogni aspetto del tuo business.
+                La piattaforma all-in-one per digitalizzare e ottimizzare ogni aspetto del tuo
+                business.
               </p>
             </div>
 
@@ -122,7 +123,9 @@ const Register = () => {
                         </div>
                         <div>
                           <h3 className='text-white font-medium text-sm mb-1'>{feature.title}</h3>
-                          <p className='text-blue-100/70 text-xs leading-relaxed'>{feature.description}</p>
+                          <p className='text-blue-100/70 text-xs leading-relaxed'>
+                            {feature.description}
+                          </p>
                         </div>
                       </div>
                     </div>
@@ -144,12 +147,16 @@ const Register = () => {
             {/* Testimonial - Professional Style */}
             <div className='mt-8'>
               <blockquote className='relative'>
-                <svg className='absolute -top-2 -left-2 w-8 h-8 text-white/10' fill='currentColor' viewBox='0 0 32 32'>
+                <svg
+                  className='absolute -top-2 -left-2 w-8 h-8 text-white/10'
+                  fill='currentColor'
+                  viewBox='0 0 32 32'
+                >
                   <path d='M9.352 4C4.456 7.456 1 13.12 1 19.36c0 5.088 3.072 8.064 6.624 8.064 3.36 0 5.856-2.688 5.856-5.856 0-3.168-2.208-5.472-5.088-5.472-.576 0-1.344.096-1.536.192.48-3.264 3.552-7.104 6.624-9.024L9.352 4zm16.512 0c-4.8 3.456-8.256 9.12-8.256 15.36 0 5.088 3.072 8.064 6.624 8.064 3.264 0 5.856-2.688 5.856-5.856 0-3.168-2.304-5.472-5.184-5.472-.576 0-1.248.096-1.44.192.48-3.264 3.456-7.104 6.528-9.024L25.864 4z' />
                 </svg>
                 <p className='text-white/90 text-sm italic leading-relaxed pl-6'>
-                  NexaManager ha rivoluzionato la gestione della nostra azienda. 
-                  L'automazione dei processi ci ha fatto risparmiare oltre 20 ore a settimana.
+                  NexaManager ha rivoluzionato la gestione della nostra azienda. L'automazione dei
+                  processi ci ha fatto risparmiare oltre 20 ore a settimana.
                 </p>
                 <footer className='mt-3 pl-6'>
                   <p className='text-white font-medium text-sm'>Alessandro Rossi</p>
@@ -172,9 +179,7 @@ const Register = () => {
             {/* Desktop Header - Centered */}
             <div className='hidden lg:block mb-8 text-center'>
               <h2 className='text-2xl font-semibold text-gray-900 mb-3'>Crea il tuo account</h2>
-              <p className='text-gray-600 text-center'>
-                Inizia la tua prova gratuita di 30 giorni
-              </p>
+              <p className='text-gray-600 text-center'>Inizia la tua prova gratuita di 30 giorni</p>
             </div>
 
             {/* Clerk SignUp Component */}
@@ -187,16 +192,13 @@ const Register = () => {
                   headerSubtitle: 'hidden',
                   logoBox: 'mb-3 flex justify-center',
                   logoImage: 'h-10 w-auto',
-                  socialButtonsBlockButton: 
+                  socialButtonsBlockButton:
                     'border border-gray-300 hover:bg-gray-50 transition-colors duration-200 py-3',
-                  formButtonPrimary: 
+                  formButtonPrimary:
                     'bg-blue-600 hover:bg-blue-700 text-white transition-colors duration-200 py-3',
-                  formFieldInput: 
-                    'border-gray-300 focus:border-blue-500 focus:ring-blue-500 py-3',
-                  footerActionLink: 
-                    'text-blue-600 hover:text-blue-700 font-medium',
-                  identityPreviewEditButton:
-                    'text-blue-600 hover:text-blue-700',
+                  formFieldInput: 'border-gray-300 focus:border-blue-500 focus:ring-blue-500 py-3',
+                  footerActionLink: 'text-blue-600 hover:text-blue-700 font-medium',
+                  identityPreviewEditButton: 'text-blue-600 hover:text-blue-700',
                   formFieldLabel: 'text-gray-700 font-medium mb-2',
                   dividerLine: 'bg-gray-200',
                   dividerText: 'text-gray-500 bg-white px-4 text-sm',
@@ -251,4 +253,4 @@ const Register = () => {
   );
 };
 
-export default Register; 
+export default Register;

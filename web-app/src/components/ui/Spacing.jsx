@@ -5,15 +5,10 @@ import { cn } from '@utils/cn';
  * Spacing component for consistent layout spacing
  * Based on 8px grid system
  */
-export const Spacing = ({
-  size = 4,
-  direction = 'vertical',
-  className,
-  ...props
-}) => {
+export const Spacing = ({ size = 4, direction = 'vertical', className, ...props }) => {
   const spacingMap = {
     1: 'h-1 w-1',
-    2: 'h-2 w-2', 
+    2: 'h-2 w-2',
     3: 'h-3 w-3',
     4: 'h-4 w-4',
     5: 'h-5 w-5',
@@ -32,35 +27,22 @@ export const Spacing = ({
     both: spacingMap[size] || `h-${size} w-${size}`,
   };
 
-  return (
-    <div 
-      className={cn(directionMap[direction], className)}
-      {...props}
-    />
-  );
+  return <div className={cn(directionMap[direction], className)} {...props} />;
 };
 
 /**
  * Container component with consistent padding
  */
-export const Container = ({
-  size = 'default',
-  className,
-  children,
-  ...props
-}) => {
+export const Container = ({ size = 'default', className, children, ...props }) => {
   const sizes = {
     sm: 'px-4 py-3',
-    default: 'px-6 py-4', 
+    default: 'px-6 py-4',
     lg: 'px-8 py-6',
     xl: 'px-12 py-8',
   };
 
   return (
-    <div 
-      className={cn(sizes[size], className)}
-      {...props}
-    >
+    <div className={cn(sizes[size], className)} {...props}>
       {children}
     </div>
   );
@@ -69,16 +51,11 @@ export const Container = ({
 /**
  * Stack component for vertical spacing between elements
  */
-export const Stack = ({
-  spacing = 4,
-  className,
-  children,
-  ...props
-}) => {
+export const Stack = ({ spacing = 4, className, children, ...props }) => {
   const spacingMap = {
     1: 'space-y-1',
     2: 'space-y-2',
-    3: 'space-y-3', 
+    3: 'space-y-3',
     4: 'space-y-4',
     5: 'space-y-5',
     6: 'space-y-6',
@@ -91,10 +68,7 @@ export const Stack = ({
   };
 
   return (
-    <div 
-      className={cn(spacingMap[spacing], className)}
-      {...props}
-    >
+    <div className={cn(spacingMap[spacing], className)} {...props}>
       {children}
     </div>
   );
@@ -103,18 +77,12 @@ export const Stack = ({
 /**
  * Inline component for horizontal spacing between elements
  */
-export const Inline = ({
-  spacing = 4,
-  align = 'start',
-  className,
-  children,
-  ...props
-}) => {
+export const Inline = ({ spacing = 4, align = 'start', className, children, ...props }) => {
   const spacingMap = {
     1: 'space-x-1',
     2: 'space-x-2',
     3: 'space-x-3',
-    4: 'space-x-4', 
+    4: 'space-x-4',
     5: 'space-x-5',
     6: 'space-x-6',
     8: 'space-x-8',
@@ -134,15 +102,7 @@ export const Inline = ({
   };
 
   return (
-    <div 
-      className={cn(
-        'flex',
-        spacingMap[spacing],
-        alignMap[align],
-        className
-      )}
-      {...props}
-    >
+    <div className={cn('flex', spacingMap[spacing], alignMap[align], className)} {...props}>
       {children}
     </div>
   );
@@ -151,13 +111,7 @@ export const Inline = ({
 /**
  * Grid component with consistent gaps
  */
-export const Grid = ({
-  cols = 1,
-  gap = 4,
-  className,
-  children,
-  ...props
-}) => {
+export const Grid = ({ cols = 1, gap = 4, className, children, ...props }) => {
   const colsMap = {
     1: 'grid-cols-1',
     2: 'grid-cols-2',
@@ -170,7 +124,7 @@ export const Grid = ({
 
   const gapMap = {
     1: 'gap-1',
-    2: 'gap-2', 
+    2: 'gap-2',
     3: 'gap-3',
     4: 'gap-4',
     5: 'gap-5',
@@ -184,15 +138,7 @@ export const Grid = ({
   };
 
   return (
-    <div 
-      className={cn(
-        'grid',
-        colsMap[cols],
-        gapMap[gap],
-        className
-      )}
-      {...props}
-    >
+    <div className={cn('grid', colsMap[cols], gapMap[gap], className)} {...props}>
       {children}
     </div>
   );
@@ -201,24 +147,16 @@ export const Grid = ({
 /**
  * Section component for page sections with consistent spacing
  */
-export const Section = ({
-  spacing = 'default',
-  className,
-  children,
-  ...props
-}) => {
+export const Section = ({ spacing = 'default', className, children, ...props }) => {
   const spacings = {
     sm: 'py-8',
     default: 'py-12',
-    lg: 'py-16', 
+    lg: 'py-16',
     xl: 'py-24',
   };
 
   return (
-    <section 
-      className={cn(spacings[spacing], className)}
-      {...props}
-    >
+    <section className={cn(spacings[spacing], className)} {...props}>
       {children}
     </section>
   );

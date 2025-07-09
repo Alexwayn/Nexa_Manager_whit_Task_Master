@@ -287,7 +287,7 @@ const Documents = () => {
         <div className='bg-blue-50 border-b border-gray-200 py-2 px-4 md:px-8'>
           <div className='flex items-center space-x-2 text-nav-text text-gray-700'>
             <HomeIcon className='h-5 w-5 text-gray-500' />
-            <button 
+            <button
               onClick={() => navigate('/dashboard')}
               className='text-blue-600 hover:text-blue-700 font-medium transition-colors'
             >
@@ -319,7 +319,9 @@ const Documents = () => {
               <div className='flex items-center justify-between'>
                 <div>
                   <p className='text-body text-gray-600'>Total Documents</p>
-                  <p className='text-page-title font-semibold text-gray-900'>{stats.totalDocuments}</p>
+                  <p className='text-page-title font-semibold text-gray-900'>
+                    {stats.totalDocuments}
+                  </p>
                   <p className='text-caption text-gray-500'>All document types</p>
                 </div>
                 <div className='bg-blue-100 p-3 rounded-lg'>
@@ -337,7 +339,9 @@ const Documents = () => {
               <div className='flex items-center justify-between'>
                 <div>
                   <p className='text-body text-gray-600'>Recent Uploads</p>
-                  <p className='text-page-title font-semibold text-gray-900'>{stats.recentUploads}</p>
+                  <p className='text-page-title font-semibold text-gray-900'>
+                    {stats.recentUploads}
+                  </p>
                   <p className='text-caption text-gray-500'>This month</p>
                 </div>
                 <div className='bg-green-100 p-3 rounded-lg'>
@@ -355,7 +359,9 @@ const Documents = () => {
               <div className='flex items-center justify-between'>
                 <div>
                   <p className='text-body text-gray-600'>Shared Documents</p>
-                  <p className='text-page-title font-semibold text-gray-900'>{stats.sharedDocuments}</p>
+                  <p className='text-page-title font-semibold text-gray-900'>
+                    {stats.sharedDocuments}
+                  </p>
                   <p className='text-caption text-gray-500'>With team and clients</p>
                 </div>
                 <div className='bg-orange-100 p-3 rounded-lg'>
@@ -490,7 +496,9 @@ const Documents = () => {
               {/* Document Categories Chart */}
               <div className='bg-white p-6 rounded-lg border border-gray-200'>
                 <div className='flex items-center justify-between mb-4'>
-                  <h3 className='text-card-title font-semibold text-gray-900'>Document Categories</h3>
+                  <h3 className='text-card-title font-semibold text-gray-900'>
+                    Document Categories
+                  </h3>
                   <button className='text-blue-600 text-body hover:text-blue-700'>—</button>
                 </div>
                 <div className='h-48 flex items-center justify-center'>
@@ -666,7 +674,9 @@ const Documents = () => {
               <div className='bg-green-600 text-white p-6 rounded-lg text-center cursor-pointer hover:bg-green-700 transition-colors'>
                 <FolderPlusIcon className='w-8 h-8 mx-auto mb-3' />
                 <h3 className='font-semibold mb-2'>Create Folder</h3>
-                <p className='text-body opacity-90'>Organize your documents in a folder structure</p>
+                <p className='text-body opacity-90'>
+                  Organize your documents in a folder structure
+                </p>
                 <button className='mt-4 bg-white bg-opacity-20 text-white px-4 py-2 rounded text-body font-medium hover:bg-opacity-30 transition-colors'>
                   Create Now
                 </button>
@@ -675,7 +685,9 @@ const Documents = () => {
               <div className='bg-orange-600 text-white p-6 rounded-lg text-center cursor-pointer hover:bg-orange-700 transition-colors'>
                 <DocumentTextIcon className='w-8 h-8 mx-auto mb-3' />
                 <h3 className='font-semibold mb-2'>Request Document</h3>
-                <p className='text-body opacity-90'>Request documents from clients or team members</p>
+                <p className='text-body opacity-90'>
+                  Request documents from clients or team members
+                </p>
                 <button className='mt-4 bg-white bg-opacity-20 text-white px-4 py-2 rounded text-body font-medium hover:bg-opacity-30 transition-colors'>
                   Request Now
                 </button>

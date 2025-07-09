@@ -19,7 +19,7 @@ const DigitalSignature = ({ quoteId, onSignatureComplete, className = '' }) => {
     name: '',
     email: '',
     title: '',
-    company: ''
+    company: '',
   });
 
   useEffect(() => {
@@ -30,7 +30,7 @@ const DigitalSignature = ({ quoteId, onSignatureComplete, className = '' }) => {
     const rect = canvas.getBoundingClientRect();
     canvas.width = rect.width * window.devicePixelRatio;
     canvas.height = rect.height * window.devicePixelRatio;
-    
+
     const ctx = canvas.getContext('2d');
     ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
     ctx.strokeStyle = '#000000';
@@ -42,30 +42,30 @@ const DigitalSignature = ({ quoteId, onSignatureComplete, className = '' }) => {
     clearSignature();
   }, []);
 
-  const startDrawing = (e) => {
+  const startDrawing = e => {
     setIsDrawing(true);
     setIsEmpty(false);
     const canvas = canvasRef.current;
     const rect = canvas.getBoundingClientRect();
     const ctx = canvas.getContext('2d');
-    
+
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
-    
+
     ctx.beginPath();
     ctx.moveTo(x, y);
   };
 
-  const draw = (e) => {
+  const draw = e => {
     if (!isDrawing) return;
-    
+
     const canvas = canvasRef.current;
     const rect = canvas.getBoundingClientRect();
     const ctx = canvas.getContext('2d');
-    
+
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
-    
+
     ctx.lineTo(x, y);
     ctx.stroke();
   };
@@ -77,14 +77,19 @@ const DigitalSignature = ({ quoteId, onSignatureComplete, className = '' }) => {
   const clearSignature = () => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
-    ctx.clearRect(0, 0, canvas.width / window.devicePixelRatio, canvas.height / window.devicePixelRatio);
+    ctx.clearRect(
+      0,
+      0,
+      canvas.width / window.devicePixelRatio,
+      canvas.height / window.devicePixelRatio,
+    );
     setIsEmpty(true);
   };
 
   const handleInputChange = (field, value) => {
     setSignerInfo(prev => ({
       ...prev,
-      [field]: value
+      [field]: value,
     }));
   };
 
@@ -130,15 +135,15 @@ const DigitalSignature = ({ quoteId, onSignatureComplete, className = '' }) => {
         user_agent: navigator.userAgent,
         canvas_dimensions: {
           width: canvas.width,
-          height: canvas.height
-        }
+          height: canvas.height,
+        },
       };
 
       await QuoteApprovalService.captureDigitalSignature(
         quoteId,
         user?.id || 'client',
         signatureMetadata,
-        signerInfo
+        signerInfo,
       );
 
       Logger.info('Digital signature captured successfully:', { quoteId });
@@ -146,14 +151,19 @@ const DigitalSignature = ({ quoteId, onSignatureComplete, className = '' }) => {
       if (onSignatureComplete) {
         onSignatureComplete({
           signature: signatureMetadata,
-          signer: signerInfo
+          signer: signerInfo,
         });
       }
 
       alert(t('quotes.signature.success', 'Signature captured successfully!'));
     } catch (error) {
       Logger.error('Failed to capture digital signature:', error);
-      alert(t('quotes.signature.errors.capture_failed', 'Failed to capture signature. Please try again.'));
+      alert(
+        t(
+          'quotes.signature.errors.capture_failed',
+          'Failed to capture signature. Please try again.',
+        ),
+      );
     } finally {
       setIsLoading(false);
     }
@@ -161,74 +171,74 @@ const DigitalSignature = ({ quoteId, onSignatureComplete, className = '' }) => {
 
   return (
     <div className={`space-y-4 ${className}`}>
-      <h3 className="text-lg font-medium text-gray-900">
+      <h3 className='text-lg font-medium text-gray-900'>
         {t('quotes.signature.title', 'Digital Signature')}
       </h3>
 
       {/* Signer Information */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
         <div>
-          <label className="block text-sm font-medium text-gray-700">
+          <label className='block text-sm font-medium text-gray-700'>
             {t('quotes.signature.name', 'Full Name')} *
           </label>
           <input
-            type="text"
+            type='text'
             value={signerInfo.name}
-            onChange={(e) => handleInputChange('name', e.target.value)}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            onChange={e => handleInputChange('name', e.target.value)}
+            className='mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500'
             placeholder={t('quotes.signature.name_placeholder', 'Enter your full name')}
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700">
+          <label className='block text-sm font-medium text-gray-700'>
             {t('quotes.signature.email', 'Email Address')} *
           </label>
           <input
-            type="email"
+            type='email'
             value={signerInfo.email}
-            onChange={(e) => handleInputChange('email', e.target.value)}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            onChange={e => handleInputChange('email', e.target.value)}
+            className='mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500'
             placeholder={t('quotes.signature.email_placeholder', 'Enter your email')}
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700">
+          <label className='block text-sm font-medium text-gray-700'>
             {t('quotes.signature.title', 'Job Title')}
           </label>
           <input
-            type="text"
+            type='text'
             value={signerInfo.title}
-            onChange={(e) => handleInputChange('title', e.target.value)}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            onChange={e => handleInputChange('title', e.target.value)}
+            className='mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500'
             placeholder={t('quotes.signature.title_placeholder', 'Your job title')}
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700">
+          <label className='block text-sm font-medium text-gray-700'>
             {t('quotes.signature.company', 'Company')}
           </label>
           <input
-            type="text"
+            type='text'
             value={signerInfo.company}
-            onChange={(e) => handleInputChange('company', e.target.value)}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            onChange={e => handleInputChange('company', e.target.value)}
+            className='mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500'
             placeholder={t('quotes.signature.company_placeholder', 'Company name')}
           />
         </div>
       </div>
 
       {/* Signature Canvas */}
-      <div className="space-y-2">
-        <label className="block text-sm font-medium text-gray-700">
+      <div className='space-y-2'>
+        <label className='block text-sm font-medium text-gray-700'>
           {t('quotes.signature.canvas_label', 'Signature')} *
         </label>
-        <div className="border border-gray-300 rounded-md p-2 bg-white">
+        <div className='border border-gray-300 rounded-md p-2 bg-white'>
           <canvas
             ref={canvasRef}
-            className="w-full h-32 cursor-crosshair"
+            className='w-full h-32 cursor-crosshair'
             onMouseDown={startDrawing}
             onMouseMove={draw}
             onMouseUp={stopDrawing}
@@ -236,32 +246,47 @@ const DigitalSignature = ({ quoteId, onSignatureComplete, className = '' }) => {
             style={{ touchAction: 'none' }}
           />
         </div>
-        <div className="text-xs text-gray-500">
+        <div className='text-xs text-gray-500'>
           {t('quotes.signature.canvas_help', 'Click and drag to sign above')}
         </div>
       </div>
 
       {/* Action Buttons */}
-      <div className="flex justify-between">
+      <div className='flex justify-between'>
         <button
-          type="button"
+          type='button'
           onClick={clearSignature}
-          className="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          className='inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500'
         >
           {t('quotes.signature.clear', 'Clear')}
         </button>
 
         <button
-          type="button"
+          type='button'
           onClick={captureSignature}
           disabled={isLoading || isEmpty}
-          className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+          className='inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed'
         >
           {isLoading ? (
             <>
-              <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
-                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              <svg
+                className='animate-spin -ml-1 mr-2 h-4 w-4 text-white'
+                fill='none'
+                viewBox='0 0 24 24'
+              >
+                <circle
+                  className='opacity-25'
+                  cx='12'
+                  cy='12'
+                  r='10'
+                  stroke='currentColor'
+                  strokeWidth='4'
+                ></circle>
+                <path
+                  className='opacity-75'
+                  fill='currentColor'
+                  d='M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z'
+                ></path>
               </svg>
               {t('common.processing', 'Processing...')}
             </>
@@ -272,11 +297,14 @@ const DigitalSignature = ({ quoteId, onSignatureComplete, className = '' }) => {
       </div>
 
       {/* Legal Notice */}
-      <div className="text-xs text-gray-500 bg-gray-50 p-3 rounded-md">
-        {t('quotes.signature.legal_notice', 'By signing above, you acknowledge that you have read and agree to the terms of this quote. Your signature will be securely stored and legally binding.')}
+      <div className='text-xs text-gray-500 bg-gray-50 p-3 rounded-md'>
+        {t(
+          'quotes.signature.legal_notice',
+          'By signing above, you acknowledge that you have read and agree to the terms of this quote. Your signature will be securely stored and legally binding.',
+        )}
       </div>
     </div>
   );
 };
 
-export default DigitalSignature; 
+export default DigitalSignature;

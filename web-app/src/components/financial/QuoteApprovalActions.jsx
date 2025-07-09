@@ -3,16 +3,16 @@ import { useTranslation } from 'react-i18next';
 import { useUserBypass as useUser } from '@hooks/useClerkBypass';
 import { QuoteApprovalService } from '@lib/quoteApprovalService';
 import Logger from '@utils/Logger';
-import { 
-  Send, 
-  CheckCircle, 
-  XCircle, 
-  Clock, 
-  RotateCcw, 
-  Ban, 
-  Edit, 
+import {
+  Send,
+  CheckCircle,
+  XCircle,
+  Clock,
+  RotateCcw,
+  Ban,
+  Edit,
   Eye,
-  CheckSquare 
+  CheckSquare,
 } from 'lucide-react';
 
 /**
@@ -34,50 +34,53 @@ const QuoteApprovalActions = ({ quote, onStatusUpdate, className = '' }) => {
       label: t('quotes.actions.send', 'Send Quote'),
       icon: Send,
       variant: 'primary',
-      confirmMessage: t('quotes.confirm.send', 'Are you sure you want to send this quote to the client?')
+      confirmMessage: t(
+        'quotes.confirm.send',
+        'Are you sure you want to send this quote to the client?',
+      ),
     },
     accepted: {
       label: t('quotes.actions.accept', 'Mark as Accepted'),
       icon: CheckCircle,
       variant: 'success',
-      confirmMessage: t('quotes.confirm.accept', 'Mark this quote as accepted?')
+      confirmMessage: t('quotes.confirm.accept', 'Mark this quote as accepted?'),
     },
     rejected: {
       label: t('quotes.actions.reject', 'Mark as Rejected'),
       icon: XCircle,
       variant: 'danger',
-      confirmMessage: t('quotes.confirm.reject', 'Mark this quote as rejected?')
+      confirmMessage: t('quotes.confirm.reject', 'Mark this quote as rejected?'),
     },
     expired: {
       label: t('quotes.actions.expire', 'Mark as Expired'),
       icon: Clock,
       variant: 'warning',
-      confirmMessage: t('quotes.confirm.expire', 'Mark this quote as expired?')
+      confirmMessage: t('quotes.confirm.expire', 'Mark this quote as expired?'),
     },
     converted: {
       label: t('quotes.actions.convert', 'Convert to Invoice'),
       icon: RotateCcw,
       variant: 'primary',
-      confirmMessage: t('quotes.confirm.convert', 'Convert this quote to an invoice?')
+      confirmMessage: t('quotes.confirm.convert', 'Convert this quote to an invoice?'),
     },
     cancelled: {
       label: t('quotes.actions.cancel', 'Cancel Quote'),
       icon: Ban,
       variant: 'danger',
-      confirmMessage: t('quotes.confirm.cancel', 'Are you sure you want to cancel this quote?')
+      confirmMessage: t('quotes.confirm.cancel', 'Are you sure you want to cancel this quote?'),
     },
     revision_requested: {
       label: t('quotes.actions.request_revision', 'Request Revision'),
       icon: Edit,
       variant: 'warning',
-      confirmMessage: t('quotes.confirm.request_revision', 'Request revision for this quote?')
+      confirmMessage: t('quotes.confirm.request_revision', 'Request revision for this quote?'),
     },
     viewed: {
       label: t('quotes.actions.mark_viewed', 'Mark as Viewed'),
       icon: CheckSquare,
       variant: 'secondary',
-      confirmMessage: t('quotes.confirm.mark_viewed', 'Mark this quote as viewed by client?')
-    }
+      confirmMessage: t('quotes.confirm.mark_viewed', 'Mark this quote as viewed by client?'),
+    },
   };
 
   // Button variant styles
@@ -86,10 +89,10 @@ const QuoteApprovalActions = ({ quote, onStatusUpdate, className = '' }) => {
     success: 'bg-green-600 hover:bg-green-700 text-white border-green-600',
     danger: 'bg-red-600 hover:bg-red-700 text-white border-red-600',
     warning: 'bg-yellow-600 hover:bg-yellow-700 text-white border-yellow-600',
-    secondary: 'bg-gray-600 hover:bg-gray-700 text-white border-gray-600'
+    secondary: 'bg-gray-600 hover:bg-gray-700 text-white border-gray-600',
   };
 
-  const handleStatusChange = async (newStatus) => {
+  const handleStatusChange = async newStatus => {
     if (!user?.id) {
       Logger.error('User not authenticated');
       return;
@@ -110,18 +113,20 @@ const QuoteApprovalActions = ({ quote, onStatusUpdate, className = '' }) => {
         newStatus,
         {
           notes: `Status changed to ${newStatus} via UI`,
-          automated: false
-        }
+          automated: false,
+        },
       );
 
       Logger.info('Quote status updated successfully:', { quoteId: quote.id, newStatus });
-      
+
       if (onStatusUpdate) {
         onStatusUpdate(updatedQuote);
       }
     } catch (error) {
       Logger.error('Failed to update quote status:', error);
-      alert(t('quotes.errors.status_update_failed', 'Failed to update quote status. Please try again.'));
+      alert(
+        t('quotes.errors.status_update_failed', 'Failed to update quote status. Please try again.'),
+      );
     } finally {
       setIsLoading(false);
       setSelectedAction(null);
@@ -138,8 +143,8 @@ const QuoteApprovalActions = ({ quote, onStatusUpdate, className = '' }) => {
 
   return (
     <div className={`${className}`}>
-      <div className="flex flex-wrap gap-2">
-        {availableTransitions.map((transition) => {
+      <div className='flex flex-wrap gap-2'>
+        {availableTransitions.map(transition => {
           const action = actionConfig[transition];
           if (!action) return null;
 
@@ -152,42 +157,41 @@ const QuoteApprovalActions = ({ quote, onStatusUpdate, className = '' }) => {
               key={transition}
               onClick={() => handleStatusChange(transition)}
               disabled={isLoading}
-              className="p-1 text-gray-400 hover:text-blue-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className='p-1 text-gray-400 hover:text-blue-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed'
               title={action.label}
             >
               {isProcessing ? (
-                <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24">
+                <svg className='animate-spin h-4 w-4' viewBox='0 0 24 24'>
                   <circle
-                    className="opacity-25"
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="currentColor"
-                    strokeWidth="4"
-                    fill="none"
+                    className='opacity-25'
+                    cx='12'
+                    cy='12'
+                    r='10'
+                    stroke='currentColor'
+                    strokeWidth='4'
+                    fill='none'
                   />
                   <path
-                    className="opacity-75"
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    className='opacity-75'
+                    fill='currentColor'
+                    d='M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z'
                   />
                 </svg>
               ) : (
-                <IconComponent className="w-4 h-4" />
+                <IconComponent className='w-4 h-4' />
               )}
             </button>
           );
         })}
       </div>
 
-
-
       {/* Expiry warning for sent quotes */}
       {quote.status === 'sent' && quote.acceptance_deadline && (
-        <div className="mt-3 p-3 bg-yellow-50 border border-yellow-200 rounded-md">
-          <div className="text-sm text-yellow-800">
+        <div className='mt-3 p-3 bg-yellow-50 border border-yellow-200 rounded-md'>
+          <div className='text-sm text-yellow-800'>
             <strong>{t('quotes.expiry_warning.title', 'Expiry Date')}:</strong>{' '}
-            {t('quotes.expiry_warning.description', 'This quote will expire on')} {new Date(quote.acceptance_deadline).toLocaleDateString()}
+            {t('quotes.expiry_warning.description', 'This quote will expire on')}{' '}
+            {new Date(quote.acceptance_deadline).toLocaleDateString()}
           </div>
         </div>
       )}

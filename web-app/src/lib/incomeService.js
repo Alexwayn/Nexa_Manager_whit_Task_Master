@@ -21,10 +21,12 @@ export const incomeService = {
 
       const { data, error } = await supabase
         .from('income')
-        .select(`
+        .select(
+          `
           *,
           client:clients(name, email)
-        `)
+        `,
+        )
         .eq('user_id', dbUserId)
         .order('date', { ascending: false });
 
@@ -74,12 +76,13 @@ export const incomeService = {
       Logger.info('incomeService.getIncomeStats: Periodo di analisi', {
         period,
         start: start.toISOString(),
-        end: end.toISOString()
+        end: end.toISOString(),
       });
 
       const { data, error } = await supabase
         .from('income')
-        .select(`
+        .select(
+          `
           id,
           amount,
           date,
@@ -87,7 +90,8 @@ export const incomeService = {
           description,
           client_id,
           clients(name)
-        `)
+        `,
+        )
         .eq('user_id', userUuid)
         .gte('date', start.toISOString().split('T')[0])
         .lte('date', end.toISOString().split('T')[0])
@@ -100,12 +104,15 @@ export const incomeService = {
 
       Logger.info('incomeService.getIncomeStats: Query results', {
         totalRecords: data?.length || 0,
-        dateRange: [start, end]
+        dateRange: [start, end],
       });
 
       // Calcola le statistiche
       const incomes = data || [];
-      const totalAmount = incomes.reduce((sum, income) => sum + (parseFloat(income.amount) || 0), 0);
+      const totalAmount = incomes.reduce(
+        (sum, income) => sum + (parseFloat(income.amount) || 0),
+        0,
+      );
       const totalCount = incomes.length;
       const averageAmount = totalCount > 0 ? totalAmount / totalCount : 0;
 
@@ -131,8 +138,8 @@ export const incomeService = {
         return acc;
       }, {});
 
-      const dailyTrendArray = Object.values(dailyTrend).sort((a, b) => 
-        new Date(a.date) - new Date(b.date)
+      const dailyTrendArray = Object.values(dailyTrend).sort(
+        (a, b) => new Date(a.date) - new Date(b.date),
       );
 
       const stats = {
@@ -143,7 +150,7 @@ export const incomeService = {
         dailyTrend: dailyTrendArray,
         period,
         startDate: start,
-        endDate: end
+        endDate: end,
       };
 
       Logger.info('incomeService.getIncomeStats: Statistiche calcolate:', {
@@ -151,7 +158,7 @@ export const incomeService = {
         totalCount,
         averageAmount,
         categoriesCount: Object.keys(byCategory).length,
-        dailyTrendLength: dailyTrendArray.length
+        dailyTrendLength: dailyTrendArray.length,
       });
 
       return stats;
@@ -175,10 +182,12 @@ export const incomeService = {
 
       const { data, error } = await supabase
         .from('income')
-        .insert([{
-          ...incomeData,
-          user_id: dbUserId
-        }])
+        .insert([
+          {
+            ...incomeData,
+            user_id: dbUserId,
+          },
+        ])
         .select()
         .single();
 
@@ -208,7 +217,7 @@ export const incomeService = {
         .single();
 
       if (error) {
-        console.error('❌ Errore nell\'aggiornamento entrata:', error);
+        console.error("❌ Errore nell'aggiornamento entrata:", error);
         throw error;
       }
 
@@ -225,13 +234,10 @@ export const incomeService = {
    */
   async deleteIncome(id) {
     try {
-      const { error } = await supabase
-        .from('income')
-        .delete()
-        .eq('id', id);
+      const { error } = await supabase.from('income').delete().eq('id', id);
 
       if (error) {
-        console.error('❌ Errore nell\'eliminazione entrata:', error);
+        console.error("❌ Errore nell'eliminazione entrata:", error);
         throw error;
       }
 
@@ -241,7 +247,7 @@ export const incomeService = {
       console.error('💥 IncomeService.deleteIncome error:', error);
       throw error;
     }
-  }
+  },
 };
 
 export default incomeService;

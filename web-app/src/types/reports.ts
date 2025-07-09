@@ -14,19 +14,42 @@ export type ExportFormat = 'pdf' | 'excel' | 'csv' | 'json';
 /**
  * Report Frequency for Scheduling
  */
-export type ReportFrequency = 'one-time' | 'daily' | 'weekly' | 'monthly' | 'quarterly' | 'yearly' | 'custom';
+export type ReportFrequency =
+  | 'one-time'
+  | 'daily'
+  | 'weekly'
+  | 'monthly'
+  | 'quarterly'
+  | 'yearly'
+  | 'custom';
 
 /**
  * Report Status Lifecycle
  */
-export type ReportStatus = 'draft' | 'generating' | 'completed' | 'scheduled' | 'failed' | 'cancelled';
+export type ReportStatus =
+  | 'draft'
+  | 'generating'
+  | 'completed'
+  | 'scheduled'
+  | 'failed'
+  | 'cancelled';
 
 /**
  * Chart Types for Data Visualization
  */
-export type ChartType = 
-  | 'line' | 'bar' | 'pie' | 'doughnut' | 'area' | 'scatter' 
-  | 'radar' | 'polar' | 'histogram' | 'heatmap' | 'gauge' | 'treemap';
+export type ChartType =
+  | 'line'
+  | 'bar'
+  | 'pie'
+  | 'doughnut'
+  | 'area'
+  | 'scatter'
+  | 'radar'
+  | 'polar'
+  | 'histogram'
+  | 'heatmap'
+  | 'gauge'
+  | 'treemap';
 
 /**
  * Date Range Configuration
@@ -34,8 +57,18 @@ export type ChartType =
 export interface DateRange {
   start: string; // ISO date
   end: string; // ISO date
-  preset?: 'today' | 'yesterday' | 'this_week' | 'last_week' | 'this_month' | 'last_month' 
-          | 'this_quarter' | 'last_quarter' | 'this_year' | 'last_year' | 'custom';
+  preset?:
+    | 'today'
+    | 'yesterday'
+    | 'this_week'
+    | 'last_week'
+    | 'this_month'
+    | 'last_month'
+    | 'this_quarter'
+    | 'last_quarter'
+    | 'this_year'
+    | 'last_year'
+    | 'custom';
 }
 
 /**
@@ -43,8 +76,18 @@ export interface DateRange {
  */
 export interface ReportFilter {
   field: string;
-  operator: 'equals' | 'not_equals' | 'contains' | 'not_contains' | 'greater_than' 
-          | 'less_than' | 'between' | 'in' | 'not_in' | 'is_null' | 'is_not_null';
+  operator:
+    | 'equals'
+    | 'not_equals'
+    | 'contains'
+    | 'not_contains'
+    | 'greater_than'
+    | 'less_than'
+    | 'between'
+    | 'in'
+    | 'not_in'
+    | 'is_null'
+    | 'is_not_null';
   value: any;
   type: 'string' | 'number' | 'date' | 'boolean' | 'array';
 }
@@ -116,16 +159,16 @@ export interface ReportTemplate extends BaseEntity {
   category: ReportCategory;
   type: ReportType;
   format: ReportFormat;
-  
+
   // Data Configuration
   dataSource: DataSource;
   filters: ReportFilter[];
   sorts: ReportSort[];
   dateRange?: DateRange;
-  
+
   // Visualization
   charts?: ChartConfig[];
-  
+
   // Layout and Styling
   layout: {
     header?: {
@@ -147,14 +190,14 @@ export interface ReportTemplate extends BaseEntity {
       disclaimer?: string;
     };
   };
-  
+
   // Metadata
   tags: string[];
   is_public: boolean;
   is_favorite: boolean;
   usage_count: number;
   last_used?: string;
-  
+
   // Access Control
   permissions: {
     can_view: string[];
@@ -170,21 +213,21 @@ export interface ReportInstance extends BaseEntity {
   template_id: string;
   name: string;
   description?: string;
-  
+
   // Generation Info
   status: ReportStatus;
   generated_by: string;
   generated_at?: string;
   completed_at?: string;
   error_message?: string;
-  
+
   // Parameters Used
   parameters: {
     dateRange: DateRange;
     filters: ReportFilter[];
     customFields?: Record<string, any>;
   };
-  
+
   // Results
   data?: any[];
   summary?: Record<string, any>;
@@ -193,12 +236,12 @@ export interface ReportInstance extends BaseEntity {
     config: ChartConfig;
     data: any[];
   }>;
-  
+
   // Export Info
   file_url?: string;
   file_format?: ExportFormat;
   file_size?: number;
-  
+
   // Metadata
   row_count?: number;
   execution_time?: number; // milliseconds
@@ -213,24 +256,24 @@ export interface ReportSchedule extends BaseEntity {
   template_id: string;
   name: string;
   description?: string;
-  
+
   // Schedule Configuration
   frequency: ReportFrequency;
   cron_expression?: string; // For custom frequencies
   timezone: string;
-  
+
   // Schedule Settings
   is_active: boolean;
   start_date: string;
   end_date?: string;
-  
+
   // Parameters
   parameters: {
     dateRange?: Partial<DateRange>; // Can use relative dates
     filters?: ReportFilter[];
     export_format?: ExportFormat;
   };
-  
+
   // Delivery Configuration
   delivery: {
     method: 'email' | 'webhook' | 'file_storage' | 'dashboard';
@@ -240,14 +283,14 @@ export interface ReportSchedule extends BaseEntity {
     subject_template?: string;
     body_template?: string;
   };
-  
+
   // Execution History
   last_run_at?: string;
   next_run_at?: string;
   run_count: number;
   success_count: number;
   failure_count: number;
-  
+
   // Notifications
   notify_on_success: boolean;
   notify_on_failure: boolean;
@@ -261,7 +304,7 @@ export interface SavedReport extends BaseEntity {
   name: string;
   description?: string;
   template_id?: string;
-  
+
   // Configuration
   config: {
     dataSource: DataSource;
@@ -271,13 +314,13 @@ export interface SavedReport extends BaseEntity {
     charts?: ChartConfig[];
     layout: any;
   };
-  
+
   // Metadata
   category: ReportCategory;
   tags: string[];
   is_favorite: boolean;
   is_shared: boolean;
-  
+
   // Sharing
   shared_with: string[];
   share_permissions: {
@@ -285,7 +328,7 @@ export interface SavedReport extends BaseEntity {
     can_edit: boolean;
     can_export: boolean;
   };
-  
+
   // Usage Statistics
   access_count: number;
   last_accessed?: string;
@@ -297,7 +340,7 @@ export interface SavedReport extends BaseEntity {
 export interface ReportAnalytics {
   report_id: string;
   period: DateRange;
-  
+
   metrics: {
     generation_time_avg: number;
     generation_time_max: number;
@@ -307,14 +350,14 @@ export interface ReportAnalytics {
     unique_users: number;
     export_count: Record<ExportFormat, number>;
   };
-  
+
   performance: {
     query_performance: number;
     data_volume: number;
     cache_hit_rate: number;
     resource_usage: number;
   };
-  
+
   user_engagement: {
     view_count: number;
     export_count: number;
@@ -354,13 +397,13 @@ export interface KPIDefinition {
   name: string;
   description: string;
   category: string;
-  
+
   calculation: {
     formula: string;
     data_source: DataSource;
     dependencies?: string[];
   };
-  
+
   visualization: {
     type: 'number' | 'gauge' | 'progress' | 'trend';
     format: 'currency' | 'percentage' | 'number' | 'ratio';
@@ -370,13 +413,13 @@ export interface KPIDefinition {
       operator: 'greater_than' | 'less_than' | 'between';
     }>;
   };
-  
+
   targets?: {
     target_value: number;
     warning_threshold: number;
     critical_threshold: number;
   };
-  
+
   refresh_interval: number; // minutes
   cache_duration: number; // minutes
 }
@@ -387,11 +430,11 @@ export interface KPIDefinition {
 export interface ReportAuditLog extends BaseEntity {
   report_id: string;
   report_type: 'template' | 'instance' | 'schedule' | 'saved';
-  
+
   action: 'view' | 'generate' | 'export' | 'share' | 'edit' | 'delete' | 'schedule' | 'cancel';
   user_id: string;
   user_email: string;
-  
+
   details: {
     parameters?: Record<string, any>;
     export_format?: ExportFormat;
@@ -399,11 +442,11 @@ export interface ReportAuditLog extends BaseEntity {
     file_size?: number;
     execution_time?: number;
   };
-  
+
   ip_address: string;
   user_agent: string;
   timestamp: string;
-  
+
   // Security and Compliance
   session_id: string;
   request_id: string;
@@ -419,7 +462,7 @@ export interface ReportPermission {
   user_id?: string;
   role?: string;
   organization_id?: string;
-  
+
   permissions: {
     can_view: boolean;
     can_create: boolean;
@@ -430,14 +473,14 @@ export interface ReportPermission {
     can_share: boolean;
     can_admin: boolean;
   };
-  
+
   restrictions?: {
     date_range_limit?: number; // days
     export_formats?: ExportFormat[];
     max_exports_per_day?: number;
     sensitive_data_access?: boolean;
   };
-  
+
   granted_by: string;
   granted_at: string;
   expires_at?: string;
@@ -456,7 +499,7 @@ export interface ReportSystemConfig {
     real_time_data: boolean;
     audit_logging: boolean;
   };
-  
+
   limits: {
     max_templates_per_user: number;
     max_scheduled_reports: number;
@@ -465,7 +508,7 @@ export interface ReportSystemConfig {
     max_concurrent_generations: number;
     rate_limit_per_minute: number;
   };
-  
+
   defaults: {
     timezone: string;
     currency: string;
@@ -474,11 +517,11 @@ export interface ReportSystemConfig {
     chart_theme: 'light' | 'dark';
     export_format: ExportFormat;
   };
-  
+
   integrations: {
     email_service: boolean;
     cloud_storage: boolean;
     webhook_notifications: boolean;
     business_intelligence: boolean;
   };
-} 
+}

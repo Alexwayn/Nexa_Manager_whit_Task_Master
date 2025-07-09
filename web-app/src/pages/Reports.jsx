@@ -294,7 +294,7 @@ const Reports = () => {
     ],
   };
 
-  const handleGenerateReport = (reportId) => {
+  const handleGenerateReport = reportId => {
     console.log(`Generating report: ${reportId}`);
     // TODO: Implement report generation logic
   };
@@ -373,7 +373,7 @@ const Reports = () => {
       <div className='bg-blue-50 border-b border-gray-200 px-6 py-3'>
         <div className='flex items-center space-x-2 text-nav-text'>
           <HomeIcon className='h-5 w-5 text-blue-600' />
-          <button 
+          <button
             onClick={() => navigate('/dashboard')}
             className='text-blue-600 hover:text-blue-700 font-medium transition-colors'
           >
@@ -543,7 +543,7 @@ const Reports = () => {
             {/* Report Builder */}
             <div className='bg-white rounded-lg p-6 border border-gray-200 shadow-sm'>
               <h3 className='text-card-title font-semibold text-gray-900 mb-4'>Report Builder</h3>
-              
+
               <div className='space-y-4'>
                 <div>
                   <label className='block text-body text-gray-700 mb-2'>Report Type</label>

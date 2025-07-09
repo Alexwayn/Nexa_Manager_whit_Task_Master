@@ -24,7 +24,7 @@ const ReportsDashboard = ({ analytics }) => {
       frequency: 'monthly',
       nextRun: '2024-02-01',
       recipients: ['admin@company.com', 'finance@company.com'],
-      active: true
+      active: true,
     },
     {
       id: 2,
@@ -33,8 +33,8 @@ const ReportsDashboard = ({ analytics }) => {
       frequency: 'weekly',
       nextRun: '2024-01-29',
       recipients: ['manager@company.com'],
-      active: true
-    }
+      active: true,
+    },
   ]);
 
   const reportTypes = [
@@ -48,8 +48,8 @@ const ReportsDashboard = ({ analytics }) => {
         'Cash Flow Analysis',
         'Revenue Breakdown',
         'Expense Analysis',
-        'Financial Forecast'
-      ]
+        'Financial Forecast',
+      ],
     },
     {
       id: 'client',
@@ -61,8 +61,8 @@ const ReportsDashboard = ({ analytics }) => {
         'Client Satisfaction Report',
         'Client Retention Analysis',
         'New Client Acquisition',
-        'Client Revenue Contribution'
-      ]
+        'Client Revenue Contribution',
+      ],
     },
     {
       id: 'operational',
@@ -74,8 +74,8 @@ const ReportsDashboard = ({ analytics }) => {
         'Team Productivity Report',
         'Resource Utilization',
         'Operational Efficiency',
-        'KPI Summary'
-      ]
+        'KPI Summary',
+      ],
     },
     {
       id: 'custom',
@@ -87,56 +87,55 @@ const ReportsDashboard = ({ analytics }) => {
         'Ad-hoc Analysis',
         'Comparative Study',
         'Trend Analysis',
-        'Executive Summary'
-      ]
-    }
+        'Executive Summary',
+      ],
+    },
   ];
 
   const exportFormats = [
     { id: 'pdf', name: 'PDF', icon: '📄', description: 'Professional formatted report' },
     { id: 'excel', name: 'Excel', icon: '📊', description: 'Spreadsheet with raw data' },
     { id: 'csv', name: 'CSV', description: 'Comma-separated values' },
-    { id: 'powerpoint', name: 'PowerPoint', icon: '📈', description: 'Presentation slides' }
+    { id: 'powerpoint', name: 'PowerPoint', icon: '📈', description: 'Presentation slides' },
   ];
 
   const quickStats = useMemo(() => {
     if (!analytics?.data) return {};
-    
+
     const { revenueAnalytics, clientAnalytics, invoiceAnalytics } = analytics.data;
-    
+
     return {
       totalRevenue: revenueAnalytics?.totalRevenue || 0,
       totalClients: clientAnalytics?.totalClients || 0,
       pendingInvoices: invoiceAnalytics?.pending || 0,
       completedProjects: 45, // Mock data
-      avgProjectValue: revenueAnalytics?.totalRevenue ? 
-        Math.round(revenueAnalytics.totalRevenue / (clientAnalytics?.totalClients || 1)) : 0,
-      clientSatisfaction: 4.7 // Mock data
+      avgProjectValue: revenueAnalytics?.totalRevenue
+        ? Math.round(revenueAnalytics.totalRevenue / (clientAnalytics?.totalClients || 1))
+        : 0,
+      clientSatisfaction: 4.7, // Mock data
     };
   }, [analytics]);
 
-  const handleExport = (format) => {
+  const handleExport = format => {
     // Mock export functionality
     console.log(`Exporting ${selectedReportType} report as ${format}`);
     // In a real implementation, this would trigger the actual export
   };
 
-  const handleScheduleReport = (reportConfig) => {
+  const handleScheduleReport = reportConfig => {
     const newReport = {
       id: Date.now(),
       ...reportConfig,
-      active: true
+      active: true,
     };
     setScheduledReports([...scheduledReports, newReport]);
   };
 
-  const toggleScheduledReport = (reportId) => {
-    setScheduledReports(reports => 
-      reports.map(report => 
-        report.id === reportId 
-          ? { ...report, active: !report.active }
-          : report
-      )
+  const toggleScheduledReport = reportId => {
+    setScheduledReports(reports =>
+      reports.map(report =>
+        report.id === reportId ? { ...report, active: !report.active } : report,
+      ),
     );
   };
 
@@ -144,7 +143,9 @@ const ReportsDashboard = ({ analytics }) => {
     <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-6'>
       <div className='bg-blue-50 p-4 rounded-lg'>
         <p className='text-sm text-blue-600 font-medium'>Total Revenue</p>
-        <p className='text-2xl font-bold text-blue-900'>€{quickStats.totalRevenue?.toLocaleString()}</p>
+        <p className='text-2xl font-bold text-blue-900'>
+          €{quickStats.totalRevenue?.toLocaleString()}
+        </p>
       </div>
       <div className='bg-green-50 p-4 rounded-lg'>
         <p className='text-sm text-green-600 font-medium'>Active Clients</p>
@@ -160,7 +161,9 @@ const ReportsDashboard = ({ analytics }) => {
       </div>
       <div className='bg-indigo-50 p-4 rounded-lg'>
         <p className='text-sm text-indigo-600 font-medium'>Avg Project Value</p>
-        <p className='text-2xl font-bold text-indigo-900'>€{quickStats.avgProjectValue?.toLocaleString()}</p>
+        <p className='text-2xl font-bold text-indigo-900'>
+          €{quickStats.avgProjectValue?.toLocaleString()}
+        </p>
       </div>
       <div className='bg-pink-50 p-4 rounded-lg'>
         <p className='text-sm text-pink-600 font-medium'>Client Satisfaction</p>
@@ -172,7 +175,7 @@ const ReportsDashboard = ({ analytics }) => {
   const renderReportBuilder = () => (
     <div className='bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-6'>
       <h3 className='text-lg font-semibold text-black mb-4'>Custom Report Builder</h3>
-      
+
       {/* Report Type Selection */}
       <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6'>
         {reportTypes.map(type => {
@@ -200,14 +203,16 @@ const ReportsDashboard = ({ analytics }) => {
         <div className='mb-6'>
           <h4 className='font-medium text-black mb-3'>Available Templates</h4>
           <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3'>
-            {reportTypes.find(t => t.id === selectedReportType)?.templates.map(template => (
-              <button
-                key={template}
-                className='p-3 text-left border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors'
-              >
-                <p className='font-medium text-black'>{template}</p>
-              </button>
-            ))}
+            {reportTypes
+              .find(t => t.id === selectedReportType)
+              ?.templates.map(template => (
+                <button
+                  key={template}
+                  className='p-3 text-left border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors'
+                >
+                  <p className='font-medium text-black'>{template}</p>
+                </button>
+              ))}
           </div>
         </div>
       )}
@@ -230,7 +235,7 @@ const ReportsDashboard = ({ analytics }) => {
             </button>
           ))}
         </div>
-        
+
         {reportPeriod === 'custom' && (
           <div className='flex gap-4'>
             <div>
@@ -238,7 +243,7 @@ const ReportsDashboard = ({ analytics }) => {
               <input
                 type='date'
                 value={customDateRange.start}
-                onChange={(e) => setCustomDateRange(prev => ({ ...prev, start: e.target.value }))}
+                onChange={e => setCustomDateRange(prev => ({ ...prev, start: e.target.value }))}
                 className='border border-gray-300 rounded-lg px-3 py-2'
               />
             </div>
@@ -247,7 +252,7 @@ const ReportsDashboard = ({ analytics }) => {
               <input
                 type='date'
                 value={customDateRange.end}
-                onChange={(e) => setCustomDateRange(prev => ({ ...prev, end: e.target.value }))}
+                onChange={e => setCustomDateRange(prev => ({ ...prev, end: e.target.value }))}
                 className='border border-gray-300 rounded-lg px-3 py-2'
               />
             </div>
@@ -293,15 +298,20 @@ const ReportsDashboard = ({ analytics }) => {
           + Schedule New
         </button>
       </div>
-      
+
       <div className='space-y-4'>
         {scheduledReports.map(report => (
-          <div key={report.id} className='flex items-center justify-between p-4 border border-gray-200 rounded-lg'>
+          <div
+            key={report.id}
+            className='flex items-center justify-between p-4 border border-gray-200 rounded-lg'
+          >
             <div className='flex-1'>
               <div className='flex items-center space-x-3'>
-                <div className={`w-3 h-3 rounded-full ${
-                  report.active ? 'bg-green-500' : 'bg-gray-400'
-                }`} />
+                <div
+                  className={`w-3 h-3 rounded-full ${
+                    report.active ? 'bg-green-500' : 'bg-gray-400'
+                  }`}
+                />
                 <h4 className='font-medium text-black'>{report.name}</h4>
                 <span className='px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded capitalize'>
                   {report.type}

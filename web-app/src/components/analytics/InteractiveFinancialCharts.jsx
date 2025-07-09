@@ -51,14 +51,9 @@ ChartJS.register(
   annotationPlugin,
 );
 
-const InteractiveFinancialCharts = ({ 
-  data, 
-  period = 'month',
-  onPeriodChange,
-  className = '' 
-}) => {
+const InteractiveFinancialCharts = ({ data, period = 'month', onPeriodChange, className = '' }) => {
   const { t, i18n } = useTranslation(['analytics', 'dashboard']);
-  
+
   // States
   const [loading, setLoading] = useState(false);
   const [selectedChart, setSelectedChart] = useState('overview');
@@ -104,14 +99,17 @@ const InteractiveFinancialCharts = ({
   ];
 
   // Utility functions
-  const formatCurrency = useCallback((amount) => {
-    return new Intl.NumberFormat(i18n.language, {
-      style: 'currency',
-      currency: 'EUR',
-    }).format(amount || 0);
-  }, [i18n.language]);
+  const formatCurrency = useCallback(
+    amount => {
+      return new Intl.NumberFormat(i18n.language, {
+        style: 'currency',
+        currency: 'EUR',
+      }).format(amount || 0);
+    },
+    [i18n.language],
+  );
 
-  const formatPercentage = useCallback((value) => {
+  const formatPercentage = useCallback(value => {
     const numValue = value || 0;
     return `${numValue > 0 ? '+' : ''}${numValue.toFixed(1)}%`;
   }, []);
@@ -123,9 +121,9 @@ const InteractiveFinancialCharts = ({
       const result = await financialService.getFinancialOverview(
         period,
         dateRange.start,
-        dateRange.end
+        dateRange.end,
       );
-      
+
       if (result.success) {
         setFinancialData(result.data);
       } else {
@@ -146,11 +144,11 @@ const InteractiveFinancialCharts = ({
   const generateOverviewChartData = useMemo(() => {
     if (!financialData?.cashFlow) return null;
 
-    const labels = financialData.cashFlow.map(item => 
-      new Date(item.date).toLocaleDateString(i18n.language, { 
-        month: 'short', 
-        day: 'numeric' 
-      })
+    const labels = financialData.cashFlow.map(item =>
+      new Date(item.date).toLocaleDateString(i18n.language, {
+        month: 'short',
+        day: 'numeric',
+      }),
     );
 
     const datasets = [];
@@ -216,11 +214,11 @@ const InteractiveFinancialCharts = ({
     const incomeMA = calculateMovingAverage(incomeTrend);
     const expenseMA = calculateMovingAverage(expenseTrend);
 
-    const labels = incomeTrend.map(item => 
-      new Date(item.date).toLocaleDateString(i18n.language, { 
-        month: 'short', 
-        day: 'numeric' 
-      })
+    const labels = incomeTrend.map(item =>
+      new Date(item.date).toLocaleDateString(i18n.language, {
+        month: 'short',
+        day: 'numeric',
+      }),
     );
 
     return {
@@ -276,10 +274,12 @@ const InteractiveFinancialCharts = ({
     const incomeCategories = financialData.income.byCategory.slice(0, 5);
     const expenseCategories = financialData.expenses.byCategory.slice(0, 5);
 
-    const allCategories = [...new Set([
-      ...incomeCategories.map(c => c.category),
-      ...expenseCategories.map(c => c.category),
-    ])];
+    const allCategories = [
+      ...new Set([
+        ...incomeCategories.map(c => c.category),
+        ...expenseCategories.map(c => c.category),
+      ]),
+    ];
 
     const incomeData = allCategories.map(category => {
       const found = incomeCategories.find(c => c.category === category);
@@ -316,7 +316,7 @@ const InteractiveFinancialCharts = ({
     if (!financialData?.expenses?.byCategory) return null;
 
     const categories = financialData.expenses.byCategory.slice(0, 6);
-    
+
     return {
       labels: categories.map(cat => cat.category),
       datasets: [
@@ -346,98 +346,123 @@ const InteractiveFinancialCharts = ({
   }, [financialData]);
 
   // Chart options
-  const getChartOptions = useCallback((type) => {
-    const baseOptions = {
-      responsive: true,
-      maintainAspectRatio: false,
-      interaction: {
-        mode: 'index',
-        intersect: false,
-      },
-      plugins: {
-        legend: {
-          position: 'top',
-          labels: {
-            usePointStyle: true,
-            padding: 20,
-          },
+  const getChartOptions = useCallback(
+    type => {
+      const baseOptions = {
+        responsive: true,
+        maintainAspectRatio: false,
+        interaction: {
+          mode: 'index',
+          intersect: false,
         },
-        tooltip: {
-          backgroundColor: 'rgba(0, 0, 0, 0.8)',
-          titleColor: 'white',
-          bodyColor: 'white',
-          borderColor: 'rgba(255, 255, 255, 0.1)',
-          borderWidth: 1,
-          cornerRadius: 8,
-          displayColors: true,
-          callbacks: {
-            label: (context) => {
-              if (type === 'distribution') {
-                const total = context.dataset.data.reduce((a, b) => a + b, 0);
-                const percentage = ((context.parsed / total) * 100).toFixed(1);
-                return `${context.label}: ${formatCurrency(context.parsed)} (${percentage}%)`;
-              }
-              return `${context.dataset.label}: ${formatCurrency(context.parsed.y || context.parsed)}`;
-            },
-          },
-        },
-        zoom: type !== 'distribution' ? {
-          pan: {
-            enabled: true,
-            mode: 'x',
-          },
-          zoom: {
-            wheel: {
-              enabled: true,
-            },
-            pinch: {
-              enabled: true,
-            },
-            mode: 'x',
-            onZoom: ({ chart }) => {
-              setZoomLevel(chart.getZoomLevel());
-            },
-          },
-        } : undefined,
-      },
-    };
-
-    if (type === 'distribution') {
-      return {
-        ...baseOptions,
         plugins: {
-          ...baseOptions.plugins,
           legend: {
-            position: 'bottom',
+            position: 'top',
             labels: {
               usePointStyle: true,
-              padding: 15,
-              generateLabels: (chart) => {
-                const data = chart.data;
-                if (data.labels.length && data.datasets.length) {
-                  return data.labels.map((label, i) => {
-                    const value = data.datasets[0].data[i];
-                    const total = data.datasets[0].data.reduce((a, b) => a + b, 0);
-                    const percentage = ((value / total) * 100).toFixed(1);
-                    return {
-                      text: `${label} (${percentage}%)`,
-                      fillStyle: data.datasets[0].backgroundColor[i],
-                      strokeStyle: data.datasets[0].borderColor[i],
-                      lineWidth: data.datasets[0].borderWidth,
-                      hidden: false,
-                      index: i,
-                    };
-                  });
+              padding: 20,
+            },
+          },
+          tooltip: {
+            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+            titleColor: 'white',
+            bodyColor: 'white',
+            borderColor: 'rgba(255, 255, 255, 0.1)',
+            borderWidth: 1,
+            cornerRadius: 8,
+            displayColors: true,
+            callbacks: {
+              label: context => {
+                if (type === 'distribution') {
+                  const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                  const percentage = ((context.parsed / total) * 100).toFixed(1);
+                  return `${context.label}: ${formatCurrency(context.parsed)} (${percentage}%)`;
                 }
-                return [];
+                return `${context.dataset.label}: ${formatCurrency(context.parsed.y || context.parsed)}`;
               },
             },
           },
+          zoom:
+            type !== 'distribution'
+              ? {
+                  pan: {
+                    enabled: true,
+                    mode: 'x',
+                  },
+                  zoom: {
+                    wheel: {
+                      enabled: true,
+                    },
+                    pinch: {
+                      enabled: true,
+                    },
+                    mode: 'x',
+                    onZoom: ({ chart }) => {
+                      setZoomLevel(chart.getZoomLevel());
+                    },
+                  },
+                }
+              : undefined,
         },
       };
-    }
 
-    if (type === 'comparison') {
+      if (type === 'distribution') {
+        return {
+          ...baseOptions,
+          plugins: {
+            ...baseOptions.plugins,
+            legend: {
+              position: 'bottom',
+              labels: {
+                usePointStyle: true,
+                padding: 15,
+                generateLabels: chart => {
+                  const data = chart.data;
+                  if (data.labels.length && data.datasets.length) {
+                    return data.labels.map((label, i) => {
+                      const value = data.datasets[0].data[i];
+                      const total = data.datasets[0].data.reduce((a, b) => a + b, 0);
+                      const percentage = ((value / total) * 100).toFixed(1);
+                      return {
+                        text: `${label} (${percentage}%)`,
+                        fillStyle: data.datasets[0].backgroundColor[i],
+                        strokeStyle: data.datasets[0].borderColor[i],
+                        lineWidth: data.datasets[0].borderWidth,
+                        hidden: false,
+                        index: i,
+                      };
+                    });
+                  }
+                  return [];
+                },
+              },
+            },
+          },
+        };
+      }
+
+      if (type === 'comparison') {
+        return {
+          ...baseOptions,
+          scales: {
+            x: {
+              grid: {
+                display: false,
+              },
+            },
+            y: {
+              beginAtZero: true,
+              ticks: {
+                callback: value => formatCurrency(value),
+              },
+              grid: {
+                color: 'rgba(0, 0, 0, 0.1)',
+              },
+            },
+          },
+        };
+      }
+
       return {
         ...baseOptions,
         scales: {
@@ -449,7 +474,7 @@ const InteractiveFinancialCharts = ({
           y: {
             beginAtZero: true,
             ticks: {
-              callback: (value) => formatCurrency(value),
+              callback: value => formatCurrency(value),
             },
             grid: {
               color: 'rgba(0, 0, 0, 0.1)',
@@ -457,35 +482,16 @@ const InteractiveFinancialCharts = ({
           },
         },
       };
-    }
-
-    return {
-      ...baseOptions,
-      scales: {
-        x: {
-          grid: {
-            display: false,
-          },
-        },
-        y: {
-          beginAtZero: true,
-          ticks: {
-            callback: (value) => formatCurrency(value),
-          },
-          grid: {
-            color: 'rgba(0, 0, 0, 0.1)',
-          },
-        },
-      },
-    };
-  }, [formatCurrency]);
+    },
+    [formatCurrency],
+  );
 
   // Event handlers
-  const handleChartTypeChange = (chartType) => {
+  const handleChartTypeChange = chartType => {
     setSelectedChart(chartType);
   };
 
-  const handleFilterChange = (filterKey) => {
+  const handleFilterChange = filterKey => {
     setChartFilters(prev => ({
       ...prev,
       [filterKey]: !prev[filterKey],
@@ -506,8 +512,8 @@ const InteractiveFinancialCharts = ({
   const renderChart = () => {
     if (loading) {
       return (
-        <div className="flex items-center justify-center h-full">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+        <div className='flex items-center justify-center h-full'>
+          <div className='animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600'></div>
         </div>
       );
     }
@@ -515,36 +521,27 @@ const InteractiveFinancialCharts = ({
     switch (selectedChart) {
       case 'overview':
         return generateOverviewChartData ? (
-          <Line 
-            data={generateOverviewChartData} 
-            options={getChartOptions('overview')} 
-          />
+          <Line data={generateOverviewChartData} options={getChartOptions('overview')} />
         ) : null;
-      
+
       case 'trends':
         return generateTrendsChartData ? (
-          <Line 
-            data={generateTrendsChartData} 
-            options={getChartOptions('trends')} 
-          />
+          <Line data={generateTrendsChartData} options={getChartOptions('trends')} />
         ) : null;
-      
+
       case 'comparison':
         return generateComparisonChartData ? (
-          <Bar 
-            data={generateComparisonChartData} 
-            options={getChartOptions('comparison')} 
-          />
+          <Bar data={generateComparisonChartData} options={getChartOptions('comparison')} />
         ) : null;
-      
+
       case 'distribution':
         return generateDistributionChartData ? (
-          <Doughnut 
-            data={generateDistributionChartData} 
-            options={getChartOptions('distribution')} 
+          <Doughnut
+            data={generateDistributionChartData}
+            options={getChartOptions('distribution')}
           />
         ) : null;
-      
+
       default:
         return null;
     }
@@ -553,41 +550,41 @@ const InteractiveFinancialCharts = ({
   return (
     <div className={`bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 ${className}`}>
       {/* Header */}
-      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-6">
+      <div className='flex flex-col lg:flex-row lg:items-center lg:justify-between mb-6'>
         <div>
-          <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+          <h3 className='text-xl font-semibold text-gray-900 dark:text-white'>
             {t('analytics:charts.interactiveAnalytics')}
           </h3>
-          <p className="text-gray-600 dark:text-gray-400 mt-1">
+          <p className='text-gray-600 dark:text-gray-400 mt-1'>
             {t('analytics:charts.interactiveDesc')}
           </p>
         </div>
-        
-        <div className="flex items-center gap-2 mt-4 lg:mt-0">
+
+        <div className='flex items-center gap-2 mt-4 lg:mt-0'>
           {zoomLevel > 1 && (
             <button
               onClick={handleResetZoom}
-              className="flex items-center gap-1 px-3 py-2 text-sm bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-200 dark:hover:bg-gray-600"
+              className='flex items-center gap-1 px-3 py-2 text-sm bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-200 dark:hover:bg-gray-600'
             >
-              <MagnifyingGlassIcon className="w-4 h-4" />
+              <MagnifyingGlassIcon className='w-4 h-4' />
               {t('analytics:charts.resetZoom')}
             </button>
           )}
-          
+
           <button
             onClick={handleExportChart}
-            className="flex items-center gap-1 px-3 py-2 text-sm bg-blue-600 text-white rounded-md hover:bg-blue-700"
+            className='flex items-center gap-1 px-3 py-2 text-sm bg-blue-600 text-white rounded-md hover:bg-blue-700'
           >
-            <ArrowDownTrayIcon className="w-4 h-4" />
+            <ArrowDownTrayIcon className='w-4 h-4' />
             {t('analytics:advanced.exportData')}
           </button>
         </div>
       </div>
 
       {/* Chart Type Selector */}
-      <div className="mb-6">
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-          {chartTypes.map((type) => {
+      <div className='mb-6'>
+        <div className='grid grid-cols-2 lg:grid-cols-4 gap-3'>
+          {chartTypes.map(type => {
             const Icon = type.icon;
             return (
               <button
@@ -599,8 +596,8 @@ const InteractiveFinancialCharts = ({
                     : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'
                 }`}
               >
-                <Icon className="w-5 h-5 mx-auto mb-2" />
-                <div className="text-sm font-medium">{type.name}</div>
+                <Icon className='w-5 h-5 mx-auto mb-2' />
+                <div className='text-sm font-medium'>{type.name}</div>
               </button>
             );
           })}
@@ -609,20 +606,20 @@ const InteractiveFinancialCharts = ({
 
       {/* Filters */}
       {selectedChart === 'overview' && (
-        <div className="mb-6">
-          <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+        <div className='mb-6'>
+          <h4 className='text-sm font-medium text-gray-700 dark:text-gray-300 mb-3'>
             {t('analytics:charts.filters')}
           </h4>
-          <div className="flex flex-wrap gap-3">
+          <div className='flex flex-wrap gap-3'>
             {Object.entries(chartFilters).map(([key, value]) => (
-              <label key={key} className="flex items-center gap-2">
+              <label key={key} className='flex items-center gap-2'>
                 <input
-                  type="checkbox"
+                  type='checkbox'
                   checked={value}
                   onChange={() => handleFilterChange(key)}
-                  className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                  className='rounded border-gray-300 text-blue-600 focus:ring-blue-500'
                 />
-                <span className="text-sm text-gray-700 dark:text-gray-300">
+                <span className='text-sm text-gray-700 dark:text-gray-300'>
                   {t(`analytics:charts.${key}`)}
                 </span>
               </label>
@@ -632,19 +629,17 @@ const InteractiveFinancialCharts = ({
       )}
 
       {/* Chart Container */}
-      <div className="h-96 lg:h-[500px]">
-        {renderChart()}
-      </div>
+      <div className='h-96 lg:h-[500px]'>{renderChart()}</div>
 
       {/* Chart Info */}
-      <div className="mt-4 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
-        <div className="flex items-start gap-3">
-          <CursorArrowRaysIcon className="w-5 h-5 text-blue-500 mt-0.5 flex-shrink-0" />
+      <div className='mt-4 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg'>
+        <div className='flex items-start gap-3'>
+          <CursorArrowRaysIcon className='w-5 h-5 text-blue-500 mt-0.5 flex-shrink-0' />
           <div>
-            <h5 className="font-medium text-gray-900 dark:text-white mb-1">
+            <h5 className='font-medium text-gray-900 dark:text-white mb-1'>
               {t('analytics:charts.interactionTips')}
             </h5>
-            <ul className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
+            <ul className='text-sm text-gray-600 dark:text-gray-400 space-y-1'>
               <li>• {t('analytics:charts.hoverTooltip')}</li>
               <li>• {t('analytics:charts.scrollZoom')}</li>
               <li>• {t('analytics:charts.dragPan')}</li>
@@ -657,4 +652,4 @@ const InteractiveFinancialCharts = ({
   );
 };
 
-export default InteractiveFinancialCharts; 
+export default InteractiveFinancialCharts;

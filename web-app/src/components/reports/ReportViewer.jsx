@@ -18,7 +18,10 @@ const ReportViewer = ({ report, onBack }) => {
 
   return (
     <div className='bg-white rounded-xl shadow-sm border border-gray-200 p-6'>
-      <button onClick={onBack} className='flex items-center text-sm font-medium text-gray-600 hover:text-gray-900 mb-6'>
+      <button
+        onClick={onBack}
+        className='flex items-center text-sm font-medium text-gray-600 hover:text-gray-900 mb-6'
+      >
         <ArrowLeftIcon className='h-4 w-4 mr-2' />
         Back to Reports
       </button>
@@ -42,7 +45,11 @@ const ReportViewer = ({ report, onBack }) => {
           <thead className='bg-gray-50'>
             <tr>
               {reportData.columns.map(col => (
-                <th key={col} scope='col' className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
+                <th
+                  key={col}
+                  scope='col'
+                  className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+                >
                   {col}
                 </th>
               ))}

@@ -10,14 +10,17 @@ const ReportSettings = ({ onBack }) => {
     dataRetentionDays: 90,
   });
 
-  const handleSettingChange = (e) => {
+  const handleSettingChange = e => {
     const { name, value, type, checked } = e.target;
     setSettings(prev => ({ ...prev, [name]: type === 'checkbox' ? checked : value }));
   };
 
   return (
     <div className='bg-white rounded-xl shadow-sm border border-gray-200 p-6'>
-      <button onClick={onBack} className='flex items-center text-sm font-medium text-gray-600 hover:text-gray-900 mb-6'>
+      <button
+        onClick={onBack}
+        className='flex items-center text-sm font-medium text-gray-600 hover:text-gray-900 mb-6'
+      >
         <ArrowLeftIcon className='h-4 w-4 mr-2' />
         Back to Reports Dashboard
       </button>
@@ -30,7 +33,9 @@ const ReportSettings = ({ onBack }) => {
       <div className='space-y-6 max-w-lg'>
         {/* Default Export Format */}
         <div>
-          <label htmlFor='defaultExportFormat' className='block text-sm font-medium text-gray-700'>Default Export Format</label>
+          <label htmlFor='defaultExportFormat' className='block text-sm font-medium text-gray-700'>
+            Default Export Format
+          </label>
           <select
             id='defaultExportFormat'
             name='defaultExportFormat'
@@ -48,17 +53,31 @@ const ReportSettings = ({ onBack }) => {
         <div className='flex items-center justify-between'>
           <span className='flex-grow flex flex-col'>
             <span className='text-sm font-medium text-gray-900'>Email Notifications</span>
-            <span className='text-sm text-gray-500'>Receive an email when a scheduled report is ready.</span>
+            <span className='text-sm text-gray-500'>
+              Receive an email when a scheduled report is ready.
+            </span>
           </span>
-          <label htmlFor='emailNotifications' className='inline-flex relative items-center cursor-pointer'>
-            <input type='checkbox' id='emailNotifications' name='emailNotifications' className='sr-only peer' checked={settings.emailNotifications} onChange={handleSettingChange} />
+          <label
+            htmlFor='emailNotifications'
+            className='inline-flex relative items-center cursor-pointer'
+          >
+            <input
+              type='checkbox'
+              id='emailNotifications'
+              name='emailNotifications'
+              className='sr-only peer'
+              checked={settings.emailNotifications}
+              onChange={handleSettingChange}
+            />
             <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
           </label>
         </div>
 
         {/* Data Retention Policy */}
         <div>
-          <label htmlFor='dataRetentionDays' className='block text-sm font-medium text-gray-700'>Report Data Retention (in days)</label>
+          <label htmlFor='dataRetentionDays' className='block text-sm font-medium text-gray-700'>
+            Report Data Retention (in days)
+          </label>
           <input
             type='number'
             id='dataRetentionDays'

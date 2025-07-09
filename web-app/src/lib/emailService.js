@@ -684,7 +684,7 @@ ${data.companyName}
 
       return result;
     } catch (error) {
-      Logger.error(`Error in sendInvoice for invoiceId ${invoiceId}:`, error);
+      Logger.error(`Error in sendInvoice for invoiceId ${invoiceId}:`, String(error?.message || error || 'Unknown error'));
       throw error;
     }
   }
@@ -768,7 +768,7 @@ ${data.companyName}
 
       return result;
     } catch (error) {
-      Logger.error(`Error in sendPaymentReminder for invoiceId ${invoiceId}:`, error);
+      Logger.error(`Error in sendPaymentReminder for invoiceId ${invoiceId}:`, String(error?.message || error || 'Unknown error'));
       throw error;
     }
   }
@@ -969,7 +969,7 @@ ${data.companyName}
     try {
       // Use the new provider service for testing
       const result = await emailProviderService.testConfiguration(testEmail, provider);
-      
+
       // Log the test in our activity
       if (result.success) {
         await this._logEmailActivity({
@@ -977,7 +977,7 @@ ${data.companyName}
           subject: 'Test Email - Nexa Manager Configuration',
           status: 'sent',
           provider: result.provider || 'unknown',
-          type: 'test_email'
+          type: 'test_email',
         });
       }
 
@@ -986,7 +986,7 @@ ${data.companyName}
       Logger.error('Error testing email configuration:', error);
       return {
         success: false,
-        error: error.message
+        error: error.message,
       };
     }
   }
@@ -1002,7 +1002,7 @@ ${data.companyName}
       // Use the enhanced provider service
       const result = await emailProviderService.sendEmail({
         ...emailData,
-        provider
+        provider,
       });
 
       // Log the activity
@@ -1013,25 +1013,25 @@ ${data.companyName}
         provider: result.provider || 'unknown',
         message_id: result.messageId,
         error: result.error,
-        type: emailData.type || 'general'
+        type: emailData.type || 'general',
       });
 
       return result;
     } catch (error) {
       Logger.error('Error sending email with provider:', error);
-      
+
       // Log failed attempt
       await this._logEmailActivity({
         recipient: emailData.to,
         subject: emailData.subject,
         status: 'failed',
         error: error.message,
-        type: emailData.type || 'general'
+        type: emailData.type || 'general',
       });
 
       return {
         success: false,
-        error: error.message
+        error: error.message,
       };
     }
   }

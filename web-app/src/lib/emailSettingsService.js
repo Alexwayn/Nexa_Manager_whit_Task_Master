@@ -13,7 +13,7 @@ class EmailSettingsService {
       sendgrid: { name: 'SendGrid', icon: '📨', description: 'SendGrid cloud email service' },
       mailgun: { name: 'Mailgun', icon: '🚀', description: 'Mailgun email API service' },
       ses: { name: 'Amazon SES', icon: '☁️', description: 'Amazon Simple Email Service' },
-      emailjs: { name: 'EmailJS', icon: '✉️', description: 'EmailJS browser service' }
+      emailjs: { name: 'EmailJS', icon: '✉️', description: 'EmailJS browser service' },
     };
 
     // Template categories
@@ -22,16 +22,23 @@ class EmailSettingsService {
       payment: { name: 'Payment', icon: '💰', color: 'green' },
       quote: { name: 'Quote', icon: '📝', color: 'purple' },
       client: { name: 'Client', icon: '👤', color: 'gray' },
-      system: { name: 'System', icon: '⚙️', color: 'red' }
+      system: { name: 'System', icon: '⚙️', color: 'red' },
     };
 
     // Available template variables
     this.templateVariables = {
       common: ['company_name', 'company_email', 'company_phone', 'current_date'],
-      invoice: ['invoice_number', 'client_name', 'issue_date', 'due_date', 'total_amount', 'invoice_link'],
+      invoice: [
+        'invoice_number',
+        'client_name',
+        'issue_date',
+        'due_date',
+        'total_amount',
+        'invoice_link',
+      ],
       payment: ['payment_date', 'payment_amount', 'payment_method', 'days_overdue'],
       quote: ['quote_number', 'expiry_date'],
-      client: ['client_name', 'client_email', 'client_company']
+      client: ['client_name', 'client_email', 'client_company'],
     };
   }
 
@@ -45,10 +52,7 @@ class EmailSettingsService {
   async getEmailSettings() {
     try {
       // Temporary: Use direct supabase client (RLS disabled)
-      const { data, error } = await supabase
-        .from('email_settings')
-        .select('*')
-        .single();
+      const { data, error } = await supabase.from('email_settings').select('*').single();
 
       if (error && error.code !== 'PGRST116') {
         throw error;
@@ -104,14 +108,14 @@ class EmailSettingsService {
    */
   async testEmailConfiguration(testEmail, settings = null) {
     try {
-      const emailSettings = settings || await this.getEmailSettings();
-      
+      const emailSettings = settings || (await this.getEmailSettings());
+
       // Simulate email test based on provider
       await this._delay(2000);
-      
+
       // Simulate 90% success rate
       const success = Math.random() > 0.1;
-      
+
       if (success) {
         // Log test email activity
         await this._logEmailActivity({
@@ -119,13 +123,13 @@ class EmailSettingsService {
           recipient_email: testEmail,
           subject: 'Email Configuration Test - Nexa Manager',
           status: 'sent',
-          sent_at: new Date().toISOString()
+          sent_at: new Date().toISOString(),
         });
 
         return {
           success: true,
           message: 'Test email sent successfully',
-          messageId: `test_${Date.now()}`
+          messageId: `test_${Date.now()}`,
         };
       } else {
         throw new Error('SMTP connection failed');
@@ -134,7 +138,7 @@ class EmailSettingsService {
       Logger.error('Email test failed:', error);
       return {
         success: false,
-        error: error.message
+        error: error.message,
       };
     }
   }
@@ -269,7 +273,7 @@ class EmailSettingsService {
         subject,
         body,
         variables: template.variables,
-        sampleData: previewData
+        sampleData: previewData,
       };
     } catch (error) {
       Logger.error('Error previewing email template:', error);
@@ -283,22 +287,22 @@ class EmailSettingsService {
   async sendTestEmail(templateKey, testEmail, customData = {}) {
     try {
       const preview = await this.previewEmailTemplate(templateKey, customData);
-      
+
       // Simulate sending test email
       await this._delay(1500);
-      
+
       // Log test email activity
       await this._logEmailActivity({
         template_key: templateKey,
         recipient_email: testEmail,
         subject: `[TEST] ${preview.subject}`,
         status: 'sent',
-        sent_at: new Date().toISOString()
+        sent_at: new Date().toISOString(),
       });
 
       return {
         success: true,
-        message: 'Test email sent successfully'
+        message: 'Test email sent successfully',
       };
     } catch (error) {
       Logger.error('Error sending test email:', error);
@@ -315,11 +319,8 @@ class EmailSettingsService {
    */
   async getNotificationPreferences() {
     try {
-      const { data, error } = await executeWithClerkAuth((supabase) =>
-        supabase
-          .from('notification_preferences')
-          .select('*')
-          .single()
+      const { data, error } = await executeWithClerkAuth(supabase =>
+        supabase.from('notification_preferences').select('*').single(),
       );
 
       if (error && error.code !== 'PGRST116') {
@@ -380,7 +381,7 @@ class EmailSettingsService {
    */
   async getEmailActivity(filters = {}) {
     try {
-      const { data, error } = await executeWithClerkAuth((supabase) => {
+      const { data, error } = await executeWithClerkAuth(supabase => {
         let query = supabase
           .from('email_activity')
           .select('*')
@@ -471,7 +472,7 @@ class EmailSettingsService {
 
     return {
       isValid: errors.length === 0,
-      errors
+      errors,
     };
   }
 
@@ -509,7 +510,7 @@ class EmailSettingsService {
 
     return {
       isValid: errors.length === 0,
-      errors
+      errors,
     };
   }
 
@@ -534,7 +535,7 @@ class EmailSettingsService {
       test_mode: false,
       max_daily_emails: 500,
       rate_limit_per_hour: 50,
-      include_unsubscribe: true
+      include_unsubscribe: true,
     };
   }
 
@@ -549,42 +550,42 @@ class EmailSettingsService {
       invoice_paid: true,
       invoice_overdue: true,
       invoice_cancelled: false,
-      
+
       // Payment notifications
       payment_received: true,
       payment_failed: true,
       payment_refunded: true,
       payment_reminder_sent: false,
-      
+
       // Quote notifications
       quote_sent: true,
       quote_accepted: true,
       quote_declined: true,
       quote_expired: false,
-      
+
       // Client notifications
       client_created: false,
       client_updated: false,
       client_deleted: false,
-      
+
       // System notifications
       system_backup: true,
       system_maintenance: true,
       system_security: true,
       system_updates: false,
-      
+
       // General preferences
       daily_summary: false,
       weekly_report: false,
       monthly_report: true,
       promotional_emails: false,
-      
+
       // Delivery preferences
       email_digest: false,
       digest_frequency: 'daily',
       quiet_hours_start: '22:00',
       quiet_hours_end: '08:00',
-      timezone: 'UTC'
+      timezone: 'UTC',
     };
   }
 
@@ -599,7 +600,7 @@ class EmailSettingsService {
       current_date: new Date().toLocaleDateString(),
       client_name: 'John Doe',
       client_email: 'john.doe@example.com',
-      client_company: 'Acme Corp'
+      client_company: 'Acme Corp',
     };
 
     const categoryData = {
@@ -608,18 +609,18 @@ class EmailSettingsService {
         issue_date: new Date().toLocaleDateString(),
         due_date: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toLocaleDateString(),
         total_amount: '1,250.00',
-        invoice_link: 'https://app.nexamanager.com/invoice/123'
+        invoice_link: 'https://app.nexamanager.com/invoice/123',
       },
       payment: {
         payment_date: new Date().toLocaleDateString(),
         payment_amount: '1,250.00',
         payment_method: 'Bank Transfer',
-        days_overdue: '5'
+        days_overdue: '5',
       },
       quote: {
         quote_number: 'QTE-2024-001',
-        expiry_date: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toLocaleDateString()
-      }
+        expiry_date: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toLocaleDateString(),
+      },
     };
 
     return { ...baseData, ...(categoryData[category] || {}) };
@@ -660,7 +661,7 @@ class EmailSettingsService {
       failed,
       pending,
       successRate: total > 0 ? Math.round((sent / total) * 100) : 0,
-      byTemplate
+      byTemplate,
     };
   }
 
@@ -669,9 +670,7 @@ class EmailSettingsService {
    */
   async _logEmailActivity(activityData) {
     try {
-      const { error } = await supabase
-        .from('email_activity')
-        .insert([activityData]);
+      const { error } = await supabase.from('email_activity').insert([activityData]);
 
       if (error) throw error;
     } catch (error) {
@@ -695,4 +694,4 @@ class EmailSettingsService {
   }
 }
 
-export default new EmailSettingsService(); 
+export default new EmailSettingsService();

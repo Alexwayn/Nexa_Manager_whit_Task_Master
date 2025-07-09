@@ -217,7 +217,7 @@ export default function Inventory() {
             status: safeT('status.inStock', {}, 'In Stock'),
             lastUpdated: new Date().toISOString().split('T')[0],
             itemCount: 0,
-            totalValue: 0
+            totalValue: 0,
           };
         }
         acc[item.category].stock += item.stock;
@@ -245,7 +245,7 @@ export default function Inventory() {
             status: safeT('status.inStock', {}, 'In Stock'),
             lastUpdated: new Date().toISOString().split('T')[0],
             itemCount: 0,
-            totalValue: 0
+            totalValue: 0,
           };
         }
         acc[item.location].stock += item.stock;
@@ -259,16 +259,19 @@ export default function Inventory() {
       // Default: show all products with filters applied
       return inventoryData.filter(item => {
         // Search filter
-        const matchesSearch = item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        const matchesSearch =
+          item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
           item.category.toLowerCase().includes(searchTerm.toLowerCase()) ||
           item.sku.toLowerCase().includes(searchTerm.toLowerCase());
-        
+
         // Category filter
-        const matchesCategory = !filters.category || item.category.toLowerCase() === filters.category.toLowerCase();
-        
+        const matchesCategory =
+          !filters.category || item.category.toLowerCase() === filters.category.toLowerCase();
+
         // Location filter
-        const matchesLocation = !filters.location || item.location.toLowerCase() === filters.location.toLowerCase();
-        
+        const matchesLocation =
+          !filters.location || item.location.toLowerCase() === filters.location.toLowerCase();
+
         // Stock status filter
         let matchesStockStatus = true;
         if (filters.stockStatus) {
@@ -280,7 +283,7 @@ export default function Inventory() {
             matchesStockStatus = item.stock === 0;
           }
         }
-        
+
         return matchesSearch && matchesCategory && matchesLocation && matchesStockStatus;
       });
     }
@@ -312,7 +315,7 @@ export default function Inventory() {
               <div className='flex items-center justify-between'>
                 <div className='flex items-center space-x-2 text-base'>
                   <HomeIcon className='h-5 w-5 text-blue-600' />
-                  <button 
+                  <button
                     onClick={() => navigate('/dashboard')}
                     className='text-blue-600 hover:text-blue-700 font-medium transition-colors'
                   >
@@ -348,26 +351,30 @@ export default function Inventory() {
                 </p>
               </div>
               <div className='flex items-center space-x-3'>
-                <button 
+                <button
                   onClick={() => setIsReportsModalOpen(true)}
                   className='flex items-center space-x-2 px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors'
                 >
                   <DocumentTextIcon className='h-4 w-4' />
-                  <span className='text-button-text'>{safeT('buttons.reports', {}, 'Reports')}</span>
+                  <span className='text-button-text'>
+                    {safeT('buttons.reports', {}, 'Reports')}
+                  </span>
                 </button>
-                <button 
+                <button
                   onClick={() => setIsExportInventoryModalOpen(true)}
                   className='flex items-center space-x-2 px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors'
                 >
                   <ArrowDownTrayIcon className='h-4 w-4' />
                   <span className='text-button-text'>{safeT('buttons.export', {}, 'Export')}</span>
                 </button>
-                <button 
+                <button
                   onClick={() => setIsAddItemModalOpen(true)}
                   className='flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors'
                 >
                   <PlusIcon className='h-4 w-4' />
-                  <span className='text-button-text'>{safeT('buttons.addNewItem', {}, 'Add New Item')}</span>
+                  <span className='text-button-text'>
+                    {safeT('buttons.addNewItem', {}, 'Add New Item')}
+                  </span>
                 </button>
               </div>
             </div>
@@ -379,21 +386,21 @@ export default function Inventory() {
                 <div className='flex items-start justify-between mb-2'>
                   <div className='flex items-center gap-3'>
                     <div className='w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center shadow-md'>
-                       <CurrencyDollarIcon className='w-5 h-5 text-white' />
+                      <CurrencyDollarIcon className='w-5 h-5 text-white' />
                     </div>
                     <div>
                       <p className='text-card-title text-blue-700'>
                         {safeT('stats.totalValue', {}, 'Total Inventory Value')}
                       </p>
                       <p className='text-card-metric text-blue-900'>
-                         €{totalValue.toLocaleString()}
-                       </p>
+                        €{totalValue.toLocaleString()}
+                      </p>
                     </div>
                   </div>
                   <div className='flex items-center gap-1 bg-green-500 text-white px-3 py-1.5 rounded-full text-badge font-semibold shadow-sm'>
-                     <ArrowUpIcon className='w-3 h-3' />
-                     +8.2%
-                   </div>
+                    <ArrowUpIcon className='w-3 h-3' />
+                    +8.2%
+                  </div>
                 </div>
                 <div className='w-full bg-blue-200 rounded-full h-3 mb-2 shadow-inner'>
                   <div
@@ -418,9 +425,7 @@ export default function Inventory() {
                       <p className='text-card-title text-red-700'>
                         {safeT('stats.lowStock', {}, 'Low Stock Items')}
                       </p>
-                      <p className='text-card-metric text-red-900'>
-                         {lowStockItems}
-                       </p>
+                      <p className='text-card-metric text-red-900'>{lowStockItems}</p>
                     </div>
                   </div>
                   <div className='flex items-center gap-1 bg-red-500 text-white px-3 py-1.5 rounded-full text-badge font-semibold shadow-sm'>
@@ -445,27 +450,25 @@ export default function Inventory() {
                 <div className='flex items-start justify-between mb-4'>
                   <div className='flex items-center gap-3'>
                     <div className='w-12 h-12 bg-gradient-to-br from-green-500 to-green-600 rounded-full flex items-center justify-center shadow-md'>
-                       <ArrowPathIcon className='w-5 h-5 text-white' />
+                      <ArrowPathIcon className='w-5 h-5 text-white' />
                     </div>
                     <div>
                       <p className='text-card-title text-green-700'>
                         {safeT('stats.itemsToReorder', {}, 'Items to Reorder')}
                       </p>
-                      <p className='text-card-metric text-green-900'>
-                         {needsReorderItems}
-                       </p>
+                      <p className='text-card-metric text-green-900'>{needsReorderItems}</p>
                     </div>
                   </div>
                   <div className='flex items-center gap-1 bg-green-500 text-white px-3 py-1.5 rounded-full text-badge font-semibold shadow-sm'>
-                     <ArrowPathIcon className='w-3 h-3' />
-                     Ready
-                   </div>
+                    <ArrowPathIcon className='w-3 h-3' />
+                    Ready
+                  </div>
                 </div>
                 <div className='flex items-center gap-2 mb-2'>
-                  <span className='text-green-700 text-nav-text font-medium'>
-                    Reorder Rate:
+                  <span className='text-green-700 text-nav-text font-medium'>Reorder Rate:</span>
+                  <span className='font-bold text-green-900'>
+                    {Math.min(Math.floor((needsReorderItems / 20) * 100), 100)}%
                   </span>
-                  <span className='font-bold text-green-900'>{Math.min(Math.floor((needsReorderItems / 20) * 100), 100)}%</span>
                   <div className='flex-1 bg-green-200 rounded-full h-3 shadow-inner'>
                     <div
                       className='bg-gradient-to-r from-green-500 to-green-600 h-3 rounded-full shadow-sm'
@@ -496,7 +499,9 @@ export default function Inventory() {
                       }`}
                       onClick={() => setActiveTab('allProducts')}
                     >
-                      <span className='text-nav-text'>{safeT('tabs.allProducts', {}, 'All Products')}</span>
+                      <span className='text-nav-text'>
+                        {safeT('tabs.allProducts', {}, 'All Products')}
+                      </span>
                     </button>
                     <button
                       className={`pb-2 text-sm font-medium border-b-2 ${
@@ -506,7 +511,9 @@ export default function Inventory() {
                       }`}
                       onClick={() => setActiveTab('categories')}
                     >
-                      <span className='text-nav-text'>{safeT('tabs.categories', {}, 'Categories')}</span>
+                      <span className='text-nav-text'>
+                        {safeT('tabs.categories', {}, 'Categories')}
+                      </span>
                     </button>
                     <button
                       className={`pb-2 text-sm font-medium border-b-2 ${
@@ -516,10 +523,12 @@ export default function Inventory() {
                       }`}
                       onClick={() => setActiveTab('locations')}
                     >
-                      <span className='text-nav-text'>{safeT('tabs.locations', {}, 'Locations')}</span>
+                      <span className='text-nav-text'>
+                        {safeT('tabs.locations', {}, 'Locations')}
+                      </span>
                     </button>
                   </div>
-                  
+
                   {/* Search, Filters, and Sort Controls */}
                   <div className='flex items-center justify-between'>
                     {/* Search Bar */}
@@ -532,79 +541,109 @@ export default function Inventory() {
                         className='block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 text-input-text'
                         placeholder={safeT('search.placeholder', {}, 'Search products...')}
                         value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
+                        onChange={e => setSearchTerm(e.target.value)}
                       />
                     </div>
-                    
+
                     <div className='flex items-center space-x-4 ml-4'>
                       {/* Filters Button */}
-                      <button 
+                      <button
                         className='flex items-center space-x-2 px-4 py-2 border border-gray-300 rounded-md text-button-text font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500'
                         onClick={() => setShowFilters(!showFilters)}
                       >
                         <FunnelIcon className='h-4 w-4' />
                         <span>{safeT('filters.title', {}, 'Filters')}</span>
                       </button>
-                      
+
                       {/* Sort Dropdown */}
                       <div className='flex items-center space-x-2 text-nav-text text-gray-600'>
                         <span>{safeT('sort.label', {}, 'Sort by:')}</span>
-                        <select 
+                        <select
                           className='border border-gray-300 rounded-md px-3 py-2 text-input-text text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
                           value={sortBy}
-                          onChange={(e) => setSortBy(e.target.value)}
+                          onChange={e => setSortBy(e.target.value)}
                         >
-                          <option value="name_az">{safeT('sort.nameAZ', {}, 'Name (A-Z)')}</option>
-                          <option value="name_za">{safeT('sort.nameZA', {}, 'Name (Z-A)')}</option>
-                          <option value="stock_low">{safeT('sort.stockLow', {}, 'Stock (Low to High)')}</option>
-                          <option value="stock_high">{safeT('sort.stockHigh', {}, 'Stock (High to Low)')}</option>
-                          <option value="price_low">{safeT('sort.priceLow', {}, 'Price (Low to High)')}</option>
-                          <option value="price_high">{safeT('sort.priceHigh', {}, 'Price (High to Low)')}</option>
+                          <option value='name_az'>{safeT('sort.nameAZ', {}, 'Name (A-Z)')}</option>
+                          <option value='name_za'>{safeT('sort.nameZA', {}, 'Name (Z-A)')}</option>
+                          <option value='stock_low'>
+                            {safeT('sort.stockLow', {}, 'Stock (Low to High)')}
+                          </option>
+                          <option value='stock_high'>
+                            {safeT('sort.stockHigh', {}, 'Stock (High to Low)')}
+                          </option>
+                          <option value='price_low'>
+                            {safeT('sort.priceLow', {}, 'Price (Low to High)')}
+                          </option>
+                          <option value='price_high'>
+                            {safeT('sort.priceHigh', {}, 'Price (High to Low)')}
+                          </option>
                         </select>
                       </div>
                     </div>
                   </div>
-                  
+
                   {/* Expandable Filters Section */}
                   {showFilters && (
                     <div className='mt-4 pt-4 border-t border-gray-200'>
                       <div className='flex items-center space-x-4'>
-                        <select 
+                        <select
                           className='border border-gray-300 rounded-md px-3 py-2 text-input-text text-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
                           value={filters.category}
-                          onChange={(e) => setFilters({...filters, category: e.target.value})}
+                          onChange={e => setFilters({ ...filters, category: e.target.value })}
                         >
-                          <option value="">{safeT('filters.category', {}, 'All Categories')}</option>
-                          <option value={safeT('sampleData.macbook.category', {}, 'Electronics')}>{safeT('sampleData.macbook.category', {}, 'Electronics')}</option>
-                          <option value={safeT('sampleData.officeChair.category', {}, 'Furniture')}>{safeT('sampleData.officeChair.category', {}, 'Furniture')}</option>
+                          <option value=''>
+                            {safeT('filters.category', {}, 'All Categories')}
+                          </option>
+                          <option value={safeT('sampleData.macbook.category', {}, 'Electronics')}>
+                            {safeT('sampleData.macbook.category', {}, 'Electronics')}
+                          </option>
+                          <option value={safeT('sampleData.officeChair.category', {}, 'Furniture')}>
+                            {safeT('sampleData.officeChair.category', {}, 'Furniture')}
+                          </option>
                         </select>
 
-                        <select 
+                        <select
                           className='border border-gray-300 rounded-md px-3 py-2 text-input-text text-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
                           value={filters.location}
-                          onChange={(e) => setFilters({...filters, location: e.target.value})}
+                          onChange={e => setFilters({ ...filters, location: e.target.value })}
                         >
-                          <option value="">{safeT('filters.location', {}, 'All Locations')}</option>
-                          <option value={safeT('sampleData.macbook.location', {}, 'Warehouse A')}>{safeT('sampleData.macbook.location', {}, 'Warehouse A')}</option>
-                          <option value={safeT('sampleData.officeChair.location', {}, 'Warehouse B')}>{safeT('sampleData.officeChair.location', {}, 'Warehouse B')}</option>
+                          <option value=''>{safeT('filters.location', {}, 'All Locations')}</option>
+                          <option value={safeT('sampleData.macbook.location', {}, 'Warehouse A')}>
+                            {safeT('sampleData.macbook.location', {}, 'Warehouse A')}
+                          </option>
+                          <option
+                            value={safeT('sampleData.officeChair.location', {}, 'Warehouse B')}
+                          >
+                            {safeT('sampleData.officeChair.location', {}, 'Warehouse B')}
+                          </option>
                         </select>
 
-                        <select 
+                        <select
                           className='border border-gray-300 rounded-md px-3 py-2 text-input-text text-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
                           value={filters.stockStatus}
-                          onChange={(e) => setFilters({...filters, stockStatus: e.target.value})}
+                          onChange={e => setFilters({ ...filters, stockStatus: e.target.value })}
                         >
-                          <option value="">{safeT('filters.stockStatus', {}, 'All Stock Status')}</option>
-                          <option value="in-stock">{safeT('status.inStock', {}, 'In Stock')}</option>
-                          <option value="low-stock">{safeT('status.lowStock', {}, 'Low Stock')}</option>
-                          <option value="out-of-stock">{safeT('status.outOfStock', {}, 'Out of Stock')}</option>
+                          <option value=''>
+                            {safeT('filters.stockStatus', {}, 'All Stock Status')}
+                          </option>
+                          <option value='in-stock'>
+                            {safeT('status.inStock', {}, 'In Stock')}
+                          </option>
+                          <option value='low-stock'>
+                            {safeT('status.lowStock', {}, 'Low Stock')}
+                          </option>
+                          <option value='out-of-stock'>
+                            {safeT('status.outOfStock', {}, 'Out of Stock')}
+                          </option>
                         </select>
 
                         {/* Clear Filters Button */}
                         {(filters.category || filters.location || filters.stockStatus) && (
                           <button
                             className='px-3 py-2 text-button-text font-medium text-red-600 hover:text-red-700 hover:bg-red-50 rounded-md transition-colors'
-                            onClick={() => setFilters({ category: '', location: '', stockStatus: '' })}
+                            onClick={() =>
+                              setFilters({ category: '', location: '', stockStatus: '' })
+                            }
                           >
                             {safeT('filters.clearFilters', {}, 'Clear Filters')}
                           </button>
@@ -614,315 +653,356 @@ export default function Inventory() {
                   )}
                 </div>
 
-              {/* Table */}
-              <div className='overflow-x-auto'>
-                <table className='min-w-full divide-y divide-gray-200'>
-                  <thead className='bg-gray-50'>
-                    <tr>
-                      {activeTab === 'categories' ? (
-                        <>
-                          <th className='px-6 py-3 text-left text-table-header text-gray-500 uppercase tracking-wider'>
-                            {safeT('table.category', {}, 'Category')}
-                          </th>
-                          <th className='px-6 py-3 text-left text-table-header text-gray-500 uppercase tracking-wider'>
-                            Items Count
-                          </th>
-                          <th className='px-6 py-3 text-left text-table-header text-gray-500 uppercase tracking-wider'>
-                            Total Stock
-                          </th>
-                          <th className='px-6 py-3 text-left text-table-header text-gray-500 uppercase tracking-wider'>
-                            Total Value
-                          </th>
-                          <th className='px-6 py-3 text-left text-table-header text-gray-500 uppercase tracking-wider'>
-                            {safeT('table.lastUpdated', {}, 'Last Updated')}
-                          </th>
-                          <th className='relative px-6 py-3'>
-                            <span className='sr-only'>{safeT('table.actions', {}, 'Actions')}</span>
-                          </th>
-                        </>
-                      ) : activeTab === 'locations' ? (
-                        <>
-                          <th className='px-6 py-3 text-left text-table-header text-gray-500 uppercase tracking-wider'>
-                            {safeT('table.location', {}, 'Location')}
-                          </th>
-                          <th className='px-6 py-3 text-left text-table-header text-gray-500 uppercase tracking-wider'>
-                            Items Count
-                          </th>
-                          <th className='px-6 py-3 text-left text-table-header text-gray-500 uppercase tracking-wider'>
-                            Total Stock
-                          </th>
-                          <th className='px-6 py-3 text-left text-table-header text-gray-500 uppercase tracking-wider'>
-                            Total Value
-                          </th>
-                          <th className='px-6 py-3 text-left text-table-header text-gray-500 uppercase tracking-wider'>
-                            {safeT('table.lastUpdated', {}, 'Last Updated')}
-                          </th>
-                          <th className='relative px-6 py-3'>
-                            <span className='sr-only'>{safeT('table.actions', {}, 'Actions')}</span>
-                          </th>
-                        </>
-                      ) : (
-                        <>
-                          <th className='px-6 py-3 text-left text-table-header text-gray-500 uppercase tracking-wider'>
-                            {safeT('table.product', {}, 'Product')}
-                          </th>
-                          <th className='px-6 py-3 text-left text-table-header text-gray-500 uppercase tracking-wider'>
-                            {safeT('table.category', {}, 'Category')}
-                          </th>
-                          <th className='px-6 py-3 text-left text-table-header text-gray-500 uppercase tracking-wider'>
-                            {safeT('table.location', {}, 'Location')}
-                          </th>
-                          <th className='px-6 py-3 text-left text-table-header text-gray-500 uppercase tracking-wider'>
-                            {safeT('table.stock', {}, 'Stock')}
-                          </th>
-                          <th className='px-6 py-3 text-left text-table-header text-gray-500 uppercase tracking-wider'>
-                            {safeT('table.price', {}, 'Price')}
-                          </th>
-                          <th className='px-6 py-3 text-left text-table-header text-gray-500 uppercase tracking-wider'>
-                            {safeT('table.supplier', {}, 'Supplier')}
-                          </th>
-                          <th className='px-6 py-3 text-left text-table-header text-gray-500 uppercase tracking-wider'>
-                            {safeT('table.lastUpdated', {}, 'Last Updated')}
-                          </th>
-                          <th className='relative px-6 py-3'>
-                            <span className='sr-only'>{safeT('table.actions', {}, 'Actions')}</span>
-                          </th>
-                        </>
-                      )}
-                    </tr>
-                  </thead>
-                  <tbody className='bg-white divide-y divide-gray-200'>
-                    {paginatedData.length > 0 ? (
-                      paginatedData.map(item => (
-                        <tr key={item.id}>
-                          {activeTab === 'categories' ? (
-                            <>
-                              <td className='px-6 py-4 whitespace-nowrap'>
-                                <div className='flex items-center'>
-                                  <div className='flex-shrink-0 h-10 w-10'>
-                                    <div className='h-10 w-10 rounded-lg bg-blue-100 flex items-center justify-center'>
-                                      <TagIcon className='h-5 w-5 text-blue-600' />
-                                    </div>
-                                  </div>
-                                  <div className='ml-4'>
-                                    <div className='text-table-cell font-medium text-gray-900'>{item.name}</div>
-                                    <div className='text-table-cell text-gray-500'>{item.sku}</div>
-                                  </div>
-                                </div>
-                              </td>
-                              <td className='px-6 py-4 whitespace-nowrap text-table-cell text-gray-900'>
-                                <span className='inline-flex items-center px-2.5 py-0.5 rounded-full text-badge font-medium bg-blue-100 text-blue-800'>
-                                  {item.itemCount} items
-                                </span>
-                              </td>
-                              <td className='px-6 py-4 whitespace-nowrap text-table-cell text-gray-900'>
-                                <span className='font-medium'>{item.stock}</span>
-                              </td>
-                              <td className='px-6 py-4 whitespace-nowrap text-table-cell text-gray-900'>
-                                ${item.totalValue.toFixed(2)}
-                              </td>
-                              <td className='px-6 py-4 whitespace-nowrap text-table-cell text-gray-500'>
-                                <div className='flex items-center'>
-                                  <ClockIcon className='h-4 w-4 mr-2' />
-                                  {item.lastUpdated}
-                                </div>
-                              </td>
-                              <td className='px-6 py-4 whitespace-nowrap text-right text-table-cell font-medium'>
-                                <button className='text-gray-500 hover:text-gray-700'>
-                                  <EllipsisHorizontalIcon className='h-5 w-5' />
-                                </button>
-                              </td>
-                            </>
-                          ) : activeTab === 'locations' ? (
-                            <>
-                              <td className='px-6 py-4 whitespace-nowrap'>
-                                <div className='flex items-center'>
-                                  <div className='flex-shrink-0 h-10 w-10'>
-                                    <div className='h-10 w-10 rounded-lg bg-green-100 flex items-center justify-center'>
-                                      <MapPinIcon className='h-5 w-5 text-green-600' />
-                                    </div>
-                                  </div>
-                                  <div className='ml-4'>
-                                    <div className='text-table-cell font-medium text-gray-900'>{item.name}</div>
-                                    <div className='text-table-cell text-gray-500'>{item.sku}</div>
-                                  </div>
-                                </div>
-                              </td>
-                              <td className='px-6 py-4 whitespace-nowrap text-table-cell text-gray-900'>
-                                <span className='inline-flex items-center px-2.5 py-0.5 rounded-full text-badge font-medium bg-green-100 text-green-800'>
-                                  {item.itemCount} items
-                                </span>
-                              </td>
-                              <td className='px-6 py-4 whitespace-nowrap text-table-cell text-gray-900'>
-                                <span className='font-medium'>{item.stock}</span>
-                              </td>
-                              <td className='px-6 py-4 whitespace-nowrap text-table-cell text-gray-900'>
-                                ${item.totalValue.toFixed(2)}
-                              </td>
-                              <td className='px-6 py-4 whitespace-nowrap text-table-cell text-gray-500'>
-                                <div className='flex items-center'>
-                                  <ClockIcon className='h-4 w-4 mr-2' />
-                                  {item.lastUpdated}
-                                </div>
-                              </td>
-                              <td className='px-6 py-4 whitespace-nowrap text-right text-table-cell font-medium'>
-                                <button className='text-gray-500 hover:text-gray-700'>
-                                  <EllipsisHorizontalIcon className='h-5 w-5' />
-                                </button>
-                              </td>
-                            </>
-                          ) : (
-                            <>
-                              <td className='px-6 py-4 whitespace-nowrap'>
-                                <div className='flex items-center'>
-                                  <div className='flex-shrink-0 h-10 w-10'>
-                                    <BuildingStorefrontIcon className='h-10 w-10 text-gray-300' />
-                                  </div>
-                                  <div className='ml-4'>
-                                    <div className='text-table-cell font-medium text-gray-900'>{item.name}</div>
-                                    <div className='text-table-cell text-gray-500'>{item.sku}</div>
-                                  </div>
-                                </div>
-                              </td>
-                              <td className='px-6 py-4 whitespace-nowrap'>
-                                <div className='flex items-center'>
-                                  <TagIcon className='h-4 w-4 text-gray-400 mr-2' />
-                                  <span className='text-table-cell text-gray-800'>{item.category}</span>
-                                </div>
-                              </td>
-                              <td className='px-6 py-4 whitespace-nowrap'>
-                                <div className='flex items-center'>
-                                  <MapPinIcon className='h-4 w-4 text-gray-400 mr-2' />
-                                  <span className='text-table-cell text-gray-800'>{item.location}</span>
-                                </div>
-                              </td>
-                              <td className='px-6 py-4 whitespace-nowrap'>
-                                <div className='flex items-center'>
-                                  <ArchiveBoxIcon className='h-4 w-4 text-gray-400 mr-2' />
-                                  <span className='text-sm font-semibold'>{item.stock}</span>
-                                  <span className='text-sm text-gray-500 ml-1'>/ {item.minStock}</span>
-                                  {(() => {
-                                    const { color, icon: Icon } = getStockIndicator(
-                                      item.stock,
-                                      item.minStock,
-                                    );
-                                    return <Icon className={`h-4 w-4 ml-2 ${color}`} />;
-                                  })()}
-                                </div>
-                              </td>
-                              <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-800'>
-                                ${item.price.toFixed(2)}
-                              </td>
-                              <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-800'>
-                                {item.supplier}
-                              </td>
-                              <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-500'>
-                                <div className='flex items-center'>
-                                  <ClockIcon className='h-4 w-4 mr-2' />
-                                  {item.lastUpdated}
-                                </div>
-                              </td>
-                              <td className='px-6 py-4 whitespace-nowrap text-right text-sm font-medium'>
-                                <button className='text-gray-500 hover:text-gray-700'>
-                                  <EllipsisHorizontalIcon className='h-5 w-5' />
-                                </button>
-                              </td>
-                            </>
-                          )}
-                        </tr>
-                      ))
-                    ) : (
+                {/* Table */}
+                <div className='overflow-x-auto'>
+                  <table className='min-w-full divide-y divide-gray-200'>
+                    <thead className='bg-gray-50'>
                       <tr>
-                        <td colSpan='8' className='text-center py-12'>
-                          <div className='flex flex-col items-center'>
-                            <MagnifyingGlassIcon className='h-12 w-12 text-gray-400' />
-                            <h3 className='mt-2 text-card-title text-gray-900'>
-                              {safeT('emptyState.title', {}, 'No products found')}
-                            </h3>
-                            <p className='mt-1 text-subtitle text-gray-500'>
-                              {safeT(
-                                'emptyState.message',
-                                {},
-                                'Try adjusting your search or filters.',
-                              )}
-                            </p>
-                          </div>
-                        </td>
+                        {activeTab === 'categories' ? (
+                          <>
+                            <th className='px-6 py-3 text-left text-table-header text-gray-500 uppercase tracking-wider'>
+                              {safeT('table.category', {}, 'Category')}
+                            </th>
+                            <th className='px-6 py-3 text-left text-table-header text-gray-500 uppercase tracking-wider'>
+                              Items Count
+                            </th>
+                            <th className='px-6 py-3 text-left text-table-header text-gray-500 uppercase tracking-wider'>
+                              Total Stock
+                            </th>
+                            <th className='px-6 py-3 text-left text-table-header text-gray-500 uppercase tracking-wider'>
+                              Total Value
+                            </th>
+                            <th className='px-6 py-3 text-left text-table-header text-gray-500 uppercase tracking-wider'>
+                              {safeT('table.lastUpdated', {}, 'Last Updated')}
+                            </th>
+                            <th className='relative px-6 py-3'>
+                              <span className='sr-only'>
+                                {safeT('table.actions', {}, 'Actions')}
+                              </span>
+                            </th>
+                          </>
+                        ) : activeTab === 'locations' ? (
+                          <>
+                            <th className='px-6 py-3 text-left text-table-header text-gray-500 uppercase tracking-wider'>
+                              {safeT('table.location', {}, 'Location')}
+                            </th>
+                            <th className='px-6 py-3 text-left text-table-header text-gray-500 uppercase tracking-wider'>
+                              Items Count
+                            </th>
+                            <th className='px-6 py-3 text-left text-table-header text-gray-500 uppercase tracking-wider'>
+                              Total Stock
+                            </th>
+                            <th className='px-6 py-3 text-left text-table-header text-gray-500 uppercase tracking-wider'>
+                              Total Value
+                            </th>
+                            <th className='px-6 py-3 text-left text-table-header text-gray-500 uppercase tracking-wider'>
+                              {safeT('table.lastUpdated', {}, 'Last Updated')}
+                            </th>
+                            <th className='relative px-6 py-3'>
+                              <span className='sr-only'>
+                                {safeT('table.actions', {}, 'Actions')}
+                              </span>
+                            </th>
+                          </>
+                        ) : (
+                          <>
+                            <th className='px-6 py-3 text-left text-table-header text-gray-500 uppercase tracking-wider'>
+                              {safeT('table.product', {}, 'Product')}
+                            </th>
+                            <th className='px-6 py-3 text-left text-table-header text-gray-500 uppercase tracking-wider'>
+                              {safeT('table.category', {}, 'Category')}
+                            </th>
+                            <th className='px-6 py-3 text-left text-table-header text-gray-500 uppercase tracking-wider'>
+                              {safeT('table.location', {}, 'Location')}
+                            </th>
+                            <th className='px-6 py-3 text-left text-table-header text-gray-500 uppercase tracking-wider'>
+                              {safeT('table.stock', {}, 'Stock')}
+                            </th>
+                            <th className='px-6 py-3 text-left text-table-header text-gray-500 uppercase tracking-wider'>
+                              {safeT('table.price', {}, 'Price')}
+                            </th>
+                            <th className='px-6 py-3 text-left text-table-header text-gray-500 uppercase tracking-wider'>
+                              {safeT('table.supplier', {}, 'Supplier')}
+                            </th>
+                            <th className='px-6 py-3 text-left text-table-header text-gray-500 uppercase tracking-wider'>
+                              {safeT('table.lastUpdated', {}, 'Last Updated')}
+                            </th>
+                            <th className='relative px-6 py-3'>
+                              <span className='sr-only'>
+                                {safeT('table.actions', {}, 'Actions')}
+                              </span>
+                            </th>
+                          </>
+                        )}
                       </tr>
-                    )}
-                  </tbody>
-                </table>
-              </div>
-              
-              {/* Pagination */}
-              <div className='px-6 py-4 flex items-center justify-between'>
-                <div className='flex-1 flex justify-between sm:hidden'>
-                  <button
-                    onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
-                    disabled={currentPage === 1}
-                    className='relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed'
-                  >
-                    <span className='text-button-text'>{safeT('pagination.previous', {}, 'Precedente')}</span>
-                  </button>
-                  <button
-                    onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
-                    disabled={currentPage === totalPages}
-                    className='ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed'
-                  >
-                    <span className='text-button-text'>{safeT('pagination.next', {}, 'Successivo')}</span>
-                  </button>
+                    </thead>
+                    <tbody className='bg-white divide-y divide-gray-200'>
+                      {paginatedData.length > 0 ? (
+                        paginatedData.map(item => (
+                          <tr key={item.id}>
+                            {activeTab === 'categories' ? (
+                              <>
+                                <td className='px-6 py-4 whitespace-nowrap'>
+                                  <div className='flex items-center'>
+                                    <div className='flex-shrink-0 h-10 w-10'>
+                                      <div className='h-10 w-10 rounded-lg bg-blue-100 flex items-center justify-center'>
+                                        <TagIcon className='h-5 w-5 text-blue-600' />
+                                      </div>
+                                    </div>
+                                    <div className='ml-4'>
+                                      <div className='text-table-cell font-medium text-gray-900'>
+                                        {item.name}
+                                      </div>
+                                      <div className='text-table-cell text-gray-500'>
+                                        {item.sku}
+                                      </div>
+                                    </div>
+                                  </div>
+                                </td>
+                                <td className='px-6 py-4 whitespace-nowrap text-table-cell text-gray-900'>
+                                  <span className='inline-flex items-center px-2.5 py-0.5 rounded-full text-badge font-medium bg-blue-100 text-blue-800'>
+                                    {item.itemCount} items
+                                  </span>
+                                </td>
+                                <td className='px-6 py-4 whitespace-nowrap text-table-cell text-gray-900'>
+                                  <span className='font-medium'>{item.stock}</span>
+                                </td>
+                                <td className='px-6 py-4 whitespace-nowrap text-table-cell text-gray-900'>
+                                  ${item.totalValue.toFixed(2)}
+                                </td>
+                                <td className='px-6 py-4 whitespace-nowrap text-table-cell text-gray-500'>
+                                  <div className='flex items-center'>
+                                    <ClockIcon className='h-4 w-4 mr-2' />
+                                    {item.lastUpdated}
+                                  </div>
+                                </td>
+                                <td className='px-6 py-4 whitespace-nowrap text-right text-table-cell font-medium'>
+                                  <button className='text-gray-500 hover:text-gray-700'>
+                                    <EllipsisHorizontalIcon className='h-5 w-5' />
+                                  </button>
+                                </td>
+                              </>
+                            ) : activeTab === 'locations' ? (
+                              <>
+                                <td className='px-6 py-4 whitespace-nowrap'>
+                                  <div className='flex items-center'>
+                                    <div className='flex-shrink-0 h-10 w-10'>
+                                      <div className='h-10 w-10 rounded-lg bg-green-100 flex items-center justify-center'>
+                                        <MapPinIcon className='h-5 w-5 text-green-600' />
+                                      </div>
+                                    </div>
+                                    <div className='ml-4'>
+                                      <div className='text-table-cell font-medium text-gray-900'>
+                                        {item.name}
+                                      </div>
+                                      <div className='text-table-cell text-gray-500'>
+                                        {item.sku}
+                                      </div>
+                                    </div>
+                                  </div>
+                                </td>
+                                <td className='px-6 py-4 whitespace-nowrap text-table-cell text-gray-900'>
+                                  <span className='inline-flex items-center px-2.5 py-0.5 rounded-full text-badge font-medium bg-green-100 text-green-800'>
+                                    {item.itemCount} items
+                                  </span>
+                                </td>
+                                <td className='px-6 py-4 whitespace-nowrap text-table-cell text-gray-900'>
+                                  <span className='font-medium'>{item.stock}</span>
+                                </td>
+                                <td className='px-6 py-4 whitespace-nowrap text-table-cell text-gray-900'>
+                                  ${item.totalValue.toFixed(2)}
+                                </td>
+                                <td className='px-6 py-4 whitespace-nowrap text-table-cell text-gray-500'>
+                                  <div className='flex items-center'>
+                                    <ClockIcon className='h-4 w-4 mr-2' />
+                                    {item.lastUpdated}
+                                  </div>
+                                </td>
+                                <td className='px-6 py-4 whitespace-nowrap text-right text-table-cell font-medium'>
+                                  <button className='text-gray-500 hover:text-gray-700'>
+                                    <EllipsisHorizontalIcon className='h-5 w-5' />
+                                  </button>
+                                </td>
+                              </>
+                            ) : (
+                              <>
+                                <td className='px-6 py-4 whitespace-nowrap'>
+                                  <div className='flex items-center'>
+                                    <div className='flex-shrink-0 h-10 w-10'>
+                                      <BuildingStorefrontIcon className='h-10 w-10 text-gray-300' />
+                                    </div>
+                                    <div className='ml-4'>
+                                      <div className='text-table-cell font-medium text-gray-900'>
+                                        {item.name}
+                                      </div>
+                                      <div className='text-table-cell text-gray-500'>
+                                        {item.sku}
+                                      </div>
+                                    </div>
+                                  </div>
+                                </td>
+                                <td className='px-6 py-4 whitespace-nowrap'>
+                                  <div className='flex items-center'>
+                                    <TagIcon className='h-4 w-4 text-gray-400 mr-2' />
+                                    <span className='text-table-cell text-gray-800'>
+                                      {item.category}
+                                    </span>
+                                  </div>
+                                </td>
+                                <td className='px-6 py-4 whitespace-nowrap'>
+                                  <div className='flex items-center'>
+                                    <MapPinIcon className='h-4 w-4 text-gray-400 mr-2' />
+                                    <span className='text-table-cell text-gray-800'>
+                                      {item.location}
+                                    </span>
+                                  </div>
+                                </td>
+                                <td className='px-6 py-4 whitespace-nowrap'>
+                                  <div className='flex items-center'>
+                                    <ArchiveBoxIcon className='h-4 w-4 text-gray-400 mr-2' />
+                                    <span className='text-sm font-semibold'>{item.stock}</span>
+                                    <span className='text-sm text-gray-500 ml-1'>
+                                      / {item.minStock}
+                                    </span>
+                                    {(() => {
+                                      const { color, icon: Icon } = getStockIndicator(
+                                        item.stock,
+                                        item.minStock,
+                                      );
+                                      return <Icon className={`h-4 w-4 ml-2 ${color}`} />;
+                                    })()}
+                                  </div>
+                                </td>
+                                <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-800'>
+                                  ${item.price.toFixed(2)}
+                                </td>
+                                <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-800'>
+                                  {item.supplier}
+                                </td>
+                                <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-500'>
+                                  <div className='flex items-center'>
+                                    <ClockIcon className='h-4 w-4 mr-2' />
+                                    {item.lastUpdated}
+                                  </div>
+                                </td>
+                                <td className='px-6 py-4 whitespace-nowrap text-right text-sm font-medium'>
+                                  <button className='text-gray-500 hover:text-gray-700'>
+                                    <EllipsisHorizontalIcon className='h-5 w-5' />
+                                  </button>
+                                </td>
+                              </>
+                            )}
+                          </tr>
+                        ))
+                      ) : (
+                        <tr>
+                          <td colSpan='8' className='text-center py-12'>
+                            <div className='flex flex-col items-center'>
+                              <MagnifyingGlassIcon className='h-12 w-12 text-gray-400' />
+                              <h3 className='mt-2 text-card-title text-gray-900'>
+                                {safeT('emptyState.title', {}, 'No products found')}
+                              </h3>
+                              <p className='mt-1 text-subtitle text-gray-500'>
+                                {safeT(
+                                  'emptyState.message',
+                                  {},
+                                  'Try adjusting your search or filters.',
+                                )}
+                              </p>
+                            </div>
+                          </td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
                 </div>
-                <div className='hidden sm:flex-1 sm:flex sm:items-center sm:justify-between'>
-                  <div>
-                    <p className='text-sm text-gray-700'>
-                      {safeT('pagination.showing', {}, 'Mostrando')}{' '}
-                      <span className='font-medium'>{startIndex + 1}</span> {safeT('pagination.to', {}, 'a')}{' '}
-                      <span className='font-medium'>{Math.min(endIndex, filteredData.length)}</span> {safeT('pagination.of', {}, 'di')}{' '}
-                      <span className='font-medium'>{filteredData.length}</span> {safeT('pagination.results', {}, 'risultati')}
-                    </p>
-                  </div>
-                  <div>
-                    <nav className='relative z-0 inline-flex rounded-md shadow-sm -space-x-px' aria-label='Pagination'>
-                      <button
-                        onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
-                        disabled={currentPage === 1}
-                        className='relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed'
-                      >
-                        <span className='sr-only'>{safeT('pagination.previous', {}, 'Precedente')}</span>
-                        <ChevronLeftIcon className='h-5 w-5' aria-hidden='true' />
-                      </button>
-                      <span className='relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700'>
-                        {safeT('pagination.page', {}, 'Pagina')} {currentPage} {safeT('pagination.of', {}, 'di')} {totalPages}
+
+                {/* Pagination */}
+                <div className='px-6 py-4 flex items-center justify-between'>
+                  <div className='flex-1 flex justify-between sm:hidden'>
+                    <button
+                      onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
+                      disabled={currentPage === 1}
+                      className='relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed'
+                    >
+                      <span className='text-button-text'>
+                        {safeT('pagination.previous', {}, 'Precedente')}
                       </span>
-                      <button
-                        onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
-                        disabled={currentPage === totalPages}
-                        className='relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed'
+                    </button>
+                    <button
+                      onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
+                      disabled={currentPage === totalPages}
+                      className='ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed'
+                    >
+                      <span className='text-button-text'>
+                        {safeT('pagination.next', {}, 'Successivo')}
+                      </span>
+                    </button>
+                  </div>
+                  <div className='hidden sm:flex-1 sm:flex sm:items-center sm:justify-between'>
+                    <div>
+                      <p className='text-sm text-gray-700'>
+                        {safeT('pagination.showing', {}, 'Mostrando')}{' '}
+                        <span className='font-medium'>{startIndex + 1}</span>{' '}
+                        {safeT('pagination.to', {}, 'a')}{' '}
+                        <span className='font-medium'>
+                          {Math.min(endIndex, filteredData.length)}
+                        </span>{' '}
+                        {safeT('pagination.of', {}, 'di')}{' '}
+                        <span className='font-medium'>{filteredData.length}</span>{' '}
+                        {safeT('pagination.results', {}, 'risultati')}
+                      </p>
+                    </div>
+                    <div>
+                      <nav
+                        className='relative z-0 inline-flex rounded-md shadow-sm -space-x-px'
+                        aria-label='Pagination'
                       >
-                        <span className='sr-only'>{safeT('pagination.next', {}, 'Successivo')}</span>
-                        <ChevronRightIcon className='h-5 w-5' aria-hidden='true' />
-                      </button>
-                    </nav>
+                        <button
+                          onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
+                          disabled={currentPage === 1}
+                          className='relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed'
+                        >
+                          <span className='sr-only'>
+                            {safeT('pagination.previous', {}, 'Precedente')}
+                          </span>
+                          <ChevronLeftIcon className='h-5 w-5' aria-hidden='true' />
+                        </button>
+                        <span className='relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700'>
+                          {safeT('pagination.page', {}, 'Pagina')} {currentPage}{' '}
+                          {safeT('pagination.of', {}, 'di')} {totalPages}
+                        </span>
+                        <button
+                          onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
+                          disabled={currentPage === totalPages}
+                          className='relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed'
+                        >
+                          <span className='sr-only'>
+                            {safeT('pagination.next', {}, 'Successivo')}
+                          </span>
+                          <ChevronRightIcon className='h-5 w-5' aria-hidden='true' />
+                        </button>
+                      </nav>
+                    </div>
                   </div>
                 </div>
-              </div>
               </div>
 
               {/* Right Column: Sidebar only */}
               <div className='w-[362px] flex flex-col gap-6'>
                 {/* Quick Actions - Moved to top */}
-                <div className="border border-gray-200 bg-white shadow-sm rounded-none h-full">
-                  <QuickActions 
+                <div className='border border-gray-200 bg-white shadow-sm rounded-none h-full'>
+                  <QuickActions
                     onAddItem={() => setIsAddItemModalOpen(true)}
                     onManageCategories={() => setIsManageCategoriesModalOpen(true)}
                     onExportInventory={() => setIsExportInventoryModalOpen(true)}
                     onStockAlerts={() => setIsStockAlertsModalOpen(true)}
                   />
                 </div>
-                
+
                 {/* Sidebar */}
-                <InventorySidebar 
-                  onReorder={(item) => {
+                <InventorySidebar
+                  onReorder={item => {
                     setSelectedItemForReorder(item);
                     setIsReorderModalOpen(true);
                   }}
@@ -931,47 +1011,45 @@ export default function Inventory() {
             </div>
           </div>
 
-
-
           {/* Footer */}
           <Footer />
         </div>
       </div>
 
       {/* Modals */}
-      <AddItemModal 
+      <AddItemModal
         isOpen={isAddItemModalOpen}
         onClose={() => setIsAddItemModalOpen(false)}
-        onSave={(newItem) => {
+        onSave={newItem => {
           // Add the new item to inventory
           console.log('Adding new item:', newItem);
           setIsAddItemModalOpen(false);
         }}
       />
 
-      <ManageCategoriesModal 
+      <ManageCategoriesModal
         isOpen={isManageCategoriesModalOpen}
         onClose={() => setIsManageCategoriesModalOpen(false)}
         categories={[...new Set(inventoryData.map(item => item.category))]}
-        onSave={(categories) => {
+        onSave={categories => {
           // Update categories
           console.log('Updated categories:', categories);
           setIsManageCategoriesModalOpen(false);
         }}
       />
 
-      <ExportInventoryModal 
+      <ExportInventoryModal
         isOpen={isExportInventoryModalOpen}
         onClose={() => setIsExportInventoryModalOpen(false)}
         data={filteredData}
-        onExport={(exportConfig) => {
+        onExport={exportConfig => {
           // Handle export
           console.log('Exporting with config:', exportConfig);
           setIsExportInventoryModalOpen(false);
         }}
       />
 
-      <StockAlertsModal 
+      <StockAlertsModal
         isOpen={isStockAlertsModalOpen}
         onClose={() => setIsStockAlertsModalOpen(false)}
         lowStockItems={inventoryData.filter(item => item.stock <= item.minStock)}
@@ -982,10 +1060,7 @@ export default function Inventory() {
         }}
       />
 
-      <ReportsModal
-        isOpen={isReportsModalOpen}
-        onClose={() => setIsReportsModalOpen(false)}
-      />
+      <ReportsModal isOpen={isReportsModalOpen} onClose={() => setIsReportsModalOpen(false)} />
 
       <ReorderModal
         isOpen={isReorderModalOpen}

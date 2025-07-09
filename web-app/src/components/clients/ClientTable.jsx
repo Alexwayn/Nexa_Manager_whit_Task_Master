@@ -96,20 +96,20 @@ const ClientTable = ({
               </div>
             </th>
             <th
-                scope='col'
-                className='px-6 py-3 text-left text-table-header text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100'
-                onClick={() => onSort('email')}
-              >
+              scope='col'
+              className='px-6 py-3 text-left text-table-header text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100'
+              onClick={() => onSort('email')}
+            >
               <div className='flex items-center space-x-1'>
                 <span>Email</span>
                 {getSortIcon('email')}
               </div>
             </th>
             <th
-                scope='col'
-                className='px-6 py-3 text-left text-table-header text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100'
-                onClick={() => onSort('phone')}
-              >
+              scope='col'
+              className='px-6 py-3 text-left text-table-header text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100'
+              onClick={() => onSort('phone')}
+            >
               <div className='flex items-center space-x-1'>
                 <span>Telefono</span>
                 {getSortIcon('phone')}
@@ -122,20 +122,20 @@ const ClientTable = ({
               Stato
             </th>
             <th
-                scope='col'
-                className='px-6 py-3 text-left text-table-header text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100'
-                onClick={() => onSort('lastActivity')}
-              >
+              scope='col'
+              className='px-6 py-3 text-left text-table-header text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100'
+              onClick={() => onSort('lastActivity')}
+            >
               <div className='flex items-center space-x-1'>
                 <span>Fatturato</span>
                 {getSortIcon('revenue')}
               </div>
             </th>
             <th
-                scope='col'
-                className='px-6 py-3 text-left text-table-header text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100'
-                onClick={() => onSort('createdAt')}
-              >
+              scope='col'
+              className='px-6 py-3 text-left text-table-header text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100'
+              onClick={() => onSort('createdAt')}
+            >
               <div className='flex items-center space-x-1'>
                 <span>Data Creazione</span>
                 {getSortIcon('created_at')}

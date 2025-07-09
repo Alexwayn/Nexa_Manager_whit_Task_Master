@@ -57,14 +57,17 @@ export default function Settings() {
     console.log('👤 user:', user);
     console.log('🎯 activeTab:', activeTab);
     console.log('📝 Current tab name:', tabs[activeTab]?.name);
-    console.log('📋 All tabs:', tabs.map((tab, index) => `${index}: ${tab.name}`));
+    console.log(
+      '📋 All tabs:',
+      tabs.map((tab, index) => `${index}: ${tab.name}`),
+    );
     console.log('🔧 Tabs structure:', tabs);
     console.log('📱 Window width:', window.innerWidth);
     console.log('🖥️ Should show desktop layout:', window.innerWidth >= 768);
   }, [isSignedIn, user, activeTab]);
 
   // Debug tab changes
-  const handleTabChange = (index) => {
+  const handleTabChange = index => {
     console.log('🔄 Tab changed from', activeTab, 'to', index);
     console.log('🏷️ New tab name:', tabs[index]?.name);
     setActiveTab(index);
@@ -86,35 +89,41 @@ export default function Settings() {
     { name: t('tabs.company'), description: t('tabs.companyDesc'), icon: BuildingOfficeIcon },
     { name: t('tabs.billing'), description: t('tabs.billingDesc'), icon: CreditCardIcon },
     { name: t('tabs.email'), description: t('tabDescriptions.email'), icon: EnvelopeIcon },
-    { name: t('tabs.integrations'), description: t('tabs.integrationsDesc'), icon: DevicePhoneMobileIcon },
-    { name: t('tabs.accessibility'), description: t('tabDescriptions.accessibility'), icon: ShieldCheckIcon },
+    {
+      name: t('tabs.integrations'),
+      description: t('tabs.integrationsDesc'),
+      icon: DevicePhoneMobileIcon,
+    },
+    {
+      name: t('tabs.accessibility'),
+      description: t('tabDescriptions.accessibility'),
+      icon: ShieldCheckIcon,
+    },
     { name: t('tabs.backup'), description: t('tabDescriptions.backup'), icon: ArrowUpTrayIcon },
   ];
 
   // Panel components
-  const renderPanelContent = (index) => {
+  const renderPanelContent = index => {
     console.log('🎨 Rendering panel content for index:', index);
     console.log('🎯 Tab name:', tabs[index]?.name);
     console.log('📝 Tab description:', tabs[index]?.description);
-    
+
     // Fallback content per test
     const fallbackContent = (
-      <div className="p-6 bg-white rounded-lg shadow">
-        <h2 className="text-2xl font-bold text-gray-900 mb-4">
+      <div className='p-6 bg-white rounded-lg shadow'>
+        <h2 className='text-2xl font-bold text-gray-900 mb-4'>
           {tabs[index]?.name} - Panel {index}
         </h2>
-        <p className="text-gray-600 mb-4">
-          {tabs[index]?.description}
-        </p>
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-          <p className="text-blue-800">
-            Questo è il contenuto del pannello per "{tabs[index]?.name}". 
-            Se vedi questo messaggio, significa che la struttura dei tab funziona correttamente.
+        <p className='text-gray-600 mb-4'>{tabs[index]?.description}</p>
+        <div className='bg-blue-50 border border-blue-200 rounded-lg p-4'>
+          <p className='text-blue-800'>
+            Questo è il contenuto del pannello per "{tabs[index]?.name}". Se vedi questo messaggio,
+            significa che la struttura dei tab funziona correttamente.
           </p>
         </div>
       </div>
     );
-    
+
     try {
       switch (index) {
         case 0: // Profile
@@ -136,7 +145,13 @@ export default function Settings() {
         case 2: // Notifications
           console.log('Rendering NotificationSettings');
           try {
-            return <NotificationSettings settings={notificationSettings} onSettingsChange={setNotificationSettings} showNotification={showNotification} />;
+            return (
+              <NotificationSettings
+                settings={notificationSettings}
+                onSettingsChange={setNotificationSettings}
+                showNotification={showNotification}
+              />
+            );
           } catch (error) {
             console.error('NotificationSettings error:', error);
             return fallbackContent;
@@ -250,7 +265,7 @@ export default function Settings() {
                 <div className='p-6'>
                   <h1 className='text-2xl font-bold text-gray-900 mb-2'>{t('title')}</h1>
                   <p className='text-gray-600 text-sm mb-8'>{t('subtitle')}</p>
-                  
+
                   <Tab.List className='space-y-2'>
                     {tabs.map((tab, index) => (
                       <Tab
@@ -264,12 +279,18 @@ export default function Settings() {
                         }
                       >
                         <div className='flex items-start space-x-3'>
-                          <tab.icon className={`h-5 w-5 mt-0.5 ${activeTab === index ? 'text-blue-600' : 'text-gray-400'}`} />
+                          <tab.icon
+                            className={`h-5 w-5 mt-0.5 ${activeTab === index ? 'text-blue-600' : 'text-gray-400'}`}
+                          />
                           <div className='flex-1 min-w-0'>
-                            <p className={`text-sm font-medium ${activeTab === index ? 'text-blue-700' : 'text-gray-900'}`}>
+                            <p
+                              className={`text-sm font-medium ${activeTab === index ? 'text-blue-700' : 'text-gray-900'}`}
+                            >
                               {tab.name}
                             </p>
-                            <p className={`text-xs mt-1 ${activeTab === index ? 'text-blue-600' : 'text-gray-500'}`}>
+                            <p
+                              className={`text-xs mt-1 ${activeTab === index ? 'text-blue-600' : 'text-gray-500'}`}
+                            >
                               {tab.description}
                             </p>
                           </div>
@@ -279,7 +300,7 @@ export default function Settings() {
                   </Tab.List>
                 </div>
               </div>
-              
+
               {/* Desktop Tab Panels */}
               <div className='flex-1 min-w-0'>
                 <Tab.Panels className='h-full'>

@@ -11,9 +11,9 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY);
 
 /**
  * Clerk Webhook Handler
- * 
+ *
  * Handles user and organization events from Clerk and syncs data with Supabase.
- * Supports events: user.created, user.updated, user.deleted, 
+ * Supports events: user.created, user.updated, user.deleted,
  * organization.created, organization.updated, organization.deleted,
  * organizationMembership.created, organizationMembership.updated, organizationMembership.deleted
  */
@@ -35,7 +35,10 @@ export default async function handler(req, res) {
     }
 
     const { type, data } = req.body;
-    console.log(`Processing Clerk webhook: ${type}`, { userId: data?.id, organizationId: data?.organization?.id });
+    console.log(`Processing Clerk webhook: ${type}`, {
+      userId: data?.id,
+      organizationId: data?.organization?.id,
+    });
 
     let result;
     switch (type) {
@@ -84,7 +87,6 @@ export default async function handler(req, res) {
       console.error(`Failed to process ${type} webhook:`, result.error);
       return res.status(500).json({ error: 'Failed to process webhook', details: result.error });
     }
-
   } catch (error) {
     console.error('Webhook processing error:', error);
     return res.status(500).json({ error: 'Internal server error', message: error.message });
@@ -114,7 +116,7 @@ function verifyWebhookSignature(payload, signature, timestamp) {
 
     return crypto.timingSafeEqual(
       Buffer.from(signatures.v1 || '', 'base64'),
-      Buffer.from(expectedSignature, 'base64')
+      Buffer.from(expectedSignature, 'base64'),
     );
   } catch (error) {
     console.error('Signature verification error:', error);
@@ -142,16 +144,12 @@ async function handleUserCreated(userData) {
           external_accounts: userData.external_accounts,
           public_metadata: userData.public_metadata,
           private_metadata: userData.private_metadata,
-          unsafe_metadata: userData.unsafe_metadata
-        }
-      }
+          unsafe_metadata: userData.unsafe_metadata,
+        },
+      },
     };
 
-    const { data, error } = await supabase
-      .from('users')
-      .insert([userRecord])
-      .select()
-      .single();
+    const { data, error } = await supabase.from('users').insert([userRecord]).select().single();
 
     if (error) {
       throw new Error(`Failed to insert user: ${error.message}`);
@@ -159,7 +157,6 @@ async function handleUserCreated(userData) {
 
     console.log('User created in Supabase:', data.id);
     return { success: true, data, action: 'user_created' };
-
   } catch (error) {
     console.error('Error handling user.created:', error);
     return { success: false, error: error.message };
@@ -184,9 +181,9 @@ async function handleUserUpdated(userData) {
           external_accounts: userData.external_accounts,
           public_metadata: userData.public_metadata,
           private_metadata: userData.private_metadata,
-          unsafe_metadata: userData.unsafe_metadata
-        }
-      }
+          unsafe_metadata: userData.unsafe_metadata,
+        },
+      },
     };
 
     const { data, error } = await supabase
@@ -202,7 +199,6 @@ async function handleUserUpdated(userData) {
 
     console.log('User updated in Supabase:', data.id);
     return { success: true, data, action: 'user_updated' };
-
   } catch (error) {
     console.error('Error handling user.updated:', error);
     return { success: false, error: error.message };
@@ -217,9 +213,9 @@ async function handleUserDeleted(userData) {
     // Soft delete by marking user as deleted
     const { data, error } = await supabase
       .from('users')
-      .update({ 
+      .update({
         deleted_at: new Date().toISOString(),
-        active: false
+        active: false,
       })
       .eq('clerk_user_id', userData.id)
       .select()
@@ -231,7 +227,6 @@ async function handleUserDeleted(userData) {
 
     console.log('User deleted in Supabase:', data.id);
     return { success: true, data, action: 'user_deleted' };
-
   } catch (error) {
     console.error('Error handling user.deleted:', error);
     return { success: false, error: error.message };
@@ -254,9 +249,9 @@ async function handleOrganizationCreated(orgData) {
       metadata: {
         clerk_data: {
           public_metadata: orgData.public_metadata,
-          private_metadata: orgData.private_metadata
-        }
-      }
+          private_metadata: orgData.private_metadata,
+        },
+      },
     };
 
     const { data, error } = await supabase
@@ -271,7 +266,6 @@ async function handleOrganizationCreated(orgData) {
 
     console.log('Organization created in Supabase:', data.id);
     return { success: true, data, action: 'organization_created' };
-
   } catch (error) {
     console.error('Error handling organization.created:', error);
     return { success: false, error: error.message };
@@ -292,9 +286,9 @@ async function handleOrganizationUpdated(orgData) {
       metadata: {
         clerk_data: {
           public_metadata: orgData.public_metadata,
-          private_metadata: orgData.private_metadata
-        }
-      }
+          private_metadata: orgData.private_metadata,
+        },
+      },
     };
 
     const { data, error } = await supabase
@@ -310,7 +304,6 @@ async function handleOrganizationUpdated(orgData) {
 
     console.log('Organization updated in Supabase:', data.id);
     return { success: true, data, action: 'organization_updated' };
-
   } catch (error) {
     console.error('Error handling organization.updated:', error);
     return { success: false, error: error.message };
@@ -325,9 +318,9 @@ async function handleOrganizationDeleted(orgData) {
     // Soft delete by marking organization as deleted
     const { data, error } = await supabase
       .from('organizations')
-      .update({ 
+      .update({
         deleted_at: new Date().toISOString(),
-        active: false
+        active: false,
       })
       .eq('clerk_organization_id', orgData.id)
       .select()
@@ -339,7 +332,6 @@ async function handleOrganizationDeleted(orgData) {
 
     console.log('Organization deleted in Supabase:', data.id);
     return { success: true, data, action: 'organization_deleted' };
-
   } catch (error) {
     console.error('Error handling organization.deleted:', error);
     return { success: false, error: error.message };
@@ -362,9 +354,9 @@ async function handleMembershipCreated(membershipData) {
         clerk_data: {
           public_user_data: membershipData.public_user_data,
           private_metadata: membershipData.private_metadata,
-          public_metadata: membershipData.public_metadata
-        }
-      }
+          public_metadata: membershipData.public_metadata,
+        },
+      },
     };
 
     const { data, error } = await supabase
@@ -379,7 +371,6 @@ async function handleMembershipCreated(membershipData) {
 
     console.log('Membership created in Supabase:', data.id);
     return { success: true, data, action: 'membership_created' };
-
   } catch (error) {
     console.error('Error handling organizationMembership.created:', error);
     return { success: false, error: error.message };
@@ -398,9 +389,9 @@ async function handleMembershipUpdated(membershipData) {
         clerk_data: {
           public_user_data: membershipData.public_user_data,
           private_metadata: membershipData.private_metadata,
-          public_metadata: membershipData.public_metadata
-        }
-      }
+          public_metadata: membershipData.public_metadata,
+        },
+      },
     };
 
     const { data, error } = await supabase
@@ -416,7 +407,6 @@ async function handleMembershipUpdated(membershipData) {
 
     console.log('Membership updated in Supabase:', data.id);
     return { success: true, data, action: 'membership_updated' };
-
   } catch (error) {
     console.error('Error handling organizationMembership.updated:', error);
     return { success: false, error: error.message };
@@ -441,9 +431,8 @@ async function handleMembershipDeleted(membershipData) {
 
     console.log('Membership deleted in Supabase:', data.id);
     return { success: true, data, action: 'membership_deleted' };
-
   } catch (error) {
     console.error('Error handling organizationMembership.deleted:', error);
     return { success: false, error: error.message };
   }
-} 
+}

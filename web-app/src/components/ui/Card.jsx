@@ -10,7 +10,7 @@ export const Card = ({
   ...props
 }) => {
   const baseStyles = 'bg-white rounded-lg border border-gray-200 shadow-sm';
-  
+
   const variants = {
     default: 'hover:shadow-md transition-shadow duration-200',
     elevated: 'shadow-lg hover:shadow-xl transition-shadow duration-200',
@@ -26,95 +26,47 @@ export const Card = ({
   };
 
   return (
-    <div
-      className={cn(
-        baseStyles,
-        variants[variant],
-        paddings[padding],
-        className
-      )}
-      {...props}
-    >
+    <div className={cn(baseStyles, variants[variant], paddings[padding], className)} {...props}>
       {children}
     </div>
   );
 };
 
-export const CardHeader = ({
-  className,
-  children,
-  ...props
-}) => {
+export const CardHeader = ({ className, children, ...props }) => {
   return (
-    <div
-      className={cn('mb-6', className)}
-      {...props}
-    >
+    <div className={cn('mb-6', className)} {...props}>
       {children}
     </div>
   );
 };
 
-export const CardTitle = ({
-  as = 'h3',
-  className,
-  children,
-  ...props
-}) => {
+export const CardTitle = ({ as = 'h3', className, children, ...props }) => {
   return (
-    <Heading
-      as={as}
-      variant="card-title"
-      className={cn('mb-2', className)}
-      {...props}
-    >
+    <Heading as={as} variant='card-title' className={cn('mb-2', className)} {...props}>
       {children}
     </Heading>
   );
 };
 
-export const CardDescription = ({
-  className,
-  children,
-  ...props
-}) => {
+export const CardDescription = ({ className, children, ...props }) => {
   return (
-    <Text
-      variant="body"
-      color="secondary"
-      className={className}
-      {...props}
-    >
+    <Text variant='body' color='secondary' className={className} {...props}>
       {children}
     </Text>
   );
 };
 
-export const CardContent = ({
-  className,
-  children,
-  ...props
-}) => {
+export const CardContent = ({ className, children, ...props }) => {
   return (
-    <div
-      className={cn('space-y-4', className)}
-      {...props}
-    >
+    <div className={cn('space-y-4', className)} {...props}>
       {children}
     </div>
   );
 };
 
-export const CardFooter = ({
-  className,
-  children,
-  ...props
-}) => {
+export const CardFooter = ({ className, children, ...props }) => {
   return (
-    <div
-      className={cn('mt-6 pt-4 border-t border-gray-100', className)}
-      {...props}
-    >
+    <div className={cn('mt-6 pt-4 border-t border-gray-100', className)} {...props}>
       {children}
     </div>
   );
@@ -133,17 +85,15 @@ export const StatCard = ({
   ...props
 }) => {
   return (
-    <Card variant="default" className={cn('relative overflow-hidden', className)} {...props}>
-      <div className="flex items-start justify-between">
-        <div className="flex-1">
-          <Text variant="body-small" color="secondary" className="mb-1">
+    <Card variant='default' className={cn('relative overflow-hidden', className)} {...props}>
+      <div className='flex items-start justify-between'>
+        <div className='flex-1'>
+          <Text variant='body-small' color='secondary' className='mb-1'>
             {title}
           </Text>
-          <div className="text-metric-large text-primary font-bold mb-1">
-            {value}
-          </div>
+          <div className='text-metric-large text-primary font-bold mb-1'>{value}</div>
           {subtitle && (
-            <Text variant="caption" color="tertiary">
+            <Text variant='caption' color='tertiary'>
               {subtitle}
             </Text>
           )}
@@ -155,15 +105,20 @@ export const StatCard = ({
         )}
       </div>
       {trend && (
-        <div className="mt-4 flex items-center">
-          <span className={cn(
-            'text-caption font-medium',
-            trend.type === 'positive' ? 'text-success' : 
-            trend.type === 'negative' ? 'text-error' : 'text-secondary'
-          )}>
+        <div className='mt-4 flex items-center'>
+          <span
+            className={cn(
+              'text-caption font-medium',
+              trend.type === 'positive'
+                ? 'text-success'
+                : trend.type === 'negative'
+                  ? 'text-error'
+                  : 'text-secondary',
+            )}
+          >
             {trend.value}
           </span>
-          <Text variant="caption" color="tertiary" className="ml-2">
+          <Text variant='caption' color='tertiary' className='ml-2'>
             {trend.label}
           </Text>
         </div>

@@ -44,7 +44,7 @@ export default function TestDebug() {
       }
     } catch (error) {
       setSupabaseStatus({ testing: false, result: { success: false, error } });
-      addLog(`Exception during Supabase test: ${error.message}`, 'error');
+      addLog(`Exception during Supabase test: ${String(error?.message || error || 'Unknown error')}`, 'error');
     }
   };
 
@@ -62,7 +62,7 @@ export default function TestDebug() {
       });
 
       if (error) {
-        addLog(`Session error: ${error.message}`, 'error');
+        addLog(`Session error: ${String(error?.message || error || 'Unknown error')}`, 'error');
       } else if (data.session) {
         addLog(`Session found for user: ${data.session.user.email}`, 'success');
         addLog(`User ID: ${data.session.user.id}`, 'info');
@@ -75,7 +75,7 @@ export default function TestDebug() {
       }
     } catch (err) {
       setSessionStatus({ testing: false, result: { error: err } });
-      addLog(`Exception checking session: ${err.message}`, 'error');
+      addLog(`Exception checking session: ${String(err?.message || err || 'Unknown error')}`, 'error');
     }
   };
 
@@ -87,12 +87,12 @@ export default function TestDebug() {
       const { error } = await supabase.auth.signOut();
 
       if (error) {
-        addLog(`Sign out error: ${error.message}`, 'error');
+        addLog(`Sign out error: ${String(error?.message || error || 'Unknown error')}`, 'error');
       } else {
         addLog('Signed out successfully', 'success');
       }
     } catch (err) {
-      addLog(`Exception during sign out: ${err.message}`, 'error');
+      addLog(`Exception during sign out: ${String(err?.message || err || 'Unknown error')}`, 'error');
     }
   };
 

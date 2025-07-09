@@ -1,0 +1,190 @@
+**1. Contesto del Progetto:**
+Sto lavorando su un'applicazione [Tipo di applicazione, es: dashboard di analisi] usando [Framework/Librerie, es: React con Vite, TypeScript]. Sto cercando di implementare [Obiettivo, es: una pagina di analytics con grafici e dati].
+
+**2. Il Codice Rilevante:**
+Ecco la porzione di codice nel file `[Nome del file, es: Analytics.jsx]` dove si verifica l'errore. Ho incluso alcune righe prima e dopo le righe segnalate dall'errore per dare più contesto.
+
+```jsx
+// Incolla qui il tuo codice.
+// Esempio:
+// ... righe da 400 a 415 del tuo file ...
+
+<section>
+  {/* Riga 406 - Qui inizia l'errore */}
+  <ErrorBoundary>
+    <div
+      {/* ... altro codice ... */}
+    </div>
+  {/* Qui probabilmente manca </ErrorBoundary> */}
+</section>
+```
+
+**3. L'Errore Esatto:**
+Quando eseguo il codice, ricevo il seguente errore nella console o nell'editor. Questo è l'errore più in alto nella lista, che credo sia la causa principale:
+
+```
+// Incolla qui il messaggio di errore completo, inclusa la riga
+[{
+	"resource": "/e:/AlexVenturesStudio/Nexa_Manager_whit_Task_Master/web-app/src/pages/Analytics.jsx",
+	"owner": "typescript",
+	"code": "17008",
+	"severity": 8,
+	"message": "JSX element 'ErrorBoundary' has no corresponding closing tag.",
+	"source": "ts",
+	"startLineNumber": 406,
+	"startColumn": 6,
+	"endLineNumber": 406,
+	"endColumn": 19,
+	"extensionID": "vscode.typescript-language-features"
+},{
+	"resource": "/e:/AlexVenturesStudio/Nexa_Manager_whit_Task_Master/web-app/src/pages/Analytics.jsx",
+	"owner": "typescript",
+	"code": "17008",
+	"severity": 8,
+	"message": "JSX element 'div' has no corresponding closing tag.",
+	"source": "ts",
+	"startLineNumber": 407,
+	"startColumn": 8,
+	"endLineNumber": 407,
+	"endColumn": 11,
+	"extensionID": "vscode.typescript-language-features"
+},{
+	"resource": "/e:/AlexVenturesStudio/Nexa_Manager_whit_Task_Master/web-app/src/pages/Analytics.jsx",
+	"owner": "typescript",
+	"code": "1005",
+	"severity": 8,
+	"message": "',' expected.",
+	"source": "ts",
+	"startLineNumber": 615,
+	"startColumn": 22,
+	"endLineNumber": 615,
+	"endColumn": 23,
+	"extensionID": "vscode.typescript-language-features"
+},{
+	"resource": "/e:/AlexVenturesStudio/Nexa_Manager_whit_Task_Master/web-app/src/pages/Analytics.jsx",
+	"owner": "typescript",
+	"code": "1005",
+	"severity": 8,
+	"message": "')' expected.",
+	"source": "ts",
+	"startLineNumber": 727,
+	"startColumn": 11,
+	"endLineNumber": 727,
+	"endColumn": 12,
+	"extensionID": "vscode.typescript-language-features"
+},{
+	"resource": "/e:/AlexVenturesStudio/Nexa_Manager_whit_Task_Master/web-app/src/pages/Analytics.jsx",
+	"owner": "typescript",
+	"code": "1381",
+	"severity": 8,
+	"message": "Unexpected token. Did you mean `{'}'}` or `&rbrace;`?",
+	"source": "ts",
+	"startLineNumber": 1018,
+	"startColumn": 12,
+	"endLineNumber": 1018,
+	"endColumn": 13,
+	"extensionID": "vscode.typescript-language-features"
+},{
+	"resource": "/e:/AlexVenturesStudio/Nexa_Manager_whit_Task_Master/web-app/src/pages/Analytics.jsx",
+	"owner": "typescript",
+	"code": "1381",
+	"severity": 8,
+	"message": "Unexpected token. Did you mean `{'}'}` or `&rbrace;`?",
+	"source": "ts",
+	"startLineNumber": 1592,
+	"startColumn": 12,
+	"endLineNumber": 1592,
+	"endColumn": 13,
+	"extensionID": "vscode.typescript-language-features"
+},{
+	"resource": "/e:/AlexVenturesStudio/Nexa_Manager_whit_Task_Master/web-app/src/pages/Analytics.jsx",
+	"owner": "typescript",
+	"code": "17002",
+	"severity": 8,
+	"message": "Expected corresponding JSX closing tag for 'Suspense'.",
+	"source": "ts",
+	"startLineNumber": 1620,
+	"startColumn": 11,
+	"endLineNumber": 1620,
+	"endColumn": 14,
+	"extensionID": "vscode.typescript-language-features"
+},{
+	"resource": "/e:/AlexVenturesStudio/Nexa_Manager_whit_Task_Master/web-app/src/pages/Analytics.jsx",
+	"owner": "typescript",
+	"code": "1005",
+	"severity": 8,
+	"message": "')' expected.",
+	"source": "ts",
+	"startLineNumber": 1622,
+	"startColumn": 9,
+	"endLineNumber": 1622,
+	"endColumn": 10,
+	"extensionID": "vscode.typescript-language-features"
+},{
+	"resource": "/e:/AlexVenturesStudio/Nexa_Manager_whit_Task_Master/web-app/src/pages/Analytics.jsx",
+	"owner": "typescript",
+	"code": "17002",
+	"severity": 8,
+	"message": "Expected corresponding JSX closing tag for 'Suspense'.",
+	"source": "ts",
+	"startLineNumber": 1624,
+	"startColumn": 9,
+	"endLineNumber": 1624,
+	"endColumn": 12,
+	"extensionID": "vscode.typescript-language-features"
+},{
+	"resource": "/e:/AlexVenturesStudio/Nexa_Manager_whit_Task_Master/web-app/src/pages/Analytics.jsx",
+	"owner": "typescript",
+	"code": "1005",
+	"severity": 8,
+	"message": "')' expected.",
+	"source": "ts",
+	"startLineNumber": 1625,
+	"startColumn": 5,
+	"endLineNumber": 1625,
+	"endColumn": 7,
+	"extensionID": "vscode.typescript-language-features"
+},{
+	"resource": "/e:/AlexVenturesStudio/Nexa_Manager_whit_Task_Master/web-app/src/pages/Analytics.jsx",
+	"owner": "typescript",
+	"code": "17002",
+	"severity": 8,
+	"message": "Expected corresponding JSX closing tag for 'div'.",
+	"source": "ts",
+	"startLineNumber": 1625,
+	"startColumn": 7,
+	"endLineNumber": 1625,
+	"endColumn": 20,
+	"extensionID": "vscode.typescript-language-features"
+},{
+	"resource": "/e:/AlexVenturesStudio/Nexa_Manager_whit_Task_Master/web-app/src/pages/Analytics.jsx",
+	"owner": "typescript",
+	"code": "1381",
+	"severity": 8,
+	"message": "Unexpected token. Did you mean `{'}'}` or `&rbrace;`?",
+	"source": "ts",
+	"startLineNumber": 1627,
+	"startColumn": 1,
+	"endLineNumber": 1627,
+	"endColumn": 2,
+	"extensionID": "vscode.typescript-language-features"
+},{
+	"resource": "/e:/AlexVenturesStudio/Nexa_Manager_whit_Task_Master/web-app/src/pages/Analytics.jsx",
+	"owner": "typescript",
+	"code": "1005",
+	"severity": 8,
+	"message": "'</' expected.",
+	"source": "ts",
+	"startLineNumber": 1629,
+	"startColumn": 28,
+	"endLineNumber": 1629,
+	"endColumn": 28,
+	"extensionID": "vscode.typescript-language-features"
+}]
+```
+
+**4. Cosa Ho Già Provato:**
+Ho già tentato [Descrivi brevemente cosa hai provato, es: "Ho controllato le parentesi graffe, ma non riesco a trovare dove manca la chiusura"]
+
+**5. Domanda Specifica:**
+Potresti aiutarmi a [Domanda specifica, es: "identificare dove mancano i tag di chiusura JSX e come sistemarli?"]

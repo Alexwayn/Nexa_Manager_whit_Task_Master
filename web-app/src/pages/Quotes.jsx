@@ -52,7 +52,6 @@ import { useTranslation } from 'react-i18next';
 const QuotesPage = () => {
   const navigate = useNavigate();
   const { t, ready, i18n: translationI18n } = useTranslation('quotes');
-  
 
   const { user } = useUser();
   const [activeTab, setActiveTab] = useState('quotes');
@@ -63,12 +62,12 @@ const QuotesPage = () => {
       client: {
         name: 'Acme Corporation',
         industry: 'Technology',
-        avatar: 'AC'
+        avatar: 'AC',
       },
       amount: 15000,
       issue_date: '2024-01-15',
       due_date: '2024-02-15',
-      status: 'pending'
+      status: 'pending',
     },
     {
       id: 2,
@@ -76,12 +75,12 @@ const QuotesPage = () => {
       client: {
         name: 'Global Solutions Ltd',
         industry: 'Consulting',
-        avatar: 'GS'
+        avatar: 'GS',
       },
       amount: 8500,
       issue_date: '2024-01-20',
       due_date: '2024-02-20',
-      status: 'accepted'
+      status: 'accepted',
     },
     {
       id: 3,
@@ -89,13 +88,13 @@ const QuotesPage = () => {
       client: {
         name: 'Innovation Hub',
         industry: 'Startup',
-        avatar: 'IH'
+        avatar: 'IH',
       },
       amount: 12750,
       issue_date: '2024-01-25',
       due_date: '2024-02-25',
-      status: 'pending'
-    }
+      status: 'pending',
+    },
   ]);
   const [filteredQuotes, setFilteredQuotes] = useState([
     {
@@ -104,12 +103,12 @@ const QuotesPage = () => {
       client: {
         name: 'Acme Corporation',
         industry: 'Technology',
-        avatar: 'AC'
+        avatar: 'AC',
       },
       amount: 15000,
       issue_date: '2024-01-15',
       due_date: '2024-02-15',
-      status: 'pending'
+      status: 'pending',
     },
     {
       id: 2,
@@ -117,12 +116,12 @@ const QuotesPage = () => {
       client: {
         name: 'Global Solutions Ltd',
         industry: 'Consulting',
-        avatar: 'GS'
+        avatar: 'GS',
       },
       amount: 8500,
       issue_date: '2024-01-20',
       due_date: '2024-02-20',
-      status: 'accepted'
+      status: 'accepted',
     },
     {
       id: 3,
@@ -130,46 +129,44 @@ const QuotesPage = () => {
       client: {
         name: 'Innovation Hub',
         industry: 'Startup',
-        avatar: 'IH'
+        avatar: 'IH',
       },
       amount: 12750,
       issue_date: '2024-01-25',
       due_date: '2024-02-25',
-      status: 'pending'
-    }
+      status: 'pending',
+    },
   ]);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10);
   const [searchTerm, setSearchTerm] = useState('');
-  
+
   // Filter state
   const [filters, setFilters] = useState({
     status: '',
     client: '',
     dateRange: '',
-    amount: ''
+    amount: '',
   });
-  
+
   // Quote modal state
   const [isQuoteModalOpen, setIsQuoteModalOpen] = useState(false);
   const [selectedQuote, setSelectedQuote] = useState(null);
   const [selectedClient, setSelectedClient] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  
+
   // Quote detail modal state for approval workflow
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
   const [detailQuote, setDetailQuote] = useState(null);
   const [refreshTrigger, setRefreshTrigger] = useState(0);
-  
+
   // Quote-to-invoice converter state
   const [isConverterOpen, setIsConverterOpen] = useState(false);
   const [quoteToConvert, setQuoteToConvert] = useState(null);
-  
+
   // Dropdown state for chart options
   const [dropdownOpen, setDropdownOpen] = useState(null);
   const dropdownRef = useRef(null);
-
-
 
   // Quotes will be loaded from the backend API
 
@@ -180,7 +177,7 @@ const QuotesPage = () => {
     setIsQuoteModalOpen(true);
   };
 
-  const handleEditQuote = (quote) => {
+  const handleEditQuote = quote => {
     setSelectedQuote(quote);
     setSelectedClient(null);
     setIsQuoteModalOpen(true);
@@ -192,16 +189,16 @@ const QuotesPage = () => {
     setSelectedClient(null);
   };
 
-  const handleQuoteCreated = async (quoteData) => {
+  const handleQuoteCreated = async quoteData => {
     try {
       setIsLoading(true);
       const result = await QuoteService.createQuote(user.id, quoteData);
-      
+
       // Update quotes list
       const updatedQuotes = [result, ...quotes];
       setQuotes(updatedQuotes);
       setFilteredQuotes(updatedQuotes);
-      
+
       return result;
     } catch (error) {
       Logger.error('Error creating quote:', error);
@@ -211,18 +208,16 @@ const QuotesPage = () => {
     }
   };
 
-  const handleQuoteUpdated = async (quoteData) => {
+  const handleQuoteUpdated = async quoteData => {
     try {
       setIsLoading(true);
       const result = await QuoteService.updateQuote(selectedQuote.id, user.id, quoteData);
-      
+
       // Update quotes list
-      const updatedQuotes = quotes.map(quote => 
-        quote.id === selectedQuote.id ? result : quote
-      );
+      const updatedQuotes = quotes.map(quote => (quote.id === selectedQuote.id ? result : quote));
       setQuotes(updatedQuotes);
       setFilteredQuotes(updatedQuotes);
-      
+
       return result;
     } catch (error) {
       Logger.error('Error updating quote:', error);
@@ -233,7 +228,7 @@ const QuotesPage = () => {
   };
 
   // Quote detail modal handlers for approval workflow
-  const handleViewQuote = (quote) => {
+  const handleViewQuote = quote => {
     setDetailQuote(quote);
     setIsDetailModalOpen(true);
   };
@@ -243,20 +238,20 @@ const QuotesPage = () => {
     setDetailQuote(null);
   };
 
-  const handleQuoteStatusUpdated = async (updatedQuote) => {
+  const handleQuoteStatusUpdated = async updatedQuote => {
     try {
       // Update quotes list with new status
-      const updatedQuotes = quotes.map(quote => 
-        quote.id === updatedQuote.id ? updatedQuote : quote
+      const updatedQuotes = quotes.map(quote =>
+        quote.id === updatedQuote.id ? updatedQuote : quote,
       );
       setQuotes(updatedQuotes);
       setFilteredQuotes(updatedQuotes);
-      
+
       // Update detail modal if it's the same quote
       if (detailQuote && detailQuote.id === updatedQuote.id) {
         setDetailQuote(updatedQuote);
       }
-      
+
       // Trigger refresh for components that need it
       setRefreshTrigger(prev => prev + 1);
     } catch (error) {
@@ -265,7 +260,7 @@ const QuotesPage = () => {
   };
 
   // Quote-to-invoice conversion handlers
-  const handleConvertToInvoice = (quote) => {
+  const handleConvertToInvoice = quote => {
     setQuoteToConvert(quote);
     setIsConverterOpen(true);
   };
@@ -275,15 +270,18 @@ const QuotesPage = () => {
     setQuoteToConvert(null);
   };
 
-  const handleConversionSuccess = (invoice) => {
+  const handleConversionSuccess = invoice => {
     // Update the quote status to converted
     handleQuoteStatusUpdated({ ...quoteToConvert, status: 'converted' });
-    
+
     // Close the converter
     handleCloseConverter();
-    
+
     // Show success message
-    alert(t('conversion.success', { invoiceNumber: invoice.invoice_number }) || `Quote successfully converted to invoice ${invoice.invoice_number}`);
+    alert(
+      t('conversion.success', { invoiceNumber: invoice.invoice_number }) ||
+        `Quote successfully converted to invoice ${invoice.invoice_number}`,
+    );
   };
 
   // Filter functions
@@ -298,7 +296,7 @@ const QuotesPage = () => {
       status: '',
       client: '',
       dateRange: '',
-      amount: ''
+      amount: '',
     };
     setFilters(clearedFilters);
     applyFilters(clearedFilters);
@@ -310,10 +308,11 @@ const QuotesPage = () => {
     // Filter by search term
     if (searchTerm.trim()) {
       const searchLower = searchTerm.toLowerCase();
-      filtered = filtered.filter(quote => 
-        quote.quote_number.toLowerCase().includes(searchLower) ||
-        quote.client.name.toLowerCase().includes(searchLower) ||
-        quote.status.toLowerCase().includes(searchLower)
+      filtered = filtered.filter(
+        quote =>
+          quote.quote_number.toLowerCase().includes(searchLower) ||
+          quote.client.name.toLowerCase().includes(searchLower) ||
+          quote.status.toLowerCase().includes(searchLower),
       );
     }
 
@@ -324,8 +323,8 @@ const QuotesPage = () => {
 
     // Filter by client
     if (currentFilters.client) {
-      filtered = filtered.filter(quote => 
-        quote.client.name.toLowerCase().includes(currentFilters.client.toLowerCase())
+      filtered = filtered.filter(quote =>
+        quote.client.name.toLowerCase().includes(currentFilters.client.toLowerCase()),
       );
     }
 
@@ -333,7 +332,7 @@ const QuotesPage = () => {
     if (currentFilters.dateRange) {
       const now = new Date();
       let startDate;
-      
+
       switch (currentFilters.dateRange) {
         case 'last7Days':
           startDate = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
@@ -347,7 +346,7 @@ const QuotesPage = () => {
         default:
           startDate = null;
       }
-      
+
       if (startDate) {
         filtered = filtered.filter(quote => {
           const quoteDate = new Date(quote.issue_date);
@@ -381,21 +380,19 @@ const QuotesPage = () => {
     applyFilters();
   };
 
-
-
   // Utility functions
-  const formatDate = (dateString) => {
+  const formatDate = dateString => {
     return new Date(dateString).toLocaleDateString('en-US', {
       year: 'numeric',
       month: 'short',
-      day: 'numeric'
+      day: 'numeric',
     });
   };
 
-  const formatCurrency = (amount) => {
+  const formatCurrency = amount => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
-      currency: 'EUR'
+      currency: 'EUR',
     }).format(amount);
   };
 
@@ -405,7 +402,7 @@ const QuotesPage = () => {
   const currentQuotes = filteredQuotes.slice(indexOfFirstItem, indexOfLastItem);
   const totalPages = Math.ceil(filteredQuotes.length / itemsPerPage);
 
-  const handlePageChange = (page) => {
+  const handlePageChange = page => {
     if (page >= 1 && page <= totalPages) {
       setCurrentPage(page);
     }
@@ -427,7 +424,7 @@ const QuotesPage = () => {
 
   // Handle clicking outside dropdown to close it
   useEffect(() => {
-    const handleClickOutside = (event) => {
+    const handleClickOutside = event => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setDropdownOpen(null);
       }
@@ -466,8 +463,8 @@ const QuotesPage = () => {
       trend: {
         type: 'up',
         value: 'No data',
-        color: 'text-gray-500'
-      }
+        color: 'text-gray-500',
+      },
     },
     {
       title: t('stats.pendingQuotes') || 'Pending Quotes',
@@ -479,8 +476,8 @@ const QuotesPage = () => {
       trend: {
         type: 'up',
         value: 'No data',
-        color: 'text-gray-500'
-      }
+        color: 'text-gray-500',
+      },
     },
     {
       title: t('stats.acceptedQuotes') || 'Accepted Quotes',
@@ -492,8 +489,8 @@ const QuotesPage = () => {
       trend: {
         type: 'up',
         value: 'No data',
-        color: 'text-gray-500'
-      }
+        color: 'text-gray-500',
+      },
     },
     {
       title: t('stats.totalValue') || 'Total Value',
@@ -505,9 +502,9 @@ const QuotesPage = () => {
       trend: {
         type: 'up',
         value: 'No data',
-        color: 'text-gray-500'
-      }
-    }
+        color: 'text-gray-500',
+      },
+    },
   ];
 
   // Top clients will be calculated from actual quotes data
@@ -518,13 +515,13 @@ const QuotesPage = () => {
 
   // Check if translations are loaded - if not, show loading
   const isTranslationLoaded = ready && t('filters.title') !== 'filters.title';
-  
+
   if (!isTranslationLoaded) {
     return (
-      <div className="min-h-screen bg-[#F9FAFB] flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#357AF3] mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading translations...</p>
+      <div className='min-h-screen bg-[#F9FAFB] flex items-center justify-center'>
+        <div className='text-center'>
+          <div className='animate-spin rounded-full h-8 w-8 border-b-2 border-[#357AF3] mx-auto mb-4'></div>
+          <p className='text-gray-600'>Loading translations...</p>
         </div>
       </div>
     );
@@ -537,14 +534,16 @@ const QuotesPage = () => {
         <div className='bg-blue-50 border-b border-gray-200 py-2 px-4 md:px-8'>
           <div className='flex items-center space-x-2 text-base'>
             <HomeIcon className='h-5 w-5 text-blue-600' />
-            <button 
-                onClick={() => navigate('/dashboard')}
-                className='text-blue-600 hover:text-blue-700 font-medium transition-colors text-nav-text'
-              >
-                Dashboard
-              </button>
+            <button
+              onClick={() => navigate('/dashboard')}
+              className='text-blue-600 hover:text-blue-700 font-medium transition-colors text-nav-text'
+            >
+              Dashboard
+            </button>
             <ChevronRightIcon className='h-5 w-5 text-gray-400' />
-            <span className='text-gray-600 font-bold text-nav-text'>{t('breadcrumb') || 'Quotes'}</span>
+            <span className='text-gray-600 font-bold text-nav-text'>
+              {t('breadcrumb') || 'Quotes'}
+            </span>
           </div>
         </div>
 
@@ -561,7 +560,7 @@ const QuotesPage = () => {
                   <Download className='w-5 h-5' />
                   <span>{t('actions.export', 'Export')}</span>
                 </button>
-                <button 
+                <button
                   onClick={() => handleCreateQuote()}
                   disabled={isLoading}
                   className='bg-[#357AF3] text-white px-6 py-3 rounded-xl hover:bg-blue-600 transition-colors flex items-center space-x-2 font-medium shadow-sm disabled:opacity-50 disabled:cursor-not-allowed text-button-text'
@@ -668,7 +667,8 @@ const QuotesPage = () => {
                         {t('dashboard.quickActions.createQuote.title') || 'Create Quote'}
                       </h4>
                       <p className='text-blue-100 text-xs mb-4 leading-relaxed flex-grow text-center'>
-                        {t('dashboard.quickActions.createQuote.description') || 'Generate new quote'}
+                        {t('dashboard.quickActions.createQuote.description') ||
+                          'Generate new quote'}
                       </p>
                     </div>
                     <div className='flex justify-center mt-auto'>
@@ -701,7 +701,8 @@ const QuotesPage = () => {
                         {t('dashboard.quickActions.createInvoice.title') || 'Create Invoice'}
                       </h4>
                       <p className='text-green-100 text-xs mb-4 leading-relaxed flex-grow text-center'>
-                        {t('dashboard.quickActions.createInvoice.description') || 'Convert to invoice'}
+                        {t('dashboard.quickActions.createInvoice.description') ||
+                          'Convert to invoice'}
                       </p>
                     </div>
                     <div className='flex justify-center mt-auto'>
@@ -733,7 +734,8 @@ const QuotesPage = () => {
                         {t('dashboard.quickActions.sendFollowups.title') || 'Send Follow-ups'}
                       </h4>
                       <p className='text-orange-100 text-xs mb-4 leading-relaxed flex-grow text-center'>
-                        {t('dashboard.quickActions.sendFollowups.description') || 'Follow pending quotes'}
+                        {t('dashboard.quickActions.sendFollowups.description') ||
+                          'Follow pending quotes'}
                       </p>
                     </div>
                     <div className='flex justify-center mt-auto'>
@@ -769,7 +771,8 @@ const QuotesPage = () => {
                         {t('dashboard.quickActions.generateReport.title') || 'Generate Report'}
                       </h4>
                       <p className='text-purple-100 text-xs mb-4 leading-relaxed flex-grow text-center'>
-                        {t('dashboard.quickActions.generateReport.description') || 'Quotes analytics'}
+                        {t('dashboard.quickActions.generateReport.description') ||
+                          'Quotes analytics'}
                       </p>
                     </div>
                     <div className='flex justify-center mt-auto'>
@@ -790,46 +793,48 @@ const QuotesPage = () => {
               {/* Quote Status Chart */}
               <div className='bg-white rounded-xl border border-gray-200 p-6 shadow-sm'>
                 <div className='flex justify-between items-center mb-6'>
-                  <h3 className='text-lg font-bold text-gray-900'>{t('dashboard.charts.quoteStatus') || 'Quote Status'}</h3>
+                  <h3 className='text-lg font-bold text-gray-900'>
+                    {t('dashboard.charts.quoteStatus') || 'Quote Status'}
+                  </h3>
                   <div className='relative' ref={dropdownRef}>
-                    <MoreHorizontal 
-                      className='w-5 h-5 text-gray-400 cursor-pointer hover:text-gray-600 transition-colors' 
+                    <MoreHorizontal
+                      className='w-5 h-5 text-gray-400 cursor-pointer hover:text-gray-600 transition-colors'
                       onClick={() => setDropdownOpen(dropdownOpen === 'status' ? null : 'status')}
                     />
                     {dropdownOpen === 'status' && (
-                       <div className='absolute right-0 top-6 bg-white border border-gray-200 rounded-lg shadow-lg z-10 min-w-[180px]'>
-                         <button 
-                           className='w-full text-left px-4 py-2 hover:bg-gray-50 text-sm flex items-center space-x-2'
-                           onClick={() => {
-                             alert('Exporting Quote Status chart...');
-                             setDropdownOpen(null);
-                           }}
-                         >
-                           <Download className='w-4 h-4' />
-                           <span>Export Chart</span>
-                         </button>
-                         <button 
-                           className='w-full text-left px-4 py-2 hover:bg-gray-50 text-sm flex items-center space-x-2'
-                           onClick={() => {
-                             alert('Viewing Quote Status details...');
-                             setDropdownOpen(null);
-                           }}
-                         >
-                           <Eye className='w-4 h-4' />
-                           <span>View Details</span>
-                         </button>
-                         <button 
-                           className='w-full text-left px-4 py-2 hover:bg-gray-50 text-sm flex items-center space-x-2'
-                           onClick={() => {
-                             alert('Refreshing Quote Status data...');
-                             setDropdownOpen(null);
-                           }}
-                         >
-                           <RefreshCw className='w-4 h-4' />
-                           <span>Refresh Data</span>
-                         </button>
-                       </div>
-                     )}
+                      <div className='absolute right-0 top-6 bg-white border border-gray-200 rounded-lg shadow-lg z-10 min-w-[180px]'>
+                        <button
+                          className='w-full text-left px-4 py-2 hover:bg-gray-50 text-sm flex items-center space-x-2'
+                          onClick={() => {
+                            alert('Exporting Quote Status chart...');
+                            setDropdownOpen(null);
+                          }}
+                        >
+                          <Download className='w-4 h-4' />
+                          <span>Export Chart</span>
+                        </button>
+                        <button
+                          className='w-full text-left px-4 py-2 hover:bg-gray-50 text-sm flex items-center space-x-2'
+                          onClick={() => {
+                            alert('Viewing Quote Status details...');
+                            setDropdownOpen(null);
+                          }}
+                        >
+                          <Eye className='w-4 h-4' />
+                          <span>View Details</span>
+                        </button>
+                        <button
+                          className='w-full text-left px-4 py-2 hover:bg-gray-50 text-sm flex items-center space-x-2'
+                          onClick={() => {
+                            alert('Refreshing Quote Status data...');
+                            setDropdownOpen(null);
+                          }}
+                        >
+                          <RefreshCw className='w-4 h-4' />
+                          <span>Refresh Data</span>
+                        </button>
+                      </div>
+                    )}
                   </div>
                 </div>
                 {/* Quote Status Chart - Data will be calculated from actual quotes */}
@@ -862,21 +867,27 @@ const QuotesPage = () => {
                     <div className='flex justify-between items-center p-3 bg-green-50 border border-green-200 rounded-lg'>
                       <div className='flex items-center space-x-2'>
                         <div className='w-3 h-3 bg-green-500 rounded-full'></div>
-                        <span className='text-sm font-medium text-gray-700'>{t('dashboard.charts.accepted') || 'Accepted'}</span>
+                        <span className='text-sm font-medium text-gray-700'>
+                          {t('dashboard.charts.accepted') || 'Accepted'}
+                        </span>
                       </div>
                       <span className='text-sm font-bold text-green-700'>0%</span>
                     </div>
                     <div className='flex justify-between items-center p-3 bg-amber-50 border border-amber-200 rounded-lg'>
                       <div className='flex items-center space-x-2'>
                         <div className='w-3 h-3 bg-amber-500 rounded-full'></div>
-                        <span className='text-sm font-medium text-gray-700'>{t('status.pending') || 'Pending'}</span>
+                        <span className='text-sm font-medium text-gray-700'>
+                          {t('status.pending') || 'Pending'}
+                        </span>
                       </div>
                       <span className='text-sm font-bold text-amber-700'>0%</span>
                     </div>
                     <div className='flex justify-between items-center p-3 bg-red-50 border border-red-200 rounded-lg'>
                       <div className='flex items-center space-x-2'>
                         <div className='w-3 h-3 bg-red-500 rounded-full'></div>
-                        <span className='text-sm font-medium text-gray-700'>{t('status.rejected') || 'Rejected'}</span>
+                        <span className='text-sm font-medium text-gray-700'>
+                          {t('status.rejected') || 'Rejected'}
+                        </span>
                       </div>
                       <span className='text-sm font-bold text-red-700'>0%</span>
                     </div>
@@ -887,46 +898,48 @@ const QuotesPage = () => {
               {/* Monthly Quotes Chart */}
               <div className='bg-white rounded-xl border border-gray-200 p-6 shadow-sm'>
                 <div className='flex justify-between items-center mb-6'>
-                  <h3 className='text-lg font-bold text-gray-900'>{t('dashboard.charts.monthlyQuotes') || 'Monthly Quotes'}</h3>
+                  <h3 className='text-lg font-bold text-gray-900'>
+                    {t('dashboard.charts.monthlyQuotes') || 'Monthly Quotes'}
+                  </h3>
                   <div className='relative'>
-                    <MoreHorizontal 
-                      className='w-5 h-5 text-gray-400 cursor-pointer hover:text-gray-600 transition-colors' 
+                    <MoreHorizontal
+                      className='w-5 h-5 text-gray-400 cursor-pointer hover:text-gray-600 transition-colors'
                       onClick={() => setDropdownOpen(dropdownOpen === 'monthly' ? null : 'monthly')}
                     />
                     {dropdownOpen === 'monthly' && (
-                       <div className='absolute right-0 top-6 bg-white border border-gray-200 rounded-lg shadow-lg z-10 min-w-[180px]'>
-                         <button 
-                           className='w-full text-left px-4 py-2 hover:bg-gray-50 text-sm flex items-center space-x-2'
-                           onClick={() => {
-                             alert('Exporting Monthly Quotes chart...');
-                             setDropdownOpen(null);
-                           }}
-                         >
-                           <Download className='w-4 h-4' />
-                           <span>Export Chart</span>
-                         </button>
-                         <button 
-                           className='w-full text-left px-4 py-2 hover:bg-gray-50 text-sm flex items-center space-x-2'
-                           onClick={() => {
-                             alert('Changing time period...');
-                             setDropdownOpen(null);
-                           }}
-                         >
-                           <Calendar className='w-4 h-4' />
-                           <span>Change Period</span>
-                         </button>
-                         <button 
-                           className='w-full text-left px-4 py-2 hover:bg-gray-50 text-sm flex items-center space-x-2'
-                           onClick={() => {
-                             alert('Viewing Monthly analytics...');
-                             setDropdownOpen(null);
-                           }}
-                         >
-                           <BarChart3 className='w-4 h-4' />
-                           <span>View Analytics</span>
-                         </button>
-                       </div>
-                     )}
+                      <div className='absolute right-0 top-6 bg-white border border-gray-200 rounded-lg shadow-lg z-10 min-w-[180px]'>
+                        <button
+                          className='w-full text-left px-4 py-2 hover:bg-gray-50 text-sm flex items-center space-x-2'
+                          onClick={() => {
+                            alert('Exporting Monthly Quotes chart...');
+                            setDropdownOpen(null);
+                          }}
+                        >
+                          <Download className='w-4 h-4' />
+                          <span>Export Chart</span>
+                        </button>
+                        <button
+                          className='w-full text-left px-4 py-2 hover:bg-gray-50 text-sm flex items-center space-x-2'
+                          onClick={() => {
+                            alert('Changing time period...');
+                            setDropdownOpen(null);
+                          }}
+                        >
+                          <Calendar className='w-4 h-4' />
+                          <span>Change Period</span>
+                        </button>
+                        <button
+                          className='w-full text-left px-4 py-2 hover:bg-gray-50 text-sm flex items-center space-x-2'
+                          onClick={() => {
+                            alert('Viewing Monthly analytics...');
+                            setDropdownOpen(null);
+                          }}
+                        >
+                          <BarChart3 className='w-4 h-4' />
+                          <span>View Analytics</span>
+                        </button>
+                      </div>
+                    )}
                   </div>
                 </div>
                 {/* Monthly Quotes Chart - Data will be loaded from API */}
@@ -938,63 +951,75 @@ const QuotesPage = () => {
                 <div className='flex justify-center space-x-6 text-xs'>
                   <div className='flex items-center space-x-1'>
                     <div className='w-2 h-2 bg-[#357AF3] rounded-full'></div>
-                    <span className='text-gray-600'>{t('dashboard.charts.created') || 'Created'}</span>
+                    <span className='text-gray-600'>
+                      {t('dashboard.charts.created') || 'Created'}
+                    </span>
                   </div>
                   <div className='flex items-center space-x-1'>
                     <div className='w-2 h-2 bg-green-500 rounded-full'></div>
-                    <span className='text-gray-600'>{t('dashboard.charts.accepted') || 'Accepted'}</span>
+                    <span className='text-gray-600'>
+                      {t('dashboard.charts.accepted') || 'Accepted'}
+                    </span>
                   </div>
                 </div>
                 <div className='mt-4 p-3 bg-gray-50 rounded-lg'>
-                  <div className='text-xs text-gray-600 mb-1'>{t('dashboard.charts.thisMonth') || 'This Month'}</div>
-                  <div className='text-lg font-bold text-gray-900'>0 {t('common.quotes') || 'quotes'}</div>
-                  <div className='text-xs text-gray-500 font-medium'>{t('dashboard.charts.noData') || 'No data available'}</div>
+                  <div className='text-xs text-gray-600 mb-1'>
+                    {t('dashboard.charts.thisMonth') || 'This Month'}
+                  </div>
+                  <div className='text-lg font-bold text-gray-900'>
+                    0 {t('common.quotes') || 'quotes'}
+                  </div>
+                  <div className='text-xs text-gray-500 font-medium'>
+                    {t('dashboard.charts.noData') || 'No data available'}
+                  </div>
                 </div>
               </div>
 
               {/* Top Clients */}
               <div className='bg-white rounded-xl border border-gray-200 p-6 shadow-sm'>
                 <div className='flex justify-between items-center mb-6'>
-                  <h3 className='text-lg font-bold text-gray-900'>{t('dashboard.charts.topClients') || 'Top Clients'}</h3>
+                  <h3 className='text-lg font-bold text-gray-900'>
+                    {t('dashboard.charts.topClients') || 'Top Clients'}
+                  </h3>
                   <div className='relative'>
-                    <MoreHorizontal 
-                      className='w-5 h-5 text-gray-400 cursor-pointer hover:text-gray-600 transition-colors' 
+                    <MoreHorizontal
+                      className='w-5 h-5 text-gray-400 cursor-pointer hover:text-gray-600 transition-colors'
                       onClick={() => setDropdownOpen(dropdownOpen === 'clients' ? null : 'clients')}
                     />
                     {dropdownOpen === 'clients' && (
-                       <div className='absolute right-0 top-6 bg-white border border-gray-200 rounded-lg shadow-lg z-10 min-w-[180px]'>
-                         <button 
-                           className='w-full text-left px-4 py-2 hover:bg-gray-50 text-sm flex items-center space-x-2'
-                           onClick={() => {
-                             navigate('/clients');
-                             setDropdownOpen(null);
-                           }}
-                         >
-                           <Users className='w-4 h-4' />
-                           <span>View All Clients</span>
-                         </button>
-                         <button 
-                           className='w-full text-left px-4 py-2 hover:bg-gray-50 text-sm flex items-center space-x-2'
-                           onClick={() => {
-                             alert('Exporting client list...');
-                             setDropdownOpen(null);
-                           }}
-                         >
-                           <Download className='w-4 h-4' />
-                           <span>Export List</span>
-                         </button>
-                         <button 
-                           className='w-full text-left px-4 py-2 hover:bg-gray-50 text-sm flex items-center space-x-2'
-                           onClick={() => {
-                             alert('Viewing client analytics...');
-                             setDropdownOpen(null);
-                           }}
-                         >
-                           <TrendingUp className='w-4 h-4' />
-                           <span>Client Analytics</span>
-                         </button>
-                       </div>
-                     )}
+                      <div className='absolute right-0 top-6 bg-white border border-gray-200 rounded-lg shadow-lg z-10 min-w-[180px]'>
+                        <button
+                          className='w-full text-left px-4 py-2 hover:bg-gray-50 text-sm flex items-center space-x-2'
+                          onClick={() => {
+                            navigate('/clients');
+                            setDropdownOpen(null);
+                          }}
+                        >
+                          <Users className='w-4 h-4' />
+                          <span>View All Clients</span>
+                        </button>
+                        <button
+                          className='w-full text-left px-4 py-2 hover:bg-gray-50 text-sm flex items-center space-x-2'
+                          onClick={() => {
+                            alert('Exporting client list...');
+                            setDropdownOpen(null);
+                          }}
+                        >
+                          <Download className='w-4 h-4' />
+                          <span>Export List</span>
+                        </button>
+                        <button
+                          className='w-full text-left px-4 py-2 hover:bg-gray-50 text-sm flex items-center space-x-2'
+                          onClick={() => {
+                            alert('Viewing client analytics...');
+                            setDropdownOpen(null);
+                          }}
+                        >
+                          <TrendingUp className='w-4 h-4' />
+                          <span>Client Analytics</span>
+                        </button>
+                      </div>
+                    )}
                   </div>
                 </div>
                 <div className='space-y-4'>
@@ -1028,8 +1053,10 @@ const QuotesPage = () => {
             {/* Filters Section */}
             <div className='bg-white rounded-xl border border-gray-200 p-8 mb-8 shadow-sm'>
               <div className='flex justify-between items-center mb-6'>
-                <h3 className='text-section-title text-gray-900'>{t('filters.title') || 'Filters'}</h3>
-                <button 
+                <h3 className='text-section-title text-gray-900'>
+                  {t('filters.title') || 'Filters'}
+                </h3>
+                <button
                   onClick={clearAllFilters}
                   className='text-[#357AF3] hover:text-blue-800 text-nav-text font-semibold'
                 >
@@ -1041,29 +1068,29 @@ const QuotesPage = () => {
                   <label className='block text-subtitle text-gray-700 mb-2'>
                     {t('filters.status.label') || 'Status'}
                   </label>
-                  <select 
+                  <select
                     value={filters.status}
-                    onChange={(e) => handleFilterChange('status', e.target.value)}
+                    onChange={e => handleFilterChange('status', e.target.value)}
                     className='w-full border border-gray-300 rounded-lg px-4 py-3 bg-gray-50 focus:ring-2 focus:ring-[#357AF3] focus:border-[#357AF3] transition-colors text-nav-text'
                   >
-                    <option value="">{t('filters.status.all') || 'All'}</option>
-                    <option value="pending">{t('status.pending') || 'Pending'}</option>
-                    <option value="sent">{t('status.sent') || 'Sent'}</option>
-                    <option value="accepted">{t('status.accepted') || 'Accepted'}</option>
-                    <option value="rejected">{t('status.rejected') || 'Rejected'}</option>
-                    <option value="draft">{t('status.draft') || 'Draft'}</option>
+                    <option value=''>{t('filters.status.all') || 'All'}</option>
+                    <option value='pending'>{t('status.pending') || 'Pending'}</option>
+                    <option value='sent'>{t('status.sent') || 'Sent'}</option>
+                    <option value='accepted'>{t('status.accepted') || 'Accepted'}</option>
+                    <option value='rejected'>{t('status.rejected') || 'Rejected'}</option>
+                    <option value='draft'>{t('status.draft') || 'Draft'}</option>
                   </select>
                 </div>
                 <div>
                   <label className='block text-subtitle text-gray-700 mb-2'>
                     {t('filters.client.label') || 'Client'}
                   </label>
-                  <select 
+                  <select
                     value={filters.client}
-                    onChange={(e) => handleFilterChange('client', e.target.value)}
+                    onChange={e => handleFilterChange('client', e.target.value)}
                     className='w-full border border-gray-300 rounded-lg px-4 py-3 bg-gray-50 focus:ring-2 focus:ring-[#357AF3] focus:border-[#357AF3] transition-colors text-nav-text'
                   >
-                    <option value="">{t('filters.client.all') || 'All Clients'}</option>
+                    <option value=''>{t('filters.client.all') || 'All Clients'}</option>
                     {/* Client options will be populated from API */}
                   </select>
                 </div>
@@ -1071,34 +1098,44 @@ const QuotesPage = () => {
                   <label className='block text-subtitle text-gray-700 mb-2'>
                     {t('filters.dateRange.label') || 'Date Range'}
                   </label>
-                  <select 
+                  <select
                     value={filters.dateRange}
-                    onChange={(e) => handleFilterChange('dateRange', e.target.value)}
+                    onChange={e => handleFilterChange('dateRange', e.target.value)}
                     className='w-full border border-gray-300 rounded-lg px-4 py-3 bg-gray-50 focus:ring-2 focus:ring-[#357AF3] focus:border-[#357AF3] transition-colors text-nav-text'
                   >
-                    <option value="">{t('filters.dateRange.all') || 'All Dates'}</option>
-                    <option value="last7Days">{t('filters.dateRanges.last7Days') || 'Last 7 days'}</option>
-                    <option value="last30Days">{t('filters.dateRanges.last30Days') || 'Last 30 days'}</option>
-                    <option value="last90Days">{t('filters.dateRanges.last90Days') || 'Last 90 days'}</option>
+                    <option value=''>{t('filters.dateRange.all') || 'All Dates'}</option>
+                    <option value='last7Days'>
+                      {t('filters.dateRanges.last7Days') || 'Last 7 days'}
+                    </option>
+                    <option value='last30Days'>
+                      {t('filters.dateRanges.last30Days') || 'Last 30 days'}
+                    </option>
+                    <option value='last90Days'>
+                      {t('filters.dateRanges.last90Days') || 'Last 90 days'}
+                    </option>
                   </select>
                 </div>
                 <div>
                   <label className='block text-subtitle text-gray-700 mb-2'>
                     {t('filters.amount.label') || 'Amount'}
                   </label>
-                  <select 
+                  <select
                     value={filters.amount}
-                    onChange={(e) => handleFilterChange('amount', e.target.value)}
+                    onChange={e => handleFilterChange('amount', e.target.value)}
                     className='w-full border border-gray-300 rounded-lg px-4 py-3 bg-gray-50 focus:ring-2 focus:ring-[#357AF3] focus:border-[#357AF3] transition-colors text-nav-text'
                   >
-                    <option value="">{t('filters.amount.any') || 'Any Amount'}</option>
-                    <option value="range1">{t('filters.amountRanges.range1') || '€0 - €5,000'}</option>
-                    <option value="range2">{t('filters.amountRanges.range2') || '€5,000 - €15,000'}</option>
-                    <option value="range3">{t('filters.amountRanges.range3') || '€15,000+'}</option>
+                    <option value=''>{t('filters.amount.any') || 'Any Amount'}</option>
+                    <option value='range1'>
+                      {t('filters.amountRanges.range1') || '€0 - €5,000'}
+                    </option>
+                    <option value='range2'>
+                      {t('filters.amountRanges.range2') || '€5,000 - €15,000'}
+                    </option>
+                    <option value='range3'>{t('filters.amountRanges.range3') || '€15,000+'}</option>
                   </select>
                 </div>
                 <div className='flex items-end'>
-                  <button 
+                  <button
                     onClick={handleApplyFilters}
                     className='w-full bg-[#357AF3] text-white px-6 py-3 rounded-lg flex items-center justify-center space-x-2 hover:bg-blue-700 font-semibold transition-colors text-button-text'
                   >
@@ -1113,7 +1150,9 @@ const QuotesPage = () => {
             <div className='bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden mb-8'>
               <div className='px-6 py-4 border-b border-gray-200'>
                 <div className='flex justify-between items-center'>
-                  <h3 className='text-section-title text-gray-900'>{t('table.recentQuotes') || 'Recent Quotes'}</h3>
+                  <h3 className='text-section-title text-gray-900'>
+                    {t('table.recentQuotes') || 'Recent Quotes'}
+                  </h3>
                   <div className='relative'>
                     <Search className='h-4 w-4 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2' />
                     <input
@@ -1122,7 +1161,7 @@ const QuotesPage = () => {
                       className='pl-12 pr-4 py-2 border border-gray-300 rounded-lg text-nav-text focus:ring-2 focus:ring-blue-500 focus:border-blue-500 w-64 bg-white'
                       style={{ textIndent: '20px' }}
                       value={searchTerm}
-                      onChange={(e) => setSearchTerm(e.target.value)}
+                      onChange={e => setSearchTerm(e.target.value)}
                     />
                   </div>
                 </div>
@@ -1159,7 +1198,7 @@ const QuotesPage = () => {
                     {currentQuotes.map(quote => (
                       <tr key={quote.id} className='hover:bg-gray-50 transition-colors'>
                         <td className='px-6 py-4 whitespace-nowrap'>
-                          <button 
+                          <button
                             onClick={() => handleViewQuote(quote)}
                             className='text-[#357AF3] hover:text-blue-600 font-medium text-nav-text'
                           >
@@ -1175,7 +1214,9 @@ const QuotesPage = () => {
                               <div className='text-nav-text font-medium text-gray-900'>
                                 {quote.client.name}
                               </div>
-                              <div className='text-metric-small text-gray-500'>{quote.client.industry}</div>
+                              <div className='text-metric-small text-gray-500'>
+                                {quote.client.industry}
+                              </div>
                             </div>
                           </div>
                         </td>
@@ -1193,27 +1234,27 @@ const QuotesPage = () => {
                         </td>
                         <td className='px-6 py-4 whitespace-nowrap text-nav-text text-gray-500'>
                           <div className='flex items-center space-x-2'>
-                            <button 
+                            <button
                               onClick={() => handleViewQuote(quote)}
                               className='p-1 text-gray-400 hover:text-[#357AF3] transition-colors'
                               title={t('table.actions.viewDetails') || 'Visualizza Dettagli'}
                             >
                               <Eye className='w-4 h-4' />
                             </button>
-                            <button 
+                            <button
                               onClick={() => handleEditQuote(quote)}
                               className='p-1 text-gray-400 hover:text-green-600 transition-colors'
                               title={t('table.actions.editQuote') || 'Modifica Preventivo'}
                             >
                               <Edit className='w-4 h-4' />
                             </button>
-                            <button 
+                            <button
                               className='p-1 text-gray-400 hover:text-blue-600 transition-colors'
                               title={t('table.actions.downloadPdf') || 'Scarica PDF'}
                             >
                               <Download className='w-4 h-4' />
                             </button>
-                            <QuoteApprovalActions 
+                            <QuoteApprovalActions
                               quote={quote}
                               onStatusUpdate={handleQuoteStatusUpdated}
                               onConvertToInvoice={handleConvertToInvoice}
@@ -1233,7 +1274,7 @@ const QuotesPage = () => {
                   {t('pagination.showing', 'Showing {{start}} to {{end}} of {{total}} results', {
                     start: indexOfFirstItem + 1,
                     end: Math.min(indexOfLastItem, filteredQuotes.length),
-                    total: filteredQuotes.length
+                    total: filteredQuotes.length,
                   })}
                 </div>
                 <div className='flex items-center space-x-2'>
@@ -1244,19 +1285,22 @@ const QuotesPage = () => {
                   >
                     {t('pagination.previous') || 'Previous'}
                   </button>
-                  {Array.from({ length: Math.ceil(filteredQuotes.length / itemsPerPage) }, (_, i) => (
-                    <button
-                      key={i + 1}
-                      onClick={() => handlePageChange(i + 1)}
-                      className={`px-3 py-2 text-nav-text ${
-                        currentPage === i + 1
-                          ? 'bg-[#357AF3] text-white'
-                          : 'text-gray-500 hover:text-gray-700'
-                      } rounded-lg`}
-                    >
-                      {i + 1}
-                    </button>
-                  ))}
+                  {Array.from(
+                    { length: Math.ceil(filteredQuotes.length / itemsPerPage) },
+                    (_, i) => (
+                      <button
+                        key={i + 1}
+                        onClick={() => handlePageChange(i + 1)}
+                        className={`px-3 py-2 text-nav-text ${
+                          currentPage === i + 1
+                            ? 'bg-[#357AF3] text-white'
+                            : 'text-gray-500 hover:text-gray-700'
+                        } rounded-lg`}
+                      >
+                        {i + 1}
+                      </button>
+                    ),
+                  )}
                   <button
                     onClick={() => handlePageChange(currentPage + 1)}
                     disabled={currentPage === Math.ceil(filteredQuotes.length / itemsPerPage)}
@@ -1271,7 +1315,9 @@ const QuotesPage = () => {
             {/* Recent Activity */}
             <div className='bg-white rounded-xl border border-gray-200 p-6 shadow-sm mb-8'>
               <div className='flex justify-between items-center mb-6'>
-                <h3 className='text-lg font-semibold text-gray-900'>{t('recentActivity.title') || 'Recent Activity'}</h3>
+                <h3 className='text-lg font-semibold text-gray-900'>
+                  {t('recentActivity.title') || 'Recent Activity'}
+                </h3>
                 <button className='text-[#357AF3] hover:text-blue-600 text-sm font-medium'>
                   {t('recentActivity.viewAll') || 'View All'}
                 </button>

@@ -126,35 +126,35 @@ const AnalyticsDashboard = () => {
   }, [autoRefresh, refreshInterval]); // Remove loadAnalyticsData from dependency array to avoid infinite loops
 
   // Enhanced date range handler
-  const handleDateRangeChange = (newRange) => {
+  const handleDateRangeChange = newRange => {
     setDateRange(newRange);
     setShowDatePicker(false);
   };
 
   // Quick date range presets
-  const getQuickDateRange = (preset) => {
+  const getQuickDateRange = preset => {
     const now = new Date();
     const ranges = {
-      'today': {
+      today: {
         start: new Date(now.getFullYear(), now.getMonth(), now.getDate()),
-        end: now
+        end: now,
       },
-      'week': {
+      week: {
         start: new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000),
-        end: now
+        end: now,
       },
-      'month': {
+      month: {
         start: new Date(now.getFullYear(), now.getMonth(), 1),
-        end: now
+        end: now,
       },
-      'quarter': {
+      quarter: {
         start: new Date(now.getFullYear(), Math.floor(now.getMonth() / 3) * 3, 1),
-        end: now
+        end: now,
       },
-      'year': {
+      year: {
         start: new Date(now.getFullYear(), 0, 1),
-        end: now
-      }
+        end: now,
+      },
     };
     return ranges[preset] || ranges.month;
   };
@@ -516,7 +516,7 @@ const AnalyticsDashboard = () => {
                   <CalendarDaysIcon className='h-4 w-4 mr-2' />
                   {dateRange.start.toLocaleDateString()} - {dateRange.end.toLocaleDateString()}
                 </button>
-                
+
                 {showDatePicker && (
                   <div className='absolute top-full mt-2 right-0 bg-white border border-gray-200 rounded-xl shadow-lg p-4 z-50 min-w-80'>
                     <div className='space-y-4'>
@@ -533,20 +533,28 @@ const AnalyticsDashboard = () => {
                       </div>
                       <div className='grid grid-cols-2 gap-4'>
                         <div>
-                          <label className='block text-sm font-medium text-gray-700 mb-1'>Start Date</label>
+                          <label className='block text-sm font-medium text-gray-700 mb-1'>
+                            Start Date
+                          </label>
                           <input
                             type='date'
                             value={dateRange.start.toISOString().split('T')[0]}
-                            onChange={(e) => setDateRange(prev => ({ ...prev, start: new Date(e.target.value) }))}
+                            onChange={e =>
+                              setDateRange(prev => ({ ...prev, start: new Date(e.target.value) }))
+                            }
                             className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500'
                           />
                         </div>
                         <div>
-                          <label className='block text-sm font-medium text-gray-700 mb-1'>End Date</label>
+                          <label className='block text-sm font-medium text-gray-700 mb-1'>
+                            End Date
+                          </label>
                           <input
                             type='date'
                             value={dateRange.end.toISOString().split('T')[0]}
-                            onChange={(e) => setDateRange(prev => ({ ...prev, end: new Date(e.target.value) }))}
+                            onChange={e =>
+                              setDateRange(prev => ({ ...prev, end: new Date(e.target.value) }))
+                            }
                             className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500'
                           />
                         </div>
@@ -561,12 +569,12 @@ const AnalyticsDashboard = () => {
                   </div>
                 )}
               </div>
-              
+
               <AdvancedTimePeriodSelector
                 selectedPeriod={selectedPeriod}
                 onPeriodChange={setSelectedPeriod}
               />
-              
+
               <button
                 onClick={handleRefresh}
                 disabled={refreshing}
@@ -575,25 +583,29 @@ const AnalyticsDashboard = () => {
                 <ArrowPathIcon className={`h-4 w-4 mr-2 ${refreshing ? 'animate-spin' : ''}`} />
                 {safeT('refresh', {}, 'Refresh')}
               </button>
-              
+
               {/* Enhanced Auto-refresh with interval control */}
               <div className='flex items-center space-x-2'>
                 <button
                   onClick={() => setAutoRefresh(!autoRefresh)}
                   className={`inline-flex items-center px-3 py-2 rounded-lg font-medium transition-colors ${
-                    autoRefresh 
-                      ? 'bg-green-100 text-green-700 hover:bg-green-200' 
+                    autoRefresh
+                      ? 'bg-green-100 text-green-700 hover:bg-green-200'
                       : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                   }`}
                 >
-                  {autoRefresh ? <PauseIcon className='h-4 w-4 mr-1' /> : <PlayIcon className='h-4 w-4 mr-1' />}
+                  {autoRefresh ? (
+                    <PauseIcon className='h-4 w-4 mr-1' />
+                  ) : (
+                    <PlayIcon className='h-4 w-4 mr-1' />
+                  )}
                   {autoRefresh ? 'Stop' : 'Auto'}
                 </button>
-                
+
                 {autoRefresh && (
                   <select
                     value={refreshInterval}
-                    onChange={(e) => setRefreshInterval(Number(e.target.value))}
+                    onChange={e => setRefreshInterval(Number(e.target.value))}
                     className='px-2 py-1 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500'
                   >
                     <option value={10000}>10s</option>

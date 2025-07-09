@@ -2,13 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuthBypass as useAuth } from '@hooks/useClerkBypass';
 import { useClerkAuth } from '../../hooks/useClerkAuth';
-import { 
-  BuildingOfficeIcon, 
+import {
+  BuildingOfficeIcon,
   MapPinIcon,
   PhoneIcon,
   EnvelopeIcon,
   GlobeAltIcon,
-  IdentificationIcon
+  IdentificationIcon,
 } from '@heroicons/react/24/outline';
 import { supabase } from '@lib/supabaseClient';
 import { businessService } from '@lib/businessService';
@@ -32,7 +32,7 @@ export default function CompanySettings({ showNotification }) {
 
   const loadCompanyData = async () => {
     if (!user) return;
-    
+
     setLoading(true);
     try {
       const profile = await businessService.getBusinessProfile(user.id);
@@ -47,12 +47,12 @@ export default function CompanySettings({ showNotification }) {
     }
   };
 
-  const handleInputChange = (e) => {
+  const handleInputChange = e => {
     const { name, value } = e.target;
     setCompany(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSave = async (e) => {
+  const handleSave = async e => {
     e.preventDefault();
     if (!user) return;
 
@@ -69,15 +69,15 @@ export default function CompanySettings({ showNotification }) {
     }
   };
 
-  const handleLogoUpload = async (file) => {
+  const handleLogoUpload = async file => {
     if (!file) return;
-    
+
     setUploadingLogo(true);
     try {
       const logoUrl = await businessService.uploadCompanyLogo(user.id, file);
       const updatedCompany = { ...company, logo_url: logoUrl };
       setCompany(updatedCompany);
-      
+
       // Save to database
       await businessService.updateBusinessProfile(user.id, updatedCompany);
       showNotification && showNotification(t('company.alerts.logoUpdateSuccess'), 'success');
@@ -89,15 +89,15 @@ export default function CompanySettings({ showNotification }) {
     }
   };
 
-  const handleFaviconUpload = async (file) => {
+  const handleFaviconUpload = async file => {
     if (!file) return;
-    
+
     setUploadingFavicon(true);
     try {
       const faviconUrl = await businessService.uploadCompanyFavicon(user.id, file);
       const updatedCompany = { ...company, favicon_url: faviconUrl };
       setCompany(updatedCompany);
-      
+
       // Save to database
       await businessService.updateBusinessProfile(user.id, updatedCompany);
       showNotification && showNotification(t('company.alerts.faviconUpdateSuccess'), 'success');
@@ -112,9 +112,9 @@ export default function CompanySettings({ showNotification }) {
   // Don't render if not authenticated
   if (!isAuthenticated || !user) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <div className="text-center">
-          <p className="text-gray-500">Please sign in to access company settings.</p>
+      <div className='flex items-center justify-center h-64'>
+        <div className='text-center'>
+          <p className='text-gray-500'>Please sign in to access company settings.</p>
         </div>
       </div>
     );
@@ -122,34 +122,34 @@ export default function CompanySettings({ showNotification }) {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center p-8">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+      <div className='flex justify-center items-center p-8'>
+        <div className='animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600'></div>
       </div>
     );
   }
 
   return (
-    <div className="space-y-8">
+    <div className='space-y-8'>
       {/* Header */}
       <div>
-        <h2 className="text-2xl font-bold text-gray-900">{t('company.title')}</h2>
-        <p className="mt-1 text-sm text-gray-600">{t('company.description')}</p>
+        <h2 className='text-2xl font-bold text-gray-900'>{t('company.title')}</h2>
+        <p className='mt-1 text-sm text-gray-600'>{t('company.description')}</p>
       </div>
 
       {/* Company Branding */}
-      <div className="bg-white border border-gray-200 rounded-lg p-6">
-        <h3 className="text-lg font-medium text-gray-900 mb-4 flex items-center">
-          <BuildingOfficeIcon className="h-5 w-5 mr-2" />
+      <div className='bg-white border border-gray-200 rounded-lg p-6'>
+        <h3 className='text-lg font-medium text-gray-900 mb-4 flex items-center'>
+          <BuildingOfficeIcon className='h-5 w-5 mr-2' />
           {t('company.branding.title')}
         </h3>
-        <p className="text-sm text-gray-600 mb-6">{t('company.branding.description')}</p>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <p className='text-sm text-gray-600 mb-6'>{t('company.branding.description')}</p>
+
+        <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
           <FileUploadField
             label={t('company.logo.title')}
             onFileUpload={handleLogoUpload}
             currentImageUrl={company.logo_url}
-            storagePath="company_logos"
+            storagePath='company_logos'
             disabled={uploadingLogo}
             loading={uploadingLogo}
             acceptedFormats={['image/png', 'image/jpeg', 'image/svg+xml']}
@@ -159,7 +159,7 @@ export default function CompanySettings({ showNotification }) {
             label={t('company.favicon.title')}
             onFileUpload={handleFaviconUpload}
             currentImageUrl={company.favicon_url}
-            storagePath="company_favicons"
+            storagePath='company_favicons'
             disabled={uploadingFavicon}
             loading={uploadingFavicon}
             acceptedFormats={['image/png', 'image/x-icon', 'image/vnd.microsoft.icon']}
@@ -169,26 +169,26 @@ export default function CompanySettings({ showNotification }) {
       </div>
 
       {/* Company Information */}
-      <form onSubmit={handleSave} className="bg-white border border-gray-200 rounded-lg p-6">
-        <h3 className="text-lg font-medium text-gray-900 mb-4 flex items-center">
-          <IdentificationIcon className="h-5 w-5 mr-2" />
+      <form onSubmit={handleSave} className='bg-white border border-gray-200 rounded-lg p-6'>
+        <h3 className='text-lg font-medium text-gray-900 mb-4 flex items-center'>
+          <IdentificationIcon className='h-5 w-5 mr-2' />
           {t('company.information.title')}
         </h3>
-        <p className="text-sm text-gray-600 mb-6">{t('company.information.description')}</p>
+        <p className='text-sm text-gray-600 mb-6'>{t('company.information.description')}</p>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
           {/* Company Name */}
           <div>
-            <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor='name' className='block text-sm font-medium text-gray-700 mb-2'>
               {t('company.name.label')} *
             </label>
             <input
-              type="text"
-              id="name"
-              name="name"
+              type='text'
+              id='name'
+              name='name'
               value={company.name || ''}
               onChange={handleInputChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className='w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
               placeholder={t('company.name.placeholder')}
               required
             />
@@ -196,131 +196,143 @@ export default function CompanySettings({ showNotification }) {
 
           {/* VAT Number */}
           <div>
-            <label htmlFor="vat_number" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor='vat_number' className='block text-sm font-medium text-gray-700 mb-2'>
               {t('company.vatNumber.label')}
             </label>
             <input
-              type="text"
-              id="vat_number"
-              name="vat_number"
+              type='text'
+              id='vat_number'
+              name='vat_number'
               value={company.vat_number || ''}
               onChange={handleInputChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className='w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
               placeholder={t('company.vatNumber.placeholder')}
             />
           </div>
 
           {/* Address */}
-          <div className="md:col-span-2">
-            <label htmlFor="address" className="block text-sm font-medium text-gray-700 mb-2 flex items-center">
-              <MapPinIcon className="h-4 w-4 mr-1" />
+          <div className='md:col-span-2'>
+            <label
+              htmlFor='address'
+              className='block text-sm font-medium text-gray-700 mb-2 flex items-center'
+            >
+              <MapPinIcon className='h-4 w-4 mr-1' />
               {t('company.address.label')}
             </label>
             <input
-              type="text"
-              id="address"
-              name="address"
+              type='text'
+              id='address'
+              name='address'
               value={company.address || ''}
               onChange={handleInputChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className='w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
               placeholder={t('company.address.placeholder')}
             />
           </div>
 
           {/* City */}
           <div>
-            <label htmlFor="city" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor='city' className='block text-sm font-medium text-gray-700 mb-2'>
               {t('company.city.label')}
             </label>
             <input
-              type="text"
-              id="city"
-              name="city"
+              type='text'
+              id='city'
+              name='city'
               value={company.city || ''}
               onChange={handleInputChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className='w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
               placeholder={t('company.city.placeholder')}
             />
           </div>
 
           {/* Country */}
           <div>
-            <label htmlFor="country" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor='country' className='block text-sm font-medium text-gray-700 mb-2'>
               {t('company.country.label')}
             </label>
             <input
-              type="text"
-              id="country"
-              name="country"
+              type='text'
+              id='country'
+              name='country'
               value={company.country || ''}
               onChange={handleInputChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className='w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
               placeholder={t('company.country.placeholder')}
             />
           </div>
 
           {/* Phone */}
           <div>
-            <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2 flex items-center">
-              <PhoneIcon className="h-4 w-4 mr-1" />
+            <label
+              htmlFor='phone'
+              className='block text-sm font-medium text-gray-700 mb-2 flex items-center'
+            >
+              <PhoneIcon className='h-4 w-4 mr-1' />
               {t('company.phone.label')}
             </label>
             <input
-              type="tel"
-              id="phone"
-              name="phone"
+              type='tel'
+              id='phone'
+              name='phone'
               value={company.phone || ''}
               onChange={handleInputChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className='w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
               placeholder={t('company.phone.placeholder')}
             />
           </div>
 
           {/* Email */}
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2 flex items-center">
-              <EnvelopeIcon className="h-4 w-4 mr-1" />
+            <label
+              htmlFor='email'
+              className='block text-sm font-medium text-gray-700 mb-2 flex items-center'
+            >
+              <EnvelopeIcon className='h-4 w-4 mr-1' />
               {t('company.email.label')}
             </label>
             <input
-              type="email"
-              id="email"
-              name="email"
+              type='email'
+              id='email'
+              name='email'
               value={company.email || ''}
               onChange={handleInputChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className='w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
               placeholder={t('company.email.placeholder')}
             />
           </div>
 
           {/* Website */}
-          <div className="md:col-span-2">
-            <label htmlFor="website" className="block text-sm font-medium text-gray-700 mb-2 flex items-center">
-              <GlobeAltIcon className="h-4 w-4 mr-1" />
+          <div className='md:col-span-2'>
+            <label
+              htmlFor='website'
+              className='block text-sm font-medium text-gray-700 mb-2 flex items-center'
+            >
+              <GlobeAltIcon className='h-4 w-4 mr-1' />
               {t('company.website.label')}
             </label>
             <input
-              type="url"
-              id="website"
-              name="website"
+              type='url'
+              id='website'
+              name='website'
               value={company.website || ''}
               onChange={handleInputChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className='w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
               placeholder={t('company.website.placeholder')}
             />
           </div>
         </div>
 
         {/* Save Button */}
-        <div className="mt-6 flex justify-end">
+        <div className='mt-6 flex justify-end'>
           <button
-            type="submit"
+            type='submit'
             disabled={saving}
-            className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed flex items-center"
+            className='px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed flex items-center'
           >
             {saving ? (
               <>
-                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                <div className='animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2'></div>
                 {t('common.saving')}
               </>
             ) : (
@@ -331,4 +343,4 @@ export default function CompanySettings({ showNotification }) {
       </form>
     </div>
   );
-} 
+}

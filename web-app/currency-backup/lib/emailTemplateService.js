@@ -21,19 +21,22 @@ class EmailTemplateService {
       'days_overdue',
       'quote_number',
       'issue_date',
-      'expiry_date'
+      'expiry_date',
     ];
 
     // Email-safe CSS for maximum compatibility
     this.emailSafeCSS = {
-      container: 'font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background-color: #ffffff;',
+      container:
+        'font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background-color: #ffffff;',
       header: 'background-color: #2563eb; color: #ffffff; padding: 20px; text-align: center;',
       content: 'padding: 30px; background-color: #f8fafc; border: 1px solid #e2e8f0;',
-      footer: 'background-color: #1f2937; color: #ffffff; padding: 15px; text-align: center; font-size: 12px;',
-      button: 'display: inline-block; background-color: #2563eb; color: #ffffff; padding: 12px 24px; text-decoration: none; border-radius: 4px; font-weight: bold; margin: 10px 0;',
+      footer:
+        'background-color: #1f2937; color: #ffffff; padding: 15px; text-align: center; font-size: 12px;',
+      button:
+        'display: inline-block; background-color: #2563eb; color: #ffffff; padding: 12px 24px; text-decoration: none; border-radius: 4px; font-weight: bold; margin: 10px 0;',
       table: 'width: 100%; border-collapse: collapse; margin: 20px 0;',
       tableCell: 'padding: 12px; border: 1px solid #e2e8f0; text-align: left;',
-      highlight: 'background-color: #fef3c7; padding: 2px 4px; border-radius: 2px;'
+      highlight: 'background-color: #fef3c7; padding: 2px 4px; border-radius: 2px;',
     };
 
     this.predefinedTemplates = {
@@ -41,26 +44,26 @@ class EmailTemplateService {
         name: 'Professional',
         description: 'Clean and professional template for business communications',
         html: this.generateProfessionalTemplate(),
-        variables: ['client_name', 'company_name', 'content', 'company_email']
+        variables: ['client_name', 'company_name', 'content', 'company_email'],
       },
       invoice: {
         name: 'Invoice Template',
         description: 'Template for invoice delivery and payment notices',
         html: this.generateInvoiceTemplate(),
-        variables: ['client_name', 'company_name', 'invoice_number', 'total_amount', 'due_date']
+        variables: ['client_name', 'company_name', 'invoice_number', 'total_amount', 'due_date'],
       },
       reminder: {
         name: 'Payment Reminder',
         description: 'Friendly reminder template for overdue payments',
         html: this.generateReminderTemplate(),
-        variables: ['client_name', 'invoice_number', 'days_overdue', 'total_amount']
+        variables: ['client_name', 'invoice_number', 'days_overdue', 'total_amount'],
       },
       newsletter: {
         name: 'Newsletter',
         description: 'Modern newsletter template for marketing campaigns',
         html: this.generateNewsletterTemplate(),
-        variables: ['subscriber_name', 'company_name', 'unsubscribe_link']
-      }
+        variables: ['subscriber_name', 'company_name', 'unsubscribe_link'],
+      },
     };
   }
 
@@ -80,7 +83,7 @@ class EmailTemplateService {
       return {
         success: true,
         data: data || [],
-        predefined: this.predefinedTemplates
+        predefined: this.predefinedTemplates,
       };
     } catch (error) {
       Logger.error('Error fetching email templates:', error);
@@ -88,7 +91,7 @@ class EmailTemplateService {
         success: false,
         error: error.message,
         data: [],
-        predefined: this.predefinedTemplates
+        predefined: this.predefinedTemplates,
       };
     }
   }
@@ -108,7 +111,7 @@ class EmailTemplateService {
         category: templateData.category || 'custom',
         organization_id: templateData.organizationId || 'default',
         is_active: true,
-        updated_at: new Date().toISOString()
+        updated_at: new Date().toISOString(),
       };
 
       let result;
@@ -123,11 +126,7 @@ class EmailTemplateService {
       } else {
         // Create new template
         template.created_at = new Date().toISOString();
-        result = await supabase
-          .from('email_templates')
-          .insert(template)
-          .select()
-          .single();
+        result = await supabase.from('email_templates').insert(template).select().single();
       }
 
       if (result.error) throw result.error;
@@ -135,13 +134,15 @@ class EmailTemplateService {
       return {
         success: true,
         data: result.data,
-        message: templateData.id ? 'Template updated successfully' : 'Template created successfully'
+        message: templateData.id
+          ? 'Template updated successfully'
+          : 'Template created successfully',
       };
     } catch (error) {
       Logger.error('Error saving email template:', error);
       return {
         success: false,
-        error: error.message
+        error: error.message,
       };
     }
   }
@@ -151,22 +152,19 @@ class EmailTemplateService {
    */
   async deleteTemplate(templateId) {
     try {
-      const { error } = await supabase
-        .from('email_templates')
-        .delete()
-        .eq('id', templateId);
+      const { error } = await supabase.from('email_templates').delete().eq('id', templateId);
 
       if (error) throw error;
 
       return {
         success: true,
-        message: 'Template deleted successfully'
+        message: 'Template deleted successfully',
       };
     } catch (error) {
       Logger.error('Error deleting email template:', error);
       return {
         success: false,
-        error: error.message
+        error: error.message,
       };
     }
   }
@@ -199,14 +197,14 @@ class EmailTemplateService {
         data: {
           subject,
           htmlContent,
-          textContent
-        }
+          textContent,
+        },
       };
     } catch (error) {
       Logger.error('Error rendering template:', error);
       return {
         success: false,
-        error: error.message
+        error: error.message,
       };
     }
   }
@@ -246,7 +244,9 @@ class EmailTemplateService {
 
     // Add email-safe DOCTYPE if not present
     if (!optimized.includes('<!DOCTYPE')) {
-      optimized = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">\n' + optimized;
+      optimized =
+        '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">\n' +
+        optimized;
     }
 
     // Wrap in html and body tags if not present
@@ -271,14 +271,10 @@ class EmailTemplateService {
   convertToAbsoluteUrls(html) {
     // This would need to be configured with your actual domain
     const baseUrl = import.meta.env.VITE_BASE_URL || 'https://your-domain.com';
-    
-    return html.replace(
-      /src="\/([^"]+)"/g,
-      `src="${baseUrl}/$1"`
-    ).replace(
-      /href="\/([^"]+)"/g,
-      `href="${baseUrl}/$1"`
-    );
+
+    return html
+      .replace(/src="\/([^"]+)"/g, `src="${baseUrl}/$1"`)
+      .replace(/href="\/([^"]+)"/g, `href="${baseUrl}/$1"`);
   }
 
   /**
@@ -291,19 +287,19 @@ class EmailTemplateService {
     // Style paragraphs
     styled = styled.replace(
       /<p(?![^>]*style)/g,
-      '<p style="margin: 0 0 16px 0; line-height: 1.6;"'
+      '<p style="margin: 0 0 16px 0; line-height: 1.6;"',
     );
 
     // Style headings
     styled = styled.replace(
       /<h([1-6])(?![^>]*style)/g,
-      '<h$1 style="margin: 0 0 16px 0; font-weight: bold;"'
+      '<h$1 style="margin: 0 0 16px 0; font-weight: bold;"',
     );
 
     // Style links
     styled = styled.replace(
       /<a(?![^>]*style)/g,
-      '<a style="color: #2563eb; text-decoration: underline;"'
+      '<a style="color: #2563eb; text-decoration: underline;"',
     );
 
     return styled;
@@ -355,7 +351,7 @@ class EmailTemplateService {
 
     return {
       isValid: issues.length === 0,
-      issues
+      issues,
     };
   }
 
@@ -507,7 +503,7 @@ class EmailTemplateService {
     return this.defaultVariables.map(variable => ({
       name: variable,
       placeholder: `{${variable}}`,
-      description: this.getVariableDescription(variable)
+      description: this.getVariableDescription(variable),
     }));
   }
 
@@ -530,11 +526,11 @@ class EmailTemplateService {
       days_overdue: 'Number of days payment is overdue',
       quote_number: 'Quote number',
       issue_date: 'Date document was issued',
-      expiry_date: 'Quote expiration date'
+      expiry_date: 'Quote expiration date',
     };
 
     return descriptions[variable] || 'Custom variable';
   }
 }
 
-export default new EmailTemplateService(); 
+export default new EmailTemplateService();

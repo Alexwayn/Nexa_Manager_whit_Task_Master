@@ -65,13 +65,13 @@ class ClientService {
         limit = null,
         offset = 0,
         filters = {},
-        userId: providedUserId
+        userId: providedUserId,
       } = options;
 
       // Get current user
       const user = this.getCurrentUser();
       const userId = providedUserId || user?.id;
-      
+
       if (!userId) {
         throw new Error('User not authenticated - no Clerk user ID available');
       }
@@ -147,7 +147,7 @@ class ClientService {
       // Get current user
       const user = this.getCurrentUser();
       const currentUserId = userId || user?.id;
-      
+
       if (!currentUserId) {
         throw new Error('User not authenticated - no Clerk user ID available');
       }
@@ -199,7 +199,7 @@ class ClientService {
       // Get current user
       const user = this.getCurrentUser();
       const currentUserId = userId || user?.id;
-      
+
       if (!currentUserId) {
         throw new Error('User not authenticated - no Clerk user ID available');
       }
@@ -266,7 +266,7 @@ class ClientService {
       // Get current user
       const user = this.getCurrentUser();
       const currentUserId = userId || user?.id;
-      
+
       if (!currentUserId) {
         throw new Error('User not authenticated - no Clerk user ID available');
       }
@@ -334,7 +334,7 @@ class ClientService {
       // Get current user
       const user = this.getCurrentUser();
       const currentUserId = userId || user?.id;
-      
+
       if (!currentUserId) {
         throw new Error('User not authenticated - no Clerk user ID available');
       }
@@ -394,7 +394,7 @@ class ClientService {
       // Get current user
       const user = this.getCurrentUser();
       const userId = searchParams.userId || user?.id;
-      
+
       if (!userId) {
         throw new Error('User not authenticated - no Clerk user ID available');
       }
@@ -405,48 +405,48 @@ class ClientService {
           .select('*', { count: 'exact' })
           .eq('user_id', userId);
 
-      // Apply specific field filters
-      if (searchParams.name) {
-        query = query.ilike('full_name', `%${searchParams.name}%`);
-      }
-      if (searchParams.email) {
-        query = query.ilike('email', `%${searchParams.email}%`);
-      }
-      if (searchParams.phone) {
-        query = query.ilike('phone', `%${searchParams.phone}%`);
-      }
-      if (searchParams.city) {
-        query = query.ilike('city', `%${searchParams.city}%`);
-      }
+        // Apply specific field filters
+        if (searchParams.name) {
+          query = query.ilike('full_name', `%${searchParams.name}%`);
+        }
+        if (searchParams.email) {
+          query = query.ilike('email', `%${searchParams.email}%`);
+        }
+        if (searchParams.phone) {
+          query = query.ilike('phone', `%${searchParams.phone}%`);
+        }
+        if (searchParams.city) {
+          query = query.ilike('city', `%${searchParams.city}%`);
+        }
 
-      // Apply general search if provided
-      if (
-        searchParams.query &&
-        !searchParams.name &&
-        !searchParams.email &&
-        !searchParams.phone &&
-        !searchParams.city
-      ) {
-        const searchTerm = `%${searchParams.query.toLowerCase()}%`;
-        query = query.or(
-          `full_name.ilike.${searchTerm},email.ilike.${searchTerm},phone.ilike.${searchTerm},address.ilike.${searchTerm},city.ilike.${searchTerm}`,
-        );
-      }
+        // Apply general search if provided
+        if (
+          searchParams.query &&
+          !searchParams.name &&
+          !searchParams.email &&
+          !searchParams.phone &&
+          !searchParams.city
+        ) {
+          const searchTerm = `%${searchParams.query.toLowerCase()}%`;
+          query = query.or(
+            `full_name.ilike.${searchTerm},email.ilike.${searchTerm},phone.ilike.${searchTerm},address.ilike.${searchTerm},city.ilike.${searchTerm}`,
+          );
+        }
 
-      query = query.order('full_name', { ascending: true });
+        query = query.order('full_name', { ascending: true });
 
-      const { data, error, count } = await query;
+        const { data, error, count } = await query;
 
-      if (error) {
-        throw error;
-      }
+        if (error) {
+          throw error;
+        }
 
-      // Adapt data for frontend compatibility
-      const adaptedData = (data || []).map(client => ({
-        ...client,
-        name: client.full_name || client.name || 'Client',
-        displayName: this.getDisplayName(client),
-      }));
+        // Adapt data for frontend compatibility
+        const adaptedData = (data || []).map(client => ({
+          ...client,
+          name: client.full_name || client.name || 'Client',
+          displayName: this.getDisplayName(client),
+        }));
 
         return {
           data: adaptedData,
@@ -476,7 +476,7 @@ class ClientService {
       // Get current user
       const user = this.getCurrentUser();
       const currentUserId = userId || user?.id;
-      
+
       if (!currentUserId) {
         throw new Error('User not authenticated - no Clerk user ID available');
       }
@@ -815,7 +815,7 @@ class ClientService {
       // Get current user
       const user = this.getCurrentUser();
       const currentUserId = userId || user?.id;
-      
+
       if (!currentUserId) {
         throw new Error('User not authenticated - no Clerk user ID available');
       }

@@ -199,15 +199,15 @@ const Voice = () => {
       <div className='bg-blue-50 border-b border-gray-200 py-2 px-4 md:px-8'>
         <div className='flex items-center justify-between'>
           <div className='flex items-center space-x-2 text-base'>
-            <button 
+            <button
               onClick={() => navigate('/dashboard')}
               className='flex items-center space-x-1 text-blue-600 hover:text-blue-700 font-medium transition-colors'
             >
-              <HomeIcon className="h-5 w-5" />
+              <HomeIcon className='h-5 w-5' />
               <span>Dashboard</span>
             </button>
             <ChevronRightIcon className='h-4 w-4 text-gray-400' />
-            <span className="text-gray-600 font-bold">Voice Assistant</span>
+            <span className='text-gray-600 font-bold'>Voice Assistant</span>
           </div>
         </div>
       </div>

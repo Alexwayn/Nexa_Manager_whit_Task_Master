@@ -27,13 +27,11 @@ class EmailAttachmentService {
         // Archives
         'application/zip',
         'application/x-rar-compressed',
-        'application/x-7z-compressed'
+        'application/x-7z-compressed',
       ],
-      bannedExtensions: [
-        '.exe', '.bat', '.cmd', '.com', '.pif', '.scr', '.vbs', '.js'
-      ]
+      bannedExtensions: ['.exe', '.bat', '.cmd', '.com', '.pif', '.scr', '.vbs', '.js'],
     };
-    
+
     this.attachments = new Map(); // Temporary storage for attachments
   }
 
@@ -72,7 +70,7 @@ class EmailAttachmentService {
 
     return {
       valid: errors.length === 0,
-      errors
+      errors,
     };
   }
 
@@ -82,7 +80,7 @@ class EmailAttachmentService {
   validateFiles(files, existingAttachments = []) {
     const errors = [];
     const validFiles = [];
-    
+
     const totalFiles = files.length + existingAttachments.length;
     if (totalFiles > this.config.maxFiles) {
       errors.push(`Too many files. Maximum: ${this.config.maxFiles}`);
@@ -93,15 +91,17 @@ class EmailAttachmentService {
 
     for (const file of files) {
       const validation = this.validateFile(file);
-      
+
       if (validation.valid) {
         totalSize += file.size;
-        
+
         if (totalSize > this.config.maxTotalSize) {
-          errors.push(`Total attachment size too large. Maximum: ${this.formatFileSize(this.config.maxTotalSize)}`);
+          errors.push(
+            `Total attachment size too large. Maximum: ${this.formatFileSize(this.config.maxTotalSize)}`,
+          );
           break;
         }
-        
+
         validFiles.push(file);
       } else {
         errors.push(`${file.name}: ${validation.errors.join(', ')}`);
@@ -111,7 +111,7 @@ class EmailAttachmentService {
     return {
       valid: errors.length === 0,
       errors,
-      validFiles
+      validFiles,
     };
   }
 
@@ -125,16 +125,16 @@ class EmailAttachmentService {
       if (!validation.valid) {
         return {
           success: false,
-          error: validation.errors.join(', ')
+          error: validation.errors.join(', '),
         };
       }
 
       // Generate unique ID for attachment
       const attachmentId = this.generateAttachmentId();
-      
+
       // Read file content
       const content = await this.readFileContent(file);
-      
+
       // Create attachment object
       const attachment = {
         id: attachmentId,
@@ -148,17 +148,17 @@ class EmailAttachmentService {
         metadata: {
           lastModified: file.lastModified,
           webkitRelativePath: file.webkitRelativePath || '',
-          ...options.metadata
-        }
+          ...options.metadata,
+        },
       };
 
       // Store temporarily (in production, upload to cloud storage)
       this.attachments.set(attachmentId, attachment);
-      
+
       Logger.info('Attachment uploaded successfully', {
         id: attachmentId,
         name: file.name,
-        size: file.size
+        size: file.size,
       });
 
       return {
@@ -168,19 +168,18 @@ class EmailAttachmentService {
           name: attachment.name,
           size: attachment.size,
           type: attachment.type,
-          uploadedAt: attachment.uploadedAt
-        }
+          uploadedAt: attachment.uploadedAt,
+        },
       };
-
     } catch (error) {
       Logger.error('Failed to upload attachment', {
         fileName: file.name,
-        error: error.message
+        error: error.message,
       });
-      
+
       return {
         success: false,
-        error: error.message
+        error: error.message,
       };
     }
   }
@@ -195,7 +194,7 @@ class EmailAttachmentService {
       if (!validation.valid) {
         return {
           success: false,
-          error: validation.errors.join('; ')
+          error: validation.errors.join('; '),
         };
       }
 
@@ -205,7 +204,7 @@ class EmailAttachmentService {
       // Upload each valid file
       for (const file of validation.validFiles) {
         const result = await this.uploadAttachment(file);
-        
+
         if (result.success) {
           results.push(result.data);
         } else {
@@ -216,14 +215,13 @@ class EmailAttachmentService {
       return {
         success: errors.length === 0,
         data: results,
-        errors: errors.length > 0 ? errors : undefined
+        errors: errors.length > 0 ? errors : undefined,
       };
-
     } catch (error) {
       Logger.error('Failed to upload attachments', { error: error.message });
       return {
         success: false,
-        error: error.message
+        error: error.message,
       };
     }
   }
@@ -236,13 +234,13 @@ class EmailAttachmentService {
     if (!attachment) {
       return {
         success: false,
-        error: 'Attachment not found'
+        error: 'Attachment not found',
       };
     }
 
     return {
       success: true,
-      data: attachment
+      data: attachment,
     };
   }
 
@@ -254,28 +252,27 @@ class EmailAttachmentService {
       if (!this.attachments.has(attachmentId)) {
         return {
           success: false,
-          error: 'Attachment not found'
+          error: 'Attachment not found',
         };
       }
 
       this.attachments.delete(attachmentId);
-      
+
       Logger.info('Attachment deleted', { id: attachmentId });
-      
+
       return {
         success: true,
-        message: 'Attachment deleted successfully'
+        message: 'Attachment deleted successfully',
       };
-
     } catch (error) {
       Logger.error('Failed to delete attachment', {
         id: attachmentId,
-        error: error.message
+        error: error.message,
       });
-      
+
       return {
         success: false,
-        error: error.message
+        error: error.message,
       };
     }
   }
@@ -295,7 +292,7 @@ class EmailAttachmentService {
             filename: attachment.name,
             content: attachment.content,
             contentType: attachment.type,
-            size: attachment.size
+            size: attachment.size,
           });
         } else {
           missing.push(id);
@@ -305,24 +302,23 @@ class EmailAttachmentService {
       if (missing.length > 0) {
         return {
           success: false,
-          error: `Missing attachments: ${missing.join(', ')}`
+          error: `Missing attachments: ${missing.join(', ')}`,
         };
       }
 
       return {
         success: true,
-        data: attachments
+        data: attachments,
       };
-
     } catch (error) {
       Logger.error('Failed to prepare attachments for email', {
         attachmentIds,
-        error: error.message
+        error: error.message,
       });
-      
+
       return {
         success: false,
-        error: error.message
+        error: error.message,
       };
     }
   }
@@ -330,7 +326,8 @@ class EmailAttachmentService {
   /**
    * Clean up old attachments
    */
-  cleanupAttachments(maxAge = 24 * 60 * 60 * 1000) { // 24 hours default
+  cleanupAttachments(maxAge = 24 * 60 * 60 * 1000) {
+    // 24 hours default
     try {
       const now = Date.now();
       const cleaned = [];
@@ -344,17 +341,16 @@ class EmailAttachmentService {
       }
 
       Logger.info('Cleaned up old attachments', { count: cleaned.length });
-      
+
       return {
         success: true,
-        cleaned: cleaned.length
+        cleaned: cleaned.length,
       };
-
     } catch (error) {
       Logger.error('Failed to cleanup attachments', { error: error.message });
       return {
         success: false,
-        error: error.message
+        error: error.message,
       };
     }
   }
@@ -365,14 +361,14 @@ class EmailAttachmentService {
   getAttachmentStats() {
     try {
       const attachments = Array.from(this.attachments.values());
-      
+
       const stats = {
         totalCount: attachments.length,
         totalSize: attachments.reduce((sum, att) => sum + att.size, 0),
         typeBreakdown: {},
         averageSize: 0,
         oldestUpload: null,
-        newestUpload: null
+        newestUpload: null,
       };
 
       if (attachments.length > 0) {
@@ -393,14 +389,13 @@ class EmailAttachmentService {
 
       return {
         success: true,
-        data: stats
+        data: stats,
       };
-
     } catch (error) {
       Logger.error('Failed to get attachment stats', { error: error.message });
       return {
         success: false,
-        error: error.message
+        error: error.message,
       };
     }
   }
@@ -414,16 +409,18 @@ class EmailAttachmentService {
   async readFileContent(file) {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
-      
+
       reader.onload = () => {
         // Convert to base64 for storage
         const base64 = btoa(
-          new Uint8Array(reader.result)
-            .reduce((data, byte) => data + String.fromCharCode(byte), '')
+          new Uint8Array(reader.result).reduce(
+            (data, byte) => data + String.fromCharCode(byte),
+            '',
+          ),
         );
         resolve(base64);
       };
-      
+
       reader.onerror = () => reject(reader.error);
       reader.readAsArrayBuffer(file);
     });
@@ -434,7 +431,7 @@ class EmailAttachmentService {
     let hash = 0;
     for (let i = 0; i < content.length; i++) {
       const char = content.charCodeAt(i);
-      hash = ((hash << 5) - hash) + char;
+      hash = (hash << 5) - hash + char;
       hash = hash & hash; // Convert to 32-bit integer
     }
     return hash.toString(16);
@@ -452,11 +449,11 @@ class EmailAttachmentService {
 
   formatFileSize(bytes) {
     if (bytes === 0) return '0 Bytes';
-    
+
     const k = 1024;
     const sizes = ['Bytes', 'KB', 'MB', 'GB'];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
-    
+
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
   }
 
@@ -467,7 +464,7 @@ class EmailAttachmentService {
     return {
       ...this.config,
       maxFileSizeFormatted: this.formatFileSize(this.config.maxFileSize),
-      maxTotalSizeFormatted: this.formatFileSize(this.config.maxTotalSize)
+      maxTotalSizeFormatted: this.formatFileSize(this.config.maxTotalSize),
     };
   }
 
@@ -480,4 +477,4 @@ class EmailAttachmentService {
   }
 }
 
-export default new EmailAttachmentService(); 
+export default new EmailAttachmentService();

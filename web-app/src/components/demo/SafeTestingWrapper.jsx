@@ -20,7 +20,7 @@ export const SafeTestingWrapper = ({ children }) => {
   useEffect(() => {
     const demoModeEnabled = import.meta.env.VITE_ENABLE_DEMO_MODE === 'true';
     const isDevEnvironment = import.meta.env.VITE_APP_ENV === 'development';
-    
+
     setIsDemoMode(demoModeEnabled && isDevEnvironment);
     Logger.info('Demo mode enabled:', demoModeEnabled && isDevEnvironment);
   }, []);
@@ -37,7 +37,7 @@ export const SafeTestingWrapper = ({ children }) => {
       alert('Demo mode is not enabled. Check your environment configuration.');
       return;
     }
-    
+
     setTestingMode(true);
     Logger.info('Testing mode enabled with demo user:', testUserId);
   };
@@ -47,7 +47,7 @@ export const SafeTestingWrapper = ({ children }) => {
     Logger.info('Testing mode disabled');
   };
 
-  const executeQuery = async (queryFunction) => {
+  const executeQuery = async queryFunction => {
     if (testingMode) {
       // Use demo data for testing
       return await executeTestQuery(queryFunction);
@@ -66,26 +66,26 @@ export const SafeTestingWrapper = ({ children }) => {
     executeQuery,
     isDemoMode,
     currentUserId: testingMode ? testUserId : user?.id,
-    isAuthenticated: testingMode || (isSignedIn && isReady)
+    isAuthenticated: testingMode || (isSignedIn && isReady),
   };
 
   return (
     <TestingContext.Provider value={contextValue}>
       {isDemoMode && (
-        <div className="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 mb-4">
-          <div className="flex items-center">
-            <div className="ml-3">
-              <p className="text-sm">
-                🧪 <strong>Development Mode Attivo</strong> - 
-                <button 
+        <div className='bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 mb-4'>
+          <div className='flex items-center'>
+            <div className='ml-3'>
+              <p className='text-sm'>
+                🧪 <strong>Development Mode Attivo</strong> -
+                <button
                   onClick={testingMode ? disableTestingMode : enableTestingMode}
-                  className="underline hover:text-yellow-800 ml-2"
+                  className='underline hover:text-yellow-800 ml-2'
                 >
                   {testingMode ? 'Disabilita Testing' : 'Abilita Testing con Dati Demo'}
                 </button>
               </p>
               {testingMode && (
-                <p className="text-xs mt-1">
+                <p className='text-xs mt-1'>
                   Usando utente demo: {testUserId} (sicuro per testing)
                 </p>
               )}
@@ -108,7 +108,7 @@ export const useSafeTesting = () => {
 };
 
 // HOC per wrappare componenti che necessitano testing
-export const withSafeTesting = (Component) => {
+export const withSafeTesting = Component => {
   return function SafeTestingComponent(props) {
     return (
       <SafeTestingWrapper>
@@ -116,4 +116,4 @@ export const withSafeTesting = (Component) => {
       </SafeTestingWrapper>
     );
   };
-}; 
+};

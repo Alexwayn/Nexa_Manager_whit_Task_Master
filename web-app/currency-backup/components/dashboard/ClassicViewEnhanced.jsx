@@ -52,22 +52,25 @@ const ClassicViewEnhanced = () => {
   const { user } = useUser();
   const navigate = useNavigate();
   const { t } = useTranslation('dashboard');
-  
+
   // Date range for data filtering
   const { dateRange } = useDateRange();
 
   // Transform dateRange for compatibility with useRealtimeDashboard
-  const realtimeDateRange = useMemo(() => ({
-    start: dateRange.startDate,
-    end: dateRange.endDate
-  }), [dateRange.startDate, dateRange.endDate]);
-  
+  const realtimeDateRange = useMemo(
+    () => ({
+      start: dateRange.startDate,
+      end: dateRange.endDate,
+    }),
+    [dateRange.startDate, dateRange.endDate],
+  );
+
   // Get real-time dashboard data with RLS security
-  const { 
-    dashboardData, 
-    loading: dashboardLoading, 
+  const {
+    dashboardData,
+    loading: dashboardLoading,
     error: dashboardError,
-    isConnected 
+    isConnected,
   } = useRealtimeDashboard(realtimeDateRange, true);
 
   // Local state for UI interactions
@@ -100,7 +103,7 @@ const ClassicViewEnhanced = () => {
           count: '0',
           period: t('values.upcomingEventsPeriod') || 'Next 7 days',
         },
-        isLoading: true
+        isLoading: true,
       };
     }
 
@@ -108,7 +111,7 @@ const ClassicViewEnhanced = () => {
     const kpis = dashboardData.kpis || {};
     const clients = dashboardData.clients || {};
     const trends = dashboardData.trends || {};
-    
+
     // Calculate revenue data from real API
     const currentRevenue = kpis.totalRevenue || 0;
     const currentExpenses = kpis.totalExpenses || 0;
@@ -120,12 +123,16 @@ const ClassicViewEnhanced = () => {
     const clientGrowth = trends.revenue ? `+${Math.round(trends.revenue * 0.7)}%` : '+8.3%'; // Derived from revenue trend
 
     // Business health score based on real data
-    const businessHealthScore = Math.min(100, Math.max(0, 
-      ((currentRevenue > 0 ? 30 : 0) + 
-       (activeClientsCount > 0 ? 25 : 0) + 
-       (revenueGrowth.includes('+') ? 25 : 0) + 
-       (clientGrowth.includes('+') ? 20 : 0))
-    ));
+    const businessHealthScore = Math.min(
+      100,
+      Math.max(
+        0,
+        (currentRevenue > 0 ? 30 : 0) +
+          (activeClientsCount > 0 ? 25 : 0) +
+          (revenueGrowth.includes('+') ? 25 : 0) +
+          (clientGrowth.includes('+') ? 20 : 0),
+      ),
+    );
 
     return {
       businessHealthScore,
@@ -143,7 +150,7 @@ const ClassicViewEnhanced = () => {
         count: (dashboardData.calendar?.upcomingEvents || 0).toString(),
         period: t('values.upcomingEventsPeriod') || 'Next 7 days',
       },
-      isLoading: false
+      isLoading: false,
     };
   }, [dashboardData, dashboardLoading, t]);
 
@@ -295,18 +302,16 @@ const ClassicViewEnhanced = () => {
   // Error state
   if (dashboardError) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="bg-white rounded-lg shadow-lg p-8 max-w-md w-full">
-          <div className="flex items-center space-x-3 text-red-600 mb-4">
-            <AlertCircle className="h-6 w-6" />
-            <h2 className="text-lg font-semibold">Dashboard Error</h2>
+      <div className='min-h-screen bg-gray-50 flex items-center justify-center'>
+        <div className='bg-white rounded-lg shadow-lg p-8 max-w-md w-full'>
+          <div className='flex items-center space-x-3 text-red-600 mb-4'>
+            <AlertCircle className='h-6 w-6' />
+            <h2 className='text-lg font-semibold'>Dashboard Error</h2>
           </div>
-          <p className="text-gray-600 mb-4">
-            Unable to load dashboard data: {dashboardError}
-          </p>
+          <p className='text-gray-600 mb-4'>Unable to load dashboard data: {dashboardError}</p>
           <button
             onClick={handleRefresh}
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+            className='w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors'
           >
             Retry
           </button>
@@ -318,21 +323,25 @@ const ClassicViewEnhanced = () => {
   return (
     <div className='min-h-screen bg-gray-50'>
       {/* Real-time Connection Status */}
-      <div className="fixed top-4 left-4 z-50">
-        <div className={`flex items-center space-x-2 px-3 py-2 rounded-lg shadow-sm text-sm ${
-          isConnected ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
-        }`}>
-          <div className={`w-2 h-2 rounded-full ${isConnected ? 'bg-green-500' : 'bg-red-500'}`}></div>
+      <div className='fixed top-4 left-4 z-50'>
+        <div
+          className={`flex items-center space-x-2 px-3 py-2 rounded-lg shadow-sm text-sm ${
+            isConnected ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+          }`}
+        >
+          <div
+            className={`w-2 h-2 rounded-full ${isConnected ? 'bg-green-500' : 'bg-red-500'}`}
+          ></div>
           <span>{isConnected ? 'Real-time' : 'Offline'}</span>
         </div>
       </div>
 
       {/* Loading State */}
       {processedData.isLoading && (
-        <div className="fixed top-20 right-4 z-40 bg-blue-100 text-blue-800 px-4 py-2 rounded-lg shadow-sm">
-          <div className="flex items-center space-x-2">
-            <Loader2 className="animate-spin h-4 w-4" />
-            <span className="text-sm">Loading dashboard data...</span>
+        <div className='fixed top-20 right-4 z-40 bg-blue-100 text-blue-800 px-4 py-2 rounded-lg shadow-sm'>
+          <div className='flex items-center space-x-2'>
+            <Loader2 className='animate-spin h-4 w-4' />
+            <span className='text-sm'>Loading dashboard data...</span>
           </div>
         </div>
       )}
@@ -348,7 +357,7 @@ const ClassicViewEnhanced = () => {
                 <ChevronDown className='h-4 w-4 text-gray-400 rotate-[-90deg]' />
                 <span className='text-gray-600'>{t('overview') || 'Overview'}</span>
               </div>
-              
+
               {/* Search Bar with Results */}
               <div className='flex items-center bg-white rounded px-2 h-10 w-100 py-0 relative'>
                 <Search className='h-2 w-2 text-gray-400 mr-1' />
@@ -360,17 +369,17 @@ const ClassicViewEnhanced = () => {
                   className='flex-1 h-5 text-gray-700 bg-transparent border-none focus:border-none focus:ring-0 focus:outline-none text-xs leading-tight font-light placeholder:text-xs placeholder:font-light'
                   style={{ textIndent: '6px' }}
                 />
-                
+
                 {/* Refresh Button */}
                 <button
                   onClick={handleRefresh}
                   disabled={isRefreshing}
-                  className="ml-2 p-1 text-gray-400 hover:text-gray-600 transition-colors"
-                  title="Refresh Data"
+                  className='ml-2 p-1 text-gray-400 hover:text-gray-600 transition-colors'
+                  title='Refresh Data'
                 >
                   <RefreshCw className={`h-3 w-3 ${isRefreshing ? 'animate-spin' : ''}`} />
                 </button>
-                
+
                 {/* Search Results Dropdown */}
                 {searchTerm.trim() && (
                   <div className='absolute left-0 top-full mt-1 w-full bg-white border border-gray-100 rounded shadow-lg z-50 max-h-64 overflow-y-auto text-xs'>
@@ -423,11 +432,13 @@ const ClassicViewEnhanced = () => {
                         ))}
                       </div>
                     )}
-                    {filteredClients.length === 0 && filteredUpcomingWork.length === 0 && filteredNotifications.length === 0 && (
-                      <div className='px-3 py-2 text-gray-500'>
-                        {t('search.noResults') || 'No results found'}
-                      </div>
-                    )}
+                    {filteredClients.length === 0 &&
+                      filteredUpcomingWork.length === 0 &&
+                      filteredNotifications.length === 0 && (
+                        <div className='px-3 py-2 text-gray-500'>
+                          {t('search.noResults') || 'No results found'}
+                        </div>
+                      )}
                   </div>
                 )}
               </div>
@@ -440,10 +451,12 @@ const ClassicViewEnhanced = () => {
             <div className='bg-white rounded-lg shadow-sm p-6 border-l-4 border-green-500'>
               <div className='flex items-center justify-between'>
                 <div>
-                  <p className='text-sm font-medium text-gray-600'>{t('metrics.businessHealth') || 'Business Health'}</p>
+                  <p className='text-sm font-medium text-gray-600'>
+                    {t('metrics.businessHealth') || 'Business Health'}
+                  </p>
                   <p className='text-2xl font-bold text-gray-900'>
                     {processedData.isLoading ? (
-                      <div className="animate-pulse bg-gray-200 h-8 w-16 rounded"></div>
+                      <div className='animate-pulse bg-gray-200 h-8 w-16 rounded'></div>
                     ) : (
                       `${processedData.businessHealthScore}%`
                     )}
@@ -465,10 +478,12 @@ const ClassicViewEnhanced = () => {
             <div className='bg-white rounded-lg shadow-sm p-6 border-l-4 border-blue-500'>
               <div className='flex items-center justify-between'>
                 <div>
-                  <p className='text-sm font-medium text-gray-600'>{t('metrics.monthlyRevenue') || 'Monthly Revenue'}</p>
+                  <p className='text-sm font-medium text-gray-600'>
+                    {t('metrics.monthlyRevenue') || 'Monthly Revenue'}
+                  </p>
                   <p className='text-2xl font-bold text-gray-900'>
                     {processedData.isLoading ? (
-                      <div className="animate-pulse bg-gray-200 h-8 w-20 rounded"></div>
+                      <div className='animate-pulse bg-gray-200 h-8 w-20 rounded'></div>
                     ) : (
                       processedData.revenueData.monthly
                     )}
@@ -490,10 +505,12 @@ const ClassicViewEnhanced = () => {
             <div className='bg-white rounded-lg shadow-sm p-6 border-l-4 border-purple-500'>
               <div className='flex items-center justify-between'>
                 <div>
-                  <p className='text-sm font-medium text-gray-600'>{t('metrics.activeClients') || 'Active Clients'}</p>
+                  <p className='text-sm font-medium text-gray-600'>
+                    {t('metrics.activeClients') || 'Active Clients'}
+                  </p>
                   <p className='text-2xl font-bold text-gray-900'>
                     {processedData.isLoading ? (
-                      <div className="animate-pulse bg-gray-200 h-8 w-12 rounded"></div>
+                      <div className='animate-pulse bg-gray-200 h-8 w-12 rounded'></div>
                     ) : (
                       processedData.clientData.active
                     )}
@@ -515,10 +532,12 @@ const ClassicViewEnhanced = () => {
             <div className='bg-white rounded-lg shadow-sm p-6 border-l-4 border-orange-500'>
               <div className='flex items-center justify-between'>
                 <div>
-                  <p className='text-sm font-medium text-gray-600'>{t('metrics.upcomingEvents') || 'Upcoming Events'}</p>
+                  <p className='text-sm font-medium text-gray-600'>
+                    {t('metrics.upcomingEvents') || 'Upcoming Events'}
+                  </p>
                   <p className='text-2xl font-bold text-gray-900'>
                     {processedData.isLoading ? (
-                      <div className="animate-pulse bg-gray-200 h-8 w-8 rounded"></div>
+                      <div className='animate-pulse bg-gray-200 h-8 w-8 rounded'></div>
                     ) : (
                       processedData.upcomingEvents.count
                     )}
@@ -539,11 +558,10 @@ const ClassicViewEnhanced = () => {
 
           {/* Rest of the dashboard content remains the same... */}
           {/* Add the existing content from your Dashboard.jsx here */}
-          
         </div>
       </div>
     </div>
   );
 };
 
-export default ClassicViewEnhanced; 
+export default ClassicViewEnhanced;

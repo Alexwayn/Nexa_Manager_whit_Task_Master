@@ -7,7 +7,8 @@ const OrganizationContext = createContext({});
 
 // Check if we're in development mode
 const isDevelopment = import.meta.env.DEV;
-const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+const isLocalhost =
+  window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
 const shouldBypassClerk = isDevelopment && isLocalhost;
 
 // Mock data for development mode
@@ -17,22 +18,24 @@ const mockOrganization = {
   slug: 'dev-org',
   membersCount: 1,
   publicMetadata: { plan: 'development' },
-  memberships: [{
-    role: 'admin',
-    publicUserData: { userId: 'dev-user-1' }
-  }]
+  memberships: [
+    {
+      role: 'admin',
+      publicUserData: { userId: 'dev-user-1' },
+    },
+  ],
 };
 
 const mockUser = {
   id: 'dev-user-1',
   firstName: 'Dev',
   lastName: 'User',
-  primaryEmailAddress: { emailAddress: 'dev@example.com' }
+  primaryEmailAddress: { emailAddress: 'dev@example.com' },
 };
 
 /**
  * Organization Context Provider for Multi-Tenant Support
- * 
+ *
  * Manages organization state and provides organization-aware data filtering
  * throughout the application. Integrates with Clerk Organizations for
  * enterprise-grade multi-tenancy and Sentry error monitoring.
@@ -44,7 +47,7 @@ export const OrganizationProvider = ({ children }) => {
   // Development mode - bypass Clerk
   if (shouldBypassClerk) {
     console.log('🚧 OrganizationProvider: Using development mode with mock data');
-    
+
     useEffect(() => {
       setSelectedOrganization(mockOrganization);
       setIsInitialized(true);
@@ -57,22 +60,22 @@ export const OrganizationProvider = ({ children }) => {
       organizationList: [{ organization: mockOrganization }],
       isLoaded: true,
       isInitialized: true,
-      
+
       // Organization management
-      switchOrganization: async (organizationId) => {
+      switchOrganization: async organizationId => {
         console.log('🚧 Dev mode: switchOrganization called with', organizationId);
       },
       createOrganization: async (name, slug) => {
         console.log('🚧 Dev mode: createOrganization called with', { name, slug });
       },
       getCurrentOrganizationId: () => mockOrganization.id,
-      
+
       // Role management
-      hasRole: (role) => role === 'admin',
+      hasRole: role => role === 'admin',
       isAdmin: () => true,
       isMember: () => true,
       getUserRole: () => 'admin',
-      
+
       // Utility functions
       getOrganizationSlug: () => mockOrganization.slug,
       getOrganizationName: () => mockOrganization.name,
@@ -83,15 +86,13 @@ export const OrganizationProvider = ({ children }) => {
       canViewAnalytics: () => true,
       getMemberCount: () => 1,
       isPersonalOrganization: () => false,
-      
+
       // Development helpers
       isDevelopmentMode: true,
     };
 
     return (
-      <OrganizationContext.Provider value={contextValue}>
-        {children}
-      </OrganizationContext.Provider>
+      <OrganizationContext.Provider value={contextValue}>{children}</OrganizationContext.Provider>
     );
   }
 
@@ -121,7 +122,7 @@ export const OrganizationProvider = ({ children }) => {
           hasOrganization: !!selectedOrganization?.id,
           userRole: getUserRole(),
         },
-        'info'
+        'info',
       );
     } else {
       // Clear Sentry context when user logs out
@@ -146,7 +147,7 @@ export const OrganizationProvider = ({ children }) => {
           organizationName: selectedOrganization.name,
           memberCount: selectedOrganization.membersCount,
         },
-        'info'
+        'info',
       );
     }
   }, [selectedOrganization]);
@@ -181,17 +182,17 @@ export const OrganizationProvider = ({ children }) => {
   /**
    * Switch to a different organization
    */
-  const switchOrganization = async (organizationId) => {
+  const switchOrganization = async organizationId => {
     try {
       await setActive({ organization: organizationId });
-      
+
       addBreadcrumb(
         'Organization switched',
         'user_action',
         { organizationId, userId: user?.id },
-        'info'
+        'info',
       );
-      
+
       Logger.info('Organization Context: Switched to organization', organizationId);
     } catch (error) {
       Logger.error('Organization Context: Failed to switch organization', error);
@@ -206,14 +207,14 @@ export const OrganizationProvider = ({ children }) => {
     try {
       // This would typically be handled by Clerk's OrganizationProfile component
       // or a custom organization creation flow
-      
+
       addBreadcrumb(
         'Organization creation attempted',
         'user_action',
         { organizationName: name, slug, userId: user?.id },
-        'info'
+        'info',
       );
-      
+
       Logger.info('Organization Context: Creating new organization', { name, slug });
       // The actual creation is handled by Clerk components
     } catch (error) {
@@ -232,13 +233,13 @@ export const OrganizationProvider = ({ children }) => {
   /**
    * Check if user has specific role in current organization
    */
-  const hasRole = (role) => {
+  const hasRole = role => {
     if (!selectedOrganization || !user) return false;
-    
+
     const membership = selectedOrganization.memberships?.find(
-      m => m.publicUserData.userId === user.id
+      m => m.publicUserData.userId === user.id,
     );
-    
+
     return membership?.role === role;
   };
 
@@ -257,11 +258,11 @@ export const OrganizationProvider = ({ children }) => {
    */
   const getUserRole = () => {
     if (!selectedOrganization || !user) return null;
-    
+
     const membership = selectedOrganization.memberships?.find(
-      m => m.publicUserData.userId === user.id
+      m => m.publicUserData.userId === user.id,
     );
-    
+
     return membership?.role || null;
   };
 
@@ -271,28 +272,28 @@ export const OrganizationProvider = ({ children }) => {
     organizationList: organizationList || [],
     isLoaded: orgLoaded && listLoaded,
     isInitialized,
-    
+
     // Organization management
     switchOrganization,
     createOrganization,
     getCurrentOrganizationId,
-    
+
     // Role management
     hasRole,
     isAdmin,
     isMember,
     getUserRole,
-    
+
     // Helper flags
     hasMultipleOrganizations: organizationList?.length > 1,
-    needsOrganizationSelection: isInitialized && !selectedOrganization && organizationList?.length > 1,
-    needsOrganizationCreation: isInitialized && (!organizationList || organizationList.length === 0),
+    needsOrganizationSelection:
+      isInitialized && !selectedOrganization && organizationList?.length > 1,
+    needsOrganizationCreation:
+      isInitialized && (!organizationList || organizationList.length === 0),
   };
 
   return (
-    <OrganizationContext.Provider value={contextValue}>
-      {children}
-    </OrganizationContext.Provider>
+    <OrganizationContext.Provider value={contextValue}>{children}</OrganizationContext.Provider>
   );
 };
 
@@ -312,7 +313,7 @@ export const useOrganizationContext = () => {
  */
 export const useOrganizationFilter = () => {
   const { getCurrentOrganizationId } = useOrganizationContext();
-  
+
   return {
     organizationId: getCurrentOrganizationId(),
     getFilter: () => ({ organizationId: getCurrentOrganizationId() }),
@@ -320,4 +321,4 @@ export const useOrganizationFilter = () => {
   };
 };
 
-export default OrganizationContext; 
+export default OrganizationContext;

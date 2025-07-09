@@ -22,4 +22,4 @@ declare module '@pages/Reports' {
 declare module '@pages/OrganizationManagement' {
   const OrganizationManagement: React.ComponentType<any>;
   export default OrganizationManagement;
-} 
+}

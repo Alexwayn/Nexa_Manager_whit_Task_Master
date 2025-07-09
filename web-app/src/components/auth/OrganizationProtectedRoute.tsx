@@ -16,10 +16,10 @@ interface OrganizationProtectedRouteProps {
 
 /**
  * OrganizationProtectedRoute Component
- * 
+ *
  * Extends ProtectedRoute with organization-specific access control.
  * Enforces organization membership, roles, and permissions.
- * 
+ *
  * @param children - Components to render if access is granted
  * @param requiredRole - Minimum role required (admin, basic_member, etc.)
  * @param requiredPermissions - Array of required permissions
@@ -34,7 +34,7 @@ export default function OrganizationProtectedRoute({
   organizationRequired = true,
   fallbackUrl = '/dashboard',
   adminOnly = false,
-  unauthorizedComponent: _unauthorizedComponent
+  unauthorizedComponent: _unauthorizedComponent,
 }: OrganizationProtectedRouteProps) {
   const { isLoaded, isSignedIn } = useAuth();
   const { user } = useUser();
@@ -48,7 +48,7 @@ export default function OrganizationProtectedRoute({
     isMember,
     getUserRole,
     needsOrganizationSelection,
-    needsOrganizationCreation
+    needsOrganizationCreation,
   } = useOrganizationContext();
 
   // Show loading spinner while Clerk and organization context are initializing
@@ -65,18 +65,14 @@ export default function OrganizationProtectedRoute({
   if (!isSignedIn || !user) {
     Logger.warn('OrganizationProtectedRoute: User not authenticated, redirecting to login');
     return (
-      <Navigate 
-        to='/login' 
-        state={{ returnTo: location.pathname + location.search }} 
-        replace 
-      />
+      <Navigate to='/login' state={{ returnTo: location.pathname + location.search }} replace />
     );
   }
 
   // Check onboarding completion
   const hasCompletedOnboarding = user.unsafeMetadata?.onboardingComplete === true;
   const isOnOnboardingPage = location.pathname === '/onboarding';
-  
+
   if (!hasCompletedOnboarding && !isOnOnboardingPage) {
     Logger.info('OrganizationProtectedRoute: User needs to complete onboarding');
     return <Navigate to='/onboarding' replace />;
@@ -100,13 +96,13 @@ export default function OrganizationProtectedRoute({
     if (!organization || !isMember()) {
       Logger.warn('OrganizationProtectedRoute: User not a member of required organization');
       return (
-        <Navigate 
+        <Navigate
           to={fallbackUrl}
-          state={{ 
+          state={{
             error: 'You do not have access to this organization.',
-            returnTo: location.pathname + location.search 
-          }} 
-          replace 
+            returnTo: location.pathname + location.search,
+          }}
+          replace
         />
       );
     }
@@ -116,31 +112,31 @@ export default function OrganizationProtectedRoute({
   if (adminOnly && !isAdmin()) {
     Logger.warn('OrganizationProtectedRoute: Admin access required but user is not admin');
     return (
-      <Navigate 
+      <Navigate
         to={fallbackUrl}
-        state={{ 
+        state={{
           error: 'Administrator access required for this page.',
-          returnTo: location.pathname + location.search 
-        }} 
-        replace 
+          returnTo: location.pathname + location.search,
+        }}
+        replace
       />
     );
   }
 
   if (requiredRole && !hasRole(requiredRole)) {
     const userRole = getUserRole();
-    Logger.warn('OrganizationProtectedRoute: Insufficient role', { 
-      required: requiredRole, 
-      current: userRole 
+    Logger.warn('OrganizationProtectedRoute: Insufficient role', {
+      required: requiredRole,
+      current: userRole,
     });
     return (
-      <Navigate 
+      <Navigate
         to={fallbackUrl}
-        state={{ 
+        state={{
           error: `This page requires ${requiredRole} access. Your current role: ${userRole || 'none'}.`,
-          returnTo: location.pathname + location.search 
-        }} 
-        replace 
+          returnTo: location.pathname + location.search,
+        }}
+        replace
       />
     );
   }
@@ -150,27 +146,27 @@ export default function OrganizationProtectedRoute({
     // This would integrate with your custom permission system
     // For now, we'll use a simple role-to-permission mapping
     const userPermissions = getUserPermissions(getUserRole());
-    const hasAllPermissions = requiredPermissions.every(permission => 
-      userPermissions.includes(permission)
+    const hasAllPermissions = requiredPermissions.every(permission =>
+      userPermissions.includes(permission),
     );
 
     if (!hasAllPermissions) {
-      const missingPermissions = requiredPermissions.filter(permission => 
-        !userPermissions.includes(permission)
+      const missingPermissions = requiredPermissions.filter(
+        permission => !userPermissions.includes(permission),
       );
       Logger.warn('OrganizationProtectedRoute: Missing required permissions', {
         required: requiredPermissions,
         missing: missingPermissions,
-        userRole: getUserRole()
+        userRole: getUserRole(),
       });
       return (
-        <Navigate 
+        <Navigate
           to={fallbackUrl}
-          state={{ 
+          state={{
             error: `Missing required permissions: ${missingPermissions.join(', ')}`,
-            returnTo: location.pathname + location.search 
-          }} 
-          replace 
+            returnTo: location.pathname + location.search,
+          }}
+          replace
         />
       );
     }
@@ -181,7 +177,7 @@ export default function OrganizationProtectedRoute({
     userId: user.id,
     organizationId: organization?.id,
     userRole: getUserRole(),
-    path: location.pathname
+    path: location.pathname,
   });
 
   return <>{children}</>;
@@ -203,15 +199,10 @@ function getUserPermissions(role: string | null): string[] {
       'export_data',
       'manage_billing',
       'access_reports',
-      'manage_settings'
+      'manage_settings',
     ],
-    basic_member: [
-      'read',
-      'write',
-      'view_analytics',
-      'access_reports'
-    ]
+    basic_member: ['read', 'write', 'view_analytics', 'access_reports'],
   };
 
   return rolePermissions[role || ''] || [];
-} 
+}

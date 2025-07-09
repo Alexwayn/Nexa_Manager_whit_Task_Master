@@ -11,14 +11,14 @@ const debugEnvVars = () => {
   Logger.info('- VITE_SUPABASE_URL:', supabaseUrl ? 'Set' : 'Missing');
   Logger.info('- VITE_SUPABASE_ANON_KEY:', supabaseAnonKey ? 'Set' : 'Missing');
   Logger.info('- VITE_SUPABASE_SERVICE_ROLE_KEY:', supabaseServiceRoleKey ? 'Set' : 'Missing');
-  
+
   if (supabaseUrl) {
     Logger.info('Supabase URL:', supabaseUrl);
   }
   if (supabaseAnonKey) {
     Logger.info('Supabase Anon Key (first 20 chars):', supabaseAnonKey.substring(0, 20) + '...');
   }
-  
+
   // List all environment variables starting with VITE_
   const viteVars = {};
   Object.keys(import.meta.env).forEach(key => {
@@ -43,7 +43,7 @@ if (!supabaseUrl || !supabaseAnonKey) {
   3. Netlify: Go to Site Settings > Environment Variables
   
   For local development, ensure your .env file contains these variables.`;
-  
+
   Logger.error(errorMessage);
   throw new Error('Missing Supabase environment variables - check deployment configuration');
 }
@@ -72,7 +72,7 @@ if (supabaseAdmin) {
 }
 
 // Utility function to set the current user ID for RLS policies
-export const setCurrentUserId = async (userId) => {
+export const setCurrentUserId = async userId => {
   if (!userId) {
     Logger.warn('No user ID provided to setCurrentUserId');
     return;
@@ -103,20 +103,20 @@ export const withUserContext = async (userId, queryFunction) => {
 
   try {
     Logger.info('Executing query with user context for:', userId);
-    
+
     // Try to set the user context (but don't fail if it doesn't work)
     await setCurrentUserId(userId);
-    
+
     // Execute the query
     const result = await queryFunction();
-    
+
     // Log the result for debugging
     if (result.error) {
       Logger.error('Query failed with error:', result.error);
     } else {
       Logger.info('Query executed successfully');
     }
-    
+
     return result;
   } catch (error) {
     Logger.error('Error executing query with user context:', error);
@@ -128,4 +128,4 @@ export const withUserContext = async (userId, queryFunction) => {
 if (typeof window !== 'undefined') {
   window.supabase = supabase;
   Logger.info('Supabase client available at window.supabase for debugging');
-} 
+}

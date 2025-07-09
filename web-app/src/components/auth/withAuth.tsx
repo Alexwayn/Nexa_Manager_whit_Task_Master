@@ -29,17 +29,17 @@ interface WithAuthOptions {
 
 /**
  * Higher-Order Component for Authentication and Authorization
- * 
+ *
  * Wraps components with authentication logic and provides auth-related props.
  * Supports role-based and permission-based access control.
- * 
+ *
  * @param WrappedComponent - Component to wrap with auth logic
  * @param options - Authentication and authorization options
  * @returns Enhanced component with authentication
  */
 export function withAuth<P extends object>(
   WrappedComponent: ComponentType<P & AuthProps>,
-  options: WithAuthOptions = {}
+  options: WithAuthOptions = {},
 ) {
   const {
     requiredRole,
@@ -48,7 +48,7 @@ export function withAuth<P extends object>(
     adminOnly = false,
     redirectTo = '/login',
     loadingComponent: LoadingComponent,
-    unauthorizedComponent: UnauthorizedComponent
+    unauthorizedComponent: UnauthorizedComponent,
   } = options;
 
   const WithAuthComponent = (props: P) => {
@@ -64,7 +64,7 @@ export function withAuth<P extends object>(
       isMember,
       getUserRole,
       needsOrganizationSelection,
-      needsOrganizationCreation
+      needsOrganizationCreation,
     } = useOrganizationContext();
 
     const isLoading = !isLoaded || !orgLoaded || !isInitialized;
@@ -86,10 +86,10 @@ export function withAuth<P extends object>(
     if (!isSignedIn || !user) {
       Logger.warn('withAuth: User not authenticated, redirecting');
       return (
-        <Navigate 
-          to={redirectTo} 
-          state={{ returnTo: location.pathname + location.search }} 
-          replace 
+        <Navigate
+          to={redirectTo}
+          state={{ returnTo: location.pathname + location.search }}
+          replace
         />
       );
     }
@@ -97,7 +97,7 @@ export function withAuth<P extends object>(
     // Onboarding check
     const hasCompletedOnboarding = user.unsafeMetadata?.onboardingComplete === true;
     const isOnOnboardingPage = location.pathname === '/onboarding';
-    
+
     if (!hasCompletedOnboarding && !isOnOnboardingPage) {
       return <Navigate to='/onboarding' replace />;
     }
@@ -114,16 +114,16 @@ export function withAuth<P extends object>(
 
       if (!organization || !isMember()) {
         if (UnauthorizedComponent) {
-          return <UnauthorizedComponent reason="Organization membership required" />;
+          return <UnauthorizedComponent reason='Organization membership required' />;
         }
         return (
-          <Navigate 
+          <Navigate
             to='/dashboard'
-            state={{ 
+            state={{
               error: 'You do not have access to this organization.',
-              returnTo: location.pathname + location.search 
-            }} 
-            replace 
+              returnTo: location.pathname + location.search,
+            }}
+            replace
           />
         );
       }
@@ -136,13 +136,13 @@ export function withAuth<P extends object>(
         return <UnauthorizedComponent reason={reason} />;
       }
       return (
-        <Navigate 
+        <Navigate
           to='/dashboard'
-          state={{ 
+          state={{
             error: reason,
-            returnTo: location.pathname + location.search 
-          }} 
-          replace 
+            returnTo: location.pathname + location.search,
+          }}
+          replace
         />
       );
     }
@@ -154,20 +154,20 @@ export function withAuth<P extends object>(
         return <UnauthorizedComponent reason={reason} />;
       }
       return (
-        <Navigate 
+        <Navigate
           to='/dashboard'
-          state={{ 
+          state={{
             error: reason,
-            returnTo: location.pathname + location.search 
-          }} 
-          replace 
+            returnTo: location.pathname + location.search,
+          }}
+          replace
         />
       );
     }
 
     // Permission-based access control
     const userPermissions = getUserPermissions(getUserRole());
-    
+
     const hasPermission = (permission: string): boolean => {
       return userPermissions.includes(permission);
     };
@@ -177,22 +177,22 @@ export function withAuth<P extends object>(
     };
 
     if (requiredPermissions.length > 0 && !hasAllPermissions(requiredPermissions)) {
-      const missingPermissions = requiredPermissions.filter(permission => 
-        !hasPermission(permission)
+      const missingPermissions = requiredPermissions.filter(
+        permission => !hasPermission(permission),
       );
       const reason = `Missing required permissions: ${missingPermissions.join(', ')}`;
-      
+
       if (UnauthorizedComponent) {
         return <UnauthorizedComponent reason={reason} />;
       }
       return (
-        <Navigate 
+        <Navigate
           to='/dashboard'
-          state={{ 
+          state={{
             error: reason,
-            returnTo: location.pathname + location.search 
-          }} 
-          replace 
+            returnTo: location.pathname + location.search,
+          }}
+          replace
         />
       );
     }
@@ -208,14 +208,14 @@ export function withAuth<P extends object>(
       hasRole,
       hasPermission,
       hasAllPermissions,
-      isLoading: false
+      isLoading: false,
     };
 
     Logger.debug('withAuth: Access granted', {
       userId: user.id,
       organizationId: organization?.id,
       userRole: getUserRole(),
-      path: location.pathname
+      path: location.pathname,
     });
 
     return <WrappedComponent {...props} {...authProps} />;
@@ -246,7 +246,7 @@ function getUserPermissions(role: string | null): string[] {
       'manage_invoices',
       'manage_clients',
       'manage_inventory',
-      'access_advanced_reports'
+      'access_advanced_reports',
     ],
     basic_member: [
       'read',
@@ -255,8 +255,8 @@ function getUserPermissions(role: string | null): string[] {
       'access_reports',
       'manage_quotes',
       'manage_invoices',
-      'manage_clients'
-    ]
+      'manage_clients',
+    ],
   };
 
   return rolePermissions[role || ''] || [];
@@ -275,30 +275,32 @@ export const withOrgAuth = <P extends object>(Component: ComponentType<P & AuthP
   withAuth(Component, { organizationRequired: true });
 
 // Role-specific decorators
-export const withRole = <P extends object>(role: string) => 
+export const withRole =
+  <P extends object>(role: string) =>
   (Component: ComponentType<P & AuthProps>) =>
     withAuth(Component, { requiredRole: role, organizationRequired: true });
 
 // Permission-specific decorator
-export const withPermissions = <P extends object>(permissions: string[]) =>
+export const withPermissions =
+  <P extends object>(permissions: string[]) =>
   (Component: ComponentType<P & AuthProps>) =>
     withAuth(Component, { requiredPermissions: permissions });
 
 /**
  * Example usage:
- * 
+ *
  * // Basic usage
  * const ProtectedComponent = withAuth(MyComponent);
- * 
+ *
  * // Admin-only component
  * const AdminComponent = withAdminAuth(MyAdminComponent);
- * 
+ *
  * // Role-specific component
  * const ManagerComponent = withRole('manager')(MyManagerComponent);
- * 
+ *
  * // Permission-specific component
  * const ReportsComponent = withPermissions(['view_analytics', 'access_reports'])(MyReportsComponent);
- * 
+ *
  * // Custom options
  * const CustomProtectedComponent = withAuth(MyComponent, {
  *   requiredRole: 'admin',
@@ -308,4 +310,4 @@ export const withPermissions = <P extends object>(permissions: string[]) =>
  *   loadingComponent: CustomLoader,
  *   unauthorizedComponent: CustomUnauthorized
  * });
- */ 
+ */

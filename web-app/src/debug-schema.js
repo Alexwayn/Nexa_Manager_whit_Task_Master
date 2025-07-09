@@ -30,7 +30,7 @@ supabase.auth.getSession().then(({ data, error }) => {
     .select('*')
     .limit(0)
     .then(({ data, error }) => {
-      Logger.error('Risultato query vuota:', error ? `Errore: ${error.message}` : 'OK');
+      Logger.error('Risultato query vuota:', error ? `Errore: ${String(error?.message || error || 'Unknown error')}` : 'OK');
       if (error) {
         console.error('Dettagli errore:', error);
       }

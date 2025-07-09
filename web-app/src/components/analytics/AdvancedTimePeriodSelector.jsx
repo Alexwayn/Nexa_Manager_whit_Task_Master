@@ -308,7 +308,7 @@ const AdvancedTimePeriodSelector = ({
                 {t('timeSelector.compare.comparePeriod')}
               </label>
             </div>
-            
+
             {/* Comparison type selector */}
             {compareMode && onComparisonTypeChange && (
               <select

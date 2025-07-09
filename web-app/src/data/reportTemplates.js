@@ -13,27 +13,27 @@ export const CORE_REPORT_TEMPLATES = [
     icon: 'ChartBarIcon',
     color: 'blue',
     tags: ['monthly', 'financial', 'summary'],
-    
+
     dataSource: {
       primaryView: 'v_monthly_performance',
-      supportingViews: ['v_revenue_summary', 'v_expense_summary', 'v_profit_loss']
+      supportingViews: ['v_revenue_summary', 'v_expense_summary', 'v_profit_loss'],
     },
-    
+
     defaultFilters: [
       {
         field: 'month',
         operator: 'equals',
         value: new Date().toISOString().slice(0, 7), // Current month
-        type: 'date'
-      }
+        type: 'date',
+      },
     ],
-    
+
     layout: {
       header: {
         title: 'Monthly Financial Summary',
         subtitle: 'Comprehensive financial overview',
         companyInfo: true,
-        logo: true
+        logo: true,
       },
       sections: [
         {
@@ -42,8 +42,8 @@ export const CORE_REPORT_TEMPLATES = [
           type: 'kpi',
           order: 1,
           config: {
-            metrics: ['total_revenue', 'total_expenses', 'net_profit', 'profit_margin']
-          }
+            metrics: ['total_revenue', 'total_expenses', 'net_profit', 'profit_margin'],
+          },
         },
         {
           id: 'revenue-chart',
@@ -54,8 +54,8 @@ export const CORE_REPORT_TEMPLATES = [
             chartType: 'line',
             xField: 'month',
             yField: 'total_revenue',
-            title: 'Monthly Revenue Trend'
-          }
+            title: 'Monthly Revenue Trend',
+          },
         },
         {
           id: 'expense-breakdown',
@@ -66,8 +66,8 @@ export const CORE_REPORT_TEMPLATES = [
             chartType: 'doughnut',
             categoryField: 'category',
             valueField: 'amount',
-            title: 'Expense Distribution'
-          }
+            title: 'Expense Distribution',
+          },
         },
         {
           id: 'profit-loss-table',
@@ -75,22 +75,28 @@ export const CORE_REPORT_TEMPLATES = [
           type: 'table',
           order: 4,
           config: {
-            columns: ['category', 'current_month', 'previous_month', 'variance', 'variance_percent']
-          }
-        }
+            columns: [
+              'category',
+              'current_month',
+              'previous_month',
+              'variance',
+              'variance_percent',
+            ],
+          },
+        },
       ],
       footer: {
         pageNumbers: true,
         timestamp: true,
-        disclaimer: 'This report is generated automatically from Nexa Manager financial data.'
-      }
+        disclaimer: 'This report is generated automatically from Nexa Manager financial data.',
+      },
     },
-    
+
     permissions: {
       can_view: ['admin', 'financial_manager', 'owner'],
       can_edit: ['admin', 'owner'],
-      can_delete: ['admin', 'owner']
-    }
+      can_delete: ['admin', 'owner'],
+    },
   },
 
   // 2. CLIENT REPORTS
@@ -104,26 +110,26 @@ export const CORE_REPORT_TEMPLATES = [
     icon: 'UsersIcon',
     color: 'green',
     tags: ['client', 'portfolio', 'analysis'],
-    
+
     dataSource: {
       primaryView: 'v_client_portfolio',
-      supportingViews: ['v_client_revenue']
+      supportingViews: ['v_client_revenue'],
     },
-    
+
     defaultFilters: [
       {
         field: 'status',
         operator: 'equals',
         value: 'active',
-        type: 'string'
-      }
+        type: 'string',
+      },
     ],
-    
+
     layout: {
       header: {
         title: 'Client Portfolio Analysis',
         subtitle: 'Client relationship and revenue analysis',
-        companyInfo: true
+        companyInfo: true,
       },
       sections: [
         {
@@ -132,8 +138,8 @@ export const CORE_REPORT_TEMPLATES = [
           type: 'kpi',
           order: 1,
           config: {
-            metrics: ['total_clients', 'active_projects', 'total_revenue', 'avg_project_value']
-          }
+            metrics: ['total_clients', 'active_projects', 'total_revenue', 'avg_project_value'],
+          },
         },
         {
           id: 'top-clients',
@@ -144,8 +150,8 @@ export const CORE_REPORT_TEMPLATES = [
             columns: ['client_name', 'total_revenue', 'project_count', 'last_invoice', 'status'],
             sortBy: 'total_revenue',
             sortDirection: 'desc',
-            limit: 10
-          }
+            limit: 10,
+          },
         },
         {
           id: 'revenue-distribution',
@@ -156,8 +162,8 @@ export const CORE_REPORT_TEMPLATES = [
             chartType: 'bar',
             xField: 'client_name',
             yField: 'total_revenue',
-            title: 'Client Revenue Contribution'
-          }
+            title: 'Client Revenue Contribution',
+          },
         },
         {
           id: 'project-timeline',
@@ -169,11 +175,11 @@ export const CORE_REPORT_TEMPLATES = [
             xField: 'month',
             yField: 'project_count',
             seriesField: 'status',
-            title: 'Projects by Status Over Time'
-          }
-        }
-      ]
-    }
+            title: 'Projects by Status Over Time',
+          },
+        },
+      ],
+    },
   },
 
   // 3. TAX & COMPLIANCE REPORTS (Italian IVA)
@@ -187,26 +193,26 @@ export const CORE_REPORT_TEMPLATES = [
     icon: 'DocumentTextIcon',
     color: 'red',
     tags: ['iva', 'tax', 'compliance', 'italy'],
-    
+
     dataSource: {
       primaryView: 'v_iva_summary',
-      supportingViews: ['v_tax_deductible_summary']
+      supportingViews: ['v_tax_deductible_summary'],
     },
-    
+
     defaultFilters: [
       {
         field: 'period',
         operator: 'equals',
         value: new Date().toISOString().slice(0, 7), // Current month
-        type: 'date'
-      }
+        type: 'date',
+      },
     ],
-    
+
     layout: {
       header: {
         title: 'Rapporto di Conformità IVA',
         subtitle: 'Analisi dettagliata IVA e spese detraibili',
-        companyInfo: true
+        companyInfo: true,
       },
       sections: [
         {
@@ -215,8 +221,8 @@ export const CORE_REPORT_TEMPLATES = [
           type: 'kpi',
           order: 1,
           config: {
-            metrics: ['iva_vendite', 'iva_acquisti', 'iva_dovuta', 'credito_iva']
-          }
+            metrics: ['iva_vendite', 'iva_acquisti', 'iva_dovuta', 'credito_iva'],
+          },
         },
         {
           id: 'deductible-expenses',
@@ -224,9 +230,17 @@ export const CORE_REPORT_TEMPLATES = [
           type: 'table',
           order: 2,
           config: {
-            columns: ['date', 'description', 'category', 'amount', 'iva_rate', 'iva_amount', 'receipt_status'],
-            filters: [{ field: 'tax_deductible', operator: 'equals', value: true }]
-          }
+            columns: [
+              'date',
+              'description',
+              'category',
+              'amount',
+              'iva_rate',
+              'iva_amount',
+              'receipt_status',
+            ],
+            filters: [{ field: 'tax_deductible', operator: 'equals', value: true }],
+          },
         },
         {
           id: 'iva-by-rate',
@@ -237,8 +251,8 @@ export const CORE_REPORT_TEMPLATES = [
             chartType: 'pie',
             categoryField: 'iva_rate',
             valueField: 'total_amount',
-            title: 'Distribuzione IVA per Aliquota'
-          }
+            title: 'Distribuzione IVA per Aliquota',
+          },
         },
         {
           id: 'monthly-trend',
@@ -249,14 +263,14 @@ export const CORE_REPORT_TEMPLATES = [
             chartType: 'line',
             xField: 'month',
             yField: 'iva_dovuta',
-            title: 'Andamento IVA Dovuta'
-          }
-        }
+            title: 'Andamento IVA Dovuta',
+          },
+        },
       ],
       footer: {
-        disclaimer: 'Questo rapporto è conforme alle normative fiscali italiane vigenti.'
-      }
-    }
+        disclaimer: 'Questo rapporto è conforme alle normative fiscali italiane vigenti.',
+      },
+    },
   },
 
   // 4. BUSINESS HEALTH DASHBOARD
@@ -270,17 +284,17 @@ export const CORE_REPORT_TEMPLATES = [
     icon: 'HeartIcon',
     color: 'purple',
     tags: ['health', 'kpi', 'performance', 'dashboard'],
-    
+
     dataSource: {
       primaryView: 'v_business_health',
-      supportingViews: ['v_monthly_performance', 'v_client_portfolio']
+      supportingViews: ['v_monthly_performance', 'v_client_portfolio'],
     },
-    
+
     layout: {
       header: {
         title: 'Business Health Dashboard',
         subtitle: 'Real-time business performance indicators',
-        companyInfo: true
+        companyInfo: true,
       },
       sections: [
         {
@@ -289,8 +303,8 @@ export const CORE_REPORT_TEMPLATES = [
           type: 'kpi',
           order: 1,
           config: {
-            metrics: ['health_score', 'revenue_growth', 'profit_margin', 'client_satisfaction']
-          }
+            metrics: ['health_score', 'revenue_growth', 'profit_margin', 'client_satisfaction'],
+          },
         },
         {
           id: 'financial-health',
@@ -300,8 +314,8 @@ export const CORE_REPORT_TEMPLATES = [
           config: {
             chartType: 'gauge',
             metrics: ['cash_flow_ratio', 'debt_to_equity', 'quick_ratio'],
-            title: 'Financial Stability Metrics'
-          }
+            title: 'Financial Stability Metrics',
+          },
         },
         {
           id: 'operational-metrics',
@@ -310,9 +324,14 @@ export const CORE_REPORT_TEMPLATES = [
           order: 3,
           config: {
             chartType: 'radar',
-            metrics: ['efficiency_score', 'project_completion_rate', 'client_retention', 'invoice_collection_rate'],
-            title: 'Operational Excellence'
-          }
+            metrics: [
+              'efficiency_score',
+              'project_completion_rate',
+              'client_retention',
+              'invoice_collection_rate',
+            ],
+            title: 'Operational Excellence',
+          },
         },
         {
           id: 'trend-analysis',
@@ -323,11 +342,11 @@ export const CORE_REPORT_TEMPLATES = [
             chartType: 'line',
             xField: 'month',
             series: ['revenue', 'expenses', 'profit', 'health_score'],
-            title: '12-Month Performance Trend'
-          }
-        }
-      ]
-    }
+            title: '12-Month Performance Trend',
+          },
+        },
+      ],
+    },
   },
 
   // 5. EXPENSE ANALYSIS REPORT
@@ -341,16 +360,16 @@ export const CORE_REPORT_TEMPLATES = [
     icon: 'CreditCardIcon',
     color: 'orange',
     tags: ['expenses', 'analysis', 'categories'],
-    
+
     dataSource: {
       primaryView: 'v_expense_summary',
-      supportingViews: ['v_tax_deductible_summary']
+      supportingViews: ['v_tax_deductible_summary'],
     },
-    
+
     layout: {
       header: {
         title: 'Detailed Expense Analysis',
-        subtitle: 'Comprehensive expense breakdown and analysis'
+        subtitle: 'Comprehensive expense breakdown and analysis',
       },
       sections: [
         {
@@ -359,8 +378,13 @@ export const CORE_REPORT_TEMPLATES = [
           type: 'kpi',
           order: 1,
           config: {
-            metrics: ['total_expenses', 'deductible_expenses', 'recurring_expenses', 'avg_monthly_expense']
-          }
+            metrics: [
+              'total_expenses',
+              'deductible_expenses',
+              'recurring_expenses',
+              'avg_monthly_expense',
+            ],
+          },
         },
         {
           id: 'category-breakdown',
@@ -371,8 +395,8 @@ export const CORE_REPORT_TEMPLATES = [
             chartType: 'doughnut',
             categoryField: 'category',
             valueField: 'total_amount',
-            title: 'Expense Distribution by Category'
-          }
+            title: 'Expense Distribution by Category',
+          },
         },
         {
           id: 'monthly-trend',
@@ -384,8 +408,8 @@ export const CORE_REPORT_TEMPLATES = [
             xField: 'month',
             yField: 'total_amount',
             seriesField: 'category',
-            title: 'Expense Trends by Category'
-          }
+            title: 'Expense Trends by Category',
+          },
         },
         {
           id: 'detailed-table',
@@ -393,21 +417,29 @@ export const CORE_REPORT_TEMPLATES = [
           type: 'table',
           order: 4,
           config: {
-            columns: ['date', 'description', 'category', 'amount', 'tax_deductible', 'receipt_status', 'vendor']
-          }
-        }
-      ]
-    }
-  }
+            columns: [
+              'date',
+              'description',
+              'category',
+              'amount',
+              'tax_deductible',
+              'receipt_status',
+              'vendor',
+            ],
+          },
+        },
+      ],
+    },
+  },
 ];
 
 // Helper function to get template by ID
-export const getTemplateById = (id) => {
+export const getTemplateById = id => {
   return CORE_REPORT_TEMPLATES.find(template => template.id === id);
 };
 
 // Helper function to get templates by category
-export const getTemplatesByCategory = (category) => {
+export const getTemplatesByCategory = category => {
   return CORE_REPORT_TEMPLATES.filter(template => template.category === category);
 };
 
@@ -424,40 +456,70 @@ export const AVAILABLE_FIELDS = {
     { id: 'expenses', name: 'Expenses', type: 'currency', table: 'expenses', aggregatable: true },
     { id: 'profit', name: 'Profit', type: 'currency', calculated: true, aggregatable: true },
     { id: 'profit_margin', name: 'Profit Margin', type: 'percentage', calculated: true },
-    { id: 'tax_amount', name: 'Tax Amount', type: 'currency', table: 'expenses', aggregatable: true },
+    {
+      id: 'tax_amount',
+      name: 'Tax Amount',
+      type: 'currency',
+      table: 'expenses',
+      aggregatable: true,
+    },
     { id: 'payment_date', name: 'Payment Date', type: 'date', table: 'invoices' },
-    { id: 'due_date', name: 'Due Date', type: 'date', table: 'invoices' }
+    { id: 'due_date', name: 'Due Date', type: 'date', table: 'invoices' },
   ],
-  
+
   // Client fields
   client: [
     { id: 'client_name', name: 'Client Name', type: 'string', table: 'clients' },
     { id: 'client_email', name: 'Client Email', type: 'string', table: 'clients' },
     { id: 'client_phone', name: 'Client Phone', type: 'string', table: 'clients' },
     { id: 'client_status', name: 'Client Status', type: 'string', table: 'clients' },
-    { id: 'total_billed', name: 'Total Billed', type: 'currency', calculated: true, aggregatable: true },
-    { id: 'project_count', name: 'Project Count', type: 'number', calculated: true, aggregatable: true },
-    { id: 'last_invoice_date', name: 'Last Invoice Date', type: 'date', calculated: true }
+    {
+      id: 'total_billed',
+      name: 'Total Billed',
+      type: 'currency',
+      calculated: true,
+      aggregatable: true,
+    },
+    {
+      id: 'project_count',
+      name: 'Project Count',
+      type: 'number',
+      calculated: true,
+      aggregatable: true,
+    },
+    { id: 'last_invoice_date', name: 'Last Invoice Date', type: 'date', calculated: true },
   ],
-  
+
   // Project fields
   project: [
     { id: 'project_name', name: 'Project Name', type: 'string', table: 'projects' },
     { id: 'project_status', name: 'Project Status', type: 'string', table: 'projects' },
     { id: 'start_date', name: 'Start Date', type: 'date', table: 'projects' },
     { id: 'end_date', name: 'End Date', type: 'date', table: 'projects' },
-    { id: 'project_value', name: 'Project Value', type: 'currency', table: 'projects', aggregatable: true },
-    { id: 'completion_rate', name: 'Completion Rate', type: 'percentage', calculated: true }
+    {
+      id: 'project_value',
+      name: 'Project Value',
+      type: 'currency',
+      table: 'projects',
+      aggregatable: true,
+    },
+    { id: 'completion_rate', name: 'Completion Rate', type: 'percentage', calculated: true },
   ],
-  
+
   // Tax & Compliance fields
   tax: [
     { id: 'tax_deductible', name: 'Tax Deductible', type: 'boolean', table: 'expenses' },
     { id: 'iva_rate', name: 'IVA Rate', type: 'percentage', table: 'invoices' },
-    { id: 'iva_amount', name: 'IVA Amount', type: 'currency', calculated: true, aggregatable: true },
+    {
+      id: 'iva_amount',
+      name: 'IVA Amount',
+      type: 'currency',
+      calculated: true,
+      aggregatable: true,
+    },
     { id: 'receipt_url', name: 'Receipt Available', type: 'boolean', table: 'expenses' },
-    { id: 'fiscal_year', name: 'Fiscal Year', type: 'string', calculated: true }
-  ]
+    { id: 'fiscal_year', name: 'Fiscal Year', type: 'string', calculated: true },
+  ],
 };
 
 // Pre-built chart configurations
@@ -466,23 +528,23 @@ export const CHART_PRESETS = {
     type: 'line',
     title: 'Revenue Trend',
     xAxis: { field: 'date', label: 'Date', type: 'time' },
-    yAxis: { field: 'revenue', label: 'Revenue', type: 'numeric', format: 'currency' }
+    yAxis: { field: 'revenue', label: 'Revenue', type: 'numeric', format: 'currency' },
   },
-  
+
   expense_breakdown: {
     type: 'doughnut',
     title: 'Expense Breakdown',
     categoryField: 'category',
-    valueField: 'amount'
+    valueField: 'amount',
   },
-  
+
   client_revenue: {
     type: 'bar',
     title: 'Revenue by Client',
     xAxis: { field: 'client_name', label: 'Client', type: 'category' },
-    yAxis: { field: 'total_revenue', label: 'Revenue', type: 'numeric', format: 'currency' }
+    yAxis: { field: 'total_revenue', label: 'Revenue', type: 'numeric', format: 'currency' },
   },
-  
+
   monthly_performance: {
     type: 'line',
     title: 'Monthly Performance',
@@ -491,7 +553,7 @@ export const CHART_PRESETS = {
     series: [
       { field: 'revenue', label: 'Revenue', color: '#10B981' },
       { field: 'expenses', label: 'Expenses', color: '#EF4444' },
-      { field: 'profit', label: 'Profit', color: '#3B82F6' }
-    ]
-  }
-}; 
+      { field: 'profit', label: 'Profit', color: '#3B82F6' },
+    ],
+  },
+};

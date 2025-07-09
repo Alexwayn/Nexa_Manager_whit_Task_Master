@@ -6,46 +6,46 @@ import ComparativeAnalytics from './ComparativeAnalytics';
 
 // Mock the services
 jest.mock('@lib/financialService', () => ({
-  getFinancialOverview: jest.fn(() => Promise.resolve({
-    success: true,
-    data: {
-      totalRevenue: 50000,
-      totalExpenses: 30000,
-      profitMargin: 40
-    }
-  }))
+  getFinancialOverview: jest.fn(() =>
+    Promise.resolve({
+      success: true,
+      data: {
+        totalRevenue: 50000,
+        totalExpenses: 30000,
+        profitMargin: 40,
+      },
+    }),
+  ),
 }));
 
 jest.mock('@lib/clientService', () => ({
-  getClientMetrics: jest.fn(() => Promise.resolve({
-    success: true,
-    data: {
-      total: 40,
-      active: 35
-    }
-  }))
+  getClientMetrics: jest.fn(() =>
+    Promise.resolve({
+      success: true,
+      data: {
+        total: 40,
+        active: 35,
+      },
+    }),
+  ),
 }));
 
 // Mock Chart.js
 jest.mock('react-chartjs-2', () => ({
-  Line: () => <div data-testid="line-chart">Line Chart</div>,
-  Bar: () => <div data-testid="bar-chart">Bar Chart</div>
+  Line: () => <div data-testid='line-chart'>Line Chart</div>,
+  Bar: () => <div data-testid='bar-chart'>Bar Chart</div>,
 }));
 
-const TestWrapper = ({ children }) => (
-  <I18nextProvider i18n={i18n}>
-    {children}
-  </I18nextProvider>
-);
+const TestWrapper = ({ children }) => <I18nextProvider i18n={i18n}>{children}</I18nextProvider>;
 
 describe('ComparativeAnalytics', () => {
   const defaultProps = {
     currentDateRange: {
       start: '2024-01-01',
-      end: '2024-01-31'
+      end: '2024-01-31',
     },
     comparisonType: 'yoy',
-    className: 'test-class'
+    className: 'test-class',
   };
 
   beforeEach(() => {
@@ -56,7 +56,7 @@ describe('ComparativeAnalytics', () => {
     render(
       <TestWrapper>
         <ComparativeAnalytics {...defaultProps} />
-      </TestWrapper>
+      </TestWrapper>,
     );
 
     expect(screen.getByText(/loading/i)).toBeInTheDocument();
@@ -66,7 +66,7 @@ describe('ComparativeAnalytics', () => {
     render(
       <TestWrapper>
         <ComparativeAnalytics {...defaultProps} />
-      </TestWrapper>
+      </TestWrapper>,
     );
 
     await waitFor(() => {
@@ -84,7 +84,7 @@ describe('ComparativeAnalytics', () => {
     const { container } = render(
       <TestWrapper>
         <ComparativeAnalytics {...defaultProps} />
-      </TestWrapper>
+      </TestWrapper>,
     );
 
     await waitFor(() => {
@@ -95,8 +95,8 @@ describe('ComparativeAnalytics', () => {
   it('handles different comparison types', async () => {
     const { rerender } = render(
       <TestWrapper>
-        <ComparativeAnalytics {...defaultProps} comparisonType="mom" />
-      </TestWrapper>
+        <ComparativeAnalytics {...defaultProps} comparisonType='mom' />
+      </TestWrapper>,
     );
 
     await waitFor(() => {
@@ -105,8 +105,8 @@ describe('ComparativeAnalytics', () => {
 
     rerender(
       <TestWrapper>
-        <ComparativeAnalytics {...defaultProps} comparisonType="qoq" />
-      </TestWrapper>
+        <ComparativeAnalytics {...defaultProps} comparisonType='qoq' />
+      </TestWrapper>,
     );
 
     await waitFor(() => {
@@ -118,7 +118,7 @@ describe('ComparativeAnalytics', () => {
     render(
       <TestWrapper>
         <ComparativeAnalytics {...defaultProps} />
-      </TestWrapper>
+      </TestWrapper>,
     );
 
     await waitFor(() => {
@@ -126,4 +126,4 @@ describe('ComparativeAnalytics', () => {
       expect(screen.getByText(/vs/i)).toBeInTheDocument();
     });
   });
-}); 
+});

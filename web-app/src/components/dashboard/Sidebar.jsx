@@ -76,21 +76,33 @@ export default function Sidebar({ onCloseSidebar, collapsed = false, onToggleCol
   const settings = [{ name: t('sidebar.settings'), href: '/settings', icon: Cog6ToothIcon }];
 
   return (
-    <div className={`flex grow flex-col gap-y-5 overflow-y-auto bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 transition-all duration-300 ease-in-out ${
-      collapsed ? 'px-2 pb-4 w-16' : 'px-6 pb-4 w-64'
-    }`}>
+    <div
+      className={`flex grow flex-col gap-y-5 overflow-y-auto bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 transition-all duration-300 ease-in-out ${
+        collapsed ? 'px-2 pb-4 w-16' : 'px-6 pb-4 w-64'
+      }`}
+    >
       {/* Header with logo and toggle button */}
-      <div className={`flex h-16 shrink-0 items-center border-b border-gray-200 dark:border-gray-700 ${
-        collapsed ? '-mx-2 px-2 justify-center' : '-mx-6 px-6 justify-between'
-      }`}>
+      <div
+        className={`flex h-16 shrink-0 items-center border-b border-gray-200 dark:border-gray-700 ${
+          collapsed ? '-mx-2 px-2 justify-center' : '-mx-6 px-6 justify-between'
+        }`}
+      >
         {!collapsed && (
           <div className='flex items-center'>
-            <img className='h-10 w-auto' src={nexaLogo} alt={t('sidebar.logoAlt', 'Nexa Manager')} />
+            <img
+              className='h-10 w-auto'
+              src={nexaLogo}
+              alt={t('sidebar.logoAlt', 'Nexa Manager')}
+            />
           </div>
         )}
-        
+
         {collapsed && (
-          <img className='h-8 w-auto' src={nexaLogoCollapsed} alt={t('sidebar.logoAlt', 'Nexa Manager')} />
+          <img
+            className='h-8 w-auto'
+            src={nexaLogoCollapsed}
+            alt={t('sidebar.logoAlt', 'Nexa Manager')}
+          />
         )}
 
         {/* Desktop toggle button */}
@@ -102,7 +114,9 @@ export default function Sidebar({ onCloseSidebar, collapsed = false, onToggleCol
             }`}
             onClick={onToggleCollapse}
           >
-            <span className='sr-only'>{collapsed ? t('sidebar.expand') : t('sidebar.collapse')}</span>
+            <span className='sr-only'>
+              {collapsed ? t('sidebar.expand') : t('sidebar.collapse')}
+            </span>
             {collapsed ? (
               <ChevronDoubleRightIcon className='h-5 w-5' aria-hidden='true' />
             ) : (
@@ -139,7 +153,7 @@ export default function Sidebar({ onCloseSidebar, collapsed = false, onToggleCol
                           ? 'bg-primary-100 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400'
                           : 'text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-gray-100 dark:hover:bg-gray-700',
                         'group flex rounded-md p-2 text-nav-text transition-colors duration-200',
-                        collapsed ? 'justify-center' : 'gap-x-3'
+                        collapsed ? 'justify-center' : 'gap-x-3',
                       )
                     }
                   >
@@ -197,7 +211,7 @@ export default function Sidebar({ onCloseSidebar, collapsed = false, onToggleCol
                             ? 'bg-primary-100 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400'
                             : 'text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-gray-100 dark:hover:bg-gray-700',
                           'group flex rounded-md p-2 text-nav-text transition-colors duration-200',
-                          collapsed ? 'justify-center' : 'gap-x-3'
+                          collapsed ? 'justify-center' : 'gap-x-3',
                         )
                       }
                     >

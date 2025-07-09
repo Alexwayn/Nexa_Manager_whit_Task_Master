@@ -15,7 +15,7 @@ export default function Login() {
   const { isLoaded, isSignedIn } = useAuth();
   const location = useLocation();
   const { t } = useTranslation('login');
-  
+
   // Get the URL from which the user was redirected (if available)
   const from = location.state?.returnTo || '/dashboard';
 
@@ -145,16 +145,14 @@ export default function Login() {
                   },
                 }}
                 redirectUrl={from}
-                routing="path"
-                path="/login"
+                routing='path'
+                path='/login'
               />
             </div>
 
             {/* Additional Info */}
             <div className='mt-8 text-center'>
-              <p className='text-xs text-gray-500'>
-                {t('security.notice')}
-              </p>
+              <p className='text-xs text-gray-500'>{t('security.notice')}</p>
             </div>
           </div>
         </div>

@@ -49,20 +49,20 @@ export class QuotePdfService {
         description: 'Clean and professional template with company branding',
         colors: {
           primary: '#2563eb',
-          secondary: '#64748b', 
+          secondary: '#64748b',
           accent: '#059669',
           text: '#1f2937',
           lightGray: '#f8fafc',
-          border: '#e2e8f0'
+          border: '#e2e8f0',
         },
         fonts: {
           header: 'helvetica',
-          body: 'helvetica'
+          body: 'helvetica',
         },
         layout: {
           headerHeight: 70,
           logoSize: { width: 40, height: 20 },
-          margins: { top: 20, right: 20, bottom: 20, left: 20 }
+          margins: { top: 20, right: 20, bottom: 20, left: 20 },
         },
         companyDefaults: {
           companyName: 'Your Company',
@@ -70,8 +70,8 @@ export class QuotePdfService {
           companyPhone: 'Tel: +39 06 1234 5678',
           companyEmail: 'info@yourcompany.it',
           companyVat: 'VAT: IT12345678901',
-          footerText: 'This quote is valid for 30 days from the date of issue.'
-        }
+          footerText: 'This quote is valid for 30 days from the date of issue.',
+        },
       },
       modern: {
         id: 'modern',
@@ -83,16 +83,16 @@ export class QuotePdfService {
           accent: '#f59e0b',
           text: '#111827',
           lightGray: '#f9fafb',
-          border: '#d1d5db'
+          border: '#d1d5db',
         },
         fonts: {
           header: 'helvetica',
-          body: 'helvetica'
+          body: 'helvetica',
         },
         layout: {
           headerHeight: 80,
           logoSize: { width: 45, height: 25 },
-          margins: { top: 20, right: 20, bottom: 20, left: 20 }
+          margins: { top: 20, right: 20, bottom: 20, left: 20 },
         },
         companyDefaults: {
           companyName: 'Your Company',
@@ -100,8 +100,8 @@ export class QuotePdfService {
           companyPhone: 'Tel: +39 06 1234 5678',
           companyEmail: 'info@yourcompany.it',
           companyVat: 'VAT: IT12345678901',
-          footerText: 'Thank you for choosing our services. This quote is valid for 30 days.'
-        }
+          footerText: 'Thank you for choosing our services. This quote is valid for 30 days.',
+        },
       },
       minimal: {
         id: 'minimal',
@@ -113,24 +113,24 @@ export class QuotePdfService {
           accent: '#10b981',
           text: '#1f2937',
           lightGray: '#ffffff',
-          border: '#f3f4f6'
+          border: '#f3f4f6',
         },
         fonts: {
           header: 'helvetica',
-          body: 'helvetica'
+          body: 'helvetica',
         },
         layout: {
           headerHeight: 60,
           logoSize: { width: 35, height: 18 },
-          margins: { top: 25, right: 25, bottom: 25, left: 25 }
+          margins: { top: 25, right: 25, bottom: 25, left: 25 },
         },
         companyDefaults: {
           companyName: 'Your Company',
           companyAddress: 'Roma, Italia',
           companyPhone: '+39 06 1234 5678',
           companyEmail: 'info@yourcompany.it',
-          footerText: 'Quote valid for 30 days.'
-        }
+          footerText: 'Quote valid for 30 days.',
+        },
       },
       elegant: {
         id: 'elegant',
@@ -142,16 +142,16 @@ export class QuotePdfService {
           accent: '#dc2626',
           text: '#0f172a',
           lightGray: '#f8fafc',
-          border: '#e2e8f0'
+          border: '#e2e8f0',
         },
         fonts: {
           header: 'times',
-          body: 'helvetica'
+          body: 'helvetica',
         },
         layout: {
           headerHeight: 75,
           logoSize: { width: 42, height: 22 },
-          margins: { top: 20, right: 20, bottom: 20, left: 20 }
+          margins: { top: 20, right: 20, bottom: 20, left: 20 },
         },
         companyDefaults: {
           companyName: 'Your Company',
@@ -159,8 +159,8 @@ export class QuotePdfService {
           companyPhone: 'Tel: +39 06 1234 5678',
           companyEmail: 'info@yourcompany.it',
           companyVat: 'VAT: IT12345678901',
-          footerText: 'We appreciate your business. This quote is valid for 30 days.'
-        }
+          footerText: 'We appreciate your business. This quote is valid for 30 days.',
+        },
       },
       creative: {
         id: 'creative',
@@ -172,16 +172,16 @@ export class QuotePdfService {
           accent: '#3b82f6',
           text: '#111827',
           lightGray: '#fef7ff',
-          border: '#e5e7eb'
+          border: '#e5e7eb',
         },
         fonts: {
           header: 'helvetica',
-          body: 'helvetica'
+          body: 'helvetica',
         },
         layout: {
           headerHeight: 85,
           logoSize: { width: 50, height: 28 },
-          margins: { top: 20, right: 20, bottom: 20, left: 20 }
+          margins: { top: 20, right: 20, bottom: 20, left: 20 },
         },
         companyDefaults: {
           companyName: 'Your Company',
@@ -189,9 +189,9 @@ export class QuotePdfService {
           companyPhone: 'Tel: +39 06 1234 5678',
           companyEmail: 'info@yourcompany.it',
           companyVat: 'VAT: IT12345678901',
-          footerText: 'Thank you for your interest. This quote is valid for 30 days.'
-        }
-      }
+          footerText: 'Thank you for your interest. This quote is valid for 30 days.',
+        },
+      },
     };
   }
 
@@ -210,12 +210,15 @@ export class QuotePdfService {
     try {
       // Load template configuration
       const template = await this.loadTemplate(options.templateId || 'default', options);
-      
+
       // Load business profile data if requested
       if (options.useBusinessProfile !== false && options.userId) {
         const businessProfile = await this.loadBusinessProfile(options.userId);
         if (businessProfile) {
-          template.companyData = this.mergeBusinessProfileData(template.companyData, businessProfile);
+          template.companyData = this.mergeBusinessProfileData(
+            template.companyData,
+            businessProfile,
+          );
         }
       }
 
@@ -343,7 +346,7 @@ export class QuotePdfService {
       companyVat: businessProfile.vat_number || templateData.companyVat,
       logo: businessProfile.logo_url || templateData.logo,
       website: businessProfile.website,
-      industry: businessProfile.industry
+      industry: businessProfile.industry,
     };
   }
 
@@ -369,7 +372,7 @@ export class QuotePdfService {
   applyTemplateStyles(doc, template) {
     // Store template for use in other methods
     this.currentTemplate = template;
-    
+
     // Update colors and fonts from template
     this.colors = { ...this.colors, ...template.colors };
     this.fonts = { ...this.fonts, ...template.fonts };
@@ -390,12 +393,12 @@ export class QuotePdfService {
     if (companyData.logo) {
       try {
         doc.addImage(
-          companyData.logo, 
-          'PNG', 
-          layout.margins.left, 
-          layout.margins.top, 
-          layout.logoSize.width, 
-          layout.logoSize.height
+          companyData.logo,
+          'PNG',
+          layout.margins.left,
+          layout.margins.top,
+          layout.logoSize.width,
+          layout.logoSize.height,
         );
       } catch (error) {
         Logger.warn('Could not add logo to PDF:', error);
@@ -407,10 +410,10 @@ export class QuotePdfService {
     doc.setFontSize(24);
     doc.setTextColor(template.colors.primary);
     doc.text(
-      companyData.companyName || 'Your Company', 
-      pageWidth - layout.margins.right, 
-      layout.margins.top + 10, 
-      { align: 'right' }
+      companyData.companyName || 'Your Company',
+      pageWidth - layout.margins.right,
+      layout.margins.top + 10,
+      { align: 'right' },
     );
 
     // Company details
@@ -435,10 +438,10 @@ export class QuotePdfService {
     doc.setDrawColor(template.colors.border);
     doc.setLineWidth(0.5);
     doc.line(
-      layout.margins.left, 
-      layout.headerHeight - 5, 
-      pageWidth - layout.margins.right, 
-      layout.headerHeight - 5
+      layout.margins.left,
+      layout.headerHeight - 5,
+      pageWidth - layout.margins.right,
+      layout.headerHeight - 5,
     );
   }
 
@@ -465,7 +468,7 @@ export class QuotePdfService {
     doc.setTextColor(template.colors.text);
 
     const infoY = startY + 15;
-    
+
     // Left column labels
     doc.text('Quote Number:', layout.margins.left, infoY);
     doc.text('Issue Date:', layout.margins.left, infoY + 10);
@@ -478,7 +481,7 @@ export class QuotePdfService {
     doc.text(quote.quote_number || '', valueX, infoY);
     doc.text(this.formatDate(quote.issue_date), valueX, infoY + 10);
     doc.text(this.formatDate(quote.due_date), valueX, infoY + 20);
-    
+
     // Status with colored background
     const statusColor = this.getTemplatedStatusColor(quote.status, template);
     doc.setFillColor(statusColor.bg);
@@ -585,7 +588,7 @@ export class QuotePdfService {
   addTemplatedTotals(doc, quote, template) {
     const pageWidth = doc.internal.pageSize.getWidth();
     const { layout } = template;
-    
+
     // Calculate position after table
     const tableEndY = doc.lastAutoTable ? doc.lastAutoTable.finalY + 20 : layout.headerHeight + 200;
 
@@ -604,13 +607,17 @@ export class QuotePdfService {
 
     // Subtotal
     doc.text('Subtotal:', totalsX, currentY);
-    doc.text(this.formatCurrency(subtotal), pageWidth - layout.margins.right, currentY, { align: 'right' });
+    doc.text(this.formatCurrency(subtotal), pageWidth - layout.margins.right, currentY, {
+      align: 'right',
+    });
 
     // Tax
     if (taxAmount > 0) {
       currentY += 8;
       doc.text(`Tax (${quote.tax_rate || 0}%):`, totalsX, currentY);
-      doc.text(this.formatCurrency(taxAmount), pageWidth - layout.margins.right, currentY, { align: 'right' });
+      doc.text(this.formatCurrency(taxAmount), pageWidth - layout.margins.right, currentY, {
+        align: 'right',
+      });
     }
 
     // Total with accent styling
@@ -618,13 +625,15 @@ export class QuotePdfService {
     doc.setFont(template.fonts.header, 'bold');
     doc.setFontSize(14);
     doc.setTextColor(template.colors.accent);
-    
+
     // Add background for total
     doc.setFillColor(template.colors.lightGray);
     doc.roundedRect(totalsX - 5, currentY - 8, 85, 12, 2, 2, 'F');
-    
+
     doc.text('TOTAL:', totalsX, currentY);
-    doc.text(this.formatCurrency(total), pageWidth - layout.margins.right, currentY, { align: 'right' });
+    doc.text(this.formatCurrency(total), pageWidth - layout.margins.right, currentY, {
+      align: 'right',
+    });
   }
 
   /**
@@ -647,8 +656,12 @@ export class QuotePdfService {
     doc.setFontSize(9);
     doc.setTextColor(template.colors.secondary);
 
-    const footerText = companyData.footerText || 'This quote is valid for 30 days from the date of issue.';
-    doc.text(footerText, pageWidth / 2, pageHeight - 25, { align: 'center', maxWidth: pageWidth - 40 });
+    const footerText =
+      companyData.footerText || 'This quote is valid for 30 days from the date of issue.';
+    doc.text(footerText, pageWidth / 2, pageHeight - 25, {
+      align: 'center',
+      maxWidth: pageWidth - 40,
+    });
 
     // Additional footer info
     if (companyData.website) {
@@ -668,15 +681,15 @@ export class QuotePdfService {
    */
   getTemplatedStatusColor(status, template) {
     const baseColors = this.getStatusColor(status);
-    
+
     // Use template accent color for positive statuses
     if (status === 'accepted' || status === 'converted') {
       return {
         bg: this.hexToRgb(template.colors.accent, 0.1),
-        text: template.colors.accent
+        text: template.colors.accent,
       };
     }
-    
+
     return baseColors;
   }
 
@@ -689,11 +702,11 @@ export class QuotePdfService {
   hexToRgb(hex, alpha = 1) {
     const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
     if (!result) return hex;
-    
+
     const r = parseInt(result[1], 16);
     const g = parseInt(result[2], 16);
     const b = parseInt(result[3], 16);
-    
+
     return alpha < 1 ? `rgba(${r},${g},${b},${alpha})` : `rgb(${r},${g},${b})`;
   }
 

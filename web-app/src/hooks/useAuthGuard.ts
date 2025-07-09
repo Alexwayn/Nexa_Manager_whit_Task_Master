@@ -29,10 +29,10 @@ export interface AuthGuardOptions {
 
 /**
  * Custom hook for authentication and authorization guards
- * 
+ *
  * Provides a declarative way to check authentication and authorization
  * without wrapping components in HOCs or ProtectedRoute components.
- * 
+ *
  * @param options - Authentication and authorization requirements
  * @returns Auth guard result with access control information
  */
@@ -42,7 +42,7 @@ export function useAuthGuard(options: AuthGuardOptions = {}): AuthGuardResult {
     requiredPermissions = [],
     organizationRequired = false,
     adminOnly = false,
-    redirectTo = '/login'
+    redirectTo = '/login',
   } = options;
 
   const { isLoaded, isSignedIn } = useAuth();
@@ -58,7 +58,7 @@ export function useAuthGuard(options: AuthGuardOptions = {}): AuthGuardResult {
     isMember,
     getUserRole,
     needsOrganizationSelection,
-    needsOrganizationCreation
+    needsOrganizationCreation,
   } = useOrganizationContext();
 
   const result = useMemo(() => {
@@ -77,13 +77,13 @@ export function useAuthGuard(options: AuthGuardOptions = {}): AuthGuardResult {
         redirect: () => {},
         checkRole: () => false,
         checkPermission: () => false,
-        checkPermissions: () => false
+        checkPermissions: () => false,
       };
     }
 
     // Authentication check
     const isAuthenticated = isSignedIn && !!user;
-    
+
     if (!isAuthenticated) {
       return {
         isAuthenticated: false,
@@ -93,21 +93,22 @@ export function useAuthGuard(options: AuthGuardOptions = {}): AuthGuardResult {
         organization: null,
         userRole: null,
         hasAccess: false,
-        redirect: () => navigate(redirectTo, { 
-          state: { returnTo: location.pathname + location.search },
-          replace: true 
-        }),
+        redirect: () =>
+          navigate(redirectTo, {
+            state: { returnTo: location.pathname + location.search },
+            replace: true,
+          }),
         checkRole: () => false,
         checkPermission: () => false,
         checkPermissions: () => false,
-        authError: 'User not authenticated'
+        authError: 'User not authenticated',
       };
     }
 
     // Onboarding check
     const hasCompletedOnboarding = user.unsafeMetadata?.onboardingComplete === true;
     const isOnOnboardingPage = location.pathname === '/onboarding';
-    
+
     if (!hasCompletedOnboarding && !isOnOnboardingPage) {
       return {
         isAuthenticated: true,
@@ -121,7 +122,7 @@ export function useAuthGuard(options: AuthGuardOptions = {}): AuthGuardResult {
         checkRole: () => false,
         checkPermission: () => false,
         checkPermissions: () => false,
-        authError: 'Onboarding not completed'
+        authError: 'Onboarding not completed',
       };
     }
 
@@ -136,14 +137,15 @@ export function useAuthGuard(options: AuthGuardOptions = {}): AuthGuardResult {
           organization: null,
           userRole: null,
           hasAccess: false,
-          redirect: () => navigate('/organization', { 
-            state: { action: 'create' }, 
-            replace: true 
-          }),
+          redirect: () =>
+            navigate('/organization', {
+              state: { action: 'create' },
+              replace: true,
+            }),
           checkRole: () => false,
           checkPermission: () => false,
           checkPermissions: () => false,
-          authError: 'Organization creation required'
+          authError: 'Organization creation required',
         };
       }
 
@@ -156,14 +158,15 @@ export function useAuthGuard(options: AuthGuardOptions = {}): AuthGuardResult {
           organization: null,
           userRole: null,
           hasAccess: false,
-          redirect: () => navigate('/organization', { 
-            state: { action: 'select' }, 
-            replace: true 
-          }),
+          redirect: () =>
+            navigate('/organization', {
+              state: { action: 'select' },
+              replace: true,
+            }),
           checkRole: () => false,
           checkPermission: () => false,
           checkPermissions: () => false,
-          authError: 'Organization selection required'
+          authError: 'Organization selection required',
         };
       }
 
@@ -176,17 +179,18 @@ export function useAuthGuard(options: AuthGuardOptions = {}): AuthGuardResult {
           organization,
           userRole: getUserRole(),
           hasAccess: false,
-          redirect: () => navigate('/dashboard', { 
-            state: { 
-              error: 'You do not have access to this organization.',
-              returnTo: location.pathname + location.search 
-            }, 
-            replace: true 
-          }),
+          redirect: () =>
+            navigate('/dashboard', {
+              state: {
+                error: 'You do not have access to this organization.',
+                returnTo: location.pathname + location.search,
+              },
+              replace: true,
+            }),
           checkRole: () => false,
           checkPermission: () => false,
           checkPermissions: () => false,
-          authError: 'Organization membership required'
+          authError: 'Organization membership required',
         };
       }
     }
@@ -196,10 +200,9 @@ export function useAuthGuard(options: AuthGuardOptions = {}): AuthGuardResult {
     const userPermissions = getUserPermissions(currentRole);
 
     const checkRole = (role: string): boolean => hasRole(role);
-    
-    const checkPermission = (permission: string): boolean => 
-      userPermissions.includes(permission);
-    
+
+    const checkPermission = (permission: string): boolean => userPermissions.includes(permission);
+
     const checkPermissions = (permissions: string[]): boolean =>
       permissions.every(permission => userPermissions.includes(permission));
 
@@ -213,17 +216,18 @@ export function useAuthGuard(options: AuthGuardOptions = {}): AuthGuardResult {
         organization,
         userRole: currentRole,
         hasAccess: false,
-        redirect: () => navigate('/dashboard', { 
-          state: { 
-            error: 'Administrator access required.',
-            returnTo: location.pathname + location.search 
-          }, 
-          replace: true 
-        }),
+        redirect: () =>
+          navigate('/dashboard', {
+            state: {
+              error: 'Administrator access required.',
+              returnTo: location.pathname + location.search,
+            },
+            replace: true,
+          }),
         checkRole,
         checkPermission,
         checkPermissions,
-        authError: 'Administrator access required'
+        authError: 'Administrator access required',
       };
     }
 
@@ -236,26 +240,27 @@ export function useAuthGuard(options: AuthGuardOptions = {}): AuthGuardResult {
         organization,
         userRole: currentRole,
         hasAccess: false,
-        redirect: () => navigate('/dashboard', { 
-          state: { 
-            error: `This page requires ${requiredRole} access. Your current role: ${currentRole || 'none'}.`,
-            returnTo: location.pathname + location.search 
-          }, 
-          replace: true 
-        }),
+        redirect: () =>
+          navigate('/dashboard', {
+            state: {
+              error: `This page requires ${requiredRole} access. Your current role: ${currentRole || 'none'}.`,
+              returnTo: location.pathname + location.search,
+            },
+            replace: true,
+          }),
         checkRole,
         checkPermission,
         checkPermissions,
-        authError: `Role ${requiredRole} required, current: ${currentRole || 'none'}`
+        authError: `Role ${requiredRole} required, current: ${currentRole || 'none'}`,
       };
     }
 
     // Permission-based access control
     if (requiredPermissions.length > 0 && !checkPermissions(requiredPermissions)) {
-      const missingPermissions = requiredPermissions.filter(permission => 
-        !checkPermission(permission)
+      const missingPermissions = requiredPermissions.filter(
+        permission => !checkPermission(permission),
       );
-      
+
       return {
         isAuthenticated: true,
         isAuthorized: false,
@@ -264,17 +269,18 @@ export function useAuthGuard(options: AuthGuardOptions = {}): AuthGuardResult {
         organization,
         userRole: currentRole,
         hasAccess: false,
-        redirect: () => navigate('/dashboard', { 
-          state: { 
-            error: `Missing required permissions: ${missingPermissions.join(', ')}`,
-            returnTo: location.pathname + location.search 
-          }, 
-          replace: true 
-        }),
+        redirect: () =>
+          navigate('/dashboard', {
+            state: {
+              error: `Missing required permissions: ${missingPermissions.join(', ')}`,
+              returnTo: location.pathname + location.search,
+            },
+            replace: true,
+          }),
         checkRole,
         checkPermission,
         checkPermissions,
-        authError: `Missing permissions: ${missingPermissions.join(', ')}`
+        authError: `Missing permissions: ${missingPermissions.join(', ')}`,
       };
     }
 
@@ -283,7 +289,7 @@ export function useAuthGuard(options: AuthGuardOptions = {}): AuthGuardResult {
       userId: user.id,
       organizationId: organization?.id,
       userRole: currentRole,
-      path: location.pathname
+      path: location.pathname,
     });
 
     return {
@@ -297,19 +303,18 @@ export function useAuthGuard(options: AuthGuardOptions = {}): AuthGuardResult {
       redirect: () => {},
       checkRole,
       checkPermission,
-      checkPermissions
+      checkPermissions,
     };
-
   }, [
-    isLoaded, 
-    orgLoaded, 
-    isInitialized, 
-    isSignedIn, 
-    user, 
-    organization, 
-    requiredRole, 
-    requiredPermissions, 
-    organizationRequired, 
+    isLoaded,
+    orgLoaded,
+    isInitialized,
+    isSignedIn,
+    user,
+    organization,
+    requiredRole,
+    requiredPermissions,
+    organizationRequired,
     adminOnly,
     needsOrganizationSelection,
     needsOrganizationCreation,
@@ -319,7 +324,7 @@ export function useAuthGuard(options: AuthGuardOptions = {}): AuthGuardResult {
     hasRole,
     isAdmin,
     isMember,
-    getUserRole
+    getUserRole,
   ]);
 
   return result;
@@ -380,7 +385,7 @@ function getUserPermissions(role: string | null): string[] {
       'manage_invoices',
       'manage_clients',
       'manage_inventory',
-      'access_advanced_reports'
+      'access_advanced_reports',
     ],
     basic_member: [
       'read',
@@ -389,8 +394,8 @@ function getUserPermissions(role: string | null): string[] {
       'access_reports',
       'manage_quotes',
       'manage_invoices',
-      'manage_clients'
-    ]
+      'manage_clients',
+    ],
   };
 
   return rolePermissions[role || ''] || [];
@@ -398,28 +403,28 @@ function getUserPermissions(role: string | null): string[] {
 
 /**
  * Example usage:
- * 
+ *
  * // Basic authentication check
  * const { isAuthenticated, redirect } = useAuthCheck();
  * if (!isAuthenticated) redirect();
- * 
+ *
  * // Admin guard
  * const { hasAccess, authError } = useAdminGuard();
  * if (!hasAccess) return <div>Access denied: {authError}</div>;
- * 
+ *
  * // Role guard
  * const { isAuthorized } = useRoleGuard('manager');
- * 
+ *
  * // Permission guard
  * const { checkPermission } = usePermissionGuard(['view_analytics']);
  * if (checkPermission('export_data')) {
  *   // Show export button
  * }
- * 
+ *
  * // Custom requirements
  * const { hasAccess, user, organization } = useAuthGuard({
  *   requiredRole: 'admin',
  *   requiredPermissions: ['manage_users'],
  *   organizationRequired: true
  * });
- */ 
+ */

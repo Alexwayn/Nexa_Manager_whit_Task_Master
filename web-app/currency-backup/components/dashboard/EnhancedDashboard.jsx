@@ -97,15 +97,8 @@ const EnhancedDashboard = () => {
   const [realtimeEnabled, setRealtimeEnabled] = useState(true);
 
   // Real-time dashboard hook
-  const {
-    dashboardData,
-    isConnected,
-    loading,
-    error,
-    forceRefresh,
-    toggleRealtime,
-    lastUpdated,
-  } = useRealtimeDashboard(dateRange, realtimeEnabled);
+  const { dashboardData, isConnected, loading, error, forceRefresh, toggleRealtime, lastUpdated } =
+    useRealtimeDashboard(dateRange, realtimeEnabled);
 
   // Fallback data for better UX when no real data exists
   const getFallbackData = useCallback(() => {
@@ -153,12 +146,13 @@ const EnhancedDashboard = () => {
     if (!dashboardData || Object.keys(dashboardData).length === 0) {
       return fallback;
     }
-    
+
     // Merge real data with fallback for missing fields
     return {
       kpis: { ...fallback.kpis, ...dashboardData.kpis },
       revenue: dashboardData.revenue?.labels?.length > 0 ? dashboardData.revenue : fallback.revenue,
-      expenses: dashboardData.expenses?.labels?.length > 0 ? dashboardData.expenses : fallback.expenses,
+      expenses:
+        dashboardData.expenses?.labels?.length > 0 ? dashboardData.expenses : fallback.expenses,
       clients: { ...fallback.clients, ...dashboardData.clients },
       trends: { ...fallback.trends, ...dashboardData.trends },
     };
@@ -284,13 +278,16 @@ const EnhancedDashboard = () => {
   }, []);
 
   // Save widget configuration
-  const handleWidgetToggle = useCallback((widgetId) => {
-    const updatedWidgets = widgets.map(widget =>
-      widget.id === widgetId ? { ...widget, enabled: !widget.enabled } : widget,
-    );
-    setWidgets(updatedWidgets);
-    localStorage.setItem('enhanced-dashboard-widgets', JSON.stringify(updatedWidgets));
-  }, [widgets]);
+  const handleWidgetToggle = useCallback(
+    widgetId => {
+      const updatedWidgets = widgets.map(widget =>
+        widget.id === widgetId ? { ...widget, enabled: !widget.enabled } : widget,
+      );
+      setWidgets(updatedWidgets);
+      localStorage.setItem('enhanced-dashboard-widgets', JSON.stringify(updatedWidgets));
+    },
+    [widgets],
+  );
 
   const handleRefresh = async () => {
     await forceRefresh();
@@ -298,32 +295,34 @@ const EnhancedDashboard = () => {
 
   // Loading Component
   const LoadingWidget = ({ title }) => (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 h-full flex flex-col items-center justify-center">
-      <Loader2 className="h-8 w-8 animate-spin text-blue-500 mb-3" />
-      <p className="text-sm text-gray-500">{t('dashboard:loading')} {title}...</p>
+    <div className='bg-white rounded-xl shadow-sm border border-gray-200 p-6 h-full flex flex-col items-center justify-center'>
+      <Loader2 className='h-8 w-8 animate-spin text-blue-500 mb-3' />
+      <p className='text-sm text-gray-500'>
+        {t('dashboard:loading')} {title}...
+      </p>
     </div>
   );
 
   // Error Component
   const ErrorWidget = ({ title, error }) => (
-    <div className="bg-white rounded-xl shadow-sm border border-red-200 p-6 h-full flex flex-col items-center justify-center">
-      <AlertCircle className="h-8 w-8 text-red-500 mb-3" />
-      <p className="text-sm text-gray-700 font-medium mb-1">{title}</p>
-      <p className="text-xs text-red-600 text-center">{error}</p>
+    <div className='bg-white rounded-xl shadow-sm border border-red-200 p-6 h-full flex flex-col items-center justify-center'>
+      <AlertCircle className='h-8 w-8 text-red-500 mb-3' />
+      <p className='text-sm text-gray-700 font-medium mb-1'>{title}</p>
+      <p className='text-xs text-red-600 text-center'>{error}</p>
     </div>
   );
 
   // Empty State Component
   const EmptyStateWidget = ({ title, description, icon: Icon = BarChart3 }) => (
-    <div className="bg-gradient-to-br from-gray-50 to-white rounded-xl shadow-sm border border-gray-200 p-6 h-full flex flex-col items-center justify-center">
-      <div className="bg-gray-100 rounded-full p-3 mb-4">
-        <Icon className="h-8 w-8 text-gray-400" />
+    <div className='bg-gradient-to-br from-gray-50 to-white rounded-xl shadow-sm border border-gray-200 p-6 h-full flex flex-col items-center justify-center'>
+      <div className='bg-gray-100 rounded-full p-3 mb-4'>
+        <Icon className='h-8 w-8 text-gray-400' />
       </div>
-      <p className="text-sm text-gray-700 font-medium mb-2">{title}</p>
-      <p className="text-xs text-gray-500 text-center">{description}</p>
+      <p className='text-sm text-gray-700 font-medium mb-2'>{title}</p>
+      <p className='text-xs text-gray-500 text-center'>{description}</p>
       <button
         onClick={handleRefresh}
-        className="mt-4 px-4 py-2 text-xs bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+        className='mt-4 px-4 py-2 text-xs bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors'
       >
         {t('dashboard:actions.refresh')}
       </button>
@@ -333,7 +332,7 @@ const EnhancedDashboard = () => {
   // KPI Overview Widget with improved design
   const KPIOverviewWidget = () => {
     const kpiData = displayData.kpis || {};
-    
+
     const kpis = [
       {
         title: t('dashboard:kpis.totalRevenue'),
@@ -374,12 +373,12 @@ const EnhancedDashboard = () => {
     }
 
     return (
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 h-full">
+      <div className='grid grid-cols-2 lg:grid-cols-4 gap-4 h-full'>
         {kpis.map((kpi, index) => (
-          <EnhancedKPICard 
-            key={index} 
-            {...kpi} 
-            className="transform hover:scale-105 transition-transform duration-200"
+          <EnhancedKPICard
+            key={index}
+            {...kpi}
+            className='transform hover:scale-105 transition-transform duration-200'
           />
         ))}
       </div>
@@ -389,7 +388,7 @@ const EnhancedDashboard = () => {
   // Revenue Chart Widget with improved design
   const RevenueChartWidget = () => {
     const revenueData = displayData.revenue || { labels: [], data: [] };
-    
+
     if (loading) {
       return <LoadingWidget title={t('dashboard:widgets.revenueChart')} />;
     }
@@ -399,7 +398,7 @@ const EnhancedDashboard = () => {
     }
 
     const hasData = revenueData.data && revenueData.data.some(value => value > 0);
-    
+
     if (!hasData) {
       return (
         <EmptyStateWidget
@@ -409,7 +408,7 @@ const EnhancedDashboard = () => {
         />
       );
     }
-    
+
     const chartData = {
       labels: revenueData.labels || [],
       datasets: [
@@ -452,7 +451,7 @@ const EnhancedDashboard = () => {
             color: 'rgba(0, 0, 0, 0.05)',
           },
           ticks: {
-            callback: (value) => `€€${value.toLocaleString()}`,
+            callback: value => `€€${value.toLocaleString()}`,
             color: 'rgb(107, 114, 128)',
           },
         },
@@ -468,15 +467,17 @@ const EnhancedDashboard = () => {
     };
 
     return (
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 h-full">
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-gray-900">{t('dashboard:widgets.revenueChart')}</h3>
-          <div className="flex items-center space-x-2">
-            <TrendingUp className="h-5 w-5 text-green-500" />
-            <span className="text-sm text-gray-500">{t('dashboard:period.thisMonth')}</span>
+      <div className='bg-white rounded-xl shadow-sm border border-gray-200 p-6 h-full'>
+        <div className='flex items-center justify-between mb-4'>
+          <h3 className='text-lg font-semibold text-gray-900'>
+            {t('dashboard:widgets.revenueChart')}
+          </h3>
+          <div className='flex items-center space-x-2'>
+            <TrendingUp className='h-5 w-5 text-green-500' />
+            <span className='text-sm text-gray-500'>{t('dashboard:period.thisMonth')}</span>
           </div>
         </div>
-        <div className="h-full" style={{ height: 'calc(100% - 4rem)' }}>
+        <div className='h-full' style={{ height: 'calc(100% - 4rem)' }}>
           <Line data={chartData} options={options} />
         </div>
       </div>
@@ -486,7 +487,7 @@ const EnhancedDashboard = () => {
   // Expense Breakdown Widget with improved design
   const ExpenseBreakdownWidget = () => {
     const expenseData = displayData.expenses || { labels: [], data: [] };
-    
+
     if (loading) {
       return <LoadingWidget title={t('dashboard:widgets.expenseBreakdown')} />;
     }
@@ -496,7 +497,7 @@ const EnhancedDashboard = () => {
     }
 
     const hasData = expenseData.data && expenseData.data.some(value => value > 0);
-    
+
     if (!hasData) {
       return (
         <EmptyStateWidget
@@ -506,20 +507,13 @@ const EnhancedDashboard = () => {
         />
       );
     }
-    
+
     const chartData = {
       labels: expenseData.labels || [],
       datasets: [
         {
           data: expenseData.data || [],
-          backgroundColor: [
-            '#3B82F6',
-            '#10B981',
-            '#F59E0B',
-            '#EF4444',
-            '#8B5CF6',
-            '#F97316',
-          ],
+          backgroundColor: ['#3B82F6', '#10B981', '#F59E0B', '#EF4444', '#8B5CF6', '#F97316'],
           borderWidth: 0,
           hoverBorderWidth: 3,
           hoverBorderColor: 'white',
@@ -546,23 +540,25 @@ const EnhancedDashboard = () => {
           titleColor: 'white',
           bodyColor: 'white',
           callbacks: {
-            label: function(context) {
+            label: function (context) {
               const total = context.dataset.data.reduce((a, b) => a + b, 0);
               const percentage = ((context.raw / total) * 100).toFixed(1);
               return `${context.label}: €€${context.raw.toLocaleString()} (${percentage}%)`;
-            }
-          }
+            },
+          },
         },
       },
     };
 
     return (
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 h-full">
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-gray-900">{t('dashboard:widgets.expenseBreakdown')}</h3>
-          <PieChart className="h-5 w-5 text-blue-500" />
+      <div className='bg-white rounded-xl shadow-sm border border-gray-200 p-6 h-full'>
+        <div className='flex items-center justify-between mb-4'>
+          <h3 className='text-lg font-semibold text-gray-900'>
+            {t('dashboard:widgets.expenseBreakdown')}
+          </h3>
+          <PieChart className='h-5 w-5 text-blue-500' />
         </div>
-        <div className="h-full" style={{ height: 'calc(100% - 4rem)' }}>
+        <div className='h-full' style={{ height: 'calc(100% - 4rem)' }}>
           <Doughnut data={chartData} options={options} />
         </div>
       </div>
@@ -596,20 +592,25 @@ const EnhancedDashboard = () => {
     ];
 
     return (
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 h-full">
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-gray-900">{t('dashboard:widgets.recentActivity')}</h3>
-          <Activity className="h-5 w-5 text-gray-400" />
+      <div className='bg-white rounded-xl shadow-sm border border-gray-200 p-6 h-full'>
+        <div className='flex items-center justify-between mb-4'>
+          <h3 className='text-lg font-semibold text-gray-900'>
+            {t('dashboard:widgets.recentActivity')}
+          </h3>
+          <Activity className='h-5 w-5 text-gray-400' />
         </div>
-        <div className="space-y-4">
+        <div className='space-y-4'>
           {activities.map((activity, index) => (
-            <div key={index} className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 transition-colors">
+            <div
+              key={index}
+              className='flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 transition-colors'
+            >
               <div className={`flex-shrink-0 p-2 rounded-lg ${activity.color}`}>
-                <activity.icon className="h-4 w-4" />
+                <activity.icon className='h-4 w-4' />
               </div>
-              <div className="flex-1 min-w-0">
-                <p className="text-sm text-gray-900 font-medium">{activity.description}</p>
-                <p className="text-xs text-gray-500">{activity.time}</p>
+              <div className='flex-1 min-w-0'>
+                <p className='text-sm text-gray-900 font-medium'>{activity.description}</p>
+                <p className='text-xs text-gray-500'>{activity.time}</p>
               </div>
             </div>
           ))}
@@ -621,55 +622,53 @@ const EnhancedDashboard = () => {
   // Financial Health Widget with improved design
   const FinancialHealthWidget = () => {
     const healthScore = displayData.kpis?.healthScore || 85;
-    
-    const getHealthColor = (score) => {
+
+    const getHealthColor = score => {
       if (score >= 80) return 'text-green-600';
       if (score >= 60) return 'text-yellow-600';
       return 'text-red-600';
     };
 
-    const getHealthBgColor = (score) => {
+    const getHealthBgColor = score => {
       if (score >= 80) return 'bg-green-500';
       if (score >= 60) return 'bg-yellow-500';
       return 'bg-red-500';
     };
 
-    const getHealthLabel = (score) => {
+    const getHealthLabel = score => {
       if (score >= 80) return t('dashboard:health.excellent');
       if (score >= 60) return t('dashboard:health.good');
       return t('dashboard:health.needsAttention');
     };
 
     return (
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 h-full">
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-gray-900">{t('dashboard:widgets.financialHealth')}</h3>
-          <Target className="h-5 w-5 text-gray-400" />
+      <div className='bg-white rounded-xl shadow-sm border border-gray-200 p-6 h-full'>
+        <div className='flex items-center justify-between mb-4'>
+          <h3 className='text-lg font-semibold text-gray-900'>
+            {t('dashboard:widgets.financialHealth')}
+          </h3>
+          <Target className='h-5 w-5 text-gray-400' />
         </div>
-        <div className="text-center">
-          <div className="mb-4">
+        <div className='text-center'>
+          <div className='mb-4'>
             <div className={`text-4xl font-bold ${getHealthColor(healthScore)} mb-2`}>
               {healthScore}%
             </div>
-            <div className="text-sm text-gray-600 font-medium">
-              {getHealthLabel(healthScore)}
-            </div>
+            <div className='text-sm text-gray-600 font-medium'>{getHealthLabel(healthScore)}</div>
           </div>
-          <div className="w-full bg-gray-200 rounded-full h-3 mb-4">
+          <div className='w-full bg-gray-200 rounded-full h-3 mb-4'>
             <div
               className={`h-3 rounded-full transition-all duration-1000 ${getHealthBgColor(healthScore)}`}
               style={{ width: `${healthScore}%` }}
             ></div>
           </div>
-          <div className="text-xs text-gray-500">
-            {t('dashboard:health.basedOnFinancials')}
-          </div>
+          <div className='text-xs text-gray-500'>{t('dashboard:health.basedOnFinancials')}</div>
         </div>
       </div>
     );
   };
 
-  const renderWidget = (widgetId) => {
+  const renderWidget = widgetId => {
     const widget = widgets.find(w => w.id === widgetId);
     if (!widget || !widget.enabled) return null;
 
@@ -693,10 +692,7 @@ const EnhancedDashboard = () => {
       case 'ComparativeAnalytics':
         return (
           <ErrorBoundary>
-            <ComparativeAnalytics
-              dateRange={dateRange}
-              comparisonType={comparisonType}
-            />
+            <ComparativeAnalytics dateRange={dateRange} comparisonType={comparisonType} />
           </ErrorBoundary>
         );
       default:
@@ -707,20 +703,18 @@ const EnhancedDashboard = () => {
   const enabledWidgets = widgets.filter(w => w.enabled);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-6">
+    <div className='min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-6'>
       {/* Header */}
-      <div className="mb-8">
-        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
-          <div className="mb-4 lg:mb-0">
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">
-              {t('dashboard:title')}
-            </h1>
-            <p className="text-gray-600">
+      <div className='mb-8'>
+        <div className='flex flex-col lg:flex-row lg:items-center lg:justify-between'>
+          <div className='mb-4 lg:mb-0'>
+            <h1 className='text-3xl font-bold text-gray-900 mb-2'>{t('dashboard:title')}</h1>
+            <p className='text-gray-600'>
               {t('dashboard:subtitle')} {user?.firstName || 'Utente'}
             </p>
           </div>
-          
-          <div className="flex flex-wrap items-center gap-3">
+
+          <div className='flex flex-wrap items-center gap-3'>
             {/* Period Selector */}
             <AdvancedTimePeriodSelector
               selectedPeriod={selectedPeriod}
@@ -728,18 +722,18 @@ const EnhancedDashboard = () => {
               dateRange={dateRange}
               onDateRangeChange={setDateRange}
             />
-            
+
             {/* Connection Status */}
-            <div className="flex items-center space-x-2">
+            <div className='flex items-center space-x-2'>
               {isConnected ? (
-                <div className="flex items-center space-x-1 text-green-600">
-                  <Wifi className="h-4 w-4" />
-                  <span className="text-xs font-medium">Live</span>
+                <div className='flex items-center space-x-1 text-green-600'>
+                  <Wifi className='h-4 w-4' />
+                  <span className='text-xs font-medium'>Live</span>
                 </div>
               ) : (
-                <div className="flex items-center space-x-1 text-red-600">
-                  <WifiOff className="h-4 w-4" />
-                  <span className="text-xs font-medium">Offline</span>
+                <div className='flex items-center space-x-1 text-red-600'>
+                  <WifiOff className='h-4 w-4' />
+                  <span className='text-xs font-medium'>Offline</span>
                 </div>
               )}
             </div>
@@ -748,14 +742,14 @@ const EnhancedDashboard = () => {
             <button
               onClick={handleRefresh}
               disabled={loading}
-              className="flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              className='flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors'
             >
               {loading ? (
-                <Loader2 className="h-4 w-4 animate-spin" />
+                <Loader2 className='h-4 w-4 animate-spin' />
               ) : (
-                <RefreshCw className="h-4 w-4" />
+                <RefreshCw className='h-4 w-4' />
               )}
-              <span className="text-sm font-medium">
+              <span className='text-sm font-medium'>
                 {loading ? t('dashboard:actions.refreshing') : t('dashboard:actions.refresh')}
               </span>
             </button>
@@ -768,8 +762,8 @@ const EnhancedDashboard = () => {
                   : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
               }`}
             >
-              <Grid className="h-4 w-4" />
-              <span className="text-sm font-medium">
+              <Grid className='h-4 w-4' />
+              <span className='text-sm font-medium'>
                 {editMode ? t('dashboard:actions.exitEdit') : t('dashboard:actions.editLayout')}
               </span>
             </button>
@@ -777,7 +771,7 @@ const EnhancedDashboard = () => {
         </div>
 
         {lastUpdated && (
-          <div className="mt-4 text-xs text-gray-500">
+          <div className='mt-4 text-xs text-gray-500'>
             {t('dashboard:lastUpdated')}: {new Date(lastUpdated).toLocaleString('it-IT')}
           </div>
         )}
@@ -785,7 +779,7 @@ const EnhancedDashboard = () => {
 
       {/* Dashboard Grid */}
       <ResponsiveGridLayout
-        className="layout"
+        className='layout'
         layouts={layouts}
         onLayoutChange={handleLayoutChange}
         isDraggable={editMode}
@@ -796,7 +790,7 @@ const EnhancedDashboard = () => {
         margin={[16, 16]}
       >
         {enabledWidgets.map(widget => (
-          <div key={widget.id} className="widget-container">
+          <div key={widget.id} className='widget-container'>
             {renderWidget(widget.id)}
           </div>
         ))}
@@ -804,20 +798,20 @@ const EnhancedDashboard = () => {
 
       {/* Edit Mode Panel */}
       {editMode && (
-        <div className="fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-white rounded-xl shadow-lg border border-gray-200 p-4 z-50">
-          <div className="flex items-center space-x-4">
-            <span className="text-sm font-medium text-gray-700">
+        <div className='fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-white rounded-xl shadow-lg border border-gray-200 p-4 z-50'>
+          <div className='flex items-center space-x-4'>
+            <span className='text-sm font-medium text-gray-700'>
               {t('dashboard:editMode.toggleWidgets')}:
             </span>
             {defaultWidgets.map(widget => (
-              <label key={widget.id} className="flex items-center space-x-2">
+              <label key={widget.id} className='flex items-center space-x-2'>
                 <input
-                  type="checkbox"
+                  type='checkbox'
                   checked={widget.enabled}
                   onChange={() => handleWidgetToggle(widget.id)}
-                  className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                  className='rounded border-gray-300 text-blue-600 focus:ring-blue-500'
                 />
-                <span className="text-xs text-gray-600">{widget.title}</span>
+                <span className='text-xs text-gray-600'>{widget.title}</span>
               </label>
             ))}
           </div>
@@ -827,4 +821,4 @@ const EnhancedDashboard = () => {
   );
 };
 
-export default EnhancedDashboard; 
+export default EnhancedDashboard;

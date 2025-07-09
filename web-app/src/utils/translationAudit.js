@@ -14,25 +14,25 @@ import { getAvailableLanguages } from './translationUtils';
 export const auditTranslations = async (baseLanguage = 'en') => {
   const languages = getAvailableLanguages();
   const namespaces = Object.keys(i18n.store.data[baseLanguage] || {});
-  
+
   const audit = {
     summary: {
       totalLanguages: languages.length,
       totalNamespaces: namespaces.length,
       baseLanguage,
       auditDate: new Date().toISOString(),
-      overallCoverage: 0
+      overallCoverage: 0,
     },
     languages: {},
     namespaces: {},
     issues: [],
-    recommendations: []
+    recommendations: [],
   };
 
   // Audit each language
   for (const language of languages) {
     if (language === baseLanguage) continue;
-    
+
     audit.languages[language] = await auditLanguage(language, baseLanguage);
   }
 
@@ -46,13 +46,19 @@ export const auditTranslations = async (baseLanguage = 'en') => {
   const totalTranslatedKeys = languages
     .filter(lang => lang !== baseLanguage)
     .reduce((sum, lang) => {
-      return sum + Object.values(audit.languages[lang]?.namespaces || {})
-        .reduce((nsSum, ns) => nsSum + ns.translatedKeys, 0);
+      return (
+        sum +
+        Object.values(audit.languages[lang]?.namespaces || {}).reduce(
+          (nsSum, ns) => nsSum + ns.translatedKeys,
+          0,
+        )
+      );
     }, 0);
 
-  audit.summary.overallCoverage = totalKeys > 0 
-    ? ((totalTranslatedKeys / (totalKeys * (languages.length - 1))) * 100).toFixed(2)
-    : 100;
+  audit.summary.overallCoverage =
+    totalKeys > 0
+      ? ((totalTranslatedKeys / (totalKeys * (languages.length - 1))) * 100).toFixed(2)
+      : 100;
 
   // Generate issues and recommendations
   audit.issues = findTranslationIssues(audit);
@@ -70,7 +76,7 @@ export const auditTranslations = async (baseLanguage = 'en') => {
 export const auditLanguage = async (language, baseLanguage = 'en') => {
   const baseData = i18n.store.data[baseLanguage] || {};
   const targetData = i18n.store.data[language] || {};
-  
+
   const languageAudit = {
     language,
     namespaces: {},
@@ -81,16 +87,16 @@ export const auditLanguage = async (language, baseLanguage = 'en') => {
       translatedKeys: 0,
       missingKeys: 0,
       emptyTranslations: 0,
-      coverage: 0
+      coverage: 0,
     },
     missingNamespaces: [],
-    qualityIssues: []
+    qualityIssues: [],
   };
 
   for (const namespace of Object.keys(baseData)) {
     const nsAudit = auditNamespaceForLanguage(namespace, language, baseLanguage);
     languageAudit.namespaces[namespace] = nsAudit;
-    
+
     // Update summary
     languageAudit.summary.totalNamespaces++;
     if (nsAudit.coverage > 0) languageAudit.summary.translatedNamespaces++;
@@ -98,20 +104,21 @@ export const auditLanguage = async (language, baseLanguage = 'en') => {
     languageAudit.summary.translatedKeys += nsAudit.translatedKeys;
     languageAudit.summary.missingKeys += nsAudit.missingKeys;
     languageAudit.summary.emptyTranslations += nsAudit.emptyTranslations;
-    
+
     // Track missing namespaces
     if (!targetData[namespace]) {
       languageAudit.missingNamespaces.push(namespace);
     }
-    
+
     // Add quality issues
     languageAudit.qualityIssues.push(...nsAudit.qualityIssues);
   }
 
   // Calculate overall coverage
-  languageAudit.summary.coverage = languageAudit.summary.totalKeys > 0
-    ? ((languageAudit.summary.translatedKeys / languageAudit.summary.totalKeys) * 100).toFixed(2)
-    : 100;
+  languageAudit.summary.coverage =
+    languageAudit.summary.totalKeys > 0
+      ? ((languageAudit.summary.translatedKeys / languageAudit.summary.totalKeys) * 100).toFixed(2)
+      : 100;
 
   return languageAudit;
 };
@@ -125,7 +132,7 @@ export const auditLanguage = async (language, baseLanguage = 'en') => {
 export const auditNamespace = async (namespace, baseLanguage = 'en') => {
   const languages = getAvailableLanguages().filter(lang => lang !== baseLanguage);
   const baseKeys = getNamespaceKeys(namespace, baseLanguage);
-  
+
   const namespaceAudit = {
     namespace,
     totalKeys: baseKeys.length,
@@ -134,17 +141,17 @@ export const auditNamespace = async (namespace, baseLanguage = 'en') => {
       averageCoverage: 0,
       fullyTranslatedLanguages: 0,
       partiallyTranslatedLanguages: 0,
-      missingLanguages: 0
+      missingLanguages: 0,
     },
     commonMissingKeys: [],
-    keyUsageStats: {}
+    keyUsageStats: {},
   };
 
   // Audit each language for this namespace
   for (const language of languages) {
     const langAudit = auditNamespaceForLanguage(namespace, language, baseLanguage);
     namespaceAudit.languages[language] = langAudit;
-    
+
     // Update summary
     if (langAudit.coverage === 100) {
       namespaceAudit.summary.fullyTranslatedLanguages++;
@@ -156,11 +163,12 @@ export const auditNamespace = async (namespace, baseLanguage = 'en') => {
   }
 
   // Calculate average coverage
-  const coverageSum = Object.values(namespaceAudit.languages)
-    .reduce((sum, lang) => sum + parseFloat(lang.coverage), 0);
-  namespaceAudit.summary.averageCoverage = languages.length > 0
-    ? (coverageSum / languages.length).toFixed(2)
-    : 0;
+  const coverageSum = Object.values(namespaceAudit.languages).reduce(
+    (sum, lang) => sum + parseFloat(lang.coverage),
+    0,
+  );
+  namespaceAudit.summary.averageCoverage =
+    languages.length > 0 ? (coverageSum / languages.length).toFixed(2) : 0;
 
   // Find commonly missing keys
   namespaceAudit.commonMissingKeys = findCommonMissingKeys(namespace, languages, baseLanguage);
@@ -182,12 +190,14 @@ export const auditNamespaceForLanguage = (namespace, language, baseLanguage = 'e
   const baseKeys = getNamespaceKeys(namespace, baseLanguage);
   const targetKeys = getNamespaceKeys(namespace, language);
   const targetData = i18n.store.data[language]?.[namespace] || {};
-  
+
   const missingKeys = baseKeys.filter(key => !targetKeys.includes(key));
-  const emptyTranslations = targetKeys.filter(key => !targetData[key] || targetData[key].trim() === '');
-  
+  const emptyTranslations = targetKeys.filter(
+    key => !targetData[key] || targetData[key].trim() === '',
+  );
+
   const qualityIssues = [];
-  
+
   // Check for quality issues
   targetKeys.forEach(key => {
     const value = targetData[key];
@@ -198,10 +208,10 @@ export const auditNamespaceForLanguage = (namespace, language, baseLanguage = 'e
           type: 'untranslated',
           key,
           value,
-          message: 'Text appears to be in base language'
+          message: 'Text appears to be in base language',
         });
       }
-      
+
       // Check for interpolation mismatches
       const baseValue = i18n.store.data[baseLanguage]?.[namespace]?.[key];
       if (baseValue && hasInterpolationMismatch(value, baseValue)) {
@@ -210,10 +220,10 @@ export const auditNamespaceForLanguage = (namespace, language, baseLanguage = 'e
           key,
           value,
           baseValue,
-          message: 'Interpolation variables don\'t match base language'
+          message: "Interpolation variables don't match base language",
         });
       }
-      
+
       // Check for suspiciously short translations
       if (baseValue && value.length < baseValue.length * 0.3) {
         qualityIssues.push({
@@ -221,12 +231,12 @@ export const auditNamespaceForLanguage = (namespace, language, baseLanguage = 'e
           key,
           value,
           baseValue,
-          message: 'Translation appears significantly shorter than original'
+          message: 'Translation appears significantly shorter than original',
         });
       }
     }
   });
-  
+
   return {
     namespace,
     language,
@@ -234,12 +244,13 @@ export const auditNamespaceForLanguage = (namespace, language, baseLanguage = 'e
     translatedKeys: targetKeys.length - emptyTranslations.length,
     missingKeys: missingKeys.length,
     emptyTranslations: emptyTranslations.length,
-    coverage: baseKeys.length > 0 
-      ? (((targetKeys.length - emptyTranslations.length) / baseKeys.length) * 100).toFixed(2)
-      : 100,
+    coverage:
+      baseKeys.length > 0
+        ? (((targetKeys.length - emptyTranslations.length) / baseKeys.length) * 100).toFixed(2)
+        : 100,
     missingKeysList: missingKeys,
     emptyTranslationsList: emptyTranslations,
-    qualityIssues
+    qualityIssues,
   };
 };
 
@@ -252,63 +263,62 @@ export const auditNamespaceForLanguage = (namespace, language, baseLanguage = 'e
 export const validateTranslationQuality = (namespace, language) => {
   const data = i18n.store.data[language]?.[namespace] || {};
   const baseData = i18n.store.data.en?.[namespace] || {};
-  
+
   const report = {
     namespace,
     language,
     totalKeys: Object.keys(data).length,
     validKeys: 0,
-    issues: []
+    issues: [],
   };
-  
+
   Object.entries(data).forEach(([key, value]) => {
     const baseValue = baseData[key];
     let isValid = true;
-    
+
     // Check if translation exists and is not empty
     if (!value || value.trim() === '') {
       report.issues.push({
         key,
         type: 'empty',
         severity: 'high',
-        message: 'Translation is empty or missing'
+        message: 'Translation is empty or missing',
       });
       isValid = false;
     }
-    
+
     // Check for interpolation consistency
     if (baseValue && hasInterpolationMismatch(value, baseValue)) {
       report.issues.push({
         key,
         type: 'interpolation',
         severity: 'medium',
-        message: 'Interpolation variables don\'t match base language',
+        message: "Interpolation variables don't match base language",
         expected: extractInterpolationVariables(baseValue),
-        actual: extractInterpolationVariables(value)
+        actual: extractInterpolationVariables(value),
       });
       isValid = false;
     }
-    
+
     // Check for HTML tag consistency
     if (baseValue && hasHtmlMismatch(value, baseValue)) {
       report.issues.push({
         key,
         type: 'html_tags',
         severity: 'medium',
-        message: 'HTML tags don\'t match base language'
+        message: "HTML tags don't match base language",
       });
       isValid = false;
     }
-    
+
     if (isValid) {
       report.validKeys++;
     }
   });
-  
-  report.qualityScore = report.totalKeys > 0 
-    ? ((report.validKeys / report.totalKeys) * 100).toFixed(2)
-    : 100;
-  
+
+  report.qualityScore =
+    report.totalKeys > 0 ? ((report.validKeys / report.totalKeys) * 100).toFixed(2) : 100;
+
   return report;
 };
 
@@ -321,7 +331,7 @@ export const validateTranslationQuality = (namespace, language) => {
 const getNamespaceKeys = (namespace, language) => {
   const data = i18n.store.data[language]?.[namespace];
   if (!data) return [];
-  
+
   const extractKeys = (obj, prefix = '') => {
     let keys = [];
     for (const [key, value] of Object.entries(obj)) {
@@ -334,7 +344,7 @@ const getNamespaceKeys = (namespace, language) => {
     }
     return keys;
   };
-  
+
   return extractKeys(data);
 };
 
@@ -343,7 +353,7 @@ const getNamespaceKeys = (namespace, language) => {
  * @param {string} baseLanguage - Base language code
  * @returns {number} Total number of keys
  */
-const getTotalKeyCount = (baseLanguage) => {
+const getTotalKeyCount = baseLanguage => {
   const data = i18n.store.data[baseLanguage] || {};
   return Object.keys(data).reduce((total, namespace) => {
     return total + getNamespaceKeys(namespace, baseLanguage).length;
@@ -360,7 +370,7 @@ const getTotalKeyCount = (baseLanguage) => {
 const findCommonMissingKeys = (namespace, languages, baseLanguage) => {
   const baseKeys = getNamespaceKeys(namespace, baseLanguage);
   const missingCounts = {};
-  
+
   languages.forEach(language => {
     const targetKeys = getNamespaceKeys(namespace, language);
     const missing = baseKeys.filter(key => !targetKeys.includes(key));
@@ -368,7 +378,7 @@ const findCommonMissingKeys = (namespace, languages, baseLanguage) => {
       missingCounts[key] = (missingCounts[key] || 0) + 1;
     });
   });
-  
+
   // Return keys missing in more than 50% of languages
   const threshold = Math.ceil(languages.length * 0.5);
   return Object.entries(missingCounts)
@@ -385,24 +395,24 @@ const findCommonMissingKeys = (namespace, languages, baseLanguage) => {
 const generateKeyUsageStats = (namespace, baseLanguage) => {
   const keys = getNamespaceKeys(namespace, baseLanguage);
   const data = i18n.store.data[baseLanguage]?.[namespace] || {};
-  
+
   const stats = {
     totalKeys: keys.length,
     categories: {},
     complexity: {
-      simple: 0,      // No interpolation, no HTML
+      simple: 0, // No interpolation, no HTML
       interpolated: 0, // Has interpolation variables
-      html: 0,        // Contains HTML tags
-      complex: 0      // Both interpolation and HTML
-    }
+      html: 0, // Contains HTML tags
+      complex: 0, // Both interpolation and HTML
+    },
   };
-  
+
   keys.forEach(key => {
     const value = getNestedValue(data, key);
     if (typeof value === 'string') {
       const hasInterpolation = /\{\{.*?\}\}/.test(value);
       const hasHtml = /<[^>]*>/.test(value);
-      
+
       if (hasInterpolation && hasHtml) {
         stats.complexity.complex++;
       } else if (hasInterpolation) {
@@ -412,13 +422,13 @@ const generateKeyUsageStats = (namespace, baseLanguage) => {
       } else {
         stats.complexity.simple++;
       }
-      
+
       // Categorize by key prefix
       const category = key.split('.')[0];
       stats.categories[category] = (stats.categories[category] || 0) + 1;
     }
   });
-  
+
   return stats;
 };
 
@@ -427,9 +437,9 @@ const generateKeyUsageStats = (namespace, baseLanguage) => {
  * @param {object} audit - Complete audit report
  * @returns {array} Array of issues
  */
-const findTranslationIssues = (audit) => {
+const findTranslationIssues = audit => {
   const issues = [];
-  
+
   // Critical issues
   Object.entries(audit.languages).forEach(([language, langAudit]) => {
     if (parseFloat(langAudit.summary.coverage) < 50) {
@@ -438,10 +448,10 @@ const findTranslationIssues = (audit) => {
         category: 'coverage',
         language,
         message: `${language} has very low translation coverage (${langAudit.summary.coverage}%)`,
-        priority: 'high'
+        priority: 'high',
       });
     }
-    
+
     if (langAudit.missingNamespaces.length > 0) {
       issues.push({
         type: 'critical',
@@ -449,11 +459,11 @@ const findTranslationIssues = (audit) => {
         language,
         message: `${language} is missing ${langAudit.missingNamespaces.length} namespaces`,
         details: langAudit.missingNamespaces,
-        priority: 'high'
+        priority: 'high',
       });
     }
   });
-  
+
   // Quality issues
   Object.values(audit.languages).forEach(langAudit => {
     if (langAudit.qualityIssues.length > 0) {
@@ -463,11 +473,11 @@ const findTranslationIssues = (audit) => {
         language: langAudit.language,
         message: `${langAudit.language} has ${langAudit.qualityIssues.length} quality issues`,
         details: langAudit.qualityIssues,
-        priority: 'medium'
+        priority: 'medium',
       });
     }
   });
-  
+
   return issues;
 };
 
@@ -476,9 +486,9 @@ const findTranslationIssues = (audit) => {
  * @param {object} audit - Complete audit report
  * @returns {array} Array of recommendations
  */
-const generateRecommendations = (audit) => {
+const generateRecommendations = audit => {
   const recommendations = [];
-  
+
   // Coverage recommendations
   if (parseFloat(audit.summary.overallCoverage) < 80) {
     recommendations.push({
@@ -489,11 +499,11 @@ const generateRecommendations = (audit) => {
       actions: [
         'Focus on languages with lowest coverage',
         'Prioritize most commonly used namespaces',
-        'Set up translation workflow for missing keys'
-      ]
+        'Set up translation workflow for missing keys',
+      ],
     });
   }
-  
+
   // Language-specific recommendations
   Object.entries(audit.languages).forEach(([language, langAudit]) => {
     if (parseFloat(langAudit.summary.coverage) < 70) {
@@ -505,12 +515,12 @@ const generateRecommendations = (audit) => {
         actions: [
           `Translate ${langAudit.summary.missingKeys} missing keys`,
           `Complete ${langAudit.missingNamespaces.length} missing namespaces`,
-          'Review and fix quality issues'
-        ]
+          'Review and fix quality issues',
+        ],
       });
     }
   });
-  
+
   // Namespace recommendations
   Object.entries(audit.namespaces).forEach(([namespace, nsAudit]) => {
     if (parseFloat(nsAudit.summary.averageCoverage) < 70) {
@@ -522,12 +532,12 @@ const generateRecommendations = (audit) => {
         actions: [
           'Prioritize commonly missing keys',
           'Review key usage and importance',
-          'Consider namespace restructuring'
-        ]
+          'Consider namespace restructuring',
+        ],
       });
     }
   });
-  
+
   return recommendations;
 };
 
@@ -546,7 +556,7 @@ const hasInterpolationMismatch = (target, base) => {
   return JSON.stringify(targetVars.sort()) !== JSON.stringify(baseVars.sort());
 };
 
-const extractInterpolationVariables = (text) => {
+const extractInterpolationVariables = text => {
   const matches = text.match(/\{\{([^}]+)\}\}/g) || [];
   return matches.map(match => match.slice(2, -2).trim());
 };
@@ -557,7 +567,7 @@ const hasHtmlMismatch = (target, base) => {
   return JSON.stringify(targetTags.sort()) !== JSON.stringify(baseTags.sort());
 };
 
-const extractHtmlTags = (text) => {
+const extractHtmlTags = text => {
   const matches = text.match(/<[^>]+>/g) || [];
   return matches.map(tag => tag.toLowerCase());
 };
@@ -571,5 +581,5 @@ export default {
   auditLanguage,
   auditNamespace,
   validateTranslationQuality,
-  auditNamespaceForLanguage
-}; 
+  auditNamespaceForLanguage,
+};

@@ -18,7 +18,7 @@ const SAMPLE_CLIENTS = [
     revenue: 55000,
     last_contact: '2024-12-29',
     created_at: '2024-01-15T10:30:00Z',
-    notes: 'Important client for technology consulting'
+    notes: 'Important client for technology consulting',
   },
   {
     id: 2,
@@ -33,7 +33,7 @@ const SAMPLE_CLIENTS = [
     revenue: 32000,
     last_contact: '2024-12-28',
     created_at: '2024-02-10T14:20:00Z',
-    notes: 'Marketing specialist'
+    notes: 'Marketing specialist',
   },
   {
     id: 3,
@@ -48,7 +48,7 @@ const SAMPLE_CLIENTS = [
     revenue: 78000,
     last_contact: '2024-12-27',
     created_at: '2024-03-05T09:15:00Z',
-    notes: 'Financial consulting services'
+    notes: 'Financial consulting services',
   },
   {
     id: 4,
@@ -63,10 +63,9 @@ const SAMPLE_CLIENTS = [
     revenue: 45000,
     last_contact: '2024-12-26',
     created_at: '2024-04-12T16:45:00Z',
-    notes: 'Creative design agency'
-  }
+    notes: 'Creative design agency',
+  },
 ];
-
 
 export function useClients() {
   const { isSignedIn, isLoaded, getToken } = useAuth();
@@ -76,7 +75,7 @@ export function useClients() {
   const [error, setError] = useState(null);
 
   // Simple helper - just use the regular supabase client for now
-  const executeQuery = async (queryFn) => {
+  const executeQuery = async queryFn => {
     try {
       return await queryFn(supabase);
     } catch (error) {
@@ -104,12 +103,12 @@ export function useClients() {
       // Logger.info('Refreshing clients for user ID:', user.id);
 
       // Use simple query with user_id filtering
-      const result = await executeQuery((client) =>
+      const result = await executeQuery(client =>
         client
           .from('clients')
           .select('*')
           .eq('user_id', user.id)
-          .order('full_name', { ascending: true })
+          .order('full_name', { ascending: true }),
       );
 
       if (result.error) {
@@ -154,7 +153,7 @@ export function useClients() {
     try {
       console.log('Creating client with data:', clientData);
       console.log('User ID:', user.id);
-      
+
       const newClient = {
         // Essential fields only for testing
         full_name: clientData.name || clientData.full_name || '',
@@ -174,7 +173,10 @@ export function useClients() {
       console.log('Attempting insert with user_id...');
       console.log('Supabase URL:', import.meta.env.VITE_SUPABASE_URL);
       console.log('Supabase Key exists:', !!import.meta.env.VITE_SUPABASE_ANON_KEY);
-      console.log('Supabase Key first 20 chars:', import.meta.env.VITE_SUPABASE_ANON_KEY?.substring(0, 20));
+      console.log(
+        'Supabase Key first 20 chars:',
+        import.meta.env.VITE_SUPABASE_ANON_KEY?.substring(0, 20),
+      );
 
       // Test with a direct fetch to bypass Supabase client
       try {
@@ -183,14 +185,17 @@ export function useClients() {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'apikey': import.meta.env.VITE_SUPABASE_ANON_KEY,
-            'Prefer': 'return=representation'
+            apikey: import.meta.env.VITE_SUPABASE_ANON_KEY,
+            Prefer: 'return=representation',
           },
-          body: JSON.stringify(newClient)
+          body: JSON.stringify(newClient),
         });
 
         console.log('Direct fetch response status:', directResponse.status);
-        console.log('Direct fetch response headers:', Object.fromEntries(directResponse.headers.entries()));
+        console.log(
+          'Direct fetch response headers:',
+          Object.fromEntries(directResponse.headers.entries()),
+        );
 
         if (directResponse.ok) {
           const directData = await directResponse.json();
@@ -204,17 +209,13 @@ export function useClients() {
         console.error('Direct fetch failed:', directFetchError);
       }
 
-      const result = await executeQuery((client) =>
-        client
-          .from('clients')
-          .insert([newClient])
-          .select()
-          .single()
+      const result = await executeQuery(client =>
+        client.from('clients').insert([newClient]).select().single(),
       );
 
       if (result.error) {
         console.error('Insert failed:', result.error);
-        return { success: false, error: `Error al crear el cliente: ${result.error.message}` };
+        return { success: false, error: `Error al crear el cliente: ${String(result?.error?.message || result?.error || 'Unknown error')}` };
       }
 
       console.log('Client created successfully:', result.data);
@@ -230,7 +231,7 @@ export function useClients() {
       return { success: true, data: adaptedClient };
     } catch (err) {
       console.error('Exception creating client:', err);
-      return { success: false, error: `Error de conexión: ${err.message}` };
+      return { success: false, error: `Error de conexión: ${String(err?.message || err || 'Unknown error')}` };
     }
   };
 
@@ -286,10 +287,7 @@ export function useClients() {
 
     try {
       const result = await withUserContext(user.id, async () => {
-        return await supabase
-          .from('clients')
-          .delete()
-          .eq('id', clientId);
+        return await supabase.from('clients').delete().eq('id', clientId);
       });
 
       if (result.error) {

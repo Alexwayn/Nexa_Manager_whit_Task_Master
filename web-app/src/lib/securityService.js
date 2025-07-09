@@ -7,7 +7,7 @@ export const ROLES = {
   ADMIN: 'admin',
   MANAGER: 'manager',
   USER: 'user',
-  VIEWER: 'viewer'
+  VIEWER: 'viewer',
 };
 
 export const PERMISSIONS = {
@@ -15,25 +15,25 @@ export const PERMISSIONS = {
   MANAGE_USERS: 'manage_users',
   VIEW_USERS: 'view_users',
   DELETE_USERS: 'delete_users',
-  
+
   // Settings management
   MANAGE_SECURITY_SETTINGS: 'manage_security_settings',
   VIEW_SECURITY_SETTINGS: 'view_security_settings',
   BACKUP_SETTINGS: 'backup_settings',
   RESTORE_SETTINGS: 'restore_settings',
-  
+
   // Audit logs
   VIEW_AUDIT_LOGS: 'view_audit_logs',
   EXPORT_AUDIT_LOGS: 'export_audit_logs',
-  
+
   // Financial data
   MANAGE_FINANCIAL_DATA: 'manage_financial_data',
   VIEW_FINANCIAL_DATA: 'view_financial_data',
   EXPORT_FINANCIAL_DATA: 'export_financial_data',
-  
+
   // Organization management
   MANAGE_ORGANIZATION: 'manage_organization',
-  VIEW_ORGANIZATION: 'view_organization'
+  VIEW_ORGANIZATION: 'view_organization',
 };
 
 // Role-permission mapping
@@ -52,7 +52,7 @@ const ROLE_PERMISSIONS = {
     PERMISSIONS.VIEW_FINANCIAL_DATA,
     PERMISSIONS.EXPORT_FINANCIAL_DATA,
     PERMISSIONS.MANAGE_ORGANIZATION,
-    PERMISSIONS.VIEW_ORGANIZATION
+    PERMISSIONS.VIEW_ORGANIZATION,
   ],
   [ROLES.MANAGER]: [
     PERMISSIONS.VIEW_USERS,
@@ -61,17 +61,14 @@ const ROLE_PERMISSIONS = {
     PERMISSIONS.MANAGE_FINANCIAL_DATA,
     PERMISSIONS.VIEW_FINANCIAL_DATA,
     PERMISSIONS.EXPORT_FINANCIAL_DATA,
-    PERMISSIONS.VIEW_ORGANIZATION
+    PERMISSIONS.VIEW_ORGANIZATION,
   ],
   [ROLES.USER]: [
     PERMISSIONS.VIEW_SECURITY_SETTINGS,
     PERMISSIONS.VIEW_FINANCIAL_DATA,
-    PERMISSIONS.VIEW_ORGANIZATION
+    PERMISSIONS.VIEW_ORGANIZATION,
   ],
-  [ROLES.VIEWER]: [
-    PERMISSIONS.VIEW_FINANCIAL_DATA,
-    PERMISSIONS.VIEW_ORGANIZATION
-  ]
+  [ROLES.VIEWER]: [PERMISSIONS.VIEW_FINANCIAL_DATA, PERMISSIONS.VIEW_ORGANIZATION],
 };
 
 class SecurityService {
@@ -81,12 +78,14 @@ class SecurityService {
       // Temporary: Use direct supabase client (RLS disabled)
       const { data, error } = await supabase
         .from('user_roles')
-        .select(`
+        .select(
+          `
           role_id,
           roles!inner(
             name
           )
-        `)
+        `,
+        )
         .eq('user_id', userId)
         .single();
 
@@ -131,7 +130,7 @@ class SecurityService {
           user_id: userId,
           role_id: roleData.id,
           updated_by: updatedBy,
-          updated_at: new Date().toISOString()
+          updated_at: new Date().toISOString(),
         })
         .select();
 
@@ -143,7 +142,7 @@ class SecurityService {
         userId: updatedBy,
         targetUserId: userId,
         details: { newRole, previousRole: currentRole },
-        severity: 'HIGH'
+        severity: 'HIGH',
       });
 
       return data;
@@ -172,21 +171,19 @@ class SecurityService {
         details = {},
         severity = 'LOW',
         ipAddress = null,
-        userAgent = null
+        userAgent = null,
       } = eventData;
 
-      const { error } = await supabase
-        .from('security_audit_logs')
-        .insert({
-          action,
-          user_id: userId,
-          target_user_id: targetUserId,
-          details: JSON.stringify(details),
-          severity,
-          ip_address: ipAddress,
-          user_agent: userAgent,
-          timestamp: new Date().toISOString()
-        });
+      const { error } = await supabase.from('security_audit_logs').insert({
+        action,
+        user_id: userId,
+        target_user_id: targetUserId,
+        details: JSON.stringify(details),
+        severity,
+        ip_address: ipAddress,
+        user_agent: userAgent,
+        timestamp: new Date().toISOString(),
+      });
 
       if (error) throw error;
     } catch (error) {
@@ -245,14 +242,12 @@ class SecurityService {
         throw new Error('Invalid verification code');
       }
 
-      const { error } = await supabase
-        .from('user_2fa_settings')
-        .upsert({
-          user_id: userId,
-          secret: secret,
-          enabled: true,
-          enabled_at: new Date().toISOString()
-        });
+      const { error } = await supabase.from('user_2fa_settings').upsert({
+        user_id: userId,
+        secret: secret,
+        enabled: true,
+        enabled_at: new Date().toISOString(),
+      });
 
       if (error) throw error;
 
@@ -264,7 +259,7 @@ class SecurityService {
       await this.logSecurityEvent({
         action: '2FA_ENABLED',
         userId,
-        severity: 'HIGH'
+        severity: 'HIGH',
       });
 
       return { success: true, backupCodes };
@@ -290,7 +285,7 @@ class SecurityService {
       await this.logSecurityEvent({
         action: '2FA_DISABLED',
         userId,
-        severity: 'HIGH'
+        severity: 'HIGH',
       });
 
       return { success: true };
@@ -322,10 +317,7 @@ class SecurityService {
 
   async saveBackupCodes(userId, codes) {
     try {
-      const { error } = await supabase
-        .from('user_backup_codes')
-        .delete()
-        .eq('user_id', userId);
+      const { error } = await supabase.from('user_backup_codes').delete().eq('user_id', userId);
 
       if (error) throw error;
 
@@ -333,7 +325,7 @@ class SecurityService {
         user_id: userId,
         code: code,
         used: false,
-        created_at: new Date().toISOString()
+        created_at: new Date().toISOString(),
       }));
 
       const { error: insertError } = await supabase
@@ -349,10 +341,7 @@ class SecurityService {
 
   async clearBackupCodes(userId) {
     try {
-      const { error } = await supabase
-        .from('user_backup_codes')
-        .delete()
-        .eq('user_id', userId);
+      const { error } = await supabase.from('user_backup_codes').delete().eq('user_id', userId);
 
       if (error) throw error;
     } catch (error) {
@@ -368,7 +357,7 @@ class SecurityService {
       const [roleData, twoFAData, sessionData] = await Promise.all([
         supabase.from('user_roles').select('*').eq('user_id', userId),
         supabase.from('user_2fa_settings').select('*').eq('user_id', userId),
-        supabase.from('user_sessions').select('*').eq('user_id', userId)
+        supabase.from('user_sessions').select('*').eq('user_id', userId),
       ]);
 
       const backup = {
@@ -378,18 +367,16 @@ class SecurityService {
         settings: {
           role: roleData.data?.[0] || null,
           twoFA: twoFAData.data?.[0] || null,
-          sessions: sessionData.data || []
-        }
+          sessions: sessionData.data || [],
+        },
       };
 
       // Store backup
-      const { data, error } = await supabase
-        .from('security_backups')
-        .insert({
-          user_id: userId,
-          backup_data: JSON.stringify(backup),
-          created_at: new Date().toISOString()
-        });
+      const { data, error } = await supabase.from('security_backups').insert({
+        user_id: userId,
+        backup_data: JSON.stringify(backup),
+        created_at: new Date().toISOString(),
+      });
 
       if (error) throw error;
 
@@ -397,7 +384,7 @@ class SecurityService {
       await this.logSecurityEvent({
         action: 'SECURITY_BACKUP_CREATED',
         userId,
-        severity: 'MEDIUM'
+        severity: 'MEDIUM',
       });
 
       return { success: true, backupId: data[0]?.id };
@@ -434,7 +421,7 @@ class SecurityService {
         action: 'SECURITY_BACKUP_RESTORED',
         userId,
         details: { backupId },
-        severity: 'HIGH'
+        severity: 'HIGH',
       });
 
       return { success: true };
@@ -477,7 +464,7 @@ class SecurityService {
         action: 'SESSION_REVOKED',
         userId,
         details: { sessionId },
-        severity: 'MEDIUM'
+        severity: 'MEDIUM',
       });
 
       return { success: true };
@@ -505,7 +492,7 @@ class SecurityService {
       await this.logSecurityEvent({
         action: 'ALL_SESSIONS_REVOKED',
         userId,
-        severity: 'HIGH'
+        severity: 'HIGH',
       });
 
       return { success: true };

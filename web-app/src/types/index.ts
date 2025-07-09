@@ -61,7 +61,7 @@ export type {
   AnalyticsMetrics,
   TrendDataPoint,
 
-    // Form types
+  // Form types
   FormState,
   ValidationError,
 } from './api';
@@ -70,13 +70,13 @@ export type {
   // Base component types
   BaseComponentProps,
   PolymorphicProps,
-  
+
   // Form component types
   ButtonProps,
   InputProps,
   SelectOption,
   SelectProps,
-  
+
   // UI component types
   ModalProps,
   TableColumn,

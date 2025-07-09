@@ -10,7 +10,7 @@ const supabaseServiceRole = createClient(
     auth: {
       persistSession: false,
     },
-  }
+  },
 );
 
 /**

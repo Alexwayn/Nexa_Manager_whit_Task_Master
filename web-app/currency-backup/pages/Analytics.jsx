@@ -50,7 +50,7 @@ const Analytics = () => {
         Logger.info('Loading analytics for user:', {
           clerkId: user.id,
           dbUserId,
-          userEmail: user.primaryEmailAddress?.emailAddress
+          userEmail: user.primaryEmailAddress?.emailAddress,
         });
 
         const data = await invoiceAnalyticsService.getInvoiceAnalytics(dbUserId);
@@ -115,15 +115,15 @@ const Analytics = () => {
         <div className='bg-blue-50 border-b border-gray-200 py-2 px-4 md:px-8'>
           <div className='flex items-center justify-between'>
             <div className='flex items-center space-x-2 text-nav-text'>
-              <button 
+              <button
                 onClick={() => navigate('/dashboard')}
                 className='flex items-center space-x-1 text-blue-600 hover:text-blue-700 font-medium transition-colors'
               >
-                <HomeIcon className="h-5 w-5" />
+                <HomeIcon className='h-5 w-5' />
                 <span>Dashboard</span>
               </button>
               <ChevronRightIcon className='h-4 w-4 text-gray-400' />
-              <span className="text-gray-600 font-bold">Analytics</span>
+              <span className='text-gray-600 font-bold'>Analytics</span>
             </div>
           </div>
         </div>
@@ -352,7 +352,9 @@ const Analytics = () => {
                     ].map((client, index) => (
                       <div key={index} className='flex items-center space-x-3'>
                         <div className='w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center'>
-                          <span className='text-caption font-medium text-blue-600'>{index + 1}</span>
+                          <span className='text-caption font-medium text-blue-600'>
+                            {index + 1}
+                          </span>
                         </div>
                         <div className='flex-1'>
                           <div className='font-medium text-black text-body'>{client.name}</div>
@@ -559,7 +561,9 @@ const Analytics = () => {
                 {/* Profit Margin Trends */}
                 <div className='bg-white rounded-xl shadow-sm border border-gray-200 p-6'>
                   <div className='flex items-center justify-between mb-4'>
-                    <h3 className='text-card-title font-semibold text-black'>Profit Margin Trends</h3>
+                    <h3 className='text-card-title font-semibold text-black'>
+                      Profit Margin Trends
+                    </h3>
                     <ChevronDownIcon className='h-4 w-4 text-gray-400' />
                   </div>
 
@@ -696,7 +700,9 @@ const Analytics = () => {
                 {/* 6-Month Revenue Projection */}
                 <div className='bg-white rounded-xl shadow-sm border border-gray-200 p-6'>
                   <div className='flex items-center justify-between mb-4'>
-                    <h3 className='text-card-title font-semibold text-black'>6-Month Revenue Projection</h3>
+                    <h3 className='text-card-title font-semibold text-black'>
+                      6-Month Revenue Projection
+                    </h3>
                     <div className='flex items-center space-x-2'>
                       <span className='text-body text-gray-500'>Projected</span>
                       <span className='text-body text-gray-500'>Actual</span>
@@ -751,7 +757,9 @@ const Analytics = () => {
                 {/* Growth Trend Analysis */}
                 <div className='bg-white rounded-xl shadow-sm border border-gray-200 p-6'>
                   <div className='flex items-center justify-between mb-4'>
-                    <h3 className='text-card-title font-semibold text-black'>Growth Trend Analysis</h3>
+                    <h3 className='text-card-title font-semibold text-black'>
+                      Growth Trend Analysis
+                    </h3>
                     <span className='text-blue-600 text-body cursor-pointer'>View Report</span>
                   </div>
 
@@ -950,7 +958,9 @@ const Analytics = () => {
                         <div className={`text-card-title font-bold ${scenario.color}`}>
                           {scenario.revenue}
                         </div>
-                        <div className='text-caption text-gray-500 mt-1'>Annual Revenue Projection</div>
+                        <div className='text-caption text-gray-500 mt-1'>
+                          Annual Revenue Projection
+                        </div>
                       </div>
                     ))}
                   </div>

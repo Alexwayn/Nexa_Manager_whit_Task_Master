@@ -169,7 +169,7 @@ export const getEventsForDateRange = async (startDate, endDate, userId) => {
       throw new Error('User ID is required for fetching events');
     }
 
-    const { data, error } = await executeWithClerkAuth(async (authenticatedClient) => {
+    const { data, error } = await executeWithClerkAuth(async authenticatedClient => {
       return await authenticatedClient
         .from('events')
         .select(
@@ -294,7 +294,7 @@ export const createEvent = async eventData => {
       updated_at: new Date().toISOString(),
     };
 
-    const { data, error } = await executeWithClerkAuth(async (authenticatedClient) => {
+    const { data, error } = await executeWithClerkAuth(async authenticatedClient => {
       return await authenticatedClient
         .from('events')
         .insert([formattedEvent])

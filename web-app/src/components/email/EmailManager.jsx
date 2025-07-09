@@ -9,7 +9,7 @@ import {
   ExclamationTriangleIcon as AlertTriangle,
   SparklesIcon,
   UserGroupIcon,
-  ChartBarIcon
+  ChartBarIcon,
 } from '@heroicons/react/24/outline';
 import emailService from '@lib/emailService';
 import EmailCampaignManager from './EmailCampaignManager';
@@ -424,16 +424,16 @@ const EmailManager = () => {
           )}
 
           {/* Campaigns Tab */}
-          {activeTab === 'campaigns' && (
-            <EmailCampaignManager />
-          )}
+          {activeTab === 'campaigns' && <EmailCampaignManager />}
 
           {/* Advanced Templates Tab */}
           {activeTab === 'templates' && (
             <div className='space-y-6'>
               <div className='flex items-center justify-between'>
                 <h3 className='text-lg font-medium'>Advanced Email Templates</h3>
-                <p className='text-sm text-gray-600'>Create and manage professional email templates with WYSIWYG editor</p>
+                <p className='text-sm text-gray-600'>
+                  Create and manage professional email templates with WYSIWYG editor
+                </p>
               </div>
               <div className='bg-blue-50 border border-blue-200 rounded-lg p-4'>
                 <div className='flex items-center'>
@@ -441,11 +441,11 @@ const EmailManager = () => {
                   <p className='text-blue-800 font-medium'>Advanced Template Management</p>
                 </div>
                 <p className='text-blue-700 text-sm mt-1'>
-                  Switch to the "Campaigns" tab to access the full template editor with WYSIWYG editing, 
-                  variable management, and email client compatibility testing.
+                  Switch to the "Campaigns" tab to access the full template editor with WYSIWYG
+                  editing, variable management, and email client compatibility testing.
                 </p>
               </div>
-              
+
               {/* Legacy Templates View */}
               <div className='border-t pt-6'>
                 <h4 className='text-md font-medium mb-4'>Legacy Templates (Read-Only)</h4>
@@ -528,9 +528,7 @@ const EmailManager = () => {
           )}
 
           {/* Signatures Tab */}
-          {activeTab === 'signatures' && (
-            <EmailSignatureManager />
-          )}
+          {activeTab === 'signatures' && <EmailSignatureManager />}
 
           {/* Analytics Tab */}
           {activeTab === 'analytics' && (
@@ -542,11 +540,11 @@ const EmailManager = () => {
                   <p className='text-purple-800 font-medium'>Advanced Analytics</p>
                 </div>
                 <p className='text-purple-700 text-sm mt-1'>
-                  Detailed campaign analytics, open rates, click tracking, and performance metrics 
+                  Detailed campaign analytics, open rates, click tracking, and performance metrics
                   are available in the "Campaigns" tab.
                 </p>
               </div>
-              
+
               {/* Basic Stats */}
               <div className='grid grid-cols-1 md:grid-cols-3 gap-4'>
                 <div className='bg-white border rounded-lg p-4'>
@@ -570,9 +568,7 @@ const EmailManager = () => {
           )}
 
           {/* Providers Tab */}
-          {activeTab === 'providers' && (
-            <EmailProviderSettings />
-          )}
+          {activeTab === 'providers' && <EmailProviderSettings />}
 
           {/* Settings Tab */}
           {activeTab === 'settings' && (

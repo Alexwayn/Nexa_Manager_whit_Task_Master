@@ -2,7 +2,7 @@
 
 /**
  * Accessibility Testing Script for CI/CD
- * 
+ *
  * This script runs comprehensive accessibility tests and generates reports
  * suitable for continuous integration and deployment pipelines.
  */
@@ -17,7 +17,7 @@ const config = {
   baseUrl: process.env.TEST_BASE_URL || 'http://localhost:3000',
   outputDir: process.env.ACCESSIBILITY_REPORT_DIR || './accessibility-reports',
   format: process.env.REPORT_FORMAT || 'json', // json, html, xml
-  
+
   // Pages to test
   pages: [
     '/',
@@ -29,17 +29,17 @@ const config = {
     '/settings',
     '/settings/profile',
     '/settings/security',
-    '/settings/accessibility'
+    '/settings/accessibility',
   ],
-  
+
   // Thresholds for CI/CD
   thresholds: {
     criticalViolations: 0,
     seriousViolations: 0,
     moderateViolations: parseInt(process.env.MAX_MODERATE_VIOLATIONS) || 5,
-    minorViolations: parseInt(process.env.MAX_MINOR_VIOLATIONS) || 10
+    minorViolations: parseInt(process.env.MAX_MINOR_VIOLATIONS) || 10,
   },
-  
+
   // CI/CD integration
   failOnViolations: process.env.FAIL_ON_VIOLATIONS !== 'false',
   githubIntegration: process.env.GITHUB_ACTIONS === 'true',
@@ -53,37 +53,36 @@ async function main() {
   console.log('🔍 Starting Accessibility Test Suite...');
   console.log(`Base URL: ${config.baseUrl}`);
   console.log(`Testing ${config.pages.length} pages`);
-  
+
   try {
     // Ensure output directory exists
     if (!fs.existsSync(config.outputDir)) {
       fs.mkdirSync(config.outputDir, { recursive: true });
     }
-    
+
     // Wait for application to be ready
     await waitForApplication();
-    
+
     // Run accessibility tests
     const results = await runAccessibilityTests();
-    
+
     // Generate reports
     await generateReports(results);
-    
+
     // Check thresholds and exit appropriately
     const exitCode = checkThresholds(results);
-    
+
     // Send notifications if configured
     if (config.slackWebhook) {
       await sendSlackNotification(results);
     }
-    
+
     if (config.githubIntegration) {
       await createGitHubSummary(results);
     }
-    
+
     console.log('✅ Accessibility testing completed');
     process.exit(exitCode);
-    
   } catch (error) {
     console.error('❌ Accessibility testing failed:', error.message);
     process.exit(1);
@@ -95,10 +94,10 @@ async function main() {
  */
 async function waitForApplication() {
   console.log('⏳ Waiting for application to be ready...');
-  
+
   const maxAttempts = 30;
   let attempts = 0;
-  
+
   while (attempts < maxAttempts) {
     try {
       const response = await fetch(config.baseUrl);
@@ -109,11 +108,11 @@ async function waitForApplication() {
     } catch (error) {
       // Application not ready yet
     }
-    
+
     attempts++;
     await new Promise(resolve => setTimeout(resolve, 2000));
   }
-  
+
   throw new Error('Application failed to start within timeout');
 }
 
@@ -130,94 +129,107 @@ async function runAccessibilityTests() {
       moderateViolations: 0,
       minorViolations: 0,
       passedTests: 0,
-      failedTests: 0
+      failedTests: 0,
     },
     pages: [],
     timestamp: new Date().toISOString(),
-    configuration: config
+    configuration: config,
   };
-  
+
   // Install and use axe-core if available
   try {
     const puppeteer = require('puppeteer');
     const axeCore = require('axe-core');
-    
+
     const browser = await puppeteer.launch({
       headless: true,
-      args: ['--no-sandbox', '--disable-setuid-sandbox']
+      args: ['--no-sandbox', '--disable-setuid-sandbox'],
     });
-    
+
     for (const page of config.pages) {
       console.log(`Testing: ${config.baseUrl}${page}`);
-      
+
       const browserPage = await browser.newPage();
       await browserPage.goto(`${config.baseUrl}${page}`, {
         waitUntil: 'networkidle0',
-        timeout: 30000
+        timeout: 30000,
       });
-      
+
       // Inject axe-core
       await browserPage.addScriptTag({
-        content: axeCore.source
+        content: axeCore.source,
       });
-      
+
       // Run axe accessibility tests
       const axeResults = await browserPage.evaluate(async () => {
         return await window.axe.run();
       });
-      
+
       const pageResult = {
         url: `${config.baseUrl}${page}`,
         page: page,
         violations: axeResults.violations,
         passes: axeResults.passes.length,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       };
-      
+
       results.pages.push(pageResult);
-      
+
       // Update summary
       results.summary.totalViolations += axeResults.violations.length;
-      results.summary.criticalViolations += axeResults.violations.filter(v => v.impact === 'critical').length;
-      results.summary.seriousViolations += axeResults.violations.filter(v => v.impact === 'serious').length;
-      results.summary.moderateViolations += axeResults.violations.filter(v => v.impact === 'moderate').length;
-      results.summary.minorViolations += axeResults.violations.filter(v => v.impact === 'minor').length;
-      
+      results.summary.criticalViolations += axeResults.violations.filter(
+        v => v.impact === 'critical',
+      ).length;
+      results.summary.seriousViolations += axeResults.violations.filter(
+        v => v.impact === 'serious',
+      ).length;
+      results.summary.moderateViolations += axeResults.violations.filter(
+        v => v.impact === 'moderate',
+      ).length;
+      results.summary.minorViolations += axeResults.violations.filter(
+        v => v.impact === 'minor',
+      ).length;
+
       if (axeResults.violations.length === 0) {
         results.summary.passedTests++;
       } else {
         results.summary.failedTests++;
       }
-      
+
       await browserPage.close();
     }
-    
+
     await browser.close();
-    
   } catch (error) {
     console.warn('⚠️  axe-core/puppeteer not available, using mock results');
-    
+
     // Generate mock results for demonstration
     for (const page of config.pages) {
       const mockViolations = generateMockViolations(page);
-      
+
       const pageResult = {
         url: `${config.baseUrl}${page}`,
         page: page,
         violations: mockViolations,
         passes: Math.floor(Math.random() * 20) + 10,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       };
-      
+
       results.pages.push(pageResult);
-      
+
       // Update summary
       results.summary.totalViolations += mockViolations.length;
-      results.summary.criticalViolations += mockViolations.filter(v => v.impact === 'critical').length;
-      results.summary.seriousViolations += mockViolations.filter(v => v.impact === 'serious').length;
-      results.summary.moderateViolations += mockViolations.filter(v => v.impact === 'moderate').length;
+      results.summary.criticalViolations += mockViolations.filter(
+        v => v.impact === 'critical',
+      ).length;
+      results.summary.seriousViolations += mockViolations.filter(
+        v => v.impact === 'serious',
+      ).length;
+      results.summary.moderateViolations += mockViolations.filter(
+        v => v.impact === 'moderate',
+      ).length;
       results.summary.minorViolations += mockViolations.filter(v => v.impact === 'minor').length;
-      
+
       if (mockViolations.length === 0) {
         results.summary.passedTests++;
       } else {
@@ -225,7 +237,7 @@ async function runAccessibilityTests() {
       }
     }
   }
-  
+
   return results;
 }
 
@@ -234,7 +246,7 @@ async function runAccessibilityTests() {
  */
 function generateMockViolations(page) {
   const violations = [];
-  
+
   // Add some sample violations based on page
   if (page === '/login') {
     violations.push({
@@ -243,14 +255,16 @@ function generateMockViolations(page) {
       description: 'Form elements must have labels',
       help: 'Ensure every form element has a label',
       helpUrl: 'https://dequeuniversity.com/rules/axe/4.4/label',
-      nodes: [{
-        html: '<input type="password" name="password">',
-        target: ['input[name="password"]'],
-        failureSummary: 'Element does not have a label'
-      }]
+      nodes: [
+        {
+          html: '<input type="password" name="password">',
+          target: ['input[name="password"]'],
+          failureSummary: 'Element does not have a label',
+        },
+      ],
     });
   }
-  
+
   if (page === '/dashboard') {
     violations.push({
       id: 'color-contrast',
@@ -258,14 +272,16 @@ function generateMockViolations(page) {
       description: 'Elements must have sufficient color contrast',
       help: 'Ensure all text elements have sufficient color contrast',
       helpUrl: 'https://dequeuniversity.com/rules/axe/4.4/color-contrast',
-      nodes: [{
-        html: '<span class="text-gray-400">Secondary text</span>',
-        target: ['.text-gray-400'],
-        failureSummary: 'Element has insufficient color contrast'
-      }]
+      nodes: [
+        {
+          html: '<span class="text-gray-400">Secondary text</span>',
+          target: ['.text-gray-400'],
+          failureSummary: 'Element has insufficient color contrast',
+        },
+      ],
     });
   }
-  
+
   return violations;
 }
 
@@ -274,27 +290,27 @@ function generateMockViolations(page) {
  */
 async function generateReports(results) {
   console.log('📄 Generating accessibility reports...');
-  
+
   // JSON Report
   const jsonReport = JSON.stringify(results, null, 2);
   fs.writeFileSync(path.join(config.outputDir, 'accessibility-report.json'), jsonReport);
-  
+
   // HTML Report
   if (config.format === 'html' || config.format === 'all') {
     const htmlReport = generateHTMLReport(results);
     fs.writeFileSync(path.join(config.outputDir, 'accessibility-report.html'), htmlReport);
   }
-  
+
   // XML Report
   if (config.format === 'xml' || config.format === 'all') {
     const xmlReport = generateXMLReport(results);
     fs.writeFileSync(path.join(config.outputDir, 'accessibility-report.xml'), xmlReport);
   }
-  
+
   // JUnit XML for CI integration
   const junitReport = generateJUnitReport(results);
   fs.writeFileSync(path.join(config.outputDir, 'accessibility-junit.xml'), junitReport);
-  
+
   console.log(`📊 Reports saved to: ${config.outputDir}`);
 }
 
@@ -303,7 +319,7 @@ async function generateReports(results) {
  */
 function generateHTMLReport(results) {
   const { summary, pages } = results;
-  
+
   return `
 <!DOCTYPE html>
 <html lang="en">
@@ -358,12 +374,17 @@ function generateHTMLReport(results) {
         </div>
         
         <h2>📋 Page Results</h2>
-        ${pages.map(page => `
+        ${pages
+          .map(
+            page => `
             <div class="page-result">
                 <h3>${page.url}</h3>
-                ${page.violations.length === 0 ? 
-                    '<div class="no-violations">✅ No accessibility violations found</div>' :
-                    page.violations.map(violation => `
+                ${
+                  page.violations.length === 0
+                    ? '<div class="no-violations">✅ No accessibility violations found</div>'
+                    : page.violations
+                        .map(
+                          violation => `
                         <div class="violation ${violation.impact}">
                             <h4>${violation.description}</h4>
                             <p><strong>Impact:</strong> ${violation.impact}</p>
@@ -371,10 +392,14 @@ function generateHTMLReport(results) {
                             <p><strong>Affected Elements:</strong> ${violation.nodes.length}</p>
                             <a href="${violation.helpUrl}" target="_blank">📚 Learn more</a>
                         </div>
-                    `).join('')
+                    `,
+                        )
+                        .join('')
                 }
             </div>
-        `).join('')}
+        `,
+          )
+          .join('')}
     </div>
 </body>
 </html>`;
@@ -385,7 +410,7 @@ function generateHTMLReport(results) {
  */
 function generateXMLReport(results) {
   const { summary, pages } = results;
-  
+
   return `<?xml version="1.0" encoding="UTF-8"?>
 <accessibility-report timestamp="${results.timestamp}">
   <summary>
@@ -399,10 +424,14 @@ function generateXMLReport(results) {
     <minor-violations>${summary.minorViolations}</minor-violations>
   </summary>
   <pages>
-    ${pages.map(page => `
+    ${pages
+      .map(
+        page => `
     <page url="${page.url}">
       <violations count="${page.violations.length}">
-        ${page.violations.map(violation => `
+        ${page.violations
+          .map(
+            violation => `
         <violation impact="${violation.impact}">
           <id>${violation.id}</id>
           <description><![CDATA[${violation.description}]]></description>
@@ -410,10 +439,14 @@ function generateXMLReport(results) {
           <help-url>${violation.helpUrl}</help-url>
           <nodes count="${violation.nodes.length}"/>
         </violation>
-        `).join('')}
+        `,
+          )
+          .join('')}
       </violations>
     </page>
-    `).join('')}
+    `,
+      )
+      .join('')}
   </pages>
 </accessibility-report>`;
 }
@@ -423,7 +456,7 @@ function generateXMLReport(results) {
  */
 function generateJUnitReport(results) {
   const { summary, pages } = results;
-  
+
   return `<?xml version="1.0" encoding="UTF-8"?>
 <testsuite 
   name="Accessibility Tests" 
@@ -431,21 +464,29 @@ function generateJUnitReport(results) {
   failures="${summary.failedTests}" 
   errors="0" 
   time="0">
-  ${pages.map(page => `
+  ${pages
+    .map(
+      page => `
   <testcase 
     classname="AccessibilityTest" 
     name="${page.page}" 
     time="0">
-    ${page.violations.length > 0 ? `
+    ${
+      page.violations.length > 0
+        ? `
     <failure message="${page.violations.length} accessibility violations found">
       <![CDATA[
         Violations found:
         ${page.violations.map(v => `- ${v.description} (${v.impact})`).join('\n        ')}
       ]]>
     </failure>
-    ` : ''}
+    `
+        : ''
+    }
   </testcase>
-  `).join('')}
+  `,
+    )
+    .join('')}
 </testsuite>`;
 }
 
@@ -455,34 +496,42 @@ function generateJUnitReport(results) {
 function checkThresholds(results) {
   const { summary } = results;
   const violations = [];
-  
+
   if (summary.criticalViolations > config.thresholds.criticalViolations) {
-    violations.push(`Critical violations: ${summary.criticalViolations} (max: ${config.thresholds.criticalViolations})`);
+    violations.push(
+      `Critical violations: ${summary.criticalViolations} (max: ${config.thresholds.criticalViolations})`,
+    );
   }
-  
+
   if (summary.seriousViolations > config.thresholds.seriousViolations) {
-    violations.push(`Serious violations: ${summary.seriousViolations} (max: ${config.thresholds.seriousViolations})`);
+    violations.push(
+      `Serious violations: ${summary.seriousViolations} (max: ${config.thresholds.seriousViolations})`,
+    );
   }
-  
+
   if (summary.moderateViolations > config.thresholds.moderateViolations) {
-    violations.push(`Moderate violations: ${summary.moderateViolations} (max: ${config.thresholds.moderateViolations})`);
+    violations.push(
+      `Moderate violations: ${summary.moderateViolations} (max: ${config.thresholds.moderateViolations})`,
+    );
   }
-  
+
   if (summary.minorViolations > config.thresholds.minorViolations) {
-    violations.push(`Minor violations: ${summary.minorViolations} (max: ${config.thresholds.minorViolations})`);
+    violations.push(
+      `Minor violations: ${summary.minorViolations} (max: ${config.thresholds.minorViolations})`,
+    );
   }
-  
+
   if (violations.length > 0) {
     console.log('❌ Accessibility thresholds exceeded:');
     violations.forEach(v => console.log(`  - ${v}`));
-    
+
     if (config.failOnViolations) {
       return 1; // Exit with error
     }
   } else {
     console.log('✅ All accessibility thresholds met');
   }
-  
+
   return 0; // Exit successfully
 }
 
@@ -491,25 +540,27 @@ function checkThresholds(results) {
  */
 async function sendSlackNotification(results) {
   const { summary } = results;
-  
+
   const message = {
     text: '🔍 Accessibility Test Results',
-    attachments: [{
-      color: summary.totalViolations === 0 ? 'good' : 'danger',
-      fields: [
-        { title: 'Total Violations', value: summary.totalViolations.toString(), short: true },
-        { title: 'Pages Tested', value: summary.totalPages.toString(), short: true },
-        { title: 'Critical', value: summary.criticalViolations.toString(), short: true },
-        { title: 'Serious', value: summary.seriousViolations.toString(), short: true }
-      ]
-    }]
+    attachments: [
+      {
+        color: summary.totalViolations === 0 ? 'good' : 'danger',
+        fields: [
+          { title: 'Total Violations', value: summary.totalViolations.toString(), short: true },
+          { title: 'Pages Tested', value: summary.totalPages.toString(), short: true },
+          { title: 'Critical', value: summary.criticalViolations.toString(), short: true },
+          { title: 'Serious', value: summary.seriousViolations.toString(), short: true },
+        ],
+      },
+    ],
   };
-  
+
   try {
     await fetch(config.slackWebhook, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(message)
+      body: JSON.stringify(message),
     });
     console.log('📢 Slack notification sent');
   } catch (error) {
@@ -522,7 +573,7 @@ async function sendSlackNotification(results) {
  */
 async function createGitHubSummary(results) {
   const { summary } = results;
-  
+
   const markdownSummary = `
 # 🔍 Accessibility Test Results
 
@@ -543,7 +594,7 @@ ${summary.totalViolations === 0 ? '✅ **All accessibility tests passed!**' : '�
 ## Detailed Report
 See the full HTML report in the artifacts section.
 `;
-  
+
   // Write GitHub summary
   if (process.env.GITHUB_STEP_SUMMARY) {
     fs.writeFileSync(process.env.GITHUB_STEP_SUMMARY, markdownSummary);
@@ -564,4 +615,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { main, generateHTMLReport, generateXMLReport, generateJUnitReport }; 
+module.exports = { main, generateHTMLReport, generateXMLReport, generateJUnitReport };

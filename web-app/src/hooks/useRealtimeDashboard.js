@@ -21,7 +21,7 @@ export const useRealtimeDashboard = (dateRange, enabled = true) => {
   const [isConnected, setIsConnected] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  
+
   // Use refs to track subscriptions and prevent memory leaks
   const subscriptionsRef = useRef([]);
   const dataRefreshTimeoutRef = useRef(null);
@@ -32,7 +32,7 @@ export const useRealtimeDashboard = (dateRange, enabled = true) => {
     if (dataRefreshTimeoutRef.current) {
       clearTimeout(dataRefreshTimeoutRef.current);
     }
-    
+
     dataRefreshTimeoutRef.current = setTimeout(() => {
       if (refreshDataRef.current) {
         refreshDataRef.current();
@@ -47,7 +47,7 @@ export const useRealtimeDashboard = (dateRange, enabled = true) => {
     }
 
     const data = financialData.data;
-    
+
     // Calculate trends (mock for now - these should come from comparing periods)
     const incomeTrend = data.income?.total > 0 ? 12.5 : 0; // Mock 12.5% increase
     const expensesTrend = data.expenses?.total > 0 ? -5.2 : 0; // Mock 5.2% decrease
@@ -64,12 +64,15 @@ export const useRealtimeDashboard = (dateRange, enabled = true) => {
         healthScore: 85,
       },
       revenue: {
-        labels: data.income?.dailyTrend?.map(d => new Date(d.date).toLocaleDateString('it-IT', { day: 'numeric', month: 'short' })) || [],
-        data: data.income?.dailyTrend?.map(d => d.amount) || []
+        labels:
+          data.income?.dailyTrend?.map(d =>
+            new Date(d.date).toLocaleDateString('it-IT', { day: 'numeric', month: 'short' }),
+          ) || [],
+        data: data.income?.dailyTrend?.map(d => d.amount) || [],
       },
       expenses: {
         labels: Object.keys(data.expenses?.byCategory || {}),
-        data: Object.values(data.expenses?.byCategory || {})
+        data: Object.values(data.expenses?.byCategory || {}),
       },
       clients: {
         total: clientData?.total || 0,
@@ -99,7 +102,8 @@ export const useRealtimeDashboard = (dateRange, enabled = true) => {
       setError(null);
 
       // Ensure dateRange has valid dates
-      const startDate = dateRange.start instanceof Date ? dateRange.start : new Date(dateRange.start);
+      const startDate =
+        dateRange.start instanceof Date ? dateRange.start : new Date(dateRange.start);
       const endDate = dateRange.end instanceof Date ? dateRange.end : new Date(dateRange.end);
 
       if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
@@ -107,17 +111,17 @@ export const useRealtimeDashboard = (dateRange, enabled = true) => {
       }
 
       Logger.info('useRealtimeDashboard: Chiamando financialService.getFinancialOverview');
-      
+
       const [financialData, clientMetrics] = await Promise.all([
         financialService.getFinancialOverview('month', startDate, endDate),
-        clientService.getClientMetrics ? 
-          clientService.getClientMetrics(startDate, endDate) : 
-          Promise.resolve({ success: true, data: { total: 38, active: 35, newThisMonth: 3 } })
+        clientService.getClientMetrics
+          ? clientService.getClientMetrics(startDate, endDate)
+          : Promise.resolve({ success: true, data: { total: 38, active: 35, newThisMonth: 3 } }),
       ]);
 
       Logger.info('useRealtimeDashboard: Dati ricevuti', {
         financialData,
-        clientMetrics
+        clientMetrics,
       });
 
       // Transform data for dashboard display
@@ -139,12 +143,15 @@ export const useRealtimeDashboard = (dateRange, enabled = true) => {
   }, [refreshDashboardData]);
 
   // Handle real-time data changes
-  const handleRealtimeChange = useCallback((change) => {
-    Logger.info('Real-time change detected:', change);
-    
-    // Debounce data refresh to handle multiple rapid changes
-    debouncedRefresh(500);
-  }, [debouncedRefresh]);
+  const handleRealtimeChange = useCallback(
+    change => {
+      Logger.info('Real-time change detected:', change);
+
+      // Debounce data refresh to handle multiple rapid changes
+      debouncedRefresh(500);
+    },
+    [debouncedRefresh],
+  );
 
   // Set up real-time subscriptions
   const setupRealtimeSubscriptions = useCallback(() => {
@@ -172,42 +179,45 @@ export const useRealtimeDashboard = (dateRange, enabled = true) => {
       // Subscription per income
       const incomeSubscription = supabase
         .channel('income_changes')
-        .on('postgres_changes', 
+        .on(
+          'postgres_changes',
           {
             event: '*',
             schema: 'public',
             table: 'income',
-            filter: `user_id=eq.${dbUserId}`
+            filter: `user_id=eq.${dbUserId}`,
           },
-          (payload) => {
+          payload => {
             Logger.info('Income change detected:', payload);
             handleRealtimeChange(payload);
-          }
+          },
         )
         .subscribe();
 
       // Subscription per expenses
       const expensesSubscription = supabase
         .channel('expenses_changes')
-        .on('postgres_changes',
+        .on(
+          'postgres_changes',
           {
-            event: '*', 
+            event: '*',
             schema: 'public',
             table: 'expenses',
-            filter: `user_id=eq.${dbUserId}`
+            filter: `user_id=eq.${dbUserId}`,
           },
-          (payload) => {
+          payload => {
             Logger.info('Expenses change detected:', payload);
             handleRealtimeChange(payload);
-          }
+          },
         )
         .subscribe();
 
       subscriptionsRef.current = [incomeSubscription, expensesSubscription];
       setIsConnected(true);
 
-      Logger.info(`Set up ${subscriptionsRef.current.length} real-time subscriptions for user ${user.id}`);
-
+      Logger.info(
+        `Set up ${subscriptionsRef.current.length} real-time subscriptions for user ${user.id}`,
+      );
     } catch (error) {
       Logger.error('Error setting up real-time subscriptions:', error);
       setIsConnected(false);
@@ -258,7 +268,7 @@ export const useRealtimeDashboard = (dateRange, enabled = true) => {
   // Toggle real-time updates
   const toggleRealtime = useCallback(() => {
     const newState = !enabled;
-    
+
     if (newState) {
       setupRealtimeSubscriptions();
     } else {
@@ -270,7 +280,7 @@ export const useRealtimeDashboard = (dateRange, enabled = true) => {
       subscriptionsRef.current = [];
       setIsConnected(false);
     }
-    
+
     return newState;
   }, [enabled, setupRealtimeSubscriptions]);
 
@@ -285,4 +295,4 @@ export const useRealtimeDashboard = (dateRange, enabled = true) => {
   };
 };
 
-export default useRealtimeDashboard; 
+export default useRealtimeDashboard;

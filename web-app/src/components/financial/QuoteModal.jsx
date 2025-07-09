@@ -8,15 +8,15 @@ import Logger from '@utils/Logger';
  * QuoteModal Component
  * Modal wrapper for creating and editing quotes using the QuoteForm component
  */
-const QuoteModal = ({ 
-  isOpen, 
-  onClose, 
+const QuoteModal = ({
+  isOpen,
+  onClose,
   quote = null, // For editing existing quotes
   client = null, // Pre-selected client
   template = null, // Template to use
   onQuoteCreated,
   onQuoteUpdated,
-  className = ''
+  className = '',
 }) => {
   const { t } = useTranslation('quotes');
   const [notification, setNotification] = useState(null);
@@ -36,7 +36,7 @@ const QuoteModal = ({
 
   // Handle escape key to close modal
   useEffect(() => {
-    const handleEscape = (e) => {
+    const handleEscape = e => {
       if (e.key === 'Escape' && isOpen) {
         handleClose();
       }
@@ -66,21 +66,21 @@ const QuoteModal = ({
     }
   };
 
-  const handleSave = async (quoteData) => {
+  const handleSave = async quoteData => {
     try {
       setIsLoading(true);
-      
+
       if (isEditMode) {
         await onQuoteUpdated?.(quoteData);
         setNotification({
           type: 'success',
-          message: t('notifications.quoteUpdated', 'Quote updated successfully')
+          message: t('notifications.quoteUpdated', 'Quote updated successfully'),
         });
       } else {
         await onQuoteCreated?.(quoteData);
         setNotification({
           type: 'success',
-          message: t('notifications.quoteCreated', 'Quote created successfully')
+          message: t('notifications.quoteCreated', 'Quote created successfully'),
         });
       }
 
@@ -92,43 +92,45 @@ const QuoteModal = ({
       Logger.error('Error in QuoteModal handleSave:', error);
       setNotification({
         type: 'error',
-        message: error.message || t('notifications.saveFailed', 'Failed to save quote')
+        message: error.message || t('notifications.saveFailed', 'Failed to save quote'),
       });
     } finally {
       setIsLoading(false);
     }
   };
 
-  const handleError = (errorMessage) => {
+  const handleError = errorMessage => {
     setNotification({
       type: 'error',
-      message: errorMessage
+      message: errorMessage,
     });
   };
 
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto">
+    <div className='fixed inset-0 z-50 overflow-y-auto'>
       {/* Background overlay */}
-      <div 
-        className="fixed inset-0 bg-black bg-opacity-50 transition-opacity"
+      <div
+        className='fixed inset-0 bg-black bg-opacity-50 transition-opacity'
         onClick={handleClose}
       />
-      
+
       {/* Modal container */}
-      <div className="flex min-h-full items-center justify-center p-4">
-        <div 
+      <div className='flex min-h-full items-center justify-center p-4'>
+        <div
           className={`relative w-full max-w-4xl bg-white rounded-xl shadow-2xl transform transition-all ${className}`}
-          onClick={(e) => e.stopPropagation()}
+          onClick={e => e.stopPropagation()}
         >
           {/* Loading overlay */}
           {isLoading && (
-            <div className="absolute inset-0 bg-white bg-opacity-75 flex items-center justify-center z-10 rounded-xl">
-              <div className="flex flex-col items-center">
-                <Loader className="w-8 h-8 animate-spin text-blue-600 mb-2" />
-                <span className="text-sm text-gray-600">
-                  {isEditMode ? t('loading.updating', 'Updating quote...') : t('loading.creating', 'Creating quote...')}
+            <div className='absolute inset-0 bg-white bg-opacity-75 flex items-center justify-center z-10 rounded-xl'>
+              <div className='flex flex-col items-center'>
+                <Loader className='w-8 h-8 animate-spin text-blue-600 mb-2' />
+                <span className='text-sm text-gray-600'>
+                  {isEditMode
+                    ? t('loading.updating', 'Updating quote...')
+                    : t('loading.creating', 'Creating quote...')}
                 </span>
               </div>
             </div>
@@ -138,31 +140,33 @@ const QuoteModal = ({
           <button
             onClick={handleClose}
             disabled={isLoading}
-            className="absolute top-4 right-4 z-20 p-2 rounded-full hover:bg-gray-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className='absolute top-4 right-4 z-20 p-2 rounded-full hover:bg-gray-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed'
           >
-            <X className="w-5 h-5 text-gray-500" />
+            <X className='w-5 h-5 text-gray-500' />
           </button>
 
           {/* Notification */}
           {notification && (
-            <div className={`absolute top-4 left-4 right-16 z-20 p-4 rounded-lg border ${
-              notification.type === 'success' 
-                ? 'bg-green-50 border-green-200 text-green-800' 
-                : 'bg-red-50 border-red-200 text-red-800'
-            }`}>
-              <div className="flex items-center">
+            <div
+              className={`absolute top-4 left-4 right-16 z-20 p-4 rounded-lg border ${
+                notification.type === 'success'
+                  ? 'bg-green-50 border-green-200 text-green-800'
+                  : 'bg-red-50 border-red-200 text-red-800'
+              }`}
+            >
+              <div className='flex items-center'>
                 {notification.type === 'success' ? (
-                  <CheckCircle className="w-5 h-5 mr-2" />
+                  <CheckCircle className='w-5 h-5 mr-2' />
                 ) : (
-                  <AlertCircle className="w-5 h-5 mr-2" />
+                  <AlertCircle className='w-5 h-5 mr-2' />
                 )}
-                <span className="text-sm font-medium">{notification.message}</span>
+                <span className='text-sm font-medium'>{notification.message}</span>
               </div>
             </div>
           )}
 
           {/* Modal content */}
-          <div className="max-h-[90vh] overflow-y-auto">
+          <div className='max-h-[90vh] overflow-y-auto'>
             <QuoteForm
               quote={quote}
               client={client}
@@ -171,7 +175,7 @@ const QuoteModal = ({
               onSave={handleSave}
               onCancel={handleClose}
               onError={handleError}
-              className="border-0 shadow-none"
+              className='border-0 shadow-none'
             />
           </div>
         </div>
@@ -180,4 +184,4 @@ const QuoteModal = ({
   );
 };
 
-export default QuoteModal; 
+export default QuoteModal;

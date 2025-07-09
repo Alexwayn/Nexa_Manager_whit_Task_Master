@@ -3,14 +3,13 @@ import Logger from '@utils/Logger';
 
 /**
  * Webhook Service
- * 
+ *
  * Handles interaction with webhook-synced data from Clerk
  * Provides functions to query users, organizations, and memberships
  * that have been synchronized via webhooks
  */
 
 class WebhookService {
-  
   // ==================== USER METHODS ====================
 
   /**
@@ -27,7 +26,8 @@ class WebhookService {
         .eq('active', true)
         .single();
 
-      if (error && error.code !== 'PGRST116') { // PGRST116 = not found
+      if (error && error.code !== 'PGRST116') {
+        // PGRST116 = not found
         throw error;
       }
 
@@ -162,8 +162,9 @@ class WebhookService {
    */
   static async getUserOrganizations(clerkUserId) {
     try {
-      const { data, error } = await supabase
-        .rpc('get_user_organizations', { user_clerk_id: clerkUserId });
+      const { data, error } = await supabase.rpc('get_user_organizations', {
+        user_clerk_id: clerkUserId,
+      });
 
       if (error) {
         throw error;
@@ -236,11 +237,10 @@ class WebhookService {
    */
   static async isOrganizationAdmin(clerkUserId, clerkOrgId) {
     try {
-      const { data, error } = await supabase
-        .rpc('is_organization_admin', { 
-          user_clerk_id: clerkUserId, 
-          org_clerk_id: clerkOrgId 
-        });
+      const { data, error } = await supabase.rpc('is_organization_admin', {
+        user_clerk_id: clerkUserId,
+        org_clerk_id: clerkOrgId,
+      });
 
       if (error) {
         throw error;
@@ -262,7 +262,8 @@ class WebhookService {
     try {
       const { data, error } = await supabase
         .from('organization_memberships')
-        .select(`
+        .select(
+          `
           *,
           organizations:clerk_organization_id (
             id,
@@ -271,7 +272,8 @@ class WebhookService {
             logo_url,
             members_count
           )
-        `)
+        `,
+        )
         .eq('clerk_user_id', clerkUserId)
         .order('created_at', { ascending: false });
 
@@ -351,7 +353,7 @@ class WebhookService {
           const logTime = new Date(log.created_at);
           const dayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
           return logTime > dayAgo;
-        }).length
+        }).length,
       };
 
       // Group by webhook type
@@ -389,12 +391,12 @@ class WebhookService {
       // 1. Call Clerk's API to get fresh user data
       // 2. Update the local database with the fresh data
       // 3. Return the sync result
-      
+
       Logger.info(`Manual sync requested for user: ${clerkUserId}`);
-      return { 
-        success: true, 
+      return {
+        success: true,
         message: 'Manual sync feature requires Clerk API integration',
-        clerkUserId 
+        clerkUserId,
       };
     } catch (error) {
       Logger.error('Error syncing user data:', error);
@@ -410,10 +412,10 @@ class WebhookService {
   static async syncOrganizationData(clerkOrgId) {
     try {
       Logger.info(`Manual sync requested for organization: ${clerkOrgId}`);
-      return { 
-        success: true, 
+      return {
+        success: true,
         message: 'Manual sync feature requires Clerk API integration',
-        clerkOrgId 
+        clerkOrgId,
       };
     } catch (error) {
       Logger.error('Error syncing organization data:', error);
@@ -438,9 +440,9 @@ class WebhookService {
           event: '*',
           schema: 'public',
           table: 'users',
-          filter: `clerk_user_id=eq.${clerkUserId}`
+          filter: `clerk_user_id=eq.${clerkUserId}`,
         },
-        callback
+        callback,
       )
       .subscribe();
 
@@ -462,9 +464,9 @@ class WebhookService {
           event: '*',
           schema: 'public',
           table: 'organizations',
-          filter: `clerk_organization_id=eq.${clerkOrgId}`
+          filter: `clerk_organization_id=eq.${clerkOrgId}`,
         },
-        callback
+        callback,
       )
       .subscribe();
 
@@ -486,9 +488,9 @@ class WebhookService {
           event: '*',
           schema: 'public',
           table: 'organization_memberships',
-          filter: `clerk_user_id=eq.${clerkUserId}`
+          filter: `clerk_user_id=eq.${clerkUserId}`,
         },
-        callback
+        callback,
       )
       .subscribe();
 
@@ -496,4 +498,4 @@ class WebhookService {
   }
 }
 
-export default WebhookService; 
+export default WebhookService;

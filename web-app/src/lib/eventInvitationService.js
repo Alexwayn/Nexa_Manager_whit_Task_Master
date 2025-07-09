@@ -99,7 +99,7 @@ export class EventInvitationService {
             invitee: invitee,
           });
         } catch (error) {
-          Logger.error(`Error sending invitation to ${invitee.email}:`, error);
+          Logger.error(`Error sending invitation to ${invitee.email}:`, String(error?.message || error || 'Unknown error'));
           errors.push({
             invitee: invitee,
             error: error.message,
@@ -798,7 +798,7 @@ ${invitation.special_requests ? `SPECIAL REQUESTS: ${invitation.special_requests
 
           results.push(invitation);
         } catch (error) {
-          Logger.error(`Error sending reminder to ${invitation.invitee_email}:`, error);
+          Logger.error(`Error sending reminder to ${invitation.invitee_email}:`, String(error?.message || error || 'Unknown error'));
           errors.push({
             invitation: invitation,
             error: error.message,

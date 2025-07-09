@@ -1,18 +1,8 @@
 // Typography Components
-export {
-  Heading,
-  Text,
-  Metric,
-  Label,
-  NavText,
-  ButtonText,
-} from './Typography';
+export { Heading, Text, Metric, Label, NavText, ButtonText } from './Typography';
 
 // Button Components
-export {
-  Button,
-  IconButton,
-} from './Button';
+export { Button, IconButton } from './Button';
 
 // Card Components
 export {
@@ -26,22 +16,10 @@ export {
 } from './Card';
 
 // Input Components
-export {
-  Input,
-  Textarea,
-  Select,
-  FormField,
-} from './Input';
+export { Input, Textarea, Select, FormField } from './Input';
 
 // Spacing Components
-export {
-  Spacing,
-  Container,
-  Stack,
-  Inline,
-  Grid,
-  Section,
-} from './Spacing';
+export { Spacing, Container, Stack, Inline, Grid, Section } from './Spacing';
 
 // Utility
 export { cn } from '@utils/cn';

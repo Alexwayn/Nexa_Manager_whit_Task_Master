@@ -28,7 +28,8 @@ const clerkPublishableKey = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 
 // Check if we're in development mode
 const isDevelopment = import.meta.env.DEV;
-const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+const isLocalhost =
+  window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
 
 // Stagewise toolbar configuration
 const stagewiseConfig = {
@@ -61,16 +62,18 @@ console.log('🚧 shouldBypassClerk:', shouldBypassClerk);
 const DevelopmentWrapper = ({ children }) => {
   return (
     <div>
-      <div style={{
-        backgroundColor: '#fef3c7',
-        border: '1px solid #f59e0b',
-        padding: '8px 16px',
-        margin: '0',
-        textAlign: 'center',
-        fontSize: '14px',
-        color: '#92400e',
-        fontWeight: 'bold'
-      }}>
+      <div
+        style={{
+          backgroundColor: '#fef3c7',
+          border: '1px solid #f59e0b',
+          padding: '8px 16px',
+          margin: '0',
+          textAlign: 'center',
+          fontSize: '14px',
+          color: '#92400e',
+          fontWeight: 'bold',
+        }}
+      >
         🚧 MODALITÀ SVILUPPO: Autenticazione Clerk bypassata per testing locale
       </div>
       {children}
@@ -102,32 +105,42 @@ function App() {
   // Show loading screen while i18n is initializing
   if (!i18nReady) {
     return (
-      <div style={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '100vh',
-        backgroundColor: '#f9fafb',
-        fontFamily: 'system-ui, -apple-system, sans-serif'
-      }}>
-        <div style={{
-          textAlign: 'center',
-          padding: '2rem'
-        }}>
-          <div style={{
-            width: '40px',
-            height: '40px',
-            border: '4px solid #e5e7eb',
-            borderTop: '4px solid #3b82f6',
-            borderRadius: '50%',
-            animation: 'spin 1s linear infinite',
-            margin: '0 auto 1rem'
-          }}></div>
-          <p style={{
-            color: '#6b7280',
-            fontSize: '14px',
-            margin: 0
-          }}>Caricamento traduzioni...</p>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '100vh',
+          backgroundColor: '#f9fafb',
+          fontFamily: 'system-ui, -apple-system, sans-serif',
+        }}
+      >
+        <div
+          style={{
+            textAlign: 'center',
+            padding: '2rem',
+          }}
+        >
+          <div
+            style={{
+              width: '40px',
+              height: '40px',
+              border: '4px solid #e5e7eb',
+              borderTop: '4px solid #3b82f6',
+              borderRadius: '50%',
+              animation: 'spin 1s linear infinite',
+              margin: '0 auto 1rem',
+            }}
+          ></div>
+          <p
+            style={{
+              color: '#6b7280',
+              fontSize: '14px',
+              margin: 0,
+            }}
+          >
+            Caricamento traduzioni...
+          </p>
           <style>{`
             @keyframes spin {
               0% { transform: rotate(0deg); }
@@ -142,10 +155,10 @@ function App() {
   if (shouldBypassClerk) {
     console.log('🚧 DEVELOPMENT MODE: Running without Clerk authentication');
     console.log('⚠️  This is for testing purposes only. Clerk authentication is bypassed.');
-    
+
     // Initialize stagewise toolbar
     setupStagewise();
-    
+
     return (
       <ErrorBoundary>
         <DevelopmentWrapper>
@@ -155,7 +168,7 @@ function App() {
                 <AppRouter />
                 <FloatingMicrophone />
 
-                <Toaster position="top-right" />
+                <Toaster position='top-right' />
               </Router>
             </OrganizationProvider>
           </ThemeProvider>
@@ -166,14 +179,14 @@ function App() {
 
   // Production mode with Clerk
   console.log('🔐 PRODUCTION MODE: Using Clerk authentication');
-  
+
   if (!clerkPublishableKey) {
     throw new Error('Missing Clerk Publishable Key');
   }
 
   // Initialize stagewise toolbar for production mode too (it handles dev-only internally)
   setupStagewise();
-  
+
   return (
     <ErrorBoundary>
       <ClerkProvider publishableKey={clerkPublishableKey}>
@@ -183,7 +196,7 @@ function App() {
               <AppRouter />
               <FloatingMicrophone />
 
-              <Toaster position="top-right" />
+              <Toaster position='top-right' />
             </Router>
           </OrganizationProvider>
         </ThemeProvider>
