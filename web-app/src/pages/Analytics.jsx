@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useCallback, lazy, Suspense } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import Footer from '@components/shared/Footer';
@@ -27,6 +27,14 @@ import {
 } from '@heroicons/react/24/outline';
 import nexaLogo from '@assets/logo_nexa.png';
 
+// Lazy load heavy components
+const ReportsDashboard = lazy(() => import('@components/reports/ReportsDashboard'));
+const AdvancedCharts = lazy(() => import('@components/analytics/AdvancedCharts'));
+
+// Cache for analytics data
+const analyticsCache = new Map();
+const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
+
 const Analytics = () => {
   const { t } = useTranslation();
   const { isSignedIn } = useAuth();
@@ -36,54 +44,118 @@ const Analytics = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [activeTab, setActiveTab] = useState('invoice-analytics');
+  const [cacheTimestamp, setCacheTimestamp] = useState(null);
+
+  // Memoized cache key generator
+  const getCacheKey = useCallback((userId, activeTab) => {
+    return `analytics_${userId}_${activeTab}`;
+  }, []);
+
+  // Check if cached data is still valid
+  const isCacheValid = useCallback((timestamp) => {
+    return timestamp && (Date.now() - timestamp) < CACHE_DURATION;
+  }, []);
+
+  // Optimized fetch function with caching
+  const fetchAnalytics = useCallback(async (forceRefresh = false) => {
+    if (!user?.id) {
+      setLoading(false);
+      return;
+    }
+
+    const cacheKey = getCacheKey(user.id, activeTab);
+    const cachedData = analyticsCache.get(cacheKey);
+    
+    // Return cached data if valid and not forcing refresh
+    if (!forceRefresh && cachedData && isCacheValid(cachedData.timestamp)) {
+      setAnalytics(cachedData.data);
+      setCacheTimestamp(cachedData.timestamp);
+      setLoading(false);
+      return;
+    }
+
+    try {
+      setLoading(true);
+
+      // Convert Clerk user ID to UUID for database queries
+      const dbUserId = getUserIdForUuidTables(user.id);
+      Logger.info('Loading analytics for user:', {
+        clerkId: user.id,
+        dbUserId,
+        userEmail: user.primaryEmailAddress?.emailAddress,
+        fromCache: false
+      });
+
+      // Progressive data loading - load critical data first
+      const invoiceDataPromise = invoiceAnalyticsService.getInvoiceAnalytics(dbUserId);
+      
+      // Load invoice data first (most critical)
+      const invoiceData = await invoiceDataPromise;
+      
+      // Set initial data to show something quickly
+      const initialData = {
+        ...invoiceData,
+        financial: null, // Will be loaded next
+        clients: null    // Will be loaded last
+      };
+      setAnalytics(initialData);
+      
+      // Load remaining data in parallel
+      const [financialData, clientData] = await Promise.all([
+        financialService.getFinancialOverview('month'),
+        clientService.getClients()
+      ]);
+
+      // Combine all data
+      const combinedData = {
+        ...invoiceData,
+        financial: financialData,
+        clients: clientData
+      };
+
+      // Cache the complete data
+      const timestamp = Date.now();
+      analyticsCache.set(cacheKey, {
+        data: combinedData,
+        timestamp
+      });
+      
+      // Clean old cache entries (simple LRU)
+      if (analyticsCache.size > 10) {
+        const oldestKey = analyticsCache.keys().next().value;
+        analyticsCache.delete(oldestKey);
+      }
+
+      setAnalytics(combinedData);
+      setCacheTimestamp(timestamp);
+      setError(null);
+    } catch (err) {
+      Logger.error('Failed to fetch analytics:', err);
+      setError('Failed to load analytics data');
+    } finally {
+      setLoading(false);
+    }
+  }, [user?.id, activeTab, getCacheKey, isCacheValid]);
 
   useEffect(() => {
-    const fetchAnalytics = async () => {
-      if (!user?.id) {
-        setLoading(false);
-        return;
-      }
-
-      try {
-        setLoading(true);
-
-        // Convert Clerk user ID to UUID for database queries
-        const dbUserId = getUserIdForUuidTables(user.id);
-        Logger.info('Loading analytics for user:', {
-          clerkId: user.id,
-          dbUserId,
-          userEmail: user.primaryEmailAddress?.emailAddress
-        });
-
-        // Fetch all required data in parallel
-        const [invoiceData, financialData, clientData] = await Promise.all([
-          invoiceAnalyticsService.getInvoiceAnalytics(dbUserId),
-          financialService.getFinancialOverview('month'),
-          clientService.getClients()
-        ]);
-
-        // Combine all data
-        const combinedData = {
-          ...invoiceData,
-          financial: financialData,
-          clients: clientData
-        };
-
-        setAnalytics(combinedData);
-        setError(null);
-      } catch (err) {
-        Logger.error('Failed to fetch analytics:', err);
-        setError('Failed to load analytics data');
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchAnalytics();
-  }, [user?.id]);
+  }, [fetchAnalytics]);
 
-  // Calculate derived data from analytics
-  const getStatusPercentages = () => {
+  // Register service worker for offline capabilities
+  useEffect(() => {
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js')
+        .then((registration) => {
+          Logger.info('Service Worker registered:', registration);
+        })
+        .catch((error) => {
+          Logger.error('Service Worker registration failed:', error);
+        });
+    }
+  }, []);
+
+  // Memoized calculations for performance optimization
+  const statusPercentages = useMemo(() => {
     if (!analytics?.data?.statusDistribution) {
       return { paid: 0, pending: 0, overdue: 0 };
     }
@@ -98,9 +170,9 @@ const Analytics = () => {
       pending: Math.round(((statusDistribution.pending?.count || 0) / total) * 100),
       overdue: Math.round(((statusDistribution.overdue?.count || 0) / total) * 100)
     };
-  };
+  }, [analytics?.data?.statusDistribution]);
 
-  const getRecentPayments = () => {
+  const recentPayments = useMemo(() => {
     if (!analytics?.data?.invoices) return [];
     
     return analytics.data.invoices
@@ -113,13 +185,10 @@ const Analytics = () => {
         date: new Date(invoice.paid_date).toLocaleDateString(),
         status: 'paid'
       }));
-  };
-
-  const recentPayments = getRecentPayments();
-  const statusPercentages = getStatusPercentages();
+  }, [analytics?.data?.invoices]);
   
-  // Calculate additional metrics
-  const getPaymentMetrics = () => {
+  // Memoized additional metrics
+  const paymentMetrics = useMemo(() => {
     if (!analytics?.data?.performanceMetrics) {
       return { averagePaymentTime: 15, collectionEfficiency: 85 };
     }
@@ -128,19 +197,45 @@ const Analytics = () => {
       averagePaymentTime: Math.round(analytics.data.performanceMetrics.averagePaymentTime || 15),
       collectionEfficiency: Math.round(analytics.data.performanceMetrics.collectionEfficiency || 85)
     };
-  };
+  }, [analytics?.data?.performanceMetrics]);
   
-  const getOutstandingAmount = () => {
+  const outstandingAmount = useMemo(() => {
     if (!analytics?.data?.revenueAnalytics) {
       return '€100,000';
     }
     
     const outstanding = analytics.data.revenueAnalytics.pendingRevenue + analytics.data.revenueAnalytics.overdueRevenue;
     return `€${outstanding.toLocaleString('en-US', { minimumFractionDigits: 2 })}`;
-  };
-  
-  const paymentMetrics = getPaymentMetrics();
-  const outstandingAmount = getOutstandingAmount();
+  }, [analytics?.data?.revenueAnalytics]);
+
+  // Virtual scrolling component for large datasets
+  const VirtualizedList = useMemo(() => {
+    return ({ items, renderItem, itemHeight = 60, maxHeight = 400 }) => {
+      const [scrollTop, setScrollTop] = useState(0);
+      const containerHeight = Math.min(maxHeight, items.length * itemHeight);
+      const visibleStart = Math.floor(scrollTop / itemHeight);
+      const visibleEnd = Math.min(visibleStart + Math.ceil(containerHeight / itemHeight) + 1, items.length);
+      const visibleItems = items.slice(visibleStart, visibleEnd);
+      
+      return (
+        <div 
+          style={{ height: containerHeight, overflow: 'auto' }}
+          onScroll={(e) => setScrollTop(e.target.scrollTop)}
+        >
+          <div style={{ height: items.length * itemHeight, position: 'relative' }}>
+            <div style={{ transform: `translateY(${visibleStart * itemHeight}px)` }}>
+              {visibleItems.map((item, index) => renderItem(item, visibleStart + index))}
+            </div>
+          </div>
+        </div>
+      );
+    };
+  }, []);
+
+  // Refresh function with cache invalidation
+    const refreshAnalytics = useCallback(() => {
+      fetchAnalytics(true); // Force refresh
+    }, [fetchAnalytics]);
   
   // Get top clients data
   const getTopClients = () => {
@@ -615,7 +710,8 @@ const Analytics = () => {
                   </div>
                 </div>
               </div>
-            </div>
+              </div>
+            </Suspense>
           )}
 
           {/* Advanced Financial Analytics Tab */}
@@ -1185,7 +1281,13 @@ const Analytics = () => {
 
           {/* Reports & Insights Tab */}
           {activeTab === 'reports-and-insights' && (
-            <div className='space-y-8'>
+            <Suspense fallback={
+              <div className='flex items-center justify-center py-12'>
+                <div className='animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600'></div>
+                <span className='ml-3 text-gray-600'>Loading reports...</span>
+              </div>
+            }>
+              <div className='space-y-8'>
               {/* Header Section */}
               <div className='flex justify-between items-center'>
                 <div>
