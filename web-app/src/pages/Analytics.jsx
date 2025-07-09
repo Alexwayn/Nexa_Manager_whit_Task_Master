@@ -1182,6 +1182,292 @@ const Analytics = () => {
               </div>
             </div>
           )}
+
+          {/* Reports & Insights Tab */}
+          {activeTab === 'reports-and-insights' && (
+            <div className='space-y-8'>
+              {/* Header Section */}
+              <div className='flex justify-between items-center'>
+                <div>
+                  <h2 className='text-2xl font-bold text-black'>Reports & Insights</h2>
+                  <p className='text-body text-gray-600 mt-1'>Comprehensive business analytics and reporting</p>
+                </div>
+                <div className='flex space-x-3'>
+                  <button className='px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors'>
+                    Export Report
+                  </button>
+                  <button className='px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors'>
+                    Schedule Report
+                  </button>
+                </div>
+              </div>
+
+              {/* Quick Stats Overview */}
+              <div className='grid grid-cols-1 md:grid-cols-4 gap-6'>
+                <div className='bg-white rounded-xl shadow-sm border border-gray-200 p-6'>
+                  <div className='flex items-center justify-between'>
+                    <div>
+                      <p className='text-caption text-gray-500 uppercase tracking-wide'>Total Revenue</p>
+                      <p className='text-2xl font-bold text-black mt-1'>€{financialMetrics.totalRevenue.toLocaleString()}</p>
+                    </div>
+                    <div className='p-3 bg-green-100 rounded-lg'>
+                      <svg className='w-6 h-6 text-green-600' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                        <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1' />
+                      </svg>
+                    </div>
+                  </div>
+                  <div className='flex items-center mt-4'>
+                    <span className='text-green-600 text-caption font-medium'>+12.5%</span>
+                    <span className='text-gray-500 text-caption ml-2'>vs last month</span>
+                  </div>
+                </div>
+
+                <div className='bg-white rounded-xl shadow-sm border border-gray-200 p-6'>
+                  <div className='flex items-center justify-between'>
+                    <div>
+                      <p className='text-caption text-gray-500 uppercase tracking-wide'>Active Clients</p>
+                      <p className='text-2xl font-bold text-black mt-1'>{clientMetrics.activeClients}</p>
+                    </div>
+                    <div className='p-3 bg-blue-100 rounded-lg'>
+                      <svg className='w-6 h-6 text-blue-600' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                        <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z' />
+                      </svg>
+                    </div>
+                  </div>
+                  <div className='flex items-center mt-4'>
+                    <span className='text-green-600 text-caption font-medium'>+{clientMetrics.newClients}</span>
+                    <span className='text-gray-500 text-caption ml-2'>new this month</span>
+                  </div>
+                </div>
+
+                <div className='bg-white rounded-xl shadow-sm border border-gray-200 p-6'>
+                  <div className='flex items-center justify-between'>
+                    <div>
+                      <p className='text-caption text-gray-500 uppercase tracking-wide'>Profit Margin</p>
+                      <p className='text-2xl font-bold text-black mt-1'>{financialMetrics.profitMargin}%</p>
+                    </div>
+                    <div className='p-3 bg-purple-100 rounded-lg'>
+                      <svg className='w-6 h-6 text-purple-600' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                        <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z' />
+                      </svg>
+                    </div>
+                  </div>
+                  <div className='flex items-center mt-4'>
+                    <span className={`text-caption font-medium ${
+                      financialMetrics.profitMargin >= 0 ? 'text-green-600' : 'text-red-600'
+                    }`}>
+                      {financialMetrics.profitMargin >= 0 ? '+' : ''}{financialMetrics.profitMargin}%
+                    </span>
+                    <span className='text-gray-500 text-caption ml-2'>vs target</span>
+                  </div>
+                </div>
+
+                <div className='bg-white rounded-xl shadow-sm border border-gray-200 p-6'>
+                  <div className='flex items-center justify-between'>
+                    <div>
+                      <p className='text-caption text-gray-500 uppercase tracking-wide'>Financial Health</p>
+                      <p className='text-2xl font-bold text-black mt-1'>{financialMetrics.financialHealth}/100</p>
+                    </div>
+                    <div className='p-3 bg-orange-100 rounded-lg'>
+                      <svg className='w-6 h-6 text-orange-600' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                        <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z' />
+                      </svg>
+                    </div>
+                  </div>
+                  <div className='flex items-center mt-4'>
+                    <span className={`text-caption font-medium ${
+                      financialMetrics.financialHealth >= 70 ? 'text-green-600' : 
+                      financialMetrics.financialHealth >= 50 ? 'text-yellow-600' : 'text-red-600'
+                    }`}>
+                      {financialMetrics.financialHealth >= 70 ? 'Excellent' : 
+                       financialMetrics.financialHealth >= 50 ? 'Good' : 'Needs Attention'}
+                    </span>
+                    <span className='text-gray-500 text-caption ml-2'>health score</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Executive Summary Report */}
+              <div className='bg-white rounded-xl shadow-sm border border-gray-200 p-6'>
+                <div className='flex items-center justify-between mb-6'>
+                  <h3 className='text-card-title font-semibold text-black'>Executive Summary</h3>
+                  <div className='flex items-center space-x-2'>
+                    <span className='text-caption text-gray-500'>Last updated: {new Date().toLocaleDateString()}</span>
+                    <button className='p-2 text-gray-400 hover:text-gray-600'>
+                      <svg className='w-4 h-4' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                        <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12' />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+
+                <div className='grid grid-cols-1 lg:grid-cols-2 gap-6'>
+                  <div>
+                    <h4 className='text-body font-medium text-black mb-3'>Key Performance Indicators</h4>
+                    <div className='space-y-3'>
+                      <div className='flex justify-between items-center p-3 bg-gray-50 rounded-lg'>
+                        <span className='text-body text-gray-700'>Monthly Recurring Revenue</span>
+                        <span className='font-semibold text-black'>€{Math.round(financialMetrics.totalRevenue / 12).toLocaleString()}</span>
+                      </div>
+                      <div className='flex justify-between items-center p-3 bg-gray-50 rounded-lg'>
+                        <span className='text-body text-gray-700'>Customer Acquisition Cost</span>
+                        <span className='font-semibold text-black'>€{Math.round(financialMetrics.totalExpenses / Math.max(clientMetrics.newClients, 1)).toLocaleString()}</span>
+                      </div>
+                      <div className='flex justify-between items-center p-3 bg-gray-50 rounded-lg'>
+                        <span className='text-body text-gray-700'>Average Revenue Per Client</span>
+                        <span className='font-semibold text-black'>€{Math.round(financialMetrics.totalRevenue / Math.max(clientMetrics.totalClients, 1)).toLocaleString()}</span>
+                      </div>
+                      <div className='flex justify-between items-center p-3 bg-gray-50 rounded-lg'>
+                        <span className='text-body text-gray-700'>Cash Flow Ratio</span>
+                        <span className='font-semibold text-black'>{(financialMetrics.cashFlow.inflow / Math.max(financialMetrics.cashFlow.outflow, 1)).toFixed(2)}:1</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <h4 className='text-body font-medium text-black mb-3'>Business Insights</h4>
+                    <div className='space-y-3'>
+                      <div className='p-3 border-l-4 border-green-500 bg-green-50'>
+                        <p className='text-caption font-medium text-green-800'>Revenue Growth</p>
+                        <p className='text-caption text-green-700 mt-1'>Your revenue has increased by 12.5% compared to last month, indicating strong business growth.</p>
+                      </div>
+                      <div className='p-3 border-l-4 border-blue-500 bg-blue-50'>
+                        <p className='text-caption font-medium text-blue-800'>Client Retention</p>
+                        <p className='text-caption text-blue-700 mt-1'>You have {clientMetrics.activeClients} active clients with {clientMetrics.newClients} new acquisitions this month.</p>
+                      </div>
+                      <div className='p-3 border-l-4 border-purple-500 bg-purple-50'>
+                        <p className='text-caption font-medium text-purple-800'>Profitability</p>
+                        <p className='text-caption text-purple-700 mt-1'>Your profit margin of {financialMetrics.profitMargin}% is {financialMetrics.profitMargin >= 20 ? 'excellent' : financialMetrics.profitMargin >= 10 ? 'good' : 'below industry average'}.</p>
+                      </div>
+                      <div className='p-3 border-l-4 border-orange-500 bg-orange-50'>
+                        <p className='text-caption font-medium text-orange-800'>Financial Health</p>
+                        <p className='text-caption text-orange-700 mt-1'>Your financial health score of {financialMetrics.financialHealth}/100 indicates {financialMetrics.financialHealth >= 70 ? 'strong' : financialMetrics.financialHealth >= 50 ? 'moderate' : 'weak'} financial stability.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Custom Report Builder */}
+              <div className='bg-white rounded-xl shadow-sm border border-gray-200 p-6'>
+                <div className='flex items-center justify-between mb-6'>
+                  <h3 className='text-card-title font-semibold text-black'>Custom Report Builder</h3>
+                  <button className='px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors'>
+                    Create Report
+                  </button>
+                </div>
+
+                <div className='grid grid-cols-1 md:grid-cols-3 gap-6'>
+                  <div>
+                    <label className='block text-body font-medium text-black mb-2'>Report Type</label>
+                    <select className='w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500'>
+                      <option>Financial Summary</option>
+                      <option>Client Analysis</option>
+                      <option>Revenue Breakdown</option>
+                      <option>Performance Metrics</option>
+                      <option>Custom Dashboard</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className='block text-body font-medium text-black mb-2'>Date Range</label>
+                    <select className='w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500'>
+                      <option>Last 30 days</option>
+                      <option>Last 3 months</option>
+                      <option>Last 6 months</option>
+                      <option>Last year</option>
+                      <option>Custom range</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className='block text-body font-medium text-black mb-2'>Export Format</label>
+                    <select className='w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500'>
+                      <option>PDF Report</option>
+                      <option>Excel Spreadsheet</option>
+                      <option>CSV Data</option>
+                      <option>PowerPoint Presentation</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div className='mt-6'>
+                  <label className='block text-body font-medium text-black mb-2'>Include Sections</label>
+                  <div className='grid grid-cols-2 md:grid-cols-4 gap-3'>
+                    {[
+                      'Revenue Analysis',
+                      'Client Metrics',
+                      'Financial Health',
+                      'Cash Flow',
+                      'Profit Margins',
+                      'Growth Trends',
+                      'Benchmarks',
+                      'Recommendations'
+                    ].map((section) => (
+                      <label key={section} className='flex items-center space-x-2'>
+                        <input type='checkbox' defaultChecked className='rounded border-gray-300 text-blue-600 focus:ring-blue-500' />
+                        <span className='text-caption text-gray-700'>{section}</span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Benchmark Comparisons */}
+              <div className='bg-white rounded-xl shadow-sm border border-gray-200 p-6'>
+                <h3 className='text-card-title font-semibold text-black mb-6'>Industry Benchmarks</h3>
+                
+                <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
+                  <div>
+                    <h4 className='text-body font-medium text-black mb-4'>Your Performance vs Industry Average</h4>
+                    <div className='space-y-4'>
+                      {[
+                        { metric: 'Profit Margin', your: financialMetrics.profitMargin, industry: 18, unit: '%' },
+                        { metric: 'Client Retention', your: 85, industry: 75, unit: '%' },
+                        { metric: 'Revenue Growth', your: 12.5, industry: 8.2, unit: '%' },
+                        { metric: 'Financial Health', your: financialMetrics.financialHealth, industry: 65, unit: '/100' }
+                      ].map((item, index) => (
+                        <div key={index} className='flex items-center justify-between'>
+                          <span className='text-body text-gray-700'>{item.metric}</span>
+                          <div className='flex items-center space-x-4'>
+                            <div className='text-right'>
+                              <div className='text-body font-semibold text-black'>{item.your}{item.unit}</div>
+                              <div className='text-caption text-gray-500'>You</div>
+                            </div>
+                            <div className='text-right'>
+                              <div className='text-body text-gray-600'>{item.industry}{item.unit}</div>
+                              <div className='text-caption text-gray-500'>Industry</div>
+                            </div>
+                            <div className={`px-2 py-1 rounded text-caption font-medium ${
+                              item.your > item.industry ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                            }`}>
+                              {item.your > item.industry ? '+' : ''}{(item.your - item.industry).toFixed(1)}
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div>
+                    <h4 className='text-body font-medium text-black mb-4'>Recommendations</h4>
+                    <div className='space-y-3'>
+                      <div className='p-3 bg-blue-50 rounded-lg border-l-4 border-blue-500'>
+                        <p className='text-caption font-medium text-blue-800'>Optimize Cash Flow</p>
+                        <p className='text-caption text-blue-700 mt-1'>Consider implementing automated payment reminders to improve cash flow timing.</p>
+                      </div>
+                      <div className='p-3 bg-green-50 rounded-lg border-l-4 border-green-500'>
+                        <p className='text-caption font-medium text-green-800'>Expand Client Base</p>
+                        <p className='text-caption text-green-700 mt-1'>Your client retention is above average. Focus on acquiring new clients to scale revenue.</p>
+                      </div>
+                      <div className='p-3 bg-purple-50 rounded-lg border-l-4 border-purple-500'>
+                        <p className='text-caption font-medium text-purple-800'>Cost Management</p>
+                        <p className='text-caption text-purple-700 mt-1'>Review operational expenses to improve profit margins further.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Footer */}
