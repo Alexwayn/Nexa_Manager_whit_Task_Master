@@ -68,6 +68,8 @@
   "date": "Data",
   "time": "Ora",
   "duration": "Durata",
+  "noEvents": "Nessun evento per questo giorno",
+  "upcomingEvents": "Eventi Prossimi",
   "eventTitle": "Titolo Evento",
   "eventTitlePlaceholder": "Inserisci il titolo dell'evento...",
   "locationPlaceholder": "Inserisci la posizione o il link della riunione...",
@@ -78,6 +80,17 @@
   "share": "Condividi",
   "save": "Salva",
   "more": "più",
+  "dayEvents": {
+    "title": "Eventi del Giorno",
+    "noEvents": "Nessun evento trovato",
+    "eventTypes": "Tipi di Evento",
+    "allEvents": "Tutti gli Eventi"
+  },
+  "form": {
+    "buttons": {
+      "close": "Chiudi"
+    }
+  },
   "hour": "ora",
   "hours": "ore",
   "minute": "minuto",

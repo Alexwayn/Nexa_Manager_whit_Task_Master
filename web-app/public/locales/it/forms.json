@@ -100,6 +100,9 @@
     "continue": "Continua",
     "finish": "Termina"
   },
+  "buttons": {
+    "close": "Chiudi"
+  },
   "messages": {
     "saveSuccess": "Modulo salvato con successo",
     "saveError": "Errore nel salvataggio del modulo",

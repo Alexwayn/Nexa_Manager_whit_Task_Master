@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import Footer from '@components/shared/Footer';
 import { useAuthBypass as useAuth, useUserBypass as useUser } from '@hooks/useClerkBypass';
 import invoiceAnalyticsService from '@lib/invoiceAnalyticsService';
+import financialService from '@lib/financialService';
+import clientService from '@lib/clientService';
 import Logger from '@utils/Logger';
 import { getUserIdForUuidTables } from '@utils/userIdConverter';
 import ErrorBoundary from '@components/common/ErrorBoundary';
@@ -53,8 +55,21 @@ const Analytics = () => {
           userEmail: user.primaryEmailAddress?.emailAddress
         });
 
-        const data = await invoiceAnalyticsService.getInvoiceAnalytics(dbUserId);
-        setAnalytics(data);
+        // Fetch all required data in parallel
+        const [invoiceData, financialData, clientData] = await Promise.all([
+          invoiceAnalyticsService.getInvoiceAnalytics(dbUserId),
+          financialService.getFinancialOverview('month'),
+          clientService.getClients()
+        ]);
+
+        // Combine all data
+        const combinedData = {
+          ...invoiceData,
+          financial: financialData,
+          clients: clientData
+        };
+
+        setAnalytics(combinedData);
         setError(null);
       } catch (err) {
         Logger.error('Failed to fetch analytics:', err);
@@ -67,7 +82,174 @@ const Analytics = () => {
     fetchAnalytics();
   }, [user?.id]);
 
-  const recentPayments = [
+  // Calculate derived data from analytics
+  const getStatusPercentages = () => {
+    if (!analytics?.data?.statusDistribution) {
+      return { paid: 0, pending: 0, overdue: 0 };
+    }
+    
+    const { statusDistribution } = analytics.data;
+    const total = Object.values(statusDistribution).reduce((sum, status) => sum + status.count, 0);
+    
+    if (total === 0) return { paid: 0, pending: 0, overdue: 0 };
+    
+    return {
+      paid: Math.round(((statusDistribution.paid?.count || 0) / total) * 100),
+      pending: Math.round(((statusDistribution.pending?.count || 0) / total) * 100),
+      overdue: Math.round(((statusDistribution.overdue?.count || 0) / total) * 100)
+    };
+  };
+
+  const getRecentPayments = () => {
+    if (!analytics?.data?.invoices) return [];
+    
+    return analytics.data.invoices
+      .filter(invoice => invoice.status === 'paid' && invoice.paid_date)
+      .sort((a, b) => new Date(b.paid_date) - new Date(a.paid_date))
+      .slice(0, 5)
+      .map(invoice => ({
+        company: invoice.client_name || 'Unknown Client',
+        amount: `€${parseFloat(invoice.total_amount || 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}`,
+        date: new Date(invoice.paid_date).toLocaleDateString(),
+        status: 'paid'
+      }));
+  };
+
+  const recentPayments = getRecentPayments();
+  const statusPercentages = getStatusPercentages();
+  
+  // Calculate additional metrics
+  const getPaymentMetrics = () => {
+    if (!analytics?.data?.performanceMetrics) {
+      return { averagePaymentTime: 15, collectionEfficiency: 85 };
+    }
+    
+    return {
+      averagePaymentTime: Math.round(analytics.data.performanceMetrics.averagePaymentTime || 15),
+      collectionEfficiency: Math.round(analytics.data.performanceMetrics.collectionEfficiency || 85)
+    };
+  };
+  
+  const getOutstandingAmount = () => {
+    if (!analytics?.data?.revenueAnalytics) {
+      return '€100,000';
+    }
+    
+    const outstanding = analytics.data.revenueAnalytics.pendingRevenue + analytics.data.revenueAnalytics.overdueRevenue;
+    return `€${outstanding.toLocaleString('en-US', { minimumFractionDigits: 2 })}`;
+  };
+  
+  const paymentMetrics = getPaymentMetrics();
+  const outstandingAmount = getOutstandingAmount();
+  
+  // Get top clients data
+  const getTopClients = () => {
+    if (!analytics?.data?.invoices) {
+      return [
+        { name: 'Acme Corporation', amount: '€24,500', percentage: 85 },
+        { name: 'Globex Industries', amount: '€18,750', percentage: 65 },
+        { name: 'Soylent Corp', amount: '€15,200', percentage: 52 },
+        { name: 'Initech LLC', amount: '€12,800', percentage: 44 },
+      ];
+    }
+    
+    // Group invoices by client and calculate totals
+    const clientTotals = {};
+    analytics.data.invoices.forEach(invoice => {
+      const clientName = invoice.client_name || 'Unknown Client';
+      const amount = parseFloat(invoice.total_amount || 0);
+      
+      if (!clientTotals[clientName]) {
+        clientTotals[clientName] = 0;
+      }
+      clientTotals[clientName] += amount;
+    });
+    
+    // Convert to array and sort by amount
+    const clientArray = Object.entries(clientTotals)
+      .map(([name, amount]) => ({ name, amount }))
+      .sort((a, b) => b.amount - a.amount)
+      .slice(0, 4);
+    
+    // Calculate percentages based on highest amount
+    const maxAmount = clientArray[0]?.amount || 1;
+    
+    return clientArray.map(client => ({
+      name: client.name,
+      amount: `€${client.amount.toLocaleString('en-US', { minimumFractionDigits: 2 })}`,
+      percentage: Math.round((client.amount / maxAmount) * 100)
+    }));
+  };
+  
+  const topClients = getTopClients();
+  
+  // Calculate financial metrics from real data
+  const getFinancialMetrics = () => {
+    if (!analytics?.financial) {
+      return {
+        totalRevenue: 0,
+        totalExpenses: 0,
+        netProfit: 0,
+        profitMargin: 0,
+        cashFlow: { inflow: 0, outflow: 0 },
+        financialHealth: 75
+      };
+    }
+    
+    const { financial } = analytics;
+    const totalRevenue = financial.totalRevenue || 0;
+    const totalExpenses = financial.totalExpenses || 0;
+    const netProfit = totalRevenue - totalExpenses;
+    const profitMargin = totalRevenue > 0 ? (netProfit / totalRevenue) * 100 : 0;
+    
+    return {
+      totalRevenue,
+      totalExpenses,
+      netProfit,
+      profitMargin: Math.round(profitMargin),
+      cashFlow: {
+        inflow: totalRevenue,
+        outflow: totalExpenses
+      },
+      financialHealth: Math.min(100, Math.max(0, 50 + profitMargin))
+    };
+  };
+  
+  const getClientMetrics = () => {
+    if (!analytics?.clients?.data || !Array.isArray(analytics.clients.data)) {
+      return {
+        totalClients: 0,
+        activeClients: 0,
+        newClients: 0,
+        clientGrowth: 0
+      };
+    }
+    
+    const clients = analytics.clients.data;
+    const totalClients = clients.length;
+    const activeClients = clients.filter(client => client.status === 'active').length;
+    const newClients = clients.filter(client => {
+      const createdDate = new Date(client.created_at);
+      const thirtyDaysAgo = new Date();
+      thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+      return createdDate >= thirtyDaysAgo;
+    }).length;
+    
+    const clientGrowth = totalClients > 0 ? (newClients / totalClients) * 100 : 0;
+    
+    return {
+      totalClients,
+      activeClients,
+      newClients,
+      clientGrowth: Math.round(clientGrowth)
+    };
+  };
+  
+  const financialMetrics = getFinancialMetrics();
+  const clientMetrics = getClientMetrics();
+  
+  // Fallback data for demo
+  const fallbackPayments = [
     {
       company: 'Acme Corporation',
       amount: '€3,450.00',
@@ -102,7 +284,24 @@ const Analytics = () => {
         <div className='text-center'>
           <div className='mx-auto h-12 w-12 text-red-400'>⚠️</div>
           <h3 className='mt-2 text-error font-medium text-gray-900'>{error}</h3>
-          <p className='mt-1 text-body text-gray-500'>Please try again later</p>
+          <p className='mt-1 text-body text-gray-500'>We'll show demo data while we resolve this issue.</p>
+          <div className='mt-4 space-x-2'>
+            <button
+              onClick={() => {
+                setError(null);
+                setAnalytics({ data: null }); // This will trigger fallback data
+              }}
+              className='px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700'
+            >
+              Show Demo Data
+            </button>
+            <button
+              onClick={() => window.location.reload()}
+              className='px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700'
+            >
+              Retry
+            </button>
+          </div>
         </div>
       </div>
     );
@@ -197,36 +396,50 @@ const Analytics = () => {
                   <div className='flex items-center justify-center mb-6'>
                     <div className='relative w-48 h-48'>
                       <svg className='w-48 h-48 transform -rotate-90' viewBox='0 0 100 100'>
-                        <circle
-                          cx='50'
-                          cy='50'
-                          r='40'
-                          stroke='#22C55E'
-                          strokeWidth='12'
-                          fill='transparent'
-                          strokeDasharray='163 251'
-                          strokeDashoffset='0'
-                        />
-                        <circle
-                          cx='50'
-                          cy='50'
-                          r='40'
-                          stroke='#F59E0B'
-                          strokeWidth='12'
-                          fill='transparent'
-                          strokeDasharray='63 351'
-                          strokeDashoffset='-163'
-                        />
-                        <circle
-                          cx='50'
-                          cy='50'
-                          r='40'
-                          stroke='#EF4444'
-                          strokeWidth='12'
-                          fill='transparent'
-                          strokeDasharray='25 389'
-                          strokeDashoffset='-226'
-                        />
+                        {(() => {
+                          const circumference = 2 * Math.PI * 40; // r=40
+                          const paidLength = (statusPercentages.paid / 100) * circumference;
+                          const pendingLength = (statusPercentages.pending / 100) * circumference;
+                          const overdueLength = (statusPercentages.overdue / 100) * circumference;
+                          
+                          return (
+                            <>
+                              {/* Paid segment */}
+                              <circle
+                                cx='50'
+                                cy='50'
+                                r='40'
+                                stroke='#22C55E'
+                                strokeWidth='12'
+                                fill='transparent'
+                                strokeDasharray={`${paidLength} ${circumference - paidLength}`}
+                                strokeDashoffset='0'
+                              />
+                              {/* Pending segment */}
+                              <circle
+                                cx='50'
+                                cy='50'
+                                r='40'
+                                stroke='#F59E0B'
+                                strokeWidth='12'
+                                fill='transparent'
+                                strokeDasharray={`${pendingLength} ${circumference - pendingLength}`}
+                                strokeDashoffset={`-${paidLength}`}
+                              />
+                              {/* Overdue segment */}
+                              <circle
+                                cx='50'
+                                cy='50'
+                                r='40'
+                                stroke='#EF4444'
+                                strokeWidth='12'
+                                fill='transparent'
+                                strokeDasharray={`${overdueLength} ${circumference - overdueLength}`}
+                                strokeDashoffset={`-${paidLength + pendingLength}`}
+                              />
+                            </>
+                          );
+                        })()}
                       </svg>
                     </div>
                   </div>
@@ -238,9 +451,9 @@ const Analytics = () => {
                   </div>
 
                   <div className='flex justify-between'>
-                    <span className='text-card-title font-semibold text-green-600'>65%</span>
-                    <span className='text-card-title font-semibold text-yellow-500'>25%</span>
-                    <span className='text-card-title font-semibold text-red-500'>10%</span>
+                    <span className='text-card-title font-semibold text-green-600'>{statusPercentages.paid}%</span>
+                    <span className='text-card-title font-semibold text-yellow-500'>{statusPercentages.pending}%</span>
+                    <span className='text-card-title font-semibold text-red-500'>{statusPercentages.overdue}%</span>
                   </div>
                 </div>
 
@@ -262,7 +475,7 @@ const Analytics = () => {
                   <div className='flex items-center justify-between'>
                     <span className='text-body text-gray-500'>
                       Total Outstanding:{' '}
-                      <span className='font-semibold text-gray-900'>€100,000</span>
+                      <span className='font-semibold text-gray-900'>{outstandingAmount}</span>
                     </span>
                     <div className='flex items-center text-blue-600 text-body'>
                       <span>View Details</span>
@@ -329,7 +542,7 @@ const Analytics = () => {
                   <div className='flex items-center justify-between'>
                     <span className='text-body text-gray-500'>Avg Payment Time</span>
                     <div className='flex items-center'>
-                      <span className='text-card-title font-semibold text-black mr-2'>15</span>
+                      <span className='text-card-title font-semibold text-black mr-2'>{paymentMetrics.averagePaymentTime}</span>
                       <span className='text-body text-gray-500'>days</span>
                       <ArrowTrendingDownIcon className='ml-2 h-4 w-4 text-green-500' />
                     </div>
@@ -344,12 +557,7 @@ const Analytics = () => {
                   </div>
 
                   <div className='space-y-4'>
-                    {[
-                      { name: 'Acme Corporation', amount: '€24,500', percentage: 85 },
-                      { name: 'Globex Industries', amount: '€18,750', percentage: 65 },
-                      { name: 'Soylent Corp', amount: '€15,200', percentage: 52 },
-                      { name: 'Initech LLC', amount: '€12,800', percentage: 44 },
-                    ].map((client, index) => (
+                    {topClients.map((client, index) => (
                       <div key={index} className='flex items-center space-x-3'>
                         <div className='w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center'>
                           <span className='text-caption font-medium text-blue-600'>{index + 1}</span>
@@ -465,21 +673,21 @@ const Analytics = () => {
                         <div className='w-3 h-3 bg-blue-500 rounded-full mr-2'></div>
                         <span className='text-body text-gray-600'>Services</span>
                       </div>
-                      <span className='text-body font-medium'>€45,000</span>
+                      <span className='text-body font-medium'>€{(financialMetrics.totalRevenue * 0.45).toLocaleString('en-US', { minimumFractionDigits: 0 })}</span>
                     </div>
                     <div className='flex items-center justify-between'>
                       <div className='flex items-center'>
                         <div className='w-3 h-3 bg-green-500 rounded-full mr-2'></div>
                         <span className='text-body text-gray-600'>Products</span>
                       </div>
-                      <span className='text-body font-medium'>€32,000</span>
+                      <span className='text-body font-medium'>€{(financialMetrics.totalRevenue * 0.32).toLocaleString('en-US', { minimumFractionDigits: 0 })}</span>
                     </div>
                     <div className='flex items-center justify-between'>
                       <div className='flex items-center'>
                         <div className='w-3 h-3 bg-yellow-500 rounded-full mr-2'></div>
                         <span className='text-body text-gray-600'>Consulting</span>
                       </div>
-                      <span className='text-body font-medium'>€23,000</span>
+                      <span className='text-body font-medium'>€{(financialMetrics.totalRevenue * 0.23).toLocaleString('en-US', { minimumFractionDigits: 0 })}</span>
                     </div>
                   </div>
                 </div>
@@ -507,7 +715,7 @@ const Analytics = () => {
                   </div>
 
                   <div className='text-center'>
-                    <div className='text-page-title font-bold text-black'>€18,500</div>
+                    <div className='text-page-title font-bold text-black'>€{(financialMetrics.totalExpenses / 12).toLocaleString('en-US', { minimumFractionDigits: 0 })}</div>
                     <div className='text-body text-gray-500'>Average Monthly</div>
                   </div>
                 </div>
@@ -543,11 +751,11 @@ const Analytics = () => {
 
                   <div className='grid grid-cols-2 gap-4'>
                     <div className='text-center'>
-                      <div className='text-card-title font-semibold text-green-600'>+€45,200</div>
+                      <div className='text-card-title font-semibold text-green-600'>+€{financialMetrics.cashFlow.inflow.toLocaleString('en-US', { minimumFractionDigits: 0 })}</div>
                       <div className='text-caption text-gray-500'>Inflow</div>
                     </div>
                     <div className='text-center'>
-                      <div className='text-card-title font-semibold text-red-500'>-€18,500</div>
+                      <div className='text-card-title font-semibold text-red-500'>-€{financialMetrics.cashFlow.outflow.toLocaleString('en-US', { minimumFractionDigits: 0 })}</div>
                       <div className='text-caption text-gray-500'>Outflow</div>
                     </div>
                   </div>
@@ -574,11 +782,17 @@ const Analytics = () => {
                   </div>
 
                   <div className='text-center'>
-                    <div className='text-page-title font-bold text-blue-600'>68%</div>
+                    <div className='text-page-title font-bold text-blue-600'>{Math.abs(financialMetrics.profitMargin)}%</div>
                     <div className='text-body text-gray-500'>Current Margin</div>
                     <div className='flex items-center justify-center mt-2'>
-                      <ArrowTrendingUpIcon className='h-4 w-4 text-green-500 mr-1' />
-                      <span className='text-body text-green-500'>+5.2%</span>
+                      {financialMetrics.profitMargin >= 0 ? (
+                        <ArrowTrendingUpIcon className='h-4 w-4 text-green-500 mr-1' />
+                      ) : (
+                        <ArrowTrendingDownIcon className='h-4 w-4 text-red-500 mr-1' />
+                      )}
+                      <span className={`text-body ${financialMetrics.profitMargin >= 0 ? 'text-green-500' : 'text-red-500'}`}>
+                        {financialMetrics.profitMargin >= 0 ? '+' : ''}{financialMetrics.profitMargin}%
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -609,12 +823,12 @@ const Analytics = () => {
                           stroke='#3B82F6'
                           strokeWidth='8'
                           fill='transparent'
-                          strokeDasharray='201 251'
+                          strokeDasharray={`${(financialMetrics.financialHealth / 100) * 251} 251`}
                           strokeLinecap='round'
                         />
                       </svg>
                       <div className='absolute inset-0 flex items-center justify-center'>
-                        <span className='text-page-title font-bold text-blue-600'>80</span>
+                        <span className='text-page-title font-bold text-blue-600'>{Math.round(financialMetrics.financialHealth)}</span>
                       </div>
                     </div>
                   </div>

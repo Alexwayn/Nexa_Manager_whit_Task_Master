@@ -15,6 +15,9 @@ import {
   EyeIcon,
   ViewColumnsIcon,
   ArrowsRightLeftIcon,
+  CalendarDaysIcon,
+  PlayIcon,
+  PauseIcon,
 } from '@heroicons/react/24/outline';
 import { Line, Doughnut } from 'react-chartjs-2';
 import {
@@ -72,6 +75,8 @@ const AnalyticsDashboard = () => {
     start: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
     end: new Date(),
   });
+  const [showDatePicker, setShowDatePicker] = useState(false);
+  const [refreshInterval, setRefreshInterval] = useState(30000); // 30 seconds default
   const refreshIntervalRef = useRef(null);
 
   // Safe translation function that handles loading state and interpolation
@@ -113,12 +118,46 @@ const AnalyticsDashboard = () => {
     if (autoRefresh) {
       refreshIntervalRef.current = setInterval(() => {
         loadAnalyticsData();
-      }, 30000);
+      }, refreshInterval);
     } else {
       clearInterval(refreshIntervalRef.current);
     }
     return () => clearInterval(refreshIntervalRef.current);
-  }, [autoRefresh]); // Remove loadAnalyticsData from dependency array to avoid infinite loops
+  }, [autoRefresh, refreshInterval]); // Remove loadAnalyticsData from dependency array to avoid infinite loops
+
+  // Enhanced date range handler
+  const handleDateRangeChange = (newRange) => {
+    setDateRange(newRange);
+    setShowDatePicker(false);
+  };
+
+  // Quick date range presets
+  const getQuickDateRange = (preset) => {
+    const now = new Date();
+    const ranges = {
+      'today': {
+        start: new Date(now.getFullYear(), now.getMonth(), now.getDate()),
+        end: now
+      },
+      'week': {
+        start: new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000),
+        end: now
+      },
+      'month': {
+        start: new Date(now.getFullYear(), now.getMonth(), 1),
+        end: now
+      },
+      'quarter': {
+        start: new Date(now.getFullYear(), Math.floor(now.getMonth() / 3) * 3, 1),
+        end: now
+      },
+      'year': {
+        start: new Date(now.getFullYear(), 0, 1),
+        end: now
+      }
+    };
+    return ranges[preset] || ranges.month;
+  };
 
   // Show loading state if translations are not ready
   if (!ready) {
@@ -468,29 +507,102 @@ const AnalyticsDashboard = () => {
               </div>
             </div>
             <div className='flex flex-wrap items-center gap-3'>
+              {/* Date Range Selector */}
+              <div className='relative'>
+                <button
+                  onClick={() => setShowDatePicker(!showDatePicker)}
+                  className='inline-flex items-center px-4 py-2 bg-white border border-gray-300 rounded-xl shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500'
+                >
+                  <CalendarDaysIcon className='h-4 w-4 mr-2' />
+                  {dateRange.start.toLocaleDateString()} - {dateRange.end.toLocaleDateString()}
+                </button>
+                
+                {showDatePicker && (
+                  <div className='absolute top-full mt-2 right-0 bg-white border border-gray-200 rounded-xl shadow-lg p-4 z-50 min-w-80'>
+                    <div className='space-y-4'>
+                      <div className='grid grid-cols-2 gap-2'>
+                        {['today', 'week', 'month', 'quarter', 'year'].map(preset => (
+                          <button
+                            key={preset}
+                            onClick={() => handleDateRangeChange(getQuickDateRange(preset))}
+                            className='px-3 py-2 text-sm bg-gray-100 hover:bg-gray-200 rounded-lg capitalize'
+                          >
+                            {preset}
+                          </button>
+                        ))}
+                      </div>
+                      <div className='grid grid-cols-2 gap-4'>
+                        <div>
+                          <label className='block text-sm font-medium text-gray-700 mb-1'>Start Date</label>
+                          <input
+                            type='date'
+                            value={dateRange.start.toISOString().split('T')[0]}
+                            onChange={(e) => setDateRange(prev => ({ ...prev, start: new Date(e.target.value) }))}
+                            className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500'
+                          />
+                        </div>
+                        <div>
+                          <label className='block text-sm font-medium text-gray-700 mb-1'>End Date</label>
+                          <input
+                            type='date'
+                            value={dateRange.end.toISOString().split('T')[0]}
+                            onChange={(e) => setDateRange(prev => ({ ...prev, end: new Date(e.target.value) }))}
+                            className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500'
+                          />
+                        </div>
+                      </div>
+                      <button
+                        onClick={() => setShowDatePicker(false)}
+                        className='w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700'
+                      >
+                        Apply
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+              
               <AdvancedTimePeriodSelector
                 selectedPeriod={selectedPeriod}
                 onPeriodChange={setSelectedPeriod}
               />
+              
               <button
-                onClick={loadAnalyticsData}
-                disabled={loading}
+                onClick={handleRefresh}
+                disabled={refreshing}
                 className='inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-xl shadow-sm transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed'
               >
-                <ArrowPathIcon className={`h-4 w-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
+                <ArrowPathIcon className={`h-4 w-4 mr-2 ${refreshing ? 'animate-spin' : ''}`} />
                 {safeT('refresh', {}, 'Refresh')}
               </button>
-              <label className='inline-flex items-center'>
-                <input
-                  type='checkbox'
-                  checked={autoRefresh}
-                  onChange={e => setAutoRefresh(e.target.checked)}
-                  className='rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50'
-                />
-                <span className='ml-2 text-sm text-gray-600 dark:text-gray-400'>
-                  {safeT('autoRefresh', {}, 'Auto-refresh')}
-                </span>
-              </label>
+              
+              {/* Enhanced Auto-refresh with interval control */}
+              <div className='flex items-center space-x-2'>
+                <button
+                  onClick={() => setAutoRefresh(!autoRefresh)}
+                  className={`inline-flex items-center px-3 py-2 rounded-lg font-medium transition-colors ${
+                    autoRefresh 
+                      ? 'bg-green-100 text-green-700 hover:bg-green-200' 
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  }`}
+                >
+                  {autoRefresh ? <PauseIcon className='h-4 w-4 mr-1' /> : <PlayIcon className='h-4 w-4 mr-1' />}
+                  {autoRefresh ? 'Stop' : 'Auto'}
+                </button>
+                
+                {autoRefresh && (
+                  <select
+                    value={refreshInterval}
+                    onChange={(e) => setRefreshInterval(Number(e.target.value))}
+                    className='px-2 py-1 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500'
+                  >
+                    <option value={10000}>10s</option>
+                    <option value={30000}>30s</option>
+                    <option value={60000}>1m</option>
+                    <option value={300000}>5m</option>
+                  </select>
+                )}
+              </div>
               <button
                 onClick={() => setLayoutEditMode(!layoutEditMode)}
                 className={`inline-flex items-center px-4 py-2 font-medium rounded-xl shadow-sm transition-colors duration-200 ${

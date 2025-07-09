@@ -97,7 +97,7 @@ const InventorySidebar = ({ onReorder }) => {
                   {item.name}
                 </div>
                 <div className="flex items-center gap-1 text-sm">
-                  <span style={{ color: item.textColor }} className="font-medium">
+                  <span style={{ color: item.textColor }} className="font-normal">
                     {t('sidebar.inStock', { count: item.stock, defaultValue: `${item.stock} in stock` })}
                   </span>
                   <span className="text-gray-600">
