@@ -309,31 +309,18 @@ export default function Inventory() {
           <div className='space-y-6'>
             {/* Breadcrumb */}
             <nav className='bg-blue-50 border-b border-gray-200 py-2 px-4 md:px-8'>
-              <div className='flex items-center justify-between'>
-                <div className='flex items-center space-x-2 text-base'>
-                  <HomeIcon className='h-5 w-5 text-blue-600' />
-                  <button 
-                    onClick={() => navigate('/dashboard')}
-                    className='text-blue-600 hover:text-blue-700 font-medium transition-colors'
-                  >
-                    Dashboard
-                  </button>
-                  <ChevronRightIcon className='h-5 w-5 text-gray-400' />
-                  <span className='text-nav-text font-semibold text-gray-600'>
-                    {safeT('breadcrumb.inventory', {}, 'Inventory')}
-                  </span>
-                </div>
-                {/* Search Bar */}
-                <div className='flex items-center bg-white rounded px-2 h-10 w-100 py-0 relative'>
-                  <Search className='h-2 w-2 text-gray-400 mr-1' />
-                  <input
-                    type='text'
-                    placeholder={safeT('searchPlaceholder', {}, 'Search products...')}
-                    value={searchTerm}
-                    onChange={e => setSearchTerm(e.target.value)}
-                    className='flex-1 h-5 text-gray-700 bg-transparent border-none focus:border-none focus:ring-0 focus:outline-none text-input-text leading-tight placeholder:text-input-text'
-                  />
-                </div>
+              <div className='flex items-center space-x-2 text-base'>
+                <HomeIcon className='h-5 w-5 text-blue-600' />
+                <button 
+                  onClick={() => navigate('/dashboard')}
+                  className='text-blue-600 hover:text-blue-700 font-medium transition-colors'
+                >
+                  Dashboard
+                </button>
+                <ChevronRightIcon className='h-5 w-5 text-gray-400' />
+                <span className='text-nav-text font-semibold text-gray-600'>
+                  {safeT('breadcrumb.inventory', {}, 'Inventory')}
+                </span>
               </div>
             </nav>
 
@@ -523,16 +510,15 @@ export default function Inventory() {
                   {/* Search, Filters, and Sort Controls */}
                   <div className='flex items-center justify-between'>
                     {/* Search Bar */}
-                    <div className='relative flex-1 max-w-md'>
-                      <div className='absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none'>
-                        <MagnifyingGlassIcon className='h-5 w-5 text-gray-400' />
-                      </div>
+                    <div className='relative'>
+                      <MagnifyingGlassIcon className='absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400 pointer-events-none' />
                       <input
                         type='text'
-                        className='block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 text-input-text'
+                        className='pl-12 pr-4 py-2 border border-gray-300 rounded-lg text-nav-text focus:ring-2 focus:ring-blue-500 focus:border-blue-500 w-64 bg-white'
                         placeholder={safeT('search.placeholder', {}, 'Search products...')}
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
+                        style={{ textIndent: '20px' }}
                       />
                     </div>
                     
