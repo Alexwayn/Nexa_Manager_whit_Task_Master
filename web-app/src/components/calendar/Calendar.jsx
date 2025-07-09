@@ -190,33 +190,32 @@ const Calendar = () => {
     return days;
   };
 
-  const monthNames = Object.values(
-    safeT('months', { returnObjects: true }) || [
-      'January',
-      'February',
-      'March',
-      'April',
-      'May',
-      'June',
-      'July',
-      'August',
-      'September',
-      'October',
-      'November',
-      'December',
-    ],
-  );
-  const weekDays = Object.values(
-    safeT('daysShort', { returnObjects: true }) || [
-      'Sun',
-      'Mon',
-      'Tue',
-      'Wed',
-      'Thu',
-      'Fri',
-      'Sat',
-    ],
-  );
+  const monthsObj = safeT('months', { returnObjects: true }) || {};
+  const monthNames = [
+    monthsObj.january || 'January',
+    monthsObj.february || 'February',
+    monthsObj.march || 'March',
+    monthsObj.april || 'April',
+    monthsObj.may || 'May',
+    monthsObj.june || 'June',
+    monthsObj.july || 'July',
+    monthsObj.august || 'August',
+    monthsObj.september || 'September',
+    monthsObj.october || 'October',
+    monthsObj.november || 'November',
+    monthsObj.december || 'December',
+  ];
+  
+  const daysShortObj = safeT('daysShort', { returnObjects: true }) || {};
+  const weekDays = [
+    daysShortObj.sunday || 'Sun',
+    daysShortObj.monday || 'Mon',
+    daysShortObj.tuesday || 'Tue',
+    daysShortObj.wednesday || 'Wed',
+    daysShortObj.thursday || 'Thu',
+    daysShortObj.friday || 'Fri',
+    daysShortObj.saturday || 'Sat',
+  ];
   const days = getDaysInMonth(currentDate);
 
   const navigateMonth = direction => {

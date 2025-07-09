@@ -30,6 +30,15 @@
   letter-spacing: -0.01em;
 }
 
+/* H3 Titles - For general purpose headings */
+.text-h3-title {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 1.125rem; /* 18px */
+  font-weight: 600;
+  line-height: 1.55; /* 28px */
+  letter-spacing: -0.02em;
+}
+
 /* Section Titles - Harmonious with page title */
 .text-section-title {
   font-family: 'Plus Jakarta Sans', sans-serif;
@@ -147,6 +156,7 @@
 
 /* Improved text rendering */
 .text-page-title,
+.text-h3-title,
 .text-section-title,
 .text-card-title,
 .text-kpi-value,
@@ -167,6 +177,11 @@
 @media (max-width: 768px) {
   .text-page-title {
     font-size: 1.5rem;
+  }
+
+  .text-h3-title {
+    font-size: 1rem; /* 16px */
+    line-height: 1.5; /* 24px */
   }
   
   .text-kpi-value {
@@ -193,14 +208,15 @@
 /* Reduced motion support */
 @media (prefers-reduced-motion: reduce) {
   .text-page-title,
-  .text-section-title,
-  .text-card-title,
-  .text-kpi-value,
-  .text-action-title,
-  .text-action-description,
-  .text-nav-text,
-  .text-button-text,
-  .text-subtitle {
+.text-h3-title,
+.text-section-title,
+.text-card-title,
+.text-kpi-value,
+.text-action-title,
+.text-action-description,
+.text-nav-text,
+.text-button-text,
+.text-subtitle {
     transition: none;
   }
 }

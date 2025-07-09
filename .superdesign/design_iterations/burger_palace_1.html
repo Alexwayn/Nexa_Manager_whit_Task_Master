@@ -1,0 +1,157 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Burger Palace</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="burger_palace_theme_1.css">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <style>
+        body {
+            background-color: var(--background);
+            color: var(--foreground);
+            font-family: var(--font-sans);
+        }
+        .tab-active {
+            background-color: var(--primary);
+            color: var(--primary-foreground);
+        }
+        .bottom-nav {
+            background-color: var(--card);
+        }
+        .bottom-nav-item-active {
+            color: var(--primary);
+        }
+    </style>
+</head>
+<body class="max-w-sm mx-auto">
+    <div class="p-4">
+        <header class="flex justify-between items-center py-2">
+            <i data-lucide="arrow-left" class="w-6 h-6"></i>
+            <h1 class="text-xl font-bold">Burger Palace</h1>
+            <div class="flex items-center space-x-4">
+                <i data-lucide="search" class="w-6 h-6"></i>
+                <i data-lucide="heart" class="w-6 h-6 text-orange-500"></i>
+            </div>
+        </header>
+
+        <div class="relative my-4">
+            <img src="https://images.unsplash.com/photo-1571091718767-18b5b1457add?q=80&w=1000&auto=format&fit=crop" alt="Delicious burger" class="rounded-lg h-48 w-full object-cover">
+            <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent rounded-lg text-white">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <span class="bg-orange-500 text-white px-2 py-1 text-xs font-bold rounded">Featured</span>
+                        <div class="flex items-center mt-1">
+                            <i data-lucide="star" class="w-4 h-4 text-yellow-400 fill-current"></i>
+                            <span class="ml-1 font-semibold">4.8 (2.5k+)</span>
+                        </div>
+                    </div>
+                    <div class="bg-gray-800 bg-opacity-75 px-3 py-1 rounded-full text-sm">
+                        $5.99 delivery
+                    </div>
+                </div>
+                <div class="flex items-center text-sm mt-2">
+                    <i data-lucide="clock" class="w-4 h-4"></i>
+                    <span class="ml-1">20-30 min • 1.2 mi</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex space-x-4 overflow-x-auto pb-2">
+            <button class="px-4 py-2 rounded-full text-sm text-gray-400">All</button>
+            <button class="px-4 py-2 rounded-full text-sm text-white bg-orange-500">Popular</button>
+            <button class="px-4 py-2 rounded-full text-sm text-gray-400">Burgers</button>
+            <button class="px-4 py-2 rounded-full text-sm text-gray-400">Sides</button>
+            <button class="px-4 py-2 rounded-full text-sm text-gray-400">Drinks</button>
+        </div>
+
+        <div class="bg-[var(--card)] p-4 rounded-lg my-4 flex items-center">
+            <img src="https://placehold.co/100x100/1f2937/ffffff?text=Burger" alt="Double Cheese Burger" class="w-24 h-24 rounded-lg object-cover">
+            <div class="ml-4 flex-grow">
+                <h2 class="text-lg font-bold">Double Cheese Burger</h2>
+                <p class="text-sm text-gray-400">Double beef patty, cheddar cheese, lettuce, tomato,</p>
+                <div class="flex justify-between items-center mt-2">
+                    <span class="text-lg font-bold">$12.99</span>
+                    <button class="bg-orange-500 text-white rounded-full w-8 h-8 flex items-center justify-center">
+                        <i data-lucide="plus" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <h3 class="text-lg font-bold">Customize Your Burger</h3>
+            <div class="mt-4">
+                <h4 class="font-semibold">Size</h4>
+                <div class="flex space-x-2 mt-2">
+                    <button class="flex-1 py-3 px-4 rounded-lg border border-orange-500 bg-orange-500/20 text-orange-400">Regular</button>
+                    <button class="flex-1 py-3 px-4 rounded-lg bg-[var(--secondary)] text-gray-300">Large (+$2)</button>
+                    <button class="flex-1 py-3 px-4 rounded-lg bg-[var(--secondary)] text-gray-300">Extra Large (+$4)</button>
+                </div>
+            </div>
+            <div class="mt-6">
+                <div class="flex justify-between items-center">
+                    <h4 class="font-semibold">Extra Toppings</h4>
+                    <span class="text-sm text-orange-500">Select up to 3</span>
+                </div>
+                <div class="space-y-4 mt-2">
+                    <div class="flex justify-between items-center">
+                        <div class="flex items-center">
+                            <input type="checkbox" id="extra-cheese" checked class="form-checkbox h-5 w-5 text-orange-500 bg-gray-800 border-gray-600 rounded focus:ring-orange-500">
+                            <label for="extra-cheese" class="ml-3">Extra Cheese</label>
+                        </div>
+                        <span>+$1.50</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <div class="flex items-center">
+                            <input type="checkbox" id="bacon" class="form-checkbox h-5 w-5 text-orange-500 bg-gray-800 border-gray-600 rounded focus:ring-orange-500">
+                            <label for="bacon" class="ml-3">Bacon</label>
+                        </div>
+                        <span>+$2.00</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <div class="flex items-center">
+                            <input type="checkbox" id="avocado" class="form-checkbox h-5 w-5 text-orange-500 bg-gray-800 border-gray-600 rounded focus:ring-orange-500">
+                            <label for="avocado" class="ml-3">Avocado</label>
+                        </div>
+                        <span>+$1.50</span>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-6">
+                <h4 class="font-semibold">Special Instructions</h4>
+                <textarea class="w-full bg-[var(--secondary)] rounded-lg p-3 mt-2 h-24" placeholder="Add notes for the restaurant..."></textarea>
+            </div>
+        </div>
+
+        <div class="fixed bottom-16 left-0 right-0 p-4 max-w-sm mx-auto">
+             <button class="w-full bg-orange-500 text-white py-4 rounded-lg font-bold text-lg">Add to Cart - $14.49</button>
+        </div>
+    </div>
+
+    <div class="fixed bottom-0 left-0 right-0 bg-[var(--card)] max-w-sm mx-auto flex justify-around py-2 border-t border-gray-800">
+        <a href="#" class="text-center text-gray-400">
+            <i data-lucide="home" class="w-6 h-6 mx-auto"></i>
+            <span class="text-xs">Home</span>
+        </a>
+        <a href="#" class="text-center text-orange-500">
+            <i data-lucide="list-ordered" class="w-6 h-6 mx-auto"></i>
+            <span class="text-xs">Orders</span>
+        </a>
+        <a href="#" class="text-center text-gray-400">
+            <i data-lucide="gift" class="w-6 h-6 mx-auto"></i>
+            <span class="text-xs">Rewards</span>
+        </a>
+        <a href="#" class="text-center text-gray-400">
+            <i data-lucide="user" class="w-6 h-6 mx-auto"></i>
+            <span class="text-xs">Profile</span>
+        </a>
+    </div>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>

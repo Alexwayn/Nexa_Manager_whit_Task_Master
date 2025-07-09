@@ -77,7 +77,12 @@ export const getEvents = async (options = {}) => {
       limit = 50,
       sortBy = 'date',
       sortOrder = 'asc',
+      userId,
     } = options;
+
+    // Get current user if not provided
+    const currentUser = userId || getCurrentUser();
+    const userIdToUse = currentUser?.id || 'dev-user-1'; // Fallback to dev-user-1 for development
 
     let query = supabase.from('events').select(`
         *,
@@ -88,6 +93,9 @@ export const getEvents = async (options = {}) => {
           phone
         )
       `);
+
+    // User filtering - CRITICAL for RLS
+    query = query.eq('user_id', userIdToUse);
 
     // Date range filtering
     if (startDate) {

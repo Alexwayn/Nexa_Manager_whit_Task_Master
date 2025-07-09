@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory Dashboard - Light</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="dashboard_theme_2.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700&family=Lora&family=Space+Mono&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            background-color: var(--background);
+            color: var(--foreground);
+            font-family: var(--font-sans), sans-serif;
+        }
+        .card {
+            background-color: var(--card);
+            border-radius: var(--radius-xl);
+            padding: 2rem;
+            box-shadow: var(--shadow-lg);
+            animation: cardLoadIn 500ms ease-out forwards;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        @keyframes cardLoadIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+        .quick-action-btn {
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            font-weight: 700;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: all 200ms ease-out;
+        }
+        .quick-action-btn:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-xl);
+        }
+    </style>
+</head>
+<body class="p-8">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+
+        <!-- Recent Activities -->
+        <div class="card" style="animation-delay: 100ms;">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="card-title">Recent Activities</h2>
+                <a href="#" class="text-sm font-bold text-blue-500">View All</a>
+            </div>
+            <div class="space-y-6">
+                <!-- Activity Item 1 -->
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-full flex items-center justify-center" style="background-color: rgba(var(--chart-1-rgb), 0.1); color: var(--chart-1);">
+                        <i data-lucide="trending-up"></i>
+                    </div>
+                    <div>
+                        <p class="font-bold">Stock Adjustment</p>
+                        <p class="text-sm text-gray-500">27" Monitor</p>
+                        <p class="text-sm font-bold text-green-500">+5 units</p>
+                    </div>
+                    <p class="ml-auto text-sm text-gray-400">10 minutes ago</p>
+                </div>
+                <!-- Activity Item 2 -->
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-full flex items-center justify-center" style="background-color: rgba(var(--chart-2-rgb), 0.1); color: var(--chart-2);">
+                        <i data-lucide="plus"></i>
+                    </div>
+                    <div>
+                        <p class="font-bold">New Item Added</p>
+                        <p class="text-sm text-gray-500">Wireless Earbuds</p>
+                        <p class="text-sm text-gray-500">Initial stock: 25</p>
+                    </div>
+                    <p class="ml-auto text-sm text-gray-400">2 hours ago</p>
+                </div>
+                <!-- Activity Item 3 -->
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-full flex items-center justify-center" style="background-color: rgba(var(--chart-3-rgb), 0.1); color: var(--chart-3);">
+                        <i data-lucide="clock"></i>
+                    </div>
+                    <div>
+                        <p class="font-bold">Item Reordered</p>
+                        <p class="text-sm text-gray-500">Ink Cartridges</p>
+                        <p class="text-sm text-gray-500">Order placed: 20 units</p>
+                    </div>
+                    <p class="ml-auto text-sm text-gray-400">4 hours ago</p>
+                </div>
+                <!-- Activity Item 4 -->
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-full flex items-center justify-center" style="background-color: rgba(var(--destructive-rgb), 0.1); color: var(--destructive);">
+                        <i data-lucide="trending-down"></i>
+                    </div>
+                    <div>
+                        <p class="font-bold">Stock Adjustment</p>
+                        <p class="text-sm text-gray-500">Notebook Set</p>
+                        <p class="text-sm font-bold text-red-500">-10 units</p>
+                    </div>
+                    <p class="ml-auto text-sm text-gray-400">Yesterday</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Inventory by Category -->
+        <div class="card" style="animation-delay: 200ms;">
+            <h2 class="card-title">Inventory by Category</h2>
+            <div class="flex justify-center items-center h-64 mb-4">
+                 <canvas id="categoryPieChart"></canvas>
+            </div>
+            <div class="flex justify-center flex-wrap gap-x-6 gap-y-2 text-sm">
+                <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-full" style="background-color: var(--chart-1);"></span> Furniture</div>
+                <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-full" style="background-color: var(--chart-2);"></span> Electronics</div>
+                <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-full" style="background-color: var(--chart-3);"></span> Supplies</div>
+                <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-full" style="background-color: var(--chart-4);"></span> Accessories</div>
+                <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-full" style="background-color: var(--chart-5);"></span> Other</div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="card" style="animation-delay: 300ms;">
+            <h2 class="card-title">Quick Actions</h2>
+            <div class="grid grid-cols-2 gap-6">
+                <button class="quick-action-btn" style="background-color: var(--chart-1); color: var(--primary-foreground);"><i data-lucide="plus" class="mb-2"></i> Add New Item</button>
+                <button class="quick-action-btn" style="background-color: var(--chart-2); color: var(--primary-foreground);"><i data-lucide="file-plus-2" class="mb-2"></i> Create Purchase Order</button>
+                <button class="quick-action-btn" style="background-color: var(--chart-3); color: var(--primary-foreground);"><i data-lucide="tag" class="mb-2"></i> Manage Categories</button>
+                <button class="quick-action-btn" style="background-color: var(--chart-5); color: var(--primary-foreground);"><i data-lucide="upload" class="mb-2"></i> Export Inventory</button>
+            </div>
+        </div>
+
+        <!-- Inventory Value Trend -->
+        <div class="card" style="animation-delay: 400ms;">
+            <h2 class="card-title">Inventory Value Trend</h2>
+            <div class="h-64 mb-4">
+                <canvas id="valueTrendChart"></canvas>
+            </div>
+            <div class="flex justify-between items-center">
+                <p class="text-sm text-green-500 font-bold flex items-center gap-1"><i data-lucide="arrow-up"></i> 31.2% increase over 6 months</p>
+                <div class="flex gap-1 text-sm bg-gray-100 p-1 rounded-md">
+                    <button class="px-3 py-1 rounded bg-white text-black">Monthly</button>
+                    <button class="px-3 py-1 rounded text-gray-500">Quarterly</button>
+                    <button class="px-3 py-1 rounded text-gray-500">Yearly</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        const getComputedColor = (variable) => getComputedStyle(document.documentElement).getPropertyValue(variable).trim();
+
+        const pieCtx = document.getElementById('categoryPieChart').getContext('2d');
+        new Chart(pieCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Furniture', 'Electronics', 'Supplies', 'Accessories', 'Other'],
+                datasets: [{
+                    data: [30, 25, 20, 15, 10],
+                    backgroundColor: [
+                        getComputedColor('--chart-1'),
+                        getComputedColor('--chart-2'),
+                        getComputedColor('--chart-3'),
+                        getComputedColor('--chart-4'),
+                        getComputedColor('--chart-5')
+                    ],
+                    borderWidth: 0,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '60%',
+                plugins: {
+                    legend: { display: false },
+                    tooltip: { enabled: true }
+                },
+                animation: {
+                    animateScale: true,
+                    animateRotate: true
+                }
+            }
+        });
+
+        const lineCtx = document.getElementById('valueTrendChart').getContext('2d');
+        new Chart(lineCtx, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                datasets: [{
+                    label: 'Inventory Value',
+                    data: [98000, 105000, 102000, 115000, 120000, 135000],
+                    borderColor: getComputedColor('--chart-1'),
+                    backgroundColor: 'rgba(var(--chart-1-rgb), 0.1)',
+                    fill: true,
+                    tension: 0.4,
+                    pointBackgroundColor: getComputedColor('--chart-1'),
+                    pointBorderColor: '#fff',
+                    pointHoverRadius: 7,
+                    pointHoverBorderWidth: 2,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: { color: 'rgba(0, 0, 0, 0.05)' },
+                        ticks: { color: '#6b7280' }
+                    },
+                    x: {
+                        grid: { display: false },
+                        ticks: { color: '#6b7280' }
+                    }
+                },
+                plugins: {
+                    legend: { display: false }
+                }
+            }
+        });
+
+        function setRGB(variable, property) {
+            let color = getComputedColor(variable);
+            if (color.startsWith('oklch')) {
+                let values = color.match(/[\d\.]+/g).map(Number);
+                let l = values[0];
+                let c = values[1];
+                let h = values[2];
+                let r = Math.round(255 * (l + c * Math.cos(h * Math.PI / 180)));
+                let g = Math.round(255 * (l + c * Math.sin(h * Math.PI / 180)));
+                let b = Math.round(255 * l * (1-c));
+                document.documentElement.style.setProperty(property, `${r}, ${g}, ${b}`);
+            } else if (color.startsWith('#')) {
+                let r = parseInt(color.slice(1, 3), 16);
+                let g = parseInt(color.slice(3, 5), 16);
+                let b = parseInt(color.slice(5, 7), 16);
+                document.documentElement.style.setProperty(property, `${r}, ${g}, ${b}`);
+            }
+        }
+        setRGB('--chart-1', '--chart-1-rgb');
+        setRGB('--chart-2', '--chart-2-rgb');
+        setRGB('--chart-3', '--chart-3-rgb');
+        setRGB('--destructive', '--destructive-rgb');
+
+    </script>
+</body>
+</html>

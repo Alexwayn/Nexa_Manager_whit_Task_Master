@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { ClerkProvider } from '@clerk/clerk-react';
@@ -79,7 +79,65 @@ const DevelopmentWrapper = ({ children }) => {
 };
 
 function App() {
+  const [i18nReady, setI18nReady] = useState(i18n.isInitialized);
+
+  useEffect(() => {
+    if (i18n.isInitialized) {
+      setI18nReady(true);
+    } else {
+      const checkI18nReady = () => {
+        if (i18n.isInitialized) {
+          setI18nReady(true);
+        } else {
+          setTimeout(checkI18nReady, 50);
+        }
+      };
+      checkI18nReady();
+    }
+  }, []);
+
   console.log('🚧 App rendering with shouldBypassClerk:', shouldBypassClerk);
+  console.log('🌐 i18n ready:', i18nReady);
+
+  // Show loading screen while i18n is initializing
+  if (!i18nReady) {
+    return (
+      <div style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '100vh',
+        backgroundColor: '#f9fafb',
+        fontFamily: 'system-ui, -apple-system, sans-serif'
+      }}>
+        <div style={{
+          textAlign: 'center',
+          padding: '2rem'
+        }}>
+          <div style={{
+            width: '40px',
+            height: '40px',
+            border: '4px solid #e5e7eb',
+            borderTop: '4px solid #3b82f6',
+            borderRadius: '50%',
+            animation: 'spin 1s linear infinite',
+            margin: '0 auto 1rem'
+          }}></div>
+          <p style={{
+            color: '#6b7280',
+            fontSize: '14px',
+            margin: 0
+          }}>Caricamento traduzioni...</p>
+          <style>{`
+            @keyframes spin {
+              0% { transform: rotate(0deg); }
+              100% { transform: rotate(360deg); }
+            }
+          `}</style>
+        </div>
+      </div>
+    );
+  }
 
   if (shouldBypassClerk) {
     console.log('🚧 DEVELOPMENT MODE: Running without Clerk authentication');

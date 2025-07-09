@@ -13,10 +13,11 @@ const getCurrentLocale = () => {
   const langToLocaleMap = {
     'it': 'it-IT',
     'en': 'en-US',
-    'ar': 'ar-SA'
+    'ar': 'ar-SA',
+    'it-IT': 'it-IT' // Add direct mapping for locale codes
   };
   
-  return langToLocaleMap[i18n.language] || 'en-US';
+  return langToLocaleMap[i18n.language] || langToLocaleMap[navigator.language] || 'en-US';
 };
 
 /**
@@ -359,4 +360,4 @@ export default {
   localeSort,
   getDefaultCurrency,
   useCurrentLocale
-}; 
+};

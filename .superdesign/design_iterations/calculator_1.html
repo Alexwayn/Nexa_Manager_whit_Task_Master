@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Calculator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="calculator_theme_1.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;700&family=Merriweather&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <style>
+        body {
+            background-color: var(--background);
+            color: var(--foreground);
+            font-family: var(--font-mono), monospace;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .calculator {
+            background-color: var(--card);
+            border-radius: var(--radius-xl);
+            padding: 2rem;
+            box-shadow: var(--shadow-2xl);
+            width: 100%;
+            max-width: 360px;
+        }
+        .display {
+            background-color: var(--background);
+            color: var(--foreground);
+            font-size: 4rem;
+            font-weight: 700;
+            text-align: right;
+            padding: 1.5rem;
+            border-radius: var(--radius-lg);
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            transition: all 300ms ease-out;
+            animation: fadeIn 500ms ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+        }
+        .btn {
+            background-color: var(--secondary);
+            color: var(--secondary-foreground);
+            font-size: 1.75rem;
+            font-weight: 700;
+            border: none;
+            border-radius: var(--radius-md);
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 150ms ease-out;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+        .btn:active {
+            transform: translateY(0px) scale(0.95);
+            box-shadow: none;
+        }
+        .btn-operator {
+            background-color: var(--accent);
+            color: var(--accent-foreground);
+        }
+        .btn-operator:hover {
+            background-color: oklch(from var(--accent) l-0.05 h c);
+        }
+        .btn-action {
+            color: var(--primary);
+        }
+        .btn-zero {
+            grid-column: span 2;
+        }
+        .btn-equal {
+            background-color: var(--primary);
+            color: var(--primary-foreground);
+        }
+        .btn-equal:hover {
+             background-color: oklch(from var(--primary) l-0.05 h c);
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <div id="display" class="display">0</div>
+        <div class="buttons">
+            <button class="btn btn-action" data-action="clear">C</button>
+            <button class="btn btn-action" data-action="percent">%</button>
+            <button class="btn btn-action" data-action="backspace"><i data-lucide="delete"></i></button>
+            <button class="btn btn-operator" data-operator="divide">/</button>
+
+            <button class="btn" data-number="7">7</button>
+            <button class="btn" data-number="8">8</button>
+            <button class="btn" data-number="9">9</button>
+            <button class="btn btn-operator" data-operator="multiply">x</button>
+
+            <button class="btn" data-number="4">4</button>
+            <button class="btn" data-number="5">5</button>
+            <button class="btn" data-number="6">6</button>
+            <button class="btn btn-operator" data-operator="subtract">-</button>
+
+            <button class="btn" data-number="1">1</button>
+            <button class="btn" data-number="2">2</button>
+            <button class="btn" data-number="3">3</button>
+            <button class="btn btn-operator" data-operator="add">+</button>
+
+            <button class="btn btn-zero" data-number="0">0</button>
+            <button class="btn" data-action="decimal">.</button>
+            <button class="btn btn-equal" data-action="equals">=</button>
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        const display = document.getElementById('display');
+        const buttons = document.querySelector('.buttons');
+
+        let currentInput = '0';
+        let operator = null;
+        let firstOperand = null;
+        let shouldResetDisplay = false;
+
+        buttons.addEventListener('click', (event) => {
+            const target = event.target.closest('button');
+            if (!target) return;
+
+            const { number, action, operator: op } = target.dataset;
+
+            if (number) {
+                handleNumber(number);
+            } else if (action) {
+                handleAction(action);
+            } else if (op) {
+                handleOperator(op);
+            }
+            updateDisplay();
+        });
+
+        function handleNumber(number) {
+            if (currentInput === '0' || shouldResetDisplay) {
+                currentInput = number;
+                shouldResetDisplay = false;
+            } else {
+                currentInput += number;
+            }
+        }
+
+        function handleOperator(op) {
+            if (operator !== null && !shouldResetDisplay) {
+                calculate();
+            }
+            firstOperand = parseFloat(currentInput);
+            operator = op;
+            shouldResetDisplay = true;
+        }
+
+        function handleAction(action) {
+            switch (action) {
+                case 'clear':
+                    currentInput = '0';
+                    operator = null;
+                    firstOperand = null;
+                    break;
+                case 'percent':
+                    currentInput = (parseFloat(currentInput) / 100).toString();
+                    break;
+                case 'backspace':
+                    currentInput = currentInput.slice(0, -1) || '0';
+                    break;
+                case 'decimal':
+                    if (!currentInput.includes('.')) {
+                        currentInput += '.';
+                    }
+                    break;
+                case 'equals':
+                    calculate();
+                    operator = null;
+                    shouldResetDisplay = true;
+                    break;
+            }
+        }
+
+        function calculate() {
+            if (operator === null || firstOperand === null) return;
+            const secondOperand = parseFloat(currentInput);
+            let result = 0;
+
+            switch (operator) {
+                case 'add':
+                    result = firstOperand + secondOperand;
+                    break;
+                case 'subtract':
+                    result = firstOperand - secondOperand;
+                    break;
+                case 'multiply':
+                    result = firstOperand * secondOperand;
+                    break;
+                case 'divide':
+                    if (secondOperand === 0) {
+                        result = 'Error';
+                    } else {
+                        result = firstOperand / secondOperand;
+                    }
+                    break;
+            }
+            currentInput = result.toString();
+        }
+
+        function updateDisplay() {
+            display.textContent = currentInput;
+            display.style.animation = 'none';
+            void display.offsetWidth; // Trigger reflow
+            display.style.animation = 'fadeIn 300ms ease-out';
+        }
+    </script>
+</body>
+</html>

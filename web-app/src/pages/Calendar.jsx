@@ -1,9 +1,8 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { useUserBypass as useUser } from '@hooks/useClerkBypass';
 import { useSupabaseWithClerk } from '@lib/supabaseClerkClient';
-import { createClient } from '@supabase/supabase-js';
 import Footer from '@components/shared/Footer';
 import { EVENT_TYPES } from '@lib/eventService';
 import Logger from '@utils/Logger';
@@ -39,6 +38,7 @@ import {
   addMonths,
   subMonths,
 } from 'date-fns';
+import { it } from 'date-fns/locale';
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
@@ -74,18 +74,7 @@ export default function Calendar() {
   const { user } = useUser();
   const supabase = useSupabaseWithClerk();
 
-  // Create service role client for bypassing RLS when needed (memoized to prevent multiple instances)
-  const supabaseServiceRole = useMemo(() => {
-    return createClient(
-      import.meta.env.VITE_SUPABASE_URL,
-      import.meta.env.VITE_SUPABASE_SERVICE_ROLE_KEY,
-      {
-        auth: {
-          persistSession: false, // Don't persist auth for service role
-        },
-      }
-    );
-  }, []);
+  // Note: Using authenticated Supabase client instead of service role
 
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -350,8 +339,8 @@ export default function Calendar() {
       const startOfCurrentMonth = format(startOfMonth(currentDate), 'yyyy-MM-dd');
       const endOfCurrentMonth = format(endOfMonth(currentDate), 'yyyy-MM-dd');
 
-      // Load events using service role client to bypass RLS
-      const { data: eventsData, error } = await supabaseServiceRole
+      // Load events using authenticated client
+      const { data: eventsData, error } = await supabase
         .from('events')
         .select(`
           id,
@@ -591,7 +580,7 @@ export default function Calendar() {
           <div className='mb-6'>
             <div className='flex items-center justify-between mb-4'>
               <h3 className='text-lg font-semibold text-gray-900'>
-                {format(currentDate, 'MMMM yyyy')}
+                {format(currentDate, 'MMMM yyyy', { locale: it })}
               </h3>
               <div className='flex space-x-1'>
                 <button onClick={goToPreviousMonth} className='p-1 hover:bg-gray-100 rounded'>
@@ -605,7 +594,15 @@ export default function Calendar() {
 
             {/* Mini Calendar Grid */}
             <div className='grid grid-cols-7 gap-1 text-center text-xs'>
-              {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map((day, index) => (
+              {[
+                t('calendar:daysMin.sunday'),
+                t('calendar:daysMin.monday'),
+                t('calendar:daysMin.tuesday'),
+                t('calendar:daysMin.wednesday'),
+                t('calendar:daysMin.thursday'),
+                t('calendar:daysMin.friday'),
+                t('calendar:daysMin.saturday'),
+              ].map((day, index) => (
                 <div key={index} className='p-2 text-gray-500 font-medium'>
                   {day}
                 </div>
@@ -730,7 +727,7 @@ export default function Calendar() {
             <div className='flex items-center justify-between'>
               <div className='flex items-center space-x-6'>
                 <h1 className='text-page-title text-gray-900'>
-                  {format(selectedDate, 'MMMM yyyy')}
+                  {format(selectedDate, 'MMMM yyyy', { locale: it })}
                 </h1>
                 <div className='flex items-center space-x-1'>
                   <button onClick={handlePrev} className='p-2 hover:bg-gray-100 rounded-lg'>
@@ -784,13 +781,13 @@ export default function Calendar() {
                 {/* Days Header */}
                 <div className='grid grid-cols-7 gap-px mb-4'>
                   {[
-                    'Sunday',
-                    'Monday',
-                    'Tuesday',
-                    'Wednesday',
-                    'Thursday',
-                    'Friday',
-                    'Saturday',
+                    t('calendar:days.sunday'),
+                    t('calendar:days.monday'),
+                    t('calendar:days.tuesday'),
+                    t('calendar:days.wednesday'),
+                    t('calendar:days.thursday'),
+                    t('calendar:days.friday'),
+                    t('calendar:days.saturday'),
                   ].map((day, index) => (
                     <div key={index} className='bg-gray-50 p-3 text-center'>
                       <span className='text-metric-small font-medium text-gray-700'>{day}</span>
@@ -872,7 +869,7 @@ export default function Calendar() {
                   {/* Time column */}
                   <div className='bg-gray-50'>
                     <div className='p-3 text-center border-b border-gray-200'>
-                      <span className='text-nav-text font-medium text-gray-700'>Time</span>
+                      <span className='text-nav-text font-medium text-gray-700'>{t('calendar:time')}</span>
                     </div>
                     {Array.from({ length: 24 }, (_, i) => (
                       <div key={i} className='p-2 text-metric-small text-gray-500 border-b border-gray-200 h-16'>
@@ -895,7 +892,7 @@ export default function Calendar() {
                           <div className={`text-nav-text font-medium ${
                             isSameDay(day, new Date()) ? 'text-blue-600' : 'text-gray-700'
                           }`}>
-                            {format(day, 'EEE')}
+                            {format(day, 'EEE', { locale: it })}
                           </div>
                           <div className={`text-card-title font-semibold ${
                             isSameDay(day, new Date()) ? 'text-blue-600' : 'text-gray-900'
@@ -934,7 +931,7 @@ export default function Calendar() {
                   <div className='bg-gray-50 rounded-lg'>
                     <div className='p-4 border-b border-gray-200'>
                       <h3 className='text-card-title text-gray-900'>
-                        {format(selectedDate, 'EEEE, MMMM d, yyyy')}
+                        {format(selectedDate, 'EEEE, MMMM d, yyyy', { locale: it })}
                       </h3>
                     </div>
                     {Array.from({ length: 24 }, (_, i) => (
@@ -1024,7 +1021,7 @@ export default function Calendar() {
                               </div>
                             </div>
                             <div className='text-right'>
-                              <p className='text-nav-text text-gray-900'>{format(new Date(event.date), 'MMM d, yyyy')}</p>
+                              <p className='text-nav-text text-gray-900'>{format(new Date(event.date), 'MMM d, yyyy', { locale: it })}</p>
                               <p className='text-metric-small text-gray-500'>{event.time}</p>
                             </div>
                           </div>
@@ -1236,7 +1233,7 @@ export default function Calendar() {
           {/* Upcoming Events */}
           <div className='bg-white rounded-lg shadow-sm p-4'>
             <div className='flex items-center justify-between mb-4'>
-              <h3 className='font-semibold text-gray-900'>{t('calendar:upcoming')}</h3>
+              <h3 className='text-h3-title text-gray-900'>{t('calendar:upcoming')}</h3>
               <button className='text-sm text-blue-600 hover:text-blue-700'>
                 {t('calendar:viewAll')}
               </button>
@@ -1468,7 +1465,7 @@ export default function Calendar() {
           <div className='bg-white rounded-lg p-6 w-full max-w-md mx-4 max-h-[80vh] overflow-y-auto'>
             <div className='flex items-center justify-between mb-4'>
               <h2 className='text-xl font-semibold text-gray-900'>
-                {t('calendar:dayEvents.title')} - {clickedDate && format(clickedDate, 'MMMM d, yyyy')}
+                {t('calendar:dayEvents.title')} - {clickedDate && format(clickedDate, 'MMMM d, yyyy', { locale: it })}
               </h2>
               <button
                 onClick={() => setShowDayEventsModal(false)}

@@ -1,0 +1,156 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Burger Palace - Home</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="burger_palace_theme_1.css">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <style>
+        body {
+            background-color: var(--background);
+            color: var(--foreground);
+            font-family: var(--font-sans);
+        }
+        .bottom-nav-item-active {
+            color: var(--primary);
+        }
+        .category-card {
+            background-color: var(--card);
+        }
+        .restaurant-card {
+            background-color: var(--card);
+        }
+    </style>
+</head>
+<body class="max-w-sm mx-auto">
+
+    <div class="p-4 pb-24">
+        <header class="flex justify-between items-center py-2 mb-4">
+            <i data-lucide="menu" class="w-6 h-6"></i>
+            <div class="text-center">
+                <span class="text-xs text-gray-400">Delivering to</span>
+                <h2 class="font-semibold flex items-center">
+                    Home
+                    <i data-lucide="chevron-down" class="w-4 h-4 ml-1"></i>
+                </h2>
+            </div>
+            <i data-lucide="user-circle-2" class="w-8 h-8"></i>
+        </header>
+
+        <div class="relative mb-6">
+            <input type="text" placeholder="Find your favorite food" class="w-full bg-[var(--secondary)] rounded-full py-3 pl-12 pr-4 focus:outline-none focus:ring-2 focus:ring-[var(--primary)]">
+            <i data-lucide="search" class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"></i>
+        </div>
+
+        <div class="mb-6">
+            <h3 class="text-xl font-bold mb-4">Categories</h3>
+            <div class="flex space-x-4 overflow-x-auto pb-2">
+                <div class="text-center space-y-2 flex-shrink-0">
+                    <div class="w-20 h-20 rounded-lg flex items-center justify-center category-card bg-orange-500/20">
+                        <i data-lucide="utensils" class="w-10 h-10 text-orange-400"></i>
+                    </div>
+                    <span class="text-sm font-semibold">All</span>
+                </div>
+                <div class="text-center space-y-2 flex-shrink-0">
+                    <div class="w-20 h-20 rounded-lg flex items-center justify-center category-card">
+                        <i data-lucide="pizza" class="w-10 h-10 text-gray-400"></i>
+                    </div>
+                    <span class="text-sm">Pizza</span>
+                </div>
+                <div class="text-center space-y-2 flex-shrink-0">
+                    <div class="w-20 h-20 rounded-lg flex items-center justify-center category-card">
+                        <i data-lucide="sushi" class="w-10 h-10 text-gray-400"></i>
+                    </div>
+                    <span class="text-sm">Sushi</span>
+                </div>
+                <div class="text-center space-y-2 flex-shrink-0">
+                    <div class="w-20 h-20 rounded-lg flex items-center justify-center category-card">
+                        <i data-lucide="ice-cream-2" class="w-10 h-10 text-gray-400"></i>
+                    </div>
+                    <span class="text-sm">Dessert</span>
+                </div>
+                 <div class="text-center space-y-2 flex-shrink-0">
+                    <div class="w-20 h-20 rounded-lg flex items-center justify-center category-card">
+                        <i data-lucide="cup-soda" class="w-10 h-10 text-gray-400"></i>
+                    </div>
+                    <span class="text-sm">Drinks</span>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <h3 class="text-xl font-bold mb-4">Featured Restaurants</h3>
+            <div class="space-y-4">
+                <div class="restaurant-card rounded-lg overflow-hidden">
+                    <div class="relative">
+                        <img src="https://images.unsplash.com/photo-1571091718767-18b5b1457add?q=80&w=1000&auto=format&fit=crop" class="w-full h-32 object-cover" alt="Burger Palace">
+                        <i data-lucide="heart" class="absolute top-3 right-3 w-6 h-6 text-white bg-black/30 p-1 rounded-full"></i>
+                    </div>
+                    <div class="p-4">
+                        <h4 class="text-lg font-bold">Burger Palace</h4>
+                        <div class="flex items-center text-sm text-gray-400 mt-1">
+                            <i data-lucide="star" class="w-4 h-4 text-yellow-400 fill-current"></i>
+                            <span class="ml-1 text-white font-semibold">4.8 (2.5k+)</span>
+                            <span class="mx-2">•</span>
+                            <span>American • Burgers</span>
+                        </div>
+                        <div class="flex items-center text-sm text-gray-400 mt-1">
+                            <i data-lucide="clock" class="w-4 h-4"></i>
+                            <span class="ml-1">20-30 min</span>
+                            <span class="mx-2">•</span>
+                            <span>$5.99</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="restaurant-card rounded-lg overflow-hidden">
+                    <div class="relative">
+                        <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=1000&auto=format&fit=crop" class="w-full h-32 object-cover" alt="Pizza Haven">
+                        <i data-lucide="heart" class="absolute top-3 right-3 w-6 h-6 text-white bg-black/30 p-1 rounded-full"></i>
+                    </div>
+                    <div class="p-4">
+                        <h4 class="text-lg font-bold">Pizza Haven</h4>
+                        <div class="flex items-center text-sm text-gray-400 mt-1">
+                            <i data-lucide="star" class="w-4 h-4 text-yellow-400 fill-current"></i>
+                            <span class="ml-1 text-white font-semibold">4.7 (1.8k+)</span>
+                            <span class="mx-2">•</span>
+                            <span>Italian • Pizza</span>
+                        </div>
+                        <div class="flex items-center text-sm text-gray-400 mt-1">
+                            <i data-lucide="clock" class="w-4 h-4"></i>
+                            <span class="ml-1">25-35 min</span>
+                            <span class="mx-2">•</span>
+                            <span>$3.99</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="fixed bottom-0 left-0 right-0 bg-[var(--card)] max-w-sm mx-auto flex justify-around py-2 border-t border-gray-800">
+        <a href="#" class="text-center bottom-nav-item-active">
+            <i data-lucide="home" class="w-6 h-6 mx-auto"></i>
+            <span class="text-xs font-semibold">Home</span>
+        </a>
+        <a href="#" class="text-center text-gray-400">
+            <i data-lucide="list-ordered" class="w-6 h-6 mx-auto"></i>
+            <span class="text-xs">Orders</span>
+        </a>
+        <a href="#" class="text-center text-gray-400">
+            <i data-lucide="gift" class="w-6 h-6 mx-auto"></i>
+            <span class="text-xs">Rewards</span>
+        </a>
+        <a href="#" class="text-center text-gray-400">
+            <i data-lucide="user" class="w-6 h-6 mx-auto"></i>
+            <span class="text-xs">Profile</span>
+        </a>
+    </div>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>

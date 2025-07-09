@@ -1,0 +1,53 @@
+
+:root {
+  --background: oklch(0.98 0.01 230);
+  --foreground: oklch(0.1 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.1 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.1 0 0);
+  --primary: oklch(0.6 0.2 250);
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.92 0.01 230);
+  --secondary-foreground: oklch(0.2 0 0);
+  --muted: oklch(0.92 0.01 230);
+  --muted-foreground: oklch(0.5 0 0);
+  --accent: oklch(0.65 0.25 150);
+  --accent-foreground: oklch(1 0 0);
+  --destructive: oklch(0.6 0.25 20);
+  --destructive-foreground: oklch(1 0 0);
+  --border: oklch(0.85 0.01 230);
+  --input: oklch(0.85 0.01 230);
+  --ring: oklch(0.6 0.2 250);
+  --chart-1: oklch(0.6, 0.2, 250); /* Blue */
+  --chart-2: oklch(0.65, 0.25, 150); /* Green */
+  --chart-3: oklch(0.75, 0.2, 80); /* Yellow */
+  --chart-4: oklch(0.7, 0.22, 40); /* Orange */
+  --chart-5: oklch(0.65, 0.25, 280); /* Purple */
+  --sidebar: oklch(0.98 0.01 230);
+  --sidebar-foreground: oklch(0.1 0 0);
+  --sidebar-primary: oklch(0.6 0.2 250);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent: oklch(0.65 0.25 150);
+  --sidebar-accent-foreground: oklch(1 0 0);
+  --sidebar-border: oklch(0.85 0.01 230);
+  --sidebar-ring: oklch(0.6 0.2 250);
+  --font-sans: 'Plus Jakarta Sans', sans-serif;
+  --font-serif: 'Lora', serif;
+  --font-mono: 'Space Mono', monospace;
+  --radius: 0.75rem;
+  --shadow-2xs: 0 1px 2px 0px hsl(0 0% 0% / 0.03);
+  --shadow-xs: 0 1px 4px 0px hsl(0 0% 0% / 0.04);
+  --shadow-sm: 0 2px 6px 0px hsl(0 0% 0% / 0.05);
+  --shadow: 0 4px 8px 0px hsl(0 0% 0% / 0.06);
+  --shadow-md: 0 6px 12px 0px hsl(0 0% 0% / 0.07);
+  --shadow-lg: 0 8px 16px 0px hsl(0 0% 0% / 0.08);
+  --shadow-xl: 0 12px 24px 0px hsl(0 0% 0% / 0.1);
+  --shadow-2xl: 0 20px 40px 0px hsl(0 0% 0% / 0.12);
+  --tracking-normal: 0em;
+  --spacing: 0.5rem;
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
