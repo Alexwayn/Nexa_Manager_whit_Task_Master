@@ -28,8 +28,9 @@ import {
 import nexaLogo from '@assets/logo_nexa.png';
 
 // Lazy load heavy components
-const ReportsDashboard = lazy(() => import('@components/reports/ReportsDashboard'));
+const ReportsDashboard = lazy(() => import('@components/analytics/ReportsDashboard'));
 const AdvancedCharts = lazy(() => import('@components/analytics/AdvancedCharts'));
+const AdvancedVisualizations = lazy(() => import('@components/analytics/AdvancedVisualizations'));
 
 // Cache for analytics data
 const analyticsCache = new Map();
@@ -465,6 +466,16 @@ const Analytics = () => {
                 }`}
               >
                 Reports & Insights
+              </button>
+              <button
+                onClick={() => setActiveTab('advanced-visualizations')}
+                className={`pb-2 text-nav-text font-medium ${
+                  activeTab === 'advanced-visualizations'
+                    ? 'text-blue-600 border-b-2 border-blue-600'
+                    : 'text-gray-500 hover:text-gray-700'
+                }`}
+              >
+                Advanced Visualizations
               </button>
             </div>
           </div>
@@ -1569,6 +1580,32 @@ const Analytics = () => {
                 </div>
               </div>
             </div>
+          )}
+
+          {/* Advanced Visualizations Tab */}
+          {activeTab === 'advanced-visualizations' && (
+            <Suspense fallback={
+              <div className='flex items-center justify-center py-12'>
+                <div className='animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600'></div>
+                <span className='ml-2 text-gray-600'>Loading advanced visualizations...</span>
+              </div>
+            }>
+              <div className='space-y-8'>
+                <div className='bg-white rounded-xl shadow-sm border border-gray-200 p-6'>
+                  <div className='flex items-center justify-between mb-6'>
+                    <div>
+                      <h2 className='text-2xl font-bold text-black'>Advanced Visualizations</h2>
+                      <p className='text-gray-600 mt-1'>Explore your data with interactive charts and advanced analytics</p>
+                    </div>
+                    <div className='flex items-center space-x-2'>
+                      <ChartBarIcon className='w-8 h-8 text-blue-600' />
+                    </div>
+                  </div>
+                  
+                  <AdvancedVisualizations analytics={analytics} />
+                </div>
+              </div>
+            </Suspense>
           )}
         </div>
 
