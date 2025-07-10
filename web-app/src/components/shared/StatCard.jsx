@@ -27,7 +27,7 @@ export default function StatCard({
   };
 
   return (
-    <div className='bg-white dark:bg-gray-800 overflow-hidden shadow-sm rounded-lg border border-gray-200 dark:border-gray-700'>
+    <div className='bg-white dark:bg-gray-800 overflow-hidden shadow-sm rounded-xl border border-gray-200 dark:border-gray-700'>
       <div className='p-5'>
         <div className='flex items-center'>
           {Icon && (

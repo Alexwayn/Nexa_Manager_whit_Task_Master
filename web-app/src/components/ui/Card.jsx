@@ -9,7 +9,7 @@ export const Card = ({
   children,
   ...props
 }) => {
-  const baseStyles = 'bg-white rounded-lg border border-gray-200 shadow-sm';
+  const baseStyles = 'bg-white rounded-xl border border-gray-200 shadow-sm';
 
   const variants = {
     default: 'hover:shadow-md transition-shadow duration-200',

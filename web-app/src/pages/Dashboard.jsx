@@ -329,9 +329,9 @@ const Dashboard = () => {
     const result = {
       businessHealthScore,
       revenueData: {
-        monthly: `€{currentRevenue.toLocaleString('it-IT', { minimumFractionDigits: 2 })}`,
+        monthly: `€${currentRevenue.toLocaleString('it-IT', { minimumFractionDigits: 2 })}`,
         growth: revenueGrowth,
-        lastMonth: `€{(currentRevenue - currentExpenses).toLocaleString('it-IT', { minimumFractionDigits: 2 })}`,
+        lastMonth: `€${(currentRevenue - currentExpenses).toLocaleString('it-IT', { minimumFractionDigits: 2 })}`,
       },
       clientData: {
         active: activeClientsCount.toString(),
@@ -484,7 +484,7 @@ const Dashboard = () => {
             {/* Top Row - Business Health, Revenue Streams, Quick Actions (3 cards) */}
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full'>
               {/* Business Health */}
-              <div className='bg-white rounded-xl shadow-sm p-6'>
+              <div className='bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border border-blue-200 hover:border-blue-300'>
                 <div className='flex items-center justify-between mb-6'>
                   <h3 className='text-section-title text-gray-900'>{t('businessHealth.title')}</h3>
                   <CardDropdownMenu
@@ -546,7 +546,7 @@ const Dashboard = () => {
               </div>
 
               {/* Revenue Streams */}
-              <div className='bg-white rounded-xl shadow-sm p-6'>
+              <div className='bg-gradient-to-br from-green-50 to-green-100 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border border-green-200 hover:border-green-300'>
                 <div className='flex items-center justify-between mb-6'>
                   <h3 className='text-section-title text-gray-900'>{t('revenueStreams.title')}</h3>
                   <CardDropdownMenu
@@ -610,7 +610,7 @@ const Dashboard = () => {
               </div>
 
               {/* Quick Actions */}
-              <div className='bg-white rounded-xl shadow-sm p-6'>
+              <div className='bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border border-purple-200 hover:border-purple-300'>
                 <h3 className='text-section-title text-gray-900 mb-6'>{t('quickActions.title')}</h3>
 
                 <div className='grid grid-cols-2 gap-3'>
@@ -857,7 +857,7 @@ const Dashboard = () => {
             {/* Second Row - Invoice Tracker and Revenue Overview */}
             <div className='grid grid-cols-2 gap-4 w-full'>
               {/* Invoice Tracker */}
-              <div className='bg-white rounded-xl shadow-sm p-6'>
+              <div className='bg-gradient-to-br from-orange-50 to-orange-100 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border border-orange-200 hover:border-orange-300'>
                 <div className='flex items-center justify-between mb-6'>
                   <h3 className='text-section-title text-gray-900'>{t('invoiceTracker.title')}</h3>
                   <CardDropdownMenu
@@ -922,7 +922,7 @@ const Dashboard = () => {
               </div>
 
               {/* Revenue Overview Chart */}
-              <div className='bg-white rounded-xl shadow-sm p-6'>
+              <div className='bg-gradient-to-br from-indigo-50 to-indigo-100 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border border-indigo-200 hover:border-indigo-300'>
                 <div className='flex items-center justify-between mb-6'>
                   <h3 className='text-section-title text-gray-900'>{t('revenueOverview.title')}</h3>
                   <div className='flex items-center space-x-2'>
@@ -1032,7 +1032,7 @@ const Dashboard = () => {
             {/* Bottom Section - 2x2 Grid Layout */}
             <div className='grid grid-cols-2 gap-4 w-full'>
               {/* Recent Clients */}
-              <div className='bg-white rounded-xl shadow-sm p-6'>
+              <div className='bg-gradient-to-br from-cyan-50 to-cyan-100 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border border-cyan-200 hover:border-cyan-300'>
                 <div className='flex items-center justify-between mb-6'>
                   <h3 className='text-section-title text-gray-900'>{t('recentClients.title')}</h3>
                   <button
@@ -1086,7 +1086,7 @@ const Dashboard = () => {
               </div>
 
               {/* Upcoming Work */}
-              <div className='bg-white rounded-xl shadow-sm p-6'>
+              <div className='bg-gradient-to-br from-pink-50 to-pink-100 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border border-pink-200 hover:border-pink-300'>
                 <div className='flex items-center justify-between mb-6'>
                   <h3 className='text-section-title text-gray-900'>{t('upcomingWork.title')}</h3>
                   <button
@@ -1148,7 +1148,7 @@ const Dashboard = () => {
             {/* Bottom Row - Notifications and Performance */}
             <div className='grid grid-cols-1 md:grid-cols-2 gap-6 w-full'>
               {/* Recent Notifications */}
-              <div className='bg-white rounded-xl shadow-sm p-6'>
+              <div className='bg-gradient-to-br from-yellow-50 to-yellow-100 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border border-yellow-200 hover:border-yellow-300'>
                 <div className='flex items-center justify-between mb-6'>
                   <h3 className='text-section-title text-gray-900'>
                     {t('recentNotifications.title')}
@@ -1226,7 +1226,7 @@ const Dashboard = () => {
               </div>
 
               {/* Performance - KPI Summary */}
-              <div className='bg-white rounded-xl shadow-sm p-6'>
+              <div className='bg-gradient-to-br from-emerald-50 to-emerald-100 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border border-emerald-200 hover:border-emerald-300'>
                 <div className='flex items-center justify-between mb-6'>
                   <h3 className='text-section-title text-gray-900'>{t('performance.title')}</h3>
                   <span className='text-blue-600 text-nav-text font-medium'>

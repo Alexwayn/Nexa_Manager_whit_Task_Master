@@ -40,7 +40,7 @@ export default function ClientCard({ client, onEdit, onDelete, onCreateInvoice, 
   const initials = getInitials(displayName);
 
   return (
-    <div className='bg-white dark:bg-gray-800 overflow-hidden shadow-sm rounded-lg border border-gray-200 dark:border-gray-700 hover:shadow-md transition-shadow duration-200'>
+    <div className='bg-white dark:bg-gray-800 overflow-hidden shadow-sm rounded-xl border border-gray-200 dark:border-gray-700 hover:shadow-md transition-shadow duration-200'>
       <div className='p-6'>
         <div className='flex items-center justify-between'>
           <div className='flex items-center'>

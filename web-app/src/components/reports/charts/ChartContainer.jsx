@@ -16,7 +16,7 @@ const ChartContainer = ({
   if (loading) {
     return (
       <div
-        className={`bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4 ${className}`}
+        className={`bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4 ${className}`}
       >
         {showTitle && title && (
           <h3
@@ -35,7 +35,7 @@ const ChartContainer = ({
   if (error) {
     return (
       <div
-        className={`bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4 ${className}`}
+        className={`bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4 ${className}`}
       >
         {showTitle && title && (
           <h3
@@ -57,7 +57,7 @@ const ChartContainer = ({
 
   return (
     <div
-      className={`bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4 ${className}`}
+      className={`bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4 ${className}`}
     >
       {showTitle && title && (
         <h3 className={`text-lg font-medium text-gray-900 dark:text-white mb-4 ${titleClassName}`}>

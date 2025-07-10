@@ -504,50 +504,58 @@ const Analytics = () => {
               <div className="space-y-8">
                 {/* Key Metrics Cards */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                  <div className="bg-white rounded-lg shadow p-6">
+                  <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border border-green-200 hover:border-green-300">
                     <div className="flex items-center">
                       <div className="flex-shrink-0">
-                        <CurrencyDollarIcon className="h-8 w-8 text-green-600" />
+                        <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-green-600 rounded-full flex items-center justify-center shadow-md">
+                          <CurrencyDollarIcon className="h-6 w-6 text-white" />
+                        </div>
                       </div>
                       <div className="ml-4">
-                        <p className="text-sm font-medium text-gray-500">{t('kpis.totalRevenue')}</p>
-                        <p className="text-2xl font-semibold text-gray-900">€{financialMetrics.totalRevenue.toLocaleString()}</p>
+                        <p className="text-card-title text-green-700">{t('kpis.totalRevenue')}</p>
+                        <p className="text-kpi-value text-green-900">€{financialMetrics.totalRevenue.toLocaleString()}</p>
                       </div>
                     </div>
                   </div>
                   
-                  <div className="bg-white rounded-lg shadow p-6">
+                  <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border border-blue-200 hover:border-blue-300">
                     <div className="flex items-center">
                       <div className="flex-shrink-0">
-                        <DocumentTextIcon className="h-8 w-8 text-blue-600" />
+                        <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center shadow-md">
+                          <DocumentTextIcon className="h-6 w-6 text-white" />
+                        </div>
                       </div>
                       <div className="ml-4">
-                        <p className="text-sm font-medium text-gray-500">{t('kpis.totalInvoices')}</p>
-                        <p className="text-2xl font-semibold text-gray-900">{analytics?.data?.invoices?.length || 0}</p>
+                        <p className="text-card-title text-blue-700">{t('kpis.totalInvoices')}</p>
+                        <p className="text-kpi-value text-blue-900">{analytics?.data?.invoices?.length || 0}</p>
                       </div>
                     </div>
                   </div>
                   
-                  <div className="bg-white rounded-lg shadow p-6">
+                  <div className="bg-gradient-to-br from-yellow-50 to-yellow-100 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border border-yellow-200 hover:border-yellow-300">
                     <div className="flex items-center">
                       <div className="flex-shrink-0">
-                        <ClockIcon className="h-8 w-8 text-yellow-600" />
+                        <div className="w-12 h-12 bg-gradient-to-br from-yellow-500 to-yellow-600 rounded-full flex items-center justify-center shadow-md">
+                          <ClockIcon className="h-6 w-6 text-white" />
+                        </div>
                       </div>
                       <div className="ml-4">
-                        <p className="text-sm font-medium text-gray-500">{t('kpis.outstanding')}</p>
-                        <p className="text-2xl font-semibold text-gray-900">€{outstandingAmount.toLocaleString()}</p>
+                        <p className="text-card-title text-yellow-700">{t('kpis.outstanding')}</p>
+                        <p className="text-kpi-value text-yellow-900">€{outstandingAmount.toLocaleString()}</p>
                       </div>
                     </div>
                   </div>
                   
-                  <div className="bg-white rounded-lg shadow p-6">
+                  <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border border-purple-200 hover:border-purple-300">
                     <div className="flex items-center">
                       <div className="flex-shrink-0">
-                        <UserGroupIcon className="h-8 w-8 text-purple-600" />
+                        <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-purple-600 rounded-full flex items-center justify-center shadow-md">
+                          <UserGroupIcon className="h-6 w-6 text-white" />
+                        </div>
                       </div>
                       <div className="ml-4">
-                        <p className="text-sm font-medium text-gray-500">{t('kpis.activeClients')}</p>
-                        <p className="text-2xl font-semibold text-gray-900">{clientMetrics.activeClients}</p>
+                        <p className="text-card-title text-purple-700">{t('kpis.activeClients')}</p>
+                        <p className="text-kpi-value text-purple-900">{clientMetrics.activeClients}</p>
                       </div>
                     </div>
                   </div>
@@ -556,9 +564,9 @@ const Analytics = () => {
                 {/* First Row - Invoice Status, Invoice Aging, Recent Payments */}
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                   {/* Invoice Status Card */}
-                  <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                  <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border border-gray-200 hover:border-gray-300">
                     <div className="flex items-center justify-between mb-4">
-                      <h3 className="text-lg font-semibold text-black">{t('charts.invoiceStatus.title')}</h3>
+                      <h3 className="text-section-title text-black">{t('charts.invoiceStatus.title')}</h3>
                       <div className="w-4 h-4 border border-gray-300 rounded"></div>
                     </div>
 
@@ -607,9 +615,9 @@ const Analytics = () => {
                   </div>
 
                   {/* Invoice Aging Card */}
-                  <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                  <div className="bg-gradient-to-br from-indigo-50 to-indigo-100 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border border-indigo-200 hover:border-indigo-300">
                     <div className="flex items-center justify-between mb-4">
-                      <h3 className="text-lg font-semibold text-black">{t('charts.invoiceAging.title')}</h3>
+                      <h3 className="text-section-title text-black">{t('charts.invoiceAging.title')}</h3>
                       <div className="w-4 h-4 border border-gray-300 rounded"></div>
                     </div>
 
@@ -634,9 +642,9 @@ const Analytics = () => {
                   </div>
 
                   {/* Recent Payments Card */}
-                  <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                  <div className="bg-gradient-to-br from-emerald-50 to-emerald-100 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border border-emerald-200 hover:border-emerald-300">
                     <div className="flex items-center justify-between mb-4">
-                      <h3 className="text-lg font-semibold text-black">{t('charts.recentPayments.title')}</h3>
+                      <h3 className="text-section-title text-black">{t('charts.recentPayments.title')}</h3>
                       <span className="text-blue-600 text-sm cursor-pointer">{t('clientAnalytics.viewAll')}</span>
                     </div>
 
@@ -650,10 +658,10 @@ const Analytics = () => {
                             <CheckIcon className="w-5 h-5 text-green-600" />
                           </div>
                           <div className="flex-1">
-                            <div className="font-medium text-black">{payment.company}</div>
-                            <div className="text-sm text-gray-500">{payment.date}</div>
+                            <div className="text-action-title text-black">{payment.company}</div>
+                            <div className="text-subtitle text-gray-500">{payment.date}</div>
                           </div>
-                          <div className="font-semibold text-black">{payment.amount}</div>
+                          <div className="text-card-metric text-black">{payment.amount}</div>
                         </div>
                       ))}
                     </div>
@@ -663,9 +671,9 @@ const Analytics = () => {
                 {/* Second Row - Payment Velocity, Top Clients, Invoice Conversion */}
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                   {/* Payment Velocity */}
-                  <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                  <div className="bg-gradient-to-br from-cyan-50 to-cyan-100 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border border-cyan-200 hover:border-cyan-300">
                     <div className="flex items-center justify-between mb-4">
-                      <h3 className="text-lg font-semibold text-black">{t('charts.paymentVelocity.title')}</h3>
+                      <h3 className="text-section-title text-black">{t('charts.paymentVelocity.title')}</h3>
                       <ChevronDownIcon className="h-4 w-4 text-gray-400" />
                     </div>
 
@@ -699,9 +707,9 @@ const Analytics = () => {
                   </div>
 
                   {/* Top Clients */}
-                  <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                  <div className="bg-gradient-to-br from-orange-50 to-orange-100 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border border-orange-200 hover:border-orange-300">
                     <div className="flex items-center justify-between mb-4">
-                      <h3 className="text-lg font-semibold text-black">{t('charts.topClients.title')}</h3>
+                      <h3 className="text-section-title text-black">{t('charts.topClients.title')}</h3>
                       <span className="text-blue-600 text-sm cursor-pointer">{t('clientAnalytics.viewAll')}</span>
                     </div>
 
@@ -712,7 +720,7 @@ const Analytics = () => {
                             <span className="text-xs font-medium text-blue-600">{index + 1}</span>
                           </div>
                           <div className="flex-1">
-                            <div className="font-medium text-black text-sm">{client.name}</div>
+                            <div className="text-action-title text-black text-sm">{client.name}</div>
                             <div className="w-full bg-gray-200 rounded-full h-1.5 mt-1">
                               <div
                                 className="bg-blue-600 h-1.5 rounded-full"
@@ -720,16 +728,16 @@ const Analytics = () => {
                               ></div>
                             </div>
                           </div>
-                          <div className="font-semibold text-black text-sm">{client.amount}</div>
+                          <div className="text-card-metric text-black text-sm">{client.amount}</div>
                         </div>
                       ))}
                     </div>
                   </div>
 
                   {/* Invoice Conversion */}
-                  <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                  <div className="bg-gradient-to-br from-pink-50 to-pink-100 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border border-pink-200 hover:border-pink-300">
                     <div className="flex items-center justify-between mb-4">
-                      <h3 className="text-lg font-semibold text-black">{t('charts.invoiceConversion.title')}</h3>
+                      <h3 className="text-section-title text-black">{t('charts.invoiceConversion.title')}</h3>
                       <span className="text-blue-600 text-sm cursor-pointer">{t('details')}</span>
                     </div>
 
@@ -750,15 +758,15 @@ const Analytics = () => {
 
                     <div className="grid grid-cols-3 gap-4 text-center">
                       <div>
-                        <div className="text-lg font-semibold text-green-600">142</div>
+                        <div className="text-card-metric text-green-600">142</div>
                         <div className="text-xs text-gray-500">{t('metrics.sent')}</div>
                       </div>
                       <div>
-                        <div className="text-lg font-semibold text-yellow-500">24.8</div>
+                        <div className="text-card-metric text-yellow-500">24.8</div>
                         <div className="text-xs text-gray-500">{t('metrics.viewed')}</div>
                       </div>
                       <div>
-                        <div className="text-lg font-semibold text-red-500">18.5</div>
+                        <div className="text-card-metric text-red-500">18.5</div>
                         <div className="text-xs text-gray-500">{t('metrics.paid')}</div>
                       </div>
                     </div>
@@ -779,9 +787,9 @@ const Analytics = () => {
                     {/* 6-Month Revenue Projection, Growth Trend Analysis */}
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                       {/* 6-Month Revenue Projection */}
-                      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                      <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border border-purple-200 hover:border-purple-300">
                         <div className="flex items-center justify-between mb-4">
-                          <h3 className="text-lg font-semibold text-black">{t('forecasting.revenueProjection.title')}</h3>
+                          <h3 className="text-section-title text-black">{t('forecasting.revenueProjection.title')}</h3>
                           <div className="flex items-center space-x-2">
                             <span className="text-sm text-gray-500">{t('forecasting.projected')}</span>
                             <span className="text-sm text-gray-500">{t('forecasting.actual')}</span>
@@ -819,30 +827,30 @@ const Analytics = () => {
 
                         <div className="grid grid-cols-3 gap-4 text-center">
                           <div>
-                            <div className="text-lg font-bold text-blue-600">€225,000</div>
+                            <div className="text-kpi-value text-blue-600">€225,000</div>
                             <div className="text-sm text-gray-500">{t('forecasting.sixMonthProjected')}</div>
                           </div>
                           <div>
-                            <div className="text-lg font-bold text-green-600">€238,000</div>
+                            <div className="text-kpi-value text-green-600">€238,000</div>
                             <div className="text-sm text-gray-500">{t('forecasting.expected')}</div>
                           </div>
                           <div>
-                            <div className="text-lg font-bold text-yellow-600">€195,000</div>
+                            <div className="text-kpi-value text-yellow-600">€195,000</div>
                             <div className="text-sm text-gray-500">{t('forecasting.conservative')}</div>
                           </div>
                         </div>
                       </div>
 
                       {/* Growth Trend Analysis */}
-                      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                      <div className="bg-gradient-to-br from-teal-50 to-teal-100 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border border-teal-200 hover:border-teal-300">
                         <div className="flex items-center justify-between mb-4">
-                          <h3 className="text-lg font-semibold text-black">{t('forecasting.growthTrend.title')}</h3>
+                          <h3 className="text-section-title text-black">{t('forecasting.growthTrend.title')}</h3>
                           <span className="text-blue-600 text-sm cursor-pointer">{t('clientAnalytics.viewReport')}</span>
                         </div>
 
                         <div className="space-y-6">
                           <div className="text-center">
-                            <div className="text-2xl font-bold text-green-600 mb-2">+23.5%</div>
+                            <div className="text-kpi-value text-green-600 mb-2">+23.5%</div>
                             <div className="text-sm text-gray-500">{t('forecasting.quarterlyGrowthRate')}</div>
                           </div>
 
@@ -895,9 +903,9 @@ const Analytics = () => {
                     {/* Quarterly Targets, Budget Planning, Scenario Modeling */}
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                       {/* Quarterly Targets */}
-                      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                      <div className="bg-gradient-to-br from-amber-50 to-amber-100 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border border-amber-200 hover:border-amber-300">
                         <div className="flex items-center justify-between mb-4">
-                          <h3 className="text-lg font-semibold text-black">Quarterly Targets</h3>
+                          <h3 className="text-section-title text-black">Quarterly Targets</h3>
                           <ChevronDownIcon className="h-4 w-4 text-gray-400" />
                         </div>
 
@@ -939,15 +947,15 @@ const Analytics = () => {
                       </div>
 
                       {/* Budget Planning */}
-                      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                      <div className="bg-gradient-to-br from-rose-50 to-rose-100 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border border-rose-200 hover:border-rose-300">
                         <div className="flex items-center justify-between mb-4">
-                          <h3 className="text-lg font-semibold text-black">{t('forecasting.budgetPlanning.title')}</h3>
+                          <h3 className="text-section-title text-black">{t('forecasting.budgetPlanning.title')}</h3>
                           <span className="text-blue-600 text-sm cursor-pointer">{t('clientAnalytics.editBudget')}</span>
                         </div>
 
                         <div className="space-y-4">
                           <div className="text-center mb-4">
-                            <div className="text-2xl font-bold text-black">€{financialMetrics.totalRevenue.toLocaleString()}</div>
+                            <div className="text-kpi-value text-black">€{financialMetrics.totalRevenue.toLocaleString()}</div>
                             <div className="text-sm text-gray-500">{t('forecasting.annualBudget')}</div>
                           </div>
 
@@ -971,9 +979,9 @@ const Analytics = () => {
                       </div>
 
                       {/* Scenario Modeling */}
-                      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                      <div className="bg-gradient-to-br from-violet-50 to-violet-100 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border border-violet-200 hover:border-violet-300">
                         <div className="flex items-center justify-between mb-4">
-                          <h3 className="text-lg font-semibold text-black">{t('forecasting.scenarioModeling.title')}</h3>
+                          <h3 className="text-section-title text-black">{t('forecasting.scenarioModeling.title')}</h3>
                           <ChevronDownIcon className="h-4 w-4 text-gray-400" />
                         </div>
 
@@ -1001,9 +1009,9 @@ const Analytics = () => {
                     {/* Revenue Breakdown, Monthly Expenses, Cash Flow Analysis */}
                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                      {/* Revenue Breakdown */}
-                     <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                     <div className="bg-gradient-to-br from-lime-50 to-lime-100 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border border-lime-200 hover:border-lime-300">
                        <div className="flex items-center justify-between mb-4">
-                         <h3 className="text-lg font-semibold text-black">{t('forecasting.revenueBreakdown.title')}</h3>
+                         <h3 className="text-section-title text-black">{t('forecasting.revenueBreakdown.title')}</h3>
                          <ChevronDownIcon className="h-4 w-4 text-gray-400" />
                        </div>
 
@@ -1070,9 +1078,9 @@ const Analytics = () => {
                      </div>
 
                      {/* Monthly Expenses */}
-                     <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                     <div className="bg-gradient-to-br from-sky-50 to-sky-100 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border border-sky-200 hover:border-sky-300">
                        <div className="flex items-center justify-between mb-4">
-                         <h3 className="text-lg font-semibold text-black">Monthly Expenses</h3>
+                         <h3 className="text-section-title text-black">Monthly Expenses</h3>
                          <ChevronDownIcon className="h-4 w-4 text-gray-400" />
                        </div>
 
@@ -1092,15 +1100,15 @@ const Analytics = () => {
                        </div>
 
                        <div className="text-center">
-                         <div className="text-2xl font-bold text-black">€{(financialMetrics.totalExpenses / 12).toLocaleString('en-US', { minimumFractionDigits: 0 })}</div>
+                         <div className="text-kpi-value text-black">€{(financialMetrics.totalExpenses / 12).toLocaleString('en-US', { minimumFractionDigits: 0 })}</div>
                          <div className="text-sm text-gray-500">Average Monthly</div>
                        </div>
                      </div>
 
                      {/* Cash Flow Analysis */}
-                     <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                     <div className="bg-gradient-to-br from-emerald-50 to-emerald-100 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border border-emerald-200 hover:border-emerald-300">
                        <div className="flex items-center justify-between mb-4">
-                         <h3 className="text-lg font-semibold text-black">Cash Flow Analysis</h3>
+                         <h3 className="text-section-title text-black">Cash Flow Analysis</h3>
                          <span className="text-blue-600 text-sm cursor-pointer">Report</span>
                        </div>
 
@@ -1128,11 +1136,11 @@ const Analytics = () => {
 
                        <div className="grid grid-cols-2 gap-4">
                          <div className="text-center">
-                           <div className="text-lg font-semibold text-green-600">+€{financialMetrics.cashFlow.inflow.toLocaleString('en-US', { minimumFractionDigits: 0 })}</div>
+                           <div className="text-card-metric text-green-600">+€{financialMetrics.cashFlow.inflow.toLocaleString('en-US', { minimumFractionDigits: 0 })}</div>
                            <div className="text-xs text-gray-500">{t('forecasting.inflow')}</div>
                          </div>
                          <div className="text-center">
-                           <div className="text-lg font-semibold text-red-500">-€{financialMetrics.cashFlow.outflow.toLocaleString('en-US', { minimumFractionDigits: 0 })}</div>
+                           <div className="text-card-metric text-red-500">-€{financialMetrics.cashFlow.outflow.toLocaleString('en-US', { minimumFractionDigits: 0 })}</div>
                            <div className="text-xs text-gray-500">{t('forecasting.outflow')}</div>
                          </div>
                        </div>
@@ -1142,9 +1150,9 @@ const Analytics = () => {
                    {/* Profit Margin Trends, Financial Health, Expense Breakdown */}
                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                      {/* Profit Margin Trends */}
-                     <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                     <div className="bg-gradient-to-br from-slate-50 to-slate-100 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border border-slate-200 hover:border-slate-300">
                        <div className="flex items-center justify-between mb-4">
-                         <h3 className="text-lg font-semibold text-black">{t('forecasting.profitMarginTrends.title')}</h3>
+                         <h3 className="text-section-title text-black">{t('forecasting.profitMarginTrends.title')}</h3>
                          <ChevronDownIcon className="h-4 w-4 text-gray-400" />
                        </div>
 
@@ -1159,7 +1167,7 @@ const Analytics = () => {
                        </div>
 
                        <div className="text-center">
-                         <div className="text-2xl font-bold text-blue-600">{Math.abs(financialMetrics.profitMargin)}%</div>
+                         <div className="text-kpi-value text-blue-600">{Math.abs(financialMetrics.profitMargin)}%</div>
                          <div className="text-sm text-gray-500">{t('forecasting.currentMargin')}</div>
                          <div className="flex items-center justify-center mt-2">
                            {financialMetrics.profitMargin >= 0 ? (
@@ -1175,9 +1183,9 @@ const Analytics = () => {
                      </div>
 
                      {/* Financial Health */}
-                     <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                     <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border border-green-200 hover:border-green-300">
                        <div className="flex items-center justify-between mb-4">
-                         <h3 className="text-lg font-semibold text-black">{t('forecasting.financialHealth.title')}</h3>
+                         <h3 className="text-section-title text-black">{t('forecasting.financialHealth.title')}</h3>
                          <span className="text-blue-600 text-sm cursor-pointer">{t('details')}</span>
                        </div>
 
@@ -1205,7 +1213,7 @@ const Analytics = () => {
                              />
                            </svg>
                            <div className="absolute inset-0 flex items-center justify-center">
-                             <span className="text-2xl font-bold text-blue-600">{Math.round(financialMetrics.financialHealth)}</span>
+                             <span className="text-kpi-value text-blue-600">{Math.round(financialMetrics.financialHealth)}</span>
                            </div>
                          </div>
                        </div>
@@ -1227,9 +1235,9 @@ const Analytics = () => {
                      </div>
 
                      {/* Expense Breakdown */}
-                     <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                     <div className="bg-gradient-to-br from-red-50 to-red-100 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border border-red-200 hover:border-red-300">
                        <div className="flex items-center justify-between mb-4">
-                         <h3 className="text-lg font-semibold text-black">Expense Breakdown</h3>
+                         <h3 className="text-section-title text-black">Expense Breakdown</h3>
                          <ChevronDownIcon className="h-4 w-4 text-gray-400" />
                        </div>
 
@@ -1311,10 +1319,10 @@ const Analytics = () => {
             }>
             <div className='space-y-8'>
               {/* Header Section */}
-              <div className='bg-white rounded-xl shadow-sm border border-gray-200 p-6'>
+              <div className='bg-gradient-to-br from-indigo-50 to-indigo-100 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border border-indigo-200 hover:border-indigo-300'>
                 <div className='flex items-center justify-between mb-6'>
                   <div>
-                    <h2 className='text-2xl font-bold text-black'>{t('tabs.reportsInsights.name')}</h2>
+                    <h2 className='text-page-title text-black'>{t('tabs.reportsInsights.name')}</h2>
                     <p className='text-gray-600 mt-1'>{t('tabs.reportsInsights.description')}</p>
                   </div>
                   <div className='flex items-center space-x-3'>
@@ -1332,11 +1340,11 @@ const Analytics = () => {
 
               {/* Quick Stats Overview */}
               <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6'>
-                <div className='bg-white rounded-xl shadow-sm border border-gray-200 p-6'>
+                <div className='bg-gradient-to-br from-green-50 to-green-100 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border border-green-200 hover:border-green-300'>
                   <div className='flex items-center justify-between'>
                     <div>
                       <p className='text-caption text-gray-600'>{t('kpis.totalRevenue')}</p>
-                      <p className='text-2xl font-bold text-black'>€{financialMetrics.totalRevenue.toLocaleString()}</p>
+                      <p className='text-kpi-value text-black'>€{financialMetrics.totalRevenue.toLocaleString()}</p>
                       <p className='text-caption text-green-600 mt-1'>{t('metrics.monthlyGrowth', { value: '12.5' })}</p>
                     </div>
                     <div className='p-3 bg-green-100 rounded-lg'>
@@ -1345,11 +1353,11 @@ const Analytics = () => {
                   </div>
                 </div>
 
-                <div className='bg-white rounded-xl shadow-sm border border-gray-200 p-6'>
+                <div className='bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border border-blue-200 hover:border-blue-300'>
                   <div className='flex items-center justify-between'>
                     <div>
                       <p className='text-caption text-gray-600'>{t('kpis.activeClients')}</p>
-                      <p className='text-2xl font-bold text-black'>{clientMetrics.activeClients}</p>
+                      <p className='text-kpi-value text-black'>{clientMetrics.activeClients}</p>
                       <p className='text-caption text-blue-600 mt-1'>{t('metrics.newClientsThisMonth', { count: clientMetrics.newClients })}</p>
                     </div>
                     <div className='p-3 bg-blue-100 rounded-lg'>
@@ -1358,24 +1366,24 @@ const Analytics = () => {
                   </div>
                 </div>
 
-                <div className='bg-white rounded-xl shadow-sm border border-gray-200 p-6'>
-                  <div className='flex items-center justify-between'>
-                    <div>
-                      <p className='text-caption text-gray-600'>{t('kpis.profitMargin')}</p>
-                      <p className='text-2xl font-bold text-black'>{financialMetrics.profitMargin}%</p>
-                      <p className='text-caption text-purple-600 mt-1'>{t('metrics.aboveIndustryAvg')}</p>
-                    </div>
-                    <div className='p-3 bg-purple-100 rounded-lg'>
-                      <ChartBarIcon className='w-6 h-6 text-purple-600' />
-                    </div>
-                  </div>
-                </div>
+                <div className='bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border border-purple-200 hover:border-purple-300'>
+                   <div className='flex items-center justify-between'>
+                     <div>
+                       <p className='text-caption text-gray-600'>{t('kpis.profitMargin')}</p>
+                       <p className='text-kpi-value text-black'>{financialMetrics.profitMargin}%</p>
+                       <p className='text-caption text-purple-600 mt-1'>{t('metrics.aboveIndustryAvg')}</p>
+                     </div>
+                     <div className='p-3 bg-purple-100 rounded-lg'>
+                       <ChartBarIcon className='w-6 h-6 text-purple-600' />
+                     </div>
+                   </div>
+                 </div>
 
-                <div className='bg-white rounded-xl shadow-sm border border-gray-200 p-6'>
+                 <div className='bg-gradient-to-br from-orange-50 to-orange-100 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border border-orange-200 hover:border-orange-300'>
                   <div className='flex items-center justify-between'>
                     <div>
                       <p className='text-caption text-gray-600'>{t('kpis.financialHealth')}</p>
-                      <p className='text-2xl font-bold text-black'>{financialMetrics.financialHealth.toFixed(2)}/100</p>
+                      <p className='text-kpi-value text-black'>{financialMetrics.financialHealth.toFixed(2)}/100</p>
                       <p className='text-caption text-orange-600 mt-1'>{t('metrics.strongPosition')}</p>
                     </div>
                     <div className='p-3 bg-orange-100 rounded-lg'>
@@ -1386,7 +1394,7 @@ const Analytics = () => {
               </div>
 
               {/* Executive Summary Report */}
-              <div className='bg-white rounded-xl shadow-sm border border-gray-200 p-6'>
+              <div className='bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border border-gray-200 hover:border-gray-300'>
                 <h3 className='text-card-title font-semibold text-black mb-6'>{t('reports.executiveSummary.title')}</h3>
                 
                 <div className='grid grid-cols-1 lg:grid-cols-2 gap-8'>
@@ -1441,7 +1449,7 @@ const Analytics = () => {
               </div>
 
               {/* Custom Report Builder */}
-              <div className='bg-white rounded-xl shadow-sm border border-gray-200 p-6'>
+              <div className='bg-gradient-to-br from-cyan-50 to-cyan-100 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border border-cyan-200 hover:border-cyan-300'>
                 <div className='flex items-center justify-between mb-6'>
                   <h3 className='text-card-title font-semibold text-black'>{t('reports.customBuilder.title')}</h3>
                   <button className='px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors'>
