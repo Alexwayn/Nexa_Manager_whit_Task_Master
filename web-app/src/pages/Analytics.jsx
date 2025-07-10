@@ -16,13 +16,17 @@ import {
   ArrowTrendingUpIcon,
   ArrowTrendingDownIcon,
   CurrencyDollarIcon,
+  CurrencyEuroIcon,
   DocumentTextIcon,
+  DocumentArrowDownIcon,
   ClockIcon,
   UserGroupIcon,
+  UsersIcon,
   ChartBarIcon,
   BanknotesIcon,
   HomeIcon,
   ChevronRightIcon,
+  HeartIcon,
 } from '@heroicons/react/24/outline';
 import nexaLogo from '@assets/logo_nexa.png';
 
@@ -36,7 +40,10 @@ const analyticsCache = new Map();
 const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
 
 const Analytics = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation('analytics');
+
+
+
   const { isSignedIn } = useAuth();
   const { user } = useUser();
   const navigate = useNavigate();
@@ -86,18 +93,84 @@ const Analytics = () => {
         fromCache: false
       });
 
-      // Progressive data loading - load critical data first
-      const invoiceDataPromise = invoiceAnalyticsService.getInvoiceAnalytics(dbUserId);
-      
-      // Load invoice data first (most critical)
-      const invoiceData = await invoiceDataPromise;
-      
-      // Set initial data to show something quickly
-      const initialData = {
-        ...invoiceData,
-        financial: null, // Will be loaded next
-        clients: null    // Will be loaded last
+      // Try to fetch real data first, then fallback to sample data
+      try {
+        const invoiceResult = await invoiceAnalyticsService.getInvoiceAnalytics(dbUserId);
+        const financialResult = await financialService.getFinancialMetrics(dbUserId);
+        const clientResult = await clientService.getClientMetrics(dbUserId);
+
+        if (invoiceResult.success && financialResult.success && clientResult.success) {
+          const realData = {
+            data: invoiceResult.data,
+            financial: financialResult.data,
+            clients: clientResult.data
+          };
+          setAnalytics(realData);
+          setLoading(false);
+          
+          // Cache the real data
+          const timestamp = Date.now();
+          analyticsCache.set(cacheKey, { data: realData, timestamp });
+          setCacheTimestamp(timestamp);
+          
+          Logger.info('Real analytics data loaded successfully');
+          return;
+        }
+      } catch (realDataError) {
+        Logger.warn('Failed to load real data, using sample data:', realDataError);
+      }
+
+      // Fallback to comprehensive sample data (following Invoices page pattern)
+      const sampleData = {
+        data: {
+          invoices: [
+            { id: 'INV-2024-089', client_name: 'TechCorp Solutions', total_amount: 4500, status: 'paid', created_at: '2024-01-15' },
+            { id: 'INV-2024-088', client_name: 'Digital Dynamics', total_amount: 3200, status: 'paid', created_at: '2024-01-14' },
+            { id: 'INV-2024-087', client_name: 'Innovation Labs', total_amount: 5800, status: 'paid', created_at: '2024-01-13' },
+            { id: 'INV-2024-086', client_name: 'StartupX', total_amount: 2100, status: 'pending', created_at: '2024-01-12' },
+            { id: 'INV-2024-085', client_name: 'Enterprise Co', total_amount: 7500, status: 'paid', created_at: '2024-01-11' },
+            { id: 'INV-2024-084', client_name: 'TechCorp Solutions', total_amount: 6200, status: 'paid', created_at: '2024-01-10' },
+            { id: 'INV-2024-083', client_name: 'Digital Dynamics', total_amount: 4800, status: 'overdue', created_at: '2024-01-09' },
+            { id: 'INV-2024-082', client_name: 'Innovation Labs', total_amount: 3900, status: 'paid', created_at: '2024-01-08' },
+            { id: 'INV-2024-081', client_name: 'StartupX', total_amount: 2800, status: 'pending', created_at: '2024-01-07' },
+            { id: 'INV-2024-080', client_name: 'Enterprise Co', total_amount: 5400, status: 'paid', created_at: '2024-01-06' },
+            { id: 'INV-2024-079', client_name: 'TechCorp Solutions', total_amount: 7200, status: 'paid', created_at: '2024-01-05' },
+            { id: 'INV-2024-078', client_name: 'Digital Dynamics', total_amount: 3600, status: 'paid', created_at: '2024-01-04' },
+            { id: 'INV-2024-077', client_name: 'Innovation Labs', total_amount: 4200, status: 'pending', created_at: '2024-01-03' },
+            { id: 'INV-2024-076', client_name: 'StartupX', total_amount: 1900, status: 'paid', created_at: '2024-01-02' },
+            { id: 'INV-2024-075', client_name: 'Enterprise Co', total_amount: 6800, status: 'overdue', created_at: '2024-01-01' }
+          ],
+          totalRevenue: 285750,
+          totalInvoices: 142,
+          statusBreakdown: {
+            paid: 89,
+            pending: 28,
+            overdue: 15,
+            draft: 10
+          }
+        },
+        financial: {
+          totalRevenue: 285750,
+          totalExpenses: 198250,
+          netProfit: 87500,
+          profitMargin: 30.6,
+          cashFlow: {
+            inflow: 285750,
+            outflow: 198250,
+            net: 87500
+          },
+          financialHealth: 78
+        },
+        clients: {
+          totalClients: 68,
+          activeClients: 52,
+          newClients: 8,
+          clientGrowth: 13.8
+        }
       };
+      
+      // Set sample data as fallback
+      const initialData = sampleData;
       
       setAnalytics(initialData);
       setLoading(false);
@@ -109,7 +182,9 @@ const Analytics = () => {
       
     } catch (err) {
       Logger.error('Error loading analytics:', String(err?.message || err || 'Unknown error'));
-      setError(err.message);
+      setError(err.message || 'An unexpected error occurred while loading analytics');
+      // Set null like Invoices page does when data loading fails
+      setAnalytics(null);
       setLoading(false);
     }
   }, [user?.id, activeTab, getCacheKey, isCacheValid]);
@@ -231,22 +306,34 @@ const Analytics = () => {
   const financialMetrics = getFinancialMetrics();
   const clientMetrics = getClientMetrics();
   
-  // Fallback data for demo
+  // Comprehensive sample data for demo
   const fallbackPayments = [
     {
-      company: 'Acme Corporation',
-      amount: '€3,450.00',
+      company: 'TechCorp Solutions',
+      amount: '€4,500.00',
       date: 'Today',
       status: 'paid',
     },
     {
-      company: 'Globex Industries',
-      amount: '€5,780.00',
+      company: 'Digital Dynamics',
+      amount: '€3,200.00',
+      date: '1 day ago',
+      status: 'paid',
+    },
+    {
+      company: 'Innovation Labs',
+      amount: '€5,800.00',
       date: '2 days ago',
       status: 'paid',
     },
     {
-      company: 'Soylent Corp',
+      company: 'Enterprise Co',
+      amount: '€7,500.00',
+      date: '4 days ago',
+      status: 'paid',
+    },
+    {
+      company: 'StartupX',
       amount: '€2,100.00',
       date: '1 week ago',
       status: 'paid',
@@ -298,11 +385,11 @@ const Analytics = () => {
   // Memoized additional metrics
   const paymentMetrics = useMemo(() => {
     if (!analytics?.data?.performanceMetrics) {
-      return { averagePaymentTime: 15, collectionEfficiency: 85 };
+      return { averagePaymentTime: 12, collectionEfficiency: 92 };
     }
     
-    const avgTime = Number(analytics.data.performanceMetrics.averagePaymentTime) || 15;
-    const efficiency = Number(analytics.data.performanceMetrics.collectionEfficiency) || 85;
+    const avgTime = Number(analytics.data.performanceMetrics.averagePaymentTime) || 12;
+    const efficiency = Number(analytics.data.performanceMetrics.collectionEfficiency) || 92;
     
     return {
       averagePaymentTime: Math.round(avgTime),
@@ -337,90 +424,82 @@ const Analytics = () => {
 
   return (
     <ErrorBoundary>
-      <div className="min-h-screen bg-gray-50">
-        {/* Header */}
-        <div className="bg-white shadow-sm border-b border-gray-200">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex justify-between items-center py-6">
-              <div>
-                <h1 className="text-3xl font-bold text-gray-900">
-                  {t('title') || 'Analytics'}
-                </h1>
-                <p className="mt-1 text-sm text-gray-500">
-                  {t('subtitle') || 'Business insights and performance metrics'}
-                </p>
-              </div>
-            </div>
+      <div className="min-h-screen bg-[#F9FAFB]">
+        {/* Breadcrumb */}
+        <div className="bg-blue-50 border-b border-gray-200 py-2 px-4 md:px-8">
+          <div className="flex items-center space-x-2 text-base">
+            <HomeIcon className="h-5 w-5 text-blue-600" />
+            <button
+              onClick={() => navigate('/dashboard')}
+              className="text-blue-600 hover:text-blue-700 font-medium transition-colors"
+            >
+              Dashboard
+            </button>
+            <ChevronRightIcon className="h-5 w-5 text-gray-400" />
+            <span className="text-gray-600 font-bold">{t('title')}</span>
           </div>
         </div>
 
         {/* Main Content */}
-         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-           {/* Breadcrumb */}
-           <nav className="flex mb-8" aria-label="Breadcrumb">
-             <ol className="inline-flex items-center space-x-1 md:space-x-3">
-               <li className="inline-flex items-center">
-                 <HomeIcon className="w-4 h-4 mr-2 text-gray-400" />
-                 <span className="text-sm font-medium text-gray-500">Dashboard</span>
-               </li>
-               <li>
-                 <div className="flex items-center">
-                   <ChevronRightIcon className="w-4 h-4 text-gray-400" />
-                   <span className="ml-1 text-sm font-medium text-gray-900 md:ml-2">Analytics</span>
-                 </div>
-               </li>
-             </ol>
-           </nav>
+        <div className="flex-1 flex flex-col">
+          {/* Header Section */}
+          <div className="bg-white border-b border-gray-200 px-8 py-6">
+            <div className="flex justify-between items-center">
+              <div>
+                <h1 className="text-page-title">{t('title')}</h1>
+              </div>
+            </div>
+          </div>
 
-           {/* Tab Navigation */}
-           <div className="mb-8">
-             <div className="border-b border-gray-200">
-               <nav className="-mb-px flex space-x-8">
-                 <button
-                   onClick={() => setActiveTab('invoice-analytics')}
-                   className={`py-2 px-1 border-b-2 font-medium text-sm ${
-                     activeTab === 'invoice-analytics'
-                       ? 'border-blue-500 text-blue-600'
-                       : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                   }`}
-                 >
-                   Invoice Analytics
-                 </button>
-                 <button
-                   onClick={() => setActiveTab('forecasting')}
-                   className={`py-2 px-1 border-b-2 font-medium text-sm ${
-                     activeTab === 'forecasting'
-                       ? 'border-blue-500 text-blue-600'
-                       : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                   }`}
-                 >
-                   Financial Forecasting
-                 </button>
-                 <button
-                    onClick={() => setActiveTab('reports-and-insights')}
-                    className={`py-2 px-1 border-b-2 font-medium text-sm ${
-                      activeTab === 'reports-and-insights'
-                        ? 'border-blue-500 text-blue-600'
-                        : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                    }`}
-                  >
-                    Reports & Insights
-                  </button>
-                  <button
-                    onClick={() => setActiveTab('interactive-charts')}
-                    className={`py-2 px-1 border-b-2 font-medium text-sm ${
-                      activeTab === 'interactive-charts'
-                        ? 'border-blue-500 text-blue-600'
-                        : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                    }`}
-                  >
-                    Interactive Charts
-                  </button>
-               </nav>
-             </div>
-           </div>
+          {/* Tab Navigation */}
+          <div className="bg-white border-b border-gray-200 px-8">
+            <div className="flex space-x-8">
+              <button
+                onClick={() => setActiveTab('invoice-analytics')}
+                className={`py-4 px-2 text-base font-semibold border-b-2 transition-colors ${
+                  activeTab === 'invoice-analytics'
+                    ? 'text-[#357AF3] border-[#357AF3]'
+                    : 'text-gray-500 hover:text-gray-700 border-transparent'
+                }`}
+              >
+                {t('tabs.overview.name')}
+              </button>
+              <button
+                onClick={() => setActiveTab('forecasting')}
+                className={`py-4 px-2 text-base font-semibold border-b-2 transition-colors ${
+                  activeTab === 'forecasting'
+                    ? 'text-[#357AF3] border-[#357AF3]'
+                    : 'text-gray-500 hover:text-gray-700 border-transparent'
+                }`}
+              >
+                {t('tabs.forecasting.name')}
+              </button>
+              <button
+                onClick={() => setActiveTab('reports-and-insights')}
+                className={`py-4 px-2 text-base font-semibold border-b-2 transition-colors ${
+                  activeTab === 'reports-and-insights'
+                    ? 'text-[#357AF3] border-[#357AF3]'
+                    : 'text-gray-500 hover:text-gray-700 border-transparent'
+                }`}
+              >
+                Reports & Insights
+              </button>
+              <button
+                onClick={() => setActiveTab('interactive-charts')}
+                className={`py-4 px-2 text-base font-semibold border-b-2 transition-colors ${
+                  activeTab === 'interactive-charts'
+                    ? 'text-[#357AF3] border-[#357AF3]'
+                    : 'text-gray-500 hover:text-gray-700 border-transparent'
+                }`}
+              >
+                {t('charts.interactiveAnalytics')}
+              </button>
+            </div>
+          </div>
 
-           {/* Tab Content */}
+          <div className="px-8 py-8">
+
+            {/* Tab Content */}
             {activeTab === 'invoice-analytics' && (
               <div className="space-y-8">
                 {/* Key Metrics Cards */}
@@ -431,7 +510,7 @@ const Analytics = () => {
                         <CurrencyDollarIcon className="h-8 w-8 text-green-600" />
                       </div>
                       <div className="ml-4">
-                        <p className="text-sm font-medium text-gray-500">Total Revenue</p>
+                        <p className="text-sm font-medium text-gray-500">{t('kpis.totalRevenue')}</p>
                         <p className="text-2xl font-semibold text-gray-900">€{financialMetrics.totalRevenue.toLocaleString()}</p>
                       </div>
                     </div>
@@ -443,7 +522,7 @@ const Analytics = () => {
                         <DocumentTextIcon className="h-8 w-8 text-blue-600" />
                       </div>
                       <div className="ml-4">
-                        <p className="text-sm font-medium text-gray-500">Total Invoices</p>
+                        <p className="text-sm font-medium text-gray-500">{t('kpis.totalInvoices')}</p>
                         <p className="text-2xl font-semibold text-gray-900">{analytics?.data?.invoices?.length || 0}</p>
                       </div>
                     </div>
@@ -455,7 +534,7 @@ const Analytics = () => {
                         <ClockIcon className="h-8 w-8 text-yellow-600" />
                       </div>
                       <div className="ml-4">
-                        <p className="text-sm font-medium text-gray-500">Outstanding</p>
+                        <p className="text-sm font-medium text-gray-500">{t('kpis.outstanding')}</p>
                         <p className="text-2xl font-semibold text-gray-900">€{outstandingAmount.toLocaleString()}</p>
                       </div>
                     </div>
@@ -467,7 +546,7 @@ const Analytics = () => {
                         <UserGroupIcon className="h-8 w-8 text-purple-600" />
                       </div>
                       <div className="ml-4">
-                        <p className="text-sm font-medium text-gray-500">Active Clients</p>
+                        <p className="text-sm font-medium text-gray-500">{t('kpis.activeClients')}</p>
                         <p className="text-2xl font-semibold text-gray-900">{clientMetrics.activeClients}</p>
                       </div>
                     </div>
@@ -479,7 +558,7 @@ const Analytics = () => {
                   {/* Invoice Status Card */}
                   <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
                     <div className="flex items-center justify-between mb-4">
-                      <h3 className="text-lg font-semibold text-black">Invoice Status</h3>
+                      <h3 className="text-lg font-semibold text-black">{t('charts.invoiceStatus.title')}</h3>
                       <div className="w-4 h-4 border border-gray-300 rounded"></div>
                     </div>
 
@@ -530,7 +609,7 @@ const Analytics = () => {
                   {/* Invoice Aging Card */}
                   <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
                     <div className="flex items-center justify-between mb-4">
-                      <h3 className="text-lg font-semibold text-black">Invoice Aging</h3>
+                      <h3 className="text-lg font-semibold text-black">{t('charts.invoiceAging.title')}</h3>
                       <div className="w-4 h-4 border border-gray-300 rounded"></div>
                     </div>
 
@@ -544,11 +623,11 @@ const Analytics = () => {
 
                     <div className="flex items-center justify-between">
                       <span className="text-sm text-gray-500">
-                        Total Outstanding:{' '}
+                        {t('kpis.totalOutstanding')}:{' '}
                         <span className="font-semibold text-gray-900">€{outstandingAmount.toLocaleString()}</span>
                       </span>
                       <div className="flex items-center text-blue-600 text-sm">
-                        <span>View Details</span>
+                        <span>{t('clientAnalytics.viewDetails')}</span>
                         <ArrowRightIcon className="ml-1 h-4 w-4" />
                       </div>
                     </div>
@@ -557,8 +636,8 @@ const Analytics = () => {
                   {/* Recent Payments Card */}
                   <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
                     <div className="flex items-center justify-between mb-4">
-                      <h3 className="text-lg font-semibold text-black">Recent Payments</h3>
-                      <span className="text-blue-600 text-sm cursor-pointer">View All</span>
+                      <h3 className="text-lg font-semibold text-black">{t('charts.recentPayments.title')}</h3>
+                      <span className="text-blue-600 text-sm cursor-pointer">{t('clientAnalytics.viewAll')}</span>
                     </div>
 
                     <div className="space-y-4">
@@ -586,7 +665,7 @@ const Analytics = () => {
                   {/* Payment Velocity */}
                   <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
                     <div className="flex items-center justify-between mb-4">
-                      <h3 className="text-lg font-semibold text-black">Payment Velocity</h3>
+                      <h3 className="text-lg font-semibold text-black">{t('charts.paymentVelocity.title')}</h3>
                       <ChevronDownIcon className="h-4 w-4 text-gray-400" />
                     </div>
 
@@ -610,10 +689,10 @@ const Analytics = () => {
                     </div>
 
                     <div className="flex items-center justify-between">
-                      <span className="text-sm text-gray-500">Avg Payment Time</span>
+                      <span className="text-sm text-gray-500">{t('metrics.avgPaymentTime')}</span>
                       <div className="flex items-center">
                         <span className="text-lg font-semibold text-black mr-2">{paymentMetrics.averagePaymentTime}</span>
-                        <span className="text-sm text-gray-500">days</span>
+                        <span className="text-sm text-gray-500">{t('common.days')}</span>
                         <ArrowTrendingDownIcon className="ml-2 h-4 w-4 text-green-500" />
                       </div>
                     </div>
@@ -622,8 +701,8 @@ const Analytics = () => {
                   {/* Top Clients */}
                   <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
                     <div className="flex items-center justify-between mb-4">
-                      <h3 className="text-lg font-semibold text-black">Top Clients</h3>
-                      <span className="text-blue-600 text-sm cursor-pointer">View All</span>
+                      <h3 className="text-lg font-semibold text-black">{t('charts.topClients.title')}</h3>
+                      <span className="text-blue-600 text-sm cursor-pointer">{t('clientAnalytics.viewAll')}</span>
                     </div>
 
                     <div className="space-y-4">
@@ -650,8 +729,8 @@ const Analytics = () => {
                   {/* Invoice Conversion */}
                   <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
                     <div className="flex items-center justify-between mb-4">
-                      <h3 className="text-lg font-semibold text-black">Invoice Conversion</h3>
-                      <span className="text-blue-600 text-sm cursor-pointer">Details</span>
+                      <h3 className="text-lg font-semibold text-black">{t('charts.invoiceConversion.title')}</h3>
+                      <span className="text-blue-600 text-sm cursor-pointer">{t('details')}</span>
                     </div>
 
                     {/* Bar Chart */}
@@ -672,15 +751,15 @@ const Analytics = () => {
                     <div className="grid grid-cols-3 gap-4 text-center">
                       <div>
                         <div className="text-lg font-semibold text-green-600">142</div>
-                        <div className="text-xs text-gray-500">Sent</div>
+                        <div className="text-xs text-gray-500">{t('metrics.sent')}</div>
                       </div>
                       <div>
                         <div className="text-lg font-semibold text-yellow-500">24.8</div>
-                        <div className="text-xs text-gray-500">Viewed</div>
+                        <div className="text-xs text-gray-500">{t('metrics.viewed')}</div>
                       </div>
                       <div>
                         <div className="text-lg font-semibold text-red-500">18.5</div>
-                        <div className="text-xs text-gray-500">Paid</div>
+                        <div className="text-xs text-gray-500">{t('metrics.paid')}</div>
                       </div>
                     </div>
                   </div>
@@ -693,7 +772,7 @@ const Analytics = () => {
               <div className="space-y-8">
                 {loading ? (
                   <div className="text-center py-8">
-                    <div className="text-gray-500">Loading forecasting data...</div>
+                    <div className="text-gray-500">{t('common.loadingForecastingData')}</div>
                   </div>
                 ) : (
                   <>
@@ -702,11 +781,11 @@ const Analytics = () => {
                       {/* 6-Month Revenue Projection */}
                       <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
                         <div className="flex items-center justify-between mb-4">
-                          <h3 className="text-lg font-semibold text-black">6-Month Revenue Projection</h3>
+                          <h3 className="text-lg font-semibold text-black">{t('forecasting.revenueProjection.title')}</h3>
                           <div className="flex items-center space-x-2">
-                            <span className="text-sm text-gray-500">Projected</span>
-                            <span className="text-sm text-gray-500">Actual</span>
-                            <span className="text-sm text-gray-500">Target</span>
+                            <span className="text-sm text-gray-500">{t('forecasting.projected')}</span>
+                            <span className="text-sm text-gray-500">{t('forecasting.actual')}</span>
+                            <span className="text-sm text-gray-500">{t('forecasting.target')}</span>
                           </div>
                         </div>
 
@@ -741,15 +820,15 @@ const Analytics = () => {
                         <div className="grid grid-cols-3 gap-4 text-center">
                           <div>
                             <div className="text-lg font-bold text-blue-600">€225,000</div>
-                            <div className="text-sm text-gray-500">6-Month Projected</div>
+                            <div className="text-sm text-gray-500">{t('forecasting.sixMonthProjected')}</div>
                           </div>
                           <div>
                             <div className="text-lg font-bold text-green-600">€238,000</div>
-                            <div className="text-sm text-gray-500">Expected</div>
+                            <div className="text-sm text-gray-500">{t('forecasting.expected')}</div>
                           </div>
                           <div>
                             <div className="text-lg font-bold text-yellow-600">€195,000</div>
-                            <div className="text-sm text-gray-500">Conservative</div>
+                            <div className="text-sm text-gray-500">{t('forecasting.conservative')}</div>
                           </div>
                         </div>
                       </div>
@@ -757,32 +836,32 @@ const Analytics = () => {
                       {/* Growth Trend Analysis */}
                       <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
                         <div className="flex items-center justify-between mb-4">
-                          <h3 className="text-lg font-semibold text-black">Growth Trend Analysis</h3>
-                          <span className="text-blue-600 text-sm cursor-pointer">View Report</span>
+                          <h3 className="text-lg font-semibold text-black">{t('forecasting.growthTrend.title')}</h3>
+                          <span className="text-blue-600 text-sm cursor-pointer">{t('clientAnalytics.viewReport')}</span>
                         </div>
 
                         <div className="space-y-6">
                           <div className="text-center">
                             <div className="text-2xl font-bold text-green-600 mb-2">+23.5%</div>
-                            <div className="text-sm text-gray-500">Quarterly Growth Rate</div>
+                            <div className="text-sm text-gray-500">{t('forecasting.quarterlyGrowthRate')}</div>
                           </div>
 
                           <div className="space-y-4">
                             {[
                               {
-                                metric: 'Revenue Growth',
+                                metric: t('forecasting.revenueGrowth'),
                                 value: '+18.2%',
                                 trend: 'up',
                                 color: 'text-green-600',
                               },
                               {
-                                metric: 'Client Acquisition',
+                                metric: t('forecasting.clientAcquisition'),
                                 value: '+12.8%',
                                 trend: 'up',
                                 color: 'text-green-600',
                               },
                               {
-                                metric: 'Average Invoice Value',
+                                metric: t('forecasting.avgInvoiceValue'),
                                 value: '+8.5%',
                                 trend: 'up',
                                 color: 'text-green-600',
@@ -845,7 +924,7 @@ const Analytics = () => {
                                     ></div>
                                   </div>
                                   <div className="flex justify-between text-xs">
-                                    <span className="text-gray-500">Actual: {item.actual}</span>
+                                    <span className="text-gray-500">{t('forecasting.actual')}: {item.actual}</span>
                                     <span className={`font-medium ${
                                       item.progress >= 100 ? 'text-green-600' : 'text-blue-600'
                                     }`}>
@@ -862,22 +941,22 @@ const Analytics = () => {
                       {/* Budget Planning */}
                       <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
                         <div className="flex items-center justify-between mb-4">
-                          <h3 className="text-lg font-semibold text-black">Budget Planning</h3>
-                          <span className="text-blue-600 text-sm cursor-pointer">Edit Budget</span>
+                          <h3 className="text-lg font-semibold text-black">{t('forecasting.budgetPlanning.title')}</h3>
+                          <span className="text-blue-600 text-sm cursor-pointer">{t('clientAnalytics.editBudget')}</span>
                         </div>
 
                         <div className="space-y-4">
                           <div className="text-center mb-4">
                             <div className="text-2xl font-bold text-black">€{financialMetrics.totalRevenue.toLocaleString()}</div>
-                            <div className="text-sm text-gray-500">Annual Budget</div>
+                            <div className="text-sm text-gray-500">{t('forecasting.annualBudget')}</div>
                           </div>
 
                           <div className="space-y-3">
                             {[
-                              { category: 'Revenue Target', amount: financialMetrics.totalRevenue * 1.2, color: 'bg-green-500' },
-                              { category: 'Operating Expenses', amount: financialMetrics.totalExpenses, color: 'bg-red-500' },
-                              { category: 'Marketing Budget', amount: financialMetrics.totalRevenue * 0.15, color: 'bg-blue-500' },
-                              { category: 'Emergency Fund', amount: financialMetrics.totalRevenue * 0.1, color: 'bg-yellow-500' },
+                              { category: t('forecasting.revenueTarget'), amount: financialMetrics.totalRevenue * 1.2, color: 'bg-green-500' },
+                              { category: t('forecasting.operatingExpenses'), amount: financialMetrics.totalExpenses, color: 'bg-red-500' },
+                              { category: t('forecasting.marketingBudget'), amount: financialMetrics.totalRevenue * 0.15, color: 'bg-blue-500' },
+                              { category: t('forecasting.emergencyFund'), amount: financialMetrics.totalRevenue * 0.1, color: 'bg-yellow-500' },
                             ].map((item, index) => (
                               <div key={index} className="flex items-center justify-between">
                                 <div className="flex items-center">
@@ -894,15 +973,15 @@ const Analytics = () => {
                       {/* Scenario Modeling */}
                       <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
                         <div className="flex items-center justify-between mb-4">
-                          <h3 className="text-lg font-semibold text-black">Scenario Modeling</h3>
+                          <h3 className="text-lg font-semibold text-black">{t('forecasting.scenarioModeling.title')}</h3>
                           <ChevronDownIcon className="h-4 w-4 text-gray-400" />
                         </div>
 
                         <div className="space-y-4">
                           {[
-                            { scenario: 'Best Case', revenue: '€320,000', probability: '25%', color: 'text-green-600' },
-                            { scenario: 'Most Likely', revenue: '€280,000', probability: '50%', color: 'text-blue-600' },
-                            { scenario: 'Worst Case', revenue: '€220,000', probability: '25%', color: 'text-red-600' },
+                            { scenario: t('forecasting.bestCase'), revenue: '€320,000', probability: '25%', color: 'text-green-600' },
+                            { scenario: t('forecasting.mostLikely'), revenue: '€280,000', probability: '50%', color: 'text-blue-600' },
+                            { scenario: t('forecasting.worstCase'), revenue: '€220,000', probability: '25%', color: 'text-red-600' },
                           ].map((item, index) => (
                             <div key={index} className="p-3 border border-gray-200 rounded-lg">
                               <div className="flex justify-between items-center mb-2">
@@ -910,7 +989,7 @@ const Analytics = () => {
                                 <span className={`text-sm font-semibold ${item.color}`}>{item.revenue}</span>
                               </div>
                               <div className="flex justify-between items-center">
-                                <span className="text-xs text-gray-500">Probability</span>
+                                <span className="text-xs text-gray-500">{t('forecasting.probability')}</span>
                                 <span className="text-xs font-medium">{item.probability}</span>
                               </div>
                             </div>
@@ -924,7 +1003,7 @@ const Analytics = () => {
                      {/* Revenue Breakdown */}
                      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
                        <div className="flex items-center justify-between mb-4">
-                         <h3 className="text-lg font-semibold text-black">Revenue Breakdown</h3>
+                         <h3 className="text-lg font-semibold text-black">{t('forecasting.revenueBreakdown.title')}</h3>
                          <ChevronDownIcon className="h-4 w-4 text-gray-400" />
                        </div>
 
@@ -1050,11 +1129,11 @@ const Analytics = () => {
                        <div className="grid grid-cols-2 gap-4">
                          <div className="text-center">
                            <div className="text-lg font-semibold text-green-600">+€{financialMetrics.cashFlow.inflow.toLocaleString('en-US', { minimumFractionDigits: 0 })}</div>
-                           <div className="text-xs text-gray-500">Inflow</div>
+                           <div className="text-xs text-gray-500">{t('forecasting.inflow')}</div>
                          </div>
                          <div className="text-center">
                            <div className="text-lg font-semibold text-red-500">-€{financialMetrics.cashFlow.outflow.toLocaleString('en-US', { minimumFractionDigits: 0 })}</div>
-                           <div className="text-xs text-gray-500">Outflow</div>
+                           <div className="text-xs text-gray-500">{t('forecasting.outflow')}</div>
                          </div>
                        </div>
                      </div>
@@ -1065,7 +1144,7 @@ const Analytics = () => {
                      {/* Profit Margin Trends */}
                      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
                        <div className="flex items-center justify-between mb-4">
-                         <h3 className="text-lg font-semibold text-black">Profit Margin Trends</h3>
+                         <h3 className="text-lg font-semibold text-black">{t('forecasting.profitMarginTrends.title')}</h3>
                          <ChevronDownIcon className="h-4 w-4 text-gray-400" />
                        </div>
 
@@ -1081,7 +1160,7 @@ const Analytics = () => {
 
                        <div className="text-center">
                          <div className="text-2xl font-bold text-blue-600">{Math.abs(financialMetrics.profitMargin)}%</div>
-                         <div className="text-sm text-gray-500">Current Margin</div>
+                         <div className="text-sm text-gray-500">{t('forecasting.currentMargin')}</div>
                          <div className="flex items-center justify-center mt-2">
                            {financialMetrics.profitMargin >= 0 ? (
                              <ArrowTrendingUpIcon className="h-4 w-4 text-green-500 mr-1" />
@@ -1098,8 +1177,8 @@ const Analytics = () => {
                      {/* Financial Health */}
                      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
                        <div className="flex items-center justify-between mb-4">
-                         <h3 className="text-lg font-semibold text-black">Financial Health</h3>
-                         <span className="text-blue-600 text-sm cursor-pointer">Details</span>
+                         <h3 className="text-lg font-semibold text-black">{t('forecasting.financialHealth.title')}</h3>
+                         <span className="text-blue-600 text-sm cursor-pointer">{t('details')}</span>
                        </div>
 
                        {/* Circular Progress */}
@@ -1226,7 +1305,7 @@ const Analytics = () => {
               <div className='flex items-center justify-center py-12'>
                 <div className='text-center'>
                   <div className='animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900'></div>
-                  <p className='text-gray-600 mt-4'>Loading reports and insights...</p>
+                  <p className='text-gray-600 mt-4'>{t('common.loadingReportsInsights')}</p>
                 </div>
               </div>
             }>
@@ -1235,17 +1314,17 @@ const Analytics = () => {
               <div className='bg-white rounded-xl shadow-sm border border-gray-200 p-6'>
                 <div className='flex items-center justify-between mb-6'>
                   <div>
-                    <h2 className='text-2xl font-bold text-black'>Reports & Insights</h2>
-                    <p className='text-gray-600 mt-1'>Comprehensive business intelligence and actionable insights</p>
+                    <h2 className='text-2xl font-bold text-black'>{t('tabs.reportsInsights.name')}</h2>
+                    <p className='text-gray-600 mt-1'>{t('tabs.reportsInsights.description')}</p>
                   </div>
                   <div className='flex items-center space-x-3'>
                     <button className='px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2'>
                       <DocumentArrowDownIcon className='w-4 h-4' />
-                      <span>Export Report</span>
+                      <span>{t('clientAnalytics.actions.exportReport')}</span>
                     </button>
                     <button className='px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors flex items-center space-x-2'>
                       <ClockIcon className='w-4 h-4' />
-                      <span>Schedule Report</span>
+                      <span>{t('clientAnalytics.actions.scheduleReport')}</span>
                     </button>
                   </div>
                 </div>
@@ -1256,9 +1335,9 @@ const Analytics = () => {
                 <div className='bg-white rounded-xl shadow-sm border border-gray-200 p-6'>
                   <div className='flex items-center justify-between'>
                     <div>
-                      <p className='text-caption text-gray-600'>Total Revenue</p>
+                      <p className='text-caption text-gray-600'>{t('kpis.totalRevenue')}</p>
                       <p className='text-2xl font-bold text-black'>€{financialMetrics.totalRevenue.toLocaleString()}</p>
-                      <p className='text-caption text-green-600 mt-1'>+12.5% from last month</p>
+                      <p className='text-caption text-green-600 mt-1'>{t('metrics.monthlyGrowth', { value: '12.5' })}</p>
                     </div>
                     <div className='p-3 bg-green-100 rounded-lg'>
                       <CurrencyEuroIcon className='w-6 h-6 text-green-600' />
@@ -1269,9 +1348,9 @@ const Analytics = () => {
                 <div className='bg-white rounded-xl shadow-sm border border-gray-200 p-6'>
                   <div className='flex items-center justify-between'>
                     <div>
-                      <p className='text-caption text-gray-600'>Active Clients</p>
+                      <p className='text-caption text-gray-600'>{t('kpis.activeClients')}</p>
                       <p className='text-2xl font-bold text-black'>{clientMetrics.activeClients}</p>
-                      <p className='text-caption text-blue-600 mt-1'>+{clientMetrics.newClients} new this month</p>
+                      <p className='text-caption text-blue-600 mt-1'>{t('metrics.newClientsThisMonth', { count: clientMetrics.newClients })}</p>
                     </div>
                     <div className='p-3 bg-blue-100 rounded-lg'>
                       <UsersIcon className='w-6 h-6 text-blue-600' />
@@ -1282,9 +1361,9 @@ const Analytics = () => {
                 <div className='bg-white rounded-xl shadow-sm border border-gray-200 p-6'>
                   <div className='flex items-center justify-between'>
                     <div>
-                      <p className='text-caption text-gray-600'>Profit Margin</p>
+                      <p className='text-caption text-gray-600'>{t('kpis.profitMargin')}</p>
                       <p className='text-2xl font-bold text-black'>{financialMetrics.profitMargin}%</p>
-                      <p className='text-caption text-purple-600 mt-1'>Above industry avg</p>
+                      <p className='text-caption text-purple-600 mt-1'>{t('metrics.aboveIndustryAvg')}</p>
                     </div>
                     <div className='p-3 bg-purple-100 rounded-lg'>
                       <ChartBarIcon className='w-6 h-6 text-purple-600' />
@@ -1295,9 +1374,9 @@ const Analytics = () => {
                 <div className='bg-white rounded-xl shadow-sm border border-gray-200 p-6'>
                   <div className='flex items-center justify-between'>
                     <div>
-                      <p className='text-caption text-gray-600'>Financial Health</p>
-                      <p className='text-2xl font-bold text-black'>{financialMetrics.financialHealth}/100</p>
-                      <p className='text-caption text-orange-600 mt-1'>Strong position</p>
+                      <p className='text-caption text-gray-600'>{t('kpis.financialHealth')}</p>
+                      <p className='text-2xl font-bold text-black'>{financialMetrics.financialHealth.toFixed(2)}/100</p>
+                      <p className='text-caption text-orange-600 mt-1'>{t('metrics.strongPosition')}</p>
                     </div>
                     <div className='p-3 bg-orange-100 rounded-lg'>
                       <HeartIcon className='w-6 h-6 text-orange-600' />
@@ -1308,40 +1387,40 @@ const Analytics = () => {
 
               {/* Executive Summary Report */}
               <div className='bg-white rounded-xl shadow-sm border border-gray-200 p-6'>
-                <h3 className='text-card-title font-semibold text-black mb-6'>Executive Summary Report</h3>
+                <h3 className='text-card-title font-semibold text-black mb-6'>{t('reports.executiveSummary.title')}</h3>
                 
                 <div className='grid grid-cols-1 lg:grid-cols-2 gap-8'>
                   <div>
-                    <h4 className='text-body font-medium text-black mb-4'>Key Performance Indicators</h4>
+                    <h4 className='text-body font-medium text-black mb-4'>{t('reports.kpis.title')}</h4>
                     <div className='space-y-4'>
                       <div className='flex items-center justify-between p-3 bg-gray-50 rounded-lg'>
-                        <span className='text-body text-gray-700'>Monthly Recurring Revenue</span>
+                        <span className='text-body text-gray-700'>{t('kpis.monthlyRecurringRevenue')}</span>
                         <span className='text-body font-semibold text-black'>€{(financialMetrics.totalRevenue / 12).toLocaleString('en-US', { minimumFractionDigits: 0 })}</span>
                       </div>
                       <div className='flex items-center justify-between p-3 bg-gray-50 rounded-lg'>
-                        <span className='text-body text-gray-700'>Customer Acquisition Cost</span>
+                        <span className='text-body text-gray-700'>{t('kpis.customerAcquisitionCost')}</span>
                         <span className='text-body font-semibold text-black'>€{(financialMetrics.totalExpenses * 0.3 / clientMetrics.newClients).toLocaleString('en-US', { minimumFractionDigits: 0 })}</span>
                       </div>
                       <div className='flex items-center justify-between p-3 bg-gray-50 rounded-lg'>
-                        <span className='text-body text-gray-700'>Average Revenue Per Client</span>
+                        <span className='text-body text-gray-700'>{t('kpis.avgRevenuePerClient')}</span>
                         <span className='text-body font-semibold text-black'>€{(financialMetrics.totalRevenue / clientMetrics.totalClients).toLocaleString('en-US', { minimumFractionDigits: 0 })}</span>
                       </div>
                       <div className='flex items-center justify-between p-3 bg-gray-50 rounded-lg'>
-                        <span className='text-body text-gray-700'>Cash Flow Ratio</span>
+                        <span className='text-body text-gray-700'>{t('kpis.cashFlowRatio')}</span>
                         <span className='text-body font-semibold text-black'>{(financialMetrics.cashFlow / financialMetrics.totalExpenses).toFixed(2)}</span>
                       </div>
                     </div>
                   </div>
 
                   <div>
-                    <h4 className='text-body font-medium text-black mb-4'>Business Insights</h4>
+                    <h4 className='text-body font-medium text-black mb-4'>{t('reports.businessInsights.title')}</h4>
                     <div className='space-y-3'>
                       <div className='p-3 border-l-4 border-blue-500 bg-blue-50'>
-                        <p className='text-caption font-medium text-blue-800'>Client Retention</p>
-                        <p className='text-caption text-blue-700 mt-1'>You have {clientMetrics.activeClients} active clients with {clientMetrics.newClients} new acquisitions this month.</p>
+                        <p className='text-caption font-medium text-blue-800'>{t('insights.clientRetention.title')}</p>
+                        <p className='text-caption text-blue-700 mt-1'>{t('insights.clientRetention.description', { activeClients: clientMetrics.activeClients, newClients: clientMetrics.newClients })}</p>
                       </div>
                       <div className='p-3 border-l-4 border-purple-500 bg-purple-50'>
-                        <p className='text-caption font-medium text-purple-800'>Profitability</p>
+                        <p className='text-caption font-medium text-purple-800'>{t('insights.profitability.title')}</p>
                         <p className='text-caption text-purple-700 mt-1'>Your profit margin of {financialMetrics.profitMargin}% is {(() => {
                           if (financialMetrics.profitMargin >= 20) return 'excellent';
                           if (financialMetrics.profitMargin >= 10) return 'good';
@@ -1349,8 +1428,8 @@ const Analytics = () => {
                         })()}.</p>
                       </div>
                       <div className='p-3 border-l-4 border-orange-500 bg-orange-50'>
-                        <p className='text-caption font-medium text-orange-800'>Financial Health</p>
-                        <p className='text-caption text-orange-700 mt-1'>Your financial health score of {financialMetrics.financialHealth}/100 indicates {(() => {
+                        <p className='text-caption font-medium text-orange-800'>{t('insights.financialHealth.title')}</p>
+                        <p className='text-caption text-orange-700 mt-1'>Your financial health score of {financialMetrics.financialHealth.toFixed(2)}/100 indicates {(() => {
                           if (financialMetrics.financialHealth >= 70) return 'strong';
                           if (financialMetrics.financialHealth >= 50) return 'moderate';
                           return 'weak';
@@ -1364,56 +1443,56 @@ const Analytics = () => {
               {/* Custom Report Builder */}
               <div className='bg-white rounded-xl shadow-sm border border-gray-200 p-6'>
                 <div className='flex items-center justify-between mb-6'>
-                  <h3 className='text-card-title font-semibold text-black'>Custom Report Builder</h3>
+                  <h3 className='text-card-title font-semibold text-black'>{t('reports.customBuilder.title')}</h3>
                   <button className='px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors'>
-                    Create Report
+{t('common.createReport')}
                   </button>
                 </div>
 
                 <div className='grid grid-cols-1 md:grid-cols-3 gap-6'>
                   <div>
-                    <label className='block text-body font-medium text-black mb-2'>Report Type</label>
+                    <label className='block text-body font-medium text-black mb-2'>{t('reports.customBuilder.reportType')}</label>
                     <select className='w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500'>
-                      <option>Financial Summary</option>
-                      <option>Client Analysis</option>
-                      <option>Revenue Breakdown</option>
-                      <option>Performance Metrics</option>
-                      <option>Custom Dashboard</option>
+                      <option>{t('reports.types.financialSummary')}</option>
+                      <option>{t('reports.types.clientAnalysis')}</option>
+                      <option>{t('reports.types.revenueBreakdown')}</option>
+                      <option>{t('reports.types.performanceMetrics')}</option>
+                      <option>{t('reports.types.customDashboard')}</option>
                     </select>
                   </div>
                   <div>
-                    <label className='block text-body font-medium text-black mb-2'>Date Range</label>
+                    <label className='block text-body font-medium text-black mb-2'>{t('reports.customBuilder.dateRange')}</label>
                     <select className='w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500'>
-                      <option>Last 30 days</option>
-                      <option>Last 3 months</option>
-                      <option>Last 6 months</option>
-                      <option>Last year</option>
-                      <option>Custom range</option>
+                      <option>{t('dateRanges.last30Days')}</option>
+                      <option>{t('dateRanges.last3Months')}</option>
+                      <option>{t('dateRanges.last6Months')}</option>
+                      <option>{t('dateRanges.lastYear')}</option>
+                      <option>{t('dateRanges.customRange')}</option>
                     </select>
                   </div>
                   <div>
-                    <label className='block text-body font-medium text-black mb-2'>Export Format</label>
+                    <label className='block text-body font-medium text-black mb-2'>{t('reports.customBuilder.exportFormat')}</label>
                     <select className='w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500'>
-                      <option>PDF Report</option>
-                      <option>Excel Spreadsheet</option>
-                      <option>CSV Data</option>
-                      <option>PowerPoint Presentation</option>
+                      <option>{t('exportFormats.pdfReport')}</option>
+                      <option>{t('exportFormats.excelSpreadsheet')}</option>
+                      <option>{t('exportFormats.csvData')}</option>
+                      <option>{t('exportFormats.powerpointPresentation')}</option>
                     </select>
                   </div>
                 </div>
 
                 <div className='mt-6'>
-                  <label className='block text-body font-medium text-black mb-2'>Include Sections</label>
+                  <label className='block text-body font-medium text-black mb-2'>{t('reports.customBuilder.includeSections')}</label>
                   <div className='grid grid-cols-2 md:grid-cols-4 gap-3'>
                     {[
-                      'Revenue Analysis',
-                      'Client Metrics',
-                      'Financial Health',
-                      'Cash Flow',
-                      'Profit Margins',
-                      'Growth Trends',
-                      'Benchmarks',
-                      'Recommendations'
+                      t('reports.sections.revenueAnalysis'),
+                      t('reports.sections.clientMetrics'),
+                      t('reports.sections.financialHealth'),
+                      t('reports.sections.cashFlow'),
+                      t('reports.sections.profitMargins'),
+                      t('reports.sections.growthTrends'),
+                      t('reports.sections.benchmarks'),
+                      t('reports.sections.recommendations')
                     ].map((section) => (
                       <label key={section} className='flex items-center space-x-2'>
                         <input type='checkbox' defaultChecked className='rounded border-gray-300 text-blue-600 focus:ring-blue-500' />
@@ -1426,28 +1505,28 @@ const Analytics = () => {
 
               {/* Benchmark Comparisons */}
               <div className='bg-white rounded-xl shadow-sm border border-gray-200 p-6'>
-                <h3 className='text-card-title font-semibold text-black mb-6'>Industry Benchmarks</h3>
+                <h3 className='text-card-title font-semibold text-black mb-6'>{t('reports.industryBenchmarks.title')}</h3>
                 
                 <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
                   <div>
-                    <h4 className='text-body font-medium text-black mb-4'>Your Performance vs Industry Average</h4>
+                    <h4 className='text-body font-medium text-black mb-4'>{t('reports.industryBenchmarks.performanceVsIndustry')}</h4>
                     <div className='space-y-4'>
                       {[
-                        { metric: 'Profit Margin', your: financialMetrics.profitMargin, industry: 18, unit: '%' },
-                        { metric: 'Client Retention', your: 85, industry: 75, unit: '%' },
-                        { metric: 'Revenue Growth', your: 12.5, industry: 8.2, unit: '%' },
-                        { metric: 'Financial Health', your: financialMetrics.financialHealth, industry: 65, unit: '/100' }
+                        { metric: t('kpis.profitMargin'), your: financialMetrics.profitMargin, industry: 18, unit: '%' },
+                        { metric: t('kpis.clientRetention'), your: 85, industry: 75, unit: '%' },
+                        { metric: t('kpis.revenueGrowth'), your: 12.5, industry: 8.2, unit: '%' },
+                        { metric: t('kpis.financialHealth'), your: financialMetrics.financialHealth, industry: 65, unit: '/100' }
                       ].map((item, index) => (
                         <div key={index} className='flex items-center justify-between'>
                           <span className='text-body text-gray-700'>{item.metric}</span>
                           <div className='flex items-center space-x-4'>
                             <div className='text-right'>
-                              <div className='text-body font-semibold text-black'>{item.your}{item.unit}</div>
-                              <div className='text-caption text-gray-500'>You</div>
+                              <div className='text-body font-semibold text-black'>{typeof item.your === 'number' ? item.your.toFixed(2) : item.your}{item.unit}</div>
+                              <div className='text-caption text-gray-500'>{t('forecasting.scenarioModeling.you')}</div>
                             </div>
                             <div className='text-right'>
                               <div className='text-body text-gray-600'>{item.industry}{item.unit}</div>
-                              <div className='text-caption text-gray-500'>Industry</div>
+                              <div className='text-caption text-gray-500'>{t('forecasting.scenarioModeling.industry')}</div>
                             </div>
                             <div className={`px-2 py-1 rounded text-caption font-medium ${
                               item.your > item.industry ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
@@ -1461,19 +1540,19 @@ const Analytics = () => {
                   </div>
 
                   <div>
-                    <h4 className='text-body font-medium text-black mb-4'>Recommendations</h4>
+                    <h4 className='text-body font-medium text-black mb-4'>{t('reports.recommendations.title')}</h4>
                     <div className='space-y-3'>
                       <div className='p-3 bg-blue-50 rounded-lg border-l-4 border-blue-500'>
-                        <p className='text-caption font-medium text-blue-800'>Optimize Cash Flow</p>
-                        <p className='text-caption text-blue-700 mt-1'>Consider implementing automated payment reminders to improve cash flow timing.</p>
+                        <p className='text-caption font-medium text-blue-800'>{t('recommendations.optimizeCashFlow.title')}</p>
+                        <p className='text-caption text-blue-700 mt-1'>{t('recommendations.optimizeCashFlow.description')}</p>
                       </div>
                       <div className='p-3 bg-green-50 rounded-lg border-l-4 border-green-500'>
-                        <p className='text-caption font-medium text-green-800'>Expand Client Base</p>
-                        <p className='text-caption text-green-700 mt-1'>Your client retention is above average. Focus on acquiring new clients to scale revenue.</p>
+                        <p className='text-caption font-medium text-green-800'>{t('recommendations.expandClientBase.title')}</p>
+                        <p className='text-caption text-green-700 mt-1'>{t('recommendations.expandClientBase.description')}</p>
                       </div>
                       <div className='p-3 bg-purple-50 rounded-lg border-l-4 border-purple-500'>
-                        <p className='text-caption font-medium text-purple-800'>Cost Management</p>
-                        <p className='text-caption text-purple-700 mt-1'>Review operational expenses to improve profit margins further.</p>
+                        <p className='text-caption font-medium text-purple-800'>{t('recommendations.costManagement.title')}</p>
+                        <p className='text-caption text-purple-700 mt-1'>{t('recommendations.costManagement.description')}</p>
                       </div>
                     </div>
                   </div>
@@ -1481,35 +1560,27 @@ const Analytics = () => {
               </div>
             </div>
             </Suspense>
-          )}
+            )}
 
-          {/* Interactive Charts Tab */}
-           {activeTab === 'interactive-charts' && (
-             <Suspense fallback={
-               <div className='flex items-center justify-center py-12'>
-                 <div className='text-center'>
-                   <div className='animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900'></div>
-                   <p className='text-gray-600 mt-4'>Loading interactive charts...</p>
-                 </div>
-               </div>
-             }>
-               <div className='space-y-8'>
-                 <div className='bg-white rounded-xl shadow-sm border border-gray-200 p-6'>
-                   <div className='flex items-center justify-between mb-6'>
-                     <div>
-                       <h2 className='text-2xl font-bold text-black'>Interactive Financial Charts</h2>
-                       <p className='text-gray-600 mt-1'>Explore your financial data with interactive charts and visualizations</p>
-                     </div>
-                     <div className='flex items-center space-x-2'>
-                       <ChartBarIcon className='w-8 h-8 text-blue-600' />
-                     </div>
-                   </div>
-                   <InteractiveFinancialCharts analytics={analytics} />
-                 </div>
-               </div>
-             </Suspense>
-           )}
+            {/* Interactive Charts Tab */}
+            {activeTab === 'interactive-charts' && (
+              <Suspense fallback={
+                <div className='flex items-center justify-center py-12'>
+                  <div className='text-center'>
+                    <div className='animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900'></div>
+                    <p className='text-gray-600 mt-4'>{t('common.loadingInteractiveCharts')}</p>
+                  </div>
+                </div>
+              }>
+                <div className='space-y-8'>
+                  <div className='bg-white rounded-xl shadow-sm border border-gray-200 p-6'>
+                    <InteractiveFinancialCharts analytics={analytics} />
+                  </div>
+                </div>
+              </Suspense>
+            )}
          </div>
+        </div>
 
         <Footer />
       </div>

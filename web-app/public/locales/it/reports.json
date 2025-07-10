@@ -236,6 +236,87 @@
     "confidenceLevel": "Livello di Confidenza",
     "low": "Basso"
   },
+  "reports": {
+    "executiveSummary": {
+      "title": "Report Riassuntivo Esecutivo"
+    },
+    "kpis": {
+      "title": "Indicatori Chiave di Performance"
+    },
+    "businessInsights": {
+      "title": "Approfondimenti di Business"
+    },
+    "customBuilder": {
+      "title": "Generatore Report Personalizzato",
+      "reportType": "Tipo di Report",
+      "dateRange": "Intervallo Date",
+      "exportFormat": "Formato di Esportazione",
+      "includeSections": "Includi Sezioni"
+    },
+    "types": {
+      "financialSummary": "Riassunto Finanziario",
+      "clientAnalysis": "Analisi Clienti",
+      "revenueBreakdown": "Dettaglio Ricavi",
+      "performanceMetrics": "Metriche di Performance",
+      "customDashboard": "Dashboard Personalizzata"
+    },
+    "sections": {
+      "revenueAnalysis": "Analisi Ricavi",
+      "clientMetrics": "Metriche Clienti",
+      "financialHealth": "Salute Finanziaria",
+      "cashFlow": "Flusso di Cassa",
+      "profitMargins": "Margini di Profitto",
+      "growthTrends": "Trend di Crescita",
+      "benchmarks": "Benchmark",
+      "recommendations": "Raccomandazioni"
+    },
+    "industryBenchmarks": {
+      "title": "Benchmark del Settore",
+      "performanceVsIndustry": "Le Tue Performance vs Media del Settore"
+    },
+    "recommendations": {
+      "title": "Raccomandazioni"
+    }
+  },
+  "dateRanges": {
+    "last30Days": "Ultimi 30 giorni",
+    "last3Months": "Ultimi 3 mesi",
+    "last6Months": "Ultimi 6 mesi",
+    "lastYear": "Ultimo anno",
+    "customRange": "Intervallo personalizzato"
+  },
+  "exportFormats": {
+    "pdfReport": "Report PDF",
+    "excelSpreadsheet": "Foglio Excel",
+    "csvData": "Dati CSV",
+    "powerpointPresentation": "Presentazione PowerPoint"
+  },
+  "insights": {
+    "clientRetention": {
+      "title": "Retention Clienti",
+      "description": "Hai {{activeClients}} clienti attivi con {{newClients}} nuove acquisizioni questo mese."
+    },
+    "profitability": {
+      "title": "Redditività"
+    },
+    "financialHealth": {
+      "title": "Salute Finanziaria"
+    }
+  },
+  "recommendations": {
+    "optimizeCashFlow": {
+      "title": "Ottimizza Flusso di Cassa",
+      "description": "Considera l'implementazione di promemoria automatici per i pagamenti per migliorare i tempi del flusso di cassa."
+    },
+    "expandClientBase": {
+      "title": "Espandi Base Clienti",
+      "description": "La tua retention clienti è sopra la media. Concentrati sull'acquisizione di nuovi clienti per scalare i ricavi."
+    },
+    "costManagement": {
+      "title": "Gestione Costi",
+      "description": "Rivedi le spese operative per migliorare ulteriormente i margini di profitto."
+    }
+  },
   "footer": {
     "company": {
       "description": "Piattaforma avanzata di gestione aziendale progettata per ottimizzare le tue operazioni e aumentare la produttività.",

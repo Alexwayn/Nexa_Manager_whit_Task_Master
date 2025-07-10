@@ -17,6 +17,10 @@
       "name": "Previsioni",
       "description": "Proiezioni finanziarie e analisi predittive"
     },
+    "reportsInsights": {
+      "name": "Report e Approfondimenti",
+      "description": "Business intelligence completa e approfondimenti attuabili"
+    },
     "invoiceAging": {
       
       "label": "Importo Scaduto",
@@ -35,6 +39,21 @@
       "jun": "Giu"
     }
   },
+  "kpis": {
+    "totalRevenue": "Fatturato Totale",
+    "totalInvoices": "Fatture Totali",
+    "outstanding": "In Sospeso",
+    "activeClients": "Clienti Attivi",
+    "totalOutstanding": "Totale in Sospeso",
+    "profitMargin": "Margine di Profitto",
+    "clientRetention": "Retention Clienti",
+    "revenueGrowth": "Crescita dei Ricavi",
+    "financialHealth": "Salute Finanziaria",
+    "monthlyRecurringRevenue": "Ricavi Ricorrenti Mensili",
+    "customerAcquisitionCost": "Costo di Acquisizione Cliente",
+    "avgRevenuePerClient": "Ricavo Medio per Cliente",
+    "cashFlowRatio": "Rapporto di Flusso di Cassa"
+  },
   "kpi": {
     "totalRevenue": "Ricavi Totali",
     "yoyGrowth": "Crescita su base annua",
@@ -52,8 +71,26 @@
   "charts": {
     "revenue": "Ricavi",
     "revenueTitle": "Andamento Entrate",
-    "invoiceStatusTitle": "Stato Fatture",
+    "invoiceStatus": {
+       "title": "Stato Fatture"
+     },
+     "invoiceAging": {
+       "title": "Scadenzario Fatture"
+     },
+    "recentPayments": {
+      "title": "Pagamenti Recenti"
+    },
+    "paymentVelocity": {
+      "title": "Velocità di Pagamento"
+    },
+    "topClients": {
+      "title": "Migliori Clienti"
+    },
+    "invoiceConversion": {
+      "title": "Tasso di Conversione Fatture"
+    },
     "interactiveAnalytics": "Analisi Finanziarie Interattive",
+    "interactiveDescription": "Esplora i tuoi dati finanziari con grafici e visualizzazioni interattive",
     "interactiveDesc": "Grafici avanzati con zoom, panoramica e filtri",
     "overview": "Panoramica",
     "overviewDesc": "Vista completa di entrate, spese e flusso di cassa",
@@ -334,13 +371,17 @@
       "basedOnClientMetrics": "Basato su metriche e performance dei clienti"
     },
     "actions": {
-      "viewDetails": "Vedi Dettagli",
-      "viewAll": "Vedi Tutti",
       "analyze": "Analizza",
       "drillDown": "Approfondisci",
       "export": "Esporta Dati",
-      "filter": "Filtra"
+      "filter": "Filtra",
+      "exportReport": "Esporta Report",
+      "scheduleReport": "Programma Report"
     },
+    "viewDetails": "Visualizza Dettagli",
+    "viewAll": "Visualizza Tutti",
+    "viewReport": "Vedi Report",
+    "editBudget": "Modifica Budget",
     "loading": {
       "loadingClientAnalytics": "Caricamento analisi clienti...",
       "analyzing": "Analizzando dati clienti..."
@@ -359,5 +400,145 @@
   "active": "Attivi",
   "newThisMonth": "Nuovi Questo Mese",
   "retention": "Retention",
-  "totalClients": "Clienti Totali"
+  "totalClients": "Clienti Totali",
+  "metrics": {
+    "avgPaymentTime": "Tempo Medio di Pagamento",
+    "sent": "Inviate",
+    "viewed": "Visualizzate",
+    "paid": "Pagate",
+    "monthlyGrowth": "+{{value}}% dal mese scorso",
+    "newClientsThisMonth": "+{{count}} nuovi questo mese",
+    "aboveIndustryAvg": "Sopra la media del settore",
+    "strongPosition": "Posizione forte"
+  },
+  "forecasting": {
+    "revenueProjection": {
+      "title": "Proiezione dei Ricavi"
+    },
+    "projected": "Proiettato",
+    "actual": "Effettivo",
+    "target": "Obiettivo",
+    "sixMonthProjected": "Proiezione a 6 Mesi",
+    "expected": "Previsto",
+    "conservative": "Conservativo",
+    "growthTrend": {
+      "title": "Trend di Crescita"
+    },
+    "quarterlyGrowthRate": "Tasso di Crescita Trimestrale",
+    "revenueGrowth": "Crescita dei Ricavi",
+    "clientAcquisition": "Acquisizione Clienti",
+    "avgInvoiceValue": "Valore Medio Fattura",
+    "budgetPlanning": {
+      "title": "Pianificazione del Budget"
+    },
+    "annualBudget": "Budget Annuale",
+    "revenueTarget": "Obiettivo di Fatturato",
+    "operatingExpenses": "Spese Operative",
+    "marketingBudget": "Budget di Marketing",
+    "emergencyFund": "Fondo di Emergenza",
+    "scenarioModeling": {
+      "title": "Modellazione di Scenari",
+      "you": "Tu",
+      "industry": "Settore"
+    },
+    "bestCase": "Scenario Migliore",
+    "probability": "Probabilità",
+    "mostLikely": "Scenario Più Probabile",
+    "worstCase": "Scenario Peggiore",
+    "you": "Tu",
+      "industry": "Settore",
+      "revenueBreakdown": {
+      "title": "Dettaglio Ricavi"
+    },
+    "inflow": "Entrate",
+    "outflow": "Uscite",
+    "profitMarginTrends": {
+      "title": "Trend Margine di Profitto"
+    },
+    "currentMargin": "Margine Attuale",
+    "financialHealth": {
+      "title": "Salute Finanziaria"
+    }
+  },
+  "reports": {
+    "executiveSummary": {
+      "title": "Riepilogo Esecutivo"
+    },
+    "kpis": {
+      "title": "Indicatori Chiave di Performance"
+    },
+    "businessInsights": {
+      "title": "Approfondimenti di Business"
+    },
+    "customBuilder": {
+      "title": "Generatore di Report Personalizzati",
+      "reportType": "Tipo di Report",
+      "dateRange": "Intervallo di Date",
+      "exportFormat": "Formato di Esportazione",
+      "includeSections": "Includi Sezioni"
+    },
+    "types": {
+       "financialSummary": "Riepilogo Finanziario",
+       "clientAnalysis": "Analisi Clienti",
+       "revenueBreakdown": "Dettaglio Ricavi",
+       "performanceMetrics": "Metriche di Performance",
+       "customDashboard": "Dashboard Personalizzata"
+     },
+    "sections": {
+      "revenueAnalysis": "Analisi dei Ricavi",
+      "clientMetrics": "Metriche Clienti",
+      "financialHealth": "Salute Finanziaria",
+      "cashFlow": "Flusso di Cassa",
+      "profitMargins": "Margini di Profitto",
+      "growthTrends": "Trend di Crescita",
+      "benchmarks": "Benchmark",
+      "recommendations": "Raccomandazioni"
+    },
+    "industryBenchmarks": {
+      "title": "Benchmark del Settore",
+      "performanceVsIndustry": "Performance vs Settore"
+    },
+    "recommendations": {
+      "title": "Raccomandazioni"
+    }
+  },
+  "insights": {
+    "clientRetention": {
+      "title": "Analisi Retention Clienti",
+      "description": "Analisi dei pattern di retention dei clienti e opportunità di miglioramento."
+    },
+    "profitability": {
+      "title": "Analisi della Redditività"
+    },
+    "financialHealth": {
+      "title": "Valutazione della Salute Finanziaria"
+    }
+  },
+  "recommendations": {
+    "optimizeCashFlow": {
+      "title": "Ottimizza il Flusso di Cassa",
+      "description": "Migliora la gestione del flusso di cassa attraverso strategie di fatturazione e riscossione più efficaci."
+    },
+    "expandClientBase": {
+      "title": "Espandi la Base Clienti",
+      "description": "Concentrati sull'acquisizione di nuovi clienti per diversificare i flussi di ricavi e ridurre la dipendenza."
+    },
+    "costManagement": {
+      "title": "Gestione dei Costi",
+      "description": "Rivedi e ottimizza i costi operativi per migliorare i margini di profitto."
+    }
+  },
+  "dateRanges": {
+     "last30Days": "Ultimi 30 Giorni",
+     "last3Months": "Ultimi 3 Mesi",
+     "last6Months": "Ultimi 6 Mesi",
+     "lastYear": "Ultimo Anno",
+     "customRange": "Intervallo Personalizzato"
+   },
+  "exportFormats": {
+     "pdfReport": "Report PDF",
+     "excelSpreadsheet": "Foglio Excel",
+     "csvData": "Dati CSV",
+     "powerpointPresentation": "Presentazione PowerPoint"
+    }
 }

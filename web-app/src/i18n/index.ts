@@ -1,26 +1,29 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import Backend from 'i18next-http-backend';
-
-// Force Italian language in localStorage before initialization
-localStorage.setItem('nexa-language', 'it');
+import LanguageDetector from 'i18next-browser-languagedetector';
 
 i18n
   // Load translation using http backend
   .use(Backend)
+  // Detect user language
+  .use(LanguageDetector)
   // Pass the i18n instance to react-i18next
   .use(initReactI18next)
   // Initialize i18next
   .init({
-    // Force Italian language
-    lng: 'it',
     // Fallback language
-    fallbackLng: 'it', // Changed to 'it' to prevent English fallback
+    fallbackLng: 'en',
 
     // Debug mode - disable to reduce console noise
     debug: false,
 
-    // No language detection - force Italian
+    // Language detection options
+    detection: {
+      order: ['localStorage', 'navigator'],
+      caches: ['localStorage'],
+      lookupLocalStorage: 'nexa-language',
+    },
 
     // Backend options for loading translations
     backend: {
@@ -53,7 +56,7 @@ i18n
     defaultNS: 'inventory',
 
     // Preload namespaces
-    preload: ['it'],
+    preload: ['en', 'it'],
 
     // Partials to load
     partialBundledLanguages: true,
@@ -79,17 +82,7 @@ i18n
   })
   .then(() => {
     console.log('i18next initialized successfully');
-    // Force Italian as default language
-    localStorage.setItem('nexa-language', 'it');
-
-    // Explicitly load Italian inventory namespace
-    return i18n.loadNamespaces(['inventory']).then(() => {
-      return i18n.changeLanguage('it');
-    });
-  })
-  .then(() => {
-    console.log('🇮🇹 Language forced to Italian:', i18n.language);
-    console.log('📦 Inventory namespace loaded for Italian');
+    console.log('Language set to:', i18n.language);
   })
   .catch(error => {
     console.error('i18next initialization failed:', error);

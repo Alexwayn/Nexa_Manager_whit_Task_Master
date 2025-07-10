@@ -37,7 +37,7 @@ ChartJS.register(
 );
 
 const AdvancedVisualizations = ({ analytics }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(['analytics', 'common']);
   const [activeVisualization, setActiveVisualization] = useState('heatmap');
 
   // Heatmap data for seasonal analysis

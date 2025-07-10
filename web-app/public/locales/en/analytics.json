@@ -1,14 +1,14 @@
 {
   "title": "Financial Analytics",
-  "subtitle": "Deep dive into your business performance",
-  "autoRefresh": "Auto Refresh",
+  "subtitle": "In-depth analysis of business performance",
+  "autoRefresh": "Auto-Refresh",
   "tabs": {
     "overview": {
       "name": "Overview",
       "description": "Real-time financial dashboard"
     },
     "detailed": {
-      "name": "Detailed Analytics",
+      "name": "Detailed Analysis",
       "description": "In-depth financial analysis and advanced metrics",
       "pending": "Pending",
       "overdue": "Overdue"
@@ -17,187 +17,127 @@
       "name": "Forecasting",
       "description": "Financial projections and predictive analytics"
     },
-    "invoiceAging": {
-      
-      "label": "Outstanding Amount",
-      "period1": "0-30 days",
-      "period2": "31-60 days",
-      "period3": "61-90 days",
-      "period4": "90+ days"
-    },
-    "paymentVelocity": {
-      
-      "services": "Services"
-    },
-    "monthlyExpenses": {
-      
-      "may": "May",
-      "jun": "Jun"
+    "reportsInsights": {
+      "name": "Reports & Insights",
+      "description": "Comprehensive business intelligence and actionable insights"
     }
   },
-  "kpi": {
+  "kpis": {
     "totalRevenue": "Total Revenue",
-    "yoyGrowth": "Year-over-Year Growth",
-    "avgInvoiceValue": "Average Invoice Value",
-    "paymentTime": "Average Payment Time",
-    "paidInvoices": "Paid Invoices",
-    "overdueInvoices": "Overdue Invoices",
-    "activeClients": "Active Clients",
-    "newClients": "New Clients",
-    "performance": "Performance",
-    "vsPreviousMonth": "vs Previous Month",
     "totalInvoices": "Total Invoices",
-    "avgPaymentTime": "Average Payment Time"
+    "outstanding": "Outstanding",
+    "activeClients": "Active Clients",
+    "totalOutstanding": "Total Outstanding",
+    "profitMargin": "Profit Margin",
+    "clientRetention": "Client Retention",
+    "revenueGrowth": "Revenue Growth",
+    "financialHealth": "Financial Health",
+    "monthlyRecurringRevenue": "Monthly Recurring Revenue",
+    "customerAcquisitionCost": "Customer Acquisition Cost",
+    "avgRevenuePerClient": "Avg. Revenue Per Client",
+    "cashFlowRatio": "Cash Flow Ratio"
   },
   "charts": {
     "revenue": "Revenue",
     "revenueTitle": "Revenue Trend",
-    "invoiceStatusTitle": "Invoice Status",
-    "months": {
-      "january": "January",
-      "february": "February",
-      "march": "March",
-      "april": "April",
-      "may": "May",
-      "june": "June",
-      "july": "July",
-      "august": "August",
-      "september": "September",
-      "october": "October",
-      "november": "November",
-      "december": "December"
-    },
     "invoiceStatus": {
-      "paid": "Paid",
-      "pending": "Pending",
-      "overdue": "Overdue"
+      "title": "Invoice Status"
     },
     "invoiceAging": {
-      "label": "Invoice Aging",
-      "period1": "0-30 days",
-      "period2": "31-60 days",
-      "period3": "61-90 days",
-      "period4": "90+ days"
+      "title": "Invoice Aging"
+    },
+    "recentPayments": {
+      "title": "Recent Payments"
     },
     "paymentVelocity": {
-      "label": "Payment Velocity"
+      "title": "Payment Velocity"
     },
-    "invoiceGeneration": {
-      "label": "Invoice Generation"
+    "topClients": {
+      "title": "Top Clients"
     },
-    "revenueBreakdown": {
-      "consulting": "Consulting",
-      "products": "Products",
-      "services": "Services"
+    "invoiceConversion": {
+      "title": "Invoice Conversion Rate"
     },
-    "monthlyExpenses": {
-      "label": "Monthly Expenses"
-    },
-    "cashFlow": {
-      "label": "Cash Flow"
-    },
-    "profitMargin": {
-      "label": "Profit Margin"
-    },
-    "forecastProjection": {
-      "label": "Forecast Projection"
-    },
-    "interactiveAnalytics": "Interactive Financial Analytics",
-    "interactiveDesc": "Advanced charts with zoom, pan, and filtering capabilities",
+    "interactiveAnalytics": "Interactive Analytics",
+    "interactiveDescription": "Explore your financial data with interactive charts and filters.",
     "overview": "Overview",
-    "overviewDesc": "Complete view of income, expenses, and cash flow",
     "trends": "Trends",
-    "trendsDesc": "Moving averages and trend analysis",
-    "comparison": "Comparison", 
-    "comparisonDesc": "Compare income vs expenses by category",
+    "comparison": "Comparison",
     "distribution": "Distribution",
-    "distributionDesc": "Expense distribution by category",
-    "filters": "Chart Filters",
+    "interactiveDesc": "Dive deep into your financial data with interactive charts.",
+    "overviewDesc": "A high-level view of your key financial metrics.",
+    "trendsDesc": "Analyze trends and moving averages over time.",
+    "comparisonDesc": "Compare income and expenses across different categories.",
+    "distributionDesc": "Understand the distribution of your expenses.",
+    "filters": "Filters",
     "showIncome": "Show Income",
-    "showExpenses": "Show Expenses", 
+    "showExpenses": "Show Expenses",
     "showNetProfit": "Show Net Profit",
     "showTrends": "Show Trends",
-    "resetZoom": "Reset Zoom",
-    "incomeMovingAvg": "Income (7-day avg)",
-    "expenseMovingAvg": "Expenses (7-day avg)",
-    "interactionTips": "Chart Interaction Tips",
-    "hoverTooltip": "Hover over data points for detailed information",
-    "scrollZoom": "Scroll to zoom in/out on charts",
-    "dragPan": "Drag to pan across the chart",
-         "clickLegend": "Click legend items to show/hide data series",
-     "months": {
-       "jan": "Jan",
-       "feb": "Feb", 
-       "mar": "Mar",
-       "apr": "Apr",
-       "may": "May",
-       "jun": "Jun",
-       "jul": "Jul",
-       "aug": "Aug",
-       "sep": "Sep",
-       "oct": "Oct",
-       "nov": "Nov",
-       "dec": "Dec"
-     },
-     "revenueBreakdown": {
-       "consulting": "Consulting",
-       "products": "Products",
-       "services": "Services"
-     }
+    "interactionTips": "Interaction Tips",
+    "hoverTooltip": "Hover over data points for details.",
+    "scrollZoom": "Scroll to zoom in and out.",
+    "dragPan": "Click and drag to pan the chart.",
+    "clickLegend": "Click on legend items to toggle visibility."
   },
-  "timeSelector": {
-    "title": "Time Period Selector",
-    "last30Days": "Last 30 Days",
-    "last90Days": "Last 90 Days",
-    "presets": {
-      "today": "Today",
-      "yesterday": "Yesterday",
-      "thisWeek": "This Week",
-      "lastWeek": "Last Week",
-      "thisMonth": "This Month",
-      "lastMonth": "Last Month",
-      "thisQuarter": "This Quarter",
-      "thisYear": "This Year",
-      "ytd": "Year to Date",
-      "customPeriod": "Custom Period"
+  "metrics": {
+    "avgPaymentTime": "Avg. Payment Time",
+    "sent": "Sent",
+    "viewed": "Viewed",
+    "paid": "Paid",
+    "monthlyGrowth": "Monthly Growth",
+    "newClientsThisMonth": "New Clients This Month",
+    "aboveIndustryAvg": "Above Industry Avg",
+    "strongPosition": "Strong Position"
+  },
+  "forecasting": {
+    "revenueProjection": {
+      "title": "Revenue Projection"
     },
-    "compare": {
-      "comparePeriod": "Compare Period",
-      "yearOverYear": "Year over Year",
-      "monthOverMonth": "Month over Month",
-      "quarterOverQuarter": "Quarter over Quarter"
+    "projected": "Projected",
+    "actual": "Actual",
+    "target": "Target",
+    "sixMonthProjected": "6-Month Projected",
+    "expected": "Expected",
+    "conservative": "Conservative",
+    "growthTrend": {
+      "title": "Growth Trend"
+    },
+    "quarterlyGrowthRate": "Quarterly Growth Rate",
+    "revenueGrowth": "Revenue Growth",
+    "clientAcquisition": "Client Acquisition",
+    "avgInvoiceValue": "Avg. Invoice Value",
+    "budgetPlanning": {
+      "title": "Budget Planning"
+    },
+    "annualBudget": "Annual Budget",
+    "revenueTarget": "Revenue Target",
+    "operatingExpenses": "Operating Expenses",
+    "marketingBudget": "Marketing Budget",
+    "emergencyFund": "Emergency Fund",
+    "scenarioModeling": {
+      "title": "Scenario Modeling",
+      "bestCase": "Best Case",
+      "probability": "Probability",
+      "mostLikely": "Most Likely",
+      "worstCase": "Worst Case",
+      "you": "You",
+      "industry": "Industry"
+    },
+    "revenueBreakdown": {
+      "title": "Revenue Breakdown"
+    },
+    "inflow": "Inflow",
+    "outflow": "Outflow",
+    "profitMarginTrends": {
+      "title": "Profit Margin Trends"
+    },
+    "currentMargin": "Current Margin",
+    "financialHealth": {
+      "title": "Financial Health Score"
     }
   },
-  "status": {
-    "paid": "Paid",
-    "pending": "Pending",
-    "overdue": "Overdue"
-  },
-  "common": {
-    "loading": "Loading analytics...",
-    "noData": "No data available for the selected period.",
-    "error": "An error occurred while loading data.",
-    "retry": "Retry",
-    "refresh": "Refresh",
-    "refreshing": "Refreshing...",
-    "days": "days"
-  },
-  "errors": {
-    "loadFailed": "Failed to load analytics data"
-  },
-  "kpi": {
-    "totalRevenue": "Total Revenue",
-    "totalInvoices": "Total Invoices",
-    "activeClients": "Active Clients",
-    "avgPaymentTime": "Average Payment Time"
-  },
-  "insights": {
-    "title": "Insights",
-    "avgMonthlyRevenue": "Average Monthly Revenue",
-    "paymentRate": "Payment Rate",
-    "avgInvoiceValue": "Average Invoice Value"
-  },
-  "lastUpdated": "Last updated",
+  "days": "days",
   "pageTitle": "Financial Analytics",
   "pageSubtitle": "Deep dive into your business performance",
   "clientAnalytics": {
@@ -247,13 +187,17 @@
       "basedOnClientMetrics": "Based on client metrics and performance"
     },
     "actions": {
-      "viewDetails": "View Details",
-      "viewAll": "View All",
       "analyze": "Analyze",
       "drillDown": "Drill Down",
       "export": "Export Data",
-      "filter": "Filter"
+      "filter": "Filter",
+      "exportReport": "Export Report",
+      "scheduleReport": "Schedule Report"
     },
+    "viewDetails": "View Details",
+    "viewAll": "View All",
+    "viewReport": "View Report",
+    "editBudget": "Edit Budget",
     "loading": {
       "loadingClientAnalytics": "Loading client analytics...",
       "analyzing": "Analyzing client data..."
@@ -359,13 +303,85 @@
       "quarterOverQuarter": "Quarter over Quarter"
     }
   },
-  "totalRevenue": "Total Revenue",
-  "totalExpenses": "Total Expenses",
-  "activeClients": "Active Clients",
-  "profitMargin": "Profit Margin",
-  "revenue": "Revenue",
-  "active": "Active",
-  "newThisMonth": "New This Month",
-  "retention": "Retention",
-  "totalClients": "Total Clients"
+  "reports": {
+    "executiveSummary": {
+      "title": "Executive Summary"
+    },
+    "kpis": {
+      "title": "Key Performance Indicators"
+    },
+    "businessInsights": {
+      "title": "Business Insights"
+    },
+    "customBuilder": {
+      "title": "Custom Report Builder",
+      "reportType": "Report Type",
+      "dateRange": "Date Range",
+      "exportFormat": "Export Format",
+      "includeSections": "Include Sections"
+    },
+    "types": {
+      "financialSummary": "Financial Summary",
+      "clientAnalysis": "Client Analysis",
+      "revenueBreakdown": "Revenue Breakdown",
+      "performanceMetrics": "Performance Metrics",
+      "customDashboard": "Custom Dashboard"
+    },
+    "sections": {
+      "revenueAnalysis": "Revenue Analysis",
+      "clientMetrics": "Client Metrics",
+      "financialHealth": "Financial Health",
+      "cashFlow": "Cash Flow",
+      "profitMargins": "Profit Margins",
+      "growthTrends": "Growth Trends",
+      "benchmarks": "Benchmarks",
+      "recommendations": "Recommendations"
+    },
+    "industryBenchmarks": {
+      "title": "Industry Benchmarks",
+      "performanceVsIndustry": "Performance vs Industry"
+    },
+    "recommendations": {
+      "title": "Recommendations"
+    }
+  },
+  "insights": {
+    "clientRetention": {
+      "title": "Client Retention Analysis",
+      "description": "Analysis of client retention patterns and opportunities for improvement."
+    },
+    "profitability": {
+      "title": "Profitability Analysis"
+    },
+    "financialHealth": {
+      "title": "Financial Health Assessment"
+    }
+  },
+  "recommendations": {
+    "optimizeCashFlow": {
+      "title": "Optimize Cash Flow",
+      "description": "Improve cash flow management through better invoicing and payment collection strategies."
+    },
+    "expandClientBase": {
+      "title": "Expand Client Base",
+      "description": "Focus on acquiring new clients to diversify revenue streams and reduce dependency."
+    },
+    "costManagement": {
+      "title": "Cost Management",
+      "description": "Review and optimize operational costs to improve profit margins."
+    }
+  },
+  "dateRanges": {
+    "last30Days": "Last 30 Days",
+    "last3Months": "Last 3 Months",
+    "last6Months": "Last 6 Months",
+    "lastYear": "Last Year",
+    "customRange": "Custom Range"
+  },
+  "exportFormats": {
+    "pdfReport": "PDF Report",
+    "excelSpreadsheet": "Excel Spreadsheet",
+    "csvData": "CSV Data",
+    "powerpointPresentation": "PowerPoint Presentation"
+  }
 }

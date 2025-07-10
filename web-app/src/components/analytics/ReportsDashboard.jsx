@@ -12,7 +12,7 @@ import {
 } from '@heroicons/react/24/outline';
 
 const ReportsDashboard = ({ analytics }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(['analytics', 'common']);
   const [selectedReportType, setSelectedReportType] = useState('financial');
   const [reportPeriod, setReportPeriod] = useState('monthly');
   const [customDateRange, setCustomDateRange] = useState({ start: '', end: '' });

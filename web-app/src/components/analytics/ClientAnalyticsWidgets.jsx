@@ -95,7 +95,7 @@ const ClientAnalyticsWidgets = ({ dateRange, onDrillDown, className = "" }) => {
       const analytics = analyticsResult.data || {};
 
       // Calculate client overview metrics
-      const overview = calculateOverviewMetrics(clients, analytics);
+      const overview = calculateOverviewMetrics(analytics, t);
       
       // Calculate client segmentation (RFM analysis)
       const segmentation = calculateClientSegmentation(clients, analytics);
@@ -104,7 +104,7 @@ const ClientAnalyticsWidgets = ({ dateRange, onDrillDown, className = "" }) => {
       const growthTrends = calculateGrowthTrends(clients);
       
       // Calculate business health score
-      const healthScore = calculateBusinessHealthScore(overview, analytics);
+      const healthScore = calculateBusinessHealthScore(overview, analytics, t);
 
       // Calculate enhanced Phase 2 analytics
       const retentionMetrics = calculateRetentionMetrics(clients, analytics);
@@ -160,31 +160,65 @@ const ClientAnalyticsWidgets = ({ dateRange, onDrillDown, className = "" }) => {
   };
 
   // Helper functions for calculations
-  const calculateOverviewMetrics = (clients, analytics) => {
-    const now = new Date();
-    const thisMonth = new Date(now.getFullYear(), now.getMonth(), 1);
-    const lastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1);
-    
-    const newThisMonth = clients.filter(client => 
-      new Date(client.created_at) >= thisMonth
-    ).length;
-    
-    const newLastMonth = clients.filter(client => {
-      const createdAt = new Date(client.created_at);
-      return createdAt >= lastMonth && createdAt < thisMonth;
-    }).length;
+  const calculateOverviewMetrics = (data, t) => {
+    if (!data || !data.invoices) {
+      return {
+        monthlyGrowth: { value: '0%', label: t('analytics:clientAnalytics.metrics.monthlyGrowth'), color: 'text-green-600', icon: TrendingUp },
+        newClientsThisMonth: { value: 0, label: t('analytics:clientAnalytics.metrics.newClientsThisMonth'), color: 'text-blue-600', icon: Users },
+        retentionRate: { value: '0%', label: t('analytics:clientAnalytics.metrics.aboveIndustryAvg'), color: 'text-purple-600', icon: Target },
+        clientSatisfaction: { value: '0%', label: t('analytics:clientAnalytics.metrics.strongPosition'), color: 'text-orange-600', icon: Smile },
+      };
+    }
 
-    const growth = newLastMonth > 0 ? ((newThisMonth - newLastMonth) / newLastMonth * 100) : 0;
+    const now = new Date();
+    const oneMonthAgo = new Date(now.getFullYear(), now.getMonth() - 1, now.getDate());
+
+    const currentMonthInvoices = data.invoices.filter(inv => new Date(inv.invoice_date) >= oneMonthAgo);
+    const previousMonthInvoices = data.invoices.filter(inv => {
+      const invDate = new Date(inv.invoice_date);
+      return invDate < oneMonthAgo && invDate >= new Date(now.getFullYear(), now.getMonth() - 2, now.getDate());
+    });
+
+    const currentMonthRevenue = currentMonthInvoices.reduce((acc, inv) => acc + inv.total_amount, 0);
+    const previousMonthRevenue = previousMonthInvoices.reduce((acc, inv) => acc + inv.total_amount, 0);
+
+    const monthlyGrowth = previousMonthRevenue === 0 && currentMonthRevenue > 0 ? 100 : previousMonthRevenue !== 0 ? ((currentMonthRevenue - previousMonthRevenue) / previousMonthRevenue) * 100 : 0;
+
+    const newClientsThisMonth = new Set(
+      currentMonthInvoices
+        .filter(inv => !data.invoices.some(pInv => pInv.client_id === inv.client_id && new Date(pInv.invoice_date) < oneMonthAgo))
+        .map(inv => inv.client_id)
+    ).size;
+    
+    // Dummy data for retention and satisfaction until real logic is available
+    const retentionRate = 95.5;
+    const clientSatisfaction = 92;
 
     return {
-      totalClients: clients.length,
-      activeClients: analytics.totalClients || clients.length,
-      newThisMonth,
-      growth,
-      retention: 92, // Mock retention rate - would need historical data
-      avgRevenue: analytics.totalClients > 0 ? 
-        Object.values(analytics.clientMetrics || {})
-          .reduce((sum, client) => sum + client.totalRevenue, 0) / analytics.totalClients : 0
+      monthlyGrowth: {
+        value: `${monthlyGrowth.toFixed(1)}%`,
+        label: t('analytics:clientAnalytics.metrics.monthlyGrowth'),
+        color: 'text-green-600',
+        icon: TrendingUp,
+      },
+      newClientsThisMonth: {
+        value: newClientsThisMonth,
+        label: t('analytics:clientAnalytics.metrics.newClientsThisMonth'),
+        color: 'text-blue-600',
+        icon: Users,
+      },
+      retentionRate: {
+        value: `${retentionRate.toFixed(1)}%`,
+        label: t('analytics:clientAnalytics.metrics.aboveIndustryAvg'),
+        color: 'text-purple-600',
+        icon: Target,
+      },
+      clientSatisfaction: {
+        value: `${clientSatisfaction}%`,
+        label: t('analytics:clientAnalytics.metrics.strongPosition'),
+        color: 'text-orange-600',
+        icon: Smile,
+      },
     };
   };
 
@@ -254,41 +288,76 @@ const ClientAnalyticsWidgets = ({ dateRange, onDrillDown, className = "" }) => {
     return last6Months;
   };
 
-  const calculateBusinessHealthScore = (overview, analytics) => {
+  const calculateBusinessHealthScore = (overview, analytics, t) => {
     let score = 0;
-    
+    const metrics = [];
+
     // Client growth (30%)
-    if (overview.growth > 10) score += 30;
-    else if (overview.growth > 0) score += 20;
-    else if (overview.growth > -10) score += 10;
-    
+    if (overview.growth > 10) {
+        score += 30;
+        metrics.push({ name: t('metrics.strongGrowth'), value: overview.growth, weight: 30 });
+    } else if (overview.growth > 0) {
+        score += 20;
+        metrics.push({ name: t('metrics.positiveGrowth'), value: overview.growth, weight: 20 });
+    } else if (overview.growth > -10) {
+        score += 10;
+        metrics.push({ name: t('metrics.stableGrowth'), value: overview.growth, weight: 10 });
+    }
+
     // Retention rate (25%)
-    if (overview.retention > 90) score += 25;
-    else if (overview.retention > 80) score += 20;
-    else if (overview.retention > 70) score += 15;
-    else if (overview.retention > 60) score += 10;
-    
+    if (overview.retention > 90) {
+        score += 25;
+        metrics.push({ name: t('metrics.excellentRetention'), value: overview.retention, weight: 25 });
+    } else if (overview.retention > 80) {
+        score += 20;
+        metrics.push({ name: t('metrics.goodRetention'), value: overview.retention, weight: 20 });
+    } else if (overview.retention > 70) {
+        score += 15;
+        metrics.push({ name: t('metrics.fairRetention'), value: overview.retention, weight: 15 });
+    } else if (overview.retention > 60) {
+        score += 10;
+        metrics.push({ name: t('metrics.weakRetention'), value: overview.retention, weight: 10 });
+    }
+
     // Payment behavior (25%)
     const paymentBehavior = analytics.paymentBehavior || {};
     const excellentPayments = paymentBehavior.excellent?.percentage || 0;
-    if (excellentPayments > 80) score += 25;
-    else if (excellentPayments > 60) score += 20;
-    else if (excellentPayments > 40) score += 15;
-    else if (excellentPayments > 20) score += 10;
-    
+    if (excellentPayments > 80) {
+        score += 25;
+        metrics.push({ name: t('metrics.excellentPayments'), value: excellentPayments, weight: 25 });
+    } else if (excellentPayments > 60) {
+        score += 20;
+        metrics.push({ name: t('metrics.goodPayments'), value: excellentPayments, weight: 20 });
+    } else if (excellentPayments > 40) {
+        score += 15;
+        metrics.push({ name: t('metrics.fairPayments'), value: excellentPayments, weight: 15 });
+    } else if (excellentPayments > 20) {
+        score += 10;
+        metrics.push({ name: t('metrics.weakPayments'), value: excellentPayments, weight: 10 });
+    }
+
     // Client diversity (20%)
     const topClientRevenue = analytics.topClients?.[0]?.totalRevenue || 0;
     const totalRevenue = Object.values(analytics.clientMetrics || {})
-      .reduce((sum, client) => sum + client.totalRevenue, 0);
+        .reduce((sum, client) => sum + client.totalRevenue, 0);
     const concentration = totalRevenue > 0 ? (topClientRevenue / totalRevenue) * 100 : 0;
-    
-    if (concentration < 20) score += 20;
-    else if (concentration < 30) score += 15;
-    else if (concentration < 40) score += 10;
-    else if (concentration < 50) score += 5;
-    
-    return Math.min(score, 100);
-  };
+
+    if (concentration < 20) {
+        score += 20;
+        metrics.push({ name: t('metrics.diverseClientBase'), value: concentration, weight: 20 });
+    } else if (concentration < 30) {
+        score += 15;
+        metrics.push({ name: t('metrics.moderateConcentration'), value: concentration, weight: 15 });
+    } else if (concentration < 40) {
+        score += 10;
+        metrics.push({ name: t('metrics.highConcentration'), value: concentration, weight: 10 });
+    } else if (concentration < 50) {
+        score += 5;
+        metrics.push({ name: t('metrics.veryHighConcentration'), value: concentration, weight: 5 });
+    }
+
+    return { score: Math.min(score, 100), metrics };
+};
 
   // Phase 2: Enhanced analytics calculation functions
   const calculateRetentionMetrics = (clients, analytics) => {
@@ -672,7 +741,72 @@ const ClientAnalyticsWidgets = ({ dateRange, onDrillDown, className = "" }) => {
                 <AlertTriangle className="w-8 h-8 text-red-600 mx-auto" />
               )}
             </div>
-            <div className={`text-4xl font-bold mb-2 ${
+            <div className={`text-4xl font-bold mb-2 ${healthScoreColor}`}>
+              {clientData.healthScore.score}/100
+            </div>
+            <div className="text-lg font-medium text-gray-900 dark:text-white mb-4">
+              {healthScoreLabel}
+            </div>
+            
+            <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3 mb-4">
+              <div
+                className={`h-3 rounded-full transition-all duration-500 ${healthScoreBgColor}`}
+                style={{ width: `${clientData.healthScore.score}%` }}
+              />
+            </div>
+            
+            <div className="text-sm text-gray-600 dark:text-gray-400">
+              {t('analytics:clientAnalytics.metrics.basedOnClientMetrics')}
+            </div>
+          </div>
+        </div>
+
+        {/* Top Clients Widget */}
+        <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+          <div className="flex items-center justify-between mb-6">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+              {t('analytics:clientAnalytics.topClients')}
+            </h3>
+            <div className="flex items-center space-x-2">
+              <Star className="w-5 h-5 text-yellow-500" />
+              <button
+                onClick={() => handleDrillDown('topClients')}
+                className="text-blue-600 hover:text-blue-700 text-sm font-medium"
+              >
+                {t('analytics:clientAnalytics.actions.viewAll')}
+              </button>
+            </div>
+          </div>
+          
+          <div className="space-y-3">
+            {clientData.topClients.slice(0, 5).map((client, index) => (
+              <div key={client.client?.id || index} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                <div className="flex items-center space-x-3">
+                  <div className="w-8 h-8 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center">
+                    <span className="text-sm font-medium text-blue-600 dark:text-blue-400">
+                      {client.rank || index + 1}
+                    </span>
+                  </div>
+                  <div>
+                    <div className="font-medium text-gray-900 dark:text-white">
+                      {client.client?.full_name || client.client?.name || `Client ${index + 1}`}
+                    </div>
+                    <div className="text-sm text-gray-500">
+                      {client.invoiceCount || 0} {t('analytics:clientAnalytics.metrics.invoices')}
+                    </div>
+                  </div>
+                </div>
+                <div className="text-right">
+                  <div className="font-semibold text-gray-900 dark:text-white">
+                    {formatCurrency(client.totalRevenue || 0)}
+                  </div>
+                                      <div className="text-sm text-gray-500">
+                      {client.averagePaymentTime || 0} {t('analytics:clientAnalytics.metrics.avgDays')}
+                    </div>
+                </div>
+              </div>
+            ))}
+          </div>
               clientData.healthScore >= 80 ? 'text-green-600' :
               clientData.healthScore >= 60 ? 'text-blue-600' :
               clientData.healthScore >= 40 ? 'text-yellow-600' : 'text-red-600'
@@ -801,15 +935,14 @@ const ClientAnalyticsWidgets = ({ dateRange, onDrillDown, className = "" }) => {
         </div>
       )}
       
-      {/* 
-      // Phase 2: Retention Analytics View 
+      {/* Phase 2: Retention Analytics View */}
       {activeView === 'retention' && (
         <div className="space-y-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-6">
             <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                  {t('analytics:clientAnalytics.yearlyRetention')}
+                  {t('yearlyRetention')}
                 </h3>
                 <Target className="w-5 h-5 text-green-500" />
               </div>
@@ -821,7 +954,7 @@ const ClientAnalyticsWidgets = ({ dateRange, onDrillDown, className = "" }) => {
             <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                  {t('analytics:clientAnalytics.quarterlyRetention')}
+                  {t('quarterlyRetention')}
                 </h3>
                 <TrendingUp className="w-5 h-5 text-blue-500" />
               </div>
@@ -833,7 +966,7 @@ const ClientAnalyticsWidgets = ({ dateRange, onDrillDown, className = "" }) => {
             <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                  {t('analytics:clientAnalytics.churnRate')}
+                  {t('churnRate')}
                 </h3>
                 <AlertTriangle className="w-5 h-5 text-red-500" />
               </div>
@@ -845,7 +978,7 @@ const ClientAnalyticsWidgets = ({ dateRange, onDrillDown, className = "" }) => {
             <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                  {t('analytics:clientAnalytics.monthlyRetention')}
+                  {t('monthlyRetention')}
                 </h3>
                 <Activity className="w-5 h-5 text-purple-500" />
               </div>
@@ -857,19 +990,19 @@ const ClientAnalyticsWidgets = ({ dateRange, onDrillDown, className = "" }) => {
         </div>
       )}
       
-      // Phase 2: Behavior Analytics View
+      {/* Phase 2: Behavior Analytics View */}
       {activeView === 'behavior' && (
         <div className="space-y-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-                {t('analytics:clientAnalytics.paymentPatterns')}
+                {t('paymentPatterns')}
               </h3>
               <div className="space-y-3">
                 {Object.entries(clientData.behaviorAnalysis?.paymentPatterns || {}).map(([key, value]) => (
                   <div key={key} className="flex justify-between items-center">
                     <span className="text-gray-600 dark:text-gray-400 capitalize">
-                      {key.replace(/([A-Z])/g, ' $1').trim()}
+                      {t(key)}
                     </span>
                     <span className="font-medium text-gray-900 dark:text-white">{value}</span>
                   </div>
@@ -879,12 +1012,12 @@ const ClientAnalyticsWidgets = ({ dateRange, onDrillDown, className = "" }) => {
             
             <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-                {t('analytics:clientAnalytics.engagementLevels')}
+                {t('engagementLevels')}
               </h3>
               <div className="space-y-3">
                 {Object.entries(clientData.behaviorAnalysis?.engagementLevels || {}).map(([key, value]) => (
                   <div key={key} className="flex justify-between items-center">
-                    <span className="text-gray-600 dark:text-gray-400 capitalize">{key}</span>
+                    <span className="text-gray-600 dark:text-gray-400 capitalize">{t(key)}</span>
                     <span className="font-medium text-gray-900 dark:text-white">{value}%</span>
                   </div>
                 ))}
@@ -894,18 +1027,18 @@ const ClientAnalyticsWidgets = ({ dateRange, onDrillDown, className = "" }) => {
         </div>
       )}
       
-      // Phase 2: Predictive Insights View
+      {/* Phase 2: Predictive Insights View */}
       {activeView === 'insights' && (
         <div className="space-y-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-                {t('analytics:clientAnalytics.revenueForecasting')}
+                {t('revenueForecasting')}
               </h3>
               <div className="space-y-4">
                 <div className="flex justify-between items-center">
                   <span className="text-gray-600 dark:text-gray-400">
-                    {t('analytics:clientAnalytics.nextMonth')}
+                    {t('nextMonth')}
                   </span>
                   <span className="font-medium text-gray-900 dark:text-white">
                     {formatCurrency(clientData.predictiveInsights?.revenueForecasting?.nextMonth || 0)}
@@ -913,7 +1046,7 @@ const ClientAnalyticsWidgets = ({ dateRange, onDrillDown, className = "" }) => {
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-gray-600 dark:text-gray-400">
-                    {t('analytics:clientAnalytics.nextQuarter')}
+                    {t('nextQuarter')}
                   </span>
                   <span className="font-medium text-gray-900 dark:text-white">
                     {formatCurrency(clientData.predictiveInsights?.revenueForecasting?.nextQuarter || 0)}
@@ -921,7 +1054,7 @@ const ClientAnalyticsWidgets = ({ dateRange, onDrillDown, className = "" }) => {
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-gray-600 dark:text-gray-400">
-                    {t('analytics:clientAnalytics.confidence')}
+                    {t('confidence')}
                   </span>
                   <span className="font-medium text-green-600">
                     {clientData.predictiveInsights?.revenueForecasting?.confidence || 0}%
@@ -932,20 +1065,21 @@ const ClientAnalyticsWidgets = ({ dateRange, onDrillDown, className = "" }) => {
             
             <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-                {t('analytics:clientAnalytics.recommendations')}
+                {t('recommendations')}
               </h3>
               <div className="space-y-2">
                 {(clientData.predictiveInsights?.recommendations || []).map((rec, index) => (
                   <div key={index} className="flex items-start space-x-2">
                     <CheckCircle className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
-                    <span className="text-sm text-gray-600 dark:text-gray-400">{rec}</span>
+                    <span className="text-sm text-gray-600 dark:text-gray-400">{t(rec)}</span>
                   </div>
                 ))}
               </div>
             </div>
           </div>
         </div>
-      )}      */}
+      )}
+    </div>
     </div>
   );
 };

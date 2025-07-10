@@ -1,0 +1,20 @@
+{
+  "paymentVelocity": "Velocità di Pagamento",
+  "quarterlyTargets": "Obiettivi Trimestrali",
+  "services": "Servizi",
+  "products": "Prodotti",
+  "consulting": "Consulenza",
+  "monthlyExpenses": "Spese Mensili",
+  "averageMonthly": "Media Mensile",
+  "cashFlowAnalysisReport": "Report Analisi Flusso di Cassa",
+  "cashFlow": "Flusso di Cassa",
+  "excellent": "Eccellente",
+  "debtRatio": "Rapporto di Indebitamento",
+  "good": "Buono",
+  "liquidity": "Liquidità",
+  "strong": "Forte",
+  "expenseBreakdown": "Dettaglio Spese",
+  "operations": "Operazioni",
+  "marketing": "Marketing",
+  "admin": "Amministrazione"
+}

@@ -271,8 +271,8 @@ const InteractiveFinancialCharts = ({ data, period = 'month', onPeriodChange, cl
   const generateComparisonChartData = useMemo(() => {
     if (!financialData?.income?.byCategory || !financialData?.expenses?.byCategory) return null;
 
-    const incomeCategories = financialData.income.byCategory.slice(0, 5);
-    const expenseCategories = financialData.expenses.byCategory.slice(0, 5);
+    const incomeCategories = Object.values(financialData.income.byCategory).slice(0, 5);
+    const expenseCategories = Object.values(financialData.expenses.byCategory).slice(0, 5);
 
     const allCategories = [
       ...new Set([
@@ -315,7 +315,7 @@ const InteractiveFinancialCharts = ({ data, period = 'month', onPeriodChange, cl
   const generateDistributionChartData = useMemo(() => {
     if (!financialData?.expenses?.byCategory) return null;
 
-    const categories = financialData.expenses.byCategory.slice(0, 6);
+    const categories = Object.values(financialData.expenses.byCategory).slice(0, 6);
 
     return {
       labels: categories.map(cat => cat.category),
