@@ -372,8 +372,8 @@ export default function Inventory() {
               <div className='bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border border-blue-200 hover:border-blue-300'>
                 <div className='flex items-start justify-between mb-2'>
                   <div className='flex items-center gap-3'>
-                    <div className='w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center shadow-md'>
-                      <CurrencyDollarIcon className='w-5 h-5 text-white' />
+                    <div className='w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105'>
+                      <CurrencyDollarIcon className='w-6 h-6 text-white' />
                     </div>
                     <div>
                       <p className='text-card-title text-blue-700'>
@@ -407,8 +407,8 @@ export default function Inventory() {
               <div className='bg-gradient-to-br from-red-50 to-red-100 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border border-red-200 hover:border-red-300'>
                 <div className='flex items-start justify-between mb-2'>
                   <div className='flex items-center gap-3'>
-                    <div className='w-12 h-12 bg-gradient-to-br from-red-500 to-red-600 rounded-full flex items-center justify-center shadow-md'>
-                      <ExclamationTriangleIcon className='w-5 h-5 text-white' />
+                    <div className='w-12 h-12 bg-gradient-to-br from-red-500 to-red-600 rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105'>
+                      <ExclamationTriangleIcon className='w-6 h-6 text-white' />
                     </div>
                     <div>
                       <p className='text-card-title text-red-700'>
@@ -440,8 +440,8 @@ export default function Inventory() {
               <div className='bg-gradient-to-br from-green-50 to-green-100 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border border-green-200 hover:border-green-300'>
                 <div className='flex items-start justify-between mb-4'>
                   <div className='flex items-center gap-3'>
-                    <div className='w-12 h-12 bg-gradient-to-br from-green-500 to-green-600 rounded-full flex items-center justify-center shadow-md'>
-                      <ArrowPathIcon className='w-5 h-5 text-white' />
+                    <div className='w-12 h-12 bg-gradient-to-br from-green-500 to-green-600 rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105'>
+                      <ArrowPathIcon className='w-6 h-6 text-white' />
                     </div>
                     <div>
                       <p className='text-card-title text-green-700'>

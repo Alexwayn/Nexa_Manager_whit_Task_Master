@@ -28,6 +28,7 @@
     "outstanding": "Outstanding",
     "activeClients": "Active Clients",
     "totalOutstanding": "Total Outstanding",
+    "paidInvoices": "Paid Invoices",
     "profitMargin": "Profit Margin",
     "clientRetention": "Client Retention",
     "revenueGrowth": "Revenue Growth",
@@ -44,7 +45,11 @@
       "title": "Invoice Status"
     },
     "invoiceAging": {
-      "title": "Invoice Aging"
+      "title": "Invoice Aging",
+      "period1": "0-30 days",
+      "period2": "31-60 days",
+      "period3": "61-90 days",
+      "period4": "90+ days"
     },
     "recentPayments": {
       "title": "Recent Payments"
@@ -325,6 +330,7 @@
       "clientAnalysis": "Client Analysis",
       "revenueBreakdown": "Revenue Breakdown",
       "performanceMetrics": "Performance Metrics",
+      "performanceMetric": "Performance Metric",
       "customDashboard": "Custom Dashboard"
     },
     "sections": {
@@ -383,5 +389,91 @@
     "excelSpreadsheet": "Excel Spreadsheet",
     "csvData": "CSV Data",
     "powerpointPresentation": "PowerPoint Presentation"
+  },
+  "interactiveCard": {
+    "timeRanges": {
+      "daily": "Daily",
+      "weekly": "Weekly",
+      "monthly": "Monthly",
+      "yearly": "Yearly"
+    },
+    "viewOptions": {
+      "overview": "Overview",
+      "revenueSources": "Revenue Sources",
+      "trends": "Trends",
+      "breakdown": "Breakdown",
+      "userBehavior": "User Behavior",
+      "userFlows": "User Flows",
+      "engagement": "Engagement",
+      "funnelAnalysis": "Funnel Analysis",
+      "conversionStages": "Conversion Stages",
+      "optimization": "Optimization",
+      "keyMetrics": "Key Metrics",
+      "efficiency": "Efficiency",
+      "benchmarks": "Benchmarks",
+      "details": "Details"
+    },
+    "controls": {
+      "timeRange": "Time Range",
+      "view": "View",
+      "export": "Export",
+      "filter": "Filter"
+    },
+    "charts": {
+      "revenueSources": "Revenue Sources",
+      "userBehaviorFlows": "User Behavior Flows",
+      "conversionFunnel": "Conversion Funnel",
+      "keyPerformanceIndicators": "Key Performance Indicators"
+    },
+    "funnel": {
+      "visitors": "Visitors",
+      "leads": "Leads",
+      "prospects": "Prospects",
+      "customers": "Customers"
+    },
+    "kpis": {
+      "revenueGrowth": "Revenue Growth",
+      "customerAcquisition": "Customer Acquisition",
+      "churnRate": "Churn Rate",
+      "averageOrderValue": "Average Order Value"
+    },
+    "views": {
+      "overview": "Overview",
+      "revenueSources": "Revenue Sources",
+      "trends": "Trends",
+      "breakdown": "Breakdown",
+      "userBehavior": "User Behavior",
+      "userFlows": "User Flows",
+      "engagement": "Engagement",
+      "funnelAnalysis": "Funnel Analysis",
+      "conversionStages": "Conversion Stages",
+      "optimization": "Optimization",
+      "keyMetrics": "Key Metrics",
+      "efficiency": "Efficiency",
+      "benchmarks": "Benchmarks",
+      "details": "Details"
+    },
+    "timeRange": {
+      "daily": "Daily",
+      "weekly": "Weekly",
+      "monthly": "Monthly",
+      "yearly": "Yearly",
+      "label": "Time Range"
+    },
+    "view": {
+      "label": "View"
+    },
+    "conversion": "conversion",
+    "noDataAvailable": "No data available",
+    "detailedInfo": "Detailed information about {{title}}",
+    "export": "Export",
+    "filter": "Filter",
+    "value": "Value",
+    "rate": "Rate"
+  },
+  "status": {
+    "paid": "Paid",
+    "pending": "Pending",
+    "overdue": "Overdue"
   }
 }

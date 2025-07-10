@@ -45,6 +45,7 @@
     "outstanding": "In Sospeso",
     "activeClients": "Clienti Attivi",
     "totalOutstanding": "Totale in Sospeso",
+    "paidInvoices": "Fatture Pagate",
     "profitMargin": "Margine di Profitto",
     "clientRetention": "Retention Clienti",
     "revenueGrowth": "Crescita dei Ricavi",
@@ -482,6 +483,7 @@
        "clientAnalysis": "Analisi Clienti",
        "revenueBreakdown": "Dettaglio Ricavi",
        "performanceMetrics": "Metriche di Performance",
+    "performanceMetric": "Metrica di performance",
        "customDashboard": "Dashboard Personalizzata"
      },
     "sections": {
@@ -540,5 +542,86 @@
      "excelSpreadsheet": "Foglio Excel",
      "csvData": "Dati CSV",
      "powerpointPresentation": "Presentazione PowerPoint"
-    }
-}
+    },
+  "interactiveCard": {
+    "timeRanges": {
+      "daily": "Giornaliero",
+      "weekly": "Settimanale",
+      "monthly": "Mensile",
+      "yearly": "Annuale"
+    },
+    "viewOptions": {
+      "overview": "Panoramica",
+      "revenueSources": "Fonti di Ricavo",
+      "trends": "Tendenze",
+      "breakdown": "Dettaglio",
+      "userBehavior": "Comportamento Utenti",
+      "userFlows": "Flussi Utenti",
+      "engagement": "Coinvolgimento",
+      "funnelAnalysis": "Analisi Funnel",
+      "conversionStages": "Fasi di Conversione",
+      "optimization": "Ottimizzazione",
+      "keyMetrics": "Metriche Chiave",
+      "efficiency": "Efficienza",
+      "benchmarks": "Benchmark",
+      "details": "Dettagli"
+    },
+    "controls": {
+       "timeRange": "Intervallo Temporale",
+       "view": "Vista",
+       "export": "Esporta",
+       "filter": "Filtra"
+     },
+     "charts": {
+       "revenueSources": "Fonti di Ricavo",
+       "userBehaviorFlows": "Flussi Comportamento Utenti",
+       "conversionFunnel": "Funnel di Conversione",
+       "keyPerformanceIndicators": "Indicatori Chiave di Performance"
+     },
+     "funnel": {
+       "visitors": "Visitatori",
+       "leads": "Lead",
+       "prospects": "Prospect",
+       "customers": "Clienti"
+     },
+     "kpis": {
+       "revenueGrowth": "Crescita Ricavi",
+       "customerAcquisition": "Acquisizione Clienti",
+       "churnRate": "Tasso di Abbandono",
+       "averageOrderValue": "Valore Medio Ordine"
+     },
+     "views": {
+       "overview": "Panoramica",
+       "revenueSources": "Fonti di Ricavo",
+       "trends": "Tendenze",
+       "breakdown": "Dettaglio",
+       "userBehavior": "Comportamento Utenti",
+       "userFlows": "Flussi Utenti",
+       "engagement": "Coinvolgimento",
+       "funnelAnalysis": "Analisi Funnel",
+       "conversionStages": "Fasi di Conversione",
+       "optimization": "Ottimizzazione",
+       "keyMetrics": "Metriche Chiave",
+       "efficiency": "Efficienza",
+       "benchmarks": "Benchmark",
+       "details": "Dettagli"
+     },
+     "timeRange": {
+       "daily": "Giornaliero",
+       "weekly": "Settimanale",
+       "monthly": "Mensile",
+       "yearly": "Annuale",
+       "label": "Intervallo Temporale"
+     },
+     "view": {
+       "label": "Vista"
+     },
+     "conversion": "conversione",
+     "noDataAvailable": "Nessun dato disponibile",
+     "detailedInfo": "Informazioni dettagliate su {{title}}",
+     "export": "Esporta",
+     "filter": "Filtra",
+     "value": "Valore",
+     "rate": "Tasso"
+   }
+ }

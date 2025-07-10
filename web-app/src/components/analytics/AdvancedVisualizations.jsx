@@ -17,7 +17,7 @@ import { Line, Bar, Doughnut } from 'react-chartjs-2';
 import {
   CalendarIcon,
   MapPinIcon,
-  TrendingUpIcon,
+  ArrowTrendingUpIcon,
   UsersIcon,
   FunnelIcon,
   ChartBarIcon,
@@ -434,7 +434,7 @@ const AdvancedVisualizations = ({ analytics }) => {
     },
     predictive: {
       component: renderPredictiveAnalytics,
-      icon: TrendingUpIcon,
+      icon: ArrowTrendingUpIcon,
       title: 'Predictive Analytics',
     },
   };

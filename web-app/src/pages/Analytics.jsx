@@ -9,6 +9,7 @@ import clientService from '@lib/clientService';
 import Logger from '@utils/Logger';
 import { getUserIdForUuidTables } from '@utils/userIdConverter';
 import ErrorBoundary from '@components/common/ErrorBoundary';
+import InteractiveAnalyticsCard from '../components/InteractiveAnalyticsCard';
 import {
   ChevronDownIcon,
   ArrowRightIcon,
@@ -502,275 +503,171 @@ const Analytics = () => {
             {/* Tab Content */}
             {activeTab === 'invoice-analytics' && (
               <div className="space-y-8">
-                {/* Key Metrics Cards */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                  <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border border-green-200 hover:border-green-300">
-                    <div className="flex items-center">
-                      <div className="flex-shrink-0">
-                        <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-green-600 rounded-full flex items-center justify-center shadow-md">
-                          <CurrencyDollarIcon className="h-6 w-6 text-white" />
-                        </div>
-                      </div>
-                      <div className="ml-4">
-                        <p className="text-card-title text-green-700">{t('kpis.totalRevenue')}</p>
-                        <p className="text-kpi-value text-green-900">€{financialMetrics.totalRevenue.toLocaleString()}</p>
-                      </div>
-                    </div>
-                  </div>
+                {/* Interactive Analytics Cards */}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                  <InteractiveAnalyticsCard
+                    title={<span className="text-blue-600">{t('kpis.totalRevenue')}</span>}
+                    icon={CurrencyDollarIcon}
+                    value={<span className="text-blue-700">{`€${financialMetrics.totalRevenue.toLocaleString()}`}</span>}
+                    subtitle={<span className="text-blue-500">Monthly revenue</span>}
+                    cardType="revenue"
+                    gradient="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border border-blue-200 hover:border-blue-300"
+                    data={[
+                      { name: 'Product Sales', value: financialMetrics.totalRevenue * 0.6 },
+                      { name: 'Services', value: financialMetrics.totalRevenue * 0.25 },
+                      { name: 'Subscriptions', value: financialMetrics.totalRevenue * 0.15 },
+                      { name: 'Consulting', value: financialMetrics.totalRevenue * 0.1 },
+                      { name: 'Licensing', value: financialMetrics.totalRevenue * 0.05 },
+                      { name: 'Other', value: financialMetrics.totalRevenue * 0.03 }
+                    ]}
+                  />
                   
-                  <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border border-blue-200 hover:border-blue-300">
-                    <div className="flex items-center">
-                      <div className="flex-shrink-0">
-                        <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center shadow-md">
-                          <DocumentTextIcon className="h-6 w-6 text-white" />
-                        </div>
-                      </div>
-                      <div className="ml-4">
-                        <p className="text-card-title text-blue-700">{t('kpis.totalInvoices')}</p>
-                        <p className="text-kpi-value text-blue-900">{analytics?.data?.invoices?.length || 0}</p>
-                      </div>
-                    </div>
-                  </div>
+                  <InteractiveAnalyticsCard
+                    title={<span className="text-green-600">User Activity</span>}
+                    icon={UserGroupIcon}
+                    value={<span className="text-green-700">{clientMetrics.activeClients.toString()}</span>}
+                    subtitle={<span className="text-green-500">Active users this month</span>}
+                    cardType="user-activity"
+                    gradient="bg-gradient-to-br from-green-50 to-green-100 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border border-green-200 hover:border-green-300"
+                    data={[
+                      { name: 'Daily Active', value: Math.floor(clientMetrics.activeClients * 0.8) },
+                      { name: 'Weekly Active', value: Math.floor(clientMetrics.activeClients * 0.9) },
+                      { name: 'Monthly Active', value: clientMetrics.activeClients },
+                      { name: 'New Users', value: clientMetrics.newClients },
+                      { name: 'Returning Users', value: Math.floor(clientMetrics.activeClients * 0.7) }
+                    ]}
+                  />
                   
-                  <div className="bg-gradient-to-br from-yellow-50 to-yellow-100 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border border-yellow-200 hover:border-yellow-300">
-                    <div className="flex items-center">
-                      <div className="flex-shrink-0">
-                        <div className="w-12 h-12 bg-gradient-to-br from-yellow-500 to-yellow-600 rounded-full flex items-center justify-center shadow-md">
-                          <ClockIcon className="h-6 w-6 text-white" />
-                        </div>
-                      </div>
-                      <div className="ml-4">
-                        <p className="text-card-title text-yellow-700">{t('kpis.outstanding')}</p>
-                        <p className="text-kpi-value text-yellow-900">€{outstandingAmount.toLocaleString()}</p>
-                      </div>
-                    </div>
-                  </div>
+                  <InteractiveAnalyticsCard
+                    title={<span className="text-red-600">Conversion Rate</span>}
+                    icon={ArrowTrendingUpIcon}
+                    value={<span className="text-red-700">12.5%</span>}
+                    subtitle={<span className="text-red-500">Lead to customer conversion</span>}
+                    cardType="conversion"
+                    gradient="bg-gradient-to-br from-red-50 to-red-100 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border border-red-200 hover:border-red-300"
+                    data={[
+                      { stage: 'Visitors', value: 10000, percentage: 100 },
+                      { stage: 'Leads', value: 2500, percentage: 25 },
+                      { stage: 'Prospects', value: 750, percentage: 7.5 },
+                      { stage: 'Customers', value: 150, percentage: 1.5 }
+                    ]}
+                  />
                   
-                  <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border border-purple-200 hover:border-purple-300">
-                    <div className="flex items-center">
-                      <div className="flex-shrink-0">
-                        <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-purple-600 rounded-full flex items-center justify-center shadow-md">
-                          <UserGroupIcon className="h-6 w-6 text-white" />
-                        </div>
-                      </div>
-                      <div className="ml-4">
-                        <p className="text-card-title text-purple-700">{t('kpis.activeClients')}</p>
-                        <p className="text-kpi-value text-purple-900">{clientMetrics.activeClients}</p>
-                      </div>
-                    </div>
-                  </div>
+                  <InteractiveAnalyticsCard
+                    title={<span className="text-purple-600">Performance Score</span>}
+                    icon={ChartBarIcon}
+                    value={<span className="text-purple-700">87%</span>}
+                    subtitle={<span className="text-purple-500">Overall business performance</span>}
+                    cardType="performance"
+                    gradient="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border border-purple-200 hover:border-purple-300"
+                    data={[
+                      { name: 'Revenue Growth', value: 23.5, trend: 'up' },
+                      { name: 'Customer Satisfaction', value: 92, trend: 'up' },
+                      { name: 'Operational Efficiency', value: 78, trend: 'stable' },
+                      { name: 'Market Share', value: 15.2, trend: 'up' }
+                    ]}
+                  />
                 </div>
 
                 {/* First Row - Invoice Status, Invoice Aging, Recent Payments */}
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                  {/* Invoice Status Card */}
-                  <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border border-gray-200 hover:border-gray-300">
-                    <div className="flex items-center justify-between mb-4">
-                      <h3 className="text-section-title text-black">{t('charts.invoiceStatus.title')}</h3>
-                      <div className="w-4 h-4 border border-gray-300 rounded"></div>
-                    </div>
+                  <InteractiveAnalyticsCard
+                    title={t('charts.invoiceStatus.title')}
+                    icon={ChartBarIcon}
+                    value={`${statusPercentages.paid}%`}
+                    subtitle={t('kpis.paidInvoices')}
+                    data={[
+                      { name: t('status.paid'), value: statusPercentages.paid, color: '#10B981' },
+                      { name: t('status.pending'), value: statusPercentages.pending, color: '#F59E0B' },
+                      { name: t('status.overdue'), value: statusPercentages.overdue, color: '#EF4444' }
+                    ]}
+                    cardType="pie"
+                    gradient="from-gray-50 to-gray-100"
+                  />
 
-                    {/* Donut Chart */}
-                    <div className="flex items-center justify-center mb-6">
-                      <div className="relative w-32 h-32">
-                        <svg className="w-32 h-32 transform -rotate-90" viewBox="0 0 100 100">
-                          <circle
-                            cx="50"
-                            cy="50"
-                            r="35"
-                            stroke="#10B981"
-                            strokeWidth="15"
-                            fill="transparent"
-                            strokeDasharray={`${statusPercentages.paid * 2.2} 220`}
-                          />
-                          <circle
-                            cx="50"
-                            cy="50"
-                            r="35"
-                            stroke="#F59E0B"
-                            strokeWidth="15"
-                            fill="transparent"
-                            strokeDasharray={`${statusPercentages.pending * 2.2} 220`}
-                            strokeDashoffset={`-${statusPercentages.paid * 2.2}`}
-                          />
-                          <circle
-                            cx="50"
-                            cy="50"
-                            r="35"
-                            stroke="#EF4444"
-                            strokeWidth="15"
-                            fill="transparent"
-                            strokeDasharray={`${statusPercentages.overdue * 2.2} 220`}
-                            strokeDashoffset={`-${(statusPercentages.paid + statusPercentages.pending) * 2.2}`}
-                          />
-                        </svg>
-                      </div>
-                    </div>
+                  <InteractiveAnalyticsCard
+                    title={t('charts.invoiceAging.title')}
+                    icon={ClockIcon}
+                    value={`€${outstandingAmount.toLocaleString()}`}
+                    subtitle={t('kpis.totalOutstanding')}
+                    data={[
+                      { name: t('charts.invoiceAging.period1'), value: 65, color: '#3B82F6' },
+                      { name: t('charts.invoiceAging.period2'), value: 20, color: '#6B7280' },
+                      { name: t('charts.invoiceAging.period3'), value: 10, color: '#9CA3AF' },
+                      { name: t('charts.invoiceAging.period4'), value: 5, color: '#D1D5DB' }
+                    ]}
+                    cardType="bar"
+                    gradient="from-indigo-50 to-indigo-100"
+                  />
 
-                    <div className="flex items-center justify-between text-sm">
-                      <span className="text-lg font-semibold text-green-500">{statusPercentages.paid}%</span>
-                      <span className="text-lg font-semibold text-yellow-500">{statusPercentages.pending}%</span>
-                      <span className="text-lg font-semibold text-red-500">{statusPercentages.overdue}%</span>
-                    </div>
-                  </div>
-
-                  {/* Invoice Aging Card */}
-                  <div className="bg-gradient-to-br from-indigo-50 to-indigo-100 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border border-indigo-200 hover:border-indigo-300">
-                    <div className="flex items-center justify-between mb-4">
-                      <h3 className="text-section-title text-black">{t('charts.invoiceAging.title')}</h3>
-                      <div className="w-4 h-4 border border-gray-300 rounded"></div>
-                    </div>
-
-                    <div className="h-64 flex items-end justify-center space-x-4 mb-4">
-                      <div className="w-8 bg-blue-600 h-32 rounded-t"></div>
-                      <div className="w-8 bg-gray-400 h-24 rounded-t"></div>
-                      <div className="w-8 bg-gray-300 h-16 rounded-t"></div>
-                      <div className="w-8 bg-gray-300 h-20 rounded-t"></div>
-                      <div className="w-8 bg-gray-300 h-12 rounded-t"></div>
-                    </div>
-
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm text-gray-500">
-                        {t('kpis.totalOutstanding')}:{' '}
-                        <span className="font-semibold text-gray-900">€{outstandingAmount.toLocaleString()}</span>
-                      </span>
-                      <div className="flex items-center text-blue-600 text-sm">
-                        <span>{t('clientAnalytics.viewDetails')}</span>
-                        <ArrowRightIcon className="ml-1 h-4 w-4" />
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Recent Payments Card */}
-                  <div className="bg-gradient-to-br from-emerald-50 to-emerald-100 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border border-emerald-200 hover:border-emerald-300">
-                    <div className="flex items-center justify-between mb-4">
-                      <h3 className="text-section-title text-black">{t('charts.recentPayments.title')}</h3>
-                      <span className="text-blue-600 text-sm cursor-pointer">{t('clientAnalytics.viewAll')}</span>
-                    </div>
-
-                    <div className="space-y-4">
-                      {recentPayments.map((payment, index) => (
-                        <div
-                          key={index}
-                          className="flex items-center space-x-3 py-3 border-b border-gray-100 last:border-b-0"
-                        >
-                          <div className="w-9 h-9 bg-green-100 rounded-full flex items-center justify-center">
-                            <CheckIcon className="w-5 h-5 text-green-600" />
-                          </div>
-                          <div className="flex-1">
-                            <div className="text-action-title text-black">{payment.company}</div>
-                            <div className="text-subtitle text-gray-500">{payment.date}</div>
-                          </div>
-                          <div className="text-card-metric text-black">{payment.amount}</div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
+                  <InteractiveAnalyticsCard
+                    title={t('charts.recentPayments.title')}
+                    icon={CheckIcon}
+                    value={recentPayments.length.toString()}
+                    subtitle={t('charts.recentPayments.title')}
+                    data={recentPayments.map((payment, index) => ({
+                      name: payment.company,
+                      value: parseFloat(payment.amount.replace(/[€,]/g, '')),
+                      date: payment.date,
+                      color: '#10B981'
+                    }))}
+                    cardType="bar"
+                    gradient="from-emerald-50 to-emerald-100"
+                  />
                 </div>
 
                 {/* Second Row - Payment Velocity, Top Clients, Invoice Conversion */}
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                  {/* Payment Velocity */}
-                  <div className="bg-gradient-to-br from-cyan-50 to-cyan-100 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border border-cyan-200 hover:border-cyan-300">
-                    <div className="flex items-center justify-between mb-4">
-                      <h3 className="text-section-title text-black">{t('charts.paymentVelocity.title')}</h3>
-                      <ChevronDownIcon className="h-4 w-4 text-gray-400" />
-                    </div>
+                  <InteractiveAnalyticsCard
+                    title={t('charts.paymentVelocity.title')}
+                    icon={ClockIcon}
+                    value={`${paymentMetrics.averagePaymentTime} days`}
+                    subtitle="Average Payment Time"
+                    data={[
+                      { name: 'Week 1', value: 15, color: '#3B82F6' },
+                      { name: 'Week 2', value: 12, color: '#3B82F6' },
+                      { name: 'Week 3', value: 14, color: '#3B82F6' },
+                      { name: 'Week 4', value: 10, color: '#3B82F6' },
+                      { name: 'Week 5', value: 11, color: '#3B82F6' },
+                      { name: 'Week 6', value: 8, color: '#3B82F6' },
+                      { name: 'Week 7', value: 9, color: '#3B82F6' }
+                    ]}
+                    cardType="bar"
+                    gradient="from-cyan-50 to-cyan-100"
+                  />
 
-                    {/* Line Chart Placeholder */}
-                    <div className="h-48 mb-4">
-                      <svg className="w-full h-full" viewBox="0 0 300 150">
-                        <polyline
-                          fill="none"
-                          stroke="#3B82F6"
-                          strokeWidth="2"
-                          points="20,120 60,80 100,90 140,60 180,70 220,40 260,50"
-                        />
-                        <circle cx="20" cy="120" r="3" fill="#3B82F6" />
-                        <circle cx="60" cy="80" r="3" fill="#3B82F6" />
-                        <circle cx="100" cy="90" r="3" fill="#3B82F6" />
-                        <circle cx="140" cy="60" r="3" fill="#3B82F6" />
-                        <circle cx="180" cy="70" r="3" fill="#3B82F6" />
-                        <circle cx="220" cy="40" r="3" fill="#3B82F6" />
-                        <circle cx="260" cy="50" r="3" fill="#3B82F6" />
-                      </svg>
-                    </div>
+                  <InteractiveAnalyticsCard
+                    title={t('charts.topClients.title')}
+                    icon={UserGroupIcon}
+                    value={topClients.length.toString()}
+                    subtitle="Top Clients"
+                    data={topClients.map((client, index) => ({
+                      name: client.name,
+                      value: parseFloat(client.amount.replace(/[€,]/g, '')),
+                      percentage: client.percentage,
+                      color: '#F97316'
+                    }))}
+                    cardType="bar"
+                    gradient="from-orange-50 to-orange-100"
+                  />
 
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm text-gray-500">{t('metrics.avgPaymentTime')}</span>
-                      <div className="flex items-center">
-                        <span className="text-lg font-semibold text-black mr-2">{paymentMetrics.averagePaymentTime}</span>
-                        <span className="text-sm text-gray-500">{t('common.days')}</span>
-                        <ArrowTrendingDownIcon className="ml-2 h-4 w-4 text-green-500" />
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Top Clients */}
-                  <div className="bg-gradient-to-br from-orange-50 to-orange-100 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border border-orange-200 hover:border-orange-300">
-                    <div className="flex items-center justify-between mb-4">
-                      <h3 className="text-section-title text-black">{t('charts.topClients.title')}</h3>
-                      <span className="text-blue-600 text-sm cursor-pointer">{t('clientAnalytics.viewAll')}</span>
-                    </div>
-
-                    <div className="space-y-4">
-                      {topClients.map((client, index) => (
-                        <div key={index} className="flex items-center space-x-3">
-                          <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                            <span className="text-xs font-medium text-blue-600">{index + 1}</span>
-                          </div>
-                          <div className="flex-1">
-                            <div className="text-action-title text-black text-sm">{client.name}</div>
-                            <div className="w-full bg-gray-200 rounded-full h-1.5 mt-1">
-                              <div
-                                className="bg-blue-600 h-1.5 rounded-full"
-                                style={{ width: `${client.percentage}%` }}
-                              ></div>
-                            </div>
-                          </div>
-                          <div className="text-card-metric text-black text-sm">{client.amount}</div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Invoice Conversion */}
-                  <div className="bg-gradient-to-br from-pink-50 to-pink-100 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border border-pink-200 hover:border-pink-300">
-                    <div className="flex items-center justify-between mb-4">
-                      <h3 className="text-section-title text-black">{t('charts.invoiceConversion.title')}</h3>
-                      <span className="text-blue-600 text-sm cursor-pointer">{t('details')}</span>
-                    </div>
-
-                    {/* Bar Chart */}
-                    <div className="h-48 flex items-end justify-center space-x-3 mb-4">
-                      {[85, 92, 78, 88, 95, 82, 90].map((height, index) => (
-                        <div key={index} className="flex flex-col items-center">
-                          <div
-                            className="w-6 bg-gradient-to-t from-blue-600 to-blue-400 rounded-t"
-                            style={{ height: `${height}%` }}
-                          ></div>
-                          <span className="text-xs text-gray-500 mt-2">
-                            {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'][index]}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-
-                    <div className="grid grid-cols-3 gap-4 text-center">
-                      <div>
-                        <div className="text-card-metric text-green-600">142</div>
-                        <div className="text-xs text-gray-500">{t('metrics.sent')}</div>
-                      </div>
-                      <div>
-                        <div className="text-card-metric text-yellow-500">24.8</div>
-                        <div className="text-xs text-gray-500">{t('metrics.viewed')}</div>
-                      </div>
-                      <div>
-                        <div className="text-card-metric text-red-500">18.5</div>
-                        <div className="text-xs text-gray-500">{t('metrics.paid')}</div>
-                      </div>
-                    </div>
-                  </div>
+                  <InteractiveAnalyticsCard
+                    title={t('charts.invoiceConversion.title')}
+                    icon={ArrowTrendingUpIcon}
+                    value="85%"
+                    subtitle="Conversion Rate"
+                    data={[
+                      { name: 'Mon', value: 85, color: '#3B82F6' },
+                      { name: 'Tue', value: 92, color: '#3B82F6' },
+                      { name: 'Wed', value: 78, color: '#3B82F6' },
+                      { name: 'Thu', value: 88, color: '#3B82F6' },
+                      { name: 'Fri', value: 95, color: '#3B82F6' },
+                      { name: 'Sat', value: 82, color: '#3B82F6' },
+                      { name: 'Sun', value: 90, color: '#3B82F6' }
+                    ]}
+                    cardType="bar"
+                    gradient="from-pink-50 to-pink-100"
+                  />
                 </div>
               </div>
             )}
@@ -905,8 +802,8 @@ const Analytics = () => {
                       {/* Quarterly Targets */}
                       <div className="bg-gradient-to-br from-amber-50 to-amber-100 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border border-amber-200 hover:border-amber-300">
                         <div className="flex items-center justify-between mb-4">
-                          <h3 className="text-section-title text-black">Quarterly Targets</h3>
-                          <ChevronDownIcon className="h-4 w-4 text-gray-400" />
+                          <h3 className="text-section-title text-amber-600">Quarterly Targets</h3>
+                          <ChevronDownIcon className="h-4 w-4 text-amber-400" />
                         </div>
 
                         <div className="space-y-4">
@@ -918,8 +815,8 @@ const Analytics = () => {
                           ].map((item, index) => (
                             <div key={index} className="space-y-2">
                               <div className="flex justify-between">
-                                <span className="text-sm font-medium">{item.quarter}</span>
-                                <span className="text-sm text-gray-600">{item.target}</span>
+                                <span className="text-sm font-medium text-amber-700">{item.quarter}</span>
+                                <span className="text-sm text-amber-600">{item.target}</span>
                               </div>
                               {item.progress > 0 && (
                                 <>
@@ -932,9 +829,9 @@ const Analytics = () => {
                                     ></div>
                                   </div>
                                   <div className="flex justify-between text-xs">
-                                    <span className="text-gray-500">{t('forecasting.actual')}: {item.actual}</span>
+                                    <span className="text-amber-500">{t('forecasting.actual')}: {item.actual}</span>
                                     <span className={`font-medium ${
-                                      item.progress >= 100 ? 'text-green-600' : 'text-blue-600'
+                                      item.progress >= 100 ? 'text-green-600' : 'text-amber-600'
                                     }`}>
                                       {item.progress}%
                                     </span>
@@ -949,14 +846,14 @@ const Analytics = () => {
                       {/* Budget Planning */}
                       <div className="bg-gradient-to-br from-rose-50 to-rose-100 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border border-rose-200 hover:border-rose-300">
                         <div className="flex items-center justify-between mb-4">
-                          <h3 className="text-section-title text-black">{t('forecasting.budgetPlanning.title')}</h3>
-                          <span className="text-blue-600 text-sm cursor-pointer">{t('clientAnalytics.editBudget')}</span>
+                          <h3 className="text-section-title text-rose-600">{t('forecasting.budgetPlanning.title')}</h3>
+                          <span className="text-rose-600 text-sm cursor-pointer">{t('clientAnalytics.editBudget')}</span>
                         </div>
 
                         <div className="space-y-4">
                           <div className="text-center mb-4">
-                            <div className="text-kpi-value text-black">€{financialMetrics.totalRevenue.toLocaleString()}</div>
-                            <div className="text-sm text-gray-500">{t('forecasting.annualBudget')}</div>
+                            <div className="text-kpi-value text-rose-700">€{financialMetrics.totalRevenue.toLocaleString()}</div>
+                            <div className="text-sm text-rose-500">{t('forecasting.annualBudget')}</div>
                           </div>
 
                           <div className="space-y-3">
@@ -969,9 +866,9 @@ const Analytics = () => {
                               <div key={index} className="flex items-center justify-between">
                                 <div className="flex items-center">
                                   <div className={`w-3 h-3 ${item.color} rounded-full mr-2`}></div>
-                                  <span className="text-sm text-gray-600">{item.category}</span>
+                                  <span className="text-sm text-rose-600">{item.category}</span>
                                 </div>
-                                <span className="text-sm font-medium">€{item.amount.toLocaleString('en-US', { minimumFractionDigits: 0 })}</span>
+                                <span className="text-sm font-medium text-rose-700">€{item.amount.toLocaleString('en-US', { minimumFractionDigits: 0 })}</span>
                               </div>
                             ))}
                           </div>
@@ -981,8 +878,8 @@ const Analytics = () => {
                       {/* Scenario Modeling */}
                       <div className="bg-gradient-to-br from-violet-50 to-violet-100 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border border-violet-200 hover:border-violet-300">
                         <div className="flex items-center justify-between mb-4">
-                          <h3 className="text-section-title text-black">{t('forecasting.scenarioModeling.title')}</h3>
-                          <ChevronDownIcon className="h-4 w-4 text-gray-400" />
+                          <h3 className="text-section-title text-violet-600">{t('forecasting.scenarioModeling.title')}</h3>
+                          <ChevronDownIcon className="h-4 w-4 text-violet-400" />
                         </div>
 
                         <div className="space-y-4">
@@ -991,14 +888,14 @@ const Analytics = () => {
                             { scenario: t('forecasting.mostLikely'), revenue: '€280,000', probability: '50%', color: 'text-blue-600' },
                             { scenario: t('forecasting.worstCase'), revenue: '€220,000', probability: '25%', color: 'text-red-600' },
                           ].map((item, index) => (
-                            <div key={index} className="p-3 border border-gray-200 rounded-lg">
+                            <div key={index} className="p-3 border border-violet-200 rounded-lg">
                               <div className="flex justify-between items-center mb-2">
-                                <span className="text-sm font-medium">{item.scenario}</span>
+                                <span className="text-sm font-medium text-violet-700">{item.scenario}</span>
                                 <span className={`text-sm font-semibold ${item.color}`}>{item.revenue}</span>
                               </div>
                               <div className="flex justify-between items-center">
-                                <span className="text-xs text-gray-500">{t('forecasting.probability')}</span>
-                                <span className="text-xs font-medium">{item.probability}</span>
+                                <span className="text-xs text-violet-500">{t('forecasting.probability')}</span>
+                                <span className="text-xs font-medium text-violet-600">{item.probability}</span>
                               </div>
                             </div>
                           ))}
@@ -1011,8 +908,8 @@ const Analytics = () => {
                      {/* Revenue Breakdown */}
                      <div className="bg-gradient-to-br from-lime-50 to-lime-100 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border border-lime-200 hover:border-lime-300">
                        <div className="flex items-center justify-between mb-4">
-                         <h3 className="text-section-title text-black">{t('forecasting.revenueBreakdown.title')}</h3>
-                         <ChevronDownIcon className="h-4 w-4 text-gray-400" />
+                         <h3 className="text-section-title text-lime-600">{t('forecasting.revenueBreakdown.title')}</h3>
+                         <ChevronDownIcon className="h-4 w-4 text-lime-400" />
                        </div>
 
                        <div className="flex items-center justify-center mb-6">
@@ -1056,23 +953,23 @@ const Analytics = () => {
                          <div className="flex items-center justify-between">
                            <div className="flex items-center">
                              <div className="w-3 h-3 bg-blue-500 rounded-full mr-2"></div>
-                             <span className="text-sm text-gray-600">Services</span>
+                             <span className="text-sm text-lime-600">Services</span>
                            </div>
-                           <span className="text-sm font-medium">€{(financialMetrics.totalRevenue * 0.45).toLocaleString('en-US', { minimumFractionDigits: 0 })}</span>
+                           <span className="text-sm font-medium text-lime-700">€{(financialMetrics.totalRevenue * 0.45).toLocaleString('en-US', { minimumFractionDigits: 0 })}</span>
                          </div>
                          <div className="flex items-center justify-between">
                            <div className="flex items-center">
                              <div className="w-3 h-3 bg-green-500 rounded-full mr-2"></div>
-                             <span className="text-sm text-gray-600">Products</span>
+                             <span className="text-sm text-lime-600">Products</span>
                            </div>
-                           <span className="text-sm font-medium">€{(financialMetrics.totalRevenue * 0.32).toLocaleString('en-US', { minimumFractionDigits: 0 })}</span>
+                           <span className="text-sm font-medium text-lime-700">€{(financialMetrics.totalRevenue * 0.32).toLocaleString('en-US', { minimumFractionDigits: 0 })}</span>
                          </div>
                          <div className="flex items-center justify-between">
                            <div className="flex items-center">
                              <div className="w-3 h-3 bg-yellow-500 rounded-full mr-2"></div>
-                             <span className="text-sm text-gray-600">Consulting</span>
+                             <span className="text-sm text-lime-600">Consulting</span>
                            </div>
-                           <span className="text-sm font-medium">€{(financialMetrics.totalRevenue * 0.23).toLocaleString('en-US', { minimumFractionDigits: 0 })}</span>
+                           <span className="text-sm font-medium text-lime-700">€{(financialMetrics.totalRevenue * 0.23).toLocaleString('en-US', { minimumFractionDigits: 0 })}</span>
                          </div>
                        </div>
                      </div>
@@ -1080,8 +977,8 @@ const Analytics = () => {
                      {/* Monthly Expenses */}
                      <div className="bg-gradient-to-br from-sky-50 to-sky-100 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border border-sky-200 hover:border-sky-300">
                        <div className="flex items-center justify-between mb-4">
-                         <h3 className="text-section-title text-black">Monthly Expenses</h3>
-                         <ChevronDownIcon className="h-4 w-4 text-gray-400" />
+                         <h3 className="text-section-title text-sky-600">Monthly Expenses</h3>
+                         <ChevronDownIcon className="h-4 w-4 text-sky-400" />
                        </div>
 
                        {/* Bar Chart */}
@@ -1092,7 +989,7 @@ const Analytics = () => {
                                className="w-8 bg-gradient-to-t from-purple-600 to-purple-400 rounded-t"
                                style={{ height: `${height}%` }}
                              ></div>
-                             <span className="text-xs text-gray-500 mt-2">
+                             <span className="text-xs text-sky-500 mt-2">
                                {['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'][index]}
                              </span>
                            </div>
@@ -1100,16 +997,16 @@ const Analytics = () => {
                        </div>
 
                        <div className="text-center">
-                         <div className="text-kpi-value text-black">€{(financialMetrics.totalExpenses / 12).toLocaleString('en-US', { minimumFractionDigits: 0 })}</div>
-                         <div className="text-sm text-gray-500">Average Monthly</div>
+                         <div className="text-kpi-value text-sky-700">€{(financialMetrics.totalExpenses / 12).toLocaleString('en-US', { minimumFractionDigits: 0 })}</div>
+                         <div className="text-sm text-sky-500">Average Monthly</div>
                        </div>
                      </div>
 
                      {/* Cash Flow Analysis */}
                      <div className="bg-gradient-to-br from-emerald-50 to-emerald-100 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border border-emerald-200 hover:border-emerald-300">
                        <div className="flex items-center justify-between mb-4">
-                         <h3 className="text-section-title text-black">Cash Flow Analysis</h3>
-                         <span className="text-blue-600 text-sm cursor-pointer">Report</span>
+                         <h3 className="text-section-title text-emerald-600">Cash Flow Analysis</h3>
+                         <span className="text-emerald-600 text-sm cursor-pointer">Report</span>
                        </div>
 
                        {/* Area Chart Placeholder */}
@@ -1137,11 +1034,11 @@ const Analytics = () => {
                        <div className="grid grid-cols-2 gap-4">
                          <div className="text-center">
                            <div className="text-card-metric text-green-600">+€{financialMetrics.cashFlow.inflow.toLocaleString('en-US', { minimumFractionDigits: 0 })}</div>
-                           <div className="text-xs text-gray-500">{t('forecasting.inflow')}</div>
+                           <div className="text-xs text-emerald-500">{t('forecasting.inflow')}</div>
                          </div>
                          <div className="text-center">
                            <div className="text-card-metric text-red-500">-€{financialMetrics.cashFlow.outflow.toLocaleString('en-US', { minimumFractionDigits: 0 })}</div>
-                           <div className="text-xs text-gray-500">{t('forecasting.outflow')}</div>
+                           <div className="text-xs text-emerald-500">{t('forecasting.outflow')}</div>
                          </div>
                        </div>
                      </div>
@@ -1152,8 +1049,8 @@ const Analytics = () => {
                      {/* Profit Margin Trends */}
                      <div className="bg-gradient-to-br from-slate-50 to-slate-100 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border border-slate-200 hover:border-slate-300">
                        <div className="flex items-center justify-between mb-4">
-                         <h3 className="text-section-title text-black">{t('forecasting.profitMarginTrends.title')}</h3>
-                         <ChevronDownIcon className="h-4 w-4 text-gray-400" />
+                         <h3 className="text-section-title text-slate-600">{t('forecasting.profitMarginTrends.title')}</h3>
+                         <ChevronDownIcon className="h-4 w-4 text-slate-400" />
                        </div>
 
                        <div className="h-32 flex items-end justify-center space-x-1 mb-4">
@@ -1167,8 +1064,8 @@ const Analytics = () => {
                        </div>
 
                        <div className="text-center">
-                         <div className="text-kpi-value text-blue-600">{Math.abs(financialMetrics.profitMargin)}%</div>
-                         <div className="text-sm text-gray-500">{t('forecasting.currentMargin')}</div>
+                         <div className="text-kpi-value text-slate-700">{Math.abs(financialMetrics.profitMargin)}%</div>
+                         <div className="text-sm text-slate-500">{t('forecasting.currentMargin')}</div>
                          <div className="flex items-center justify-center mt-2">
                            {financialMetrics.profitMargin >= 0 ? (
                              <ArrowTrendingUpIcon className="h-4 w-4 text-green-500 mr-1" />
@@ -1185,8 +1082,8 @@ const Analytics = () => {
                      {/* Financial Health */}
                      <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border border-green-200 hover:border-green-300">
                        <div className="flex items-center justify-between mb-4">
-                         <h3 className="text-section-title text-black">{t('forecasting.financialHealth.title')}</h3>
-                         <span className="text-blue-600 text-sm cursor-pointer">{t('details')}</span>
+                         <h3 className="text-section-title text-green-600">{t('forecasting.financialHealth.title')}</h3>
+                         <span className="text-green-600 text-sm cursor-pointer">{t('details')}</span>
                        </div>
 
                        {/* Circular Progress */}
@@ -1213,23 +1110,23 @@ const Analytics = () => {
                              />
                            </svg>
                            <div className="absolute inset-0 flex items-center justify-center">
-                             <span className="text-kpi-value text-blue-600">{Math.round(financialMetrics.financialHealth)}</span>
+                             <span className="text-kpi-value text-green-700">{Math.round(financialMetrics.financialHealth)}</span>
                            </div>
                          </div>
                        </div>
 
                        <div className="space-y-3">
                          <div className="flex justify-between">
-                           <span className="text-sm text-gray-600">Cash Flow</span>
-                           <span className="text-sm font-medium text-green-600">Excellent</span>
+                           <span className="text-sm text-green-600">Cash Flow</span>
+                           <span className="text-sm font-medium text-green-700">Excellent</span>
                          </div>
                          <div className="flex justify-between">
-                           <span className="text-sm text-gray-600">Debt Ratio</span>
-                           <span className="text-sm font-medium text-yellow-600">Good</span>
+                           <span className="text-sm text-green-600">Debt Ratio</span>
+                           <span className="text-sm font-medium text-green-700">Good</span>
                          </div>
                          <div className="flex justify-between">
-                           <span className="text-sm text-gray-600">Liquidity</span>
-                           <span className="text-sm font-medium text-green-600">Strong</span>
+                           <span className="text-sm text-green-600">Liquidity</span>
+                           <span className="text-sm font-medium text-green-700">Strong</span>
                          </div>
                        </div>
                      </div>
@@ -1237,8 +1134,8 @@ const Analytics = () => {
                      {/* Expense Breakdown */}
                      <div className="bg-gradient-to-br from-red-50 to-red-100 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border border-red-200 hover:border-red-300">
                        <div className="flex items-center justify-between mb-4">
-                         <h3 className="text-section-title text-black">Expense Breakdown</h3>
-                         <ChevronDownIcon className="h-4 w-4 text-gray-400" />
+                         <h3 className="text-section-title text-red-600">Expense Breakdown</h3>
+                         <ChevronDownIcon className="h-4 w-4 text-red-400" />
                        </div>
 
                        <div className="flex items-center justify-center mb-6">
@@ -1282,23 +1179,23 @@ const Analytics = () => {
                          <div className="flex items-center justify-between">
                            <div className="flex items-center">
                              <div className="w-3 h-3 bg-red-500 rounded-full mr-2"></div>
-                             <span className="text-sm text-gray-600">Operations</span>
+                             <span className="text-sm text-red-600">Operations</span>
                            </div>
-                           <span className="text-sm font-medium">€{(financialMetrics.totalExpenses * 0.4).toLocaleString('en-US', { minimumFractionDigits: 0 })}</span>
+                           <span className="text-sm font-medium text-red-700">€{(financialMetrics.totalExpenses * 0.4).toLocaleString('en-US', { minimumFractionDigits: 0 })}</span>
                          </div>
                          <div className="flex items-center justify-between">
                            <div className="flex items-center">
                              <div className="w-3 h-3 bg-yellow-500 rounded-full mr-2"></div>
-                             <span className="text-sm text-gray-600">Marketing</span>
+                             <span className="text-sm text-red-600">Marketing</span>
                            </div>
-                           <span className="text-sm font-medium">€{(financialMetrics.totalExpenses * 0.35).toLocaleString('en-US', { minimumFractionDigits: 0 })}</span>
+                           <span className="text-sm font-medium text-red-700">€{(financialMetrics.totalExpenses * 0.35).toLocaleString('en-US', { minimumFractionDigits: 0 })}</span>
                          </div>
                          <div className="flex items-center justify-between">
                            <div className="flex items-center">
                              <div className="w-3 h-3 bg-purple-500 rounded-full mr-2"></div>
-                             <span className="text-sm text-gray-600">Admin</span>
+                             <span className="text-sm text-red-600">Admin</span>
                            </div>
-                           <span className="text-sm font-medium">€{(financialMetrics.totalExpenses * 0.25).toLocaleString('en-US', { minimumFractionDigits: 0 })}</span>
+                           <span className="text-sm font-medium text-red-700">€{(financialMetrics.totalExpenses * 0.25).toLocaleString('en-US', { minimumFractionDigits: 0 })}</span>
                          </div>
                        </div>
                      </div>
@@ -1322,8 +1219,8 @@ const Analytics = () => {
               <div className='bg-gradient-to-br from-indigo-50 to-indigo-100 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border border-indigo-200 hover:border-indigo-300'>
                 <div className='flex items-center justify-between mb-6'>
                   <div>
-                    <h2 className='text-page-title text-black'>{t('tabs.reportsInsights.name')}</h2>
-                    <p className='text-gray-600 mt-1'>{t('tabs.reportsInsights.description')}</p>
+                    <h2 className='text-page-title text-indigo-600'>{t('tabs.reportsInsights.name')}</h2>
+                    <p className='text-indigo-600 mt-1'>{t('tabs.reportsInsights.description')}</p>
                   </div>
                   <div className='flex items-center space-x-3'>
                     <button className='px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2'>
@@ -1339,55 +1236,55 @@ const Analytics = () => {
               </div>
 
               {/* Quick Stats Overview */}
-              <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6'>
-                <div className='bg-gradient-to-br from-green-50 to-green-100 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border border-green-200 hover:border-green-300'>
+              <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4'>
+                <div className='bg-gradient-to-br from-green-50 to-green-100 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-4 border border-green-200 hover:border-green-300'>
                   <div className='flex items-center justify-between'>
-                    <div>
-                      <p className='text-caption text-gray-600'>{t('kpis.totalRevenue')}</p>
-                      <p className='text-kpi-value text-black'>€{financialMetrics.totalRevenue.toLocaleString()}</p>
-                      <p className='text-caption text-green-600 mt-1'>{t('metrics.monthlyGrowth', { value: '12.5' })}</p>
+                      <div>
+                        <p className='text-caption text-green-600 mb-1'>{t('kpis.totalRevenue')}</p>
+                        <p className='text-lg font-bold text-green-700 mb-1'>€{financialMetrics.totalRevenue.toLocaleString()}</p>
+                        <p className='text-xs text-green-600'>{t('metrics.monthlyGrowth', { value: '12.5' })}</p>
+                      </div>
+                      <div className='p-2 bg-green-100 rounded-lg'>
+                        <CurrencyEuroIcon className='w-5 h-5 text-green-600' />
+                      </div>
                     </div>
-                    <div className='p-3 bg-green-100 rounded-lg'>
-                      <CurrencyEuroIcon className='w-6 h-6 text-green-600' />
-                    </div>
-                  </div>
                 </div>
 
-                <div className='bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border border-blue-200 hover:border-blue-300'>
+                <div className='bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-4 border border-blue-200 hover:border-blue-300'>
                   <div className='flex items-center justify-between'>
-                    <div>
-                      <p className='text-caption text-gray-600'>{t('kpis.activeClients')}</p>
-                      <p className='text-kpi-value text-black'>{clientMetrics.activeClients}</p>
-                      <p className='text-caption text-blue-600 mt-1'>{t('metrics.newClientsThisMonth', { count: clientMetrics.newClients })}</p>
+                      <div>
+                        <p className='text-caption text-blue-600 mb-1'>{t('kpis.activeClients')}</p>
+                        <p className='text-lg font-bold text-blue-700 mb-1'>{clientMetrics.activeClients}</p>
+                        <p className='text-xs text-blue-600'>{t('metrics.newClientsThisMonth', { count: clientMetrics.newClients })}</p>
+                      </div>
+                      <div className='p-2 bg-blue-100 rounded-lg'>
+                        <UsersIcon className='w-5 h-5 text-blue-600' />
+                      </div>
                     </div>
-                    <div className='p-3 bg-blue-100 rounded-lg'>
-                      <UsersIcon className='w-6 h-6 text-blue-600' />
-                    </div>
-                  </div>
                 </div>
 
-                <div className='bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border border-purple-200 hover:border-purple-300'>
+                <div className='bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-4 border border-purple-200 hover:border-purple-300'>
                    <div className='flex items-center justify-between'>
                      <div>
-                       <p className='text-caption text-gray-600'>{t('kpis.profitMargin')}</p>
-                       <p className='text-kpi-value text-black'>{financialMetrics.profitMargin}%</p>
-                       <p className='text-caption text-purple-600 mt-1'>{t('metrics.aboveIndustryAvg')}</p>
+                       <p className='text-caption text-purple-600 mb-1'>{t('kpis.profitMargin')}</p>
+                       <p className='text-lg font-bold text-purple-700 mb-1'>{financialMetrics.profitMargin}%</p>
+                       <p className='text-xs text-purple-600'>{t('metrics.aboveIndustryAvg')}</p>
                      </div>
-                     <div className='p-3 bg-purple-100 rounded-lg'>
-                       <ChartBarIcon className='w-6 h-6 text-purple-600' />
+                     <div className='p-2 bg-purple-100 rounded-lg'>
+                       <ChartBarIcon className='w-5 h-5 text-purple-600' />
                      </div>
                    </div>
                  </div>
 
-                 <div className='bg-gradient-to-br from-orange-50 to-orange-100 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border border-orange-200 hover:border-orange-300'>
+                 <div className='bg-gradient-to-br from-orange-50 to-orange-100 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-4 border border-orange-200 hover:border-orange-300'>
                   <div className='flex items-center justify-between'>
                     <div>
-                      <p className='text-caption text-gray-600'>{t('kpis.financialHealth')}</p>
-                      <p className='text-kpi-value text-black'>{financialMetrics.financialHealth.toFixed(2)}/100</p>
-                      <p className='text-caption text-orange-600 mt-1'>{t('metrics.strongPosition')}</p>
+                      <p className='text-caption text-orange-600 mb-1'>{t('kpis.financialHealth')}</p>
+                      <p className='text-lg font-bold text-orange-700 mb-1'>{financialMetrics.financialHealth.toFixed(2)}/100</p>
+                      <p className='text-xs text-orange-600'>{t('metrics.strongPosition')}</p>
                     </div>
-                    <div className='p-3 bg-orange-100 rounded-lg'>
-                      <HeartIcon className='w-6 h-6 text-orange-600' />
+                    <div className='p-2 bg-orange-100 rounded-lg'>
+                      <HeartIcon className='w-5 h-5 text-orange-600' />
                     </div>
                   </div>
                 </div>
@@ -1395,33 +1292,33 @@ const Analytics = () => {
 
               {/* Executive Summary Report */}
               <div className='bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border border-gray-200 hover:border-gray-300'>
-                <h3 className='text-card-title font-semibold text-black mb-6'>{t('reports.executiveSummary.title')}</h3>
+                <h3 className='text-card-title font-semibold text-gray-600 mb-6'>{t('reports.executiveSummary.title')}</h3>
                 
                 <div className='grid grid-cols-1 lg:grid-cols-2 gap-8'>
                   <div>
-                    <h4 className='text-body font-medium text-black mb-4'>{t('reports.kpis.title')}</h4>
+                    <h4 className='text-body font-medium text-gray-600 mb-4'>{t('reports.kpis.title')}</h4>
                     <div className='space-y-4'>
                       <div className='flex items-center justify-between p-3 bg-gray-50 rounded-lg'>
-                        <span className='text-body text-gray-700'>{t('kpis.monthlyRecurringRevenue')}</span>
-                        <span className='text-body font-semibold text-black'>€{(financialMetrics.totalRevenue / 12).toLocaleString('en-US', { minimumFractionDigits: 0 })}</span>
+                        <span className='text-body text-gray-600'>{t('kpis.monthlyRecurringRevenue')}</span>
+                        <span className='text-body font-semibold text-gray-700'>€{(financialMetrics.totalRevenue / 12).toLocaleString('en-US', { minimumFractionDigits: 0 })}</span>
                       </div>
                       <div className='flex items-center justify-between p-3 bg-gray-50 rounded-lg'>
-                        <span className='text-body text-gray-700'>{t('kpis.customerAcquisitionCost')}</span>
-                        <span className='text-body font-semibold text-black'>€{(financialMetrics.totalExpenses * 0.3 / clientMetrics.newClients).toLocaleString('en-US', { minimumFractionDigits: 0 })}</span>
+                        <span className='text-body text-gray-600'>{t('kpis.customerAcquisitionCost')}</span>
+                        <span className='text-body font-semibold text-gray-700'>€{(financialMetrics.totalExpenses * 0.3 / clientMetrics.newClients).toLocaleString('en-US', { minimumFractionDigits: 0 })}</span>
                       </div>
                       <div className='flex items-center justify-between p-3 bg-gray-50 rounded-lg'>
-                        <span className='text-body text-gray-700'>{t('kpis.avgRevenuePerClient')}</span>
-                        <span className='text-body font-semibold text-black'>€{(financialMetrics.totalRevenue / clientMetrics.totalClients).toLocaleString('en-US', { minimumFractionDigits: 0 })}</span>
+                        <span className='text-body text-gray-600'>{t('kpis.avgRevenuePerClient')}</span>
+                        <span className='text-body font-semibold text-gray-700'>€{(financialMetrics.totalRevenue / clientMetrics.totalClients).toLocaleString('en-US', { minimumFractionDigits: 0 })}</span>
                       </div>
                       <div className='flex items-center justify-between p-3 bg-gray-50 rounded-lg'>
-                        <span className='text-body text-gray-700'>{t('kpis.cashFlowRatio')}</span>
-                        <span className='text-body font-semibold text-black'>{(financialMetrics.cashFlow / financialMetrics.totalExpenses).toFixed(2)}</span>
+                        <span className='text-body text-gray-600'>{t('kpis.cashFlowRatio')}</span>
+                        <span className='text-body font-semibold text-gray-700'>{(financialMetrics.cashFlow / financialMetrics.totalExpenses).toFixed(2)}</span>
                       </div>
                     </div>
                   </div>
 
                   <div>
-                    <h4 className='text-body font-medium text-black mb-4'>{t('reports.businessInsights.title')}</h4>
+                    <h4 className='text-body font-medium text-gray-600 mb-4'>{t('reports.businessInsights.title')}</h4>
                     <div className='space-y-3'>
                       <div className='p-3 border-l-4 border-blue-500 bg-blue-50'>
                         <p className='text-caption font-medium text-blue-800'>{t('insights.clientRetention.title')}</p>
@@ -1451,7 +1348,7 @@ const Analytics = () => {
               {/* Custom Report Builder */}
               <div className='bg-gradient-to-br from-cyan-50 to-cyan-100 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border border-cyan-200 hover:border-cyan-300'>
                 <div className='flex items-center justify-between mb-6'>
-                  <h3 className='text-card-title font-semibold text-black'>{t('reports.customBuilder.title')}</h3>
+                  <h3 className='text-card-title font-semibold text-cyan-600'>{t('reports.customBuilder.title')}</h3>
                   <button className='px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors'>
 {t('common.createReport')}
                   </button>
@@ -1459,7 +1356,7 @@ const Analytics = () => {
 
                 <div className='grid grid-cols-1 md:grid-cols-3 gap-6'>
                   <div>
-                    <label className='block text-body font-medium text-black mb-2'>{t('reports.customBuilder.reportType')}</label>
+                    <label className='block text-body font-medium text-cyan-600 mb-2'>{t('reports.customBuilder.reportType')}</label>
                     <select className='w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500'>
                       <option>{t('reports.types.financialSummary')}</option>
                       <option>{t('reports.types.clientAnalysis')}</option>
@@ -1469,7 +1366,7 @@ const Analytics = () => {
                     </select>
                   </div>
                   <div>
-                    <label className='block text-body font-medium text-black mb-2'>{t('reports.customBuilder.dateRange')}</label>
+                    <label className='block text-body font-medium text-cyan-600 mb-2'>{t('reports.customBuilder.dateRange')}</label>
                     <select className='w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500'>
                       <option>{t('dateRanges.last30Days')}</option>
                       <option>{t('dateRanges.last3Months')}</option>
@@ -1479,7 +1376,7 @@ const Analytics = () => {
                     </select>
                   </div>
                   <div>
-                    <label className='block text-body font-medium text-black mb-2'>{t('reports.customBuilder.exportFormat')}</label>
+                    <label className='block text-body font-medium text-cyan-600 mb-2'>{t('reports.customBuilder.exportFormat')}</label>
                     <select className='w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500'>
                       <option>{t('exportFormats.pdfReport')}</option>
                       <option>{t('exportFormats.excelSpreadsheet')}</option>
@@ -1490,7 +1387,7 @@ const Analytics = () => {
                 </div>
 
                 <div className='mt-6'>
-                  <label className='block text-body font-medium text-black mb-2'>{t('reports.customBuilder.includeSections')}</label>
+                  <label className='block text-body font-medium text-cyan-600 mb-2'>{t('reports.customBuilder.includeSections')}</label>
                   <div className='grid grid-cols-2 md:grid-cols-4 gap-3'>
                     {[
                       t('reports.sections.revenueAnalysis'),
@@ -1504,7 +1401,7 @@ const Analytics = () => {
                     ].map((section) => (
                       <label key={section} className='flex items-center space-x-2'>
                         <input type='checkbox' defaultChecked className='rounded border-gray-300 text-blue-600 focus:ring-blue-500' />
-                        <span className='text-caption text-gray-700'>{section}</span>
+                        <span className='text-caption text-cyan-600'>{section}</span>
                       </label>
                     ))}
                   </div>
@@ -1513,11 +1410,11 @@ const Analytics = () => {
 
               {/* Benchmark Comparisons */}
               <div className='bg-white rounded-xl shadow-sm border border-gray-200 p-6'>
-                <h3 className='text-card-title font-semibold text-black mb-6'>{t('reports.industryBenchmarks.title')}</h3>
+                <h3 className='text-card-title font-semibold text-gray-600 mb-6'>{t('reports.industryBenchmarks.title')}</h3>
                 
                 <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
                   <div>
-                    <h4 className='text-body font-medium text-black mb-4'>{t('reports.industryBenchmarks.performanceVsIndustry')}</h4>
+                    <h4 className='text-body font-medium text-gray-600 mb-4'>{t('reports.industryBenchmarks.performanceVsIndustry')}</h4>
                     <div className='space-y-4'>
                       {[
                         { metric: t('kpis.profitMargin'), your: financialMetrics.profitMargin, industry: 18, unit: '%' },
@@ -1526,10 +1423,10 @@ const Analytics = () => {
                         { metric: t('kpis.financialHealth'), your: financialMetrics.financialHealth, industry: 65, unit: '/100' }
                       ].map((item, index) => (
                         <div key={index} className='flex items-center justify-between'>
-                          <span className='text-body text-gray-700'>{item.metric}</span>
+                          <span className='text-body text-gray-600'>{item.metric}</span>
                           <div className='flex items-center space-x-4'>
                             <div className='text-right'>
-                              <div className='text-body font-semibold text-black'>{typeof item.your === 'number' ? item.your.toFixed(2) : item.your}{item.unit}</div>
+                              <div className='text-body font-semibold text-gray-700'>{typeof item.your === 'number' ? item.your.toFixed(2) : item.your}{item.unit}</div>
                               <div className='text-caption text-gray-500'>{t('forecasting.scenarioModeling.you')}</div>
                             </div>
                             <div className='text-right'>
@@ -1548,7 +1445,7 @@ const Analytics = () => {
                   </div>
 
                   <div>
-                    <h4 className='text-body font-medium text-black mb-4'>{t('reports.recommendations.title')}</h4>
+                    <h4 className='text-body font-medium text-gray-600 mb-4'>{t('reports.recommendations.title')}</h4>
                     <div className='space-y-3'>
                       <div className='p-3 bg-blue-50 rounded-lg border-l-4 border-blue-500'>
                         <p className='text-caption font-medium text-blue-800'>{t('recommendations.optimizeCashFlow.title')}</p>
