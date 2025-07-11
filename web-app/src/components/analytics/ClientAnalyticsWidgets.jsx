@@ -374,15 +374,10 @@ const ClientAnalyticsWidgets = ({ dateRange, onDrillDown, className = "" }) => {
     
     return {
       yearlyRetention: yearlyClients.length > 0 ? (activeYearlyClients.length / yearlyClients.length) * 100 : 0,
-      quarterlyRetention: 85, // Mock data
-      monthlyRetention: 92,
-      churnRate: 8,
-      cohortAnalysis: [
-        { period: 'Q1 2024', retention: 88, clients: 45 },
-        { period: 'Q2 2024', retention: 92, clients: 52 },
-        { period: 'Q3 2024', retention: 85, clients: 48 },
-        { period: 'Q4 2024', retention: 90, clients: 55 }
-      ]
+      quarterlyRetention: 0,
+      monthlyRetention: 0,
+      churnRate: 0,
+      cohortAnalysis: []
     };
   };
 

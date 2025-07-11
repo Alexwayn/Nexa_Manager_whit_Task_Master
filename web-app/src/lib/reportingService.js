@@ -749,6 +749,193 @@ class ReportingService {
   }
 
   /**
+   * Get revenue summary for dashboard metrics
+   * @param {string} userId - User ID
+   * @param {Object} dateRange - Date range with start and end
+   * @param {string} groupBy - Grouping method (month, year)
+   * @returns {Promise<Array>} Revenue summary data
+   */
+  async getRevenueSummary(userId, dateRange, groupBy = 'month') {
+    try {
+      let query = supabase.from('v_revenue_summary').select('*').eq('user_id', userId);
+
+      if (dateRange) {
+        query = query.gte('month_start', dateRange.start).lte('month_start', dateRange.end);
+      }
+
+      query = query.order(groupBy === 'month' ? 'month_start' : 'year_start', { ascending: false });
+
+      const { data, error } = await query;
+
+      if (error) {
+        Logger.error('Error fetching revenue summary:', error);
+        throw error;
+      }
+
+      return data || [];
+    } catch (error) {
+      Logger.error('getRevenueSummary failed:', error);
+      return [];
+    }
+  }
+
+  /**
+   * Get expense summary for dashboard metrics
+   * @param {string} userId - User ID
+   * @param {Object} dateRange - Date range with start and end
+   * @param {string} category - Optional category filter
+   * @returns {Promise<Array>} Expense summary data
+   */
+  async getExpenseSummary(userId, dateRange, category) {
+    try {
+      let query = supabase.from('v_expense_summary').select('*').eq('user_id', userId);
+
+      if (dateRange) {
+        query = query.gte('month_start', dateRange.start).lte('month_start', dateRange.end);
+      }
+
+      if (category) {
+        query = query.eq('category', category);
+      }
+
+      query = query.order('month_start', { ascending: false });
+
+      const { data, error } = await query;
+
+      if (error) {
+        Logger.error('Error fetching expense summary:', error);
+        throw error;
+      }
+
+      return data || [];
+    } catch (error) {
+      Logger.error('getExpenseSummary failed:', error);
+      return [];
+    }
+  }
+
+  /**
+   * Get profit and loss data for dashboard metrics
+   * @param {string} userId - User ID
+   * @param {Object} dateRange - Date range with start and end
+   * @returns {Promise<Array>} Profit and loss data
+   */
+  async getProfitLoss(userId, dateRange) {
+    try {
+      let query = supabase.from('v_profit_loss').select('*').eq('user_id', userId);
+
+      if (dateRange) {
+        query = query.gte('period_start', dateRange.start).lte('period_start', dateRange.end);
+      }
+
+      query = query.order('period_start', { ascending: false });
+
+      const { data, error } = await query;
+
+      if (error) {
+        Logger.error('Error fetching profit/loss data:', error);
+        throw error;
+      }
+
+      return data || [];
+    } catch (error) {
+      Logger.error('getProfitLoss failed:', error);
+      return [];
+    }
+  }
+
+  /**
+   * Schedule a report for automatic generation
+   * @param {Object} config - Report configuration
+   * @param {string} config.reportType - Type of report
+   * @param {string} config.format - Export format
+   * @param {string} config.frequency - Schedule frequency (daily, weekly, monthly)
+   * @param {string} config.email - Email to send report to
+   * @returns {Promise<Object>} Scheduled report info
+   */
+  async scheduleReport(config) {
+    try {
+      const scheduleId = `schedule_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+      
+      // In a real implementation, this would save to database
+      const scheduledReport = {
+        id: scheduleId,
+        ...config,
+        createdAt: new Date().toISOString(),
+        status: 'active',
+        nextRun: this.calculateNextRun(config.frequency)
+      };
+      
+      Logger.info('Report scheduled:', scheduledReport);
+      return scheduledReport;
+    } catch (error) {
+      Logger.error('Error scheduling report:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Get list of scheduled reports
+   * @returns {Promise<Array>} List of scheduled reports
+   */
+  async getScheduledReports() {
+    try {
+      // In a real implementation, this would fetch from database
+      return [
+        {
+          id: 'schedule_1',
+          reportType: 'revenue-summary',
+          format: 'pdf',
+          frequency: 'monthly',
+          email: 'admin@company.com',
+          status: 'active',
+          nextRun: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString()
+        }
+      ];
+    } catch (error) {
+      Logger.error('Error getting scheduled reports:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Cancel a scheduled report
+   * @param {string} scheduleId - ID of scheduled report
+   * @returns {Promise<boolean>} Success status
+   */
+  async cancelScheduledReport(scheduleId) {
+    try {
+      Logger.info(`Cancelling scheduled report: ${scheduleId}`);
+      // In a real implementation, this would update database
+      return true;
+    } catch (error) {
+      Logger.error('Error cancelling scheduled report:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Calculate next run time based on frequency
+   * @param {string} frequency - Schedule frequency
+   * @returns {string} Next run time (ISO string)
+   */
+  calculateNextRun(frequency) {
+    const now = new Date();
+    switch (frequency) {
+      case 'daily':
+        return new Date(now.getTime() + 24 * 60 * 60 * 1000).toISOString();
+      case 'weekly':
+        return new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000).toISOString();
+      case 'monthly':
+        const nextMonth = new Date(now);
+        nextMonth.setMonth(nextMonth.getMonth() + 1);
+        return nextMonth.toISOString();
+      default:
+        return new Date(now.getTime() + 24 * 60 * 60 * 1000).toISOString();
+    }
+  }
+
+  /**
    * Download file helper for browser downloads
    * @param {Blob} blob - File blob to download
    * @param {string} filename - Filename for download

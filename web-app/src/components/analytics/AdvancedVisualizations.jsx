@@ -58,38 +58,13 @@ const AdvancedVisualizations = ({ analytics }) => {
     ];
     const weeks = ['Week 1', 'Week 2', 'Week 3', 'Week 4'];
 
-    // Generate sample heatmap data based on analytics
-    const data = [];
-    months.forEach((month, monthIndex) => {
-      weeks.forEach((week, weekIndex) => {
-        const baseValue = analytics?.data?.revenueAnalytics?.totalRevenue || 50000;
-        const seasonalFactor = Math.sin((monthIndex / 12) * 2 * Math.PI) * 0.3 + 1;
-        const weeklyFactor = (4 - weekIndex) * 0.1 + 0.8;
-        const value = Math.round(
-          baseValue * seasonalFactor * weeklyFactor * (Math.random() * 0.4 + 0.8),
-        );
-
-        data.push({
-          month,
-          week,
-          value,
-          intensity: Math.min(value / (baseValue * 1.5), 1),
-        });
-      });
-    });
-
-    return data;
+    // Return empty data when no real analytics available
+    return [];
   }, [analytics]);
 
   // Geographic revenue mapping data
   const geographicData = useMemo(() => {
-    const regions = [
-      { name: 'North America', revenue: 125000, clients: 45, growth: 12.5 },
-      { name: 'Europe', revenue: 98000, clients: 38, growth: 8.3 },
-      { name: 'Asia Pacific', revenue: 67000, clients: 22, growth: 15.7 },
-      { name: 'Latin America', revenue: 34000, clients: 15, growth: 6.2 },
-      { name: 'Middle East & Africa', revenue: 23000, clients: 8, growth: 9.1 },
-    ];
+    const regions = [];
 
     return regions.map(region => ({
       ...region,
@@ -99,12 +74,7 @@ const AdvancedVisualizations = ({ analytics }) => {
 
   // Cohort analysis data
   const cohortData = useMemo(() => {
-    const cohorts = [
-      { period: 'Q1 2024', month0: 100, month1: 85, month2: 72, month3: 65 },
-      { period: 'Q2 2024', month0: 100, month1: 88, month2: 76, month3: 68 },
-      { period: 'Q3 2024', month0: 100, month1: 82, month2: 70, month3: 62 },
-      { period: 'Q4 2024', month0: 100, month1: 90, month2: 78, month3: null },
-    ];
+    const cohorts = [];
 
     return {
       labels: ['Month 0', 'Month 1', 'Month 2', 'Month 3'],
@@ -120,13 +90,7 @@ const AdvancedVisualizations = ({ analytics }) => {
 
   // Funnel analysis data
   const funnelData = useMemo(() => {
-    const stages = [
-      { name: 'Leads', value: 1000, color: '#3B82F6' },
-      { name: 'Qualified', value: 750, color: '#10B981' },
-      { name: 'Proposals', value: 400, color: '#F59E0B' },
-      { name: 'Negotiations', value: 250, color: '#EF4444' },
-      { name: 'Closed Won', value: 150, color: '#8B5CF6' },
-    ];
+    const stages = [];
 
     return stages.map((stage, index) => ({
       ...stage,
@@ -137,44 +101,17 @@ const AdvancedVisualizations = ({ analytics }) => {
 
   // Correlation analysis data
   const correlationData = useMemo(() => {
-    const metrics = [
-      'Revenue',
-      'Client Satisfaction',
-      'Response Time',
-      'Project Complexity',
-      'Team Size',
-    ];
-    const correlationMatrix = [
-      [1.0, 0.85, -0.32, 0.67, 0.45],
-      [0.85, 1.0, -0.28, 0.52, 0.38],
-      [-0.32, -0.28, 1.0, -0.15, -0.22],
-      [0.67, 0.52, -0.15, 1.0, 0.73],
-      [0.45, 0.38, -0.22, 0.73, 1.0],
-    ];
+    const metrics = [];
+    const correlationMatrix = [];
 
     return { metrics, correlationMatrix };
   }, []);
 
   // Predictive analytics chart
   const predictiveData = useMemo(() => {
-    const months = [
-      'Jan',
-      'Feb',
-      'Mar',
-      'Apr',
-      'May',
-      'Jun',
-      'Jul',
-      'Aug',
-      'Sep',
-      'Oct',
-      'Nov',
-      'Dec',
-    ];
-    const historical = [
-      45000, 52000, 48000, 55000, 61000, 58000, 65000, 62000, 68000, 72000, 69000, 75000,
-    ];
-    const predicted = [78000, 82000, 85000, 88000, 92000, 95000];
+    const months = [];
+    const historical = [];
+    const predicted = [];
 
     return {
       labels: [...months, 'Jan+1', 'Feb+1', 'Mar+1', 'Apr+1', 'May+1', 'Jun+1'],

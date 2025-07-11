@@ -57,43 +57,24 @@ const AdvancedFinancialAnalytics = ({ data }) => {
     return `${numValue > 0 ? '+' : ''}${numValue.toFixed(1)}%`;
   };
 
-  const getMockFinancialData = () => {
-    const months = t('charts.months', { returnObjects: true });
+  const getEmptyFinancialData = () => {
     return {
-      totalRevenue: 125000,
-      totalExpenses: 87500,
-      netProfit: 37500,
-      profitMargin: 30.0,
-      revenueGrowth: 12.5,
-      expenseGrowth: 8.3,
-      cashFlow: [
-        { month: months.jan, income: 18000, expense: 12000, net: 6000 },
-        { month: months.feb, income: 22000, expense: 14000, net: 8000 },
-        { month: months.mar, income: 25000, expense: 15000, net: 10000 },
-        { month: months.apr, income: 20000, expense: 13000, net: 7000 },
-        { month: months.may, income: 28000, expense: 16000, net: 12000 },
-        { month: months.jun, income: 32000, expense: 17500, net: 14500 },
-      ],
-      categoryDistribution: [
-        { category: t('charts.revenueBreakdown.consulting'), amount: 45000, percentage: 36 },
-        { category: t('charts.revenueBreakdown.products'), amount: 35000, percentage: 28 },
-        { category: t('charts.revenueBreakdown.services'), amount: 25000, percentage: 20 },
-        { category: 'Support', amount: 20000, percentage: 16 },
-      ],
-      expenseCategories: [
-        { category: 'Salaries', amount: 35000, percentage: 40 },
-        { category: 'Marketing', amount: 17500, percentage: 20 },
-        { category: 'Operations', amount: 15000, percentage: 17 },
-        { category: 'Technology', amount: 10000, percentage: 11 },
-        { category: 'Other', amount: 10000, percentage: 12 },
-      ],
+      totalRevenue: 0,
+      totalExpenses: 0,
+      netProfit: 0,
+      profitMargin: 0,
+      revenueGrowth: 0,
+      expenseGrowth: 0,
+      cashFlow: [],
+      categoryDistribution: [],
+      expenseCategories: [],
     };
   };
 
   const financialData = useMemo(() => {
-    const mockData = getMockFinancialData();
-    return data?.success && data?.data ? { ...mockData, ...data.data } : mockData;
-  }, [data, i18n.language, getMockFinancialData]);
+    const emptyData = getEmptyFinancialData();
+    return data?.success && data?.data ? data.data : emptyData;
+  }, [data]);
 
   const CashFlowChart = () => {
     const chartData = {

@@ -63,44 +63,21 @@ const FinancialForecast = ({ data }) => {
   };
 
   // Mock forecast data when real data is not available
-  const getMockForecastData = () => {
-    const currentDate = new Date();
-    const forecast = [];
-    let cumulativeProfit = 0;
-
-    for (let i = 1; i <= config.months; i++) {
-      const futureDate = new Date(currentDate);
-      futureDate.setMonth(futureDate.getMonth() + i);
-
-      const baseIncome = 28000 + (Math.random() * 8000 - 4000); // 24k-32k range
-      const baseExpense = 18000 + (Math.random() * 4000 - 2000); // 16k-20k range
-      const netProfit = baseIncome - baseExpense;
-      cumulativeProfit += netProfit;
-
-      forecast.push({
-        month: futureDate.toISOString().substring(0, 7), // YYYY-MM format
-        income: Math.round(baseIncome),
-        expense: Math.round(baseExpense),
-        netProfit: Math.round(netProfit),
-        cumulativeProfit: Math.round(cumulativeProfit),
-      });
-    }
-
+  const getEmptyForecastData = () => {
     return {
-      forecast,
+      forecast: [],
       method: config.method,
-      confidence: 0.78,
+      confidence: 0,
       summary: {
-        totalProjectedIncome: forecast.reduce((sum, item) => sum + item.income, 0),
-        totalProjectedExpenses: forecast.reduce((sum, item) => sum + item.expense, 0),
-        totalProjectedProfit: forecast.reduce((sum, item) => sum + item.netProfit, 0),
-        averageMonthlyProfit:
-          forecast.reduce((sum, item) => sum + item.netProfit, 0) / forecast.length,
+        totalProjectedIncome: 0,
+        totalProjectedExpenses: 0,
+        totalProjectedProfit: 0,
+        averageMonthlyProfit: 0,
       },
     };
   };
 
-  const forecastData = data?.success && data?.data ? data.data : getMockForecastData();
+  const forecastData = data?.success && data?.data ? data.data : getEmptyForecastData();
 
   // Configurazione del grafico delle previsioni
   const getChartData = () => {

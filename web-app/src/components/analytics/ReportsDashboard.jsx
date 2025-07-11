@@ -108,11 +108,11 @@ const ReportsDashboard = ({ analytics }) => {
       totalRevenue: revenueAnalytics?.totalRevenue || 0,
       totalClients: clientAnalytics?.totalClients || 0,
       pendingInvoices: invoiceAnalytics?.pending || 0,
-      completedProjects: 45, // Mock data
+      completedProjects: 0,
       avgProjectValue: revenueAnalytics?.totalRevenue
         ? Math.round(revenueAnalytics.totalRevenue / (clientAnalytics?.totalClients || 1))
         : 0,
-      clientSatisfaction: 4.7, // Mock data
+      clientSatisfaction: 0,
     };
   }, [analytics]);
 

@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import Footer from '../components/shared/Footer';
+import ReportScheduler from '../components/reports/ReportScheduler';
+import ReportHistory from '../components/reports/ReportHistory';
+import CustomReportBuilder from '../components/reports/CustomReportBuilder';
 import {
   ChartBarIcon,
   PresentationChartLineIcon,
@@ -13,6 +16,7 @@ import {
   ExclamationTriangleIcon,
   ArrowTrendingUpIcon,
   CurrencyDollarIcon,
+  CurrencyEuroIcon,
   CalendarIcon,
   ChevronDownIcon,
   ArrowDownTrayIcon,
@@ -24,7 +28,17 @@ import {
   DocumentChartBarIcon,
   Cog6ToothIcon,
   HomeIcon,
+  CreditCardIcon,
+  UsersIcon,
+  UserPlusIcon,
+  HeartIcon,
+  Squares2X2Icon,
+  XMarkIcon,
+  ArchiveBoxIcon,
+  BookmarkIcon,
 } from '@heroicons/react/24/outline';
+import { useReports } from '@hooks/useReports';
+import Logger from '@utils/Logger';
 
 const Reports = () => {
   const { t } = useTranslation('reports');
@@ -32,9 +46,52 @@ const Reports = () => {
   const [activeTab, setActiveTab] = useState('financial');
   const [timeRange, setTimeRange] = useState('Last 30 Days');
   const [reportBuilderTab, setReportBuilderTab] = useState('recent');
+  const [selectedFormats, setSelectedFormats] = useState({});
+  const [showPreview, setShowPreview] = useState(false);
+  const [previewReport, setPreviewReport] = useState(null);
+  const [showScheduleModal, setShowScheduleModal] = useState(false);
+  const [scheduleReport, setScheduleReport] = useState(null);
+  const [dateRange, setDateRange] = useState({
+    startDate: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+    endDate: new Date().toISOString().split('T')[0]
+  });
+  
+  // Phase 3 state variables
+  const [showScheduler, setShowScheduler] = useState(false);
+  const [showHistory, setShowHistory] = useState(false);
+  const [showCustomBuilder, setShowCustomBuilder] = useState(false);
+  const [mainView, setMainView] = useState('dashboard'); // 'dashboard', 'scheduler', 'history', 'builder'
+  
+  // Use the reports hook for real data
+  const {
+    metrics: hookMetrics,
+    recentReports: hookRecentReports,
+    chartData: hookChartData,
+    loading,
+    error,
+    generating,
+    generateReport,
+    refreshMetrics
+  } = useReports();
 
-  // Enhanced metrics data matching Motiff design
-  const metrics = {
+  // Icon mapping for metrics (since we store icon names as strings)
+  const iconMap = {
+    CurrencyEuroIcon,
+    ArrowTrendingUpIcon,
+    ChartBarIcon,
+    CreditCardIcon,
+    UsersIcon,
+    UserPlusIcon,
+    HeartIcon,
+    DocumentTextIcon,
+    DocumentChartBarIcon,
+    ClockIcon,
+    ArrowDownTrayIcon,
+    Squares2X2Icon
+  };
+
+  // Enhanced metrics data matching Motiff design - use hook data if available
+  const metrics = hookMetrics || {
     financial: {
       totalRevenue: {
         value: '€142,500',
@@ -139,8 +196,14 @@ const Reports = () => {
     },
   };
 
-  // Recent reports data for the table
-  const recentReports = [
+  // Format recent reports with proper icons
+  const formattedRecentReports = (hookRecentReports || []).map(report => ({
+    ...report,
+    icon: iconMap[report.icon] || DocumentTextIcon
+  }));
+
+  // Fallback recent reports data for the table
+  const recentReports = formattedRecentReports.length > 0 ? formattedRecentReports : [
     {
       id: 1,
       name: 'Monthly Revenue Summary',
@@ -175,17 +238,17 @@ const Reports = () => {
     },
   ];
 
-  // Sample chart data (in a real app, this would come from an API)
-  const chartData = {
+  // Use chart data from hook or provide empty fallback
+  const safeChartData = hookChartData || {
     revenueVsExpenses: {
-      revenue: [45000, 52000, 48000, 61000, 55000, 58000],
-      expenses: [32000, 35000, 33000, 42000, 38000, 40000],
-      months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+      revenue: [],
+      expenses: [],
+      months: [],
     },
     clientAcquisition: {
-      newClients: [8, 12, 10, 15, 11, 14],
-      churn: [2, 3, 4, 2, 3, 1],
-      months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+      newClients: [],
+      churn: [],
+      months: [],
     },
   };
 
@@ -294,9 +357,88 @@ const Reports = () => {
     ],
   };
 
-  const handleGenerateReport = reportId => {
-    console.log(`Generating report: ${reportId}`);
-    // TODO: Implement report generation logic
+  const handleGenerateReport = async (reportId, format = 'pdf') => {
+    try {
+      Logger.info('Generating report:', { reportId, format });
+      
+      // Show generation progress
+      const result = await generateReport(reportId, { 
+        format,
+        dateRange: {
+          startDate: dateRange.startDate,
+          endDate: dateRange.endDate
+        }
+      });
+      
+      if (result && result.success) {
+        Logger.info('Report generated successfully:', result);
+        
+        // Handle different result types
+        if (result.downloadUrl) {
+          // Direct download URL
+          const link = document.createElement('a');
+          link.href = result.downloadUrl;
+          link.download = `${reportId}-${new Date().toISOString().split('T')[0]}.${format}`;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        } else if (result.blob) {
+          // Blob data for download
+          const url = window.URL.createObjectURL(result.blob);
+          const link = document.createElement('a');
+          link.href = url;
+          link.download = `${reportId}-${new Date().toISOString().split('T')[0]}.${format}`;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          window.URL.revokeObjectURL(url);
+        } else if (result.data) {
+          // Raw data - convert to downloadable format
+          let content, mimeType, extension;
+          
+          switch (format) {
+            case 'csv':
+              content = result.data;
+              mimeType = 'text/csv';
+              extension = 'csv';
+              break;
+            case 'json':
+              content = JSON.stringify(result.data, null, 2);
+              mimeType = 'application/json';
+              extension = 'json';
+              break;
+            default:
+              content = result.data;
+              mimeType = 'application/octet-stream';
+              extension = format;
+          }
+          
+          const blob = new Blob([content], { type: mimeType });
+          const url = window.URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = url;
+          link.download = `${reportId}-${new Date().toISOString().split('T')[0]}.${extension}`;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          window.URL.revokeObjectURL(url);
+        }
+        
+        // Refresh metrics to show updated recent reports
+        await refreshMetrics();
+        
+        // Show success notification (you can replace with toast notification)
+        console.log(`Report ${reportId} generated successfully in ${format} format`);
+        
+      } else {
+        throw new Error(result?.error || 'Failed to generate report');
+      }
+    } catch (err) {
+      Logger.error('Error generating report:', err);
+      // Show error notification (you can replace with toast notification)
+      console.error(`Failed to generate report ${reportId}:`, err.message);
+      alert(`Failed to generate report: ${err.message}`);
+    }
   };
 
   // Simple chart components (in a real app, you'd use a charting library like Chart.js or Recharts)
@@ -407,45 +549,100 @@ const Reports = () => {
         </div>
       </div>
 
-      {/* Navigation Tabs */}
+      {/* Main Navigation Tabs */}
       <div className='border-b border-gray-200 px-6'>
-        <div className='flex space-x-10'>
+        <div className='flex space-x-8'>
           <button
-            onClick={() => setActiveTab('financial')}
-            className={`py-3 px-4 text-nav-text font-medium border-b-2 ${
-              activeTab === 'financial'
+            onClick={() => setMainView('dashboard')}
+            className={`py-3 px-4 text-nav-text font-medium border-b-2 flex items-center space-x-2 ${
+              mainView === 'dashboard'
                 ? 'text-blue-600 border-blue-600'
                 : 'text-gray-500 border-transparent hover:text-gray-700'
             }`}
           >
-            Financial Reports
+            <HomeIcon className='h-4 w-4' />
+            <span>Dashboard</span>
           </button>
           <button
-            onClick={() => setActiveTab('client')}
-            className={`py-3 px-4 text-nav-text font-medium border-b-2 ${
-              activeTab === 'client'
+            onClick={() => setMainView('scheduler')}
+            className={`py-3 px-4 text-nav-text font-medium border-b-2 flex items-center space-x-2 ${
+              mainView === 'scheduler'
                 ? 'text-blue-600 border-blue-600'
                 : 'text-gray-500 border-transparent hover:text-gray-700'
             }`}
           >
-            Client Reports
+            <ClockIcon className='h-4 w-4' />
+            <span>Schedule Reports</span>
           </button>
           <button
-            onClick={() => setActiveTab('custom')}
-            className={`py-3 px-4 text-nav-text font-medium border-b-2 ${
-              activeTab === 'custom'
+            onClick={() => setMainView('history')}
+            className={`py-3 px-4 text-nav-text font-medium border-b-2 flex items-center space-x-2 ${
+              mainView === 'history'
                 ? 'text-blue-600 border-blue-600'
                 : 'text-gray-500 border-transparent hover:text-gray-700'
             }`}
           >
-            Custom Reports
+            <ArchiveBoxIcon className='h-4 w-4' />
+            <span>Report History</span>
+          </button>
+          <button
+            onClick={() => setMainView('builder')}
+            className={`py-3 px-4 text-nav-text font-medium border-b-2 flex items-center space-x-2 ${
+              mainView === 'builder'
+                ? 'text-blue-600 border-blue-600'
+                : 'text-gray-500 border-transparent hover:text-gray-700'
+            }`}
+          >
+            <Cog6ToothIcon className='h-4 w-4' />
+            <span>Custom Builder</span>
           </button>
         </div>
       </div>
 
-      {/* Report Cards Grid */}
-      <div className='px-6 py-6'>
-        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4'>
+      {/* Dashboard Sub-Navigation */}
+      {mainView === 'dashboard' && (
+        <div className='border-b border-gray-100 px-6 bg-gray-50'>
+          <div className='flex space-x-6'>
+            <button
+              onClick={() => setActiveTab('financial')}
+              className={`py-2 px-3 text-sm font-medium border-b-2 ${
+                activeTab === 'financial'
+                  ? 'text-blue-600 border-blue-600'
+                  : 'text-gray-500 border-transparent hover:text-gray-700'
+              }`}
+            >
+              Financial Reports
+            </button>
+            <button
+              onClick={() => setActiveTab('client')}
+              className={`py-2 px-3 text-sm font-medium border-b-2 ${
+                activeTab === 'client'
+                  ? 'text-blue-600 border-blue-600'
+                  : 'text-gray-500 border-transparent hover:text-gray-700'
+              }`}
+            >
+              Client Reports
+            </button>
+            <button
+              onClick={() => setActiveTab('custom')}
+              className={`py-2 px-3 text-sm font-medium border-b-2 ${
+                activeTab === 'custom'
+                  ? 'text-blue-600 border-blue-600'
+                  : 'text-gray-500 border-transparent hover:text-gray-700'
+              }`}
+            >
+              Custom Reports
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Main Content Area */}
+      {mainView === 'dashboard' && (
+        <>
+          {/* Report Cards Grid */}
+          <div className='px-6 py-6'>
+            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4'>
           {reportCards[activeTab]?.map(report => {
             const IconComponent = report.icon;
             return (
@@ -468,22 +665,107 @@ const Reports = () => {
                 {/* Description */}
                 <p className='text-body text-gray-500 mb-4 leading-5'>{report.description}</p>
 
-                {/* Generate Report Button */}
-                <button
-                  onClick={() => handleGenerateReport(report.id)}
-                  className='flex items-center space-x-1 text-blue-600 text-body font-normal hover:text-blue-700 transition-colors duration-200'
-                >
-                  <span>Generate Report</span>
-                  <ArrowRightIcon className='h-4 w-4' />
-                </button>
+                {/* Format Selection */}
+                <div className='mb-3'>
+                  <label className='block text-xs font-medium text-gray-700 mb-1'>Format</label>
+                  <select
+                    value={selectedFormats[report.id] || 'pdf'}
+                    onChange={(e) => setSelectedFormats(prev => ({ ...prev, [report.id]: e.target.value }))}
+                    className='w-full text-sm border border-gray-300 rounded-md px-2 py-1 focus:ring-1 focus:ring-blue-500 focus:border-blue-500'
+                  >
+                    <option value='pdf'>PDF</option>
+                    <option value='csv'>CSV</option>
+                    <option value='excel'>Excel</option>
+                  </select>
+                </div>
+
+                {/* Action Buttons */}
+                <div className='space-y-2'>
+                  <div className='grid grid-cols-2 gap-2'>
+                    <button
+                      onClick={() => {
+                        setPreviewReport(report);
+                        setShowPreview(true);
+                      }}
+                      className='flex items-center justify-center space-x-1 py-2 px-2 rounded-md text-xs font-medium border border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors duration-200'
+                    >
+                      <EyeIcon className='h-3 w-3' />
+                      <span>Preview</span>
+                    </button>
+                    
+                    <button
+                      onClick={() => {
+                        setScheduleReport(report);
+                        setShowScheduleModal(true);
+                      }}
+                      className='flex items-center justify-center space-x-1 py-2 px-2 rounded-md text-xs font-medium border border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors duration-200'
+                    >
+                      <CalendarIcon className='h-3 w-3' />
+                      <span>Schedule</span>
+                    </button>
+                  </div>
+                  
+                  <button
+                    onClick={() => handleGenerateReport(report.id, selectedFormats[report.id] || 'pdf')}
+                    disabled={generating}
+                    className={`w-full flex items-center justify-center space-x-2 py-2 px-3 rounded-md text-sm font-medium transition-colors duration-200 ${
+                      generating
+                        ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                        : 'bg-blue-600 text-white hover:bg-blue-700'
+                    }`}
+                  >
+                    {generating ? (
+                      <>
+                        <div className='animate-spin rounded-full h-4 w-4 border-b-2 border-white'></div>
+                        <span>Generating...</span>
+                      </>
+                    ) : (
+                      <>
+                        <span>Generate Now</span>
+                        <ArrowRightIcon className='h-4 w-4' />
+                      </>
+                    )}
+                  </button>
+                </div>
               </div>
             );
           })}
         </div>
       </div>
 
+      {/* Loading State */}
+      {loading && (
+        <div className='flex justify-center items-center py-12 px-6'>
+          <div className='animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600'></div>
+          <span className='ml-2 text-gray-600'>Loading reports data...</span>
+        </div>
+      )}
+
+      {/* Error State */}
+      {error && (
+        <div className='px-6 py-4'>
+          <div className='bg-red-50 border border-red-200 rounded-lg p-4'>
+            <div className='flex'>
+              <div className='flex-shrink-0'>
+                <ExclamationTriangleIcon className='h-5 w-5 text-red-400' />
+              </div>
+              <div className='ml-3'>
+                <h3 className='text-sm font-medium text-red-800'>Error loading reports data</h3>
+                <p className='mt-1 text-sm text-red-700'>{error}</p>
+                <button
+                  onClick={refreshMetrics}
+                  className='mt-2 text-sm text-red-600 hover:text-red-500 underline'
+                >
+                  Try again
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Enhanced Metrics Dashboard */}
-      {metrics[activeTab] && (
+      {!loading && !error && metrics[activeTab] && (
         <div className='px-6 py-4'>
           <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6'>
             {Object.entries(metrics[activeTab]).map(([key, metric]) => {
@@ -521,12 +803,12 @@ const Reports = () => {
       {activeTab === 'financial' && (
         <div className='px-6 py-6'>
           <div className='grid grid-cols-1 lg:grid-cols-2 gap-6'>
-            <SimpleBarChart data={chartData.revenueVsExpenses} title='Revenue vs Expenses' />
+            <SimpleBarChart data={safeChartData.revenueVsExpenses} title='Revenue vs Expenses' />
             <SimpleBarChart
               data={{
-                revenue: chartData.clientAcquisition.newClients,
-                expenses: chartData.clientAcquisition.churn,
-                months: chartData.clientAcquisition.months,
+                revenue: safeChartData.clientAcquisition.newClients,
+                expenses: safeChartData.clientAcquisition.churn,
+                months: safeChartData.clientAcquisition.months,
               }}
               title='Client Acquisition vs Churn'
             />
@@ -700,58 +982,292 @@ const Reports = () => {
 
           {/* Table Body */}
           <div className='divide-y divide-gray-200'>
-            {recentReports.map(report => {
-              const IconComponent = report.icon;
-              return (
-                <div key={report.id} className='px-6 py-4 hover:bg-gray-50'>
-                  <div className='grid grid-cols-12 gap-4 items-center'>
-                    <div className='col-span-4 flex items-center space-x-3'>
-                      <div className='bg-blue-100 rounded-md p-2'>
-                        <IconComponent className='h-5 w-5 text-blue-600' />
+            {recentReports.length > 0 ? (
+              recentReports.map(report => {
+                const IconComponent = report.icon;
+                return (
+                  <div key={report.id} className='px-6 py-4 hover:bg-gray-50'>
+                    <div className='grid grid-cols-12 gap-4 items-center'>
+                      <div className='col-span-4 flex items-center space-x-3'>
+                        <div className='bg-blue-100 rounded-md p-2'>
+                          <IconComponent className='h-5 w-5 text-blue-600' />
+                        </div>
+                        <span className='text-body font-medium text-gray-900'>{report.name}</span>
                       </div>
-                      <span className='text-body font-medium text-gray-900'>{report.name}</span>
-                    </div>
-                    <div className='col-span-2 text-body text-gray-600'>{report.date}</div>
-                    <div className='col-span-2'>
-                      <span
-                        className={`inline-flex px-2 py-1 text-caption font-medium rounded-full ${
-                          report.type === 'Financial'
-                            ? 'bg-blue-100 text-blue-800'
-                            : report.type === 'Client'
-                              ? 'bg-green-100 text-green-800'
-                              : 'bg-purple-100 text-purple-800'
-                        }`}
-                      >
-                        {report.type}
-                      </span>
-                    </div>
-                    <div className='col-span-2'>
-                      <div className='flex items-center space-x-1'>
-                        <CheckCircleIcon className='h-4 w-4 text-green-500' />
-                        <span className='text-body text-gray-600'>{report.status}</span>
+                      <div className='col-span-2 text-body text-gray-600'>{report.date}</div>
+                      <div className='col-span-2'>
+                        <span
+                          className={`inline-flex px-2 py-1 text-caption font-medium rounded-full ${
+                            report.type === 'Financial'
+                              ? 'bg-blue-100 text-blue-800'
+                              : report.type === 'Client'
+                                ? 'bg-green-100 text-green-800'
+                                : 'bg-purple-100 text-purple-800'
+                          }`}
+                        >
+                          {report.type}
+                        </span>
                       </div>
-                    </div>
-                    <div className='col-span-2 flex justify-end space-x-2'>
-                      <button className='p-1 text-gray-400 hover:text-gray-600'>
-                        <EyeIcon className='h-4 w-4' />
-                      </button>
-                      <button className='p-1 text-gray-400 hover:text-gray-600'>
-                        <ArrowDownTrayIcon className='h-4 w-4' />
-                      </button>
-                      <button className='p-1 text-gray-400 hover:text-red-600'>
-                        <TrashIcon className='h-4 w-4' />
-                      </button>
+                      <div className='col-span-2'>
+                        <div className='flex items-center space-x-1'>
+                          <CheckCircleIcon className='h-4 w-4 text-green-500' />
+                          <span className='text-body text-gray-600'>{report.status}</span>
+                        </div>
+                      </div>
+                      <div className='col-span-2 flex justify-end space-x-2'>
+                        <button className='p-1 text-gray-400 hover:text-gray-600'>
+                          <EyeIcon className='h-4 w-4' />
+                        </button>
+                        <button className='p-1 text-gray-400 hover:text-gray-600'>
+                          <ArrowDownTrayIcon className='h-4 w-4' />
+                        </button>
+                        <button className='p-1 text-gray-400 hover:text-red-600'>
+                          <TrashIcon className='h-4 w-4' />
+                        </button>
+                      </div>
                     </div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })
+            ) : (
+              <div className='px-6 py-8 text-center'>
+                <DocumentChartBarIcon className='mx-auto h-12 w-12 text-gray-400' />
+                <h3 className='mt-2 text-sm font-medium text-gray-900'>No reports yet</h3>
+                <p className='mt-1 text-sm text-gray-500'>Get started by generating your first report.</p>
+              </div>
+            )}
           </div>
         </div>
       </div>
+        </>
+      )}
 
-      {/* Footer */}
-      <Footer />
+      {/* Report Preview Modal */}
+      {showPreview && previewReport && (
+        <div className='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50'>
+          <div className='bg-white rounded-lg shadow-xl max-w-4xl w-full mx-4 max-h-[90vh] overflow-hidden'>
+            <div className='flex items-center justify-between p-6 border-b'>
+              <h3 className='text-lg font-semibold text-gray-900'>
+                Preview: {previewReport.title}
+              </h3>
+              <button
+                onClick={() => setShowPreview(false)}
+                className='text-gray-400 hover:text-gray-600'
+              >
+                <XMarkIcon className='h-6 w-6' />
+              </button>
+            </div>
+            
+            <div className='p-6 overflow-y-auto max-h-[calc(90vh-120px)]'>
+              {/* Date Range Selection */}
+              <div className='mb-6'>
+                <h4 className='text-sm font-medium text-gray-700 mb-3'>Report Configuration</h4>
+                <div className='grid grid-cols-2 gap-4'>
+                  <div>
+                    <label className='block text-xs font-medium text-gray-600 mb-1'>Start Date</label>
+                    <input
+                      type='date'
+                      value={dateRange.startDate}
+                      onChange={(e) => setDateRange(prev => ({ ...prev, startDate: e.target.value }))}
+                      className='w-full text-sm border border-gray-300 rounded-md px-3 py-2 focus:ring-1 focus:ring-blue-500 focus:border-blue-500'
+                    />
+                  </div>
+                  <div>
+                    <label className='block text-xs font-medium text-gray-600 mb-1'>End Date</label>
+                    <input
+                      type='date'
+                      value={dateRange.endDate}
+                      onChange={(e) => setDateRange(prev => ({ ...prev, endDate: e.target.value }))}
+                      className='w-full text-sm border border-gray-300 rounded-md px-3 py-2 focus:ring-1 focus:ring-blue-500 focus:border-blue-500'
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Preview Content */}
+              <div className='bg-gray-50 rounded-lg p-4 mb-6'>
+                <h5 className='text-sm font-medium text-gray-700 mb-2'>Report Preview</h5>
+                <div className='text-sm text-gray-600 space-y-2'>
+                  <p><strong>Report Type:</strong> {previewReport.title}</p>
+                  <p><strong>Description:</strong> {previewReport.description}</p>
+                  <p><strong>Date Range:</strong> {dateRange.startDate} to {dateRange.endDate}</p>
+                  <p><strong>Format:</strong> {selectedFormats[previewReport.id] || 'PDF'}</p>
+                  <p><strong>Estimated Size:</strong> ~2-5 MB</p>
+                  <p><strong>Generation Time:</strong> ~30-60 seconds</p>
+                </div>
+              </div>
+
+              {/* Sample Data Preview */}
+              <div className='bg-white border rounded-lg p-4'>
+                <h5 className='text-sm font-medium text-gray-700 mb-3'>Sample Data</h5>
+                <div className='text-xs text-gray-500 space-y-1'>
+                  <div className='grid grid-cols-3 gap-4 py-2 border-b font-medium'>
+                    <span>Metric</span>
+                    <span>Current Period</span>
+                    <span>Previous Period</span>
+                  </div>
+                  <div className='grid grid-cols-3 gap-4 py-1'>
+                    <span>Total Revenue</span>
+                    <span>$45,230</span>
+                    <span>$38,920</span>
+                  </div>
+                  <div className='grid grid-cols-3 gap-4 py-1'>
+                    <span>Total Expenses</span>
+                    <span>$23,150</span>
+                    <span>$21,480</span>
+                  </div>
+                  <div className='grid grid-cols-3 gap-4 py-1'>
+                    <span>Net Profit</span>
+                    <span>$22,080</span>
+                    <span>$17,440</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div className='flex items-center justify-end space-x-3 p-6 border-t bg-gray-50'>
+              <button
+                onClick={() => setShowPreview(false)}
+                className='px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50'
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => {
+                  setShowPreview(false);
+                  handleGenerateReport(previewReport.id, selectedFormats[previewReport.id] || 'pdf');
+                }}
+                className='px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700'
+              >
+                Generate Report
+              </button>
+            </div>
+          </div>
+        </div>
+       )}
+
+       {/* Schedule Report Modal */}
+       {showScheduleModal && scheduleReport && (
+         <div className='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50'>
+           <div className='bg-white rounded-lg shadow-xl max-w-md w-full mx-4'>
+             <div className='flex items-center justify-between p-6 border-b'>
+               <h3 className='text-lg font-semibold text-gray-900'>
+                 Schedule: {scheduleReport.title}
+               </h3>
+               <button
+                 onClick={() => setShowScheduleModal(false)}
+                 className='text-gray-400 hover:text-gray-600'
+               >
+                 <XMarkIcon className='h-6 w-6' />
+               </button>
+             </div>
+             
+             <div className='p-6'>
+               <form onSubmit={async (e) => {
+                 e.preventDefault();
+                 const formData = new FormData(e.target);
+                 const config = {
+                   reportType: scheduleReport.id,
+                   format: formData.get('format'),
+                   frequency: formData.get('frequency'),
+                   email: formData.get('email')
+                 };
+                 
+                 try {
+                   await reportingService.scheduleReport(config);
+                   setShowScheduleModal(false);
+                   console.log('Report scheduled successfully');
+                 } catch (error) {
+                   console.error('Error scheduling report:', error);
+                 }
+               }}>
+                 <div className='space-y-4'>
+                   <div>
+                     <label className='block text-sm font-medium text-gray-700 mb-1'>Format</label>
+                     <select
+                       name='format'
+                       required
+                       className='w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-1 focus:ring-blue-500 focus:border-blue-500'
+                     >
+                       <option value='pdf'>PDF</option>
+                       <option value='csv'>CSV</option>
+                       <option value='excel'>Excel</option>
+                     </select>
+                   </div>
+                   
+                   <div>
+                     <label className='block text-sm font-medium text-gray-700 mb-1'>Frequency</label>
+                     <select
+                       name='frequency'
+                       required
+                       className='w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-1 focus:ring-blue-500 focus:border-blue-500'
+                     >
+                       <option value='daily'>Daily</option>
+                       <option value='weekly'>Weekly</option>
+                       <option value='monthly'>Monthly</option>
+                     </select>
+                   </div>
+                   
+                   <div>
+                     <label className='block text-sm font-medium text-gray-700 mb-1'>Email Address</label>
+                     <input
+                       type='email'
+                       name='email'
+                       required
+                       placeholder='admin@company.com'
+                       className='w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-1 focus:ring-blue-500 focus:border-blue-500'
+                     />
+                   </div>
+                   
+                   <div className='bg-blue-50 rounded-lg p-3'>
+                     <p className='text-sm text-blue-700'>
+                       <strong>Note:</strong> Scheduled reports will be automatically generated and sent to the specified email address.
+                     </p>
+                   </div>
+                 </div>
+                 
+                 <div className='flex items-center justify-end space-x-3 mt-6'>
+                   <button
+                     type='button'
+                     onClick={() => setShowScheduleModal(false)}
+                     className='px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50'
+                   >
+                     Cancel
+                   </button>
+                   <button
+                     type='submit'
+                     className='px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700'
+                   >
+                     Schedule Report
+                   </button>
+                 </div>
+               </form>
+             </div>
+           </div>
+         </div>
+       )}
+
+      {/* Phase 3 Components */}
+      {mainView === 'scheduler' && (
+        <div className='px-6 py-6'>
+          <ReportScheduler />
+        </div>
+      )}
+
+      {mainView === 'history' && (
+        <div className='px-6 py-6'>
+          <ReportHistory />
+        </div>
+      )}
+
+      {mainView === 'builder' && (
+        <div className='px-6 py-6'>
+          <CustomReportBuilder />
+        </div>
+      )}
+
+       {/* Footer */}
+       <Footer />
     </div>
   );
 };

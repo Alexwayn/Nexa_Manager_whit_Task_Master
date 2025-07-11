@@ -189,43 +189,23 @@ const CustomReportBuilder = ({ onBack, initialTemplate = null }) => {
 
     // Simulate API call
     setTimeout(() => {
-      const mockData = generateMockData();
+      const emptyData = generateEmptyData();
       setReportConfig(prev => ({
         ...prev,
-        previewData: mockData,
+        previewData: emptyData,
         isGenerating: false,
       }));
     }, 1500);
   };
 
-  // Generate mock data for preview
-  const generateMockData = () => {
+  // Generate empty data for preview
+  const generateEmptyData = () => {
     // This would normally come from the reporting service
     return {
-      rows: 25,
+      rows: 0,
       columns: reportConfig.selectedFields.length,
-      sampleData: reportConfig.selectedFields.slice(0, 5).map(field => ({
-        field: field.name,
-        sampleValue: getSampleValue(field.type),
-      })),
+      sampleData: [],
     };
-  };
-
-  const getSampleValue = type => {
-    switch (type) {
-      case 'currency':
-        return '€1,234.56';
-      case 'percentage':
-        return '24.5%';
-      case 'date':
-        return '2024-01-15';
-      case 'number':
-        return '42';
-      case 'boolean':
-        return 'Yes';
-      default:
-        return 'Sample Value';
-    }
   };
 
   // Sortable Section Component
@@ -623,17 +603,19 @@ const CustomReportBuilder = ({ onBack, initialTemplate = null }) => {
               </div>
             </div>
 
-            <div className='text-left'>
-              <h5 className='font-medium text-gray-900 mb-2'>Sample Data Preview:</h5>
-              <div className='bg-gray-50 rounded p-3 text-sm space-y-1'>
-                {reportConfig.previewData.sampleData.map((item, index) => (
-                  <div key={index} className='flex justify-between'>
-                    <span className='font-medium text-gray-700'>{item.field}:</span>
-                    <span className='text-gray-600'>{item.sampleValue}</span>
-                  </div>
-                ))}
+            {reportConfig.previewData.sampleData.length > 0 && (
+              <div className='text-left'>
+                <h5 className='font-medium text-gray-900 mb-2'>Sample Data Preview:</h5>
+                <div className='bg-gray-50 rounded p-3 text-sm space-y-1'>
+                  {reportConfig.previewData.sampleData.map((item, index) => (
+                    <div key={index} className='flex justify-between'>
+                      <span className='font-medium text-gray-700'>{item.field}:</span>
+                      <span className='text-gray-600'>{item.sampleValue}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
           </div>
         )}
       </div>

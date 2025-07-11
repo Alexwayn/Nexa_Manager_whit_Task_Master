@@ -121,65 +121,11 @@ const Analytics = () => {
         Logger.warn('Failed to load real data, using sample data:', realDataError);
       }
 
-      // Fallback to comprehensive sample data (following Invoices page pattern)
-      const sampleData = {
-        data: {
-          invoices: [
-            { id: 'INV-2024-089', client_name: 'TechCorp Solutions', total_amount: 4500, status: 'paid', created_at: '2024-01-15' },
-            { id: 'INV-2024-088', client_name: 'Digital Dynamics', total_amount: 3200, status: 'paid', created_at: '2024-01-14' },
-            { id: 'INV-2024-087', client_name: 'Innovation Labs', total_amount: 5800, status: 'paid', created_at: '2024-01-13' },
-            { id: 'INV-2024-086', client_name: 'StartupX', total_amount: 2100, status: 'pending', created_at: '2024-01-12' },
-            { id: 'INV-2024-085', client_name: 'Enterprise Co', total_amount: 7500, status: 'paid', created_at: '2024-01-11' },
-            { id: 'INV-2024-084', client_name: 'TechCorp Solutions', total_amount: 6200, status: 'paid', created_at: '2024-01-10' },
-            { id: 'INV-2024-083', client_name: 'Digital Dynamics', total_amount: 4800, status: 'overdue', created_at: '2024-01-09' },
-            { id: 'INV-2024-082', client_name: 'Innovation Labs', total_amount: 3900, status: 'paid', created_at: '2024-01-08' },
-            { id: 'INV-2024-081', client_name: 'StartupX', total_amount: 2800, status: 'pending', created_at: '2024-01-07' },
-            { id: 'INV-2024-080', client_name: 'Enterprise Co', total_amount: 5400, status: 'paid', created_at: '2024-01-06' },
-            { id: 'INV-2024-079', client_name: 'TechCorp Solutions', total_amount: 7200, status: 'paid', created_at: '2024-01-05' },
-            { id: 'INV-2024-078', client_name: 'Digital Dynamics', total_amount: 3600, status: 'paid', created_at: '2024-01-04' },
-            { id: 'INV-2024-077', client_name: 'Innovation Labs', total_amount: 4200, status: 'pending', created_at: '2024-01-03' },
-            { id: 'INV-2024-076', client_name: 'StartupX', total_amount: 1900, status: 'paid', created_at: '2024-01-02' },
-            { id: 'INV-2024-075', client_name: 'Enterprise Co', total_amount: 6800, status: 'overdue', created_at: '2024-01-01' }
-          ],
-          totalRevenue: 285750,
-          totalInvoices: 142,
-          statusBreakdown: {
-            paid: 89,
-            pending: 28,
-            overdue: 15,
-            draft: 10
-          }
-        },
-        financial: {
-          totalRevenue: 285750,
-          totalExpenses: 198250,
-          netProfit: 87500,
-          profitMargin: 30.6,
-          cashFlow: {
-            inflow: 285750,
-            outflow: 198250,
-            net: 87500
-          },
-          financialHealth: 78
-        },
-        clients: {
-          totalClients: 68,
-          activeClients: 52,
-          newClients: 8,
-          clientGrowth: 13.8
-        }
-      };
+      // No fallback data - show empty state when real data fails
+      Logger.warn('Real data failed to load, showing empty state');
+      setAnalytics(null);
       
-      // Set sample data as fallback
-      const initialData = sampleData;
-      
-      setAnalytics(initialData);
       setLoading(false);
-      
-      // Cache the data
-      const timestamp = Date.now();
-      analyticsCache.set(cacheKey, { data: initialData, timestamp });
-      setCacheTimestamp(timestamp);
       
     } catch (err) {
       Logger.error('Error loading analytics:', String(err?.message || err || 'Unknown error'));
