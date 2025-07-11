@@ -36,7 +36,7 @@ const stagewiseConfig = {
 
 function setupStagewise() {
   // Only initialize once and only in development mode
-  if (process.env.NODE_ENV === 'development') {
+  if (import.meta.env.MODE === 'development') {
     initToolbar(stagewiseConfig);
   }
 }

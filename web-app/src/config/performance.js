@@ -36,7 +36,7 @@ export const VIRTUALIZATION_CONFIG = {
 // Memory optimization settings
 export const MEMORY_CONFIG = {
   tracking: {
-    enabled: process.env.NODE_ENV === 'development',
+    enabled: import.meta.env.MODE === 'development',
     interval: 30000, // 30 seconds
     maxEntries: 1000,
   },
@@ -88,7 +88,7 @@ export const INTERSECTION_CONFIG = {
 
 // Performance monitoring settings
 export const MONITORING_CONFIG = {
-  enabled: process.env.NODE_ENV === 'development',
+  enabled: import.meta.env.MODE === 'development',
   sampleRate: 0.1, // 10% sampling in production
   metrics: {
     renderTime: true,
@@ -133,7 +133,7 @@ export const ERROR_CONFIG = {
   maxRetries: 3,
   retryDelay: 1000,
   fallbackComponent: 'ErrorFallback',
-  reportErrors: process.env.NODE_ENV === 'production',
+  reportErrors: import.meta.env.MODE === 'production',
   errorTypes: {
     ChunkLoadError: {
       retry: true,
@@ -153,17 +153,17 @@ export const ERROR_CONFIG = {
 // Development tools settings
 export const DEV_TOOLS_CONFIG = {
   performanceDashboard: {
-    enabled: process.env.NODE_ENV === 'development',
+    enabled: import.meta.env.MODE === 'development',
     position: 'bottom-right',
     collapsed: true,
   },
   memoryTracker: {
-    enabled: process.env.NODE_ENV === 'development',
+    enabled: import.meta.env.MODE === 'development',
     interval: 5000, // 5 seconds
     maxEntries: 100,
   },
   bundleAnalyzer: {
-    enabled: process.env.NODE_ENV === 'development',
+    enabled: import.meta.env.MODE === 'development',
     trackChunks: true,
     trackRetries: true,
   },

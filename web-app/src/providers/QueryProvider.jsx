@@ -31,7 +31,7 @@ export const QueryProvider = ({ children }) => {
     <QueryClientProvider client={queryClient}>
       {children}
       {/* Only show devtools in development */}
-      {process.env.NODE_ENV === 'development' && (
+      {import.meta.env.MODE === 'development' && (
         <ReactQueryDevtools initialIsOpen={false} />
       )}
     </QueryClientProvider>

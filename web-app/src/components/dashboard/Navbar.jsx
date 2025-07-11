@@ -11,6 +11,7 @@ import {
 import { useTheme } from '@context/OptimizedThemeContext';
 import LanguageSwitcher from '@components/common/LanguageSwitcher';
 import { useClerkBypass, useUserBypass } from '@hooks/useClerkBypass';
+import NotificationCenter from '../notifications/NotificationCenter';
 
 export default function Navbar({ onOpenSidebar, sidebarCollapsed = false }) {
   const { t } = useTranslation('navigation');
@@ -22,18 +23,13 @@ export default function Navbar({ onOpenSidebar, sidebarCollapsed = false }) {
   const { user } = useUserBypass();
 
   const [userMenuOpen, setUserMenuOpen] = useState(false);
-  const [notificationsOpen, setNotificationsOpen] = useState(false);
   const userMenuRef = useRef(null);
-  const notificationsRef = useRef(null);
 
   // Close dropdowns when clicking outside
   useEffect(() => {
     function handleClickOutside(event) {
       if (userMenuRef.current && !userMenuRef.current.contains(event.target)) {
         setUserMenuOpen(false);
-      }
-      if (notificationsRef.current && !notificationsRef.current.contains(event.target)) {
-        setNotificationsOpen(false);
       }
     }
 
@@ -141,42 +137,7 @@ export default function Navbar({ onOpenSidebar, sidebarCollapsed = false }) {
             </button>
 
             {/* Notifications */}
-            <div className='relative' ref={notificationsRef}>
-              <button
-                onClick={() => setNotificationsOpen(!notificationsOpen)}
-                onKeyDown={e => handleDropdownKeyDown(e, notificationsOpen, setNotificationsOpen)}
-                className='p-2 text-gray-400 hover:text-gray-500 dark:text-gray-300 dark:hover:text-gray-200 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700'
-                aria-label={t('notifications')}
-                aria-expanded={notificationsOpen}
-                aria-haspopup='true'
-                aria-controls='notifications-dropdown'
-              >
-                <BellIcon className='h-6 w-6' aria-hidden='true' />
-                {/* Notification badge */}
-                <span className='absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 transform translate-x-1/2 -translate-y-1/2 bg-red-600 rounded-full sr-only'>
-                  {t('newNotifications')}
-                </span>
-              </button>
-
-              {/* Notifications dropdown */}
-              {notificationsOpen && (
-                <div
-                  id='notifications-dropdown'
-                  role='menu'
-                  aria-labelledby='notifications-button'
-                  className='origin-top-right absolute right-0 mt-2 w-80 rounded-md shadow-lg bg-white dark:bg-gray-800 ring-1 ring-black ring-opacity-5 focus:outline-none z-50'
-                >
-                  <div className='py-1' role='none'>
-                    <div className='px-4 py-2 text-sm text-gray-700 dark:text-gray-300 border-b border-gray-200 dark:border-gray-600'>
-                      <h3 className='font-medium'>{t('notifications')}</h3>
-                    </div>
-                    <div className='px-4 py-3 text-sm text-gray-500 dark:text-gray-400'>
-                      {t('noNotifications')}
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
+            <NotificationCenter className="" />
 
             {/* User menu */}
             <div className='relative' ref={userMenuRef}>

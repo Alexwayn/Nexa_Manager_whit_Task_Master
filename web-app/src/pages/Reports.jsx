@@ -6,7 +6,10 @@ import ReportScheduler from '../components/reports/ReportScheduler';
 import ReportHistory from '../components/reports/ReportHistory';
 import CustomReportBuilder from '../components/reports/CustomReportBuilder';
 import ReportPreview from '../components/reports/ReportPreview';
+import AdvancedFilters from '../components/reports/AdvancedFilters';
+import ReportTemplates from '../components/reports/ReportTemplates';
 import { VirtualizedReportTable, OptimizedChart } from '../components/reports';
+import { useReportRealTime } from '../hooks/useWebSocket';
 import {
   ChartBarIcon,
   PresentationChartLineIcon,
@@ -38,6 +41,8 @@ import {
   XMarkIcon,
   ArchiveBoxIcon,
   BookmarkIcon,
+  AdjustmentsHorizontalIcon,
+  BoltIcon,
 } from '@heroicons/react/24/outline';
 import {
   useReportMetrics,
@@ -156,6 +161,9 @@ const Reports = () => {
   // Phase 3 state variables
   const [mainView, setMainView] = useState('dashboard'); // 'dashboard', 'scheduler', 'history', 'builder'
   const [showCustomBuilder, setShowCustomBuilder] = useState(false);
+  const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
+  const [showTemplates, setShowTemplates] = useState(false);
+  const [realTimeEnabled, setRealTimeEnabled] = useState(false);
 
   // React Query hooks
   const {
@@ -180,6 +188,12 @@ const Reports = () => {
   usePrefetchReports();
 
   const { invalidateReports, clearCache } = useReportCache();
+  
+  // Real-time updates
+  const { data: realTimeData, isConnected } = useReportRealTime({
+    enabled: realTimeEnabled,
+    reportTypes: [activeTab],
+  });
 
   const loading = metricsLoading || reportsLoading;
   const error = metricsError || reportsError;
@@ -665,6 +679,31 @@ const Reports = () => {
                 <ChevronDownIcon className="h-4 w-4 text-gray-500" />
               </button>
             </div>
+            <button
+              onClick={() => setShowAdvancedFilters(true)}
+              className="flex items-center space-x-2 px-4 py-2 border border-gray-300 rounded-md bg-white text-body font-normal text-black hover:bg-gray-50"
+            >
+              <AdjustmentsHorizontalIcon className="h-4 w-4 text-gray-500" />
+              <span>Advanced Filters</span>
+            </button>
+            <button
+              onClick={() => setShowTemplates(true)}
+              className="flex items-center space-x-2 px-4 py-2 border border-gray-300 rounded-md bg-white text-body font-normal text-black hover:bg-gray-50"
+            >
+              <BookmarkIcon className="h-4 w-4 text-gray-500" />
+              <span>Templates</span>
+            </button>
+            <button
+              onClick={() => setRealTimeEnabled(!realTimeEnabled)}
+              className={`flex items-center space-x-2 px-4 py-2 rounded-md text-body font-normal transition-colors ${
+                realTimeEnabled
+                  ? 'bg-green-600 text-white hover:bg-green-700'
+                  : 'border border-gray-300 bg-white text-black hover:bg-gray-50'
+              }`}
+            >
+              <BoltIcon className={`h-4 w-4 ${realTimeEnabled ? 'text-white' : 'text-gray-500'}`} />
+              <span>Real-time {isConnected ? '🟢' : '🔴'}</span>
+            </button>
             <button className="flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-md text-body font-normal hover:bg-blue-700">
               <ArrowDownTrayIcon className="h-4 w-4" />
               <span>Export</span>
@@ -1111,6 +1150,27 @@ const Reports = () => {
             setMainView('builder');
           }}
           onExport={(report, format) => handleAdvancedExport(report, format)}
+        />
+      )}
+
+      {showAdvancedFilters && (
+        <AdvancedFilters
+          filters={dashboardFilters}
+          onApply={(filters) => {
+            applyDashboardFilters(filters);
+            setShowAdvancedFilters(false);
+          }}
+          onClose={() => setShowAdvancedFilters(false)}
+        />
+      )}
+
+      {showTemplates && (
+        <ReportTemplates
+          onSelectTemplate={(template) => {
+            handleGenerateReport(template.id, 'pdf');
+            setShowTemplates(false);
+          }}
+          onClose={() => setShowTemplates(false)}
         />
       )}
 

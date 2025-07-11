@@ -5,6 +5,7 @@ import { ClerkProvider } from '@clerk/clerk-react';
 import { ThemeProvider } from '@context/OptimizedThemeContext';
 import { OrganizationProvider } from '@context/OrganizationContext';
 import { QueryProvider } from "./providers/QueryProvider";
+import { WebSocketProvider } from './providers/WebSocketProvider';
 import AppRouter from '@router/AppRouter';
 import FloatingMicrophone from '@components/shared/FloatingMicrophone';
 import ErrorBoundary from '@components/common/ErrorBoundary';
@@ -163,18 +164,20 @@ function App() {
     return (
       <ErrorBoundary>
         <QueryProvider>
-          <DevelopmentWrapper>
-            <ThemeProvider>
-              <OrganizationProvider>
-                <Router>
-                  <AppRouter />
-                  <FloatingMicrophone />
+          <WebSocketProvider enabled={true}>
+            <DevelopmentWrapper>
+              <ThemeProvider>
+                <OrganizationProvider>
+                  <Router>
+                    <AppRouter />
+                    <FloatingMicrophone />
 
-                  <Toaster position='top-right' />
-                </Router>
-              </OrganizationProvider>
-            </ThemeProvider>
-          </DevelopmentWrapper>
+                    <Toaster position='top-right' />
+                  </Router>
+                </OrganizationProvider>
+              </ThemeProvider>
+            </DevelopmentWrapper>
+          </WebSocketProvider>
         </QueryProvider>
       </ErrorBoundary>
     );
@@ -193,18 +196,20 @@ function App() {
   return (
     <ErrorBoundary>
       <QueryProvider>
-        <ClerkProvider publishableKey={clerkPublishableKey}>
-          <ThemeProvider>
-            <OrganizationProvider>
-              <Router>
-                <AppRouter />
-                <FloatingMicrophone />
+        <WebSocketProvider enabled={true}>
+          <ClerkProvider publishableKey={clerkPublishableKey}>
+            <ThemeProvider>
+              <OrganizationProvider>
+                <Router>
+                  <AppRouter />
+                  <FloatingMicrophone />
 
-                <Toaster position='top-right' />
-              </Router>
-            </OrganizationProvider>
-          </ThemeProvider>
-        </ClerkProvider>
+                  <Toaster position='top-right' />
+                </Router>
+              </OrganizationProvider>
+            </ThemeProvider>
+          </ClerkProvider>
+        </WebSocketProvider>
       </QueryProvider>
     </ErrorBoundary>
   );
