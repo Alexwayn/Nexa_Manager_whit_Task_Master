@@ -4,6 +4,7 @@ import { Toaster } from 'react-hot-toast';
 import { ClerkProvider } from '@clerk/clerk-react';
 import { ThemeProvider } from '@context/OptimizedThemeContext';
 import { OrganizationProvider } from '@context/OrganizationContext';
+import { QueryProvider } from "./providers/QueryProvider";
 import AppRouter from '@router/AppRouter';
 import FloatingMicrophone from '@components/shared/FloatingMicrophone';
 import ErrorBoundary from '@components/common/ErrorBoundary';
@@ -161,18 +162,20 @@ function App() {
 
     return (
       <ErrorBoundary>
-        <DevelopmentWrapper>
-          <ThemeProvider>
-            <OrganizationProvider>
-              <Router>
-                <AppRouter />
-                <FloatingMicrophone />
+        <QueryProvider>
+          <DevelopmentWrapper>
+            <ThemeProvider>
+              <OrganizationProvider>
+                <Router>
+                  <AppRouter />
+                  <FloatingMicrophone />
 
-                <Toaster position='top-right' />
-              </Router>
-            </OrganizationProvider>
-          </ThemeProvider>
-        </DevelopmentWrapper>
+                  <Toaster position='top-right' />
+                </Router>
+              </OrganizationProvider>
+            </ThemeProvider>
+          </DevelopmentWrapper>
+        </QueryProvider>
       </ErrorBoundary>
     );
   }
@@ -189,18 +192,20 @@ function App() {
 
   return (
     <ErrorBoundary>
-      <ClerkProvider publishableKey={clerkPublishableKey}>
-        <ThemeProvider>
-          <OrganizationProvider>
-            <Router>
-              <AppRouter />
-              <FloatingMicrophone />
+      <QueryProvider>
+        <ClerkProvider publishableKey={clerkPublishableKey}>
+          <ThemeProvider>
+            <OrganizationProvider>
+              <Router>
+                <AppRouter />
+                <FloatingMicrophone />
 
-              <Toaster position='top-right' />
-            </Router>
-          </OrganizationProvider>
-        </ThemeProvider>
-      </ClerkProvider>
+                <Toaster position='top-right' />
+              </Router>
+            </OrganizationProvider>
+          </ThemeProvider>
+        </ClerkProvider>
+      </QueryProvider>
     </ErrorBoundary>
   );
 }

@@ -198,6 +198,30 @@ const ErrorBoundary = ({
   );
 };
 
+// Chart-specific error fallback component
+export const ChartErrorFallback = ({ error, retry }) => {
+  return (
+    <div className="flex flex-col items-center justify-center h-full bg-gray-50 dark:bg-gray-800 rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-600">
+      <ExclamationTriangleIcon className="h-8 w-8 text-yellow-500 mb-2" />
+      <h3 className="text-sm font-medium text-gray-900 dark:text-white mb-1">
+        Chart Error
+      </h3>
+      <p className="text-xs text-gray-500 dark:text-gray-400 text-center mb-3">
+        {error?.message || 'Failed to render chart'}
+      </p>
+      {retry && (
+        <button
+          onClick={retry}
+          className="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+        >
+          <ArrowPathIcon className="w-3 h-3 mr-1" />
+          Retry
+        </button>
+      )}
+    </div>
+  );
+};
+
 export default ErrorBoundary;
 
 /**
