@@ -2,7 +2,7 @@
 // allows you to do things like:
 // expect(element).toHaveTextContent(/react/i)
 // learn more: https://github.com/testing-library/jest-dom
-import '@testing-library/jest-dom';
+require('@testing-library/jest-dom');
 
 // Mock environment variables for testing
 process.env.VITE_SUPABASE_URL = 'http://localhost:54321';
@@ -58,14 +58,7 @@ global.mockLogger = {
   debug: jest.fn(),
 };
 
-// Mock React Router
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom'),
-  useNavigate: () => jest.fn(),
-  useLocation: () => ({ pathname: '/', search: '', hash: '', state: null }),
-  useParams: () => ({}),
-  useSearchParams: () => [new URLSearchParams(), jest.fn()],
-}));
+// React Router mocks will be defined in individual test files as needed
 
 // Mock file operations
 global.File = class MockFile {

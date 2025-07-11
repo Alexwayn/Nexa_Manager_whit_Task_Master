@@ -1,4 +1,4 @@
-export default {
+module.exports = {
   // Test environment configuration
   testEnvironment: 'jsdom',
   testEnvironmentOptions: {
@@ -26,6 +26,7 @@ export default {
     '^@i18n/(.*)$': '<rootDir>/src/i18n/$1',
     '^@assets/(.*)$': '<rootDir>/src/assets/$1',
     '^@tests/(.*)$': '<rootDir>/src/__tests__/$1',
+    '^@lib/(.*)$': '<rootDir>/src/lib/$1',
   },
   
   // Test file patterns
