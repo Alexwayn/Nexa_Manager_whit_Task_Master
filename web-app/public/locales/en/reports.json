@@ -196,6 +196,128 @@
   "reports": {
     "scheduler": "Report Scheduler"
   },
+  "history": {
+    "title": "Report History",
+    "subtitle": "View, download, and manage your generated reports",
+    "generatedReports": "Generated Reports",
+    "searchPlaceholder": "Search reports...",
+    "filterType": "Filter by Type",
+    "filterStatus": "Filter by Status",
+    "sortBy": "Sort by",
+    "allTypes": "All Types",
+    "allStatuses": "All Statuses",
+    "completed": "Completed",
+    "processing": "Processing",
+    "failed": "Failed",
+    "date": "Date",
+    "title": "Title",
+    "type": "Type",
+    "status": "Status",
+    "totalReports": "Total Reports",
+    "completedReports": "Completed",
+    "processingReports": "Processing",
+    "totalDownloads": "Total Downloads",
+    "downloadCount": "Downloads",
+    "noReportsFound": "No reports found",
+    "tryAdjustingFilters": "Try adjusting your search or filters",
+    "showingResults": "Showing {count} of {total} reports",
+    "close": "Close",
+    "download": "Download Report",
+    "delete": "Delete Report",
+    "preview": "Preview Report",
+    "share": "Share Report",
+    "regenerate": "Regenerate Report",
+    "revenue": "Revenue",
+    "expense": "Expense",
+    "client": "Client",
+    "inventory": "Inventory"
+  },
+  "builder": {
+    "title": "Custom Report Builder",
+    "subtitle": "Create a custom report by selecting data fields, applying filters, and designing the layout",
+    "backToDashboard": "Back to Reports Dashboard",
+    "steps": {
+      "dataSelection": "Data Selection",
+      "filtersAndSorting": "Filters & Sorting",
+      "layoutDesign": "Layout Design",
+      "previewAndSave": "Preview & Save"
+    },
+    "dataSelection": {
+      "availableFields": "Available Fields",
+      "selectedFields": "Selected Fields",
+      "noFieldsSelected": "No fields selected yet. Choose from the left panel.",
+      "fieldsCount": "{count} Fields",
+      "aggregatable": "Aggregatable"
+    },
+    "filtersAndSorting": {
+      "reportName": "Report Name",
+      "reportNamePlaceholder": "Enter report name...",
+      "category": "Category",
+      "dateRange": "Date Range",
+      "preset": "Preset",
+      "startDate": "Start Date",
+      "endDate": "End Date",
+      "filters": "Filters",
+      "addFilter": "Add Filter",
+      "selectField": "Select Field",
+      "filterValue": "Filter value...",
+      "noFiltersAdded": "No filters added yet. Click \"Add Filter\" to create one.",
+      "categories": {
+        "custom": "Custom",
+        "financial": "Financial",
+        "client": "Client",
+        "tax": "Tax & Compliance",
+        "operational": "Operational"
+      },
+      "datePresets": {
+        "today": "Today",
+        "yesterday": "Yesterday",
+        "thisWeek": "This Week",
+        "lastWeek": "Last Week",
+        "thisMonth": "This Month",
+        "lastMonth": "Last Month",
+        "thisQuarter": "This Quarter",
+        "thisYear": "This Year",
+        "customRange": "Custom Range"
+      },
+      "operators": {
+        "equals": "Equals",
+        "notEquals": "Not Equals",
+        "contains": "Contains",
+        "greaterThan": "Greater Than",
+        "lessThan": "Less Than",
+        "between": "Between"
+      }
+    },
+    "layoutDesign": {
+      "reportLayout": "Report Layout",
+      "addKpiSection": "Add KPI Section",
+      "addChart": "Add Chart",
+      "addTable": "Add Table",
+      "noSectionsAdded": "No sections added yet",
+      "noSectionsDescription": "Add KPI, chart, or table sections to build your report layout.",
+      "sectionConfig": "Section configuration options would go here based on type."
+    },
+    "previewAndSave": {
+      "readyToPreview": "Ready to Preview",
+      "previewDescription": "Generate a preview of your report with the current configuration.",
+      "generatePreview": "Generate Preview",
+      "generatingPreview": "Generating Preview...",
+      "previewResults": "Preview Results",
+      "totalRows": "Total Rows",
+      "columns": "Columns",
+      "sections": "Sections",
+      "sampleDataPreview": "Sample Data Preview:",
+      "saveOptions": "Save Options",
+      "saveAsTemplate": "Save as Template",
+      "generateAndExport": "Generate & Export"
+    },
+    "navigation": {
+      "previous": "Previous",
+      "next": "Next",
+      "stepOf": "Step {current} of {total}"
+    }
+  },
   "preview": {
     "title": "Report Preview",
     "visualAnalysis": "Visual Analysis",

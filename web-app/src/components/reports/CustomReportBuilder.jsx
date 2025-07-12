@@ -35,7 +35,7 @@ import { CSS } from '@dnd-kit/utilities';
 import { AVAILABLE_FIELDS, CHART_PRESETS } from '../../data/reportTemplates';
 
 const CustomReportBuilder = ({ onBack, initialTemplate = null }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation('reports');
   const [currentStep, setCurrentStep] = useState(1);
   const [reportConfig, setReportConfig] = useState({
     name: initialTemplate?.name || '',
@@ -72,10 +72,10 @@ const CustomReportBuilder = ({ onBack, initialTemplate = null }) => {
 
   // Steps configuration
   const steps = [
-    { id: 1, name: 'Data Selection', icon: TableCellsIcon },
-    { id: 2, name: 'Filters & Sorting', icon: FunnelIcon },
-    { id: 3, name: 'Layout Design', icon: AdjustmentsHorizontalIcon },
-    { id: 4, name: 'Preview & Save', icon: EyeIcon },
+    { id: 1, name: t('builder.steps.dataSelection'), icon: TableCellsIcon },
+    { id: 2, name: t('builder.steps.filtersAndSorting'), icon: FunnelIcon },
+    { id: 3, name: t('builder.steps.layoutDesign'), icon: AdjustmentsHorizontalIcon },
+    { id: 4, name: t('builder.steps.previewAndSave'), icon: EyeIcon },
   ];
 
   // Get all available fields from all categories
@@ -270,12 +270,12 @@ const CustomReportBuilder = ({ onBack, initialTemplate = null }) => {
     <div className='grid grid-cols-1 lg:grid-cols-3 gap-8'>
       {/* Available Fields */}
       <div className='lg:col-span-2'>
-        <h3 className='text-lg font-semibold text-gray-900 mb-4'>Available Fields</h3>
+        <h3 className='text-lg font-semibold text-gray-900 mb-4'>{t('builder.dataSelection.availableFields')}</h3>
         <div className='space-y-6'>
           {Object.entries(allAvailableFields).map(([category, fields]) => (
             <div key={category} className='bg-gray-50 rounded-lg p-4'>
               <h4 className='font-medium text-gray-700 mb-3 capitalize'>
-                {category} Fields ({fields.length})
+{category} {t('builder.dataSelection.fieldsCount', { count: fields.length })}
               </h4>
               <div className='grid grid-cols-1 md:grid-cols-2 gap-2'>
                 {fields.map(field => (
@@ -292,7 +292,7 @@ const CustomReportBuilder = ({ onBack, initialTemplate = null }) => {
                     <div className='flex-1 min-w-0'>
                       <div className='text-sm font-medium text-gray-900'>{field.name}</div>
                       <div className='text-xs text-gray-500'>
-                        {field.type} {field.aggregatable && '• Aggregatable'}
+{field.type} {field.aggregatable && `• ${t('builder.dataSelection.aggregatable')}`}
                       </div>
                     </div>
                   </label>
@@ -306,7 +306,7 @@ const CustomReportBuilder = ({ onBack, initialTemplate = null }) => {
       {/* Selected Fields */}
       <div className='lg:col-span-1'>
         <h3 className='text-lg font-semibold text-gray-900 mb-4'>
-          Selected Fields ({reportConfig.selectedFields.length})
+          {t('builder.dataSelection.selectedFields')} ({reportConfig.selectedFields.length})
         </h3>
         <div className='bg-blue-50 rounded-lg p-4 border border-blue-200'>
           {reportConfig.selectedFields.length > 0 ? (
@@ -331,7 +331,7 @@ const CustomReportBuilder = ({ onBack, initialTemplate = null }) => {
             </div>
           ) : (
             <p className='text-blue-600 text-sm'>
-              No fields selected yet. Choose from the left panel.
+{t('builder.dataSelection.noFieldsSelected')}
             </p>
           )}
         </div>
@@ -345,27 +345,27 @@ const CustomReportBuilder = ({ onBack, initialTemplate = null }) => {
       {/* Basic Info */}
       <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
         <div>
-          <label className='block text-sm font-medium text-gray-700 mb-2'>Report Name</label>
+          <label className='block text-sm font-medium text-gray-700 mb-2'>{t('builder.filtersAndSorting.reportName')}</label>
           <input
             type='text'
             value={reportConfig.name}
             onChange={e => setReportConfig(prev => ({ ...prev, name: e.target.value }))}
             className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
-            placeholder='Enter report name...'
+            placeholder={t('builder.filtersAndSorting.reportNamePlaceholder')}
           />
         </div>
         <div>
-          <label className='block text-sm font-medium text-gray-700 mb-2'>Category</label>
+          <label className='block text-sm font-medium text-gray-700 mb-2'>{t('builder.filtersAndSorting.category')}</label>
           <select
             value={reportConfig.category}
             onChange={e => setReportConfig(prev => ({ ...prev, category: e.target.value }))}
             className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
           >
-            <option value='custom'>Custom</option>
-            <option value='financial'>Financial</option>
-            <option value='client'>Client</option>
-            <option value='tax'>Tax & Compliance</option>
-            <option value='operational'>Operational</option>
+            <option value='custom'>{t('builder.filtersAndSorting.categories.custom')}</option>
+            <option value='financial'>{t('builder.filtersAndSorting.categories.financial')}</option>
+            <option value='client'>{t('builder.filtersAndSorting.categories.client')}</option>
+            <option value='tax'>{t('builder.filtersAndSorting.categories.tax')}</option>
+            <option value='operational'>{t('builder.filtersAndSorting.categories.operational')}</option>
           </select>
         </div>
       </div>
@@ -645,14 +645,13 @@ const CustomReportBuilder = ({ onBack, initialTemplate = null }) => {
         className='flex items-center text-sm font-medium text-gray-600 hover:text-gray-900 mb-6 transition-colors'
       >
         <ArrowLeftIcon className='h-4 w-4 mr-2' />
-        Back to Reports Dashboard
+{t('builder.backToDashboard')}
       </button>
 
       <div className='mb-8'>
-        <h2 className='text-2xl font-semibold text-gray-800'>Custom Report Builder</h2>
+        <h2 className='text-2xl font-semibold text-gray-800'>{t('builder.title')}</h2>
         <p className='mt-1 text-gray-600'>
-          Create a custom report by selecting data fields, applying filters, and designing the
-          layout.
+          {t('builder.subtitle')}
         </p>
       </div>
 
@@ -692,12 +691,12 @@ const CustomReportBuilder = ({ onBack, initialTemplate = null }) => {
           className='flex items-center px-4 py-2 text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed'
         >
           <ArrowLeftIcon className='h-4 w-4 mr-2' />
-          Previous
+{t('builder.navigation.previous')}
         </button>
 
         <div className='flex space-x-3'>
           <span className='text-sm text-gray-500 self-center'>
-            Step {currentStep} of {steps.length}
+{t('builder.navigation.stepOf', { current: currentStep, total: steps.length })}
           </span>
         </div>
 
@@ -706,7 +705,7 @@ const CustomReportBuilder = ({ onBack, initialTemplate = null }) => {
           disabled={currentStep === steps.length}
           className='flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed'
         >
-          Next
+{t('builder.navigation.next')}
           <ArrowLeftIcon className='h-4 w-4 ml-2 rotate-180' />
         </button>
       </div>

@@ -196,6 +196,128 @@
   "reports": {
     "scheduler": "Programmatore Report"
   },
+  "history": {
+    "title": "Cronologia Report",
+    "subtitle": "Visualizza, scarica e gestisci i tuoi report generati",
+    "generatedReports": "Report Generati",
+    "searchPlaceholder": "Cerca report...",
+    "filterType": "Filtra per Tipo",
+    "filterStatus": "Filtra per Stato",
+    "sortBy": "Ordina per",
+    "allTypes": "Tutti i Tipi",
+    "allStatuses": "Tutti gli Stati",
+    "completed": "Completato",
+    "processing": "In Elaborazione",
+    "failed": "Fallito",
+    "date": "Data",
+    "title": "Titolo",
+    "type": "Tipo",
+    "status": "Stato",
+    "totalReports": "Report Totali",
+    "completedReports": "Completati",
+    "processingReports": "In Elaborazione",
+    "totalDownloads": "Download Totali",
+    "downloadCount": "Download",
+    "noReportsFound": "Nessun report trovato",
+    "tryAdjustingFilters": "Prova ad aggiustare la ricerca o i filtri",
+    "showingResults": "Mostrando {count} di {total} report",
+    "close": "Chiudi",
+    "download": "Scarica Report",
+    "delete": "Elimina Report",
+    "preview": "Anteprima Report",
+    "share": "Condividi Report",
+    "regenerate": "Rigenera Report",
+    "revenue": "Ricavi",
+    "expense": "Spese",
+    "client": "Cliente",
+    "inventory": "Inventario"
+  },
+  "builder": {
+    "title": "Costruttore Report Personalizzato",
+    "subtitle": "Crea un report personalizzato selezionando campi dati, applicando filtri e progettando il layout",
+    "backToDashboard": "Torna alla Dashboard Report",
+    "steps": {
+      "dataSelection": "Selezione Dati",
+      "filtersAndSorting": "Filtri e Ordinamento",
+      "layoutDesign": "Progettazione Layout",
+      "previewAndSave": "Anteprima e Salva"
+    },
+    "dataSelection": {
+      "availableFields": "Campi Disponibili",
+      "selectedFields": "Campi Selezionati",
+      "noFieldsSelected": "Nessun campo selezionato ancora. Scegli dal pannello di sinistra.",
+      "fieldsCount": "{count} Campi",
+      "aggregatable": "Aggregabile"
+    },
+    "filtersAndSorting": {
+      "reportName": "Nome Report",
+      "reportNamePlaceholder": "Inserisci nome report...",
+      "category": "Categoria",
+      "dateRange": "Intervallo Date",
+      "preset": "Preimpostazione",
+      "startDate": "Data Inizio",
+      "endDate": "Data Fine",
+      "filters": "Filtri",
+      "addFilter": "Aggiungi Filtro",
+      "selectField": "Seleziona Campo",
+      "filterValue": "Valore filtro...",
+      "noFiltersAdded": "Nessun filtro aggiunto ancora. Clicca \"Aggiungi Filtro\" per crearne uno.",
+      "categories": {
+        "custom": "Personalizzato",
+        "financial": "Finanziario",
+        "client": "Cliente",
+        "tax": "Tasse e Conformità",
+        "operational": "Operativo"
+      },
+      "datePresets": {
+        "today": "Oggi",
+        "yesterday": "Ieri",
+        "thisWeek": "Questa Settimana",
+        "lastWeek": "Settimana Scorsa",
+        "thisMonth": "Questo Mese",
+        "lastMonth": "Mese Scorso",
+        "thisQuarter": "Questo Trimestre",
+        "thisYear": "Quest'Anno",
+        "customRange": "Intervallo Personalizzato"
+      },
+      "operators": {
+        "equals": "Uguale",
+        "notEquals": "Non Uguale",
+        "contains": "Contiene",
+        "greaterThan": "Maggiore Di",
+        "lessThan": "Minore Di",
+        "between": "Tra"
+      }
+    },
+    "layoutDesign": {
+      "reportLayout": "Layout Report",
+      "addKpiSection": "Aggiungi Sezione KPI",
+      "addChart": "Aggiungi Grafico",
+      "addTable": "Aggiungi Tabella",
+      "noSectionsAdded": "Nessuna sezione aggiunta ancora",
+      "noSectionsDescription": "Aggiungi sezioni KPI, grafici o tabelle per costruire il layout del tuo report.",
+      "sectionConfig": "Le opzioni di configurazione della sezione andrebbero qui in base al tipo."
+    },
+    "previewAndSave": {
+      "readyToPreview": "Pronto per l'Anteprima",
+      "previewDescription": "Genera un'anteprima del tuo report con la configurazione attuale.",
+      "generatePreview": "Genera Anteprima",
+      "generatingPreview": "Generando Anteprima...",
+      "previewResults": "Risultati Anteprima",
+      "totalRows": "Righe Totali",
+      "columns": "Colonne",
+      "sections": "Sezioni",
+      "sampleDataPreview": "Anteprima Dati Campione:",
+      "saveOptions": "Opzioni Salvataggio",
+      "saveAsTemplate": "Salva come Template",
+      "generateAndExport": "Genera ed Esporta"
+    },
+    "navigation": {
+      "previous": "Precedente",
+      "next": "Successivo",
+      "stepOf": "Passo {current} di {total}"
+    }
+  },
   "preview": {
     "title": "Anteprima Report",
     "visualAnalysis": "Analisi Visiva",
