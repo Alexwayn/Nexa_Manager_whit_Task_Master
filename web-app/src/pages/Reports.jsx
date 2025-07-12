@@ -53,10 +53,10 @@ import {
   useScheduleReport,
   usePrefetchReports,
   useReportCache,
-} from '@hooks/useReportsQuery';
-import { usePerformanceMonitor } from '@utils/performance';
-import Logger from '@utils/Logger';
-import { reportingService } from '@services/reportingService';
+} from '../hooks/useReportsQuery';
+import { usePerformanceMonitor } from '../utils/performance.js';
+import Logger from '../utils/Logger.ts';
+import reportingService from '../lib/reportingService.js';
 
 // Define data structures using JSDoc comments
 /**
@@ -327,34 +327,34 @@ const Reports = () => {
   const recentReports = formattedRecentReports.length > 0 ? formattedRecentReports : [
     {
       id: 1,
-      name: 'Monthly Revenue Summary',
+      name: t('sampleReports.monthlyRevenueSummary'),
       date: 'Jun 15, 2024',
-      type: 'Financial',
-      status: 'Generated',
+      type: t('reportTypes.financial'),
+      status: t('status.generated'),
       icon: DocumentChartBarIcon,
     },
     {
       id: 2,
-      name: 'Client Acquisition Report',
+      name: t('sampleReports.clientAcquisitionReport'),
       date: 'Jun 12, 2024',
-      type: 'Client',
-      status: 'Generated',
+      type: t('reportTypes.client'),
+      status: t('status.generated'),
       icon: UserGroupIcon,
     },
     {
       id: 3,
-      name: 'Outstanding Invoices',
+      name: t('sampleReports.outstandingInvoices'),
       date: 'Jun 10, 2024',
-      type: 'Financial',
-      status: 'Generated',
+      type: t('reportTypes.financial'),
+      status: t('status.generated'),
       icon: DocumentTextIcon,
     },
     {
       id: 4,
-      name: 'Quarterly Performance',
+      name: t('sampleReports.quarterlyPerformance'),
       date: 'Jun 5, 2024',
-      type: 'Performance',
-      status: 'Generated',
+      type: t('reportTypes.performance'),
+      status: t('status.generated'),
       icon: ChartBarIcon,
     },
   ];
@@ -376,31 +376,127 @@ const Reports = () => {
     financial: [
       {
         id: 'financial-summary',
-        title: 'Financial Summary',
-        description: 'Revenue, expenses, and profit overview',
+        title: t('cards.financial.financialSummary.title'),
+        description: t('cards.financial.financialSummary.description'),
         icon: ChartBarIcon,
+        gradient: 'from-blue-50 to-blue-100',
+        border: 'border-blue-200 hover:border-blue-300',
         iconBg: 'bg-blue-100',
         iconColor: 'text-blue-600',
+      },
+      {
+        id: 'revenue-analysis',
+        title: t('cards.financial.revenueAnalysis.title'),
+        description: t('cards.financial.revenueAnalysis.description'),
+        icon: ArrowTrendingUpIcon,
+        gradient: 'from-green-50 to-green-100',
+        border: 'border-green-200 hover:border-green-300',
+        iconBg: 'bg-green-100',
+        iconColor: 'text-green-600',
+      },
+      {
+        id: 'expense-breakdown',
+        title: t('cards.financial.expenseBreakdown.title'),
+        description: t('cards.financial.expenseBreakdown.description'),
+        icon: CreditCardIcon,
+        gradient: 'from-red-50 to-red-100',
+        border: 'border-red-200 hover:border-red-300',
+        iconBg: 'bg-red-100',
+        iconColor: 'text-red-600',
+      },
+      {
+        id: 'profit-loss',
+        title: t('cards.financial.profitLoss.title'),
+        description: t('cards.financial.profitLoss.description'),
+        icon: DocumentTextIcon,
+        gradient: 'from-purple-50 to-purple-100',
+        border: 'border-purple-200 hover:border-purple-300',
+        iconBg: 'bg-purple-100',
+        iconColor: 'text-purple-600',
       },
     ],
     client: [
       {
         id: 'client-performance',
-        title: 'Client Performance',
-        description: 'Top performing clients and revenue contribution',
+        title: t('cards.client.clientPerformance.title'),
+        description: t('cards.client.clientPerformance.description'),
         icon: UserGroupIcon,
+        gradient: 'from-emerald-50 to-emerald-100',
+        border: 'border-emerald-200 hover:border-emerald-300',
         iconBg: 'bg-blue-100',
         iconColor: 'text-blue-600',
+      },
+      {
+        id: 'client-acquisition',
+        title: t('cards.client.clientAcquisition.title'),
+        description: t('cards.client.clientAcquisition.description'),
+        icon: UserPlusIcon,
+        gradient: 'from-cyan-50 to-cyan-100',
+        border: 'border-cyan-200 hover:border-cyan-300',
+        iconBg: 'bg-green-100',
+        iconColor: 'text-green-600',
+      },
+      {
+        id: 'client-retention',
+        title: t('cards.client.clientRetention.title'),
+        description: t('cards.client.clientRetention.description'),
+        icon: HeartIcon,
+        gradient: 'from-pink-50 to-pink-100',
+        border: 'border-pink-200 hover:border-pink-300',
+        iconBg: 'bg-pink-100',
+        iconColor: 'text-pink-600',
+      },
+      {
+        id: 'top-clients-revenue',
+        title: t('cards.client.topClientsRevenue.title'),
+        description: t('cards.client.topClientsRevenue.description'),
+        icon: CurrencyEuroIcon,
+        gradient: 'from-yellow-50 to-yellow-100',
+        border: 'border-yellow-200 hover:border-yellow-300',
+        iconBg: 'bg-yellow-100',
+        iconColor: 'text-yellow-600',
       },
     ],
     custom: [
       {
         id: 'custom-dashboard',
-        title: 'Custom Dashboard',
-        description: 'Build your own custom reports and metrics',
+        title: t('cards.custom.customDashboard.title'),
+        description: t('cards.custom.customDashboard.description'),
         icon: Cog6ToothIcon,
+        gradient: 'from-indigo-50 to-indigo-100',
+        border: 'border-indigo-200 hover:border-indigo-300',
         iconBg: 'bg-blue-100',
         iconColor: 'text-blue-600',
+      },
+      {
+        id: 'report-templates',
+        title: t('cards.custom.reportTemplates.title'),
+        description: t('cards.custom.reportTemplates.description'),
+        icon: DocumentChartBarIcon,
+        gradient: 'from-slate-50 to-slate-100',
+        border: 'border-slate-200 hover:border-slate-300',
+        iconBg: 'bg-indigo-100',
+        iconColor: 'text-indigo-600',
+      },
+      {
+        id: 'scheduled-reports',
+        title: t('cards.custom.scheduledReports.title'),
+        description: t('cards.custom.scheduledReports.description'),
+        icon: ClockIcon,
+        gradient: 'from-orange-50 to-orange-100',
+        border: 'border-orange-200 hover:border-orange-300',
+        iconBg: 'bg-orange-100',
+        iconColor: 'text-orange-600',
+      },
+      {
+        id: 'data-export',
+        title: t('cards.custom.dataExport.title'),
+        description: t('cards.custom.dataExport.description'),
+        icon: ArrowDownTrayIcon,
+        gradient: 'from-teal-50 to-teal-100',
+        border: 'border-teal-200 hover:border-teal-300',
+        iconBg: 'bg-teal-100',
+        iconColor: 'text-teal-600',
       },
     ],
   };
@@ -481,27 +577,31 @@ const Reports = () => {
       ...report,
       dateRange,
       metrics: [
-        { label: 'Total Revenue', value: 125000, type: 'currency', change: 12.5 },
-        { label: 'Total Expenses', value: 85000, type: 'currency', change: -5.2 },
-        { label: 'Net Profit', value: 40000, type: 'currency', change: 18.7 },
-        { label: 'Profit Margin', value: 32, type: 'percentage', change: 3.2 },
+        { label: t('reportContent.metrics.totalRevenue'), value: 125000, type: 'currency', change: 12.5 },
+        { label: t('reportContent.metrics.totalExpenses'), value: 85000, type: 'currency', change: -5.2 },
+        { label: t('reportContent.metrics.netProfit'), value: 40000, type: 'currency', change: 18.7 },
+        { label: t('reportContent.metrics.profitMargin'), value: 32, type: 'percentage', change: 3.2 },
       ],
       charts: [
-        { title: 'Revenue vs Expenses', type: 'bar', component: null },
-        { title: 'Monthly Trends', type: 'line', component: null },
+        { title: t('reportContent.charts.revenueVsExpenses'), type: 'bar', component: null },
+        { title: t('reportContent.charts.monthlyTrends'), type: 'line', component: null },
       ],
       tables: [
         {
-          title: 'Revenue Breakdown',
-          headers: ['Category', 'Amount', 'Percentage'],
+          title: t('reportContent.tables.revenueBreakdown'),
+          headers: [
+            t('reportContent.tables.headers.category'), 
+            t('reportContent.tables.headers.amount'), 
+            t('reportContent.tables.headers.percentage')
+          ],
           rows: [
-            ['Product Sales', 75000, '60%'],
-            ['Service Revenue', 35000, '28%'],
-            ['Other Income', 15000, '12%'],
+            [t('reportContent.tables.categories.productSales'), 75000, '60%'],
+            [t('reportContent.tables.categories.serviceRevenue'), 35000, '28%'],
+            [t('reportContent.tables.categories.otherIncome'), 15000, '12%'],
           ],
         },
       ],
-      summary: 'This report shows strong financial performance...',
+      summary: t('reportContent.sampleSummary'),
       confidential: true,
     };
 
@@ -585,14 +685,14 @@ const Reports = () => {
   }, []);
 
   const SimpleBarChart = ({ data, title }) => {
-    if (!data || !data.revenue || !data.months) {
+    if (!data || !data.revenue || data.revenue.length === 0) {
       return (
         <div className="bg-white rounded-lg p-6 border border-gray-200 shadow-sm">
           <h3 className="text-card-title font-semibold text-gray-900 mb-4">{title}</h3>
           <div className="h-64 flex items-center justify-center">
             <div className="text-center">
               <ChartBarIcon className="h-12 w-12 text-gray-400 mx-auto mb-2" />
-              <p className="text-body text-gray-500">No data available</p>
+              <p className="text-body text-gray-500">{t('charts.noDataAvailable')}</p>
             </div>
           </div>
         </div>
@@ -603,14 +703,14 @@ const Reports = () => {
       <div className="bg-white rounded-lg p-6 border border-gray-200 shadow-sm">
         <h3 className="text-card-title font-semibold text-gray-900 mb-4">{title}</h3>
         <div className="h-64 flex items-end justify-between space-x-2">
-          {data.revenue.map((value, index) => (
+          {data.revenue.map((revenue, index) => (
             <div key={index} className="flex flex-col items-center space-y-2 flex-1">
               <div className="w-full relative h-48">
                 <div
                   className="absolute bottom-0 w-full bg-blue-500 rounded-t"
-                  style={{ height: `${(value / Math.max(...data.revenue)) * 100}%` }}
+                  style={{ height: `${(revenue / Math.max(...data.revenue)) * 100}%` }}
                 ></div>
-                {data.expenses && data.expenses[index] && (
+                {data.expenses && (
                   <div
                     className="absolute bottom-0 w-full bg-gray-300 rounded-t opacity-70"
                     style={{
@@ -626,12 +726,12 @@ const Reports = () => {
         <div className="flex justify-center mt-4 space-x-6">
           <div className="flex items-center space-x-2">
             <div className="w-3 h-3 bg-blue-500 rounded"></div>
-            <span className="text-body text-gray-600">Revenue</span>
+            <span className="text-body text-gray-600">{t('charts.revenue')}</span>
           </div>
           {data.expenses && (
             <div className="flex items-center space-x-2">
               <div className="w-3 h-3 bg-gray-300 rounded"></div>
-              <span className="text-body text-gray-600">Expenses</span>
+              <span className="text-body text-gray-600">{t('charts.expenses')}</span>
             </div>
           )}
         </div>
@@ -644,7 +744,7 @@ const Reports = () => {
       <h3 className="text-card-title font-semibold text-gray-900 mb-4">{title}</h3>
       <div className="flex items-center justify-center h-48">
         <div className="w-32 h-32 rounded-full border-8 border-blue-500 flex items-center justify-center bg-gray-100">
-          <span className="text-body text-gray-600">Chart</span>
+          <span className="text-body text-gray-600">{t('charts.chart')}</span>
         </div>
       </div>
     </div>
@@ -660,17 +760,17 @@ const Reports = () => {
             onClick={() => navigate('/dashboard')}
             className="text-blue-600 hover:text-blue-700 font-medium transition-colors"
           >
-            Dashboard
+            {t('breadcrumb.dashboard')}
           </button>
           <ChevronRightIcon className="h-5 w-5 text-gray-400" />
-          <span className="text-gray-600 font-bold">Reports</span>
+          <span className="text-gray-600 font-bold">{t('breadcrumb.reports')}</span>
         </div>
       </div>
 
       {/* Header */}
       <div className="px-6 py-4">
         <div className="flex items-center justify-between">
-          <h1 className="text-page-title font-semibold text-black">Reports and Analysis</h1>
+          <h1 className="text-page-title font-semibold text-black">{t('title')}</h1>
           <div className="flex items-center space-x-3">
             <div className="relative">
               <button className="flex items-center space-x-2 px-4 py-2 border border-gray-300 rounded-md bg-white text-body font-normal text-black hover:bg-gray-50">
@@ -684,14 +784,14 @@ const Reports = () => {
               className="flex items-center space-x-2 px-4 py-2 border border-gray-300 rounded-md bg-white text-body font-normal text-black hover:bg-gray-50"
             >
               <AdjustmentsHorizontalIcon className="h-4 w-4 text-gray-500" />
-              <span>Advanced Filters</span>
+              <span>{t('buttons.advancedFilters')}</span>
             </button>
             <button
               onClick={() => setShowTemplates(true)}
               className="flex items-center space-x-2 px-4 py-2 border border-gray-300 rounded-md bg-white text-body font-normal text-black hover:bg-gray-50"
             >
               <BookmarkIcon className="h-4 w-4 text-gray-500" />
-              <span>Templates</span>
+              <span>{t('buttons.templates')}</span>
             </button>
             <button
               onClick={() => setRealTimeEnabled(!realTimeEnabled)}
@@ -702,11 +802,11 @@ const Reports = () => {
               }`}
             >
               <BoltIcon className={`h-4 w-4 ${realTimeEnabled ? 'text-white' : 'text-gray-500'}`} />
-              <span>Real-time {isConnected ? '🟢' : '🔴'}</span>
+              <span>{t('buttons.realTime')} {isConnected ? '🟢' : '🔴'}</span>
             </button>
             <button className="flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-md text-body font-normal hover:bg-blue-700">
               <ArrowDownTrayIcon className="h-4 w-4" />
-              <span>Export</span>
+              <span>{t('buttons.export')}</span>
             </button>
           </div>
         </div>
@@ -724,7 +824,7 @@ const Reports = () => {
             }`}
           >
             <HomeIcon className="h-4 w-4" />
-            <span>Dashboard</span>
+            <span>{t('navigation.dashboard')}</span>
           </button>
           <button
             onClick={() => setMainView('scheduler')}
@@ -735,7 +835,7 @@ const Reports = () => {
             }`}
           >
             <ClockIcon className="h-4 w-4" />
-            <span>Schedule Reports</span>
+            <span>{t('navigation.scheduleReports')}</span>
           </button>
           <button
             onClick={() => setMainView('history')}
@@ -746,7 +846,7 @@ const Reports = () => {
             }`}
           >
             <ArchiveBoxIcon className="h-4 w-4" />
-            <span>Report History</span>
+            <span>{t('navigation.reportHistory')}</span>
           </button>
           <button
             onClick={() => setMainView('builder')}
@@ -757,44 +857,44 @@ const Reports = () => {
             }`}
           >
             <Cog6ToothIcon className="h-4 w-4" />
-            <span>Custom Builder</span>
+            <span>{t('navigation.customBuilder')}</span>
           </button>
         </div>
       </div>
 
       {/* Dashboard Sub-Navigation */}
       {mainView === 'dashboard' && (
-        <div className="border-b border-gray-100 px-6 bg-gray-50">
+        <div className="border-b border-gray-100 px-6 bg-gray-50 py-4">
           <div className="flex space-x-6">
             <button
               onClick={() => setActiveTab('financial')}
-              className={`py-2 px-3 text-sm font-medium border-b-2 ${
+              className={`py-3 px-4 text-sm font-medium border-b-2 rounded-md transition-all duration-200 ${
                 activeTab === 'financial'
-                  ? 'text-blue-600 border-blue-600'
-                  : 'text-gray-500 border-transparent hover:text-gray-700'
+                  ? 'text-blue-600 border-blue-600 bg-blue-50'
+                  : 'text-gray-500 border-transparent hover:text-gray-700 hover:bg-gray-100'
               }`}
             >
-              Financial Reports
+              {t('tabs.financialReports')}
             </button>
             <button
               onClick={() => setActiveTab('client')}
-              className={`py-2 px-3 text-sm font-medium border-b-2 ${
+              className={`py-3 px-4 text-sm font-medium border-b-2 rounded-md transition-all duration-200 ${
                 activeTab === 'client'
-                  ? 'text-blue-600 border-blue-600'
-                  : 'text-gray-500 border-transparent hover:text-gray-700'
+                  ? 'text-blue-600 border-blue-600 bg-blue-50'
+                  : 'text-gray-500 border-transparent hover:text-gray-700 hover:bg-gray-100'
               }`}
             >
-              Client Reports
+              {t('tabs.clientReports')}
             </button>
             <button
               onClick={() => setActiveTab('custom')}
-              className={`py-2 px-3 text-sm font-medium border-b-2 ${
+              className={`py-3 px-4 text-sm font-medium border-b-2 rounded-md transition-all duration-200 ${
                 activeTab === 'custom'
-                  ? 'text-blue-600 border-blue-600'
-                  : 'text-gray-500 border-transparent hover:text-gray-700'
+                  ? 'text-blue-600 border-blue-600 bg-blue-50'
+                  : 'text-gray-500 border-transparent hover:text-gray-700 hover:bg-gray-100'
               }`}
             >
-              Custom Reports
+              {t('tabs.customReports')}
             </button>
           </div>
         </div>
@@ -810,19 +910,19 @@ const Reports = () => {
                 return (
                   <div
                     key={report.id}
-                    className="bg-white border border-gray-200 rounded-xl p-5 shadow-sm hover:shadow-md transition-shadow duration-200"
+                    className={`bg-gradient-to-br ${report.gradient} border ${report.border} rounded-xl p-5 shadow-sm hover:shadow-md transition-all duration-200`}
                   >
                     <div className="mb-3">
                       <div
-                        className={`${report.iconBg} rounded-lg p-2.5 w-10 h-10 flex items-center justify-center`}
+                        className={`${report.iconBg} rounded-lg p-2.5 w-10 h-10 flex items-center justify-center hover:scale-110 transition-all duration-300 shadow-sm hover:shadow-md cursor-pointer`}
                       >
                         <IconComponent className={`h-5 w-5 ${report.iconColor}`} />
                       </div>
                     </div>
                     <h3 className="text-card-title font-semibold text-gray-900 mb-1">{report.title}</h3>
-                    <p className="text-body text-gray-500 mb-4 leading-5">{report.description}</p>
+                    <p className="text-sm text-gray-500 mb-4 leading-5">{report.description}</p>
                     <div className="mb-3">
-                      <label className="block text-xs font-medium text-gray-700 mb-1">Format</label>
+                      <label className="block text-xs font-medium text-gray-700 mb-1">{t('format')}</label>
                       <select
                         value={selectedFormats[report.id] || 'pdf'}
                         onChange={(e) =>
@@ -830,9 +930,9 @@ const Reports = () => {
                         }
                         className="w-full text-sm border border-gray-300 rounded-md px-2 py-1 focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                       >
-                        <option value="pdf">PDF</option>
-                        <option value="csv">CSV</option>
-                        <option value="excel">Excel</option>
+                        <option value="pdf">{t('formatOptions.pdf')}</option>
+                        <option value="csv">{t('formatOptions.csv')}</option>
+                        <option value="excel">{t('formatOptions.excel')}</option>
                       </select>
                     </div>
                     <div className="space-y-2">
@@ -842,7 +942,7 @@ const Reports = () => {
                           className="flex items-center justify-center space-x-1 py-2 px-2 rounded-md text-xs font-medium border border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors duration-200"
                         >
                           <EyeIcon className="h-3 w-3" />
-                          <span>Preview</span>
+                          <span>{t('buttons.preview')}</span>
                         </button>
                         <button
                           onClick={() => {
@@ -852,7 +952,7 @@ const Reports = () => {
                           className="flex items-center justify-center space-x-1 py-2 px-2 rounded-md text-xs font-medium border border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors duration-200"
                         >
                           <CalendarIcon className="h-3 w-3" />
-                          <span>Schedule</span>
+                          <span>{t('buttons.schedule')}</span>
                         </button>
                       </div>
                       <button
@@ -867,11 +967,11 @@ const Reports = () => {
                         {generating ? (
                           <>
                             <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
-                            <span>Generating...</span>
+                            <span>{t('buttons.generating')}</span>
                           </>
                         ) : (
                           <>
-                            <span>Generate Now</span>
+                            <span>{t('buttons.generateNow')}</span>
                             <ArrowRightIcon className="h-4 w-4" />
                           </>
                         )}
@@ -889,9 +989,10 @@ const Reports = () => {
       {loading && (
         <div className="flex justify-center items-center py-12 px-6">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-          <span className="ml-2 text-gray-600">Loading reports data...</span>
+          <span className="ml-2 text-gray-600">{t('loading')}</span>
         </div>
       )}
+
       {error && (
         <div className="px-6 py-4">
           <div className="bg-red-50 border border-red-200 rounded-lg p-4">
@@ -900,13 +1001,13 @@ const Reports = () => {
                 <ExclamationTriangleIcon className="h-5 w-5 text-red-400" />
               </div>
               <div className="ml-3">
-                <h3 className="text-sm font-medium text-red-800">Error loading reports data</h3>
+                <h3 className="text-sm font-medium text-red-800">{t('error.title')}</h3>
                 <p className="mt-1 text-sm text-red-700">{error.message}</p>
                 <button
-                  onClick={() => refetchMetrics()}
+                  onClick={() => window.location.reload()}
                   className="mt-2 text-sm text-red-600 hover:text-red-500 underline"
                 >
-                  Try again
+                  {t('error.tryAgain')}
                 </button>
               </div>
             </div>
@@ -936,7 +1037,7 @@ const Reports = () => {
                   </div>
                   <div>
                     <p className="text-body text-gray-600 mb-1">
-                      {key.replace(/([A-Z])/g, ' $1').replace(/^./, (str) => str.toUpperCase())}
+                      {t(`metrics.${key}`) || key.replace(/([A-Z])/g, ' $1').replace(/^./, (str) => str.toUpperCase())}
                     </p>
                     <p className="text-page-title font-semibold text-gray-900">{metric.value}</p>
                   </div>
@@ -955,7 +1056,7 @@ const Reports = () => {
             columns={[
               {
                 key: 'name',
-                label: 'Report Name',
+                label: t('table.reportName'),
                 width: 300,
                 render: (value, row) => {
                   const IconComponent = row.icon || DocumentTextIcon;
@@ -969,17 +1070,17 @@ const Reports = () => {
                   );
                 }
               },
-              { key: 'date', label: 'Date', width: 120, sortable: true },
+              { key: 'date', label: t('table.date'), width: 120, sortable: true },
               {
                 key: 'type',
-                label: 'Type',
+                label: t('table.type'),
                 width: 120,
                 render: (value) => (
                   <span
                     className={`inline-flex px-2 py-1 text-caption font-medium rounded-full ${
-                      value === 'Financial'
+                      value === t('reportTypes.financial')
                         ? 'bg-blue-100 text-blue-800'
-                        : value === 'Client'
+                        : value === t('reportTypes.client')
                         ? 'bg-green-100 text-green-800'
                         : 'bg-purple-100 text-purple-800'
                     }`}
@@ -990,7 +1091,7 @@ const Reports = () => {
               },
               {
                 key: 'status',
-                label: 'Status',
+                label: t('table.status'),
                 width: 120,
                 render: (value) => (
                   <div className="flex items-center space-x-1">
@@ -1001,7 +1102,7 @@ const Reports = () => {
               },
               {
                 key: 'actions',
-                label: 'Actions',
+                label: t('table.actions'),
                 width: 120,
                 render: (_, row) => (
                   <div className="flex justify-end space-x-2">
@@ -1019,8 +1120,8 @@ const Reports = () => {
               },
             ]}
             height={400}
-            emptyMessage="No reports yet"
-            emptyDescription="Get started by generating your first report."
+            emptyMessage={t('table.noReports')}
+            emptyDescription={t('table.noReportsDescription')}
             searchable
             exportable
           />
@@ -1033,7 +1134,7 @@ const Reports = () => {
           <div className="bg-white rounded-lg shadow-xl max-w-md w-full mx-4">
             <div className="flex items-center justify-between p-6 border-b">
               <h3 className="text-lg font-semibold text-gray-900">
-                Schedule: {scheduleReport.title || scheduleReport.name}
+                {t('schedule.modalTitle')}: {scheduleReport.title || scheduleReport.name}
               </h3>
               <button
                 onClick={() => setShowScheduleModal(false)}
@@ -1064,36 +1165,36 @@ const Reports = () => {
               >
                 <div className="space-y-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Format</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">{t('schedule.format')}</label>
                     <select
                       name="format"
                       required
                       className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                     >
-                      <option value="pdf">PDF</option>
-                      <option value="csv">CSV</option>
-                      <option value="excel">Excel</option>
+                      <option value="pdf">{t('formatOptions.pdf')}</option>
+                      <option value="csv">{t('formatOptions.csv')}</option>
+                      <option value="excel">{t('formatOptions.excel')}</option>
                     </select>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Frequency</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">{t('schedule.frequency')}</label>
                     <select
                       name="frequency"
                       required
                       className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                     >
-                      <option value="daily">Daily</option>
-                      <option value="weekly">Weekly</option>
-                      <option value="monthly">Monthly</option>
+                      <option value="daily">{t('schedule.frequencies.daily')}</option>
+                      <option value="weekly">{t('schedule.frequencies.weekly')}</option>
+                      <option value="monthly">{t('schedule.frequencies.monthly')}</option>
                     </select>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">{t('schedule.emailAddress')}</label>
                     <input
                       type="email"
                       name="email"
                       required
-                      placeholder="admin@company.com"
+                      placeholder={t('schedule.emailPlaceholder')}
                       className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                     />
                   </div>
@@ -1104,13 +1205,13 @@ const Reports = () => {
                     onClick={() => setShowScheduleModal(false)}
                     className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
                   >
-                    Cancel
+                    {t('buttons.cancel')}
                   </button>
                   <button
                     type="submit"
                     className="px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700"
                   >
-                    Schedule Report
+                    {t('buttons.scheduleReport')}
                   </button>
                 </div>
               </form>

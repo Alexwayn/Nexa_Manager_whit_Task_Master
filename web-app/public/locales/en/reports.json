@@ -1,207 +1,246 @@
 {
   "title": "Reports and Analysis",
-  "user": "User: {{email}}",
-  "export": {
-    "revenue": "Export Revenue PDF",
-    "invoices": "Export Invoices PDF",
-    "clients": "Export Clients PDF",
-    "aging": "Export Aging PDF",
-    "tax": "Export Tax PDF"
+  "breadcrumb": {
+    "dashboard": "Dashboard",
+    "reports": "Reports"
   },
-  "error": {
-    
-    "close": "Close"
+  "navigation": {
+    "dashboard": "Dashboard",
+    "scheduleReports": "Schedule Reports",
+    "reportHistory": "Report History",
+    "customBuilder": "Custom Builder"
   },
   "tabs": {
-    "financial": "Financial Reports",
-    "client": "Client Reports",
-    "invoices": "Invoice Reports",
-    "custom": "Custom Reports"
+    "financialReports": "Financial Reports",
+    "clientReports": "Client Reports",
+    "customReports": "Custom Reports"
   },
-  "categories": {
-    "incomeExpenses": {
-      "name": "Income and Expenses",
-      "description": "View reports and graphs on your business's income and expenses"
-    },
-    "unexpectedError": "An unexpected error occurred"
+  "buttons": {
+    "advancedFilters": "Advanced Filters",
+    "templates": "Templates",
+    "realTime": "Real-time",
+    "export": "Export",
+    "generateNow": "Generate Now",
+    "generating": "Generating...",
+    "preview": "Preview",
+    "schedule": "Schedule",
+    "cancel": "Cancel",
+    "scheduleReport": "Schedule Report"
   },
   "cards": {
-    "financial-summary": {
-      "title": "Financial Summary",
-      "description": "Revenue, expenses, and profit overview"
+    "financial": {
+      "financialSummary": {
+        "title": "Financial Summary",
+        "description": "Revenue, expenses, and profit overview"
+      },
+      "revenueAnalysis": {
+        "title": "Revenue Analysis",
+        "description": "Detailed revenue trends and forecasting"
+      },
+      "expenseBreakdown": {
+        "title": "Expense Breakdown",
+        "description": "Categorized expense analysis and insights"
+      },
+      "profitLoss": {
+        "title": "Profit & Loss Statement",
+        "description": "Comprehensive P&L with period comparisons"
+      }
     },
-    "client-activity": {
-      "title": "Client Activity",
-      "description": "Client engagement and retention metrics"
+    "client": {
+      "clientPerformance": {
+        "title": "Client Performance",
+        "description": "Top performing clients and revenue contribution"
+      },
+      "clientAcquisition": {
+        "title": "Client Acquisition",
+        "description": "New client trends and acquisition metrics"
+      },
+      "clientRetention": {
+        "title": "Client Retention Analysis",
+        "description": "Retention rates and churn analysis"
+      },
+      "topClientsRevenue": {
+        "title": "Top Clients by Revenue",
+        "description": "Highest value clients and revenue breakdown"
+      }
     },
-    "invoice-status": {
-      "title": "Invoice Status",
-      "description": "Outstanding, paid, and overdue invoices"
-    },
-    "revenue-analysis": {
-      "title": "Revenue Analysis",
-      "description": "Detailed revenue streams and trends"
-    },
-    "client-performance": {
-      "title": "Client Performance",
-      "description": "Top performing clients and revenue contribution"
-    },
-    "client-retention": {
-      "title": "Client Retention",
-      "description": "Client retention rates and churn analysis"
-    },
-    "client-satisfaction": {
-      "title": "Client Satisfaction",
-      "description": "Feedback scores and satisfaction metrics"
-    },
-    "client-growth": {
-      "title": "Client Growth",
-      "description": "New client acquisition and growth trends"
-    },
-    "custom-dashboard": {
-      "title": "Custom Dashboard",
-      "description": "Build your own custom reports and metrics"
-    },
-    "data-export": {
-      "title": "Data Export",
-      "description": "Export data in various formats for analysis"
-    },
-    "scheduled-reports": {
-      "title": "Scheduled Reports",
-      "description": "Automated report generation and delivery"
-    },
-    "advanced-analytics": {
-      "title": "Advanced Analytics",
-      "description": "Deep dive analytics with custom filters"
-    },
-    "expense-tracking": {
-      "title": "Expense Tracking",
-      "description": "Monitor and categorize business expenses"
-    },
-    "profit-margins": {
-      "title": "Profit Margins",
-      "description": "Analyze profit margins across services and clients"
-    },
-    "cash-flow": {
-      "title": "Cash Flow",
-      "description": "Track cash inflows and outflows over time"
-    },
-    "tax-reports": {
-      "title": "Tax Reports",
-      "description": "Generate tax-ready financial reports"
-    },
-    "budget-variance": {
-      "title": "Budget Variance",
-      "description": "Compare actual vs budgeted performance"
-    },
-    "financial-forecast": {
-      "title": "Financial Forecast",
-      "description": "Predict future financial performance"
-    },
-    "client-profitability": {
-      "title": "Client Profitability",
-      "description": "Analyze profitability by individual clients"
-    },
-    "payment-history": {
-      "title": "Payment History",
-      "description": "Track client payment patterns and history"
-    },
-    "client-demographics": {
-      "title": "Client Demographics",
-      "description": "Analyze client base demographics and segments"
-    },
-    "report-builder": {
-      "title": "Report Builder",
-      "description": "Create custom reports with drag-and-drop interface"
-    },
-    "api-integration": {
-      "title": "API Integration",
-      "description": "Connect external data sources and APIs"
-    },
-    "payment-tracking": {
-      "title": "Payment Tracking",
-      "description": "Monitor payment status and collection progress"
-    },
-    "overdue-analysis": {
-      "title": "Overdue Analysis",
-      "description": "Analyze overdue invoices and payment delays"
-    },
-    "invoice-aging": {
-      "title": "Invoice Aging",
-      "description": "Track invoice aging and collection metrics"
-    },
-    "collection-reports": {
-      "title": "Collection Reports",
-      "description": "Monitor collection efforts and success rates"
-    },
-    "invoice-templates": {
-      "title": "Invoice Templates",
-      "description": "Manage and customize invoice templates"
-    },
-    "generateReport": "Generate Report"
+    "custom": {
+      "customDashboard": {
+        "title": "Custom Dashboard",
+        "description": "Build your own custom reports and metrics"
+      },
+      "reportTemplates": {
+        "title": "Report Templates",
+        "description": "Pre-built templates for common reports"
+      },
+      "scheduledReports": {
+        "title": "Scheduled Reports",
+        "description": "Automated report generation and delivery"
+      },
+      "dataExport": {
+        "title": "Data Export Tools",
+        "description": "Export data in multiple formats and destinations"
+      }
+    }
   },
-  "date": {
-    "from": "from",
-    "to": "to",
-    "lastDays": "Last {{days}} days"
+  "format": "Format",
+  "formatOptions": {
+    "pdf": "PDF",
+    "csv": "CSV",
+    "excel": "Excel"
   },
-  "advancedClientReports": {
-
-    "subtitle": "Analysis of clients by profitability, loyalty, and purchase frequency"
+  "charts": {
+    "revenue": "Revenue",
+    "expenses": "Expenses",
+    "chart": "Chart",
+    "noDataAvailable": "No data available"
   },
-  "financialForecast": {
-    "title": "Financial Forecast",
-    "chart": "Forecast Chart",
-    "data": "Data",
-    "configuration": "Configuration",
-    "summary": "Summary",
-    "totalProjectedIncome": "Total Projected Income",
-    "totalProjectedExpenses": "Total Projected Expenses",
-    "totalProjectedProfit": "Total Projected Profit",
-    "avgMonthlyProfit": "Average Monthly Profit",
-    "projectedIncome": "Projected Income",
-    "projectedExpenses": "Projected Expenses",
-    "netProfit": "Net Profit",
-    "cumulativeProfit": "Cumulative Profit",
-    "forecastMonths": "Forecast Months",
-    "months3": "3 Months",
-    "months6": "6 Months",
-    "months12": "12 Months",
-    "months24": "24 Months",
-    "method": "Method",
-    "linear": "Linear",
-    "exponential": "Exponential",
-    "logarithmic": "Logarithmic",
-    "confidenceLevel": "Confidence Level",
-    "low": "Low"
+  "table": {
+    "reportName": "Report Name",
+    "date": "Date",
+    "type": "Type",
+    "status": "Status",
+    "actions": "Actions",
+    "noReports": "No reports yet",
+    "noReportsDescription": "Get started by generating your first report."
   },
-  "footer": {
-    "company": {
-      "description": "Advanced business management platform designed to streamline your operations and boost productivity.",
-      "copyright": "© 2024 Nexa Manager. All rights reserved.",
-      "securityVerified": "Security Verified",
-      "language": "Language"
+  "sampleReports": {
+    "monthlyRevenueSummary": "Monthly Revenue Summary",
+    "clientAcquisitionReport": "Client Acquisition Report",
+    "outstandingInvoices": "Outstanding Invoices",
+    "quarterlyPerformance": "Quarterly Performance"
+  },
+  "reportTypes": {
+    "financial": "Financial",
+    "client": "Client",
+    "performance": "Performance"
+  },
+  "status": {
+    "generated": "Generated",
+    "pending": "Pending",
+    "failed": "Failed"
+  },
+  "loading": "Loading reports data...",
+  "error": {
+    "title": "Error loading reports data",
+    "tryAgain": "Try again"
+  },
+  "metrics": {
+    "totalRevenue": "Total Revenue",
+    "totalInvoices": "Total Invoices",
+    "activeClients": "Active Clients",
+    "outstanding": "Outstanding",
+    "totalClients": "Total Clients",
+    "newClients": "New Clients",
+    "retentionRate": "Retention Rate",
+    "totalReports": "Total Reports",
+    "scheduledReports": "Scheduled Reports",
+    "dataExports": "Data Exports",
+    "customDashboards": "Custom Dashboards"
+  },
+  "schedule": {
+    "modalTitle": "Schedule",
+    "format": "Format",
+    "frequency": "Frequency",
+    "emailAddress": "Email Address",
+    "emailPlaceholder": "admin@company.com",
+    "frequencies": {
+      "daily": "Daily",
+      "weekly": "Weekly",
+      "monthly": "Monthly"
+    }
+  },
+  "metadata": {
+    "generated": "Generated",
+    "period": "Period",
+    "type": "Type"
+  },
+  "scheduler": {
+    "title": "Report Scheduler",
+    "create": "Create New Schedule",
+    "searchSchedules": "Search schedules...",
+    "allStatuses": "All Statuses",
+    "noSchedules": "No schedules found",
+    "active": "Active",
+    "inactive": "Inactive",
+    "hourly": "Hourly",
+    "daily": "Daily",
+    "weekly": "Weekly",
+    "monthly": "Monthly",
+    "quarterly": "Quarterly",
+    "yearly": "Yearly",
+    "email": "Email",
+    "download": "Download",
+    "webhook": "Webhook",
+    "monday": "Monday",
+    "tuesday": "Tuesday",
+    "wednesday": "Wednesday",
+    "thursday": "Thursday",
+    "friday": "Friday",
+    "saturday": "Saturday",
+    "sunday": "Sunday",
+    "test": "Test Schedule",
+    "pause": "Pause Schedule",
+    "resume": "Resume Schedule",
+    "template": "Template",
+    "unknownTemplate": "Unknown Template",
+    "frequency": "Frequency",
+    "nextRun": "Next Run",
+    "recipients": "Recipients",
+    "runs": "Runs",
+    "success": "Success",
+    "failed": "Failed",
+    "edit": "Edit",
+    "delete": "Delete"
+  },
+  "reports": {
+    "scheduler": "Report Scheduler"
+  },
+  "preview": {
+    "title": "Report Preview",
+    "visualAnalysis": "Visual Analysis",
+    "detailedData": "Detailed Data",
+    "confidential": "CONFIDENTIAL - Internal Use Only",
+    "generatedBy": "Generated by Nexa Manager",
+    "modes": {
+      "live": "Live",
+      "print": "Print"
     },
-    "resources": {
-      "title": "Resources",
-      "helpCenter": "Help Center",
-      "documentation": "Documentation", 
-      "apiReference": "API Reference",
-      "systemStatus": "System Status"
+    "actions": {
+      "exportReport": "Export Report",
+      "printReport": "Print Report",
+      "editReport": "Edit Report",
+      "enterFullscreen": "Enter Fullscreen",
+      "exitFullscreen": "Exit Fullscreen",
+      "closePreview": "Close Preview"
+    }
+  },
+  "reportContent": {
+    "executiveSummary": "Executive Summary",
+    "keyMetrics": "Key Metrics",
+    "sampleSummary": "This report shows strong financial performance...",
+    "metrics": {
+      "totalRevenue": "Total Revenue",
+      "totalExpenses": "Total Expenses",
+      "netProfit": "Net Profit",
+      "profitMargin": "Profit Margin"
     },
-    "legal": {
-      "title": "Legal",
-      "termsOfService": "Terms of Service",
-      "privacyPolicy": "Privacy Policy",
-      "security": "Security",
-      "compliance": "Compliance"
+    "charts": {
+      "revenueVsExpenses": "Revenue vs Expenses",
+      "monthlyTrends": "Monthly Trends"
     },
-    "contact": {
-      "title": "Contact",
-      "email": "support@nexamanager.com",
-      "phone": "+1 (555) 123-4567",
-      "supportMessage": "Need help? Our support team is available 24/7",
-      "contactSupport": "Contact Support"
+    "tables": {
+      "revenueBreakdown": "Revenue Breakdown",
+      "headers": {
+        "category": "Category",
+        "amount": "Amount",
+        "percentage": "Percentage"
+      },
+      "categories": {
+        "productSales": "Product Sales",
+        "serviceRevenue": "Service Revenue",
+        "otherIncome": "Other Income"
+      }
     }
   }
 }

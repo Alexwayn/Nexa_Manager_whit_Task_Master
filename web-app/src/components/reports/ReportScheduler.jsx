@@ -37,7 +37,7 @@ const ReportScheduler = ({
   availableUsers = [],
   className = ''
 }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation('reports');
   const [showCreateDialog, setShowCreateDialog] = useState(false);
   const [editingSchedule, setEditingSchedule] = useState(null);
   const [selectedSchedule, setSelectedSchedule] = useState(null);
@@ -341,7 +341,7 @@ const ReportScheduler = ({
             <button
               onClick={() => startEditing(schedule)}
               className="p-1 text-gray-500 hover:bg-gray-100 rounded"
-              title={t('common.edit')}
+              title={t('scheduler.edit')}
             >
               <Edit3 className="w-4 h-4" />
             </button>
@@ -355,7 +355,7 @@ const ReportScheduler = ({
             <button
               onClick={() => onDeleteSchedule && onDeleteSchedule(schedule.id)}
               className="p-1 text-red-500 hover:bg-red-100 rounded"
-              title={t('common.delete')}
+              title={t('scheduler.delete')}
             >
               <Trash2 className="w-4 h-4" />
             </button>

@@ -1,349 +1,246 @@
 {
   "title": "Report e Analisi",
-  "user": "Utente: {{email}}",
-  "export": {
-    "revenue": "Export Ricavi PDF",
-    "invoices": "Export Fatture PDF",
-    "clients": "Export Clienti PDF",
-    "aging": "Export Aging PDF",
-    "tax": "Export Fiscale PDF"
+  "breadcrumb": {
+    "dashboard": "Dashboard",
+    "reports": "Report"
   },
-  "error": {
-    "close": "Chiudi"
+  "navigation": {
+    "dashboard": "Dashboard",
+    "scheduleReports": "Programma Report",
+    "reportHistory": "Cronologia Report",
+    "customBuilder": "Costruttore Personalizzato"
   },
   "tabs": {
-    "financials": "Report Finanziari",
-    "invoices": "Report Fatture",
-    "clients": "Report Clienti",
-    "quotes": "Preventivi",
-    "analytics": "Analisi",
-    "custom": "Report Personalizzati",
-    "clientsAdvanced": "Report Avanzati Clienti"
+    "financialReports": "Report Finanziari",
+    "clientReports": "Report Clienti",
+    "customReports": "Report Personalizzati"
   },
-  "categories": {
-    "invoices": {
-      "name": "Fatture",
-      "description": "Analizza le fatture emesse e i pagamenti ricevuti"
+  "buttons": {
+    "advancedFilters": "Filtri Avanzati",
+    "templates": "Modelli",
+    "realTime": "Tempo reale",
+    "export": "Esporta",
+    "generateNow": "Genera Ora",
+    "generating": "Generazione...",
+    "preview": "Anteprima",
+    "schedule": "Programma",
+    "cancel": "Annulla",
+    "scheduleReport": "Programma Report"
+  },
+  "cards": {
+    "financial": {
+      "financialSummary": {
+        "title": "Riepilogo Finanziario",
+        "description": "Panoramica di ricavi, spese e profitti"
+      },
+      "revenueAnalysis": {
+        "title": "Analisi Ricavi",
+        "description": "Tendenze dettagliate dei ricavi e previsioni"
+      },
+      "expenseBreakdown": {
+        "title": "Ripartizione Spese",
+        "description": "Analisi categorizzata delle spese e approfondimenti"
+      },
+      "profitLoss": {
+        "title": "Conto Economico",
+        "description": "P&L completo con confronti periodici"
+      }
     },
-    "quotes": {
-      "name": "Preventivi",
-      "description": "Monitora i preventivi emessi, accettati e rifiutati"
+    "client": {
+      "clientPerformance": {
+        "title": "Performance Clienti",
+        "description": "Clienti più performanti e contributo ai ricavi"
+      },
+      "clientAcquisition": {
+        "title": "Acquisizione Clienti",
+        "description": "Tendenze nuovi clienti e metriche di acquisizione"
+      },
+      "clientRetention": {
+        "title": "Analisi Fidelizzazione Clienti",
+        "description": "Tassi di fidelizzazione e analisi dell'abbandono"
+      },
+      "topClientsRevenue": {
+        "title": "Top Clienti per Ricavi",
+        "description": "Clienti di maggior valore e ripartizione ricavi"
+      }
     },
-    "clients": {
-      "name": "Clienti",
-      "description": "Visualizza statistiche e analisi sui tuoi clienti"
-    },
-    "analytics": {
-      "name": "Analisi Avanzate",
-      "description": "Approfondisci con analisi dettagliate e previsioni"
+    "custom": {
+      "customDashboard": {
+        "title": "Dashboard Personalizzata",
+        "description": "Crea i tuoi report e metriche personalizzati"
+      },
+      "reportTemplates": {
+        "title": "Modelli Report",
+        "description": "Modelli predefiniti per report comuni"
+      },
+      "scheduledReports": {
+        "title": "Report Programmati",
+        "description": "Generazione e consegna automatica dei report"
+      },
+      "dataExport": {
+        "title": "Strumenti Esportazione Dati",
+        "description": "Esporta dati in formati multipli e destinazioni"
+      }
     }
   },
-  "selectReportCategory": "Seleziona una categoria di report",
-  "backToCategorySelection": "Torna alla selezione categoria",
-  "cards": {
-    "financial-summary": {
-      "title": "Riepilogo Finanziario",
-      "description": "Panoramica di ricavi, spese e profitti"
-    },
-    "revenue-analysis": {
-      "title": "Analisi Ricavi",
-      "description": "Flussi di ricavi dettagliati e tendenze"
-    },
-    "expense-tracking": {
-      "title": "Tracciamento Spese",
-      "description": "Monitora e categorizza le spese aziendali"
-    },
-    "profit-margins": {
-      "title": "Margini di Profitto",
-      "description": "Analizza i margini di profitto per servizio/prodotto"
-    },
-    "cash-flow": {
-      "title": "Flusso di Cassa",
-      "description": "Traccia i flussi di cassa in entrata e in uscita"
-    },
-    "tax-reports": {
-      "title": "Report Fiscali",
-      "description": "Genera report finanziari pronti per le tasse"
-    },
-    "budget-variance": {
-      "title": "Varianza Budget",
-      "description": "Confronta importi effettivi vs preventivati"
-    },
-    "financial-forecast": {
-      "title": "Previsioni Finanziarie",
-      "description": "Prevedi le performance finanziarie future"
-    },
-    "client-performance": {
-      "title": "Performance Clienti",
-      "description": "Clienti più performanti e contributo ai ricavi"
-    },
-    "client-retention": {
-      "title": "Retention Clienti",
-      "description": "Tassi di retention e analisi del churn"
-    },
-    "client-satisfaction": {
-      "title": "Soddisfazione Clienti",
-      "description": "Punteggi di feedback e metriche di soddisfazione"
-    },
-    "client-growth": {
-      "title": "Crescita Clienti",
-      "description": "Acquisizione nuovi clienti e tendenze di crescita"
-    },
-    "client-activity": {
-      "title": "Attività Clienti",
-      "description": "Metriche di engagement e interazione clienti"
-    },
-    "client-profitability": {
-      "title": "Redditività Clienti",
-      "description": "Analisi ricavi e profitti per cliente"
-    },
-    "payment-history": {
-      "title": "Storico Pagamenti",
-      "description": "Pattern di pagamento e storico clienti"
-    },
-    "client-demographics": {
-      "title": "Demografia Clienti",
-      "description": "Analisi geografica e demografica"
-    },
-    "custom-dashboard": {
-      "title": "Dashboard Personalizzata",
-      "description": "Crea i tuoi report e metriche personalizzati"
-    },
-    "data-export": {
-      "title": "Export Dati",
-      "description": "Esporta dati in vari formati per l'analisi"
-    },
-    "scheduled-reports": {
-      "title": "Report Programmati",
-      "description": "Generazione e consegna automatica dei report"
-    },
-    "advanced-analytics": {
-      "title": "Analisi Avanzate",
-      "description": "Analisi approfondite con filtri personalizzati"
-    },
-    "report-builder": {
-      "title": "Costruttore Report",
-      "description": "Crea report personalizzati con drag & drop"
-    },
-    "api-integration": {
-      "title": "Integrazione API",
-      "description": "Connetti fonti dati esterne"
-    },
-    "invoice-status": {
-      "title": "Stato Fatture",
-      "description": "Fatture in sospeso, pagate e scadute"
-    },
-    "payment-tracking": {
-      "title": "Tracciamento Pagamenti",
-      "description": "Traccia stato e storico pagamenti"
-    },
-    "overdue-analysis": {
-      "title": "Analisi Scaduti",
-      "description": "Analizza fatture scadute e pattern"
-    },
-    "invoice-aging": {
-      "title": "Aging Fatture",
-      "description": "Analisi dell'età delle fatture in sospeso"
-    },
-    "collection-reports": {
-      "title": "Report Incassi",
-      "description": "Traccia sforzi di incasso e tassi di successo"
-    },
-    "invoice-templates": {
-      "title": "Template Fatture",
-      "description": "Gestisci e personalizza i template delle fatture"
-    },
-    "generateReport": "Genera Report"
+  "format": "Formato",
+  "formatOptions": {
+    "pdf": "PDF",
+    "csv": "CSV",
+    "excel": "Excel"
   },
-  "financials": {
-    "loading": "Caricamento dati finanziari...",
-    "error": {
-      "message": "Errore nel caricamento dei dati finanziari",
-      "retry": "Riprova"
+  "charts": {
+    "revenue": "Ricavi",
+    "expenses": "Spese",
+    "chart": "Grafico",
+    "noDataAvailable": "Nessun dato disponibile"
+  },
+  "table": {
+    "reportName": "Nome Report",
+    "date": "Data",
+    "type": "Tipo",
+    "status": "Stato",
+    "actions": "Azioni",
+    "noReports": "Nessun report ancora",
+    "noReportsDescription": "Inizia generando il tuo primo report."
+  },
+  "sampleReports": {
+    "monthlyRevenueSummary": "Riepilogo Ricavi Mensili",
+    "clientAcquisitionReport": "Report Acquisizione Clienti",
+    "outstandingInvoices": "Fatture in Sospeso",
+    "quarterlyPerformance": "Performance Trimestrale"
+  },
+  "reportTypes": {
+    "financial": "Finanziario",
+    "client": "Cliente",
+    "performance": "Performance"
+  },
+  "status": {
+    "generated": "Generato",
+    "pending": "In Attesa",
+    "failed": "Fallito"
+  },
+  "loading": "Caricamento dati report...",
+  "error": {
+    "title": "Errore nel caricamento dei dati del report",
+    "tryAgain": "Riprova"
+  },
+  "metrics": {
+    "totalRevenue": "Ricavi Totali",
+    "totalInvoices": "Fatture Totali",
+    "activeClients": "Clienti Attivi",
+    "outstanding": "In Sospeso",
+    "totalClients": "Clienti Totali",
+    "newClients": "Nuovi Clienti",
+    "retentionRate": "Tasso di Fidelizzazione",
+    "totalReports": "Report Totali",
+    "scheduledReports": "Report Programmati",
+    "dataExports": "Esportazioni Dati",
+    "customDashboards": "Dashboard Personalizzate"
+  },
+  "schedule": {
+    "modalTitle": "Programma",
+    "format": "Formato",
+    "frequency": "Frequenza",
+    "emailAddress": "Indirizzo Email",
+    "emailPlaceholder": "admin@azienda.com",
+    "frequencies": {
+      "daily": "Giornaliero",
+      "weekly": "Settimanale",
+      "monthly": "Mensile"
+    }
+  },
+  "metadata": {
+    "generated": "Generato",
+    "period": "Periodo",
+    "type": "Tipo"
+  },
+  "scheduler": {
+    "title": "Programmatore Report",
+    "create": "Crea Nuova Programmazione",
+    "searchSchedules": "Cerca programmazioni...",
+    "allStatuses": "Tutti gli Stati",
+    "noSchedules": "Nessuna programmazione trovata",
+    "active": "Attivo",
+    "inactive": "Inattivo",
+    "hourly": "Ogni Ora",
+    "daily": "Giornaliero",
+    "weekly": "Settimanale",
+    "monthly": "Mensile",
+    "quarterly": "Trimestrale",
+    "yearly": "Annuale",
+    "email": "Email",
+    "download": "Download",
+    "webhook": "Webhook",
+    "monday": "Lunedì",
+    "tuesday": "Martedì",
+    "wednesday": "Mercoledì",
+    "thursday": "Giovedì",
+    "friday": "Venerdì",
+    "saturday": "Sabato",
+    "sunday": "Domenica",
+    "test": "Testa Programmazione",
+    "pause": "Pausa Programmazione",
+    "resume": "Riprendi Programmazione",
+    "template": "Template",
+    "unknownTemplate": "Template Sconosciuto",
+    "frequency": "Frequenza",
+    "nextRun": "Prossima Esecuzione",
+    "recipients": "Destinatari",
+    "runs": "Esecuzioni",
+    "success": "Successo",
+    "failed": "Fallito",
+    "edit": "Modifica",
+    "delete": "Elimina"
+  },
+  "reports": {
+    "scheduler": "Programmatore Report"
+  },
+  "preview": {
+    "title": "Anteprima Report",
+    "visualAnalysis": "Analisi Visiva",
+    "detailedData": "Dati Dettagliati",
+    "confidential": "RISERVATO - Solo Uso Interno",
+    "generatedBy": "Generato da Nexa Manager",
+    "modes": {
+      "live": "Live",
+      "print": "Stampa"
     },
-    "title": "Report Finanziari",
-    "subtitle": "Periodo: {{startDate}} - {{endDate}}",
-    "tabs": {
-      "overview": "Panoramica",
-      "income": "Entrate",
-      "expenses": "Spese",
-      "categories": "Categorie",
-      "vendors": "Fornitori",
-      "tax": "Fiscale"
-    },
+    "actions": {
+      "exportReport": "Esporta Report",
+      "printReport": "Stampa Report",
+      "editReport": "Modifica Report",
+      "enterFullscreen": "Schermo Intero",
+      "exitFullscreen": "Esci da Schermo Intero",
+      "closePreview": "Chiudi Anteprima"
+    }
+  },
+  "reportContent": {
+    "executiveSummary": "Riepilogo Esecutivo",
+    "keyMetrics": "Metriche Chiave",
+    "sampleSummary": "Questo report mostra una forte performance finanziaria...",
     "metrics": {
-      "totalIncome": "Entrate Totali",
+      "totalRevenue": "Ricavi Totali",
       "totalExpenses": "Spese Totali",
       "netProfit": "Profitto Netto",
       "profitMargin": "Margine di Profitto"
     },
-    "health": {
-      "title": "Salute Finanziaria"
-    },
-    "distribution": {
-      "title": "Distribuzione"
-    }
-  },
-  "invoices": {
-    "loading": "Caricamento dati fatture...",
-    "error": {
-      "message": "Errore nel caricamento dei dati fatture"
-    },
-    "title": "Report Fatture",
-    "subtitle": "Periodo: {{startDate}} - {{endDate}}",
     "charts": {
-      "monthlyRevenueLabel": "Fatturato Mensile"
-    }
-  },
-  "quotes": {
-    "loading": "Caricamento dati preventivi...",
-    "title": "Report Preventivi",
-    "subtitle": "Periodo: {{startDate}} - {{endDate}}"
-  },
-  "clients": {
-    "loading": "Caricamento dati clienti...",
-    "title": "Report Clienti",
-    "subtitle": "Periodo: {{startDate}} - {{endDate}}"
-  },
-  "analytics": {
-    "loading": "Caricamento analisi...",
-    "title": "Analisi Avanzate",
-    "subtitle": "Periodo: {{startDate}} - {{endDate}}"
-  },
-  "financialForecast": {
-    "title": "Previsioni Finanziarie",
-    "chart": "Grafico Previsioni",
-    "data": "Dati",
-    "configuration": "Configurazione",
-    "summary": "Riepilogo",
-    "totalProjectedIncome": "Entrate Previste Totali",
-    "totalProjectedExpenses": "Spese Previste Totali",
-    "totalProjectedProfit": "Profitto Previsto Totale",
-    "avgMonthlyProfit": "Profitto Mensile Medio",
-    "projectedIncome": "Entrate Previste",
-    "projectedExpenses": "Spese Previste",
-    "netProfit": "Profitto Netto",
-    "cumulativeProfit": "Profitto Cumulativo",
-    "forecastMonths": "Mesi di Previsione",
-    "months3": "3 Mesi",
-    "months6": "6 Mesi",
-    "months12": "12 Mesi",
-    "months24": "24 Mesi",
-    "method": "Metodo",
-    "linear": "Lineare",
-    "exponential": "Esponenziale",
-    "logarithmic": "Logaritmico",
-    "confidenceLevel": "Livello di Confidenza",
-    "low": "Basso"
-  },
-  "reports": {
-    "executiveSummary": {
-      "title": "Report Riassuntivo Esecutivo"
+      "revenueVsExpenses": "Ricavi vs Spese",
+      "monthlyTrends": "Tendenze Mensili"
     },
-    "kpis": {
-      "title": "Indicatori Chiave di Performance"
-    },
-    "businessInsights": {
-      "title": "Approfondimenti di Business"
-    },
-    "customBuilder": {
-      "title": "Generatore Report Personalizzato",
-      "reportType": "Tipo di Report",
-      "dateRange": "Intervallo Date",
-      "exportFormat": "Formato di Esportazione",
-      "includeSections": "Includi Sezioni"
-    },
-    "types": {
-      "financialSummary": "Riassunto Finanziario",
-      "clientAnalysis": "Analisi Clienti",
-      "revenueBreakdown": "Dettaglio Ricavi",
-      "performanceMetrics": "Metriche di Performance",
-      "customDashboard": "Dashboard Personalizzata"
-    },
-    "sections": {
-      "revenueAnalysis": "Analisi Ricavi",
-      "clientMetrics": "Metriche Clienti",
-      "financialHealth": "Salute Finanziaria",
-      "cashFlow": "Flusso di Cassa",
-      "profitMargins": "Margini di Profitto",
-      "growthTrends": "Trend di Crescita",
-      "benchmarks": "Benchmark",
-      "recommendations": "Raccomandazioni"
-    },
-    "industryBenchmarks": {
-      "title": "Benchmark del Settore",
-      "performanceVsIndustry": "Le Tue Performance vs Media del Settore"
-    },
-    "recommendations": {
-      "title": "Raccomandazioni"
-    }
-  },
-  "dateRanges": {
-    "last30Days": "Ultimi 30 giorni",
-    "last3Months": "Ultimi 3 mesi",
-    "last6Months": "Ultimi 6 mesi",
-    "lastYear": "Ultimo anno",
-    "customRange": "Intervallo personalizzato"
-  },
-  "exportFormats": {
-    "pdfReport": "Report PDF",
-    "excelSpreadsheet": "Foglio Excel",
-    "csvData": "Dati CSV",
-    "powerpointPresentation": "Presentazione PowerPoint"
-  },
-  "insights": {
-    "clientRetention": {
-      "title": "Retention Clienti",
-      "description": "Hai {{activeClients}} clienti attivi con {{newClients}} nuove acquisizioni questo mese."
-    },
-    "profitability": {
-      "title": "Redditività"
-    },
-    "financialHealth": {
-      "title": "Salute Finanziaria"
-    }
-  },
-  "recommendations": {
-    "optimizeCashFlow": {
-      "title": "Ottimizza Flusso di Cassa",
-      "description": "Considera l'implementazione di promemoria automatici per i pagamenti per migliorare i tempi del flusso di cassa."
-    },
-    "expandClientBase": {
-      "title": "Espandi Base Clienti",
-      "description": "La tua retention clienti è sopra la media. Concentrati sull'acquisizione di nuovi clienti per scalare i ricavi."
-    },
-    "costManagement": {
-      "title": "Gestione Costi",
-      "description": "Rivedi le spese operative per migliorare ulteriormente i margini di profitto."
-    }
-  },
-  "footer": {
-    "company": {
-      "description": "Piattaforma avanzata di gestione aziendale progettata per ottimizzare le tue operazioni e aumentare la produttività.",
-      "copyright": "© 2024 Nexa Manager. Tutti i diritti riservati.",
-      "securityVerified": "Sicurezza Verificata",
-      "language": "Lingua"
-    },
-    "resources": {
-      "title": "Risorse",
-      "helpCenter": "Centro Assistenza",
-      "documentation": "Documentazione",
-      "apiReference": "Riferimento API",
-      "systemStatus": "Stato Sistema"
-    },
-    "legal": {
-      "title": "Legale",
-      "termsOfService": "Termini di Servizio",
-      "privacyPolicy": "Politica Privacy",
-      "security": "Sicurezza",
-      "compliance": "Conformità"
-    },
-    "contact": {
-      "title": "Contatti",
-      "email": "support@nexamanager.com",
-      "phone": "+39 02 1234 5678",
-      "supportMessage": "Hai bisogno di aiuto? Il nostro team di supporto è disponibile 24/7",
-      "contactSupport": "Contatta il Supporto"
+    "tables": {
+      "revenueBreakdown": "Ripartizione Ricavi",
+      "headers": {
+        "category": "Categoria",
+        "amount": "Importo",
+        "percentage": "Percentuale"
+      },
+      "categories": {
+        "productSales": "Vendite Prodotti",
+        "serviceRevenue": "Ricavi Servizi",
+        "otherIncome": "Altri Ricavi"
+      }
     }
   }
 }

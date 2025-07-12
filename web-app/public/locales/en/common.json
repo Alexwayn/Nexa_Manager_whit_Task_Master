@@ -196,5 +196,12 @@
     "showing": "Showing {{start}} to {{end}} of {{total}} results",
     "previous": "Previous",
     "next": "Next"
-  }
+  },
+  "viewReport": "View Report",
+  "editBudget": "Edit Budget",
+  "viewAll": "View All",
+  "exportReport": "Export Report",
+  "you": "You",
+  "industry": "Industry",
+  "scheduleReport": "Schedule Report"
 }

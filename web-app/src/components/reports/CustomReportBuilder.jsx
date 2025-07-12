@@ -562,7 +562,7 @@ const CustomReportBuilder = ({ onBack, initialTemplate = null }) => {
   const renderPreviewAndSave = () => (
     <div className='space-y-8'>
       <div className='text-center'>
-        <h3 className='text-lg font-semibold text-gray-900 mb-4'>Report Preview</h3>
+        <h3 className='text-lg font-semibold text-gray-900 mb-4'>{t('preview.title', { ns: 'reports' })}</h3>
 
         {!reportConfig.previewData ? (
           <div className='bg-gray-50 rounded-lg p-8'>
