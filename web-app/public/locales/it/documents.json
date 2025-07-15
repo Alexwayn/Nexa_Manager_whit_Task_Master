@@ -4,6 +4,275 @@
     "dashboard": "Dashboard",
     "documents": "Documenti"
   },
+  "header": {
+    "title": "Documenti",
+    "uploadDocument": "Carica Documento",
+    "export": "Esporta"
+  },
+  "statistics": {
+    "totalDocuments": "Documenti Totali",
+    "totalDocumentsDescription": "Tutti i tipi di documento",
+    "recentUploads": "Caricamenti Recenti",
+    "recentUploadsDescription": "Questo mese",
+    "sharedDocuments": "Documenti Condivisi",
+    "sharedDocumentsDescription": "Con team e clienti",
+    "storageUsed": "Spazio Utilizzato",
+    "storageUsedDescription": "{{percentage}}% dello spazio totale",
+    "increaseFromLastMonth": "↗ {{percentage}}% aumento dal mese scorso",
+    "ofTarget": "dell'obiettivo",
+    "alert": "Avviso",
+    "ofCapacity": "della capacità"
+  },
+  "sidebar": {
+    "folders": "Cartelle",
+    "filters": "Filtri",
+    "category": "Categoria",
+    "dateRange": "Intervallo Date",
+    "owner": "Proprietario",
+    "applyFilters": "Applica Filtri",
+    "clearAll": "Cancella Tutto"
+  },
+  "foldersList": {
+    "myDocuments": "I Miei Documenti",
+    "contracts": "Contratti",
+    "invoices": "Fatture",
+    "reports": "Report",
+    "templates": "Modelli",
+    "sharedWithMe": "Condivisi con Me",
+    "favorites": "Preferiti",
+    "trash": "Cestino"
+  },
+  "categories": {
+    "allCategories": "Tutte le Categorie",
+    "contracts": "Contratti",
+    "invoices": "Fatture",
+    "reports": "Report",
+    "templates": "Modelli"
+  },
+  "dateRanges": {
+    "allTime": "Sempre",
+    "last7Days": "Ultimi 7 giorni",
+    "last30Days": "Ultimi 30 giorni",
+    "last3Months": "Ultimi 3 mesi",
+    "thisYear": "Quest'anno"
+  },
+  "owners": {
+    "allOwners": "Tutti i Proprietari",
+    "johnDoe": "John Doe",
+    "sarahJohnson": "Sarah Johnson",
+    "mikeWilson": "Mike Wilson",
+    "emilychen": "Emily Chen"
+  },
+  "analytics": {
+    "documentCategories": "Categorie Documenti",
+    "recentActivity": "Attività Recenti",
+    "viewAll": "Visualizza Tutto",
+    "categoriesLabels": {
+      "contracts": "Contratti (35%)",
+      "invoices": "Fatture (25%)",
+      "receipts": "Ricevute (20%)",
+      "other": "Altro (20%)"
+    }
+  },
+  "recentActivity": {
+    "actions": {
+      "uploaded": "ha caricato",
+      "viewed": "ha visualizzato",
+      "shared": "ha condiviso",
+      "edited": "ha modificato",
+      "deleted": "ha eliminato"
+    },
+    "documents": {
+      "q2FinancialReport": "Rapporto Finanziario Q2.pdf",
+      "clientContractAcme": "Contratto Cliente - Acme Corp.docx",
+      "marketingPresentation": "Presentazione Marketing.pptx",
+      "projectProposal": "Proposta Progetto.docx",
+      "outdatedGuidelines": "Linee Guida Obsolete.pdf"
+    },
+    "timeAgo": {
+      "minutesAgo": "{{count}} minuti fa",
+      "hourAgo": "1 ora fa",
+      "hoursAgo": "{{count}} ore fa",
+      "dayAgo": "1 giorno fa"
+    }
+  },
+  "searchAndFilters": {
+    "searchPlaceholder": "Cerca documenti...",
+    "allTypes": "Tutti i Tipi",
+    "last30Days": "Ultimi 30 Giorni",
+    "clear": "Cancella",
+    "perPage": "{{count}} per pagina"
+  },
+  "table": {
+    "headers": {
+      "documentName": "Nome Documento",
+      "type": "Tipo",
+      "dateModified": "Data Modifica",
+      "owner": "Proprietario",
+      "status": "Stato",
+      "actions": "Azioni"
+    },
+    "fileTypes": {
+      "pdf": "PDF",
+      "word": "Word",
+      "powerpoint": "PowerPoint",
+      "excel": "Excel",
+      "image": "Immagine",
+      "archive": "Archivio"
+    },
+    "statuses": {
+      "shared": "Condiviso",
+      "private": "Privato",
+      "archived": "Archiviato"
+    },
+    "documents": {
+      "q2FinancialReport": "Rapporto Finanziario Q2.pdf",
+      "clientContractAcme": "Contratto Cliente - Acme Corp.docx",
+      "marketingPresentation": "Presentazione Marketing.pptx",
+      "projectBudget": "Budget Progetto.xlsx",
+      "companyLogo": "Logo Aziendale.png",
+      "productSpecifications": "Specifiche Prodotto.pdf",
+      "userResearchResults": "Risultati Ricerca Utenti.zip",
+      "meetingNotes": "Note Riunione.docx"
+    }
+  },
+  "pagination": {
+    "showing": "Visualizzando",
+    "to": "a",
+    "of": "di",
+    "entries": "voci",
+    "previous": "Precedente",
+    "next": "Successivo"
+  },
+  "actionCards": {
+    "uploadDocument": {
+      "title": "Carica Documento",
+      "description": "Carica nuovi file nel tuo archivio documenti",
+      "button": "Carica Ora"
+    },
+    "createFolder": {
+      "title": "Crea Cartella",
+      "description": "Organizza i tuoi documenti in una struttura a cartelle",
+      "button": "Crea Ora"
+    },
+    "requestDocument": {
+      "title": "Richiedi Documento",
+      "description": "Richiedi documenti da clienti o membri del team",
+      "button": "Richiedi Ora"
+    },
+    "archive": {
+      "title": "Archivia",
+      "description": "Archivia documenti di cui non hai più bisogno",
+      "button": "Archivia"
+    }
+  },
+  "modals": {
+    "upload": {
+      "title": "Carica Documenti",
+      "description": "Carica nuovi file nel tuo archivio documenti",
+      "dragDrop": "Trascina e rilascia i file qui o clicca per sfogliare",
+      "supportedFormats": "Formati supportati: PDF, DOC, DOCX, XLS, XLSX, PPT, PPTX, JPG, PNG, ZIP",
+      "maxSize": "Dimensione massima file: 10MB per file",
+      "uploading": "Caricamento in corso...",
+      "uploadProgress": "{{uploaded}} di {{total}} file caricati",
+      "uploadComplete": "Caricamento Completato",
+      "allFilesUploaded": "Tutti i file sono stati caricati con successo",
+      "uploadFailed": "Caricamento Fallito",
+      "someFilesFailed": "Alcuni file non sono stati caricati",
+      "retry": "Riprova",
+      "cancel": "Annulla",
+      "close": "Chiudi"
+    },
+    "createFolder": {
+      "title": "Crea Nuova Cartella",
+      "description": "Crea una nuova cartella per organizzare i tuoi documenti",
+      "folderName": "Nome Cartella",
+      "folderNamePlaceholder": "Inserisci nome cartella",
+      "parentFolder": "Cartella Genitore",
+      "rootFolder": "Cartella Radice",
+      "folderColor": "Colore Cartella",
+      "colors": {
+        "blue": "Blu",
+        "green": "Verde",
+        "orange": "Arancione",
+        "purple": "Viola",
+        "red": "Rosso",
+        "gray": "Grigio"
+      },
+      "folderIcon": "Icona Cartella",
+      "icons": {
+        "folder": "Cartella Predefinita",
+        "contracts": "Contratti",
+        "invoices": "Fatture",
+        "reports": "Report",
+        "templates": "Modelli",
+        "archive": "Archivio"
+      },
+      "preview": "Anteprima Cartella",
+      "create": "Crea Cartella",
+      "creating": "Creazione in corso...",
+      "cancel": "Annulla"
+    },
+    "share": {
+      "title": "Condividi Documenti",
+      "description": "Condividi documenti con membri del team o clienti esterni",
+      "shareVia": "Condividi tramite",
+      "shareLink": "Condividi Link",
+      "shareEmail": "Condividi tramite Email",
+      "linkSettings": "Impostazioni Link",
+      "emailSettings": "Impostazioni Email",
+      "publicAccess": "Accesso Pubblico",
+      "publicAccessDescription": "Chiunque con il link può visualizzare",
+      "passwordProtected": "Protetto da Password",
+      "passwordProtectedDescription": "Richiedi password per accedere",
+      "expirationDate": "Data Scadenza",
+      "expirationDateDescription": "Imposta quando scade il link",
+      "permissions": "Permessi",
+      "canView": "Può Visualizzare",
+      "canDownload": "Può Scaricare",
+      "canComment": "Può Commentare",
+      "emailAddresses": "Indirizzi Email",
+      "emailAddressesPlaceholder": "Inserisci indirizzi email separati da virgole",
+      "personalMessage": "Messaggio Personale (Opzionale)",
+      "personalMessagePlaceholder": "Aggiungi un messaggio personale...",
+      "generateLink": "Genera Link",
+      "sendEmail": "Invia Email",
+      "generating": "Generazione in corso...",
+      "sending": "Invio in corso...",
+      "linkGenerated": "Link Generato con Successo",
+      "linkCopied": "Link copiato negli appunti",
+      "emailSent": "Email inviata con successo",
+      "cancel": "Annulla",
+      "close": "Chiudi"
+    },
+    "analytics": {
+      "title": "Analisi Documenti",
+      "description": "Visualizza analisi dettagliate e approfondimenti per i tuoi documenti",
+      "overview": "Panoramica",
+      "documentTypes": "Tipi di Documento",
+      "activityTrends": "Tendenze Attività",
+      "storageUsage": "Utilizzo Spazio",
+      "totalDocuments": "Documenti Totali",
+      "totalSize": "Dimensione Totale",
+      "averageSize": "Dimensione Media",
+      "lastUpdated": "Ultimo Aggiornamento",
+      "viewsThisMonth": "Visualizzazioni Questo Mese",
+      "downloadsThisMonth": "Download Questo Mese",
+      "sharesThisMonth": "Condivisioni Questo Mese",
+      "uploadsThisMonth": "Caricamenti Questo Mese",
+      "timeRange": "Intervallo Temporale",
+      "timeRanges": {
+        "last7Days": "Ultimi 7 Giorni",
+        "last30Days": "Ultimi 30 Giorni",
+        "last3Months": "Ultimi 3 Mesi",
+        "last6Months": "Ultimi 6 Mesi",
+        "lastYear": "Ultimo Anno"
+      },
+      "exportData": "Esporta Dati",
+      "refreshData": "Aggiorna Dati",
+      "close": "Chiudi"
+    }
+  },
   "upload": "Carica",
   "newFolder": "Nuova Cartella",
   "searchPlaceholder": "Cerca documenti...",
@@ -25,95 +294,17 @@
   "loading": "Caricamento documenti...",
   "error": "Errore durante il caricamento dei documenti",
   "errorWithMessage": "Errore durante il caricamento dei documenti: {{message}}",
-  "recentFiles": {
-    
-    "q2Report": "Rapporto Finanziario Q2.pdf",
-    "meetingNotes": "Note Riunione Cliente.docx",
-    "marketingStrategy": "Strategia di Marketing.pptx",
-    "budgetAnalysis": "Analisi Budget.xlsx"
-  },
-  "folders": {
-    
-    "clientDocs": "Documenti Cliente",
-    "financialReports": "Rapporti Finanziari",
-    "marketingMaterials": "Materiale di Marketing",
-    "projectResources": "Risorse di Progetto",
-    "files": "{{count}} file"
-  },
-  "allFilesTable": {
-    "name": "Nome",
-    "owner": "Proprietario",
-    "lastModified": "Ultima Modifica",
-    "fileSize": "Dimensione File",
-    "annualReport": "Rapporto Annuale 2023.pdf",
-    "clientPresentation": "Presentazione Cliente.pptx",
-    "projectTimeline": "Cronologia Progetto.xlsx",
-    "contractTemplate": "Modello Contratto.docx",
-    "marketingAssets": "Asset di Marketing.zip",
-    "productPhotos": "Foto Prodotto.jpg"
-  },
-  "time": {
-    "today": "Oggi",
-    "yesterday": "Ieri",
-    "daysAgo": "{{count}} giorni fa",
-    "weekAgo": "1 settimana fa"
-  },
   "actions": {
     "view": "Visualizza",
     "download": "Scarica",
     "share": "Condividi",
     "delete": "Elimina"
   },
-  "pagination": {
-    "previous": "Precedente",
-    "next": "Successivo"
-  },
-  "sharing": {
-    
-    "settingsTitle": "Impostazioni di Condivisione",
-    "publicLink": "Link Pubblico",
-    "withPassword": "Con Password",
-    "onlyByEmail": "Solo via Email",
-    "expirationOptional": "Scadenza (Opzionale)",
-    "expirationDescription": "Imposta una data di scadenza per il link.",
-    "accessPassword": "Password di Accesso",
-    "passwordDescription": "Richiedi una password per visualizzare.",
-    "recipientEmail": "Email del Destinatario",
-    "emailDescription": "Invia un link univoco all'indirizzo email specificato.",
-    "advancedOptions": "Opzioni Avanzate",
-    "allowDownload": "Consenti Download",
-    "allowPrint": "Consenti Stampa",
-    "trackViews": "Traccia Visualizzazioni",
-    "notifyOnFirstAccess": "Notifica al Primo Accesso",
-    "generateLink": "Genera Link di Condivisione",
-    "generatingLink": "Generazione in corso...",
-    "secureLink": "Il tuo link di condivisione sicuro",
-    "cancel": "Annulla",
-    "copyLink": "Copia Link",
-    "copied": "Copiato!",
-    "sendByEmail": "Invia tramite Email",
-    "sending": "Invio in corso...",
-    "shareViaQr": "Condividi tramite QR Code",
-    "scanToView": "Scansiona per Visualizzare",
-    "linkGenerated": "Link di condivisione generato",
-    "linkGeneratedDescription": "Chiunque abbia il link può visualizzare il documento.",
-    "viewStats": "Visualizza Statistiche",
-    "views": "Visualizzazioni",
-    "totalViews": "Visualizzazioni Totali",
-    "downloads": "Download",
-    "totalDownloads": "Download Totali",
-    "lastAccessed": "Ultimo Accesso",
-    "revokeAccess": "Revoca Accesso",
-    "revokeAccessConfirmation": "Sei sicuro di voler revocare l'accesso a questo documento? Questa azione è irreversibile.",
-    "emailSubject": "Documento condiviso: ",
-    "quote": "Preventivo",
-    "invoice": "Fattura",
-    "document": "Documento",
-    "emailBodyDearUser": "Gentile utente,",
-    "emailBodyShared": "Ti è stato condiviso un {{docType}}: {{docName}}",
-    "emailBodyViewLink": "Puoi visualizzare il documento al seguente link:",
-    "emailBodyExpiration": "Il link sarà valido fino al {{date}}",
-    "emailBodyRegards": "Cordiali saluti,"
+  "time": {
+    "today": "Oggi",
+    "yesterday": "Ieri",
+    "daysAgo": "{{count}} giorni fa",
+    "weekAgo": "1 settimana fa"
   },
   "noFilesFound": "Nessun file trovato",
   "noFilesFoundDescription": "Non ci sono file che corrispondono ai tuoi criteri di ricerca e filtro attuali.",

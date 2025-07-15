@@ -4,6 +4,275 @@
     "dashboard": "Dashboard",
     "documents": "Documents"
   },
+  "header": {
+    "title": "Documents",
+    "uploadDocument": "Upload Document",
+    "export": "Export"
+  },
+  "statistics": {
+    "totalDocuments": "Total Documents",
+    "totalDocumentsDescription": "All document types",
+    "recentUploads": "Recent Uploads",
+    "recentUploadsDescription": "This month",
+    "sharedDocuments": "Shared Documents",
+    "sharedDocumentsDescription": "With team and clients",
+    "storageUsed": "Storage Used",
+    "storageUsedDescription": "{{percentage}}% of total space",
+    "increaseFromLastMonth": "↗ {{percentage}}% increase from last month",
+    "ofTarget": "of target",
+    "alert": "Alert",
+    "ofCapacity": "of capacity"
+  },
+  "sidebar": {
+    "folders": "Folders",
+    "filters": "Filters",
+    "category": "Category",
+    "dateRange": "Date Range",
+    "owner": "Owner",
+    "applyFilters": "Apply Filters",
+    "clearAll": "Clear All"
+  },
+  "foldersList": {
+    "myDocuments": "My Documents",
+    "contracts": "Contracts",
+    "invoices": "Invoices",
+    "reports": "Reports",
+    "templates": "Templates",
+    "sharedWithMe": "Shared with Me",
+    "favorites": "Favorites",
+    "trash": "Trash"
+  },
+  "categories": {
+    "allCategories": "All Categories",
+    "contracts": "Contracts",
+    "invoices": "Invoices",
+    "reports": "Reports",
+    "templates": "Templates"
+  },
+  "dateRanges": {
+    "allTime": "All time",
+    "last7Days": "Last 7 days",
+    "last30Days": "Last 30 days",
+    "last3Months": "Last 3 months",
+    "thisYear": "This year"
+  },
+  "owners": {
+    "allOwners": "All Owners",
+    "johnDoe": "John Doe",
+    "sarahJohnson": "Sarah Johnson",
+    "mikeWilson": "Mike Wilson",
+    "emilychen": "Emily Chen"
+  },
+  "analytics": {
+    "documentCategories": "Document Categories",
+    "recentActivity": "Recent Activity",
+    "viewAll": "View All",
+    "categoriesLabels": {
+      "contracts": "Contracts (35%)",
+      "invoices": "Invoices (25%)",
+      "receipts": "Receipts (20%)",
+      "other": "Other (20%)"
+    }
+  },
+  "recentActivity": {
+    "actions": {
+      "uploaded": "uploaded",
+      "viewed": "viewed",
+      "shared": "shared",
+      "edited": "edited",
+      "deleted": "deleted"
+    },
+    "documents": {
+      "q2FinancialReport": "Q2 Financial Report.pdf",
+      "clientContractAcme": "Client Contract - Acme Corp.docx",
+      "marketingPresentation": "Marketing Presentation.pptx",
+      "projectProposal": "Project Proposal.docx",
+      "outdatedGuidelines": "Outdated Guidelines.pdf"
+    },
+    "timeAgo": {
+      "minutesAgo": "{{count}} minutes ago",
+      "hourAgo": "1 hour ago",
+      "hoursAgo": "{{count}} hours ago",
+      "dayAgo": "1 day ago"
+    }
+  },
+  "searchAndFilters": {
+    "searchPlaceholder": "Search documents...",
+    "allTypes": "All Types",
+    "last30Days": "Last 30 Days",
+    "clear": "Clear",
+    "perPage": "{{count}} per page"
+  },
+  "table": {
+    "headers": {
+      "documentName": "Document Name",
+      "type": "Type",
+      "dateModified": "Date Modified",
+      "owner": "Owner",
+      "status": "Status",
+      "actions": "Actions"
+    },
+    "fileTypes": {
+      "pdf": "PDF",
+      "word": "Word",
+      "powerpoint": "PowerPoint",
+      "excel": "Excel",
+      "image": "Image",
+      "archive": "Archive"
+    },
+    "statuses": {
+      "shared": "Shared",
+      "private": "Private",
+      "archived": "Archived"
+    },
+    "documents": {
+      "q2FinancialReport": "Q2 Financial Report.pdf",
+      "clientContractAcme": "Client Contract - Acme Corp.docx",
+      "marketingPresentation": "Marketing Presentation.pptx",
+      "projectBudget": "Project Budget.xlsx",
+      "companyLogo": "Company Logo.png",
+      "productSpecifications": "Product Specifications.pdf",
+      "userResearchResults": "User Research Results.zip",
+      "meetingNotes": "Meeting Notes.docx"
+    }
+  },
+  "pagination": {
+    "showing": "Showing",
+    "to": "to",
+    "of": "of",
+    "entries": "entries",
+    "previous": "Previous",
+    "next": "Next"
+  },
+  "actionCards": {
+    "uploadDocument": {
+      "title": "Upload Document",
+      "description": "Upload new files to your document storage",
+      "button": "Upload Now"
+    },
+    "createFolder": {
+      "title": "Create Folder",
+      "description": "Organize your documents in a folder structure",
+      "button": "Create Now"
+    },
+    "requestDocument": {
+      "title": "Request Document",
+      "description": "Request documents from clients or team members",
+      "button": "Request Now"
+    },
+    "archive": {
+      "title": "Archive",
+      "description": "Archive documents you no longer need",
+      "button": "Archive"
+    }
+  },
+  "modals": {
+    "upload": {
+      "title": "Upload Documents",
+      "description": "Upload new files to your document storage",
+      "dragDrop": "Drag and drop files here or click to browse",
+      "supportedFormats": "Supported formats: PDF, DOC, DOCX, XLS, XLSX, PPT, PPTX, JPG, PNG, ZIP",
+      "maxSize": "Maximum file size: 10MB per file",
+      "uploading": "Uploading...",
+      "uploadProgress": "{{uploaded}} of {{total}} files uploaded",
+      "uploadComplete": "Upload Complete",
+      "allFilesUploaded": "All files have been uploaded successfully",
+      "uploadFailed": "Upload Failed",
+      "someFilesFailed": "Some files could not be uploaded",
+      "retry": "Retry",
+      "cancel": "Cancel",
+      "close": "Close"
+    },
+    "createFolder": {
+      "title": "Create New Folder",
+      "description": "Create a new folder to organize your documents",
+      "folderName": "Folder Name",
+      "folderNamePlaceholder": "Enter folder name",
+      "parentFolder": "Parent Folder",
+      "rootFolder": "Root Folder",
+      "folderColor": "Folder Color",
+      "colors": {
+        "blue": "Blue",
+        "green": "Green",
+        "orange": "Orange",
+        "purple": "Purple",
+        "red": "Red",
+        "gray": "Gray"
+      },
+      "folderIcon": "Folder Icon",
+      "icons": {
+        "folder": "Default Folder",
+        "contracts": "Contracts",
+        "invoices": "Invoices",
+        "reports": "Reports",
+        "templates": "Templates",
+        "archive": "Archive"
+      },
+      "preview": "Folder Preview",
+      "create": "Create Folder",
+      "creating": "Creating...",
+      "cancel": "Cancel"
+    },
+    "share": {
+      "title": "Share Documents",
+      "description": "Share documents with team members or external clients",
+      "shareVia": "Share via",
+      "shareLink": "Share Link",
+      "shareEmail": "Share via Email",
+      "linkSettings": "Link Settings",
+      "emailSettings": "Email Settings",
+      "publicAccess": "Public Access",
+      "publicAccessDescription": "Anyone with the link can view",
+      "passwordProtected": "Password Protected",
+      "passwordProtectedDescription": "Require password to access",
+      "expirationDate": "Expiration Date",
+      "expirationDateDescription": "Set when the link expires",
+      "permissions": "Permissions",
+      "canView": "Can View",
+      "canDownload": "Can Download",
+      "canComment": "Can Comment",
+      "emailAddresses": "Email Addresses",
+      "emailAddressesPlaceholder": "Enter email addresses separated by commas",
+      "personalMessage": "Personal Message (Optional)",
+      "personalMessagePlaceholder": "Add a personal message...",
+      "generateLink": "Generate Link",
+      "sendEmail": "Send Email",
+      "generating": "Generating...",
+      "sending": "Sending...",
+      "linkGenerated": "Link Generated Successfully",
+      "linkCopied": "Link copied to clipboard",
+      "emailSent": "Email sent successfully",
+      "cancel": "Cancel",
+      "close": "Close"
+    },
+    "analytics": {
+      "title": "Document Analytics",
+      "description": "View detailed analytics and insights for your documents",
+      "overview": "Overview",
+      "documentTypes": "Document Types",
+      "activityTrends": "Activity Trends",
+      "storageUsage": "Storage Usage",
+      "totalDocuments": "Total Documents",
+      "totalSize": "Total Size",
+      "averageSize": "Average Size",
+      "lastUpdated": "Last Updated",
+      "viewsThisMonth": "Views This Month",
+      "downloadsThisMonth": "Downloads This Month",
+      "sharesThisMonth": "Shares This Month",
+      "uploadsThisMonth": "Uploads This Month",
+      "timeRange": "Time Range",
+      "timeRanges": {
+        "last7Days": "Last 7 Days",
+        "last30Days": "Last 30 Days",
+        "last3Months": "Last 3 Months",
+        "last6Months": "Last 6 Months",
+        "lastYear": "Last Year"
+      },
+      "exportData": "Export Data",
+      "refreshData": "Refresh Data",
+      "close": "Close"
+    }
+  },
   "upload": "Upload",
   "newFolder": "New Folder",
   "searchPlaceholder": "Search documents...",
@@ -25,95 +294,17 @@
   "loading": "Loading documents...",
   "error": "Error loading documents",
   "errorWithMessage": "Error loading documents: {{message}}",
-  "recentFiles": {
-    
-    "q2Report": "Q2 Financial Report.pdf",
-    "meetingNotes": "Client Meeting Notes.docx",
-    "marketingStrategy": "Marketing Strategy.pptx",
-    "budgetAnalysis": "Budget Analysis.xlsx"
-  },
-  "folders": {
-    
-    "clientDocs": "Client Documents",
-    "financialReports": "Financial Reports",
-    "marketingMaterials": "Marketing Materials",
-    "projectResources": "Project Resources",
-    "files": "{{count}} files"
-  },
-  "allFilesTable": {
-    "name": "Name",
-    "owner": "Owner",
-    "lastModified": "Last Modified",
-    "fileSize": "File Size",
-    "annualReport": "Annual Report 2023.pdf",
-    "clientPresentation": "Client Presentation.pptx",
-    "projectTimeline": "Project Timeline.xlsx",
-    "contractTemplate": "Contract Template.docx",
-    "marketingAssets": "Marketing Assets.zip",
-    "productPhotos": "Product Photos.jpg"
-  },
-  "time": {
-    "today": "Today",
-    "yesterday": "Yesterday",
-    "daysAgo": "{{count}} days ago",
-    "weekAgo": "1 week ago"
-  },
   "actions": {
     "view": "View",
     "download": "Download",
     "share": "Share",
     "delete": "Delete"
   },
-  "pagination": {
-    "previous": "Previous",
-    "next": "Next"
-  },
-  "sharing": {
-    
-    "settingsTitle": "Sharing Settings",
-    "publicLink": "Public Link",
-    "withPassword": "With Password",
-    "onlyByEmail": "Email Only",
-    "expirationOptional": "Expiration (Optional)",
-    "expirationDescription": "Set an expiration date for the link.",
-    "accessPassword": "Access Password",
-    "passwordDescription": "Require a password to view.",
-    "recipientEmail": "Recipient's Email",
-    "emailDescription": "Send a unique link to the specified email address.",
-    "advancedOptions": "Advanced Options",
-    "allowDownload": "Allow Download",
-    "allowPrint": "Allow Printing",
-    "trackViews": "Track Views",
-    "notifyOnFirstAccess": "Notify on First Access",
-    "generateLink": "Generate Share Link",
-    "generatingLink": "Generating...",
-    "secureLink": "Your secure sharing link",
-    "cancel": "Cancel",
-    "copyLink": "Copy Link",
-    "copied": "Copied!",
-    "sendByEmail": "Send via Email",
-    "sending": "Sending...",
-    "shareViaQr": "Share via QR Code",
-    "scanToView": "Scan to View",
-    "linkGenerated": "Share link generated",
-    "linkGeneratedDescription": "Anyone with the link can view the document.",
-    "viewStats": "View Statistics",
-    "views": "Views",
-    "totalViews": "Total Views",
-    "downloads": "Downloads",
-    "totalDownloads": "Total Downloads",
-    "lastAccessed": "Last Accessed",
-    "revokeAccess": "Revoke Access",
-    "revokeAccessConfirmation": "Are you sure you want to revoke access to this document? This action cannot be undone.",
-    "emailSubject": "Document shared: ",
-    "quote": "Quote",
-    "invoice": "Invoice",
-    "document": "Document",
-    "emailBodyDearUser": "Dear user,",
-    "emailBodyShared": "A {{docType}} has been shared with you: {{docName}}",
-    "emailBodyViewLink": "You can view the document at the following link:",
-    "emailBodyExpiration": "The link will be valid until {{date}}",
-    "emailBodyRegards": "Best regards,"
+  "time": {
+    "today": "Today",
+    "yesterday": "Yesterday",
+    "daysAgo": "{{count}} days ago",
+    "weekAgo": "1 week ago"
   },
   "noFilesFound": "No files found",
   "noFilesFoundDescription": "There are no files matching your current search and filter criteria.",
