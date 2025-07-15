@@ -23,3 +23,6 @@ node_modules/
 
 # OS specific
 .DS_Store.env.lok
+
+# Cursor MCP configuration (contains API keys)
+.cursor/mcp.json

@@ -1,5 +1,9 @@
 {
   "title": "Documenti",
+  "breadcrumb": {
+    "dashboard": "Dashboard",
+    "documents": "Documenti"
+  },
   "upload": "Carica",
   "newFolder": "Nuova Cartella",
   "searchPlaceholder": "Cerca documenti...",

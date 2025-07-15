@@ -291,10 +291,10 @@ const Documents = () => {
               onClick={() => navigate('/dashboard')}
               className='text-blue-600 hover:text-blue-700 font-medium transition-colors'
             >
-              Dashboard
+              {t('breadcrumb.dashboard')}
             </button>
             <ChevronRightIcon className='h-5 w-5 text-gray-400' />
-            <span className='font-bold'>{t('title')}</span>
+            <span className='font-bold'>{t('breadcrumb.documents')}</span>
           </div>
         </div>
 

@@ -1,5 +1,9 @@
 {
   "title": "Documents",
+  "breadcrumb": {
+    "dashboard": "Dashboard",
+    "documents": "Documents"
+  },
   "upload": "Upload",
   "newFolder": "New Folder",
   "searchPlaceholder": "Search documents...",

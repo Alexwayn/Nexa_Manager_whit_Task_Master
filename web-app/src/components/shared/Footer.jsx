@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import nexaLogo from '@assets/logo_nexa.png';
 
 export default function Footer() {
-  const { t } = useTranslation('reports');
+  const { t } = useTranslation('common');
 
   return (
     <footer className='w-full bg-gradient-to-r from-blue-50 to-blue-100 mt-8'>
