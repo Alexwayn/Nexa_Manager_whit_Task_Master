@@ -1,0 +1,22 @@
+{
+  "enabled": true,
+  "name": "I18n Translation Generator",
+  "description": "Monitors changes to localization files (JSON, YAML, etc.) and automatically generates translations for all configured target languages while maintaining context and locale-specific conventions",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "**/*.json",
+      "**/*.yaml",
+      "**/*.yml",
+      "**/locales/**/*",
+      "**/i18n/**/*",
+      "**/translations/**/*",
+      "**/lang/**/*"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "A localization file has been modified. Please analyze the changes to identify new or modified text content in the primary language. For any new or changed text, generate accurate translations for all configured target languages. Ensure translations:\n\n1. Maintain proper context and meaning from the original text\n2. Follow locale-specific conventions (date formats, currency, cultural references)\n3. Preserve any interpolation variables or formatting codes\n4. Use appropriate formality levels for the target culture\n5. Handle pluralization rules correctly for each language\n\nPlease provide the translations in the same file format and structure as the source file, clearly indicating which languages need updates."
+  }
+}

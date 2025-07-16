@@ -297,7 +297,211 @@ const Documents = () => {
     }
   };
 
-  if (loading) {
+  
+  // Handler for document request submission
+  const handleSubmitDocumentRequest = async (requestData) => {
+    try {
+      setLoading(true);
+
+      // Create document request record
+      const documentRequest = {
+        recipient_email: requestData.recipientEmail,
+        recipient_name: requestData.recipientName || null,
+        document_type: requestData.documentType || 'other',
+        description: requestData.description,
+        due_date: requestData.dueDate,
+        priority: requestData.priority || 'medium',
+        status: 'pending',
+        requested_by: 'current_user', // In real app, get from auth context
+        requested_at: new Date().toISOString(),
+        path: requestData.path || selectedFolder,
+        metadata: {
+          source: 'documents_page',
+          user_agent: navigator.userAgent
+        }
+      };
+
+      // In a real implementation, this would save to database
+      // For now, we'll simulate the API call
+      const result = await documentService.createDocument({
+        name: `Document Request - ${requestData.description.substring(0, 50)}`,
+        type: 'request',
+        description: `Document request sent to ${requestData.recipientEmail}`,
+        createdBy: 'current_user',
+        metadata: documentRequest,
+        tags: ['request', requestData.priority]
+      });
+
+      if (!result.success) {
+        throw new Error(result.error || 'Failed to create document request');
+      }
+
+      // Send notification email to recipient
+      try {
+        const emailData = {
+          recipientEmail: requestData.recipientEmail,
+          recipientName: requestData.recipientName || 'Recipient',
+          documentType: requestData.documentType || 'document',
+          description: requestData.description,
+          dueDate: new Date(requestData.dueDate).toLocaleDateString(),
+          priority: requestData.priority,
+          requesterName: 'Your Name', // In real app, get from user context
+          companyName: 'Nexa Manager'
+        };
+
+        // Simulate email sending (in real app, use emailService)
+        await emailService.sendDocumentRequestEmail(emailData);
+      } catch (emailError) {
+        console.warn('Email notification failed:', emailError);
+        // Don't fail the entire operation if email fails
+      }
+
+      // Send in-app notification
+      try {
+        await sendInAppNotification({
+          type: 'document_request_sent',
+          title: 'Document Request Sent',
+          message: `Document request sent to ${requestData.recipientEmail}`,
+          data: {
+            requestId: result.data.id,
+            recipientEmail: requestData.recipientEmail,
+            dueDate: requestData.dueDate
+          }
+        });
+      } catch (notificationError) {
+        console.warn('In-app notification failed:', notificationError);
+      }
+
+      // Show success message
+      toast.success(
+        t('notifications.documentRequestSent', 'Document request sent successfully to {{email}}', {
+          email: requestData.recipientEmail
+        })
+      );
+
+      // Log the activity for demo purposes
+      console.log('Document request created:', {
+        id: result.data.id,
+        recipient: requestData.recipientEmail,
+        type: requestData.documentType,
+        dueDate: requestData.dueDate
+      });
+
+    } catch (error) {
+      console.error('Error submitting document request:', error);
+      toast.error(
+        error.message || t('notifications.documentRequestFailed', 'Failed to send document request')
+      );
+      throw error; // Re-throw to let modal handle the error
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Handler for archiving documents
+  const handleArchiveDocuments = async (archiveData) => {
+    try {
+      setLoading(true);
+
+      const { documentIds, reason, archivedAt } = archiveData;
+      
+      if (!documentIds || documentIds.length === 0) {
+        throw new Error('No documents selected for archiving');
+      }
+
+      // Get documents to be archived for logging
+      const documentsToArchive = documents.filter(doc => documentIds.includes(doc.id));
+      
+      // In a real implementation, this would update multiple documents in the database
+      // For now, we'll simulate the batch update operation
+      const archivePromises = documentIds.map(async (docId) => {
+        const document = documents.find(d => d.id === docId);
+        if (!document) {
+          throw new Error(`Document with ID ${docId} not found`);
+        }
+
+        // Simulate updating document status to archived
+        const result = await documentService.updateDocument(docId, {
+          status: 'archived',
+          archived_at: archivedAt,
+          archived_by: 'current_user', // In real app, get from auth context
+          archive_reason: reason,
+          previous_status: document.status || 'active',
+          updated_by: 'current_user'
+        });
+
+        if (!result.success) {
+          throw new Error(`Failed to archive document: ${document.name}`);
+        }
+
+        return result.data;
+      });
+
+      // Execute all archive operations
+      const results = await Promise.all(archivePromises);
+
+      // Create archive activity log
+      const archiveLog = {
+        action: 'bulk_archive',
+        document_count: documentIds.length,
+        document_names: documentsToArchive.map(d => d.name),
+        reason: reason || null,
+        archived_by: 'current_user',
+        archived_at: archivedAt,
+        metadata: {
+          source: 'documents_page',
+          original_statuses: documentsToArchive.map(d => ({ id: d.id, status: d.status }))
+        }
+      };
+
+      // Log the archive operation (in real app, save to audit log)
+      console.log('Documents archived:', archiveLog);
+
+      // Send in-app notification
+      try {
+        await sendInAppNotification({
+          type: 'documents_archived',
+          title: 'Documents Archived',
+          message: `${documentIds.length} document${documentIds.length > 1 ? 's' : ''} archived successfully`,
+          data: {
+            documentCount: documentIds.length,
+            documentNames: documentsToArchive.map(d => d.name).slice(0, 3), // First 3 names
+            reason: reason
+          }
+        });
+      } catch (notificationError) {
+        console.warn('In-app notification failed:', notificationError);
+      }
+
+      // Show success message
+      const documentCount = documentIds.length;
+      toast.success(
+        t('notifications.documentsArchived', '{{count}} document{{s}} archived successfully', {
+          count: documentCount,
+          s: documentCount > 1 ? 's' : ''
+        })
+      );
+
+      // In a real app, you might want to refresh the documents list here
+      // or update the local state to reflect the changes
+      console.log('Archive operation completed:', {
+        archivedCount: results.length,
+        documentNames: documentsToArchive.map(d => d.name),
+        reason: reason
+      });
+
+    } catch (error) {
+      console.error('Error archiving documents:', error);
+      toast.error(
+        error.message || t('notifications.archiveFailed', 'Failed to archive documents')
+      );
+      throw error; // Re-throw to let modal handle the error
+    } finally {
+      setLoading(false);
+    }
+  };
+
+if (loading) {
     return (
       <div className='min-h-screen bg-gray-50 flex items-center justify-center'>
         <div className='text-center'>

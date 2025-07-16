@@ -167,6 +167,67 @@
     }
   },
   "modals": {
+    "requestDocument": {
+      "title": "Richiedi Documento",
+      "description": "Richiedi documenti da clienti o membri del team",
+      "recipientEmail": "Email Destinatario",
+      "recipientName": "Nome Destinatario (Opzionale)",
+      "documentType": "Tipo Documento",
+      "description": "Descrizione",
+      "dueDate": "Data di Scadenza",
+      "priority": "Priorità",
+      "priorities": {
+        "low": "Bassa",
+        "medium": "Media",
+        "high": "Alta"
+      },
+      "documentTypes": {
+        "contract": "Contratto",
+        "invoice": "Fattura",
+        "receipt": "Ricevuta",
+        "report": "Report",
+        "other": "Altro"
+      },
+      "placeholders": {
+        "email": "Inserisci email destinatario",
+        "name": "Inserisci nome destinatario",
+        "description": "Descrivi quale documento ti serve"
+      },
+      "validation": {
+        "emailRequired": "L'email è obbligatoria",
+        "emailInvalid": "Inserisci un'email valida",
+        "descriptionRequired": "La descrizione è obbligatoria",
+        "dueDateRequired": "La data di scadenza è obbligatoria",
+        "dueDatePast": "La data di scadenza non può essere nel passato",
+        "submitFailed": "Invio della richiesta fallito"
+      },
+      "submit": "Invia Richiesta",
+      "submitting": "Invio in corso...",
+      "cancel": "Annulla"
+    },
+    "archive": {
+      "title": "Archivia Documenti",
+      "description": "Archivia documenti di cui non hai più bisogno",
+      "selectDocuments": "Seleziona Documenti da Archiviare",
+      "selectedCount": "{{count}} documenti selezionati",
+      "searchPlaceholder": "Cerca documenti...",
+      "selectAll": "Seleziona Tutto",
+      "clearAll": "Deseleziona Tutto",
+      "confirmTitle": "Conferma Archiviazione",
+      "confirmMessage": "Sei sicuro di voler archiviare {{count}} documenti?",
+      "reason": "Motivo Archiviazione (Opzionale)",
+      "reasonPlaceholder": "Perché stai archiviando questi documenti?",
+      "validation": {
+        "noDocuments": "Seleziona almeno un documento",
+        "alreadyArchived": "Alcuni documenti sono già archiviati",
+        "archiveFailed": "Archiviazione dei documenti fallita"
+      },
+      "archive": "Archivia Documenti",
+      "archiving": "Archiviazione in corso...",
+      "continue": "Continua",
+      "cancel": "Annulla",
+      "back": "Indietro"
+    },
     "upload": {
       "title": "Carica Documenti",
       "description": "Carica nuovi file nel tuo archivio documenti",

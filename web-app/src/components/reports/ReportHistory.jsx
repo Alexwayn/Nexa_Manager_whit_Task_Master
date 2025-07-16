@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
 import { 
   DocumentArrowDownIcon, 
   TrashIcon, 
@@ -18,7 +17,6 @@ import {
 import reportingService from '../../lib/reportingService';
 
 const ReportHistory = ({ isOpen, onClose }) => {
-  const { t } = useTranslation('reports');
   const [reports, setReports] = useState([]);
   const [filteredReports, setFilteredReports] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -233,9 +231,9 @@ const ReportHistory = ({ isOpen, onClose }) => {
 
   const getStatusBadge = (status) => {
     const statusConfig = {
-      completed: { color: 'bg-green-100 text-green-800', icon: CheckIcon, text: t('history.completed') },
-      processing: { color: 'bg-yellow-100 text-yellow-800', icon: ClockIcon, text: t('history.processing') },
-      failed: { color: 'bg-red-100 text-red-800', icon: XMarkIcon, text: t('history.failed') }
+      completed: { color: 'bg-green-100 text-green-800', icon: CheckIcon, text: 'Completed' },
+      processing: { color: 'bg-yellow-100 text-yellow-800', icon: ClockIcon, text: 'Processing' },
+      failed: { color: 'bg-red-100 text-red-800', icon: XMarkIcon, text: 'Failed' }
     };
     
     const config = statusConfig[status] || statusConfig.completed;
@@ -281,7 +279,7 @@ const ReportHistory = ({ isOpen, onClose }) => {
       {isOpen !== undefined ? (
         <div className="flex items-center justify-between p-6 border-b">
           <h3 className="text-lg font-semibold text-gray-900">
-            {t('history.title')}
+            Report History
           </h3>
           <button
             onClick={onClose}
@@ -293,10 +291,10 @@ const ReportHistory = ({ isOpen, onClose }) => {
       ) : (
         <div className="p-6 border-b">
           <h3 className="text-xl font-semibold text-gray-900">
-            {t('history.generatedReports')}
+            Generated Reports
           </h3>
           <p className="text-sm text-gray-600 mt-1">
-            {t('history.subtitle')}
+            View, download, and manage your generated reports
           </p>
         </div>
       )}
@@ -309,28 +307,28 @@ const ReportHistory = ({ isOpen, onClose }) => {
               <DocumentTextIcon className="w-6 h-6 text-blue-600" />
             </div>
             <div className="text-2xl font-bold text-gray-900">{totalReports}</div>
-            <div className="text-sm text-gray-600">{t('history.totalReports')}</div>
+            <div className="text-sm text-gray-600">Total Reports</div>
           </div>
           <div className="text-center">
             <div className="flex items-center justify-center w-12 h-12 mx-auto mb-2 bg-green-100 rounded-lg">
               <CheckIcon className="w-6 h-6 text-green-600" />
             </div>
             <div className="text-2xl font-bold text-gray-900">{completedReports}</div>
-            <div className="text-sm text-gray-600">{t('history.completedReports')}</div>
+            <div className="text-sm text-gray-600">Completed</div>
           </div>
           <div className="text-center">
             <div className="flex items-center justify-center w-12 h-12 mx-auto mb-2 bg-yellow-100 rounded-lg">
               <ClockIcon className="w-6 h-6 text-yellow-600" />
             </div>
             <div className="text-2xl font-bold text-gray-900">{processingReports}</div>
-            <div className="text-sm text-gray-600">{t('history.processingReports')}</div>
+            <div className="text-sm text-gray-600">Processing</div>
           </div>
           <div className="text-center">
             <div className="flex items-center justify-center w-12 h-12 mx-auto mb-2 bg-purple-100 rounded-lg">
               <DocumentArrowDownIcon className="w-6 h-6 text-purple-600" />
             </div>
             <div className="text-2xl font-bold text-gray-900">{totalDownloads}</div>
-            <div className="text-sm text-gray-600">{t('history.totalDownloads')}</div>
+            <div className="text-sm text-gray-600">Total Downloads</div>
           </div>
         </div>
       </div>
@@ -343,7 +341,7 @@ const ReportHistory = ({ isOpen, onClose }) => {
               <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
               <input
                 type="text"
-                placeholder={t('history.searchPlaceholder')}
+                placeholder="Search reports..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -356,12 +354,12 @@ const ReportHistory = ({ isOpen, onClose }) => {
             onChange={(e) => setFilterType(e.target.value)}
             className="px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           >
-            <option value="all">{t('history.allTypes')}</option>
-            <option value="revenue">{t('history.revenue')}</option>
-            <option value="expense">{t('history.expense')}</option>
-            <option value="client">{t('history.client')}</option>
+            <option value="all">All Types</option>
+            <option value="revenue">Revenue</option>
+            <option value="expense">Expense</option>
+            <option value="client">Client</option>
             <option value="financial">Financial</option>
-            <option value="inventory">{t('history.inventory')}</option>
+            <option value="inventory">Inventory</option>
             <option value="profit-loss">Profit & Loss</option>
             <option value="cash-flow">Cash Flow</option>
           </select>
@@ -371,10 +369,10 @@ const ReportHistory = ({ isOpen, onClose }) => {
             onChange={(e) => setFilterStatus(e.target.value)}
             className="px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           >
-            <option value="all">{t('history.allStatuses')}</option>
-            <option value="completed">{t('history.completed')}</option>
-            <option value="processing">{t('history.processing')}</option>
-            <option value="failed">{t('history.failed')}</option>
+            <option value="all">All Status</option>
+            <option value="completed">Completed</option>
+            <option value="processing">Processing</option>
+            <option value="failed">Failed</option>
           </select>
           
           <select
@@ -405,8 +403,8 @@ const ReportHistory = ({ isOpen, onClose }) => {
         ) : filteredReports.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-64 text-gray-500">
             <DocumentTextIcon className="h-12 w-12 mb-4" />
-            <p className="text-lg font-medium">{t('history.noReportsFound')}</p>
-            <p className="text-sm">{t('history.tryAdjustingFilters')}</p>
+            <p className="text-lg font-medium">No reports found</p>
+            <p className="text-sm">Try adjusting your search or filters</p>
           </div>
         ) : (
           <div className="divide-y divide-gray-200">
@@ -437,7 +435,7 @@ const ReportHistory = ({ isOpen, onClose }) => {
                       <span>{report.size}</span>
                       <span className="flex items-center gap-1">
                         <DocumentArrowDownIcon className="h-4 w-4" />
-{report.downloadCount} {t('history.downloadCount')}
+                        {report.downloadCount} downloads
                       </span>
                     </div>
                     
@@ -469,7 +467,7 @@ const ReportHistory = ({ isOpen, onClose }) => {
                         <button
                           onClick={() => handlePreview(report.id)}
                           className="p-2 text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded-md transition-colors"
-                          title={t('history.preview')}
+                          title="Preview Report"
                         >
                           <EyeIcon className="h-4 w-4" />
                         </button>
@@ -477,7 +475,7 @@ const ReportHistory = ({ isOpen, onClose }) => {
                         <button
                           onClick={() => handleShare(report.id)}
                           className="p-2 text-green-600 hover:text-green-800 hover:bg-green-50 rounded-md transition-colors"
-                          title={t('history.share')}
+                          title="Share Report"
                         >
                           <ShareIcon className="h-4 w-4" />
                         </button>
@@ -485,7 +483,7 @@ const ReportHistory = ({ isOpen, onClose }) => {
                         <button
                           onClick={() => handleDownload(report.id)}
                           className="p-2 text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded-md transition-colors"
-                          title={t('history.download')}
+                          title="Download Report"
                         >
                           <DocumentArrowDownIcon className="h-4 w-4" />
                         </button>
@@ -496,7 +494,7 @@ const ReportHistory = ({ isOpen, onClose }) => {
                       <button
                         onClick={() => handleRegenerate(report.id)}
                         className="p-2 text-orange-600 hover:text-orange-800 hover:bg-orange-50 rounded-md transition-colors"
-                        title={t('history.regenerate')}
+                        title="Regenerate Report"
                       >
                         <ArrowPathIcon className="h-4 w-4" />
                       </button>
@@ -505,7 +503,7 @@ const ReportHistory = ({ isOpen, onClose }) => {
                     <button
                       onClick={() => handleDelete(report.id)}
                       className="p-2 text-red-600 hover:text-red-800 hover:bg-red-50 rounded-md transition-colors"
-                      title={t('history.delete')}
+                      title="Delete Report"
                     >
                       <TrashIcon className="h-4 w-4" />
                     </button>
@@ -521,14 +519,14 @@ const ReportHistory = ({ isOpen, onClose }) => {
       <div className="p-6 border-t bg-gray-50">
         <div className="flex justify-between items-center">
           <p className="text-sm text-gray-600">
-{t('history.showingResults', { count: filteredReports.length, total: reports.length })}
+            Showing {filteredReports.length} of {reports.length} reports
           </p>
           {isOpen !== undefined && (
             <button
               onClick={onClose}
               className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
             >
-              {t('history.close')}
+              Close
             </button>
           )}
         </div>

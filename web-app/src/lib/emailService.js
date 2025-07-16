@@ -1079,6 +1079,7 @@ ${data.companyName}
   getEstimatedDeliveryTime(provider = null) {
     return emailProviderService.getEstimatedDeliveryTime(provider);
   }
+
 }
 
 export default new EmailService();

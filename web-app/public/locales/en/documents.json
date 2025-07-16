@@ -167,6 +167,67 @@
     }
   },
   "modals": {
+    "requestDocument": {
+      "title": "Request Document",
+      "description": "Request documents from clients or team members",
+      "recipientEmail": "Recipient Email",
+      "recipientName": "Recipient Name (Optional)",
+      "documentType": "Document Type",
+      "description": "Description",
+      "dueDate": "Due Date",
+      "priority": "Priority",
+      "priorities": {
+        "low": "Low",
+        "medium": "Medium",
+        "high": "High"
+      },
+      "documentTypes": {
+        "contract": "Contract",
+        "invoice": "Invoice",
+        "receipt": "Receipt",
+        "report": "Report",
+        "other": "Other"
+      },
+      "placeholders": {
+        "email": "Enter recipient email",
+        "name": "Enter recipient name",
+        "description": "Describe what document you need"
+      },
+      "validation": {
+        "emailRequired": "Email is required",
+        "emailInvalid": "Please enter a valid email",
+        "descriptionRequired": "Description is required",
+        "dueDateRequired": "Due date is required",
+        "dueDatePast": "Due date cannot be in the past",
+        "submitFailed": "Failed to send request"
+      },
+      "submit": "Send Request",
+      "submitting": "Sending...",
+      "cancel": "Cancel"
+    },
+    "archive": {
+      "title": "Archive Documents",
+      "description": "Archive documents you no longer need",
+      "selectDocuments": "Select Documents to Archive",
+      "selectedCount": "{{count}} documents selected",
+      "searchPlaceholder": "Search documents...",
+      "selectAll": "Select All",
+      "clearAll": "Clear All",
+      "confirmTitle": "Confirm Archive",
+      "confirmMessage": "Are you sure you want to archive {{count}} documents?",
+      "reason": "Archive Reason (Optional)",
+      "reasonPlaceholder": "Why are you archiving these documents?",
+      "validation": {
+        "noDocuments": "Please select at least one document",
+        "alreadyArchived": "Some documents are already archived",
+        "archiveFailed": "Failed to archive documents"
+      },
+      "archive": "Archive Documents",
+      "archiving": "Archiving...",
+      "continue": "Continue",
+      "cancel": "Cancel",
+      "back": "Back"
+    },
     "upload": {
       "title": "Upload Documents",
       "description": "Upload new files to your document storage",

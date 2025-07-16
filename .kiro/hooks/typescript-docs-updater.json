@@ -1,0 +1,42 @@
+{
+  "name": "TypeScript Documentation Updater",
+  "description": "Automatically updates project documentation in README.md and docs folder when TypeScript source files or configuration files change",
+  "triggers": [
+    {
+      "type": "file_change",
+      "patterns": [
+        "**/*.ts",
+        "**/*.tsx",
+        "**/tsconfig.json",
+        "**/tsconfig.*.json",
+        "**/package.json",
+        "**/vite.config.ts",
+        "**/jest.config.*",
+        "**/eslint.config.*",
+        "**/tailwind.config.*",
+        "**/babel.config.*",
+        "**/postcss.config.*"
+      ],
+      "excludePatterns": [
+        "**/node_modules/**",
+        "**/dist/**",
+        "**/*.test.ts",
+        "**/*.spec.ts"
+      ]
+    }
+  ],
+  "action": {
+    "type": "agent_request",
+    "prompt": "TypeScript source files or configuration have been modified. Please analyze the recent changes and update the project documentation accordingly:\n\n1. Review the modified TypeScript files and extract any new components, functions, or significant architectural changes\n2. Update the main README.md file to reflect:\n   - New features or components added\n   - Updated setup/installation instructions if configuration changed\n   - Modified API documentation if interfaces changed\n   - Updated usage examples if applicable\n3. Update relevant documentation in the docs/ folder:\n   - Component documentation\n   - API reference documentation\n   - Architecture documentation\n   - Setup guides if configuration files changed\n4. Ensure all documentation is consistent with the current codebase\n5. Use clear, concise language and include code examples where helpful\n\nFocus on documenting user-facing changes and developer-relevant updates. Keep the documentation accurate and up-to-date with the current implementation.",
+    "context": {
+      "includeChangedFiles": true,
+      "includeProjectStructure": true,
+      "maxContextFiles": 20
+    }
+  },
+  "settings": {
+    "debounceMs": 5000,
+    "enabled": true,
+    "runOnStartup": false
+  }
+}

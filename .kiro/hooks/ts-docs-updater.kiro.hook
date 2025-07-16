@@ -1,0 +1,25 @@
+{
+  "enabled": true,
+  "name": "TypeScript Documentation Updater",
+  "description": "Listens to TypeScript source files and configuration changes to automatically update project documentation in README.md and docs folder",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "**/*.ts",
+      "**/*.tsx",
+      "tsconfig.json",
+      "tsconfig.*.json",
+      "package.json",
+      "web-app/src/**/*.ts",
+      "web-app/src/**/*.tsx",
+      "web-app/tsconfig.json",
+      "web-app/tsconfig.node.json",
+      "web-app/package.json"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "TypeScript source files or configuration have been modified. Please analyze the changes and update the project documentation accordingly. Focus on:\n\n1. Update README.md files (both root and web-app) to reflect any new features, API changes, or architectural updates\n2. Update documentation in the docs/ folders to maintain accuracy with code changes\n3. Ensure configuration changes in tsconfig.json files are documented\n4. Update any relevant setup guides or technical documentation\n5. Maintain consistency between code structure and documentation\n\nPlease review the modified files and provide comprehensive documentation updates that keep the project documentation current and helpful for developers."
+  }
+}
