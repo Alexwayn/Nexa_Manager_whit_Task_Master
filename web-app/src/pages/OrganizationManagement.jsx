@@ -10,7 +10,7 @@ import {
 import {
   useOrganizationBypass as useOrganization,
   useOrganizationListBypass as useOrganizationList,
-} from '@hooks/useClerkBypass';
+} from '@clerk/clerk-react';
 import { OrganizationProfile, CreateOrganization } from '@clerk/clerk-react';
 import { useTranslation } from 'react-i18next';
 import { useOrganizationContext } from '@context/OrganizationContext';

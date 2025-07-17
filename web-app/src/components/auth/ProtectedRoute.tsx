@@ -6,22 +6,10 @@ interface ProtectedRouteProps {
   children: ReactNode;
 }
 
-// Check if we're in development mode without Clerk
-const isDevelopment = import.meta.env.DEV;
-const isLocalhost =
-  window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-const shouldBypassClerk = isDevelopment && isLocalhost;
-
 export default function ProtectedRoute({ children }: ProtectedRouteProps) {
   const location = useLocation();
 
-  // If we're in development mode, bypass authentication completely
-  if (shouldBypassClerk) {
-    console.log('🚧 ProtectedRoute: Bypassing authentication in development mode');
-    return <>{children}</>;
-  }
-
-  // Production mode with Clerk
+  // Use Clerk for authentication
   const { isSignedIn, isLoaded } = useAuth();
 
   // Wait for Clerk to load
@@ -33,9 +21,9 @@ export default function ProtectedRoute({ children }: ProtectedRouteProps) {
     );
   }
 
-  // If not signed in, redirect to sign-in page
+  // If not signed in, redirect to login page
   if (!isSignedIn) {
-    return <Navigate to='/sign-in' state={{ from: location }} replace />;
+    return <Navigate to='/login' state={{ from: location }} replace />;
   }
 
   // If signed in, render the protected content

@@ -1,5 +1,5 @@
 import { supabase } from '@lib/supabaseClient';
-import { useClerkBypass as useClerk, useAuthBypass as useAuth } from '@hooks/useClerkBypass';
+import { useClerk, useAuth } from '@clerk/clerk-react';
 import Logger from '@utils/Logger';
 
 /**

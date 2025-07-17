@@ -1,0 +1,108 @@
+# Test Coverage Expansion Project - Nexa Manager
+
+## Project Overview
+Expand test coverage for the Nexa Manager web application from the current baseline of ~4.5% to comprehensive coverage across all critical components and services.
+
+## Current State Analysis
+- **Current Coverage**: 4.61% statements, 4.54% branches, 5.14% functions, 4.52% lines
+- **Existing Tests**: 6 test suites, 129 tests passing
+- **Test Files**: authService.test.js, emailService.test.js, financialService.test.js, taxCalculationService.test.js, uiUtils.test.ts, QuoteEmailSender.test.jsx
+
+## Priority Areas for Test Coverage Expansion
+
+### 1. Core Business Logic Services (High Priority)
+- **Client Management**: clientService.js - CRUD operations, validation, search functionality
+- **Invoice Management**: invoiceService.js, invoiceLifecycleService.js, invoiceAnalyticsService.js
+- **Quote Management**: quoteService.js, quotePdfService.js
+- **Document Management**: documentService.js, pdfGenerationService.js
+- **Event Management**: eventService.js, eventInvitationService.js, recurringEventsService.js
+- **Financial Operations**: expenseService.js, incomeService.js, reportingService.js
+- **Storage & Export**: storageService.ts, exportService.js
+- **Notifications**: notificationService.js, realtimeService.js
+- **Receipt Processing**: receiptUploadService.js
+
+### 2. UI Components - Settings Area (High Priority)
+- **Settings Components**: BillingSection.jsx, CompanySection.jsx, ProfileSection.jsx, SecuritySection.jsx
+- **Settings Infrastructure**: SettingsFormSection.jsx, SettingsTabNavigation.jsx, SettingsTable.jsx
+- **File Upload**: FileUploadField.jsx, ReceiptUpload.jsx
+- **Notifications**: NotificationsSection.jsx
+
+### 3. UI Components - Reports Area (High Priority)
+- **Report Components**: FinancialOverview.jsx, DateRangeFilter.jsx, ReportHeader.jsx
+- **Analytics**: AdvancedFinancialAnalytics.jsx, AnalyticsDashboard.jsx, FinancialForecast.jsx
+- **Charts**: All chart components in reports/charts/
+- **Navigation**: TabNavigation.jsx
+
+### 4. UI Components - Client Management (Medium Priority)
+- **Client Components**: ClientCard.jsx, ClientTableRow.jsx, ClientTableRowOptimized.jsx
+- **Client Features**: ClientHistoryView.jsx, ClientImportExport.jsx, ClientSearchFilter.jsx
+
+### 5. Core UI Infrastructure (Medium Priority)
+- **Layout Components**: Layout.jsx, Navbar.jsx, Sidebar.jsx
+- **Common Components**: Modal.jsx, ConfirmationModal.jsx, StatCard.jsx
+- **Error Handling**: ErrorBoundary.jsx, ComponentErrorBoundary.jsx, ReportErrorBoundary.jsx
+- **Performance**: PerformanceWrapper.jsx, LazyComponents.jsx, LazyWrapper.jsx
+
+### 6. Utility Functions and Helpers (Medium Priority)
+- **Logger**: Logger.ts - logging functionality, error handling
+- **Performance Utils**: performanceTestUtils.js
+- **Security Utils**: rls-security-tests.js, xss-security-demo.js
+
+### 7. Advanced Features (Lower Priority)
+- **Calendar**: Calendar.jsx, EventModal.jsx
+- **Email Management**: EmailManager.jsx
+- **Payment Processing**: PaymentDashboard.jsx, PaymentModal.jsx
+- **Document Sharing**: DocumentSharing.jsx, DocumentManager.jsx
+- **Tax Calculator**: TaxCalculator.jsx
+- **Dashboard**: DashboardLayoutManager.jsx
+
+## Technical Requirements
+
+### Test Framework Setup
+- Use Jest as the primary testing framework
+- React Testing Library for component testing
+- Mock Supabase client and external dependencies
+- Maintain existing test patterns and conventions
+
+### Coverage Goals
+- **Target Coverage**: 80% statements, 75% branches, 80% functions, 80% lines
+- **Critical Path Coverage**: 95% for core business logic (services)
+- **Component Coverage**: 70% for UI components
+- **Utility Coverage**: 90% for utility functions
+
+### Test Categories
+1. **Unit Tests**: Individual functions and methods
+2. **Integration Tests**: Service interactions with Supabase
+3. **Component Tests**: UI component rendering and interactions
+4. **Security Tests**: XSS protection, input validation
+5. **Performance Tests**: Component rendering performance
+
+### Quality Standards
+- All tests must pass consistently
+- Tests should be maintainable and readable
+- Mock external dependencies appropriately
+- Include edge cases and error scenarios
+- Follow existing naming conventions
+
+## Success Criteria
+- Achieve target coverage percentages
+- All existing tests continue to pass
+- New tests are well-documented and maintainable
+- Critical business logic has comprehensive test coverage
+- Security vulnerabilities are covered by tests
+- Performance regressions are prevented through testing
+
+## Implementation Strategy
+1. Start with high-priority service layer tests
+2. Add component tests for settings and reports areas
+3. Expand to client management components
+4. Cover utility functions and helpers
+5. Add advanced feature tests
+6. Optimize and refactor tests for maintainability
+
+## Dependencies
+- Existing Jest configuration
+- React Testing Library setup
+- Supabase client mocking
+- DOMPurify for XSS testing
+- Existing test utilities and helpers

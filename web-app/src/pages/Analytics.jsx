@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo, useCallback, lazy, Suspense } from
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import Footer from '@components/shared/Footer';
-import { useAuthBypass as useAuth, useUserBypass as useUser } from '@hooks/useClerkBypass';
+import { useAuth, useUser } from '@clerk/clerk-react';
 import invoiceAnalyticsService from '@lib/invoiceAnalyticsService';
 import financialService from '@lib/financialService';
 import clientService from '@lib/clientService';

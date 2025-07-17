@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useUserBypass as useUser } from '@hooks/useClerkBypass';
+import { useUser } from '@clerk/clerk-react';
 import { useClerkAuth } from '../../hooks/useClerkAuth';
 import { securityService, PERMISSIONS } from '../../lib/securityService';
 import UserRoleManagement from './UserRoleManagement';

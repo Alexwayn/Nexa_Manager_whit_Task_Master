@@ -14,7 +14,7 @@ import {
   LinkIcon,
   ChartBarIcon,
 } from '@heroicons/react/24/outline';
-import { useAuthBypass as useAuth, useUserBypass as useUser } from '@hooks/useClerkBypass';
+import { useAuth, useUser } from '@clerk/clerk-react';
 import { useTranslation } from 'react-i18next';
 import { useClerkAuth } from '../../hooks/useClerkAuth';
 import Logger from '../../utils/Logger';

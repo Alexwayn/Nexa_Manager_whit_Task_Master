@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
-import { useUserBypass as useUser } from '@hooks/useClerkBypass';
+import { useUser } from '@clerk/clerk-react';
 import reportingService from '@lib/reportingService';
 import invoiceAnalyticsService from '@lib/invoiceAnalyticsService';
 import Logger from '@utils/Logger';

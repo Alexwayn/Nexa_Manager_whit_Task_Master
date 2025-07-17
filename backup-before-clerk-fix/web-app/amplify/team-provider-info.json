@@ -1,0 +1,29 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-nexamanager-dev-dffba-authRole",
+      "UnauthRoleArn": "arn:aws:iam::668427974510:role/amplify-nexamanager-dev-dffba-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::668427974510:role/amplify-nexamanager-dev-dffba-authRole",
+      "Region": "eu-central-1",
+      "DeploymentBucketName": "amplify-nexamanager-dev-dffba-deployment",
+      "UnauthRoleName": "amplify-nexamanager-dev-dffba-unauthRole",
+      "StackName": "amplify-nexamanager-dev-dffba",
+      "StackId": "arn:aws:cloudformation:eu-central-1:668427974510:stack/amplify-nexamanager-dev-dffba/2e3be6b0-5170-11f0-ba0b-027330817d41",
+      "AmplifyAppId": "ds472bnf8zom2"
+    },
+    "categories": {
+      "function": {
+        "clerkWebhook": {
+          "supabaseUrl": "https://bmumnhsdiiryyxpjrggs.supabase.co",
+          "supabaseServiceRoleKey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJtdW1uaHNkaWlyeXl4cGpyZ2dzIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0NDMyOTY5NSwiZXhwIjoyMDU5OTA1Njk1fQ.0Y5XhvsQS6S3yF0jOSoV0glrFoZSC_THrhVTEILFRJc",
+          "clerkWebhookSecret": "whsec_ufFymVHwjZ89NFKPMcnRoxFpTG8lBb/C",
+          "deploymentBucketName": "amplify-nexamanager-dev-dffba-deployment",
+          "s3Key": "amplify-builds/clerkWebhook-6f5170757542576b3573-build.zip"
+        }
+      },
+      "api": {
+        "webhookApi": {}
+      }
+    }
+  }
+}

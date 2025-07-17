@@ -1,5 +1,5 @@
 import { ComponentType } from 'react';
-import { useAuthBypass as useAuth, useUserBypass as useUser } from '@hooks/useClerkBypass';
+import { useAuth, useUser } from '@clerk/clerk-react';
 import { useOrganizationContext } from '@context/OrganizationContext';
 import { Navigate, useLocation } from 'react-router-dom';
 import Logger from '@utils/Logger';

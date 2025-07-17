@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { PhotoIcon, ArrowUpTrayIcon } from '@heroicons/react/24/outline';
-import { useAuthBypass as useAuth, useUserBypass as useUser } from '@hooks/useClerkBypass';
+import { useAuth, useUser } from '@clerk/clerk-react';
 import { supabase } from '@lib/supabaseClient';
 import Logger from '@utils/Logger';
 import { useTranslation } from 'react-i18next';

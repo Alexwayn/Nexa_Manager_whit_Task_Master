@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { useUserBypass as useUser } from '@hooks/useClerkBypass';
+import { useUser } from '@clerk/clerk-react';
 import { useSupabaseWithClerk } from '@lib/supabaseClerkClient';
 import Footer from '@components/shared/Footer';
 import { EVENT_TYPES } from '@lib/eventService';
