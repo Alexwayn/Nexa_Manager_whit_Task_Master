@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useAuthBypass as useAuth, useUserBypass as useUser } from '@hooks/useClerkBypass';
+import { useAuth, useUser } from '@clerk/clerk-react';
 import { supabase, withUserContext } from '@lib/supabaseClient';
 // import Logger from '@utils/Logger';
 

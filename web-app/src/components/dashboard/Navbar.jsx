@@ -10,7 +10,7 @@ import {
 } from '@heroicons/react/24/outline';
 import { useTheme } from '@context/OptimizedThemeContext';
 import LanguageSwitcher from '@components/common/LanguageSwitcher';
-import { useClerkBypass, useUserBypass } from '@hooks/useClerkBypass';
+import { useClerk, useUser } from '@clerk/clerk-react';
 import NotificationCenter from '../notifications/NotificationCenter';
 
 export default function Navbar({ onOpenSidebar, sidebarCollapsed = false }) {
@@ -18,9 +18,9 @@ export default function Navbar({ onOpenSidebar, sidebarCollapsed = false }) {
   const navigate = useNavigate();
   const { theme, toggleTheme } = useTheme();
 
-  // Use bypass hooks that automatically handle development mode
-  const { signOut } = useClerkBypass();
-  const { user } = useUserBypass();
+  // Use Clerk hooks for authentication
+  const { signOut } = useClerk();
+  const { user } = useUser();
 
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const userMenuRef = useRef(null);

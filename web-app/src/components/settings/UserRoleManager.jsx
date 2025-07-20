@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { supabase } from '@lib/supabaseClient';
-import { useClerkBypass as useClerk } from '@hooks/useClerkBypass';
+import { useClerk } from '@clerk/clerk-react';
 
 const UserRoleManager = ({ showNotification }) => {
   const { t } = useTranslation('settings');

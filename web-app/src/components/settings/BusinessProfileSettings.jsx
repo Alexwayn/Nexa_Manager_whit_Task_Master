@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useAuthBypass as useAuth } from '@hooks/useClerkBypass';
+import { useAuth } from '@clerk/clerk-react';
 import { businessService } from '@lib/businessService';
 import FileUploadField from '@components/settings/FileUploadField';
 import {

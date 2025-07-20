@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useAuthBypass as useAuth } from '@hooks/useClerkBypass';
+import { useAuth } from '@clerk/clerk-react';
 import { useClerkAuth } from '../../hooks/useClerkAuth';
 import {
   BuildingOfficeIcon,

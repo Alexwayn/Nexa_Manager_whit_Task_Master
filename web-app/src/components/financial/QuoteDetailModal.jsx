@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FileText, Zap, Clock, PenTool, CheckCircle } from 'lucide-react';
-import { useUserBypass as useUser } from '@hooks/useClerkBypass';
+import { useUser } from '@clerk/clerk-react';
 import QuoteStatusBadge from './QuoteStatusBadge';
 import QuoteApprovalActions from './QuoteApprovalActions';
 import QuoteStatusHistory from './QuoteStatusHistory';

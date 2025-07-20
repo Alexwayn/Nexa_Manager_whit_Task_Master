@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "paths": {
+    "/clerk-webhook": {
+      "name": "/clerk-webhook",
+      "lambdaFunction": "clerkWebhook",
+      "permissions": {
+        "setting": "open"
+      }
+    }
+  }
+}

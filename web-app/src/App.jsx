@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { BrowserRouter as Router, useNavigate } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { ClerkProvider } from '@clerk/clerk-react';
 import { ThemeProvider } from '@context/OptimizedThemeContext';
@@ -55,33 +55,19 @@ console.log('- isLocalhost:', isLocalhost);
 console.log('- clerkPublishableKey exists:', !!clerkPublishableKey);
 console.log('- window.location.hostname:', window.location.hostname);
 
-// For development/localhost, we can bypass Clerk completely
-const shouldBypassClerk = isDevelopment && isLocalhost;
-
-console.log('🚧 shouldBypassClerk:', shouldBypassClerk);
-
-// Simple wrapper component for development mode
-const DevelopmentWrapper = ({ children }) => {
+// Wrapper component to use navigate inside Router context
+function ClerkProviderWithRouter({ children }) {
+  const navigate = useNavigate();
+  
   return (
-    <div>
-      <div
-        style={{
-          backgroundColor: '#fef3c7',
-          border: '1px solid #f59e0b',
-          padding: '8px 16px',
-          margin: '0',
-          textAlign: 'center',
-          fontSize: '14px',
-          color: '#92400e',
-          fontWeight: 'bold',
-        }}
-      >
-        🚧 MODALITÀ SVILUPPO: Autenticazione Clerk bypassata per testing locale
-      </div>
+    <ClerkProvider 
+      publishableKey={clerkPublishableKey}
+      navigate={(to) => navigate(to)}
+    >
       {children}
-    </div>
+    </ClerkProvider>
   );
-};
+}
 
 function App() {
   const [i18nReady, setI18nReady] = useState(i18n.isInitialized);
@@ -101,7 +87,6 @@ function App() {
     }
   }, []);
 
-  console.log('🚧 App rendering with shouldBypassClerk:', shouldBypassClerk);
   console.log('🌐 i18n ready:', i18nReady);
 
   // Show loading screen while i18n is initializing
@@ -154,35 +139,6 @@ function App() {
     );
   }
 
-  if (shouldBypassClerk) {
-    console.log('🚧 DEVELOPMENT MODE: Running without Clerk authentication');
-    console.log('⚠️  This is for testing purposes only. Clerk authentication is bypassed.');
-
-    // Initialize stagewise toolbar
-    setupStagewise();
-
-    return (
-      <ErrorBoundary>
-        <QueryProvider>
-          <WebSocketProvider enabled={true}>
-            <DevelopmentWrapper>
-              <ThemeProvider>
-                <OrganizationProvider>
-                  <Router>
-                    <AppRouter />
-                    <FloatingMicrophone />
-
-                    <Toaster position='top-right' />
-                  </Router>
-                </OrganizationProvider>
-              </ThemeProvider>
-            </DevelopmentWrapper>
-          </WebSocketProvider>
-        </QueryProvider>
-      </ErrorBoundary>
-    );
-  }
-
   // Production mode with Clerk
   console.log('🔐 PRODUCTION MODE: Using Clerk authentication');
 
@@ -197,18 +153,17 @@ function App() {
     <ErrorBoundary>
       <QueryProvider>
         <WebSocketProvider enabled={true}>
-          <ClerkProvider publishableKey={clerkPublishableKey}>
-            <ThemeProvider>
-              <OrganizationProvider>
-                <Router>
+          <Router>
+            <ClerkProviderWithRouter>
+              <ThemeProvider>
+                <OrganizationProvider>
                   <AppRouter />
                   <FloatingMicrophone />
-
                   <Toaster position='top-right' />
-                </Router>
-              </OrganizationProvider>
-            </ThemeProvider>
-          </ClerkProvider>
+                </OrganizationProvider>
+              </ThemeProvider>
+            </ClerkProviderWithRouter>
+          </Router>
         </WebSocketProvider>
       </QueryProvider>
     </ErrorBoundary>

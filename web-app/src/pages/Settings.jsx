@@ -21,7 +21,7 @@ import {
 import { supabase } from '@lib/supabaseClient';
 import Logger from '@utils/Logger';
 import { useTranslation } from '@hooks/useTranslation';
-import { useAuthBypass, useUserBypass } from '@hooks/useClerkBypass';
+import { useAuth, useUser } from '@clerk/clerk-react';
 import Footer from '@components/shared/Footer';
 import { businessService } from '@lib/businessService';
 import CompanySettings from '@components/settings/CompanySettingsFallback';
@@ -40,8 +40,8 @@ import DataExportSettings from '@components/settings/DataExportSettingsFallback'
 
 export default function Settings() {
   const { t } = useTranslation('settings');
-  const { isSignedIn } = useAuthBypass();
-  const { user } = useUserBypass();
+  const { isSignedIn } = useAuth();
+  const { user } = useUser();
   const [activeTab, setActiveTab] = useState(0);
   const [notification, setNotification] = useState({ show: false, message: '', type: 'success' });
   const [notificationSettings, setNotificationSettings] = useState({

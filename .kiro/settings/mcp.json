@@ -1,4 +1,49 @@
 {
   "mcpServers": {
+    "fetch": {
+      "command": "C:\\Users\\user\\.local\\bin\\uvx.exe",
+      "args": [
+        "mcp-server-fetch"
+      ],
+      "env": {
+        "PATH": "C:\\Users\\user\\.local\\bin;%PATH%"
+      },
+      "disabled": false,
+      "autoApprove": []
+    },
+    "browsermcp": {
+      "command": "npx",
+      "args": [
+        "@browsermcp/mcp@latest"
+      ],
+      "disabled": false,
+      "autoApprove": []
+    },
+    "motiff": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@motiffcom/motiff-mcp-server@latest"
+      ],
+      "env": {
+        "MOTIFF_TOKEN": "${MOTIFF_TOKEN}"
+      },
+      "disabled": false,
+      "autoApprove": []
+    },
+    "taskmaster-ai": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "task-master-ai"
+      ],
+      "cwd": "E:\\AlexVenturesStudio\\Nexa_Manager_whit_Task_Master",
+      "env": {
+        "ANTHROPIC_API_KEY": "${ANTHROPIC_API_KEY}",
+        "PERPLEXITY_API_KEY": "${PERPLEXITY_API_KEY}"
+      },
+      "disabled": true,
+      "autoApprove": []
+    }
   }
 }

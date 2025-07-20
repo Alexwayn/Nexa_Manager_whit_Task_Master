@@ -20,7 +20,7 @@ import {
 import { QuoteService } from '@lib/quoteService';
 import { QuotePdfService } from '@lib/quotePdfService';
 import clientService from '@lib/clientService';
-import { useUserBypass as useUser } from '@hooks/useClerkBypass';
+import { useUser } from '@clerk/clerk-react';
 import Logger from '@utils/Logger';
 
 /**

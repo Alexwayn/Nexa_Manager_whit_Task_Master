@@ -9,7 +9,7 @@ import QuoteApprovalActions from '@components/financial/QuoteApprovalActions';
 import QuoteToInvoiceConverter from '@components/financial/QuoteToInvoiceConverter';
 import { QuoteService } from '@lib/quoteService';
 import { QuoteApprovalService } from '@lib/quoteApprovalService';
-import { useUserBypass as useUser } from '@hooks/useClerkBypass';
+import { useUser } from '@clerk/clerk-react';
 import Logger from '@utils/Logger';
 import {
   Plus,

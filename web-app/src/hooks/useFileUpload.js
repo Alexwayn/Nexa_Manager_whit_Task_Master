@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { supabase } from '@lib/supabaseClient';
-import { useAuthBypass as useAuth, useUserBypass as useUser } from '@hooks/useClerkBypass';
+import { useAuth, useUser } from '@clerk/clerk-react';
 // import Logger from '@utils/Logger';
 
 export const useFileUpload = () => {
