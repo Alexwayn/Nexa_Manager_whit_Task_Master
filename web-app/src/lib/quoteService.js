@@ -709,6 +709,222 @@ export class QuoteService {
       totalAmount: Math.round(totalAmount * 100) / 100,
     };
   }
+  /**
+   * Send quote email using business email integration
+   * @param {string} quoteId - Quote ID
+   * @param {string} userId - User ID
+   * @param {Object} emailOptions - Email sending options
+   * @returns {Promise<Object>} Email sending result
+   */
+  static async sendQuoteEmail(quoteId, userId, emailOptions = {}) {
+    try {
+      // Get quote data
+      const quote = await this.getQuoteById(quoteId, userId);
+      if (!quote) {
+        throw new Error('Quote not found');
+      }
+
+      const recipientEmail = emailOptions.to || quote.clients?.email;
+      if (!recipientEmail) {
+        throw new Error('No recipient email address provided');
+      }
+
+      // Use business email integration
+      const businessEmailIntegration = await import('./businessEmailIntegration.js');
+      const emailResult = await businessEmailIntegration.default.sendQuoteEmail(
+        userId,
+        quoteId,
+        recipientEmail,
+        {
+          templateId: emailOptions.template || 'quote',
+          customMessage: emailOptions.customMessage,
+          emailType: emailOptions.emailType || 'quote_sent',
+          useNewSystem: emailOptions.useNewSystem !== false,
+        }
+      );
+
+      if (emailResult.success) {
+        // Update quote status to 'sent'
+        await this.updateQuoteStatus(quoteId, 'sent', userId);
+      }
+
+      return {
+        success: emailResult.success,
+        quote: quote,
+        emailResult: emailResult,
+        message: emailResult.success 
+          ? 'Quote sent successfully'
+          : `Quote email failed: ${emailResult.error}`,
+      };
+    } catch (error) {
+      Logger.error('QuoteService.sendQuoteEmail error:', error);
+      return {
+        success: false,
+        error: error.message,
+      };
+    }
+  }
+
+  /**
+   * Update quote status
+   * @param {string} quoteId - Quote ID
+   * @param {string} status - New status
+   * @param {string} userId - User ID
+   * @returns {Promise<Object>} Updated quote
+   */
+  static async updateQuoteStatus(quoteId, status, userId) {
+    try {
+      const { data, error } = await supabase
+        .from('quotes')
+        .update({ 
+          status: status,
+          updated_at: new Date().toISOString(),
+        })
+        .eq('id', quoteId)
+        .eq('user_id', userId)
+        .select()
+        .single();
+
+      if (error) {
+        throw new Error(`Failed to update quote status: ${error.message}`);
+      }
+
+      return data;
+    } catch (error) {
+      Logger.error('QuoteService.updateQuoteStatus error:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Send quote reminder email
+   * @param {string} quoteId - Quote ID
+   * @param {string} userId - User ID
+   * @param {Object} reminderOptions - Reminder options
+   * @returns {Promise<Object>} Email sending result
+   */
+  static async sendQuoteReminder(quoteId, userId, reminderOptions = {}) {
+    try {
+      const quote = await this.getQuoteById(quoteId, userId);
+      if (!quote) {
+        throw new Error('Quote not found');
+      }
+
+      const recipientEmail = reminderOptions.to || quote.client?.email;
+      if (!recipientEmail) {
+        throw new Error('No recipient email address provided');
+      }
+
+      const businessEmailIntegration = await import('./businessEmailIntegration.js');
+      const emailResult = await businessEmailIntegration.default.sendQuoteEmail(
+        userId,
+        quoteId,
+        recipientEmail,
+        {
+          templateId: reminderOptions.template || 'quote_reminder',
+          customMessage: reminderOptions.customMessage,
+          emailType: 'quote_reminder',
+          useNewSystem: true,
+        }
+      );
+
+      return {
+        success: emailResult.success,
+        quote: quote,
+        emailResult: emailResult,
+        message: emailResult.success 
+          ? 'Quote reminder sent successfully'
+          : `Quote reminder failed: ${emailResult.error}`,
+      };
+    } catch (error) {
+      Logger.error('QuoteService.sendQuoteReminder error:', error);
+      return {
+        success: false,
+        error: error.message,
+      };
+    }
+  }
 }
 
 export default QuoteService;
+
+  /**
+   * Get quote email history
+   * @param {string} quoteId - Quote ID
+   * @param {string} userId - User ID
+   * @returns {Promise<Object>} Email history for the quote
+   */
+  static async getQuoteEmailHistory(quoteId, userId) {
+    try {
+      // Verify quote exists and user has access
+      const quote = await this.getQuoteById(quoteId, userId);
+      if (!quote) {
+        throw new Error('Quote not found');
+      }
+
+      // Get email history from business email logger
+      const businessEmailLogger = await import('./businessEmailLogger.js');
+      const historyResult = await businessEmailLogger.default.getDocumentEmailHistory(
+        userId, 
+        'quote', 
+        quoteId
+      );
+
+      return {
+        success: historyResult.success,
+        quote: quote,
+        emailHistory: historyResult.data || [],
+        message: historyResult.success 
+          ? 'Email history retrieved successfully'
+          : `Failed to get email history: ${historyResult.error}`,
+      };
+    } catch (error) {
+      Logger.error('QuoteService.getQuoteEmailHistory error:', error);
+      return {
+        success: false,
+        error: error.message,
+        emailHistory: [],
+      };
+    }
+  }
+
+  /**
+   * Get client quote communication summary
+   * @param {string} clientId - Client ID
+   * @param {string} userId - User ID
+   * @returns {Promise<Object>} Quote communication summary for client
+   */
+  static async getClientQuoteCommunicationSummary(clientId, userId) {
+    try {
+      // Get client's quotes
+      const quotes = await this.getQuotes(userId, { clientId });
+
+      // Get email activity for this client's quotes
+      const clientEmailService = await import('./clientEmailService.js');
+      const emailHistory = await clientEmailService.default.getClientEmailHistory(
+        userId, 
+        clientId, 
+        { type: ['quote_sent', 'quote_reminder', 'quote_accepted', 'quote_rejected'] }
+      );
+
+      return {
+        success: true,
+        data: {
+          quotes: quotes || [],
+          emailHistory: emailHistory.success ? emailHistory.data : [],
+          summary: {
+            totalQuotes: quotes?.length || 0,
+            totalEmails: emailHistory.success ? emailHistory.total : 0,
+            recentActivity: emailHistory.success ? emailHistory.data.slice(0, 5) : [],
+          },
+        },
+      };
+    } catch (error) {
+      Logger.error('QuoteService.getClientQuoteCommunicationSummary error:', error);
+      return {
+        success: false,
+        error: error.message,
+      };
+    }
+  }
+}

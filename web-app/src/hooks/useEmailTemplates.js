@@ -1,87 +1,121 @@
 import { useState, useEffect, useCallback } from 'react';
 import emailTemplateService from '@lib/emailTemplateService';
+import { useEmailContext } from '@context/EmailContext';
 
 /**
- * Custom hook for managing email templates
- * Provides CRUD operations and state management for email templates
+ * Enhanced custom hook for managing email templates
+ * Provides CRUD operations and state management for email templates with context integration
  */
 export const useEmailTemplates = () => {
-  const [templates, setTemplates] = useState([]);
-  const [predefinedTemplates, setPredefinedTemplates] = useState({});
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const {
+    templates: contextTemplates,
+    templatesLoading,
+    templatesError,
+    loadTemplates,
+    dispatch,
+  } = useEmailContext();
 
-  // Load all templates
-  const loadTemplates = useCallback(async () => {
-    setLoading(true);
-    setError(null);
+  const [predefinedTemplates, setPredefinedTemplates] = useState({});
+  const [localLoading, setLocalLoading] = useState(false);
+  const [localError, setLocalError] = useState(null);
+
+  // Use context templates or fallback to local state
+  const templates = contextTemplates;
+  const loading = templatesLoading || localLoading;
+  const error = templatesError || localError;
+
+  // Load all templates (enhanced to work with context)
+  const loadAllTemplates = useCallback(async () => {
+    setLocalLoading(true);
+    setLocalError(null);
     try {
       const result = await emailTemplateService.getTemplates();
       if (result.success) {
-        setTemplates(result.data || []);
+        // Update context templates
+        dispatch({
+          type: 'SET_TEMPLATES',
+          payload: { templates: result.data || [] },
+        });
         setPredefinedTemplates(result.predefined || {});
       } else {
-        setError(result.error || 'Failed to load templates');
+        setLocalError(result.error || 'Failed to load templates');
       }
     } catch (err) {
-      setError(err.message || 'Failed to load templates');
+      setLocalError(err.message || 'Failed to load templates');
     } finally {
-      setLoading(false);
+      setLocalLoading(false);
     }
-  }, []);
+  }, [dispatch]);
 
   // Create or update a template
   const saveTemplate = useCallback(async (templateData) => {
-    setLoading(true);
-    setError(null);
+    setLocalLoading(true);
+    setLocalError(null);
     try {
       const result = await emailTemplateService.saveTemplate(templateData);
       if (result.success) {
-        // Refresh templates list
-        await loadTemplates();
+        if (templateData.id) {
+          // Update existing template in context
+          dispatch({
+            type: 'UPDATE_TEMPLATE',
+            payload: {
+              templateId: templateData.id,
+              updates: result.data,
+            },
+          });
+        } else {
+          // Add new template to context
+          dispatch({
+            type: 'ADD_TEMPLATE',
+            payload: { template: result.data },
+          });
+        }
         return result;
       } else {
-        setError(result.error || 'Failed to save template');
+        setLocalError(result.error || 'Failed to save template');
         return result;
       }
     } catch (err) {
       const error = err.message || 'Failed to save template';
-      setError(error);
+      setLocalError(error);
       return { success: false, error };
     } finally {
-      setLoading(false);
+      setLocalLoading(false);
     }
-  }, [loadTemplates]);
+  }, [dispatch]);
 
   // Delete a template
   const deleteTemplate = useCallback(async (templateId) => {
-    setLoading(true);
-    setError(null);
+    setLocalLoading(true);
+    setLocalError(null);
     try {
       const result = await emailTemplateService.deleteTemplate(templateId);
       if (result.success) {
-        // Remove from local state
-        setTemplates(prev => prev.filter(t => t.id !== templateId));
+        // Remove from context
+        dispatch({
+          type: 'REMOVE_TEMPLATE',
+          payload: { templateId },
+        });
         return result;
       } else {
-        setError(result.error || 'Failed to delete template');
+        setLocalError(result.error || 'Failed to delete template');
         return result;
       }
     } catch (err) {
       const error = err.message || 'Failed to delete template';
-      setError(error);
+      setLocalError(error);
       return { success: false, error };
     } finally {
-      setLoading(false);
+      setLocalLoading(false);
     }
-  }, []);
+  }, [dispatch]);
 
   // Render a template with variables
   const renderTemplate = useCallback((template, variables = {}) => {
     try {
       return emailTemplateService.renderTemplate(template, variables);
     } catch (err) {
-      setError(err.message || 'Failed to render template');
+      setLocalError(err.message || 'Failed to render template');
       return { success: false, error: err.message };
     }
   }, []);
@@ -119,10 +153,12 @@ export const useEmailTemplates = () => {
     return emailTemplateService.validateTemplate(htmlContent);
   }, []);
 
-  // Load templates on mount
+  // Load templates on mount if not already loaded
   useEffect(() => {
-    loadTemplates();
-  }, [loadTemplates]);
+    if (templates.length === 0 && !loading) {
+      loadAllTemplates();
+    }
+  }, [templates.length, loading, loadAllTemplates]);
 
   return {
     // State
@@ -132,7 +168,7 @@ export const useEmailTemplates = () => {
     error,
     
     // Actions
-    loadTemplates,
+    loadTemplates: loadAllTemplates,
     saveTemplate,
     deleteTemplate,
     renderTemplate,

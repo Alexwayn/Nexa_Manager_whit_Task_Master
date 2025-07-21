@@ -285,30 +285,28 @@ export class InvoiceLifecycleService {
       }
 
       const reminderType = this.getReminderType(daysOverdue);
-      const subject = this.getOverdueReminderSubject(
+      const customMessage = this.getOverdueReminderMessage(reminderType, invoice, daysOverdue);
+
+      // Use new business email integration
+      const businessEmailIntegration = await import('./businessEmailIntegration.js');
+      const result = await businessEmailIntegration.default.sendPaymentReminder(
+        invoice.user_id,
+        invoice.id,
         reminderType,
-        invoice.invoice_number,
-        daysOverdue,
+        {
+          customMessage,
+        }
       );
-      const message = this.getOverdueReminderMessage(reminderType, invoice, daysOverdue);
 
-      // Send email reminder
-      await emailService.sendEmail({
-        to: invoice.clients.email,
-        subject,
-        html: message,
-        metadata: {
-          type: 'overdue_reminder',
-          invoice_id: invoice.id,
-          invoice_number: invoice.invoice_number,
-          days_overdue: daysOverdue,
-          reminder_type: reminderType,
-        },
-      });
+      if (result.success) {
+        Logger.log(
+          `Overdue reminder sent for invoice ${invoice.invoice_number} (${daysOverdue} days overdue)`,
+        );
+      } else {
+        Logger.error(`Failed to send reminder for invoice ${invoice.invoice_number}:`, result.error);
+      }
 
-      Logger.log(
-        `Overdue reminder sent for invoice ${invoice.invoice_number} (${daysOverdue} days overdue)`,
-      );
+      return result;
     } catch (error) {
       Logger.error('Error sending overdue reminder:', error);
       throw error;

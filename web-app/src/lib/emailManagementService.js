@@ -165,6 +165,34 @@ class EmailManagementService {
 
         const storeResult = await emailStorageService.storeEmail(sentEmail);
         
+        // Log business email activity if related documents are present
+        if (emailData.relatedDocuments && emailData.relatedDocuments.length > 0) {
+          for (const doc of emailData.relatedDocuments) {
+            const activityData = {
+              emailId: storeResult.data?.id,
+              clientId: emailData.clientId,
+              type: `${doc.type}_sent`,
+              status: 'sent',
+              recipientEmail: processedEmailData.to,
+              subject: processedEmailData.subject,
+              templateType: emailData.templateId,
+              details: {
+                documentId: doc.id,
+                documentType: doc.type,
+                customContent: emailData.customContent || null,
+              },
+            };
+
+            if (doc.type === 'invoice') {
+              activityData.invoiceId = doc.id;
+            } else if (doc.type === 'quote') {
+              activityData.quoteId = doc.id;
+            }
+
+            await this.logEmailActivity(userId, activityData);
+          }
+        }
+        
         // Emit event
         this.emitEvent('email:sent', {
           userId,
@@ -750,6 +778,369 @@ class EmailManagementService {
   }
 
   /**
+   * Get client-specific email history with filtering
+   */
+  async getClientEmailHistory(userId, clientId, options = {}) {
+    try {
+      const {
+        limit = 50,
+        offset = 0,
+        dateFrom,
+        dateTo,
+        documentType, // 'invoice', 'quote', or null for all
+        includeActivity = true,
+      } = options;
+
+      // Build base query for emails
+      let emailQuery = supabase
+        .from('emails')
+        .select(`
+          *,
+          folders(name, type)
+        `)
+        .eq('user_id', userId)
+        .eq('client_id', clientId)
+        .order('received_at', { ascending: false })
+        .range(offset, offset + limit - 1);
+
+      // Apply date filters
+      if (dateFrom) {
+        emailQuery = emailQuery.gte('received_at', dateFrom);
+      }
+      if (dateTo) {
+        emailQuery = emailQuery.lte('received_at', dateTo);
+      }
+
+      // Apply document type filter
+      if (documentType) {
+        emailQuery = emailQuery.contains('related_documents', [{ type: documentType }]);
+      }
+
+      const { data: emails, error: emailError } = await emailQuery;
+
+      if (emailError) {
+        throw emailError;
+      }
+
+      let activityData = [];
+      if (includeActivity) {
+        // Get email activity for this client
+        let activityQuery = supabase
+          .from('email_activity')
+          .select('*')
+          .eq('user_id', userId)
+          .eq('client_id', clientId)
+          .order('sent_at', { ascending: false })
+          .range(offset, offset + limit - 1);
+
+        // Apply same filters to activity
+        if (dateFrom) {
+          activityQuery = activityQuery.gte('sent_at', dateFrom);
+        }
+        if (dateTo) {
+          activityQuery = activityQuery.lte('sent_at', dateTo);
+        }
+        if (documentType) {
+          if (documentType === 'invoice') {
+            activityQuery = activityQuery.not('invoice_id', 'is', null);
+          } else if (documentType === 'quote') {
+            activityQuery = activityQuery.not('quote_id', 'is', null);
+          }
+        }
+
+        const { data: activity, error: activityError } = await activityQuery;
+        if (!activityError) {
+          activityData = activity || [];
+        }
+      }
+
+      // Get total count for pagination
+      const { count: totalEmails } = await supabase
+        .from('emails')
+        .select('*', { count: 'exact', head: true })
+        .eq('user_id', userId)
+        .eq('client_id', clientId);
+
+      return {
+        success: true,
+        data: {
+          emails: emails || [],
+          activity: activityData,
+          pagination: {
+            total: totalEmails || 0,
+            limit,
+            offset,
+            hasMore: (totalEmails || 0) > offset + limit,
+          },
+        },
+      };
+    } catch (error) {
+      Logger.error('Error getting client email history:', error);
+      return {
+        success: false,
+        error: error.message,
+      };
+    }
+  }
+
+  /**
+   * Log email activity for business document communications
+   */
+  async logEmailActivity(userId, activityData) {
+    try {
+      const {
+        emailId,
+        invoiceId,
+        quoteId,
+        clientId,
+        type,
+        status = 'sent',
+        recipientEmail,
+        subject,
+        templateType,
+        details = {},
+      } = activityData;
+
+      const logEntry = {
+        user_id: userId,
+        email_id: emailId || null,
+        invoice_id: invoiceId || null,
+        quote_id: quoteId || null,
+        client_id: clientId || null,
+        type,
+        status,
+        recipient_email: recipientEmail,
+        subject: subject || null,
+        template_type: templateType || null,
+        details: JSON.stringify(details),
+        sent_at: new Date().toISOString(),
+      };
+
+      const { data, error } = await supabase
+        .from('email_activity')
+        .insert([logEntry])
+        .select()
+        .single();
+
+      if (error) {
+        throw error;
+      }
+
+      return {
+        success: true,
+        data,
+      };
+    } catch (error) {
+      Logger.error('Error logging email activity:', error);
+      return {
+        success: false,
+        error: error.message,
+      };
+    }
+  }
+
+  /**
+   * Connect with existing invoice email functionality
+   */
+  async integrateInvoiceEmail(userId, invoiceId, recipientEmail, options = {}) {
+    try {
+      const {
+        templateId,
+        customMessage,
+        attachPdf = true,
+        sendReminder = false,
+        reminderType = 'gentle',
+      } = options;
+
+      // Use existing invoice service to generate and send email
+      const invoiceService = await import('./invoiceService.js');
+      
+      let result;
+      if (sendReminder) {
+        // Send reminder using existing service
+        result = await invoiceService.default.sendPaymentReminder(invoiceId, reminderType);
+      } else {
+        // Send invoice email using existing service
+        result = await invoiceService.default.generateAndEmailInvoicePDF(invoiceId, userId, {
+          to: recipientEmail,
+          template: templateId,
+          customMessage,
+          attachPdf,
+        });
+      }
+
+      if (result.success) {
+        // Log the activity in our email management system
+        const { data: invoice } = await supabase
+          .from('invoices')
+          .select('*, clients(*)')
+          .eq('id', invoiceId)
+          .single();
+
+        if (invoice) {
+          await this.logEmailActivity(userId, {
+            invoiceId,
+            clientId: invoice.client_id,
+            type: sendReminder ? `reminder_${reminderType}` : 'invoice_sent',
+            status: 'sent',
+            recipientEmail,
+            subject: `Invoice ${invoice.invoice_number}`,
+            templateType: templateId || 'invoice',
+            details: {
+              attachPdf,
+              customMessage: customMessage || null,
+            },
+          });
+        }
+      }
+
+      return result;
+    } catch (error) {
+      Logger.error('Error integrating invoice email:', error);
+      return {
+        success: false,
+        error: error.message,
+      };
+    }
+  }
+
+  /**
+   * Connect with existing quote email functionality
+   */
+  async integrateQuoteEmail(userId, quoteId, recipientEmail, options = {}) {
+    try {
+      const {
+        templateId,
+        customMessage,
+        emailType = 'quote_sent', // 'quote_sent', 'quote_reminder', 'quote_accepted'
+      } = options;
+
+      // Use existing email service for quotes
+      const emailService = await import('./emailService.js');
+      
+      // Get quote data
+      const { data: quote, error } = await supabase
+        .from('quotes')
+        .select('*, clients(*)')
+        .eq('id', quoteId)
+        .single();
+
+      if (error || !quote) {
+        throw new Error('Quote not found');
+      }
+
+      let result;
+      switch (emailType) {
+        case 'quote_reminder':
+          result = await emailService.default.sendReminderEmail(quote, recipientEmail, 7);
+          break;
+        case 'quote_accepted':
+          result = await emailService.default.sendAcceptanceConfirmation(quote, recipientEmail);
+          break;
+        default:
+          result = await emailService.default.sendQuoteEmail(quote, recipientEmail, emailType, customMessage);
+      }
+
+      if (result.success) {
+        // Log the activity in our email management system
+        await this.logEmailActivity(userId, {
+          quoteId,
+          clientId: quote.client_id,
+          type: emailType,
+          status: 'sent',
+          recipientEmail,
+          subject: `Quote ${quote.quote_number}`,
+          templateType: templateId || 'quote',
+          details: {
+            customMessage: customMessage || null,
+            emailType,
+          },
+        });
+      }
+
+      return result;
+    } catch (error) {
+      Logger.error('Error integrating quote email:', error);
+      return {
+        success: false,
+        error: error.message,
+      };
+    }
+  }
+
+  /**
+   * Get email activity summary for business documents
+   */
+  async getBusinessEmailSummary(userId, options = {}) {
+    try {
+      const {
+        dateFrom,
+        dateTo,
+        clientId,
+        documentType,
+      } = options;
+
+      let query = supabase
+        .from('email_activity')
+        .select(`
+          *,
+          clients(full_name, company_name),
+          invoices(invoice_number, total_amount),
+          quotes(quote_number, total_amount)
+        `)
+        .eq('user_id', userId)
+        .order('sent_at', { ascending: false });
+
+      // Apply filters
+      if (dateFrom) {
+        query = query.gte('sent_at', dateFrom);
+      }
+      if (dateTo) {
+        query = query.lte('sent_at', dateTo);
+      }
+      if (clientId) {
+        query = query.eq('client_id', clientId);
+      }
+      if (documentType === 'invoice') {
+        query = query.not('invoice_id', 'is', null);
+      } else if (documentType === 'quote') {
+        query = query.not('quote_id', 'is', null);
+      }
+
+      const { data, error } = await query;
+
+      if (error) {
+        throw error;
+      }
+
+      // Calculate summary statistics
+      const summary = {
+        totalEmails: data.length,
+        invoiceEmails: data.filter(item => item.invoice_id).length,
+        quoteEmails: data.filter(item => item.quote_id).length,
+        reminderEmails: data.filter(item => item.type.includes('reminder')).length,
+        successfulSends: data.filter(item => item.status === 'sent').length,
+        failedSends: data.filter(item => item.status === 'failed').length,
+        uniqueClients: new Set(data.map(item => item.client_id).filter(Boolean)).size,
+      };
+
+      return {
+        success: true,
+        data: {
+          activity: data || [],
+          summary,
+        },
+      };
+    } catch (error) {
+      Logger.error('Error getting business email summary:', error);
+      return {
+        success: false,
+        error: error.message,
+      };
+    }
+  }
+
+  /**
    * EMAIL SYNCHRONIZATION
    */
 
@@ -976,4 +1367,460 @@ class EmailManagementService {
   }
 }
 
-export default new EmailManagementService();
+export default new EmailManagementService();  /**
+   *
+ ENHANCED BUSINESS INTEGRATION METHODS
+   */
+
+  /**
+   * Connect with existing invoice email functionality
+   */
+  async integrateInvoiceEmail(userId, invoiceId, recipientEmail, options = {}) {
+    try {
+      const {
+        templateId,
+        customMessage,
+        attachPdf = true,
+        sendReminder = false,
+        reminderType = 'gentle',
+        useNewSystem = true,
+      } = options;
+
+      let result;
+      if (useNewSystem) {
+        // Use new email management system
+        result = await this.sendInvoiceEmail(userId, invoiceId, recipientEmail, templateId, customMessage);
+      } else {
+        // Use existing invoice service
+        const { InvoiceService } = await import('./invoiceService.js');
+        
+        if (sendReminder) {
+          result = await InvoiceService.sendPaymentReminder(invoiceId, userId, reminderType, {
+            customMessage,
+            attachPdf,
+          });
+        } else {
+          result = await InvoiceService.generateAndEmailInvoicePDF(invoiceId, userId, {
+            to: recipientEmail,
+            template: templateId,
+            customMessage,
+            attachPdf,
+          });
+        }
+      }
+
+      // Log the activity in our email management system
+      if (result.success) {
+        const { data: invoice } = await supabase
+          .from('invoices')
+          .select('*, clients(*)')
+          .eq('id', invoiceId)
+          .single();
+
+        if (invoice) {
+          await this.logEmailActivity(userId, {
+            invoiceId,
+            clientId: invoice.client_id,
+            type: sendReminder ? `reminder_${reminderType}` : 'invoice_sent',
+            status: 'sent',
+            recipientEmail,
+            subject: `Invoice ${invoice.invoice_number}`,
+            templateType: templateId || 'invoice',
+            details: {
+              attachPdf,
+              customMessage: customMessage || null,
+              system_used: useNewSystem ? 'new' : 'legacy',
+            },
+          });
+        }
+      }
+
+      return result;
+    } catch (error) {
+      Logger.error('Error integrating invoice email:', error);
+      return {
+        success: false,
+        error: error.message,
+      };
+    }
+  }
+
+  /**
+   * Connect with existing quote email functionality
+   */
+  async integrateQuoteEmail(userId, quoteId, recipientEmail, options = {}) {
+    try {
+      const {
+        templateId,
+        customMessage,
+        emailType = 'quote_sent',
+        useNewSystem = true,
+      } = options;
+
+      let result;
+      if (useNewSystem) {
+        // Use new email management system
+        result = await this.sendQuoteEmail(userId, quoteId, recipientEmail, templateId, customMessage);
+      } else {
+        // Use existing quote service
+        const { default: QuoteService } = await import('./quoteService.js');
+        
+        result = await QuoteService.sendQuoteEmail(quoteId, userId, {
+          to: recipientEmail,
+          template: templateId,
+          customMessage,
+          emailType,
+        });
+      }
+
+      // Log the activity in our email management system
+      if (result.success) {
+        const { data: quote } = await supabase
+          .from('quotes')
+          .select('*, clients(*)')
+          .eq('id', quoteId)
+          .single();
+
+        if (quote) {
+          await this.logEmailActivity(userId, {
+            quoteId,
+            clientId: quote.client_id,
+            type: emailType,
+            status: 'sent',
+            recipientEmail,
+            subject: `Quote ${quote.quote_number}`,
+            templateType: templateId || 'quote',
+            details: {
+              customMessage: customMessage || null,
+              emailType,
+              system_used: useNewSystem ? 'new' : 'legacy',
+            },
+          });
+        }
+      }
+
+      return result;
+    } catch (error) {
+      Logger.error('Error integrating quote email:', error);
+      return {
+        success: false,
+        error: error.message,
+      };
+    }
+  }
+
+  /**
+   * Get comprehensive client email history with business document context
+   */
+  async getEnhancedClientEmailHistory(userId, clientId, options = {}) {
+    try {
+      const {
+        limit = 50,
+        offset = 0,
+        dateFrom,
+        dateTo,
+        documentType, // 'invoice', 'quote', or null for all
+        includeDocuments = true,
+      } = options;
+
+      // Get email activity from our logging system
+      let activityQuery = supabase
+        .from('email_activity')
+        .select(`
+          *,
+          clients(id, full_name, email, company_name),
+          invoices(id, invoice_number, total_amount, status, issue_date, due_date),
+          quotes(id, quote_number, total_amount, status, issue_date, due_date)
+        `)
+        .eq('user_id', userId)
+        .eq('client_id', clientId)
+        .order('sent_at', { ascending: false })
+        .range(offset, offset + limit - 1);
+
+      // Apply filters
+      if (dateFrom) {
+        activityQuery = activityQuery.gte('sent_at', dateFrom);
+      }
+      if (dateTo) {
+        activityQuery = activityQuery.lte('sent_at', dateTo);
+      }
+      if (documentType) {
+        if (documentType === 'invoice') {
+          activityQuery = activityQuery.not('invoice_id', 'is', null);
+        } else if (documentType === 'quote') {
+          activityQuery = activityQuery.not('quote_id', 'is', null);
+        }
+      }
+
+      const { data: activity, error: activityError } = await activityQuery;
+
+      if (activityError) {
+        throw activityError;
+      }
+
+      // Get emails from the email management system
+      const emailsResult = await this.getEmailsByClient(userId, clientId, {
+        limit,
+        offset,
+        dateFrom,
+        dateTo,
+      });
+
+      // Get total count for pagination
+      const { count: totalActivity } = await supabase
+        .from('email_activity')
+        .select('*', { count: 'exact', head: true })
+        .eq('user_id', userId)
+        .eq('client_id', clientId);
+
+      // Combine and organize data
+      const combinedHistory = {
+        businessEmails: activity || [],
+        regularEmails: emailsResult.success ? emailsResult.data : [],
+        summary: {
+          totalBusinessEmails: totalActivity || 0,
+          totalRegularEmails: emailsResult.success ? emailsResult.total : 0,
+          recentActivity: (activity || []).slice(0, 10),
+        },
+      };
+
+      return {
+        success: true,
+        data: combinedHistory,
+        pagination: {
+          total: totalActivity || 0,
+          limit,
+          offset,
+          hasMore: (totalActivity || 0) > offset + limit,
+        },
+      };
+    } catch (error) {
+      Logger.error('Error getting enhanced client email history:', error);
+      return {
+        success: false,
+        error: error.message,
+      };
+    }
+  }
+
+  /**
+   * Get business email analytics and insights
+   */
+  async getBusinessEmailAnalytics(userId, options = {}) {
+    try {
+      const {
+        dateFrom,
+        dateTo,
+        clientId,
+        documentType,
+      } = options;
+
+      let query = supabase
+        .from('email_activity')
+        .select(`
+          *,
+          clients(full_name, company_name),
+          invoices(invoice_number, total_amount, status),
+          quotes(quote_number, total_amount, status)
+        `)
+        .eq('user_id', userId)
+        .order('sent_at', { ascending: false });
+
+      // Apply filters
+      if (dateFrom) {
+        query = query.gte('sent_at', dateFrom);
+      }
+      if (dateTo) {
+        query = query.lte('sent_at', dateTo);
+      }
+      if (clientId) {
+        query = query.eq('client_id', clientId);
+      }
+      if (documentType === 'invoice') {
+        query = query.not('invoice_id', 'is', null);
+      } else if (documentType === 'quote') {
+        query = query.not('quote_id', 'is', null);
+      }
+
+      const { data: activity, error } = await query;
+
+      if (error) {
+        throw new Error(`Failed to get business email analytics: ${error.message}`);
+      }
+
+      // Calculate comprehensive analytics
+      const analytics = {
+        totalEmails: activity.length,
+        emailsByType: this.groupBy(activity, 'type'),
+        emailsByStatus: this.groupBy(activity, 'status'),
+        emailsByClient: this.groupClientEmails(activity),
+        emailsByMonth: this.groupByMonth(activity),
+        documentBreakdown: {
+          invoices: activity.filter(a => a.invoice_id).length,
+          quotes: activity.filter(a => a.quote_id).length,
+        },
+        recentActivity: activity.slice(0, 20),
+        topClients: this.getTopClientsByEmailCount(activity),
+        successRate: this.calculateEmailSuccessRate(activity),
+      };
+
+      return {
+        success: true,
+        data: {
+          activity,
+          analytics,
+        },
+      };
+    } catch (error) {
+      Logger.error('Error getting business email analytics:', error);
+      return {
+        success: false,
+        error: error.message,
+      };
+    }
+  }
+
+  // Helper methods for analytics
+  groupBy(items, field) {
+    const groups = {};
+    items.forEach(item => {
+      const value = item[field] || 'unknown';
+      groups[value] = (groups[value] || 0) + 1;
+    });
+    return groups;
+  }
+
+  groupByMonth(items) {
+    const groups = {};
+    items.forEach(item => {
+      const month = new Date(item.sent_at).toISOString().substring(0, 7);
+      groups[month] = (groups[month] || 0) + 1;
+    });
+    return groups;
+  }
+
+  groupClientEmails(activity) {
+    const groups = {};
+    activity.forEach(item => {
+      if (item.clients) {
+        const clientName = item.clients.full_name || item.clients.company_name || 'Unknown';
+        groups[clientName] = (groups[clientName] || 0) + 1;
+      }
+    });
+    return groups;
+  }
+
+  getTopClientsByEmailCount(activity, limit = 10) {
+    const clientCounts = this.groupBy(activity, 'client_id');
+    return Object.entries(clientCounts)
+      .sort(([,a], [,b]) => b - a)
+      .slice(0, limit)
+      .map(([clientId, count]) => ({ clientId, count }));
+  }
+
+  calculateEmailSuccessRate(activity) {
+    if (activity.length === 0) return 0;
+    const successful = activity.filter(a => a.status === 'sent' || a.status === 'delivered').length;
+    return (successful / activity.length) * 100;
+  }
+
+  /**
+   * Migrate existing business email data to new system
+   */
+  async migrateBusinessEmailData(userId) {
+    try {
+      Logger.info('Starting business email data migration for user:', userId);
+      
+      // Get existing invoices that likely had emails sent
+      const { data: invoices } = await supabase
+        .from('invoices')
+        .select(`
+          id,
+          invoice_number,
+          client_id,
+          status,
+          created_at,
+          updated_at,
+          clients(email, full_name)
+        `)
+        .eq('user_id', userId)
+        .in('status', ['sent', 'paid', 'overdue'])
+        .not('clients.email', 'is', null);
+
+      // Get existing quotes that likely had emails sent
+      const { data: quotes } = await supabase
+        .from('quotes')
+        .select(`
+          id,
+          quote_number,
+          client_id,
+          status,
+          created_at,
+          updated_at,
+          clients(email, full_name)
+        `)
+        .eq('user_id', userId)
+        .in('status', ['sent', 'accepted', 'rejected'])
+        .not('clients.email', 'is', null);
+
+      let migratedCount = 0;
+
+      // Migrate invoice email activities
+      for (const invoice of invoices || []) {
+        await this.logEmailActivity(userId, {
+          invoiceId: invoice.id,
+          clientId: invoice.client_id,
+          type: 'invoice_sent',
+          status: 'sent',
+          recipientEmail: invoice.clients.email,
+          subject: `Invoice ${invoice.invoice_number}`,
+          templateType: 'invoice',
+          details: {
+            migrated: true,
+            originalDate: invoice.updated_at || invoice.created_at,
+            invoice_status: invoice.status,
+          },
+          sentAt: invoice.updated_at || invoice.created_at,
+        });
+        migratedCount++;
+      }
+
+      // Migrate quote email activities
+      for (const quote of quotes || []) {
+        await this.logEmailActivity(userId, {
+          quoteId: quote.id,
+          clientId: quote.client_id,
+          type: 'quote_sent',
+          status: 'sent',
+          recipientEmail: quote.clients.email,
+          subject: `Quote ${quote.quote_number}`,
+          templateType: 'quote',
+          details: {
+            migrated: true,
+            originalDate: quote.updated_at || quote.created_at,
+            quote_status: quote.status,
+          },
+          sentAt: quote.updated_at || quote.created_at,
+        });
+        migratedCount++;
+      }
+
+      Logger.info(`Business email data migration completed. Migrated ${migratedCount} records.`);
+
+      return {
+        success: true,
+        migratedCount,
+        invoiceCount: invoices?.length || 0,
+        quoteCount: quotes?.length || 0,
+      };
+    } catch (error) {
+      Logger.error('Error migrating business email data:', error);
+      return {
+        success: false,
+        error: error.message,
+      };
+    }
+  }
+}
+
+export default EmailManagementService;

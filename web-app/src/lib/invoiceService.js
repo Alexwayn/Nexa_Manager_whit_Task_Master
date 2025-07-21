@@ -978,6 +978,145 @@ export class InvoiceService {
   }
 
   /**
+   * Send invoice email using business email integration
+   * @param {string} invoiceId - Invoice ID
+   * @param {string} userId - User ID
+   * @param {Object} emailOptions - Email sending options
+   * @returns {Promise<Object>} Email sending result
+   */
+  static async sendInvoiceEmail(invoiceId, userId, emailOptions = {}) {
+    try {
+      // Get invoice data
+      const invoice = await this.getInvoiceById(invoiceId, userId);
+      if (!invoice) {
+        throw new Error('Invoice not found');
+      }
+
+      const recipientEmail = emailOptions.to || invoice.client?.email;
+      if (!recipientEmail) {
+        throw new Error('No recipient email address provided');
+      }
+
+      // Use business email integration
+      const businessEmailIntegration = await import('./businessEmailIntegration.js');
+      const emailResult = await businessEmailIntegration.default.sendInvoiceEmail(
+        userId,
+        invoiceId,
+        recipientEmail,
+        {
+          templateId: emailOptions.template || 'invoice',
+          customMessage: emailOptions.customMessage,
+          emailType: emailOptions.emailType || 'invoice_sent',
+          useNewSystem: emailOptions.useNewSystem !== false,
+          attachPdf: emailOptions.attachPdf !== false,
+        }
+      );
+
+      if (emailResult.success) {
+        // Update invoice status if it was a draft
+        if (invoice.status === 'draft') {
+          await this.updateInvoice(invoiceId, { status: 'sent' }, null, userId);
+        }
+      }
+
+      return {
+        success: emailResult.success,
+        invoice: invoice,
+        emailResult: emailResult,
+        message: emailResult.success 
+          ? 'Invoice sent successfully'
+          : `Invoice email failed: ${emailResult.error}`,
+      };
+    } catch (error) {
+      Logger.error('InvoiceService.sendInvoiceEmail error:', error);
+      return {
+        success: false,
+        error: error.message,
+      };
+    }
+  }
+
+  /**
+   * Get invoice email history
+   * @param {string} invoiceId - Invoice ID
+   * @param {string} userId - User ID
+   * @returns {Promise<Object>} Email history for the invoice
+   */
+  static async getInvoiceEmailHistory(invoiceId, userId) {
+    try {
+      // Verify invoice exists and user has access
+      const invoice = await this.getInvoiceById(invoiceId, userId);
+      if (!invoice) {
+        throw new Error('Invoice not found');
+      }
+
+      // Get email history from business email logger
+      const businessEmailLogger = await import('./businessEmailLogger.js');
+      const historyResult = await businessEmailLogger.default.getDocumentEmailHistory(
+        userId, 
+        'invoice', 
+        invoiceId
+      );
+
+      return {
+        success: historyResult.success,
+        invoice: invoice,
+        emailHistory: historyResult.data || [],
+        message: historyResult.success 
+          ? 'Email history retrieved successfully'
+          : `Failed to get email history: ${historyResult.error}`,
+      };
+    } catch (error) {
+      Logger.error('InvoiceService.getInvoiceEmailHistory error:', error);
+      return {
+        success: false,
+        error: error.message,
+        emailHistory: [],
+      };
+    }
+  }
+
+  /**
+   * Get client invoice communication summary
+   * @param {string} clientId - Client ID
+   * @param {string} userId - User ID
+   * @returns {Promise<Object>} Invoice communication summary for client
+   */
+  static async getClientInvoiceCommunicationSummary(clientId, userId) {
+    try {
+      // Get client's invoices
+      const invoices = await this.getInvoices(userId, { client_id: clientId });
+
+      // Get email activity for this client's invoices
+      const clientEmailService = await import('./clientEmailService.js');
+      const emailHistory = await clientEmailService.default.getClientEmailHistory(
+        userId, 
+        clientId, 
+        { type: ['invoice_sent', 'payment_reminder', 'payment_confirmation'] }
+      );
+
+      return {
+        success: true,
+        data: {
+          invoices: invoices.invoices || [],
+          emailHistory: emailHistory.success ? emailHistory.data : [],
+          summary: {
+            totalInvoices: invoices.invoices?.length || 0,
+            totalEmails: emailHistory.success ? emailHistory.total : 0,
+            recentActivity: emailHistory.success ? emailHistory.data.slice(0, 5) : [],
+          },
+        },
+      };
+    } catch (error) {
+      Logger.error('InvoiceService.getClientInvoiceCommunicationSummary error:', error);
+      return {
+        success: false,
+        error: error.message,
+      };
+    }
+  }
+
+  /**
    * Get overdue invoices
    * @param {string} userId - User ID
    * @returns {Promise<Array>} Overdue invoices
@@ -1095,36 +1234,39 @@ export class InvoiceService {
 
       // Get invoice data for email
       const invoice = pdfResult.invoice;
+      const recipientEmail = emailOptions.to || invoice.client.email;
 
-      // Prepare email data
-      const emailData = {
-        to: emailOptions.to || invoice.client.email,
-        cc: emailOptions.cc || null,
-        bcc: emailOptions.bcc || null,
-        subject: emailOptions.subject || `Invoice ${invoice.invoice_number}`,
-        body: this.generateEmailBody(invoice, emailOptions),
-        attachments: [
-          {
-            filename: pdfResult.metadata.fileName,
-            content: pdfResult.pdf.base64,
-            encoding: 'base64',
-            contentType: 'application/pdf',
-          },
-        ],
-      };
+      if (!recipientEmail) {
+        throw new Error('No recipient email address provided');
+      }
 
-      // Send email (you'll need to implement email service)
-      // const emailResult = await EmailService.sendEmail(emailData);
+      // Use new business email integration
+      const businessEmailIntegration = await import('./businessEmailIntegration.js');
+      const emailResult = await businessEmailIntegration.default.sendInvoiceEmail(
+        userId,
+        invoiceId,
+        recipientEmail,
+        {
+          templateId: emailOptions.template || 'invoice',
+          customMessage: emailOptions.customMessage,
+          attachPdf: true,
+          useNewSystem: true,
+        }
+      );
 
-      // Update invoice status to 'sent'
-      await this.updateInvoiceStatus(invoiceId, INVOICE_STATUS.SENT, userId);
+      if (emailResult.success) {
+        // Update invoice status to 'sent'
+        await this.updateInvoiceStatus(invoiceId, INVOICE_STATUS.SENT, userId);
+      }
 
       return {
-        success: true,
+        success: emailResult.success,
         pdf: pdfResult.pdf,
         metadata: pdfResult.metadata,
-        // emailResult: emailResult,
-        message: 'Invoice generated and sent successfully',
+        emailResult: emailResult,
+        message: emailResult.success 
+          ? 'Invoice generated and sent successfully'
+          : `Invoice generated but email failed: ${emailResult.error}`,
       };
     } catch (error) {
       Logger.error('InvoiceService.generateAndEmailInvoicePDF error:', error);
@@ -1369,6 +1511,224 @@ export class InvoiceService {
     } catch (error) {
       Logger.error('InvoiceService.updateInvoiceStatus error:', error);
       throw error;
+    }
+  }
+}
+
+export default InvoiceService;
+  // ==================== EMAIL INTEGRATION METHODS ====================
+
+  /**
+   * Send invoice email using business email integration
+   * @param {string} invoiceId - Invoice ID
+   * @param {string} userId - User ID
+   * @param {Object} emailOptions - Email sending options
+   * @returns {Promise<Object>} Email sending result
+   */
+  static async sendInvoiceEmail(invoiceId, userId, emailOptions = {}) {
+    try {
+      // Get invoice data
+      const invoice = await this.getInvoiceById(invoiceId, userId);
+      if (!invoice) {
+        throw new Error('Invoice not found');
+      }
+
+      const recipientEmail = emailOptions.to || invoice.client?.email;
+      if (!recipientEmail) {
+        throw new Error('No recipient email address provided');
+      }
+
+      // Use business email integration
+      const businessEmailIntegration = await import('./businessEmailIntegration.js');
+      const emailResult = await businessEmailIntegration.default.sendInvoiceEmail(
+        userId,
+        invoiceId,
+        recipientEmail,
+        {
+          templateId: emailOptions.template || 'invoice',
+          customMessage: emailOptions.customMessage,
+          attachPdf: emailOptions.attachPdf !== false,
+          useNewSystem: emailOptions.useNewSystem !== false,
+          emailType: emailOptions.emailType || 'invoice_sent',
+        }
+      );
+
+      if (emailResult.success) {
+        // Update invoice status to 'sent' if it was draft
+        if (invoice.status === INVOICE_STATUS.DRAFT) {
+          await this.updateInvoice(invoiceId, { status: INVOICE_STATUS.SENT }, null, userId);
+        }
+      }
+
+      return {
+        success: emailResult.success,
+        invoice: invoice,
+        emailResult: emailResult,
+        message: emailResult.success 
+          ? 'Invoice sent successfully'
+          : `Invoice email failed: ${emailResult.error}`,
+      };
+    } catch (error) {
+      Logger.error('InvoiceService.sendInvoiceEmail error:', error);
+      return {
+        success: false,
+        error: error.message,
+      };
+    }
+  }
+
+  /**
+   * Send payment reminder email
+   * @param {string} invoiceId - Invoice ID
+   * @param {string} userId - User ID
+   * @param {string} reminderType - Type of reminder ('gentle', 'firm', 'final')
+   * @param {Object} options - Additional options
+   * @returns {Promise<Object>} Email sending result
+   */
+  static async sendPaymentReminder(invoiceId, userId, reminderType = 'gentle', options = {}) {
+    try {
+      // Get invoice data
+      const invoice = await this.getInvoiceById(invoiceId, userId);
+      if (!invoice) {
+        throw new Error('Invoice not found');
+      }
+
+      if (invoice.status === INVOICE_STATUS.PAID) {
+        throw new Error('Cannot send reminder for paid invoice');
+      }
+
+      const recipientEmail = options.to || invoice.client?.email;
+      if (!recipientEmail) {
+        throw new Error('No recipient email address provided');
+      }
+
+      // Use business email integration
+      const businessEmailIntegration = await import('./businessEmailIntegration.js');
+      const emailResult = await businessEmailIntegration.default.sendInvoiceEmail(
+        userId,
+        invoiceId,
+        recipientEmail,
+        {
+          templateId: `reminder_${reminderType}`,
+          customMessage: options.customMessage,
+          attachPdf: options.attachPdf !== false,
+          useNewSystem: options.useNewSystem !== false,
+          emailType: `reminder_${reminderType}`,
+        }
+      );
+
+      if (emailResult.success) {
+        // Update invoice status to overdue if past due date
+        const dueDate = new Date(invoice.due_date);
+        const today = new Date();
+        if (today > dueDate && invoice.status !== INVOICE_STATUS.OVERDUE) {
+          await this.updateInvoice(invoiceId, { status: INVOICE_STATUS.OVERDUE }, null, userId);
+        }
+      }
+
+      return {
+        success: emailResult.success,
+        invoice: invoice,
+        reminderType: reminderType,
+        emailResult: emailResult,
+        message: emailResult.success 
+          ? `${reminderType} reminder sent successfully`
+          : `Reminder email failed: ${emailResult.error}`,
+      };
+    } catch (error) {
+      Logger.error('InvoiceService.sendPaymentReminder error:', error);
+      return {
+        success: false,
+        error: error.message,
+      };
+    }
+  }
+
+  /**
+   * Generate and email invoice PDF
+   * @param {string} invoiceId - Invoice ID
+   * @param {string} userId - User ID
+   * @param {Object} emailOptions - Email options
+   * @returns {Promise<Object>} Result of PDF generation and email sending
+   */
+  static async generateAndEmailInvoicePDF(invoiceId, userId, emailOptions = {}) {
+    try {
+      // Get invoice data
+      const invoice = await this.getInvoiceById(invoiceId, userId);
+      if (!invoice) {
+        throw new Error('Invoice not found');
+      }
+
+      // Generate PDF using existing PDF service
+      const PDFGenerationService = await import('./pdfGenerationService.js');
+      const pdfResult = await PDFGenerationService.default.generateInvoicePDF(invoice);
+
+      if (!pdfResult.success) {
+        throw new Error(`PDF generation failed: ${pdfResult.error}`);
+      }
+
+      // Send email with PDF attachment
+      const emailResult = await this.sendInvoiceEmail(invoiceId, userId, {
+        ...emailOptions,
+        attachPdf: true,
+        pdfData: pdfResult.data,
+      });
+
+      return {
+        success: emailResult.success,
+        invoice: invoice,
+        pdfResult: pdfResult,
+        emailResult: emailResult,
+        message: emailResult.success 
+          ? 'Invoice PDF generated and sent successfully'
+          : `Invoice email failed: ${emailResult.error}`,
+      };
+    } catch (error) {
+      Logger.error('InvoiceService.generateAndEmailInvoicePDF error:', error);
+      return {
+        success: false,
+        error: error.message,
+      };
+    }
+  }
+
+  /**
+   * Get invoice email history
+   * @param {string} invoiceId - Invoice ID
+   * @param {string} userId - User ID
+   * @returns {Promise<Object>} Email history for the invoice
+   */
+  static async getInvoiceEmailHistory(invoiceId, userId) {
+    try {
+      // Verify invoice exists and user has access
+      const invoice = await this.getInvoiceById(invoiceId, userId);
+      if (!invoice) {
+        throw new Error('Invoice not found');
+      }
+
+      // Get email history from business email logger
+      const businessEmailLogger = await import('./businessEmailLogger.js');
+      const historyResult = await businessEmailLogger.default.getDocumentEmailHistory(
+        userId, 
+        'invoice', 
+        invoiceId
+      );
+
+      return {
+        success: historyResult.success,
+        invoice: invoice,
+        emailHistory: historyResult.data || [],
+        message: historyResult.success 
+          ? 'Email history retrieved successfully'
+          : `Failed to get email history: ${historyResult.error}`,
+      };
+    } catch (error) {
+      Logger.error('InvoiceService.getInvoiceEmailHistory error:', error);
+      return {
+        success: false,
+        error: error.message,
+        emailHistory: [],
+      };
     }
   }
 }

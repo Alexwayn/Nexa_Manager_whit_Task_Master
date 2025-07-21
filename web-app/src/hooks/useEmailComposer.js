@@ -1,15 +1,24 @@
 import { useState, useEffect, useCallback } from 'react';
 import emailManagementService from '@lib/emailManagementService';
 import emailAttachmentService from '@lib/emailAttachmentService';
-import { useAuth } from '@clerk/clerk-react';
+import { useAuth } from '@context/AuthContext';
+import { useEmailContext } from '@context/EmailContext';
 import Logger from '@utils/Logger';
 
 /**
- * Custom hook for email composition functionality
- * Handles email data, validation, drafts, and sending
+ * Enhanced custom hook for email composition functionality
+ * Handles email data, validation, drafts, and sending with context integration
  */
 export const useEmailComposer = (initialData = {}) => {
-  const { userId } = useAuth();
+  const { user } = useAuth();
+  const {
+    composerOpen,
+    composerData,
+    openComposer,
+    closeComposer,
+    setComposerData,
+    addNotification,
+  } = useEmailContext();
   
   const [emailData, setEmailData] = useState({
     to: '',
@@ -127,10 +136,20 @@ export const useEmailComposer = (initialData = {}) => {
 
   // Load draft if draftId is provided
   useEffect(() => {
-    if (draftId && userId) {
+    if (draftId && user?.id) {
       loadDraft(draftId);
     }
-  }, [draftId, userId]);
+  }, [draftId, user?.id]);
+
+  // Initialize with composer data from context
+  useEffect(() => {
+    if (composerData && composerOpen) {
+      setEmailData(prev => ({
+        ...prev,
+        ...composerData,
+      }));
+    }
+  }, [composerData, composerOpen]);
 
   /**
    * Load draft from storage
@@ -180,7 +199,7 @@ export const useEmailComposer = (initialData = {}) => {
    */
   const saveDraft = async (data = emailData, isAutoSave = false) => {
     try {
-      if (!userId) return { success: false, error: 'User not authenticated' };
+      if (!user?.id) return { success: false, error: 'User not authenticated' };
 
       // Don't save empty drafts
       if (!data.to && !data.subject && !data.html && !data.text) {
@@ -231,12 +250,12 @@ export const useEmailComposer = (initialData = {}) => {
         result = await emailManagementService.updateEmail?.(draftId, userId, draftData);
       } else {
         // Create new draft
-        result = await emailManagementService.storeDraft?.(userId, draftData);
+        result = await emailManagementService.storeDraft?.(user.id, draftData);
       }
 
       // Fallback to generic email storage if draft-specific methods don't exist
       if (!result) {
-        result = await emailManagementService.sendEmail(userId, {
+        result = await emailManagementService.sendEmail(user.id, {
           ...draftData,
           isDraft: true,
         });
@@ -270,7 +289,7 @@ export const useEmailComposer = (initialData = {}) => {
    */
   const sendEmail = async (data = emailData) => {
     try {
-      if (!userId) return { success: false, error: 'User not authenticated' };
+      if (!user?.id) return { success: false, error: 'User not authenticated' };
 
       // Validate before sending
       if (!validateEmail()) {
@@ -309,12 +328,12 @@ export const useEmailComposer = (initialData = {}) => {
         labels: data.labels || [],
       };
 
-      const result = await emailManagementService.sendEmail(userId, emailToSend);
+      const result = await emailManagementService.sendEmail(user.id, emailToSend);
 
       if (result.success) {
         // Clean up draft if it exists
         if (draftId) {
-          await emailManagementService.deleteEmail(draftId, userId, true);
+          await emailManagementService.deleteEmail(draftId, user.id, true);
         }
 
         // Clean up attachments
@@ -322,10 +341,33 @@ export const useEmailComposer = (initialData = {}) => {
           emailAttachmentService.deleteAttachment(att.id);
         });
 
+        // Add success notification
+        addNotification({
+          id: `email_sent_${Date.now()}`,
+          type: 'success',
+          title: 'Email Sent',
+          message: `Email sent to ${data.to}`,
+          timestamp: new Date(),
+          read: false,
+        });
+
+        // Close composer
+        closeComposer();
+
         Logger.info('Email sent successfully', { 
           messageId: result.messageId,
           to: data.to,
           subject: data.subject,
+        });
+      } else {
+        // Add error notification
+        addNotification({
+          id: `email_error_${Date.now()}`,
+          type: 'error',
+          title: 'Email Send Failed',
+          message: result.error || 'Failed to send email',
+          timestamp: new Date(),
+          read: false,
         });
       }
 
@@ -365,6 +407,9 @@ export const useEmailComposer = (initialData = {}) => {
       clearTimeout(autoSaveTimeout);
       setAutoSaveTimeout(null);
     }
+
+    // Update context
+    setComposerData(null);
   };
 
   /**
@@ -449,6 +494,7 @@ export const useEmailComposer = (initialData = {}) => {
     errors,
     loading,
     lastSaved,
+    composerOpen,
 
     // Actions
     validateEmail,
@@ -461,6 +507,8 @@ export const useEmailComposer = (initialData = {}) => {
     addLabel,
     removeLabel,
     loadDraft,
+    openComposer,
+    closeComposer,
 
     // Computed values
     hasUnsavedChanges: isDraft && lastSaved && (Date.now() - lastSaved.getTime() > 10000), // 10 seconds
