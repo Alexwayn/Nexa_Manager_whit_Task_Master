@@ -75,7 +75,7 @@ class EmailTemplateService {
       const { data, error } = await supabase
         .from('email_templates')
         .select('*')
-        .eq('organization_id', organizationId || 'default')
+        .or(`user_id.eq.${supabase.auth.user()?.id},is_system.eq.true`)
         .order('created_at', { ascending: false });
 
       if (error) throw error;
@@ -101,15 +101,20 @@ class EmailTemplateService {
    */
   async saveTemplate(templateData) {
     try {
+      const currentUser = supabase.auth.user();
+      if (!currentUser) {
+        throw new Error('User not authenticated');
+      }
+
       const template = {
         name: templateData.name,
         description: templateData.description || '',
         subject: templateData.subject || '',
-        html_content: this.optimizeForEmail(templateData.htmlContent),
-        text_content: this.htmlToText(templateData.htmlContent),
+        content_html: this.optimizeForEmail(templateData.htmlContent),
+        content_text: this.htmlToText(templateData.htmlContent),
         variables: templateData.variables || [],
         category: templateData.category || 'custom',
-        organization_id: templateData.organizationId || 'default',
+        user_id: currentUser.id,
         is_active: true,
         updated_at: new Date().toISOString(),
       };
@@ -121,6 +126,7 @@ class EmailTemplateService {
           .from('email_templates')
           .update(template)
           .eq('id', templateData.id)
+          .eq('user_id', currentUser.id) // Ensure user can only update their own templates
           .select()
           .single();
       } else {
@@ -152,7 +158,17 @@ class EmailTemplateService {
    */
   async deleteTemplate(templateId) {
     try {
-      const { error } = await supabase.from('email_templates').delete().eq('id', templateId);
+      const currentUser = supabase.auth.user();
+      if (!currentUser) {
+        throw new Error('User not authenticated');
+      }
+
+      const { error } = await supabase
+        .from('email_templates')
+        .delete()
+        .eq('id', templateId)
+        .eq('user_id', currentUser.id) // Ensure user can only delete their own templates
+        .eq('is_system', false); // Prevent deletion of system templates
 
       if (error) throw error;
 
@@ -175,8 +191,8 @@ class EmailTemplateService {
   renderTemplate(template, variables = {}) {
     try {
       let subject = template.subject || '';
-      let htmlContent = template.html_content || template.html || '';
-      let textContent = template.text_content || '';
+      let htmlContent = template.content_html || template.html_content || template.html || '';
+      let textContent = template.content_text || template.text_content || '';
 
       // Replace variables in subject
       subject = this.replaceVariables(subject, variables);

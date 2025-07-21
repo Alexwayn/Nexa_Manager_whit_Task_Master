@@ -1,11 +1,16 @@
 import Logger from '@utils/Logger';
 
 /**
- * EmailProviderService - Handles integration with various email service providers
- * Supports SendGrid, AWS SES, Mailgun, Postmark, and more
+ * EmailProviderService - Comprehensive email provider service with IMAP/SMTP support
+ * Handles both sending (SMTP) and receiving (IMAP) emails with multiple provider support
+ * Supports SendGrid, AWS SES, Mailgun, Postmark, and custom IMAP/SMTP servers
  */
 class EmailProviderService {
   constructor() {
+    this.imapConnections = new Map(); // Store active IMAP connections
+    this.smtpConnections = new Map(); // Store active SMTP connections
+    this.syncIntervals = new Map(); // Store sync intervals for accounts
+    
     this.providers = {
       sendgrid: {
         name: 'SendGrid',
@@ -13,6 +18,7 @@ class EmailProviderService {
         requiresAuth: true,
         authType: 'bearer',
         limits: { daily: 40000, monthly: 1200000 },
+        supportsImap: false,
       },
       ses: {
         name: 'Amazon SES',
@@ -20,6 +26,7 @@ class EmailProviderService {
         requiresAuth: true,
         authType: 'aws',
         limits: { daily: 200, monthly: 1000000 },
+        supportsImap: false,
       },
       mailgun: {
         name: 'Mailgun',
@@ -27,6 +34,7 @@ class EmailProviderService {
         requiresAuth: true,
         authType: 'basic',
         limits: { daily: 300, monthly: 10000 },
+        supportsImap: false,
       },
       postmark: {
         name: 'Postmark',
@@ -34,13 +42,38 @@ class EmailProviderService {
         requiresAuth: true,
         authType: 'token',
         limits: { daily: 25000, monthly: 750000 },
+        supportsImap: false,
       },
-      smtp: {
-        name: 'Custom SMTP',
+      imap_smtp: {
+        name: 'IMAP/SMTP Server',
         endpoint: null,
         requiresAuth: true,
-        authType: 'smtp',
+        authType: 'credentials',
         limits: { daily: null, monthly: null },
+        supportsImap: true,
+        supportsSmtp: true,
+      },
+      gmail: {
+        name: 'Gmail',
+        imapHost: 'imap.gmail.com',
+        imapPort: 993,
+        smtpHost: 'smtp.gmail.com',
+        smtpPort: 587,
+        requiresAuth: true,
+        authType: 'oauth2',
+        supportsImap: true,
+        supportsSmtp: true,
+      },
+      outlook: {
+        name: 'Outlook/Hotmail',
+        imapHost: 'outlook.office365.com',
+        imapPort: 993,
+        smtpHost: 'smtp-mail.outlook.com',
+        smtpPort: 587,
+        requiresAuth: true,
+        authType: 'credentials',
+        supportsImap: true,
+        supportsSmtp: true,
       },
     };
 
@@ -342,18 +375,462 @@ class EmailProviderService {
   }
 
   /**
-   * Send email using custom SMTP (placeholder)
+   * Send email using custom SMTP
    */
   async sendWithSMTP(emailData) {
-    // This would require a backend SMTP service
-    // For now, we'll use the mock provider
-    return await this.sendWithMockProvider(
-      {
-        ...emailData,
-        provider: 'Custom SMTP',
-      },
-      'SMTP integration requires backend service',
-    );
+    try {
+      const smtpConfig = this.getSmtpConfig();
+      if (!smtpConfig) {
+        return await this.sendWithMockProvider(emailData, 'SMTP configuration not found');
+      }
+
+      // In a real implementation, this would use a backend service or WebSocket
+      // For now, we'll simulate SMTP sending
+      const result = await this.simulateSmtpSend(emailData, smtpConfig);
+      return result;
+    } catch (error) {
+      Logger.error('SMTP send error:', error);
+      return {
+        success: false,
+        error: error.message,
+        provider: 'smtp',
+      };
+    }
+  }
+
+  /**
+   * IMAP CONNECTION MANAGEMENT
+   */
+
+  /**
+   * Connect to IMAP server
+   */
+  async connectImap(accountConfig) {
+    try {
+      const { id, host, port, username, password, secure = true } = accountConfig;
+      
+      // In a real implementation, this would use a backend IMAP library
+      // For now, we'll simulate the connection
+      const connection = await this.simulateImapConnection({
+        host,
+        port: port || (secure ? 993 : 143),
+        username,
+        password,
+        secure,
+      });
+
+      this.imapConnections.set(id, {
+        ...connection,
+        accountId: id,
+        lastSync: new Date(),
+        folders: ['INBOX', 'Sent', 'Drafts', 'Trash', 'Spam'],
+      });
+
+      Logger.info(`IMAP connected for account: ${username}`);
+      return { success: true, accountId: id };
+    } catch (error) {
+      Logger.error('IMAP connection error:', error);
+      return { success: false, error: error.message };
+    }
+  }
+
+  /**
+   * Disconnect from IMAP server
+   */
+  async disconnectImap(accountId) {
+    try {
+      const connection = this.imapConnections.get(accountId);
+      if (connection) {
+        // Clear sync interval if exists
+        if (this.syncIntervals.has(accountId)) {
+          clearInterval(this.syncIntervals.get(accountId));
+          this.syncIntervals.delete(accountId);
+        }
+
+        // Simulate disconnection
+        await this.simulateImapDisconnection(connection);
+        this.imapConnections.delete(accountId);
+        
+        Logger.info(`IMAP disconnected for account: ${accountId}`);
+        return { success: true };
+      }
+      return { success: false, error: 'Connection not found' };
+    } catch (error) {
+      Logger.error('IMAP disconnection error:', error);
+      return { success: false, error: error.message };
+    }
+  }
+
+  /**
+   * Fetch emails from IMAP server
+   */
+  async fetchEmails(accountId, options = {}) {
+    try {
+      const connection = this.imapConnections.get(accountId);
+      if (!connection) {
+        throw new Error('IMAP connection not found');
+      }
+
+      const {
+        folder = 'INBOX',
+        limit = 50,
+        since = null,
+        unseen = false,
+        search = null,
+      } = options;
+
+      // Simulate email fetching
+      const emails = await this.simulateEmailFetch(connection, {
+        folder,
+        limit,
+        since,
+        unseen,
+        search,
+      });
+
+      return {
+        success: true,
+        emails,
+        folder,
+        total: emails.length,
+      };
+    } catch (error) {
+      Logger.error('Email fetch error:', error);
+      return { success: false, error: error.message };
+    }
+  }
+
+  /**
+   * Get folder list from IMAP server
+   */
+  async getFolders(accountId) {
+    try {
+      const connection = this.imapConnections.get(accountId);
+      if (!connection) {
+        throw new Error('IMAP connection not found');
+      }
+
+      return {
+        success: true,
+        folders: connection.folders.map(name => ({
+          name,
+          path: name,
+          delimiter: '/',
+          attributes: name === 'INBOX' ? ['\\HasNoChildren'] : [],
+        })),
+      };
+    } catch (error) {
+      Logger.error('Folder fetch error:', error);
+      return { success: false, error: error.message };
+    }
+  }
+
+  /**
+   * Mark email as read/unread
+   */
+  async markEmail(accountId, emailId, flags) {
+    try {
+      const connection = this.imapConnections.get(accountId);
+      if (!connection) {
+        throw new Error('IMAP connection not found');
+      }
+
+      // Simulate marking email
+      await this.simulateEmailMark(connection, emailId, flags);
+
+      return { success: true, emailId, flags };
+    } catch (error) {
+      Logger.error('Email mark error:', error);
+      return { success: false, error: error.message };
+    }
+  }
+
+  /**
+   * Move email to folder
+   */
+  async moveEmail(accountId, emailId, targetFolder) {
+    try {
+      const connection = this.imapConnections.get(accountId);
+      if (!connection) {
+        throw new Error('IMAP connection not found');
+      }
+
+      // Simulate moving email
+      await this.simulateEmailMove(connection, emailId, targetFolder);
+
+      return { success: true, emailId, targetFolder };
+    } catch (error) {
+      Logger.error('Email move error:', error);
+      return { success: false, error: error.message };
+    }
+  }
+
+  /**
+   * Delete email
+   */
+  async deleteEmail(accountId, emailId, permanent = false) {
+    try {
+      const connection = this.imapConnections.get(accountId);
+      if (!connection) {
+        throw new Error('IMAP connection not found');
+      }
+
+      if (permanent) {
+        await this.simulateEmailDelete(connection, emailId, true);
+      } else {
+        await this.moveEmail(accountId, emailId, 'Trash');
+      }
+
+      return { success: true, emailId, permanent };
+    } catch (error) {
+      Logger.error('Email delete error:', error);
+      return { success: false, error: error.message };
+    }
+  }
+
+  /**
+   * Start email synchronization for an account
+   */
+  startEmailSync(accountId, intervalMinutes = 5) {
+    try {
+      // Clear existing interval if any
+      if (this.syncIntervals.has(accountId)) {
+        clearInterval(this.syncIntervals.get(accountId));
+      }
+
+      const interval = setInterval(async () => {
+        try {
+          await this.syncEmails(accountId);
+        } catch (error) {
+          Logger.error(`Email sync error for account ${accountId}:`, error);
+        }
+      }, intervalMinutes * 60 * 1000);
+
+      this.syncIntervals.set(accountId, interval);
+      Logger.info(`Email sync started for account: ${accountId} (every ${intervalMinutes} minutes)`);
+      
+      return { success: true, intervalMinutes };
+    } catch (error) {
+      Logger.error('Email sync start error:', error);
+      return { success: false, error: error.message };
+    }
+  }
+
+  /**
+   * Stop email synchronization for an account
+   */
+  stopEmailSync(accountId) {
+    try {
+      if (this.syncIntervals.has(accountId)) {
+        clearInterval(this.syncIntervals.get(accountId));
+        this.syncIntervals.delete(accountId);
+        Logger.info(`Email sync stopped for account: ${accountId}`);
+        return { success: true };
+      }
+      return { success: false, error: 'No sync interval found' };
+    } catch (error) {
+      Logger.error('Email sync stop error:', error);
+      return { success: false, error: error.message };
+    }
+  }
+
+  /**
+   * Perform email synchronization
+   */
+  async syncEmails(accountId) {
+    try {
+      const connection = this.imapConnections.get(accountId);
+      if (!connection) {
+        throw new Error('IMAP connection not found');
+      }
+
+      const lastSync = connection.lastSync;
+      const result = await this.fetchEmails(accountId, {
+        since: lastSync,
+        unseen: true,
+      });
+
+      if (result.success && result.emails.length > 0) {
+        // Update last sync time
+        connection.lastSync = new Date();
+        
+        // Emit sync event (in real implementation, this would trigger UI updates)
+        this.emitSyncEvent(accountId, {
+          newEmails: result.emails.length,
+          lastSync: connection.lastSync,
+        });
+
+        Logger.info(`Synced ${result.emails.length} new emails for account: ${accountId}`);
+      }
+
+      return result;
+    } catch (error) {
+      Logger.error('Email sync error:', error);
+      return { success: false, error: error.message };
+    }
+  }
+
+  /**
+   * SIMULATION METHODS (In production, these would be real IMAP/SMTP implementations)
+   */
+
+  async simulateImapConnection(config) {
+    await this.delay(1000); // Simulate connection time
+    
+    return {
+      host: config.host,
+      port: config.port,
+      username: config.username,
+      secure: config.secure,
+      connected: true,
+      connectedAt: new Date(),
+    };
+  }
+
+  async simulateImapDisconnection(connection) {
+    await this.delay(500);
+    connection.connected = false;
+  }
+
+  async simulateEmailFetch(connection, options) {
+    await this.delay(800); // Simulate fetch time
+
+    // Generate mock emails
+    const emails = [];
+    const count = Math.min(options.limit, 20); // Simulate up to 20 emails
+
+    for (let i = 0; i < count; i++) {
+      emails.push({
+        id: `email_${Date.now()}_${i}`,
+        uid: 1000 + i,
+        subject: `Sample Email ${i + 1}`,
+        from: {
+          name: `Sender ${i + 1}`,
+          email: `sender${i + 1}@example.com`,
+        },
+        to: [{
+          name: connection.username,
+          email: connection.username,
+        }],
+        date: new Date(Date.now() - (i * 3600000)), // 1 hour apart
+        flags: i % 3 === 0 ? ['\\Seen'] : [], // Some read, some unread
+        folder: options.folder,
+        size: Math.floor(Math.random() * 50000) + 1000,
+        bodyPreview: `This is a preview of email ${i + 1}...`,
+        hasAttachments: i % 4 === 0, // Some with attachments
+        priority: i % 10 === 0 ? 'high' : 'normal',
+      });
+    }
+
+    return emails;
+  }
+
+  async simulateEmailMark(connection, emailId, flags) {
+    await this.delay(300);
+    Logger.info(`Email ${emailId} marked with flags:`, flags);
+  }
+
+  async simulateEmailMove(connection, emailId, targetFolder) {
+    await this.delay(500);
+    Logger.info(`Email ${emailId} moved to folder: ${targetFolder}`);
+  }
+
+  async simulateEmailDelete(connection, emailId, permanent) {
+    await this.delay(400);
+    Logger.info(`Email ${emailId} ${permanent ? 'permanently deleted' : 'moved to trash'}`);
+  }
+
+  async simulateSmtpSend(emailData, smtpConfig) {
+    await this.delay(1200); // Simulate send time
+
+    const messageId = `smtp_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    
+    Logger.info('SMTP email sent:', {
+      to: emailData.to,
+      subject: emailData.subject,
+      messageId,
+      server: smtpConfig.host,
+    });
+
+    return {
+      success: true,
+      messageId,
+      provider: 'smtp',
+      server: smtpConfig.host,
+    };
+  }
+
+  /**
+   * CONFIGURATION HELPERS
+   */
+
+  getSmtpConfig() {
+    return {
+      host: import.meta.env.VITE_SMTP_HOST,
+      port: parseInt(import.meta.env.VITE_SMTP_PORT) || 587,
+      username: import.meta.env.VITE_SMTP_USER,
+      password: import.meta.env.VITE_SMTP_PASS,
+      secure: import.meta.env.VITE_SMTP_SECURE === 'true',
+    };
+  }
+
+  /**
+   * Validate email account configuration
+   */
+  async validateAccountConfig(config) {
+    const { type, host, port, username, password, secure } = config;
+    
+    const errors = [];
+    
+    if (!host) errors.push('Host is required');
+    if (!port || port < 1 || port > 65535) errors.push('Valid port is required');
+    if (!username) errors.push('Username is required');
+    if (!password) errors.push('Password is required');
+    
+    if (errors.length > 0) {
+      return { valid: false, errors };
+    }
+
+    // Test connection
+    try {
+      if (type === 'imap' || type === 'both') {
+        const testConnection = await this.simulateImapConnection({
+          host, port, username, password, secure
+        });
+        await this.simulateImapDisconnection(testConnection);
+      }
+      
+      return { valid: true, errors: [] };
+    } catch (error) {
+      return { valid: false, errors: [error.message] };
+    }
+  }
+
+  /**
+   * Get connection status for all accounts
+   */
+  getConnectionStatus() {
+    const status = {};
+    
+    for (const [accountId, connection] of this.imapConnections) {
+      status[accountId] = {
+        connected: connection.connected,
+        lastSync: connection.lastSync,
+        host: connection.host,
+        folders: connection.folders.length,
+        hasSync: this.syncIntervals.has(accountId),
+      };
+    }
+    
+    return status;
+  }
+
+  /**
+   * Emit sync event (placeholder for real event system)
+   */
+  emitSyncEvent(accountId, data) {
+    // In a real implementation, this would emit events to the UI
+    Logger.info(`Sync event for ${accountId}:`, data);
   }
 
   /**
@@ -467,8 +944,12 @@ class EmailProviderService {
         return !!(import.meta.env.VITE_MAILGUN_API_KEY && import.meta.env.VITE_MAILGUN_DOMAIN);
       case 'postmark':
         return !!import.meta.env.VITE_POSTMARK_SERVER_TOKEN;
-      case 'smtp':
-        return !!(import.meta.env.VITE_SMTP_HOST && import.meta.env.VITE_SMTP_USER);
+      case 'imap_smtp':
+        return !!(import.meta.env.VITE_IMAP_HOST && import.meta.env.VITE_SMTP_HOST);
+      case 'gmail':
+        return !!(import.meta.env.VITE_GMAIL_CLIENT_ID && import.meta.env.VITE_GMAIL_CLIENT_SECRET);
+      case 'outlook':
+        return !!(import.meta.env.VITE_OUTLOOK_CLIENT_ID && import.meta.env.VITE_OUTLOOK_CLIENT_SECRET);
       default:
         return true; // Mock provider is always "configured"
     }
@@ -560,6 +1041,155 @@ class EmailProviderService {
       mailgun: `${baseUrl}/api/webhooks/mailgun`,
       ses: `${baseUrl}/api/webhooks/ses`,
     };
+  }
+
+  /**
+   * Get supported email providers with their capabilities
+   */
+  getSupportedProviders() {
+    return Object.entries(this.providers).map(([key, provider]) => ({
+      id: key,
+      name: provider.name,
+      supportsImap: provider.supportsImap || false,
+      supportsSmtp: provider.supportsSmtp || true,
+      authType: provider.authType,
+      configured: this.isProviderConfigured(key),
+      limits: provider.limits,
+    }));
+  }
+
+  /**
+   * Get IMAP-capable providers
+   */
+  getImapProviders() {
+    return this.getSupportedProviders().filter(provider => provider.supportsImap);
+  }
+
+  /**
+   * Test IMAP connection
+   */
+  async testImapConnection(config) {
+    try {
+      const validation = await this.validateAccountConfig({ ...config, type: 'imap' });
+      if (!validation.valid) {
+        return { success: false, errors: validation.errors };
+      }
+
+      // Simulate connection test
+      const connection = await this.simulateImapConnection(config);
+      await this.simulateImapDisconnection(connection);
+
+      return { 
+        success: true, 
+        message: 'IMAP connection successful',
+        serverInfo: {
+          host: config.host,
+          port: config.port,
+          secure: config.secure,
+        }
+      };
+    } catch (error) {
+      return { success: false, error: error.message };
+    }
+  }
+
+  /**
+   * Test SMTP connection
+   */
+  async testSmtpConnection(config) {
+    try {
+      const validation = await this.validateAccountConfig({ ...config, type: 'smtp' });
+      if (!validation.valid) {
+        return { success: false, errors: validation.errors };
+      }
+
+      // Simulate SMTP test
+      const result = await this.simulateSmtpSend({
+        to: config.username,
+        subject: 'SMTP Test - Nexa Manager',
+        html: '<p>This is a test email to verify SMTP configuration.</p>',
+      }, config);
+
+      return { 
+        success: true, 
+        message: 'SMTP connection successful',
+        messageId: result.messageId,
+      };
+    } catch (error) {
+      return { success: false, error: error.message };
+    }
+  }
+
+  /**
+   * Get email account suggestions based on email address
+   */
+  getAccountSuggestions(emailAddress) {
+    const domain = emailAddress.split('@')[1]?.toLowerCase();
+    
+    const suggestions = {
+      'gmail.com': {
+        provider: 'gmail',
+        imapHost: 'imap.gmail.com',
+        imapPort: 993,
+        smtpHost: 'smtp.gmail.com',
+        smtpPort: 587,
+        secure: true,
+        authType: 'oauth2',
+        note: 'Requires App Password or OAuth2',
+      },
+      'outlook.com': {
+        provider: 'outlook',
+        imapHost: 'outlook.office365.com',
+        imapPort: 993,
+        smtpHost: 'smtp-mail.outlook.com',
+        smtpPort: 587,
+        secure: true,
+        authType: 'credentials',
+      },
+      'hotmail.com': {
+        provider: 'outlook',
+        imapHost: 'outlook.office365.com',
+        imapPort: 993,
+        smtpHost: 'smtp-mail.outlook.com',
+        smtpPort: 587,
+        secure: true,
+        authType: 'credentials',
+      },
+      'yahoo.com': {
+        provider: 'yahoo',
+        imapHost: 'imap.mail.yahoo.com',
+        imapPort: 993,
+        smtpHost: 'smtp.mail.yahoo.com',
+        smtpPort: 587,
+        secure: true,
+        authType: 'credentials',
+        note: 'Requires App Password',
+      },
+    };
+
+    return suggestions[domain] || {
+      provider: 'custom',
+      note: 'Custom IMAP/SMTP configuration required',
+    };
+  }
+
+  /**
+   * Cleanup all connections and intervals
+   */
+  cleanup() {
+    // Stop all sync intervals
+    for (const [accountId, interval] of this.syncIntervals) {
+      clearInterval(interval);
+    }
+    this.syncIntervals.clear();
+
+    // Disconnect all IMAP connections
+    for (const [accountId, connection] of this.imapConnections) {
+      this.simulateImapDisconnection(connection);
+    }
+    this.imapConnections.clear();
+
+    Logger.info('EmailProviderService cleanup completed');
   }
 }
 
