@@ -28,6 +28,7 @@ const ProfileForm = lazy(() => import('@pages/ProfileForm'));
 const Scan = lazy(() => import('@pages/Scan'));
 const Voice = lazy(() => import('@pages/Voice'));
 const OrganizationManagement = lazy(() => import('@pages/OrganizationManagement'));
+const EmailAnalyticsPage = lazy(() => import('@pages/EmailAnalyticsPage'));
 
 // Testing components - also lazy loaded for better performance
 const TestRoute = lazy(() => import('@components/shared/TestRoute'));
@@ -180,6 +181,16 @@ export const mainRoutes = [
     element: Email,
     name: 'Email',
     category: 'communication',
+  },
+  {
+    path: '/email/analytics',
+    element: EmailAnalyticsPage,
+    name: 'Email Analytics',
+    category: 'communication',
+    authConfig: {
+      organizationRequired: true,
+      requiredPermissions: ['view_analytics'],
+    },
   },
   {
     path: '/scan',

@@ -1,8 +1,27 @@
 import React from 'react';
-import { cn } from '@utils/cn';
+import { cn } from '@/utils/cn';
 import { ButtonText } from './Typography';
 
-export const Button = ({
+const buttonVariants = {
+  default: 'bg-primary text-primary-foreground hover:bg-primary/90',
+  primary: 'bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500 shadow-sm hover:shadow-md',
+  secondary: 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 focus:ring-blue-500 shadow-sm hover:shadow-md',
+  outline: 'bg-transparent text-blue-600 border border-blue-600 hover:bg-blue-50 focus:ring-blue-500',
+  ghost: 'bg-transparent text-gray-700 hover:bg-gray-100 focus:ring-gray-500',
+  danger: 'bg-red-600 text-white hover:bg-red-700 focus:ring-red-500 shadow-sm hover:shadow-md',
+  success: 'bg-green-600 text-white hover:bg-green-700 focus:ring-green-500 shadow-sm hover:shadow-md',
+  destructive: 'bg-red-600 text-white hover:bg-red-700 focus:ring-red-500 shadow-sm hover:shadow-md',
+  link: 'text-primary underline-offset-4 hover:underline',
+};
+
+const buttonSizes = {
+  sm: 'px-3 py-2 text-button gap-2 h-9',
+  default: 'px-4 py-2.5 text-button gap-2 h-10',
+  lg: 'px-6 py-3 text-button-large gap-3 h-11',
+  icon: 'h-10 w-10',
+};
+
+export const Button = React.forwardRef(({
   variant = 'primary',
   size = 'default',
   className,
@@ -11,29 +30,11 @@ export const Button = ({
   loading = false,
   icon: Icon,
   iconPosition = 'left',
+  asChild = false,
   ...props
-}) => {
+}, ref) => {
   const baseStyles =
-    'inline-flex items-center justify-center rounded-lg font-semibold transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed';
-
-  const variants = {
-    primary:
-      'bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500 shadow-sm hover:shadow-md',
-    secondary:
-      'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 focus:ring-blue-500 shadow-sm hover:shadow-md',
-    outline:
-      'bg-transparent text-blue-600 border border-blue-600 hover:bg-blue-50 focus:ring-blue-500',
-    ghost: 'bg-transparent text-gray-700 hover:bg-gray-100 focus:ring-gray-500',
-    danger: 'bg-red-600 text-white hover:bg-red-700 focus:ring-red-500 shadow-sm hover:shadow-md',
-    success:
-      'bg-green-600 text-white hover:bg-green-700 focus:ring-green-500 shadow-sm hover:shadow-md',
-  };
-
-  const sizes = {
-    sm: 'px-3 py-2 text-button gap-2',
-    default: 'px-4 py-2.5 text-button gap-2',
-    lg: 'px-6 py-3 text-button-large gap-3',
-  };
+    'inline-flex items-center justify-center rounded-lg font-semibold transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2';
 
   const iconSizes = {
     sm: 'w-4 h-4',
@@ -52,19 +53,24 @@ export const Button = ({
     </svg>
   );
 
+  const Comp = asChild ? 'span' : 'button';
+
   return (
-    <button
-      className={cn(baseStyles, variants[variant], sizes[size], className)}
+    <Comp
+      className={cn(baseStyles, buttonVariants[variant], buttonSizes[size], className)}
       disabled={disabled || loading}
+      ref={ref}
       {...props}
     >
       {loading && <LoadingSpinner />}
       {!loading && Icon && iconPosition === 'left' && <Icon className={iconSizes[size]} />}
       {children}
       {!loading && Icon && iconPosition === 'right' && <Icon className={iconSizes[size]} />}
-    </button>
+    </Comp>
   );
-};
+});
+
+Button.displayName = 'Button';
 
 // Icon button variant
 export const IconButton = ({

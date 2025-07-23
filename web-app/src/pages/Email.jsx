@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import Footer from '@components/shared/Footer';
@@ -30,15 +30,22 @@ import {
   ClockIcon,
 } from '@heroicons/react/24/outline';
 import { StarIcon as StarSolidIcon, CheckIcon } from '@heroicons/react/24/solid';
-import { useEmailContext } from '@context/EmailContext';
-import { useEmails } from '@hooks/useEmails';
-import { useEmailComposer } from '@hooks/useEmailComposer';
-import EmailComposer from '@components/email/EmailComposer';
-import EmailSettings from '@components/email/EmailSettings';
-import EmailSecuritySettings from '@components/EmailSecuritySettings';
-import EmailSecurityIndicator from '@components/EmailSecurityIndicator';
-import AutomationDashboard from '@components/email/AutomationDashboard';
-import emailManagementService from '@lib/emailManagementService';
+import { useEmailContext } from '../context/EmailContext';
+import { useEmails } from '../hooks/useEmails';
+import { useEmailComposer } from '../hooks/useEmailComposer';
+import { useEmailPerformance, useEmailVirtualization } from '../hooks/useEmailPerformance';
+import EmailComposer from '../components/email/EmailComposer';
+import EmailSettings from '../components/email/EmailSettings';
+import EmailSecuritySettings from '../components/EmailSecuritySettings';
+import EmailSecurityIndicator from '../components/EmailSecurityIndicator';
+import AutomationDashboard from '../components/email/AutomationDashboard';
+import EmailSearchDashboard from '../components/email/EmailSearchDashboard';
+import VirtualEmailList from '../components/email/VirtualEmailList';
+import EmailPerformanceMonitor from '../components/email/EmailPerformanceMonitor';
+import EmailErrorBoundary from '../components/email/EmailErrorBoundary';
+import emailManagementService from '../lib/emailManagementService';
+import emailSyncService from '../lib/emailSyncService';
+import emailCacheService from '../lib/emailCacheService';
 
 export default function Email() {
   const { t } = useTranslation('email');
@@ -60,15 +67,12 @@ export default function Email() {
     setSearchQuery,
     openComposer,
     closeComposer,
-    refresh,
     loadEmails,
   } = useEmailContext();
 
   const {
-    markAsRead,
     deleteEmail,
     sendEmail,
-    loadMore,
     hasMoreEmails,
   } = useEmails();
 
@@ -80,14 +84,26 @@ export default function Email() {
     isValid: isComposerValid,
     loading: composerLoading,
   } = useEmailComposer();
-  
-  const [selectedEmails, setSelectedEmails] = useState(new Set());
-  const [replyText, setReplyText] = useState('');
-  const [showSettings, setShowSettings] = useState(false);
-  const [showSecuritySettings, setShowSecuritySettings] = useState(false);
-  const [replyToEmail, setReplyToEmail] = useState(null);
-  const [activeTab, setActiveTab] = useState('inbox');
-  const replyInputRef = useRef(null);
+
+  // Performance optimization hooks
+  const {
+    emails: performanceEmails,
+    loading: performanceLoading,
+    error: performanceError,
+    hasMore,
+    syncStatus,
+    loadMore,
+    refresh,
+    getEmailContent,
+    markAsRead,
+    prefetchEmailContent,
+    getPerformanceStats,
+  } = useEmailPerformance({
+    pageSize: 50,
+    prefetchCount: 10,
+    enableBackgroundSync: true,
+    syncInterval: 5 * 60 * 1000, // 5 minutes
+  });
 
   // Get emails from context and apply filters
   const filteredEmails = React.useMemo(() => {
@@ -148,6 +164,35 @@ export default function Email() {
     return filtered;
   }, [emails, selectedFolder, contextSearchQuery, filters]);
 
+  const {
+    virtualizedEmails,
+    scrollToEmail,
+    getEmailHeight,
+    containerRef,
+    isVirtualizationEnabled,
+  } = useEmailVirtualization(filteredEmails, {
+    itemHeight: 80,
+    overscan: 5,
+    threshold: 100,
+  });
+  
+  const [selectedEmails, setSelectedEmails] = useState(new Set());
+  const [replyText, setReplyText] = useState('');
+  const [showSettings, setShowSettings] = useState(false);
+  const [showSecuritySettings, setShowSecuritySettings] = useState(false);
+  const [replyToEmail, setReplyToEmail] = useState(null);
+  const [activeTab, setActiveTab] = useState('inbox');
+  const [useVirtualScrolling, setUseVirtualScrolling] = useState(true);
+  const replyInputRef = useRef(null);
+
+  // Initialize performance optimizations
+  useEffect(() => {
+    // Prefetch next batch of emails when filteredEmails change
+    if (filteredEmails.length > 0) {
+      prefetchEmailContent(filteredEmails.slice(0, 10));
+    }
+  }, [prefetchEmailContent, filteredEmails]);
+
   // Use folders from context with icons
   const foldersWithIcons = React.useMemo(() => {
     return folders.map(folder => ({
@@ -184,6 +229,7 @@ export default function Email() {
   // Tab configuration
   const tabs = [
     { id: 'inbox', name: 'Inbox', icon: InboxIcon },
+    { id: 'search', name: 'Search', icon: MagnifyingGlassIcon },
     { id: 'automation', name: 'Automation', icon: ClockIcon },
   ];
 
@@ -724,98 +770,117 @@ Email: sarah.johnson@acmecorp.com`,
           </div>
 
           {/* Email List Items */}
-           <div className='flex-1 overflow-y-auto'>
-             {emailsLoading && emails.length === 0 ? (
-               <div className="flex items-center justify-center h-32">
-                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-               </div>
-             ) : emailsError ? (
-               <div className="flex items-center justify-center h-32 text-red-600">
-                 <p>{emailsError}</p>
-               </div>
-             ) : filteredEmails.length === 0 ? (
-               <div className="flex items-center justify-center h-32 text-gray-500">
-                 <p>{contextSearchQuery ? t('noSearchResults') : t('noEmails')}</p>
-               </div>
-             ) : (
-               <>
-                 {filteredEmails.map(email => (
-                   <div
-                     key={email.id}
-                     onClick={() => handleEmailSelect(email)}
-                     className={`p-3 border-b border-gray-200 cursor-pointer hover:bg-gray-50 ${
-                       selectedEmail?.id === email.id ? 'bg-blue-50 border-l-4 border-l-blue-600' : ''
-                     } ${!email.isRead ? 'bg-blue-50' : ''}`}
-                   >
-                     <div className='flex items-start justify-between mb-1'>
-                       <div className='flex items-center space-x-2'>
-                         <input
-                           type='checkbox'
-                           checked={selectedEmails.includes(email.id)}
-                           onChange={e => {
-                             e.stopPropagation();
-                             if (e.target.checked) {
-                               setSelectedEmails([...selectedEmails, email.id]);
-                             } else {
-                               setSelectedEmails(selectedEmails.filter(id => id !== email.id));
-                             }
-                           }}
-                           className='rounded border-gray-300'
-                         />
-                         <button
-                           onClick={e => {
-                             e.stopPropagation();
-                             handleStarToggle(email.id, !email.isStarred);
-                           }}
-                           className='p-1'
-                         >
-                           {email.isStarred ? (
-                             <StarSolidIcon className='h-5 w-5 text-yellow-400' />
-                           ) : (
-                             <StarIcon className='h-5 w-5 text-gray-400' />
-                           )}
-                         </button>
-                       </div>
-                       <span className='text-caption text-gray-500'>
-                         {formatTimestamp(email.receivedAt || email.sentAt)}
-                       </span>
-                     </div>
+          <EmailErrorBoundary>
+            <div className='flex-1 overflow-y-auto' ref={containerRef}>
+            {emailsLoading && emails.length === 0 ? (
+              <div className="flex items-center justify-center h-32">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+              </div>
+            ) : emailsError ? (
+              <div className="flex items-center justify-center h-32 text-red-600">
+                <p>{emailsError}</p>
+              </div>
+            ) : filteredEmails.length === 0 ? (
+              <div className="flex items-center justify-center h-32 text-gray-500">
+                <p>{contextSearchQuery ? t('noSearchResults') : t('noEmails')}</p>
+              </div>
+            ) : useVirtualScrolling && filteredEmails.length > 50 ? (
+              // Use virtual scrolling for large lists
+              <VirtualEmailList
+                emails={filteredEmails}
+                selectedEmail={selectedEmail}
+                selectedEmails={selectedEmails}
+                onEmailSelect={handleEmailSelect}
+                onEmailsSelect={setSelectedEmails}
+                onStarToggle={handleStarToggle}
+                onLazyLoad={lazyLoadEmail}
+                formatTimestamp={formatTimestamp}
+                getLabelBadge={getLabelBadge}
+                hasMoreEmails={hasMoreEmails}
+                onLoadMore={loadMore}
+                loading={emailsLoading}
+              />
+            ) : (
+              // Traditional rendering for smaller lists
+              <>
+                {filteredEmails.map(email => (
+                  <div
+                    key={email.id}
+                    onClick={() => handleEmailSelect(email)}
+                    className={`p-3 border-b border-gray-200 cursor-pointer hover:bg-gray-50 ${
+                      selectedEmail?.id === email.id ? 'bg-blue-50 border-l-4 border-l-blue-600' : ''
+                    } ${!email.isRead ? 'bg-blue-50' : ''}`}
+                  >
+                    <div className='flex items-start justify-between mb-1'>
+                      <div className='flex items-center space-x-2'>
+                        <input
+                          type='checkbox'
+                          checked={selectedEmails.includes(email.id)}
+                          onChange={e => {
+                            e.stopPropagation();
+                            if (e.target.checked) {
+                              setSelectedEmails([...selectedEmails, email.id]);
+                            } else {
+                              setSelectedEmails(selectedEmails.filter(id => id !== email.id));
+                            }
+                          }}
+                          className='rounded border-gray-300'
+                        />
+                        <button
+                          onClick={e => {
+                            e.stopPropagation();
+                            handleStarToggle(email.id, !email.isStarred);
+                          }}
+                          className='p-1'
+                        >
+                          {email.isStarred ? (
+                            <StarSolidIcon className='h-5 w-5 text-yellow-400' />
+                          ) : (
+                            <StarIcon className='h-5 w-5 text-gray-400' />
+                          )}
+                        </button>
+                      </div>
+                      <span className='text-caption text-gray-500'>
+                        {formatTimestamp(email.receivedAt || email.sentAt)}
+                      </span>
+                    </div>
 
-                     <div className='flex items-center space-x-2 mb-1'>
-                       <span className={`font-medium ${!email.isRead ? 'text-black' : 'text-gray-900'}`}>
-                         {email.sender?.name || email.sender?.email || 'Unknown Sender'}
-                       </span>
-                       {email.labels && email.labels.map(labelId => getLabelBadge(labelId))}
-                       <EmailSecurityIndicator email={email} />
-                     </div>
+                    <div className='flex items-center space-x-2 mb-1'>
+                      <span className={`font-medium ${!email.isRead ? 'text-black' : 'text-gray-900'}`}>
+                        {email.sender?.name || email.sender?.email || 'Unknown Sender'}
+                      </span>
+                      {email.labels && email.labels.map(labelId => getLabelBadge(labelId))}
+                      <EmailSecurityIndicator email={email} />
+                    </div>
 
-                     <div
-                       className={`font-semibold mb-1 ${!email.isRead ? 'text-blue-700' : 'text-gray-900'}`}
-                     >
-                       {email.subject}
-                     </div>
+                    <div
+                      className={`font-semibold mb-1 ${!email.isRead ? 'text-blue-700' : 'text-gray-900'}`}
+                    >
+                      {email.subject}
+                    </div>
 
-                     <div className='text-body text-gray-600 line-clamp-2'>
-                       {email.preview || (email.content?.text || email.content?.html)?.substring(0, 100) + '...'}
-                     </div>
-                   </div>
-                 ))}
-                 
-                 {/* Load More Button */}
-                 {hasMoreEmails && (
-                   <div className="p-4 text-center">
-                     <button
-                       onClick={loadMore}
-                       disabled={emailsLoading}
-                       className="text-blue-600 hover:text-blue-800 disabled:opacity-50"
-                     >
-                       {emailsLoading ? 'Loading...' : 'Load More'}
-                     </button>
-                   </div>
-                 )}
-               </>
-             )}
-           </div>
+                    <div className='text-body text-gray-600 line-clamp-2'>
+                      {email.preview || (email.content?.text || email.content?.html)?.substring(0, 100) + '...'}
+                    </div>
+                  </div>
+                ))}
+                
+                {/* Load More Button */}
+                {hasMoreEmails && (
+                  <div className="p-4 text-center">
+                    <button
+                      onClick={loadMore}
+                      disabled={emailsLoading}
+                      className="text-blue-600 hover:text-blue-800 disabled:opacity-50"
+                    >
+                      {emailsLoading ? 'Loading...' : 'Load More'}
+                    </button>
+                  </div>
+                )}
+              </>
+            )}
+            </div>
+          </EmailErrorBoundary>
         </div>
 
         {/* Main Content Area */}
@@ -845,11 +910,21 @@ Email: sarah.johnson@acmecorp.com`,
           </div>
 
           {/* Tab Content */}
-          {activeTab === 'inbox' ? (
-            /* Email Content */
+          {activeTab === 'search' ? (
+            /* Search Tab Content */
+            <div className='flex-1'>
+              <EmailSearchDashboard />
+            </div>
+          ) : activeTab === 'automation' ? (
+            /* Automation Tab Content */
+            <div className='flex-1'>
+              <AutomationDashboard />
+            </div>
+          ) : (
+            /* Inbox Tab Content */
             <div className='flex-1 flex flex-col'>
               {selectedEmail ? (
-            <>
+                <>
               {/* Email Header */}
               <div className='p-6 border-b border-gray-200'>
                 <div className='flex items-center justify-between mb-4'>
@@ -1013,12 +1088,7 @@ Email: sarah.johnson@acmecorp.com`,
             </div>
           )}
             </div>
-        ) : (
-          /* Automation Tab Content */
-          <div className='flex-1'>
-            <AutomationDashboard />
-          </div>
-        )}
+          )}
         </div>
       </div>
 
@@ -1051,6 +1121,9 @@ Email: sarah.johnson@acmecorp.com`,
           onClose={() => setShowSecuritySettings(false)}
         />
       )}
+
+      {/* Email Performance Monitor */}
+      <EmailPerformanceMonitor />
 
       {/* Footer */}
       <Footer />

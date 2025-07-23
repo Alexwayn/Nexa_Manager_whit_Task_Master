@@ -2,6 +2,10 @@ import emailProviderService from '@lib/emailProviderService';
 import emailStorageService from '@lib/emailStorageService';
 import emailTemplateService from '@lib/emailTemplateService';
 import emailSecurityService from '@lib/emailSecurityService';
+import emailErrorHandler from '@lib/emailErrorHandler';
+import emailOfflineService from '@lib/emailOfflineService';
+import emailRecoveryService from '@lib/emailRecoveryService';
+import emailAnalyticsService from '@lib/emailAnalyticsService';
 import { supabase } from '@lib/supabaseClient';
 import Logger from '@utils/Logger';
 
@@ -19,30 +23,35 @@ class EmailManagementService {
    * Initialize email management service
    */
   async initialize(userId) {
-    try {
-      // Initialize storage tables
-      await emailStorageService.initializeTables();
-      
-      // Initialize email security service
-      await emailSecurityService.initializeEncryption(userId);
-      
-      // Load user's email accounts and start sync if configured
-      const accounts = await this.getEmailAccounts(userId);
-      if (accounts.success && accounts.data.length > 0) {
-        // Start sync for active accounts
-        for (const account of accounts.data) {
-          if (account.isActive && account.autoSync) {
-            await this.startEmailSync(account.id, account.syncInterval || 5);
+    return await emailErrorHandler.withErrorHandling(
+      async () => {
+        // Initialize storage tables
+        await emailStorageService.initializeTables();
+        
+        // Initialize email security service
+        await emailSecurityService.initializeEncryption(userId);
+        
+        // Load user's email accounts and start sync if configured
+        const accounts = await this.getEmailAccounts(userId);
+        if (accounts.success && accounts.data.length > 0) {
+          // Start sync for active accounts
+          for (const account of accounts.data) {
+            if (account.isActive && account.autoSync) {
+              await this.startEmailSync(account.id, account.syncInterval || 5);
+            }
           }
         }
-      }
 
-      Logger.info('Email management service initialized for user:', userId);
-      return { success: true };
-    } catch (error) {
-      Logger.error('Error initializing email management service:', error);
-      return { success: false, error: error.message };
-    }
+        Logger.info('Email management service initialized for user:', userId);
+        return { success: true };
+      },
+      {
+        operation: 'initialize_email_service',
+        userId,
+        showUserMessage: true,
+        userMessage: 'Initializing email service...'
+      }
+    );
   }
 
   /**
@@ -53,410 +62,466 @@ class EmailManagementService {
    * Fetch emails with filtering and pagination
    */
   async fetchEmails(userId, options = {}) {
-    try {
-      const result = await emailStorageService.fetchEmails(userId, options);
-      
-      if (result.success) {
-        // Emit event for UI updates
-        this.emitEvent('emails:fetched', {
-          userId,
-          emails: result.data,
-          total: result.total,
-          options,
-        });
-      }
+    return await emailErrorHandler.withErrorHandling(
+      async () => {
+        const result = await emailStorageService.fetchEmails(userId, options);
+        
+        if (result.success) {
+          // Emit event for UI updates
+          this.emitEvent('emails:fetched', {
+            userId,
+            emails: result.data,
+            total: result.total,
+            options,
+          });
+        }
 
-      return result;
-    } catch (error) {
-      Logger.error('Error fetching emails:', error);
-      return {
-        success: false,
-        error: error.message,
-        data: [],
-        total: 0,
-        hasMore: false,
-      };
-    }
+        return result;
+      },
+      {
+        operation: 'fetch_emails',
+        userId,
+        fallbackValue: {
+          success: false,
+          data: [],
+          total: 0,
+          hasMore: false,
+        }
+      }
+    );
   }
 
   /**
    * Get single email by ID
    */
   async getEmail(emailId, userId) {
-    try {
-      const result = await emailStorageService.getEmailById(emailId, userId);
-      
-      if (result.success) {
-        // Mark as read if not already read
-        if (!result.data.isRead) {
-          await this.markAsRead(emailId, userId, true);
-          result.data.isRead = true;
+    return await emailErrorHandler.withErrorHandling(
+      async () => {
+        const result = await emailStorageService.getEmailById(emailId, userId);
+        
+        if (result.success) {
+          // Mark as read if not already read
+          if (!result.data.isRead) {
+            await this.markAsRead(emailId, userId, true);
+            result.data.isRead = true;
+          }
+
+          // Perform security analysis on the email
+          try {
+            const securityAnalysis = await emailSecurityService.analyzeEmailSecurity(result.data, userId);
+            result.data.securityAnalysis = securityAnalysis;
+            
+            // Log email access for audit trail
+            await emailSecurityService.logEmailSecurityEvent({
+              action: 'EMAIL_ACCESSED',
+              userId,
+              emailId,
+              details: { 
+                riskScore: securityAnalysis.riskScore,
+                hasSecurityWarnings: securityAnalysis.riskScore > 40
+              },
+              severity: securityAnalysis.riskScore > 70 ? 'HIGH' : 'LOW'
+            });
+          } catch (securityError) {
+            Logger.warn('Security analysis failed for email:', emailId, securityError);
+            // Don't fail the entire request if security analysis fails
+          }
         }
 
-        // Perform security analysis on the email
-        try {
-          const securityAnalysis = await emailSecurityService.analyzeEmailSecurity(result.data, userId);
-          result.data.securityAnalysis = securityAnalysis;
-          
-          // Log email access for audit trail
-          await emailSecurityService.logEmailSecurityEvent({
-            action: 'EMAIL_ACCESSED',
-            userId,
-            emailId,
-            details: { 
-              riskScore: securityAnalysis.riskScore,
-              hasSecurityWarnings: securityAnalysis.riskScore > 40
-            },
-            severity: securityAnalysis.riskScore > 70 ? 'HIGH' : 'LOW'
-          });
-        } catch (securityError) {
-          Logger.warn('Security analysis failed for email:', emailId, securityError);
-          // Don't fail the entire request if security analysis fails
+        return result;
+      },
+      {
+        operation: 'get_email',
+        userId,
+        emailId,
+        fallbackValue: {
+          success: false,
+          error: 'Failed to retrieve email',
         }
       }
-
-      return result;
-    } catch (error) {
-      Logger.error('Error getting email:', error);
-      return {
-        success: false,
-        error: error.message,
-      };
-    }
+    );
   }
 
   /**
    * Send email
    */
   async sendEmail(userId, emailData) {
-    try {
-      // Validate email data
-      const validation = this.validateEmailData(emailData);
-      if (!validation.isValid) {
-        return {
-          success: false,
-          error: 'Invalid email data',
-          details: validation.errors,
-        };
-      }
+    return await emailErrorHandler.withErrorHandling(
+      async () => {
+        // Check if we're offline and queue the email
+        if (!emailOfflineService.isOnline) {
+          return await emailOfflineService.queueOfflineOperation({
+            type: 'send_email',
+            data: { emailData },
+            userId
+          });
+        }
 
-      // Apply template if specified
-      let processedEmailData = { ...emailData };
-      if (emailData.templateId) {
-        const templateResult = await this.applyTemplate(emailData.templateId, emailData.variables || {});
-        if (templateResult.success) {
-          processedEmailData = {
-            ...processedEmailData,
-            subject: templateResult.data.subject,
-            html: templateResult.data.htmlContent,
-            text: templateResult.data.textContent,
+        // Validate email data
+        const validation = this.validateEmailData(emailData);
+        if (!validation.isValid) {
+          return {
+            success: false,
+            error: 'Invalid email data',
+            details: validation.errors,
           };
         }
-      }
 
-      // Encrypt sensitive content if marked as confidential
-      let encryptedContent = null;
-      if (emailData.isConfidential || emailData.encryptContent) {
-        try {
-          const contentToEncrypt = processedEmailData.html || processedEmailData.text;
-          encryptedContent = await emailSecurityService.encryptEmailContent(contentToEncrypt, userId);
-          
-          // Log encryption event
-          await emailSecurityService.logEmailSecurityEvent({
-            action: 'EMAIL_CONTENT_ENCRYPTED',
-            userId,
-            details: { 
-              recipient: processedEmailData.to,
-              subject: processedEmailData.subject,
-              hasAttachments: (processedEmailData.attachments || []).length > 0
-            },
-            severity: 'MEDIUM'
-          });
-        } catch (encryptionError) {
-          Logger.error('Failed to encrypt email content:', encryptionError);
-          // Continue without encryption but log the failure
-          await emailSecurityService.logEmailSecurityEvent({
-            action: 'EMAIL_ENCRYPTION_FAILED',
-            userId,
-            details: { 
-              recipient: processedEmailData.to,
-              error: encryptionError.message
-            },
-            severity: 'HIGH'
-          });
-        }
-      }
-
-      // Send via email provider
-      const sendResult = await emailProviderService.sendEmail(processedEmailData);
-      
-      if (sendResult.success) {
-        // Store sent email in database
-        const sentEmail = {
-          messageId: sendResult.messageId,
-          folderId: 'sent',
-          subject: processedEmailData.subject,
-          sender: {
-            name: processedEmailData.fromName || 'You',
-            email: processedEmailData.from || processedEmailData.to, // Will be replaced with actual from
-          },
-          recipients: {
-            to: [{ email: processedEmailData.to, name: processedEmailData.toName || '' }],
-            cc: processedEmailData.cc ? [{ email: processedEmailData.cc }] : [],
-            bcc: processedEmailData.bcc ? [{ email: processedEmailData.bcc }] : [],
-          },
-          content: {
-            text: processedEmailData.text,
-            html: processedEmailData.html,
-            encrypted: encryptedContent, // Store encrypted version if available
-          },
-          attachments: processedEmailData.attachments || [],
-          labels: emailData.labels || [],
-          isRead: true,
-          isStarred: false,
-          isImportant: emailData.isImportant || false,
-          isConfidential: emailData.isConfidential || false,
-          receivedAt: new Date().toISOString(),
-          sentAt: new Date().toISOString(),
-          clientId: emailData.clientId || null,
-          relatedDocuments: emailData.relatedDocuments || [],
-          userId,
-        };
-
-        const storeResult = await emailStorageService.storeEmail(sentEmail);
-        
-        // Log email sending for security audit
-        await emailSecurityService.logEmailSecurityEvent({
-          action: 'EMAIL_SENT',
-          userId,
-          emailId: storeResult.data?.id,
-          details: {
-            recipient: processedEmailData.to,
-            subject: processedEmailData.subject,
-            hasAttachments: (processedEmailData.attachments || []).length > 0,
-            isConfidential: emailData.isConfidential || false,
-            templateUsed: emailData.templateId || null
-          },
-          severity: 'LOW'
-        });
-        
-        // Log business email activity if related documents are present
-        if (emailData.relatedDocuments && emailData.relatedDocuments.length > 0) {
-          for (const doc of emailData.relatedDocuments) {
-            const activityData = {
-              emailId: storeResult.data?.id,
-              clientId: emailData.clientId,
-              type: `${doc.type}_sent`,
-              status: 'sent',
-              recipientEmail: processedEmailData.to,
-              subject: processedEmailData.subject,
-              templateType: emailData.templateId,
-              details: {
-                documentId: doc.id,
-                documentType: doc.type,
-                customContent: emailData.customContent || null,
-              },
+        // Apply template if specified
+        let processedEmailData = { ...emailData };
+        if (emailData.templateId) {
+          const templateResult = await this.applyTemplate(emailData.templateId, emailData.variables || {});
+          if (templateResult.success) {
+            processedEmailData = {
+              ...processedEmailData,
+              subject: templateResult.data.subject,
+              html: templateResult.data.htmlContent,
+              text: templateResult.data.textContent,
             };
-
-            if (doc.type === 'invoice') {
-              activityData.invoiceId = doc.id;
-            } else if (doc.type === 'quote') {
-              activityData.quoteId = doc.id;
-            }
-
-            await this.logEmailActivity(userId, activityData);
           }
         }
+
+        // Encrypt sensitive content if marked as confidential
+        let encryptedContent = null;
+        if (emailData.isConfidential || emailData.encryptContent) {
+          try {
+            const contentToEncrypt = processedEmailData.html || processedEmailData.text;
+            encryptedContent = await emailSecurityService.encryptEmailContent(contentToEncrypt, userId);
+            
+            // Log encryption event
+            await emailSecurityService.logEmailSecurityEvent({
+              action: 'EMAIL_CONTENT_ENCRYPTED',
+              userId,
+              details: { 
+                recipient: processedEmailData.to,
+                subject: processedEmailData.subject,
+                hasAttachments: (processedEmailData.attachments || []).length > 0
+              },
+              severity: 'MEDIUM'
+            });
+          } catch (encryptionError) {
+            Logger.error('Failed to encrypt email content:', encryptionError);
+            // Continue without encryption but log the failure
+            await emailSecurityService.logEmailSecurityEvent({
+              action: 'EMAIL_ENCRYPTION_FAILED',
+              userId,
+              details: { 
+                recipient: processedEmailData.to,
+                error: encryptionError.message
+              },
+              severity: 'HIGH'
+            });
+          }
+        }
+
+        // Send via email provider
+        const sendResult = await emailProviderService.sendEmail(processedEmailData);
         
-        // Emit event
-        this.emitEvent('email:sent', {
-          userId,
-          email: storeResult.data,
-          sendResult,
-        });
+        if (sendResult.success) {
+          // Store sent email in database
+          const sentEmail = {
+            messageId: sendResult.messageId,
+            folderId: 'sent',
+            subject: processedEmailData.subject,
+            sender: {
+              name: processedEmailData.fromName || 'You',
+              email: processedEmailData.from || processedEmailData.to, // Will be replaced with actual from
+            },
+            recipients: {
+              to: [{ email: processedEmailData.to, name: processedEmailData.toName || '' }],
+              cc: processedEmailData.cc ? [{ email: processedEmailData.cc }] : [],
+              bcc: processedEmailData.bcc ? [{ email: processedEmailData.bcc }] : [],
+            },
+            content: {
+              text: processedEmailData.text,
+              html: processedEmailData.html,
+              encrypted: encryptedContent, // Store encrypted version if available
+            },
+            attachments: processedEmailData.attachments || [],
+            labels: emailData.labels || [],
+            isRead: true,
+            isStarred: false,
+            isImportant: emailData.isImportant || false,
+            isConfidential: emailData.isConfidential || false,
+            receivedAt: new Date().toISOString(),
+            sentAt: new Date().toISOString(),
+            clientId: emailData.clientId || null,
+            relatedDocuments: emailData.relatedDocuments || [],
+            userId,
+          };
 
-        return {
-          success: true,
-          messageId: sendResult.messageId,
-          email: storeResult.data,
-        };
+          const storeResult = await emailStorageService.storeEmail(sentEmail);
+          
+          // Log email sending for security audit
+          await emailSecurityService.logEmailSecurityEvent({
+            action: 'EMAIL_SENT',
+            userId,
+            emailId: storeResult.data?.id,
+            details: {
+              recipient: processedEmailData.to,
+              subject: processedEmailData.subject,
+              hasAttachments: (processedEmailData.attachments || []).length > 0,
+              isConfidential: emailData.isConfidential || false,
+              templateUsed: emailData.templateId || null
+            },
+            severity: 'LOW'
+          });
+          
+          // Log business email activity if related documents are present
+          if (emailData.relatedDocuments && emailData.relatedDocuments.length > 0) {
+            for (const doc of emailData.relatedDocuments) {
+              const activityData = {
+                emailId: storeResult.data?.id,
+                clientId: emailData.clientId,
+                type: `${doc.type}_sent`,
+                status: 'sent',
+                recipientEmail: processedEmailData.to,
+                subject: processedEmailData.subject,
+                templateType: emailData.templateId,
+                details: {
+                  documentId: doc.id,
+                  documentType: doc.type,
+                  customContent: emailData.customContent || null,
+                },
+              };
+
+              if (doc.type === 'invoice') {
+                activityData.invoiceId = doc.id;
+              } else if (doc.type === 'quote') {
+                activityData.quoteId = doc.id;
+              }
+
+              await this.logEmailActivity(userId, activityData);
+            }
+          }
+          
+          // Emit event
+          this.emitEvent('email:sent', {
+            userId,
+            email: storeResult.data,
+            sendResult,
+          });
+
+          return {
+            success: true,
+            messageId: sendResult.messageId,
+            email: storeResult.data,
+          };
+        }
+
+        return sendResult;
+      },
+      {
+        operation: 'send_email',
+        userId,
+        showUserMessage: true,
+        userMessage: 'Sending email...',
+        retryable: true
       }
-
-      return sendResult;
-    } catch (error) {
-      Logger.error('Error sending email:', error);
-      return {
-        success: false,
-        error: error.message,
-      };
-    }
+    );
   }
-
   /**
    * Delete email
    */
   async deleteEmail(emailId, userId, permanent = false) {
-    try {
-      // Get email details before deletion for security logging
-      const emailResult = await emailStorageService.getEmail(emailId, userId);
-      const emailData = emailResult.success ? emailResult.data : null;
+    return await emailErrorHandler.withErrorHandling(
+      async () => {
+        // Check if we're offline and queue the operation
+        if (!emailOfflineService.isOnline) {
+          return await emailOfflineService.queueOfflineOperation({
+            type: 'delete_email',
+            data: { emailId, permanent },
+            userId
+          });
+        }
 
-      if (permanent) {
-        // For permanent deletion, ensure secure cleanup of encrypted content
-        if (emailData && emailData.content && emailData.content.encrypted) {
-          try {
-            // Securely delete encrypted content
-            await emailSecurityService.secureDeleteEncryptedContent(emailData.content.encrypted);
-          } catch (cleanupError) {
-            Logger.warn('Failed to securely delete encrypted content:', cleanupError);
+        // Get email details before deletion for security logging
+        const emailResult = await emailStorageService.getEmail(emailId, userId);
+        const emailData = emailResult.success ? emailResult.data : null;
+
+        if (permanent) {
+          // For permanent deletion, ensure secure cleanup of encrypted content
+          if (emailData && emailData.content && emailData.content.encrypted) {
+            try {
+              // Securely delete encrypted content
+              await emailSecurityService.secureDeleteEncryptedContent(emailData.content.encrypted);
+            } catch (cleanupError) {
+              Logger.warn('Failed to securely delete encrypted content:', cleanupError);
+            }
           }
-        }
 
-        // Permanently delete from database
-        const result = await emailStorageService.deleteEmail(emailId, userId);
-        
-        if (result.success) {
-          // Log permanent deletion for security audit
-          await emailSecurityService.logEmailSecurityEvent({
-            action: 'EMAIL_PERMANENTLY_DELETED',
-            userId,
-            emailId,
-            details: {
-              subject: emailData?.subject || 'Unknown',
-              sender: emailData?.sender?.email || 'Unknown',
-              hadEncryptedContent: !!(emailData?.content?.encrypted),
-              deletionTimestamp: new Date().toISOString()
-            },
-            severity: 'MEDIUM'
-          });
+          // Permanently delete from database
+          const result = await emailStorageService.deleteEmail(emailId, userId);
+          
+          if (result.success) {
+            // Log permanent deletion for security audit
+            await emailSecurityService.logEmailSecurityEvent({
+              action: 'EMAIL_PERMANENTLY_DELETED',
+              userId,
+              emailId,
+              details: {
+                subject: emailData?.subject || 'Unknown',
+                sender: emailData?.sender?.email || 'Unknown',
+                hadEncryptedContent: !!(emailData?.content?.encrypted),
+                deletionTimestamp: new Date().toISOString()
+              },
+              severity: 'MEDIUM'
+            });
 
-          this.emitEvent('email:deleted', { userId, emailId, permanent: true });
-        }
-        
-        return result;
-      } else {
-        // Move to trash
-        const result = await this.moveToFolder(emailId, userId, 'trash');
-        
-        if (result.success) {
-          // Log soft deletion for security audit
-          await emailSecurityService.logEmailSecurityEvent({
-            action: 'EMAIL_MOVED_TO_TRASH',
-            userId,
-            emailId,
-            details: {
-              subject: emailData?.subject || 'Unknown',
-              sender: emailData?.sender?.email || 'Unknown',
-              hasEncryptedContent: !!(emailData?.content?.encrypted)
-            },
-            severity: 'LOW'
-          });
+            this.emitEvent('email:deleted', { userId, emailId, permanent: true });
+          }
+          
+          return result;
+        } else {
+          // Move to trash
+          const result = await this.moveToFolder(emailId, userId, 'trash');
+          
+          if (result.success) {
+            // Log soft deletion for security audit
+            await emailSecurityService.logEmailSecurityEvent({
+              action: 'EMAIL_MOVED_TO_TRASH',
+              userId,
+              emailId,
+              details: {
+                subject: emailData?.subject || 'Unknown',
+                sender: emailData?.sender?.email || 'Unknown',
+                hasEncryptedContent: !!(emailData?.content?.encrypted)
+              },
+              severity: 'LOW'
+            });
 
-          this.emitEvent('email:deleted', { userId, emailId, permanent: false });
+            this.emitEvent('email:deleted', { userId, emailId, permanent: false });
+          }
+          
+          return result;
         }
-        
-        return result;
-      }
-    } catch (error) {
-      Logger.error('Error deleting email:', error);
-      
-      // Log deletion failure for security audit
-      await emailSecurityService.logEmailSecurityEvent({
-        action: 'EMAIL_DELETION_FAILED',
+      },
+      {
+        operation: 'delete_email',
         userId,
         emailId,
-        details: {
-          error: error.message,
-          permanent,
-          timestamp: new Date().toISOString()
-        },
-        severity: 'HIGH'
-      });
-
-      return {
-        success: false,
-        error: error.message,
-      };
-    }
+        showUserMessage: true,
+        userMessage: permanent ? 'Permanently deleting email...' : 'Moving email to trash...',
+        retryable: true,
+        fallbackValue: { success: false, error: 'Failed to delete email' }
+      }
+    );
   }
 
   /**
    * Mark email as read/unread
    */
   async markAsRead(emailId, userId, isRead = true) {
-    try {
-      const result = await emailStorageService.updateEmail(emailId, userId, { isRead });
-      
-      if (result.success) {
-        this.emitEvent('email:read_status_changed', {
-          userId,
-          emailId,
-          isRead,
-          email: result.data,
-        });
+    return await emailErrorHandler.withErrorHandling(
+      async () => {
+        // Check if we're offline and queue the operation
+        if (!emailOfflineService.isOnline) {
+          return await emailOfflineService.queueOfflineOperation({
+            type: 'mark_read',
+            data: { emailId, isRead },
+            userId
+          });
+        }
+
+        const result = await emailStorageService.updateEmail(emailId, userId, { isRead });
+        
+        if (result.success) {
+          this.emitEvent('email:read_status_changed', {
+            userId,
+            emailId,
+            isRead,
+            email: result.data,
+          });
+        }
+        
+        return result;
+      },
+      {
+        operation: 'mark_as_read',
+        userId,
+        emailId,
+        showUserMessage: false, // This is a quick operation, no need for user message
+        retryable: true,
+        fallbackValue: { success: false, error: 'Failed to update read status' }
       }
-      
-      return result;
-    } catch (error) {
-      Logger.error('Error marking email as read:', error);
-      return {
-        success: false,
-        error: error.message,
-      };
-    }
+    );
   }
 
   /**
    * Star/unstar email
    */
   async starEmail(emailId, userId, isStarred = true) {
-    try {
-      const result = await emailStorageService.updateEmail(emailId, userId, { isStarred });
-      
-      if (result.success) {
-        this.emitEvent('email:starred_status_changed', {
-          userId,
-          emailId,
-          isStarred,
-          email: result.data,
-        });
-      }
-      
-      return result;
-    } catch (error) {
-      Logger.error('Error starring email:', error);
-      return {
-        success: false,
-        error: error.message,
-      };
-    }
-  }
+    return await emailErrorHandler.withErrorHandling(
+      async () => {
+        // Check if we're offline and queue the operation
+        if (!emailOfflineService.isOnline) {
+          return await emailOfflineService.queueOfflineOperation({
+            type: 'star_email',
+            data: { emailId, isStarred },
+            userId
+          });
+        }
 
+        const result = await emailStorageService.updateEmail(emailId, userId, { isStarred });
+        
+        if (result.success) {
+          this.emitEvent('email:starred', {
+            userId,
+            emailId,
+            isStarred,
+            email: result.data,
+          });
+        }
+        
+        return result;
+      },
+      {
+        operation: 'star_email',
+        userId,
+        emailId,
+        showUserMessage: false, // This is a quick operation, no need for user message
+        retryable: true,
+        fallbackValue: { success: false, error: 'Failed to update star status' }
+      }
+    );
+  }
   /**
    * Bulk operations on emails
    */
   async bulkUpdateEmails(emailIds, userId, updates) {
-    try {
-      const result = await emailStorageService.bulkUpdateEmails(emailIds, userId, updates);
-      
-      if (result.success) {
-        this.emitEvent('emails:bulk_updated', {
-          userId,
-          emailIds,
-          updates,
-          count: result.count,
-        });
+    return await emailErrorHandler.withErrorHandling(
+      async () => {
+        // Check if we're offline and queue the operation
+        if (!emailOfflineService.isOnline) {
+          return await emailOfflineService.queueOfflineOperation({
+            type: 'bulk_update',
+            data: { emailIds, updates },
+            userId
+          });
+        }
+
+        const result = await emailStorageService.bulkUpdateEmails(emailIds, userId, updates);
+        
+        if (result.success) {
+          this.emitEvent('emails:bulk_updated', {
+            userId,
+            emailIds,
+            updates,
+            count: result.count,
+          });
+        }
+        
+        return result;
+      },
+      {
+        operation: 'bulk_update_emails',
+        userId,
+        showUserMessage: true,
+        userMessage: `Updating ${emailIds.length} emails...`,
+        retryable: true,
+        fallbackValue: { success: false, error: 'Failed to update emails', count: 0 }
       }
-      
-      return result;
-    } catch (error) {
-      Logger.error('Error bulk updating emails:', error);
-      return {
-        success: false,
-        error: error.message,
-        count: 0,
-      };
-    }
+    );
   }
 
   /**
@@ -556,46 +621,120 @@ class EmailManagementService {
    * Move email to folder
    */
   async moveToFolder(emailId, userId, folderId) {
-    try {
-      const result = await emailStorageService.updateEmail(emailId, userId, { folderId });
-      
-      if (result.success) {
-        this.emitEvent('email:moved', {
-          userId,
-          emailId,
-          folderId,
-          email: result.data,
-        });
+    return await emailErrorHandler.withErrorHandling(
+      async () => {
+        // Check if we're offline and queue the operation
+        if (!emailOfflineService.isOnline) {
+          return await emailOfflineService.queueOfflineOperation({
+            type: 'move_email',
+            data: { emailId, folderId },
+            userId
+          });
+        }
+
+        const result = await emailStorageService.updateEmail(emailId, userId, { folderId });
+        
+        if (result.success) {
+          this.emitEvent('email:moved', {
+            userId,
+            emailId,
+            folderId,
+            email: result.data,
+          });
+        }
+        
+        return result;
+      },
+      {
+        operation: 'move_to_folder',
+        userId,
+        emailId,
+        showUserMessage: false, // This is a quick operation, no need for user message
+        retryable: true,
+        fallbackValue: { success: false, error: 'Failed to move email' }
       }
-      
-      return result;
-    } catch (error) {
-      Logger.error('Error moving email to folder:', error);
-      return {
-        success: false,
-        error: error.message,
-      };
-    }
+    );
   }
 
   /**
    * Apply label to email
    */
   async applyLabel(emailId, userId, labelId) {
-    try {
-      // Get current email to update labels
-      const emailResult = await emailStorageService.getEmailById(emailId, userId);
-      if (!emailResult.success) {
-        return emailResult;
-      }
+    return await emailErrorHandler.withErrorHandling(
+      async () => {
+        // Check if we're offline and queue the operation
+        if (!emailOfflineService.isOnline) {
+          return await emailOfflineService.queueOfflineOperation({
+            type: 'add_label',
+            data: { emailId, labelId },
+            userId
+          });
+        }
 
-      const currentLabels = emailResult.data.labels || [];
-      if (!currentLabels.includes(labelId)) {
-        const updatedLabels = [...currentLabels, labelId];
+        // Get current email to update labels
+        const emailResult = await emailStorageService.getEmailById(emailId, userId);
+        if (!emailResult.success) {
+          return emailResult;
+        }
+
+        const currentLabels = emailResult.data.labels || [];
+        if (!currentLabels.includes(labelId)) {
+          const updatedLabels = [...currentLabels, labelId];
+          const result = await emailStorageService.updateEmail(emailId, userId, { labels: updatedLabels });
+          
+          if (result.success) {
+            this.emitEvent('email:label_applied', {
+              userId,
+              emailId,
+              labelId,
+              email: result.data,
+            });
+          }
+          
+          return result;
+        }
+
+        return { success: true, data: emailResult.data };
+      },
+      {
+        operation: 'apply_label',
+        userId,
+        emailId,
+        showUserMessage: false,
+        retryable: true,
+        fallbackValue: { success: false, error: 'Failed to apply label' }
+      }
+    );
+  }
+
+  /**
+   * Remove label from email
+   */
+  async removeLabel(emailId, userId, labelId) {
+    return await emailErrorHandler.withErrorHandling(
+      async () => {
+        // Check if we're offline and queue the operation
+        if (!emailOfflineService.isOnline) {
+          return await emailOfflineService.queueOfflineOperation({
+            type: 'remove_label',
+            data: { emailId, labelId },
+            userId
+          });
+        }
+
+        // Get current email to update labels
+        const emailResult = await emailStorageService.getEmailById(emailId, userId);
+        if (!emailResult.success) {
+          return emailResult;
+        }
+
+        const currentLabels = emailResult.data.labels || [];
+        const updatedLabels = currentLabels.filter(label => label !== labelId);
+        
         const result = await emailStorageService.updateEmail(emailId, userId, { labels: updatedLabels });
         
         if (result.success) {
-          this.emitEvent('email:label_applied', {
+          this.emitEvent('email:label_removed', {
             userId,
             emailId,
             labelId,
@@ -604,51 +743,16 @@ class EmailManagementService {
         }
         
         return result;
+      },
+      {
+        operation: 'remove_label',
+        userId,
+        emailId,
+        showUserMessage: false,
+        retryable: true,
+        fallbackValue: { success: false, error: 'Failed to remove label' }
       }
-
-      return { success: true, data: emailResult.data };
-    } catch (error) {
-      Logger.error('Error applying label:', error);
-      return {
-        success: false,
-        error: error.message,
-      };
-    }
-  }
-
-  /**
-   * Remove label from email
-   */
-  async removeLabel(emailId, userId, labelId) {
-    try {
-      // Get current email to update labels
-      const emailResult = await emailStorageService.getEmailById(emailId, userId);
-      if (!emailResult.success) {
-        return emailResult;
-      }
-
-      const currentLabels = emailResult.data.labels || [];
-      const updatedLabels = currentLabels.filter(label => label !== labelId);
-      
-      const result = await emailStorageService.updateEmail(emailId, userId, { labels: updatedLabels });
-      
-      if (result.success) {
-        this.emitEvent('email:label_removed', {
-          userId,
-          emailId,
-          labelId,
-          email: result.data,
-        });
-      }
-      
-      return result;
-    } catch (error) {
-      Logger.error('Error removing label:', error);
-      return {
-        success: false,
-        error: error.message,
-      };
-    }
+    );
   }
 
   /**
@@ -659,52 +763,64 @@ class EmailManagementService {
    * Search emails
    */
   async searchEmails(userId, query, options = {}) {
-    try {
-      const result = await emailStorageService.searchEmails(userId, query, options);
-      
-      if (result.success) {
-        this.emitEvent('emails:searched', {
-          userId,
-          query,
-          results: result.data,
-          total: result.total,
-        });
+    return await emailErrorHandler.withErrorHandling(
+      async () => {
+        const result = await emailStorageService.searchEmails(userId, query, options);
+        
+        if (result.success) {
+          this.emitEvent('emails:searched', {
+            userId,
+            query,
+            results: result.data,
+            total: result.total,
+          });
+        }
+        
+        return result;
+      },
+      {
+        operation: 'search_emails',
+        userId,
+        showUserMessage: false,
+        retryable: true,
+        fallbackValue: {
+          success: false,
+          error: 'Failed to search emails',
+          data: [],
+          total: 0,
+          hasMore: false,
+        }
       }
-      
-      return result;
-    } catch (error) {
-      Logger.error('Error searching emails:', error);
-      return {
-        success: false,
-        error: error.message,
-        data: [],
-        total: 0,
-        hasMore: false,
-      };
-    }
+    );
   }
 
   /**
    * Get emails by client
    */
   async getEmailsByClient(userId, clientId, options = {}) {
-    try {
-      const searchOptions = {
-        ...options,
-        clientId,
-      };
-      
-      return await emailStorageService.fetchEmails(userId, searchOptions);
-    } catch (error) {
-      Logger.error('Error getting emails by client:', error);
-      return {
-        success: false,
-        error: error.message,
-        data: [],
-        total: 0,
-        hasMore: false,
-      };
-    }
+    return await emailErrorHandler.withErrorHandling(
+      async () => {
+        const searchOptions = {
+          ...options,
+          clientId,
+        };
+        
+        return await emailStorageService.fetchEmails(userId, searchOptions);
+      },
+      {
+        operation: 'get_emails_by_client',
+        userId,
+        showUserMessage: false,
+        retryable: true,
+        fallbackValue: {
+          success: false,
+          error: 'Failed to get emails by client',
+          data: [],
+          total: 0,
+          hasMore: false,
+        }
+      }
+    );
   }
 
   /**
@@ -715,72 +831,88 @@ class EmailManagementService {
    * Get templates
    */
   async getTemplates(organizationId = null) {
-    try {
-      return await emailTemplateService.getTemplates(organizationId);
-    } catch (error) {
-      Logger.error('Error getting templates:', error);
-      return {
-        success: false,
-        error: error.message,
-        data: [],
-        predefined: {},
-      };
-    }
+    return await emailErrorHandler.withErrorHandling(
+      async () => {
+        return await emailTemplateService.getTemplates(organizationId);
+      },
+      {
+        operation: 'get_templates',
+        showUserMessage: false,
+        retryable: true,
+        fallbackValue: {
+          success: false,
+          error: 'Failed to get templates',
+          data: [],
+          predefined: {},
+        }
+      }
+    );
   }
 
   /**
    * Save template
    */
   async saveTemplate(templateData) {
-    try {
-      return await emailTemplateService.saveTemplate(templateData);
-    } catch (error) {
-      Logger.error('Error saving template:', error);
-      return {
-        success: false,
-        error: error.message,
-      };
-    }
+    return await emailErrorHandler.withErrorHandling(
+      async () => {
+        return await emailTemplateService.saveTemplate(templateData);
+      },
+      {
+        operation: 'save_template',
+        showUserMessage: true,
+        userMessage: 'Saving email template...',
+        retryable: true,
+        fallbackValue: {
+          success: false,
+          error: 'Failed to save template',
+        }
+      }
+    );
   }
 
   /**
    * Apply template with variables
    */
   async applyTemplate(templateId, variables = {}) {
-    try {
-      // Get template (could be from database or predefined)
-      const templatesResult = await emailTemplateService.getTemplates();
-      if (!templatesResult.success) {
-        return templatesResult;
-      }
+    return await emailErrorHandler.withErrorHandling(
+      async () => {
+        // Get template (could be from database or predefined)
+        const templatesResult = await emailTemplateService.getTemplates();
+        if (!templatesResult.success) {
+          return templatesResult;
+        }
 
-      let template = null;
-      
-      // Check custom templates
-      if (templatesResult.data) {
-        template = templatesResult.data.find(t => t.id === templateId);
-      }
-      
-      // Check predefined templates
-      if (!template && templatesResult.predefined) {
-        template = templatesResult.predefined[templateId];
-      }
+        let template = null;
+        
+        // Check custom templates
+        if (templatesResult.data) {
+          template = templatesResult.data.find(t => t.id === templateId);
+        }
+        
+        // Check predefined templates
+        if (!template && templatesResult.predefined) {
+          template = templatesResult.predefined[templateId];
+        }
 
-      if (!template) {
-        return {
+        if (!template) {
+          return {
+            success: false,
+            error: 'Template not found',
+          };
+        }
+
+        return emailTemplateService.renderTemplate(template, variables);
+      },
+      {
+        operation: 'apply_template',
+        showUserMessage: false,
+        retryable: true,
+        fallbackValue: {
           success: false,
-          error: 'Template not found',
-        };
+          error: 'Failed to apply template',
+        }
       }
-
-      return emailTemplateService.renderTemplate(template, variables);
-    } catch (error) {
-      Logger.error('Error applying template:', error);
-      return {
-        success: false,
-        error: error.message,
-      };
-    }
+    );
   }
 
   /**
@@ -791,226 +923,254 @@ class EmailManagementService {
    * Send invoice email
    */
   async sendInvoiceEmail(userId, invoiceId, recipientEmail, templateId = null, customMessage = null) {
-    try {
-      // Get invoice data
-      const { data: invoice, error } = await supabase
-        .from('invoices')
-        .select('*, clients(*)')
-        .eq('id', invoiceId)
-        .single();
+    return await emailErrorHandler.withErrorHandling(
+      async () => {
+        // Get invoice data
+        const { data: invoice, error } = await supabase
+          .from('invoices')
+          .select('*, clients(*)')
+          .eq('id', invoiceId)
+          .single();
 
-      if (error || !invoice) {
-        return {
-          success: false,
-          error: 'Invoice not found',
+        if (error || !invoice) {
+          return {
+            success: false,
+            error: 'Invoice not found',
+          };
+        }
+
+        // Prepare template variables
+        const variables = {
+          client_name: invoice.clients?.full_name || 'Valued Customer',
+          company_name: 'Nexa Manager', // Should come from user settings
+          invoice_number: invoice.invoice_number,
+          total_amount: new Intl.NumberFormat('en-US', { 
+            style: 'currency', 
+            currency: 'EUR' 
+          }).format(invoice.total_amount),
+          due_date: new Date(invoice.due_date).toLocaleDateString(),
+          issue_date: new Date(invoice.issue_date).toLocaleDateString(),
         };
+
+        // Prepare email data
+        const emailData = {
+          to: recipientEmail,
+          subject: `Invoice ${invoice.invoice_number} - Nexa Manager`,
+          templateId: templateId || 'invoice',
+          variables,
+          clientId: invoice.client_id,
+          relatedDocuments: [{
+            type: 'invoice',
+            id: invoiceId,
+          }],
+          isImportant: true,
+        };
+
+        if (customMessage) {
+          emailData.customContent = customMessage;
+        }
+
+        return await this.sendEmail(userId, emailData);
+      },
+      {
+        operation: 'send_invoice_email',
+        userId,
+        showUserMessage: true,
+        userMessage: 'Sending invoice email...',
+        retryable: true,
+        fallbackValue: {
+          success: false,
+          error: 'Failed to send invoice email',
+        }
       }
-
-      // Prepare template variables
-      const variables = {
-        client_name: invoice.clients?.full_name || 'Valued Customer',
-        company_name: 'Nexa Manager', // Should come from user settings
-        invoice_number: invoice.invoice_number,
-        total_amount: new Intl.NumberFormat('en-US', { 
-          style: 'currency', 
-          currency: 'EUR' 
-        }).format(invoice.total_amount),
-        due_date: new Date(invoice.due_date).toLocaleDateString(),
-        issue_date: new Date(invoice.issue_date).toLocaleDateString(),
-      };
-
-      // Prepare email data
-      const emailData = {
-        to: recipientEmail,
-        subject: `Invoice ${invoice.invoice_number} - Nexa Manager`,
-        templateId: templateId || 'invoice',
-        variables,
-        clientId: invoice.client_id,
-        relatedDocuments: [{
-          type: 'invoice',
-          id: invoiceId,
-        }],
-        isImportant: true,
-      };
-
-      if (customMessage) {
-        emailData.customContent = customMessage;
-      }
-
-      return await this.sendEmail(userId, emailData);
-    } catch (error) {
-      Logger.error('Error sending invoice email:', error);
-      return {
-        success: false,
-        error: error.message,
-      };
-    }
+    );
   }
 
   /**
    * Send quote email
    */
   async sendQuoteEmail(userId, quoteId, recipientEmail, templateId = null, customMessage = null) {
-    try {
-      // Get quote data
-      const { data: quote, error } = await supabase
-        .from('quotes')
-        .select('*, clients(*)')
-        .eq('id', quoteId)
-        .single();
+    return await emailErrorHandler.withErrorHandling(
+      async () => {
+        // Get quote data
+        const { data: quote, error } = await supabase
+          .from('quotes')
+          .select('*, clients(*)')
+          .eq('id', quoteId)
+          .single();
 
-      if (error || !quote) {
-        return {
-          success: false,
-          error: 'Quote not found',
+        if (error || !quote) {
+          return {
+            success: false,
+            error: 'Quote not found',
+          };
+        }
+
+        // Prepare template variables
+        const variables = {
+          client_name: quote.clients?.full_name || 'Valued Customer',
+          company_name: 'Nexa Manager', // Should come from user settings
+          quote_number: quote.quote_number,
+          total_amount: new Intl.NumberFormat('en-US', { 
+            style: 'currency', 
+            currency: 'EUR' 
+          }).format(quote.total_amount),
+          issue_date: new Date(quote.issue_date).toLocaleDateString(),
+          expiry_date: quote.due_date ? new Date(quote.due_date).toLocaleDateString() : 'N/A',
         };
+
+        // Prepare email data
+        const emailData = {
+          to: recipientEmail,
+          subject: `Quote ${quote.quote_number} - Nexa Manager`,
+          templateId: templateId || 'quote',
+          variables,
+          clientId: quote.client_id,
+          relatedDocuments: [{
+            type: 'quote',
+            id: quoteId,
+          }],
+          isImportant: true,
+        };
+
+        if (customMessage) {
+          emailData.customContent = customMessage;
+        }
+
+        return await this.sendEmail(userId, emailData);
+      },
+      {
+        operation: 'send_quote_email',
+        userId,
+        showUserMessage: true,
+        userMessage: 'Sending quote email...',
+        retryable: true,
+        fallbackValue: {
+          success: false,
+          error: 'Failed to send quote email',
+        }
       }
-
-      // Prepare template variables
-      const variables = {
-        client_name: quote.clients?.full_name || 'Valued Customer',
-        company_name: 'Nexa Manager', // Should come from user settings
-        quote_number: quote.quote_number,
-        total_amount: new Intl.NumberFormat('en-US', { 
-          style: 'currency', 
-          currency: 'EUR' 
-        }).format(quote.total_amount),
-        issue_date: new Date(quote.issue_date).toLocaleDateString(),
-        expiry_date: quote.due_date ? new Date(quote.due_date).toLocaleDateString() : 'N/A',
-      };
-
-      // Prepare email data
-      const emailData = {
-        to: recipientEmail,
-        subject: `Quote ${quote.quote_number} - Nexa Manager`,
-        templateId: templateId || 'quote',
-        variables,
-        clientId: quote.client_id,
-        relatedDocuments: [{
-          type: 'quote',
-          id: quoteId,
-        }],
-        isImportant: true,
-      };
-
-      if (customMessage) {
-        emailData.customContent = customMessage;
-      }
-
-      return await this.sendEmail(userId, emailData);
-    } catch (error) {
-      Logger.error('Error sending quote email:', error);
-      return {
-        success: false,
-        error: error.message,
-      };
-    }
+    );
   }
 
   /**
    * Get client-specific email history with filtering
    */
   async getClientEmailHistory(userId, clientId, options = {}) {
-    try {
-      const {
-        limit = 50,
-        offset = 0,
-        dateFrom,
-        dateTo,
-        documentType, // 'invoice', 'quote', or null for all
-        includeActivity = true,
-      } = options;
+    return await emailErrorHandler.withErrorHandling(
+      async () => {
+        const {
+          limit = 50,
+          offset = 0,
+          dateFrom,
+          dateTo,
+          documentType, // 'invoice', 'quote', or null for all
+          includeActivity = true,
+        } = options;
 
-      // Build base query for emails
-      let emailQuery = supabase
-        .from('emails')
-        .select(`
-          *,
-          folders(name, type)
-        `)
-        .eq('user_id', userId)
-        .eq('client_id', clientId)
-        .order('received_at', { ascending: false })
-        .range(offset, offset + limit - 1);
-
-      // Apply date filters
-      if (dateFrom) {
-        emailQuery = emailQuery.gte('received_at', dateFrom);
-      }
-      if (dateTo) {
-        emailQuery = emailQuery.lte('received_at', dateTo);
-      }
-
-      // Apply document type filter
-      if (documentType) {
-        emailQuery = emailQuery.contains('related_documents', [{ type: documentType }]);
-      }
-
-      const { data: emails, error: emailError } = await emailQuery;
-
-      if (emailError) {
-        throw emailError;
-      }
-
-      let activityData = [];
-      if (includeActivity) {
-        // Get email activity for this client
-        let activityQuery = supabase
-          .from('email_activity')
-          .select('*')
+        // Build base query for emails
+        let emailQuery = supabase
+          .from('emails')
+          .select(`
+            *,
+            folders(name, type)
+          `)
           .eq('user_id', userId)
           .eq('client_id', clientId)
-          .order('sent_at', { ascending: false })
+          .order('received_at', { ascending: false })
           .range(offset, offset + limit - 1);
 
-        // Apply same filters to activity
+        // Apply date filters
         if (dateFrom) {
-          activityQuery = activityQuery.gte('sent_at', dateFrom);
+          emailQuery = emailQuery.gte('received_at', dateFrom);
         }
         if (dateTo) {
-          activityQuery = activityQuery.lte('sent_at', dateTo);
+          emailQuery = emailQuery.lte('received_at', dateTo);
         }
+
+        // Apply document type filter
         if (documentType) {
-          if (documentType === 'invoice') {
-            activityQuery = activityQuery.not('invoice_id', 'is', null);
-          } else if (documentType === 'quote') {
-            activityQuery = activityQuery.not('quote_id', 'is', null);
+          emailQuery = emailQuery.contains('related_documents', [{ type: documentType }]);
+        }
+
+        const { data: emails, error: emailError } = await emailQuery;
+
+        if (emailError) {
+          throw emailError;
+        }
+
+        let activityData = [];
+        if (includeActivity) {
+          // Get email activity for this client
+          let activityQuery = supabase
+            .from('email_activity')
+            .select('*')
+            .eq('user_id', userId)
+            .eq('client_id', clientId)
+            .order('sent_at', { ascending: false })
+            .range(offset, offset + limit - 1);
+
+          // Apply same filters to activity
+          if (dateFrom) {
+            activityQuery = activityQuery.gte('sent_at', dateFrom);
+          }
+          if (dateTo) {
+            activityQuery = activityQuery.lte('sent_at', dateTo);
+          }
+          if (documentType) {
+            if (documentType === 'invoice') {
+              activityQuery = activityQuery.not('invoice_id', 'is', null);
+            } else if (documentType === 'quote') {
+              activityQuery = activityQuery.not('quote_id', 'is', null);
+            }
+          }
+
+          const { data: activity, error: activityError } = await activityQuery;
+          if (!activityError) {
+            activityData = activity || [];
           }
         }
 
-        const { data: activity, error: activityError } = await activityQuery;
-        if (!activityError) {
-          activityData = activity || [];
+        // Get total count for pagination
+        const { count: totalEmails } = await supabase
+          .from('emails')
+          .select('*', { count: 'exact', head: true })
+          .eq('user_id', userId)
+          .eq('client_id', clientId);
+
+        return {
+          success: true,
+          data: {
+            emails: emails || [],
+            activity: activityData,
+            pagination: {
+              total: totalEmails || 0,
+              limit,
+              offset,
+              hasMore: (totalEmails || 0) > offset + limit,
+            },
+          },
+        };
+      },
+      {
+        operation: 'get_client_email_history',
+        userId,
+        fallbackValue: {
+          success: false,
+          error: 'Failed to get client email history',
+          data: {
+            emails: [],
+            activity: [],
+            pagination: {
+              total: 0,
+              limit: 50,
+              offset: 0,
+              hasMore: false,
+            },
+          },
         }
       }
-
-      // Get total count for pagination
-      const { count: totalEmails } = await supabase
-        .from('emails')
-        .select('*', { count: 'exact', head: true })
-        .eq('user_id', userId)
-        .eq('client_id', clientId);
-
-      return {
-        success: true,
-        data: {
-          emails: emails || [],
-          activity: activityData,
-          pagination: {
-            total: totalEmails || 0,
-            limit,
-            offset,
-            hasMore: (totalEmails || 0) > offset + limit,
-          },
-        },
-      };
-    } catch (error) {
-      Logger.error('Error getting client email history:', error);
-      return {
-        success: false,
-        error: error.message,
-      };
-    }
+    );
   }
 
   /**
@@ -1278,82 +1438,91 @@ class EmailManagementService {
    * Start email synchronization for user accounts
    */
   async startEmailSync(accountId, intervalMinutes = 5) {
-    try {
-      // Stop existing sync if running
-      if (this.syncIntervals.has(accountId)) {
-        clearInterval(this.syncIntervals.get(accountId));
-      }
-
-      // Start new sync interval
-      const interval = setInterval(async () => {
-        try {
-          await this.syncEmails(accountId);
-        } catch (error) {
-          Logger.error(`Email sync error for account ${accountId}:`, error);
+    return await emailErrorHandler.withErrorHandling(
+      async () => {
+        // Stop existing sync if running
+        if (this.syncIntervals.has(accountId)) {
+          clearInterval(this.syncIntervals.get(accountId));
         }
-      }, intervalMinutes * 60 * 1000);
 
-      this.syncIntervals.set(accountId, interval);
-      
-      // Perform initial sync
-      await this.syncEmails(accountId);
+        // Start new sync interval
+        const interval = setInterval(async () => {
+          try {
+            await this.syncEmails(accountId);
+          } catch (error) {
+            Logger.error(`Email sync error for account ${accountId}:`, error);
+          }
+        }, intervalMinutes * 60 * 1000);
 
-      Logger.info(`Email sync started for account: ${accountId} (every ${intervalMinutes} minutes)`);
-      return { success: true, intervalMinutes };
-    } catch (error) {
-      Logger.error('Error starting email sync:', error);
-      return { success: false, error: error.message };
-    }
+        this.syncIntervals.set(accountId, interval);
+        
+        // Perform initial sync
+        await this.syncEmails(accountId);
+
+        Logger.info(`Email sync started for account: ${accountId} (every ${intervalMinutes} minutes)`);
+        return { success: true, intervalMinutes };
+      },
+      {
+        operation: 'start_email_sync',
+        fallbackValue: { success: false, error: 'Failed to start email sync' }
+      }
+    );
   }
 
   /**
    * Stop email synchronization
    */
   stopEmailSync(accountId) {
-    try {
-      if (this.syncIntervals.has(accountId)) {
-        clearInterval(this.syncIntervals.get(accountId));
-        this.syncIntervals.delete(accountId);
-        Logger.info(`Email sync stopped for account: ${accountId}`);
-        return { success: true };
+    return emailErrorHandler.withErrorHandling(
+      () => {
+        if (this.syncIntervals.has(accountId)) {
+          clearInterval(this.syncIntervals.get(accountId));
+          this.syncIntervals.delete(accountId);
+          Logger.info(`Email sync stopped for account: ${accountId}`);
+          return { success: true };
+        }
+        return { success: false, error: 'No sync interval found' };
+      },
+      {
+        operation: 'stop_email_sync',
+        fallbackValue: { success: false, error: 'Failed to stop email sync' }
       }
-      return { success: false, error: 'No sync interval found' };
-    } catch (error) {
-      Logger.error('Error stopping email sync:', error);
-      return { success: false, error: error.message };
-    }
+    );
   }
 
   /**
    * Perform email synchronization
    */
   async syncEmails(accountId) {
-    try {
-      // This would integrate with the email provider service
-      // For now, we'll simulate the sync process
-      const result = await emailProviderService.syncEmails(accountId);
-      
-      if (result.success && result.emails && result.emails.length > 0) {
-        // Store new emails in database
-        for (const email of result.emails) {
-          await emailStorageService.storeEmail({
-            ...email,
-            userId: accountId, // This should be mapped properly
+    return await emailErrorHandler.withErrorHandling(
+      async () => {
+        // This would integrate with the email provider service
+        // For now, we'll simulate the sync process
+        const result = await emailProviderService.syncEmails(accountId);
+        
+        if (result.success && result.emails && result.emails.length > 0) {
+          // Store new emails in database
+          for (const email of result.emails) {
+            await emailStorageService.storeEmail({
+              ...email,
+              userId: accountId, // This should be mapped properly
+            });
+          }
+
+          this.emitEvent('emails:synced', {
+            accountId,
+            newEmails: result.emails.length,
+            lastSync: new Date(),
           });
         }
 
-        this.emitEvent('emails:synced', {
-          accountId,
-          newEmails: result.emails.length,
-          lastSync: new Date(),
-        });
+        return result;
+      },
+      {
+        operation: 'sync_emails',
+        fallbackValue: { success: false, error: 'Failed to sync emails' }
       }
-
-      return result;
-    } catch (error) {
-      Logger.error('Error syncing emails:', error);
-      return { success: false, error: error.message };
-    }
+    );
   }
 
   /**
@@ -1398,42 +1567,50 @@ class EmailManagementService {
    * Get email accounts for user
    */
   async getEmailAccounts(userId) {
-    try {
-      // This would fetch from a user email accounts table
-      // For now, return empty array
-      return {
-        success: true,
-        data: [],
-      };
-    } catch (error) {
-      Logger.error('Error getting email accounts:', error);
-      return {
-        success: false,
-        error: error.message,
-        data: [],
-      };
-    }
+    return await emailErrorHandler.withErrorHandling(
+      async () => {
+        // This would fetch from a user email accounts table
+        // For now, return empty array
+        return {
+          success: true,
+          data: [],
+        };
+      },
+      {
+        operation: 'get_email_accounts',
+        userId,
+        fallbackValue: {
+          success: false,
+          error: 'Failed to get email accounts',
+          data: [],
+        }
+      }
+    );
   }
 
   /**
    * Get email statistics
    */
   async getEmailStats(userId) {
-    try {
-      return await emailStorageService.getEmailStats(userId);
-    } catch (error) {
-      Logger.error('Error getting email stats:', error);
-      return {
-        success: false,
-        error: error.message,
-        data: {
-          total: 0,
-          unread: 0,
-          starred: 0,
-          byFolder: {},
-        },
-      };
-    }
+    return await emailErrorHandler.withErrorHandling(
+      async () => {
+        return await emailStorageService.getEmailStats(userId);
+      },
+      {
+        operation: 'get_email_stats',
+        userId,
+        fallbackValue: {
+          success: false,
+          error: 'Failed to get email stats',
+          data: {
+            total: 0,
+            unread: 0,
+            starred: 0,
+            byFolder: {},
+          },
+        }
+      }
+    );
   }
 
   /**
@@ -1477,6 +1654,144 @@ class EmailManagementService {
         }
       });
     }
+  }
+
+  /**
+   * EMAIL ANALYTICS AND REPORTING
+   */
+
+  /**
+   * Get comprehensive email analytics dashboard
+   */
+  async getEmailAnalytics(userId, options = {}) {
+    return await emailErrorHandler.withErrorHandling(
+      async () => {
+        return await emailAnalyticsService.getDashboardAnalytics(userId, options);
+      },
+      {
+        operation: 'get_email_analytics',
+        userId,
+        fallbackValue: {
+          success: false,
+          error: 'Failed to get email analytics',
+          data: emailAnalyticsService.getEmptyDashboardData(),
+        }
+      }
+    );
+  }
+
+  /**
+   * Get email performance metrics
+   */
+  async getEmailPerformanceMetrics(userId, options = {}) {
+    return await emailErrorHandler.withErrorHandling(
+      async () => {
+        return await emailAnalyticsService.getPerformanceMetrics(userId, options);
+      },
+      {
+        operation: 'get_email_performance_metrics',
+        userId,
+        fallbackValue: {
+          success: false,
+          error: 'Failed to get performance metrics',
+        }
+      }
+    );
+  }
+
+  /**
+   * Get client communication analytics
+   */
+  async getClientCommunicationAnalytics(userId, options = {}) {
+    return await emailErrorHandler.withErrorHandling(
+      async () => {
+        return await emailAnalyticsService.getClientCommunicationMetrics(userId, options);
+      },
+      {
+        operation: 'get_client_communication_analytics',
+        userId,
+        fallbackValue: {
+          success: false,
+          error: 'Failed to get client communication analytics',
+        }
+      }
+    );
+  }
+
+  /**
+   * Get email activity metrics
+   */
+  async getEmailActivityMetrics(userId, options = {}) {
+    return await emailErrorHandler.withErrorHandling(
+      async () => {
+        return await emailAnalyticsService.getActivityMetrics(userId, options);
+      },
+      {
+        operation: 'get_email_activity_metrics',
+        userId,
+        fallbackValue: {
+          success: false,
+          error: 'Failed to get activity metrics',
+        }
+      }
+    );
+  }
+
+  /**
+   * Generate comprehensive email report
+   */
+  async generateEmailReport(userId, options = {}) {
+    return await emailErrorHandler.withErrorHandling(
+      async () => {
+        return await emailAnalyticsService.generateEmailReport(userId, options);
+      },
+      {
+        operation: 'generate_email_report',
+        userId,
+        fallbackValue: {
+          success: false,
+          error: 'Failed to generate email report',
+        }
+      }
+    );
+  }
+
+  /**
+   * Get email usage reports
+   */
+  async getEmailUsageReports(userId, options = {}) {
+    return await emailErrorHandler.withErrorHandling(
+      async () => {
+        return await emailAnalyticsService.getUsageReports(userId, options);
+      },
+      {
+        operation: 'get_email_usage_reports',
+        userId,
+        fallbackValue: {
+          success: false,
+          error: 'Failed to get usage reports',
+        }
+      }
+    );
+  }
+
+  /**
+   * Get real-time email metrics
+   */
+  async getRealTimeEmailMetrics(userId) {
+    return await emailErrorHandler.withErrorHandling(
+      async () => {
+        return await emailAnalyticsService.getRealTimeMetrics(userId);
+      },
+      {
+        operation: 'get_real_time_email_metrics',
+        userId,
+        fallbackValue: {
+          success: false,
+          error: 'Failed to get real-time metrics',
+        }
+      }
+    );
   }
 
   /**

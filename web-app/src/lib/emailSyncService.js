@@ -1,11 +1,13 @@
 import emailManagementService from '@lib/emailManagementService';
 import emailProviderService from '@lib/emailProviderService';
+import emailCacheService from '@lib/emailCacheService';
 import { supabase } from '@lib/supabaseClient';
 import Logger from '@utils/Logger';
 
 /**
  * Email Synchronization Service
  * Handles real-time email synchronization with WebSocket integration
+ * Enhanced with performance optimizations, caching, and offline support
  */
 class EmailSyncService {
   constructor() {
@@ -13,6 +15,196 @@ class EmailSyncService {
     this.syncStatus = new Map();
     this.eventListeners = new Map();
     this.isInitialized = false;
+    
+    // Performance optimization features
+    this.isOnline = navigator.onLine;
+    this.syncQueue = new Map(); // userId -> operations[]
+    this.maxRetries = 3;
+    this.retryDelay = 2000;
+    this.backgroundSyncEnabled = true;
+    this.lastSyncTimes = new Map(); // userId -> timestamp
+    
+    // WebSocket connection for real-time updates
+    this.ws = null;
+    this.wsReconnectAttempts = 0;
+    this.maxWsReconnectAttempts = 5;
+    
+    // Setup online/offline listeners
+    this.setupNetworkListeners();
+  }
+
+  /**
+   * Setup network listeners for online/offline detection
+   */
+  setupNetworkListeners() {
+    window.addEventListener('online', this.handleOnline.bind(this));
+    window.addEventListener('offline', this.handleOffline.bind(this));
+    document.addEventListener('visibilitychange', this.handleVisibilityChange.bind(this));
+  }
+
+  /**
+   * Handle online event
+   */
+  handleOnline() {
+    this.isOnline = true;
+    Logger.info('Connection restored, processing offline queue');
+    this.emitEvent('connection:online');
+    
+    // Process offline queue for all users
+    for (const userId of this.syncQueue.keys()) {
+      this.processOfflineQueue(userId);
+    }
+  }
+
+  /**
+   * Handle offline event
+   */
+  handleOffline() {
+    this.isOnline = false;
+    Logger.info('Connection lost, entering offline mode');
+    this.emitEvent('connection:offline');
+  }
+
+  /**
+   * Handle visibility change for background sync
+   */
+  handleVisibilityChange() {
+    if (!document.hidden && this.isOnline && this.backgroundSyncEnabled) {
+      // App became visible, check if sync is needed
+      for (const [userId, lastSync] of this.lastSyncTimes) {
+        const timeSinceLastSync = Date.now() - lastSync;
+        if (timeSinceLastSync > 5 * 60 * 1000) { // 5 minutes
+          this.performBackgroundSync(userId);
+        }
+      }
+    }
+  }
+
+  /**
+   * Perform background sync for a user
+   */
+  async performBackgroundSync(userId) {
+    try {
+      const emailAccounts = await this.getUserEmailAccounts(userId);
+      if (emailAccounts && emailAccounts.length > 0) {
+        await this.performIncrementalSync(userId, emailAccounts);
+      }
+    } catch (error) {
+      Logger.error(`Background sync failed for user ${userId}:`, error);
+    }
+  }
+
+  /**
+   * Perform incremental sync to reduce data transfer
+   */
+  async performIncrementalSync(userId, emailAccounts) {
+    const lastSync = this.lastSyncTimes.get(userId) || new Date(Date.now() - 24 * 60 * 60 * 1000);
+    
+    for (const account of emailAccounts) {
+      try {
+        // Get only emails modified since last sync
+        const newEmails = await emailProviderService.getEmailsSince(account, lastSync);
+        
+        if (newEmails && newEmails.length > 0) {
+          // Cache new emails
+          for (const email of newEmails) {
+            emailCacheService.setCache(`email_${email.id}`, email);
+          }
+          
+          // Store in database
+          await emailManagementService.bulkCreateEmails(newEmails, userId);
+          
+          this.emitEvent('emails:synced', {
+            userId,
+            accountId: account.id,
+            count: newEmails.length,
+            incremental: true,
+          });
+        }
+      } catch (error) {
+        Logger.error(`Incremental sync failed for account ${account.id}:`, error);
+      }
+    }
+    
+    this.lastSyncTimes.set(userId, Date.now());
+  }
+
+  /**
+   * Queue operation for offline processing
+   */
+  queueOperation(userId, operation) {
+    if (!this.syncQueue.has(userId)) {
+      this.syncQueue.set(userId, []);
+    }
+    
+    const queue = this.syncQueue.get(userId);
+    queue.push({
+      ...operation,
+      timestamp: Date.now(),
+      retryCount: 0,
+    });
+    
+    Logger.debug(`Queued operation for user ${userId}:`, operation);
+    
+    // Try to process immediately if online
+    if (this.isOnline) {
+      this.processOfflineQueue(userId);
+    }
+  }
+
+  /**
+   * Process offline queue for a user
+   */
+  async processOfflineQueue(userId) {
+    const queue = this.syncQueue.get(userId);
+    if (!queue || queue.length === 0) return;
+    
+    Logger.info(`Processing ${queue.length} queued operations for user ${userId}`);
+    
+    const processedOperations = [];
+    
+    for (const operation of queue) {
+      try {
+        await this.processQueuedOperation(userId, operation);
+        processedOperations.push(operation);
+      } catch (error) {
+        Logger.error('Failed to process queued operation:', error);
+        operation.retryCount++;
+        
+        if (operation.retryCount >= this.maxRetries) {
+          Logger.error('Max retries reached, removing operation:', operation);
+          processedOperations.push(operation);
+        }
+      }
+    }
+    
+    // Remove processed operations
+    const remainingQueue = queue.filter(op => !processedOperations.includes(op));
+    this.syncQueue.set(userId, remainingQueue);
+  }
+
+  /**
+   * Process individual queued operation
+   */
+  async processQueuedOperation(userId, operation) {
+    const { type, data } = operation;
+    
+    switch (type) {
+      case 'mark_read':
+        await emailManagementService.markEmailsAsRead(data.emailIds, userId);
+        break;
+      case 'mark_starred':
+        await emailManagementService.markEmailsAsStarred(data.emailIds, data.starred, userId);
+        break;
+      case 'delete':
+        await emailManagementService.deleteEmails(data.emailIds, userId);
+        break;
+      case 'move':
+        await emailManagementService.moveEmails(data.emailIds, data.folderId, userId);
+        break;
+      default:
+        Logger.warn('Unknown queued operation type:', type);
+    }
   }
 
   /**
@@ -583,6 +775,130 @@ class EmailSyncService {
   }
 
   /**
+   * Get performance statistics
+   */
+  getPerformanceStats() {
+    const stats = {
+      cacheStats: emailCacheService.getStats(),
+      syncStatuses: this.getAllSyncStatuses(),
+      queueSizes: {},
+      isOnline: this.isOnline,
+      backgroundSyncEnabled: this.backgroundSyncEnabled,
+    };
+    
+    // Add queue sizes for each user
+    for (const [userId, queue] of this.syncQueue) {
+      stats.queueSizes[userId] = queue.length;
+    }
+    
+    return stats;
+  }
+
+  /**
+   * Enable/disable background sync
+   */
+  setBackgroundSyncEnabled(enabled) {
+    this.backgroundSyncEnabled = enabled;
+    Logger.info(`Background sync ${enabled ? 'enabled' : 'disabled'}`);
+  }
+
+  /**
+   * Clear cache for performance optimization
+   */
+  clearCache() {
+    emailCacheService.clear();
+    Logger.info('Email cache cleared');
+  }
+
+  /**
+   * Optimize email operations for offline use
+   */
+  async markEmailsAsReadOffline(userId, emailIds) {
+    if (this.isOnline) {
+      try {
+        await emailManagementService.markEmailsAsRead(emailIds, userId);
+        return { success: true };
+      } catch (error) {
+        Logger.error('Failed to mark emails as read online, queuing for offline:', error);
+      }
+    }
+    
+    // Queue for offline processing
+    this.queueOperation(userId, {
+      type: 'mark_read',
+      data: { emailIds },
+    });
+    
+    return { success: true, queued: true };
+  }
+
+  /**
+   * Optimize email operations for offline use
+   */
+  async markEmailsAsStarredOffline(userId, emailIds, starred) {
+    if (this.isOnline) {
+      try {
+        await emailManagementService.markEmailsAsStarred(emailIds, starred, userId);
+        return { success: true };
+      } catch (error) {
+        Logger.error('Failed to mark emails as starred online, queuing for offline:', error);
+      }
+    }
+    
+    // Queue for offline processing
+    this.queueOperation(userId, {
+      type: 'mark_starred',
+      data: { emailIds, starred },
+    });
+    
+    return { success: true, queued: true };
+  }
+
+  /**
+   * Optimize email operations for offline use
+   */
+  async deleteEmailsOffline(userId, emailIds) {
+    if (this.isOnline) {
+      try {
+        await emailManagementService.deleteEmails(emailIds, userId);
+        return { success: true };
+      } catch (error) {
+        Logger.error('Failed to delete emails online, queuing for offline:', error);
+      }
+    }
+    
+    // Queue for offline processing
+    this.queueOperation(userId, {
+      type: 'delete',
+      data: { emailIds },
+    });
+    
+    return { success: true, queued: true };
+  }
+
+  /**
+   * Optimize email operations for offline use
+   */
+  async moveEmailsOffline(userId, emailIds, folderId) {
+    if (this.isOnline) {
+      try {
+        await emailManagementService.moveEmails(emailIds, folderId, userId);
+        return { success: true };
+      } catch (error) {
+        Logger.error('Failed to move emails online, queuing for offline:', error);
+      }
+    }
+    
+    // Queue for offline processing
+    this.queueOperation(userId, {
+      type: 'move',
+      data: { emailIds, folderId },
+    });
+    
+    return { success: true, queued: true };
+  }
+
+  /**
    * Cleanup resources
    */
   cleanup() {
@@ -598,6 +914,18 @@ class EmailSyncService {
 
     // Clear event listeners
     this.eventListeners.clear();
+
+    // Clear performance optimization data
+    this.syncQueue.clear();
+    this.lastSyncTimes.clear();
+
+    // Clear cache
+    emailCacheService.destroy();
+
+    // Remove network listeners
+    window.removeEventListener('online', this.handleOnline);
+    window.removeEventListener('offline', this.handleOffline);
+    document.removeEventListener('visibilitychange', this.handleVisibilityChange);
 
     // Unsubscribe from Supabase real-time
     if (this.emailSubscription) {

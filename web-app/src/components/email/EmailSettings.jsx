@@ -9,8 +9,11 @@ import {
   BellIcon,
   UserIcon,
   KeyIcon,
+  BoltIcon,
 } from '@heroicons/react/24/outline';
 import { useEmailContext } from '@context/EmailContext';
+import emailSyncService from '@lib/emailSyncService';
+import emailCacheService from '@lib/emailCacheService';
 
 export default function EmailSettings({ isOpen, onClose }) {
   const { addNotification } = useEmailContext();
@@ -41,17 +44,36 @@ export default function EmailSettings({ isOpen, onClose }) {
       showImages: false,
       compactView: false,
     },
+    performance: {
+      enableVirtualScrolling: true,
+      enableBackgroundSync: true,
+      enableCaching: true,
+      cacheSize: 100, // MB
+      prefetchCount: 10,
+      syncInterval: 30, // seconds
+      enableLazyLoading: true,
+      enableCompression: true,
+    },
   });
 
   const [activeTab, setActiveTab] = useState('account');
   const [testEmail, setTestEmail] = useState('');
   const [isTestingEmail, setIsTestingEmail] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const [performanceStats, setPerformanceStats] = useState(null);
+
+  // Load performance stats when component mounts or performance tab is active
+  useEffect(() => {
+    if (activeTab === 'performance') {
+      loadPerformanceStats();
+    }
+  }, [activeTab]);
 
   // Load settings on mount
   useEffect(() => {
     if (isOpen) {
       loadSettings();
+      loadPerformanceStats();
     }
   }, [isOpen]);
 
@@ -63,6 +85,58 @@ export default function EmailSettings({ isOpen, onClose }) {
     } catch (error) {
       console.error('Error loading email settings:', error);
       addNotification?.('Failed to load email settings', 'error');
+    }
+  };
+
+  const loadPerformanceStats = async () => {
+    try {
+      const stats = await emailSyncService.getPerformanceStats();
+      setPerformanceStats(stats);
+    } catch (error) {
+      console.error('Error loading performance stats:', error);
+    }
+  };
+
+  const handleClearCache = async () => {
+    try {
+      await emailCacheService.clearCache();
+      await emailSyncService.clearCache();
+      addNotification?.('Cache cleared successfully!', 'success');
+      loadPerformanceStats(); // Refresh stats
+    } catch (error) {
+      console.error('Error clearing cache:', error);
+      addNotification?.('Failed to clear cache', 'error');
+    }
+  };
+
+  const handlePerformanceSettingChange = async (setting, value) => {
+    const newSettings = {
+      ...emailSettings,
+      performance: {
+        ...emailSettings.performance,
+        [setting]: value,
+      },
+    };
+    setEmailSettings(newSettings);
+
+    // Apply settings immediately for some options
+    try {
+      switch (setting) {
+        case 'enableBackgroundSync':
+          if (value) {
+            await emailSyncService.setBackgroundSyncEnabled(true);
+          } else {
+            await emailSyncService.setBackgroundSyncEnabled(false);
+          }
+          break;
+        case 'cacheSize':
+          emailCacheService.setMaxSize(value * 1024 * 1024); // Convert MB to bytes
+          break;
+        default:
+          break;
+      }
+    } catch (error) {
+      console.error('Error applying performance setting:', error);
     }
   };
 
@@ -113,6 +187,7 @@ export default function EmailSettings({ isOpen, onClose }) {
     { key: 'smtp', name: 'SMTP', icon: Cog6ToothIcon },
     { key: 'notifications', name: 'Notifications', icon: BellIcon },
     { key: 'display', name: 'Display', icon: EnvelopeIcon },
+    { key: 'performance', name: 'Performance', icon: BoltIcon },
   ];
 
   const encryptionOptions = [
@@ -431,6 +506,165 @@ export default function EmailSettings({ isOpen, onClose }) {
                         />
                       </div>
                     ))}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Performance Tab */}
+            {activeTab === 'performance' && (
+              <div className="space-y-6">
+                <div>
+                  <h4 className="text-md font-medium text-gray-900 mb-4">Performance Optimization</h4>
+                  
+                  {/* Performance Statistics */}
+                  <div className="bg-gray-50 p-4 rounded-lg mb-6">
+                    <h5 className="text-sm font-medium text-gray-900 mb-3">Performance Statistics</h5>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                      <div>
+                        <span className="text-gray-500">Cache Hit Rate</span>
+                        <div className="font-medium">{performanceStats.cacheHitRate}%</div>
+                      </div>
+                      <div>
+                        <span className="text-gray-500">Cached Emails</span>
+                        <div className="font-medium">{performanceStats.cachedEmails}</div>
+                      </div>
+                      <div>
+                        <span className="text-gray-500">Queue Size</span>
+                        <div className="font-medium">{performanceStats.queueSize}</div>
+                      </div>
+                      <div>
+                        <span className="text-gray-500">Online Status</span>
+                        <div className={`font-medium ${performanceStats.isOnline ? 'text-green-600' : 'text-red-600'}`}>
+                          {performanceStats.isOnline ? 'Online' : 'Offline'}
+                        </div>
+                      </div>
+                    </div>
+                    <button
+                      onClick={handleClearCache}
+                      className="mt-3 px-3 py-1 text-xs bg-red-100 text-red-700 rounded hover:bg-red-200"
+                    >
+                      Clear Cache
+                    </button>
+                  </div>
+
+                  {/* Performance Settings */}
+                  <div className="space-y-4">
+                    {/* Virtual Scrolling */}
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <label className="text-sm font-medium text-gray-900">Virtual Scrolling</label>
+                        <p className="text-sm text-gray-500">Enable virtual scrolling for large email lists</p>
+                      </div>
+                      <input
+                        type="checkbox"
+                        checked={emailSettings.performance.virtualScrolling}
+                        onChange={e => handlePerformanceSettingChange('virtualScrolling', e.target.checked)}
+                        className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                      />
+                    </div>
+
+                    {/* Background Sync */}
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <label className="text-sm font-medium text-gray-900">Background Sync</label>
+                        <p className="text-sm text-gray-500">Sync emails in the background when app is not active</p>
+                      </div>
+                      <input
+                        type="checkbox"
+                        checked={emailSettings.performance.backgroundSync}
+                        onChange={e => handlePerformanceSettingChange('backgroundSync', e.target.checked)}
+                        className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                      />
+                    </div>
+
+                    {/* Caching */}
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <label className="text-sm font-medium text-gray-900">Email Caching</label>
+                        <p className="text-sm text-gray-500">Cache email content for faster loading</p>
+                      </div>
+                      <input
+                        type="checkbox"
+                        checked={emailSettings.performance.caching}
+                        onChange={e => handlePerformanceSettingChange('caching', e.target.checked)}
+                        className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                      />
+                    </div>
+
+                    {/* Lazy Loading */}
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <label className="text-sm font-medium text-gray-900">Lazy Loading</label>
+                        <p className="text-sm text-gray-500">Load email content only when needed</p>
+                      </div>
+                      <input
+                        type="checkbox"
+                        checked={emailSettings.performance.lazyLoading}
+                        onChange={e => handlePerformanceSettingChange('lazyLoading', e.target.checked)}
+                        className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                      />
+                    </div>
+
+                    {/* Compression */}
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <label className="text-sm font-medium text-gray-900">Data Compression</label>
+                        <p className="text-sm text-gray-500">Compress email data for faster transfer</p>
+                      </div>
+                      <input
+                        type="checkbox"
+                        checked={emailSettings.performance.compression}
+                        onChange={e => handlePerformanceSettingChange('compression', e.target.checked)}
+                        className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                      />
+                    </div>
+
+                    {/* Cache Size */}
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Cache Size (MB)</label>
+                      <select
+                        value={emailSettings.performance.cacheSize}
+                        onChange={e => handlePerformanceSettingChange('cacheSize', parseInt(e.target.value))}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                      >
+                        <option value={50}>50 MB</option>
+                        <option value={100}>100 MB</option>
+                        <option value={200}>200 MB</option>
+                        <option value={500}>500 MB</option>
+                      </select>
+                    </div>
+
+                    {/* Prefetch Count */}
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Prefetch Count</label>
+                      <select
+                        value={emailSettings.performance.prefetchCount}
+                        onChange={e => handlePerformanceSettingChange('prefetchCount', parseInt(e.target.value))}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                      >
+                        <option value={5}>5 emails</option>
+                        <option value={10}>10 emails</option>
+                        <option value={20}>20 emails</option>
+                        <option value={50}>50 emails</option>
+                      </select>
+                    </div>
+
+                    {/* Sync Interval */}
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Sync Interval (minutes)</label>
+                      <select
+                        value={emailSettings.performance.syncInterval}
+                        onChange={e => handlePerformanceSettingChange('syncInterval', parseInt(e.target.value))}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                      >
+                        <option value={1}>1 minute</option>
+                        <option value={5}>5 minutes</option>
+                        <option value={15}>15 minutes</option>
+                        <option value={30}>30 minutes</option>
+                        <option value={60}>1 hour</option>
+                      </select>
+                    </div>
                   </div>
                 </div>
               </div>

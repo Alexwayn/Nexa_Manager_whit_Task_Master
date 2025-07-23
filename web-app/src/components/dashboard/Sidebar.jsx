@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import {
@@ -16,15 +16,17 @@ import {
   DocumentTextIcon, // Added for Preventivi
   EnvelopeIcon, // Added for Email
   XMarkIcon,
-  PresentationChartLineIcon, // Added for Advanced Analytics
-  UserGroupIcon,
-  DocumentDuplicateIcon,
-  CreditCardIcon,
-  CalendarIcon,
-  FolderIcon,
-  CameraIcon,
   ChevronDoubleLeftIcon,
   ChevronDoubleRightIcon,
+  UserGroupIcon,
+  CalendarIcon,
+  DocumentDuplicateIcon,
+  CreditCardIcon,
+  FolderIcon,
+  CameraIcon,
+  ChartPieIcon, // Added for Email Analytics
+  ChevronDownIcon,
+  ChevronRightIcon,
 } from '@heroicons/react/24/outline';
 import { useTheme } from '@context/OptimizedThemeContext';
 import nexaLogo from '@assets/logo_nexa.png';
@@ -39,6 +41,14 @@ function classNames(...classes) {
 export default function Sidebar({ onCloseSidebar, collapsed = false, onToggleCollapse }) {
   const { isDark } = useTheme();
   const { t, ready } = useTranslation('navigation');
+  const [expandedMenus, setExpandedMenus] = useState({});
+
+  const toggleSubMenu = (itemName) => {
+    setExpandedMenus(prev => ({
+      ...prev,
+      [itemName]: !prev[itemName]
+    }));
+  };
 
   // Show loading state if translations are not ready - MUST be before other hooks/function calls
   if (!ready) {
@@ -63,7 +73,14 @@ export default function Sidebar({ onCloseSidebar, collapsed = false, onToggleCol
     { name: t('sidebar.analytics'), href: '/analytics', icon: ChartBarIcon },
     { name: t('sidebar.reports'), href: '/reports', icon: DocumentChartBarIcon },
     { name: t('sidebar.documents'), href: '/documents', icon: FolderIcon },
-    { name: t('sidebar.email'), href: '/email', icon: EnvelopeIcon },
+    { 
+      name: t('sidebar.email'), 
+      href: '/email', 
+      icon: EnvelopeIcon,
+      subItems: [
+        { name: t('sidebar.emailAnalytics', 'Email Analytics'), href: '/email/analytics', icon: ChartPieIcon }
+      ]
+    },
     { name: t('sidebar.scanner'), href: '/scan', icon: CameraIcon },
     { name: t('sidebar.voice'), href: '/voice', icon: MicrophoneIcon },
   ];
@@ -143,23 +160,100 @@ export default function Sidebar({ onCloseSidebar, collapsed = false, onToggleCol
             <ul role='list' className='-mx-2 space-y-1'>
               {navigation.map(item => (
                 <li key={item.name}>
-                  <NavLink
-                    to={item.href}
-                    onClick={onCloseSidebar} // Close sidebar on mobile when link is clicked
-                    title={collapsed ? item.name : undefined} // Show tooltip when collapsed
-                    className={({ isActive }) =>
-                      classNames(
-                        isActive
-                          ? 'bg-primary-100 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400'
-                          : 'text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-gray-100 dark:hover:bg-gray-700',
-                        'group flex rounded-md p-2 text-nav-text transition-colors duration-200',
-                        collapsed ? 'justify-center' : 'gap-x-3',
-                      )
-                    }
-                  >
-                    <item.icon className={classNames('h-6 w-6 shrink-0')} aria-hidden='true' />
-                    {!collapsed && <span>{item.name}</span>}
-                  </NavLink>
+                  {item.subItems ? (
+                    // Navigation item with sub-menu
+                    <div>
+                      <button
+                        onClick={() => toggleSubMenu(item.name)}
+                        title={collapsed ? item.name : undefined}
+                        className={classNames(
+                          'text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-gray-100 dark:hover:bg-gray-700',
+                          'group flex w-full rounded-md p-2 text-nav-text transition-colors duration-200',
+                          collapsed ? 'justify-center' : 'gap-x-3 justify-between',
+                        )}
+                      >
+                        <div className={classNames('flex items-center', collapsed ? '' : 'gap-x-3')}>
+                          <item.icon className='h-6 w-6 shrink-0' aria-hidden='true' />
+                          {!collapsed && <span>{item.name}</span>}
+                        </div>
+                        {!collapsed && (
+                          <div className='flex items-center'>
+                            {expandedMenus[item.name] ? (
+                              <ChevronDownIcon className='h-4 w-4' />
+                            ) : (
+                              <ChevronRightIcon className='h-4 w-4' />
+                            )}
+                          </div>
+                        )}
+                      </button>
+                      
+                      {/* Main item link */}
+                      <NavLink
+                        to={item.href}
+                        onClick={onCloseSidebar}
+                        title={collapsed ? item.name : undefined}
+                        className={({ isActive }) =>
+                          classNames(
+                            isActive
+                              ? 'bg-primary-100 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400'
+                              : 'text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-gray-100 dark:hover:bg-gray-700',
+                            'group flex rounded-md p-2 text-nav-text transition-colors duration-200 mt-1',
+                            collapsed ? 'justify-center' : 'gap-x-3 ml-6',
+                          )
+                        }
+                      >
+                        {collapsed ? (
+                          <item.icon className='h-6 w-6 shrink-0' aria-hidden='true' />
+                        ) : (
+                          <span>{item.name}</span>
+                        )}
+                      </NavLink>
+
+                      {/* Sub-menu items */}
+                      {!collapsed && expandedMenus[item.name] && (
+                        <ul className='ml-6 mt-1 space-y-1'>
+                          {item.subItems.map(subItem => (
+                            <li key={subItem.name}>
+                              <NavLink
+                                to={subItem.href}
+                                onClick={onCloseSidebar}
+                                className={({ isActive }) =>
+                                  classNames(
+                                    isActive
+                                      ? 'bg-primary-100 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400'
+                                      : 'text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-gray-50 dark:hover:bg-gray-700/50',
+                                    'group flex gap-x-3 rounded-md p-2 text-sm transition-colors duration-200',
+                                  )
+                                }
+                              >
+                                <subItem.icon className='h-5 w-5 shrink-0' aria-hidden='true' />
+                                <span>{subItem.name}</span>
+                              </NavLink>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                    </div>
+                  ) : (
+                    // Regular navigation item
+                    <NavLink
+                      to={item.href}
+                      onClick={onCloseSidebar}
+                      title={collapsed ? item.name : undefined}
+                      className={({ isActive }) =>
+                        classNames(
+                          isActive
+                            ? 'bg-primary-100 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400'
+                            : 'text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-gray-100 dark:hover:bg-gray-700',
+                          'group flex rounded-md p-2 text-nav-text transition-colors duration-200',
+                          collapsed ? 'justify-center' : 'gap-x-3',
+                        )
+                      }
+                    >
+                      <item.icon className='h-6 w-6 shrink-0' aria-hidden='true' />
+                      {!collapsed && <span>{item.name}</span>}
+                    </NavLink>
+                  )}
                 </li>
               ))}
             </ul>
