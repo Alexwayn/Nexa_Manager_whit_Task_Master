@@ -8,11 +8,342 @@ class EmailTrackingService {
   constructor() {
     this.baseUrl = import.meta.env.VITE_BASE_URL || 'https://your-domain.com';
     this.pixelCache = new Map();
+    this.eventQueue = [];
+    this.batchSize = 10;
+    this.flushInterval = 5000; // 5 seconds
+    
+    // Start batch processing
+    this.startBatchProcessing();
   }
 
   /**
-   * Generate tracking pixel for email opens
+   * Track email sent event with enhanced analytics
    */
+  async trackEmailSent(emailData) {
+    try {
+      const trackingEvent = {
+        user_id: emailData.userId,
+        email_id: emailData.emailId,
+        event_type: 'sent',
+        event_data: {
+          to: emailData.to,
+          subject: emailData.subject,
+          template_id: emailData.templateId,
+          template_name: emailData.templateName,
+          client_id: emailData.clientId,
+          client_name: emailData.clientName,
+          has_attachments: emailData.hasAttachments || false,
+          email_size: emailData.emailSize || 0
+        },
+        timestamp: new Date().toISOString(),
+        ip_address: emailData.ipAddress,
+        user_agent: emailData.userAgent
+      };
+
+      // Add to event queue for batch processing
+      this.eventQueue.push(trackingEvent);
+
+      // Create performance metrics record
+      await this.createPerformanceMetric(emailData);
+
+      // Update activity timeline
+      await this.updateActivityTimeline(emailData.userId, 'email_sent', trackingEvent.event_data);
+
+      // Update client communication analytics
+      await this.updateClientCommunicationAnalytics(emailData);
+
+      Logger.info('Email sent event tracked:', { emailId: emailData.emailId });
+      return { success: true };
+    } catch (error) {
+      Logger.error('Failed to track email sent:', error);
+      return { success: false, error: error.message };
+    }
+  }
+
+  /**
+   * Track email opened event with enhanced data
+   */
+  async trackEmailOpened(emailId, trackingData = {}) {
+    try {
+      const trackingEvent = {
+        email_id: emailId,
+        event_type: 'opened',
+        event_data: {
+          open_count: trackingData.openCount || 1,
+          first_open: trackingData.firstOpen || true,
+          location: trackingData.location,
+          device_type: trackingData.deviceType,
+          email_client: trackingData.emailClient
+        },
+        timestamp: new Date().toISOString(),
+        ip_address: trackingData.ipAddress,
+        user_agent: trackingData.userAgent
+      };
+
+      this.eventQueue.push(trackingEvent);
+
+      // Update performance metrics
+      await this.updatePerformanceMetric(emailId, { 
+        is_opened: true, 
+        opened_at: new Date(),
+        open_count: trackingData.openCount || 1
+      });
+
+      Logger.info('Email opened event tracked:', { emailId });
+      return { success: true };
+    } catch (error) {
+      Logger.error('Failed to track email opened:', error);
+      return { success: false, error: error.message };
+    }
+  }
+
+  /**
+   * Track email clicked event with link details
+   */
+  async trackEmailClicked(emailId, clickData = {}) {
+    try {
+      const trackingEvent = {
+        email_id: emailId,
+        event_type: 'clicked',
+        event_data: {
+          link_url: clickData.linkUrl,
+          link_text: clickData.linkText,
+          click_position: clickData.clickPosition,
+          click_count: clickData.clickCount || 1
+        },
+        timestamp: new Date().toISOString(),
+        ip_address: clickData.ipAddress,
+        user_agent: clickData.userAgent
+      };
+
+      this.eventQueue.push(trackingEvent);
+
+      // Update performance metrics
+      await this.updatePerformanceMetric(emailId, { 
+        is_clicked: true, 
+        clicked_at: new Date(),
+        click_count: (clickData.clickCount || 1)
+      });
+
+      Logger.info('Email clicked event tracked:', { emailId, linkUrl: clickData.linkUrl });
+      return { success: true };
+    } catch (error) {
+      Logger.error('Failed to track email clicked:', error);
+      return { success: false, error: error.message };
+    }
+  }
+
+  /**
+   * Track email replied event with response metrics
+   */
+  async trackEmailReplied(emailId, replyData = {}) {
+    try {
+      const trackingEvent = {
+        email_id: emailId,
+        event_type: 'replied',
+        event_data: {
+          reply_id: replyData.replyId,
+          response_time_hours: replyData.responseTimeHours,
+          reply_length: replyData.replyLength,
+          sentiment: replyData.sentiment
+        },
+        timestamp: new Date().toISOString(),
+        ip_address: replyData.ipAddress,
+        user_agent: replyData.userAgent
+      };
+
+      this.eventQueue.push(trackingEvent);
+
+      // Update performance metrics
+      await this.updatePerformanceMetric(emailId, { 
+        is_replied: true, 
+        replied_at: new Date(),
+        response_time_hours: replyData.responseTimeHours
+      });
+
+      Logger.info('Email replied event tracked:', { emailId });
+      return { success: true };
+    } catch (error) {
+      Logger.error('Failed to track email replied:', error);
+      return { success: false, error: error.message };
+    }
+  }
+
+  /**
+   * Create performance metrics record
+   */
+  async createPerformanceMetric(emailData) {
+    try {
+      const { error } = await supabase
+        .from('email_performance_metrics')
+        .insert({
+          user_id: emailData.userId,
+          email_id: emailData.emailId,
+          template_id: emailData.templateId,
+          template_name: emailData.templateName,
+          client_id: emailData.clientId,
+          sent_at: new Date().toISOString(),
+          is_delivered: true, // Assume delivered when sent
+          delivered_at: new Date().toISOString()
+        });
+
+      if (error) throw error;
+    } catch (error) {
+      Logger.error('Failed to create performance metric:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Update performance metrics
+   */
+  async updatePerformanceMetric(emailId, updates) {
+    try {
+      const { error } = await supabase
+        .from('email_performance_metrics')
+        .update(updates)
+        .eq('email_id', emailId);
+
+      if (error) throw error;
+    } catch (error) {
+      Logger.error('Failed to update performance metric:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Update activity timeline
+   */
+  async updateActivityTimeline(userId, activityType, activityData) {
+    try {
+      const { error } = await supabase
+        .from('email_activity_timeline')
+        .insert({
+          user_id: userId,
+          activity_type: activityType,
+          activity_data: activityData,
+          client_id: activityData.client_id,
+          created_at: new Date().toISOString()
+        });
+
+      if (error) throw error;
+    } catch (error) {
+      Logger.error('Failed to update activity timeline:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Update client communication analytics
+   */
+  async updateClientCommunicationAnalytics(emailData) {
+    try {
+      // Check if record exists for this client
+      const { data: existing } = await supabase
+        .from('client_communication_analytics')
+        .select('*')
+        .eq('user_id', emailData.userId)
+        .eq('client_id', emailData.clientId)
+        .single();
+
+      if (existing) {
+        // Update existing record
+        const { error } = await supabase
+          .from('client_communication_analytics')
+          .update({
+            total_emails_sent: existing.total_emails_sent + 1,
+            last_email_sent: new Date().toISOString(),
+            updated_at: new Date().toISOString()
+          })
+          .eq('id', existing.id);
+
+        if (error) throw error;
+      } else {
+        // Create new record
+        const { error } = await supabase
+          .from('client_communication_analytics')
+          .insert({
+            user_id: emailData.userId,
+            client_id: emailData.clientId,
+            client_name: emailData.clientName,
+            total_emails_sent: 1,
+            total_emails_received: 0,
+            last_email_sent: new Date().toISOString(),
+            engagement_score: 0,
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString()
+          });
+
+        if (error) throw error;
+      }
+    } catch (error) {
+      Logger.error('Failed to update client communication analytics:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Start batch processing of tracking events
+   */
+  startBatchProcessing() {
+    setInterval(() => {
+      this.flushEventQueue();
+    }, this.flushInterval);
+  }
+
+  /**
+   * Flush event queue to database
+   */
+  async flushEventQueue() {
+    if (this.eventQueue.length === 0) return;
+
+    const eventsToProcess = this.eventQueue.splice(0, this.batchSize);
+    
+    try {
+      const { error } = await supabase
+        .from('email_tracking_events')
+        .insert(eventsToProcess);
+
+      if (error) throw error;
+
+      Logger.info(`Flushed ${eventsToProcess.length} tracking events to database`);
+    } catch (error) {
+      Logger.error('Failed to flush tracking events:', error);
+      // Re-add events to queue for retry
+      this.eventQueue.unshift(...eventsToProcess);
+    }
+  }
+
+  /**
+   * Get tracking statistics for an email
+   */
+  async getEmailTrackingStats(emailId) {
+    try {
+      const { data: events, error } = await supabase
+        .from('email_tracking_events')
+        .select('*')
+        .eq('email_id', emailId)
+        .order('timestamp', { ascending: true });
+
+      if (error) throw error;
+
+      const stats = {
+        sent: events.some(e => e.event_type === 'sent'),
+        opened: events.filter(e => e.event_type === 'opened').length,
+        clicked: events.filter(e => e.event_type === 'clicked').length,
+        replied: events.some(e => e.event_type === 'replied'),
+        bounced: events.some(e => e.event_type === 'bounced'),
+        firstOpenedAt: events.find(e => e.event_type === 'opened')?.timestamp,
+        lastActivityAt: events[events.length - 1]?.timestamp,
+        totalEvents: events.length
+      };
+
+      return { success: true, data: stats };
+    } catch (error) {
+      Logger.error('Failed to get email tracking stats:', error);
+      return { success: false, error: error.message };
+    }
+  }
   generateOpenTrackingPixel(campaignId, recipientId, messageId) {
     const trackingData = {
       campaign_id: campaignId,

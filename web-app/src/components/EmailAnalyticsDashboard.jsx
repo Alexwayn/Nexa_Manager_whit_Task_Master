@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
+import { Button } from '@/components/ui/Button';
+import { Badge } from '@/components/ui/Badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/Select';
 import { DatePickerWithRange } from '@/components/ui/date-picker';
 import { 
   BarChart, Bar, LineChart, Line, PieChart, Pie, Cell, 
@@ -39,21 +39,26 @@ const EmailAnalyticsDashboard = ({ userId }) => {
   const loadAnalytics = async () => {
     try {
       setLoading(true);
-      const result = await emailAnalyticsService.getDashboardAnalytics(userId, {
+      
+      // Use the new API endpoint
+      const params = new URLSearchParams({
         dateFrom: dateRange.from.toISOString(),
         dateTo: dateRange.to.toISOString(),
-        includeRealTime: true,
       });
 
-      if (result.success) {
-        setAnalytics(result.data);
-      } else {
-        toast({
-          title: 'Error',
-          description: result.error || 'Failed to load analytics',
-          variant: 'destructive',
-        });
+      const response = await fetch(`/api/email/analytics/dashboard?${params}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
+
+      const data = await response.json();
+      setAnalytics(data);
     } catch (error) {
       console.error('Error loading analytics:', error);
       toast({
@@ -78,37 +83,53 @@ const EmailAnalyticsDashboard = ({ userId }) => {
 
   const generateReport = async (format = 'json') => {
     try {
-      const result = await emailAnalyticsService.generateEmailReport(userId, {
+      const params = new URLSearchParams({
+        format,
+        type: 'comprehensive',
         dateFrom: dateRange.from.toISOString(),
         dateTo: dateRange.to.toISOString(),
-        format,
-        includeCharts: true,
-        includeDetails: true,
       });
 
-      if (result.success) {
-        // Handle download based on format
-        if (format === 'csv' || format === 'pdf') {
-          // Trigger download
-          const blob = new Blob([result.data], { 
-            type: format === 'csv' ? 'text/csv' : 'application/pdf' 
-          });
-          const url = URL.createObjectURL(blob);
-          const a = document.createElement('a');
-          a.href = url;
-          a.download = `email-report-${formatDate(new Date())}.${format}`;
-          a.click();
-          URL.revokeObjectURL(url);
-        }
-        
+      const response = await fetch(`/api/email/analytics/reports?${params}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      if (format === 'csv') {
+        // Handle CSV download
+        const csvData = await response.text();
+        const blob = new Blob([csvData], { type: 'text/csv' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `email-report-${formatDate(new Date())}.csv`;
+        a.click();
+        URL.revokeObjectURL(url);
+      } else if (format === 'pdf') {
+        // Handle PDF download (when implemented)
+        const data = await response.json();
         toast({
-          title: 'Success',
-          description: `Report generated successfully`,
+          title: 'Info',
+          description: 'PDF generation is not yet implemented',
         });
       } else {
-        throw new Error(result.error);
+        // Handle JSON format
+        const data = await response.json();
+        console.log('Report data:', data);
       }
+      
+      toast({
+        title: 'Success',
+        description: `Report generated successfully`,
+      });
     } catch (error) {
+      console.error('Error generating report:', error);
       toast({
         title: 'Error',
         description: 'Failed to generate report',

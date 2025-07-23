@@ -118,27 +118,44 @@ class EmailAnalyticsService {
   async getActivityMetrics(userId, options = {}) {
     return await emailErrorHandler.withErrorHandling(
       async () => {
-        const { dateFrom, dateTo } = options;
+        const { dateFrom, dateTo, timeframe = 'daily' } = options;
 
-        // Get activity timeline
-        const timeline = await this.getActivityTimeline(userId, { dateFrom, dateTo });
+        let query = supabase
+          .from('email_activity_timeline')
+          .select('*')
+          .eq('user_id', userId)
+          .order('created_at', { ascending: true });
+
+        if (dateFrom && dateTo) {
+          query = query
+            .gte('created_at', dateFrom)
+            .lte('created_at', dateTo);
+        }
+
+        const { data: activities, error } = await query;
         
-        // Get hourly distribution
-        const hourlyDistribution = await this.getHourlyDistribution(userId, { dateFrom, dateTo });
-        
-        // Get daily trends
-        const dailyTrends = await this.getDailyTrends(userId, { dateFrom, dateTo });
-        
-        // Get email types breakdown
-        const typeBreakdown = await this.getEmailTypeBreakdown(userId, { dateFrom, dateTo });
+        if (error) throw error;
+
+        // Process timeline data
+         const timeline = this.processTimelineData(activities, timeframe);
+         
+         // Get hourly distribution
+         const hourlyDistribution = this.getHourlyDistribution(activities);
+         
+         // Get daily trends
+         const dailyTrends = this.getDailyTrends(activities);
+         
+         // Get type breakdown
+         const typeBreakdown = this.getTypeBreakdown(activities);
 
         return {
           success: true,
           data: {
-            timeline: timeline.data,
-            hourlyDistribution: hourlyDistribution.data,
-            dailyTrends: dailyTrends.data,
-            typeBreakdown: typeBreakdown.data,
+            timeline,
+            hourlyDistribution,
+            dailyTrends,
+            typeBreakdown,
+            totalActivities: activities.length
           },
         };
       },
@@ -158,11 +175,40 @@ class EmailAnalyticsService {
       async () => {
         const { dateFrom, dateTo, limit = 10 } = options;
 
-        // Get top clients by email volume
-        const topClients = await this.getTopClientsByEmailVolume(userId, { dateFrom, dateTo, limit });
+        let query = supabase
+          .from('client_communication_analytics')
+          .select('*')
+          .eq('user_id', userId)
+          .order('total_emails', { ascending: false });
+
+        if (dateFrom && dateTo) {
+          query = query
+            .gte('last_communication', dateFrom)
+            .lte('last_communication', dateTo);
+        }
+
+        if (limit) {
+          query = query.limit(limit);
+        }
+
+        const { data: clientMetrics, error } = await query;
         
-        // Get client response rates
-        const clientResponseRates = await this.getClientResponseRates(userId, { dateFrom, dateTo });
+        if (error) throw error;
+
+        // Get top clients by email volume
+        const topClients = clientMetrics.map(client => ({
+          clientId: client.client_id,
+          clientName: client.client_name,
+          emailCount: client.total_emails,
+          lastContact: client.last_communication,
+          responseRate: client.response_rate,
+          avgResponseTime: client.avg_response_time_hours
+        }));
+
+        // Calculate overall response rates
+        const totalEmails = clientMetrics.reduce((sum, c) => sum + c.total_emails, 0);
+        const totalResponses = clientMetrics.reduce((sum, c) => sum + (c.total_emails * c.response_rate / 100), 0);
+        const overallResponseRate = totalEmails > 0 ? (totalResponses / totalEmails * 100).toFixed(1) : 0;
         
         // Get client communication history
         const communicationHistory = await this.getClientCommunicationHistory(userId, { dateFrom, dateTo });
@@ -173,8 +219,12 @@ class EmailAnalyticsService {
         return {
           success: true,
           data: {
-            topClients: topClients.data,
-            responseRates: clientResponseRates.data,
+            topClients,
+            responseRates: {
+              overall: overallResponseRate,
+              average: clientMetrics.length > 0 ? 
+                (clientMetrics.reduce((sum, c) => sum + c.response_rate, 0) / clientMetrics.length).toFixed(1) : 0
+            },
             communicationHistory: communicationHistory.data,
             engagement: engagementMetrics.data,
           },
@@ -391,79 +441,175 @@ class EmailAnalyticsService {
   // Helper methods for data retrieval
 
   async getEmailCounts(userId, options = {}) {
-    const { dateFrom, dateTo } = options;
+    try {
+      const { dateFrom, dateTo } = options;
+      
+      let query = supabase
+        .from('emails')
+        .select('id, is_read, is_starred, is_draft, sent_at, received_at')
+        .eq('user_id', userId);
 
-    let query = supabase
-      .from('emails')
-      .select('id, folder_id, is_read, is_starred, received_at, sent_at')
-      .eq('user_id', userId);
+      if (dateFrom && dateTo) {
+        query = query
+          .gte('received_at', dateFrom)
+          .lte('received_at', dateTo);
+      }
 
-    if (dateFrom) query = query.gte('received_at', dateFrom);
-    if (dateTo) query = query.lte('received_at', dateTo);
+      const { data: emails, error } = await query;
+      
+      if (error) throw error;
 
-    const { data, error } = await query;
-    if (error) throw error;
+      const counts = {
+        total: emails.length,
+        sent: emails.filter(e => e.sent_at).length,
+        received: emails.filter(e => e.received_at && !e.sent_at).length,
+        drafts: emails.filter(e => e.is_draft).length,
+        unread: emails.filter(e => !e.is_read).length,
+        starred: emails.filter(e => e.is_starred).length,
+      };
 
-    return {
-      total: data.length,
-      sent: data.filter(e => e.folder_id === 'sent').length,
-      received: data.filter(e => e.folder_id === 'inbox').length,
-      drafts: data.filter(e => e.folder_id === 'drafts').length,
-      unread: data.filter(e => !e.is_read).length,
-      starred: data.filter(e => e.is_starred).length,
-    };
+      return counts;
+    } catch (error) {
+      Logger.error('Failed to get email counts:', error);
+      return {
+        total: 0, sent: 0, received: 0, drafts: 0, unread: 0, starred: 0
+      };
+    }
   }
 
   async getActivityCounts(userId, options = {}) {
-    const { dateFrom, dateTo } = options;
+    try {
+      const { dateFrom, dateTo } = options;
+      
+      let query = supabase
+        .from('email_activity_timeline')
+        .select('activity_type, activity_data')
+        .eq('user_id', userId);
 
-    let query = supabase
-      .from('email_activity')
-      .select('id, type, invoice_id, quote_id')
-      .eq('user_id', userId);
+      if (dateFrom && dateTo) {
+        query = query
+          .gte('created_at', dateFrom)
+          .lte('created_at', dateTo);
+      }
 
-    if (dateFrom) query = query.gte('sent_at', dateFrom);
-    if (dateTo) query = query.lte('sent_at', dateTo);
+      const { data: activities, error } = await query;
+      
+      if (error) throw error;
 
-    const { data, error } = await query;
-    if (error) throw error;
+      const counts = {
+        total: activities.length,
+        invoices: activities.filter(a => 
+          a.activity_data?.template_category === 'invoice' || 
+          a.activity_data?.document_type === 'invoice'
+        ).length,
+        quotes: activities.filter(a => 
+          a.activity_data?.template_category === 'quote' || 
+          a.activity_data?.document_type === 'quote'
+        ).length,
+        reminders: activities.filter(a => 
+          a.activity_data?.template_category === 'reminder'
+        ).length,
+        general: activities.filter(a => 
+          !a.activity_data?.template_category || 
+          a.activity_data?.template_category === 'general'
+        ).length,
+      };
 
-    return {
-      total: data.length,
-      invoices: data.filter(a => a.invoice_id).length,
-      quotes: data.filter(a => a.quote_id).length,
-      reminders: data.filter(a => a.type.includes('reminder')).length,
-    };
+      return counts;
+    } catch (error) {
+      Logger.error('Failed to get activity counts:', error);
+      return {
+        total: 0, invoices: 0, quotes: 0, reminders: 0, general: 0
+      };
+    }
   }
 
   async getTrackingStats(userId, options = {}) {
-    // This would integrate with the tracking service
-    // For now, return mock data
-    return {
-      deliveryRate: 98.5,
-      openRate: 24.3,
-      clickRate: 3.7,
-      responseRate: 12.1,
-    };
+    try {
+      const { dateFrom, dateTo } = options;
+      
+      let query = supabase
+        .from('email_performance_metrics')
+        .select('*')
+        .eq('user_id', userId);
+
+      if (dateFrom && dateTo) {
+        query = query
+          .gte('sent_at', dateFrom)
+          .lte('sent_at', dateTo);
+      }
+
+      const { data: metrics, error } = await query;
+      
+      if (error) throw error;
+
+      if (metrics.length === 0) {
+        return { deliveryRate: 0, openRate: 0, clickRate: 0, responseRate: 0 };
+      }
+
+      const totalSent = metrics.length;
+      const delivered = metrics.filter(m => m.is_delivered).length;
+      const opened = metrics.filter(m => m.is_opened).length;
+      const clicked = metrics.filter(m => m.is_clicked).length;
+      const replied = metrics.filter(m => m.is_replied).length;
+
+      return {
+        deliveryRate: totalSent > 0 ? (delivered / totalSent * 100).toFixed(1) : 0,
+        openRate: delivered > 0 ? (opened / delivered * 100).toFixed(1) : 0,
+        clickRate: opened > 0 ? (clicked / opened * 100).toFixed(1) : 0,
+        responseRate: delivered > 0 ? (replied / delivered * 100).toFixed(1) : 0,
+      };
+    } catch (error) {
+      Logger.error('Failed to get tracking stats:', error);
+      return { deliveryRate: 0, openRate: 0, clickRate: 0, responseRate: 0 };
+    }
   }
 
   async calculateGrowthMetrics(userId, options = {}) {
-    // Calculate growth compared to previous period
-    const { dateFrom, dateTo } = options;
-    const periodLength = new Date(dateTo) - new Date(dateFrom);
-    const previousDateFrom = new Date(new Date(dateFrom).getTime() - periodLength).toISOString();
-    const previousDateTo = dateFrom;
+    try {
+      const { dateFrom, dateTo } = options;
+      
+      // Calculate previous period for comparison
+      const currentPeriod = new Date(dateTo) - new Date(dateFrom);
+      const previousDateTo = new Date(dateFrom);
+      const previousDateFrom = new Date(previousDateTo.getTime() - currentPeriod);
 
-    const [currentCounts, previousCounts] = await Promise.all([
-      this.getEmailCounts(userId, { dateFrom, dateTo }),
-      this.getEmailCounts(userId, { dateFrom: previousDateFrom, dateTo: previousDateTo }),
-    ]);
+      const [currentStats, previousStats] = await Promise.all([
+        this.getEmailCounts(userId, { dateFrom, dateTo }),
+        this.getEmailCounts(userId, { 
+          dateFrom: previousDateFrom.toISOString(), 
+          dateTo: previousDateTo.toISOString() 
+        })
+      ]);
 
-    return {
-      emailGrowth: this.calculatePercentageChange(currentCounts.total, previousCounts.total),
-      sentGrowth: this.calculatePercentageChange(currentCounts.sent, previousCounts.sent),
-      receivedGrowth: this.calculatePercentageChange(currentCounts.received, previousCounts.received),
-    };
+      const [currentTracking, previousTracking] = await Promise.all([
+        this.getTrackingStats(userId, { dateFrom, dateTo }),
+        this.getTrackingStats(userId, { 
+          dateFrom: previousDateFrom.toISOString(), 
+          dateTo: previousDateTo.toISOString() 
+        })
+      ]);
+
+      const calculateGrowth = (current, previous) => {
+        if (previous === 0) return current > 0 ? 100 : 0;
+        return ((current - previous) / previous * 100).toFixed(1);
+      };
+
+      return {
+        emailGrowth: calculateGrowth(currentStats.total, previousStats.total),
+        responseGrowth: calculateGrowth(
+          parseFloat(currentTracking.responseRate), 
+          parseFloat(previousTracking.responseRate)
+        ),
+        engagementGrowth: calculateGrowth(
+          parseFloat(currentTracking.openRate), 
+          parseFloat(previousTracking.openRate)
+        ),
+      };
+    } catch (error) {
+      Logger.error('Failed to calculate growth metrics:', error);
+      return { emailGrowth: 0, responseGrowth: 0, engagementGrowth: 0 };
+    }
   }
 
   calculatePercentageChange(current, previous) {
@@ -485,22 +631,351 @@ class EmailAnalyticsService {
     };
   }
 
-  // Placeholder methods for detailed implementations
-  async getActivityTimeline(userId, options) {
-    return { success: true, data: [] };
-  }
+  // Helper methods for performance metrics
+   async getTemplatePerformance(userId, options = {}) {
+     try {
+       const { dateFrom, dateTo } = options;
+       
+       let query = supabase
+         .from('email_performance_metrics')
+         .select(`
+           template_id,
+           template_name,
+           is_delivered,
+           is_opened,
+           is_clicked,
+           is_replied,
+           sent_at
+         `)
+         .eq('user_id', userId)
+         .not('template_id', 'is', null);
 
-  async getHourlyDistribution(userId, options) {
-    return { success: true, data: Array.from({ length: 24 }, (_, i) => ({ hour: i, count: 0 })) };
-  }
+       if (dateFrom && dateTo) {
+         query = query
+           .gte('sent_at', dateFrom)
+           .lte('sent_at', dateTo);
+       }
 
-  async getDailyTrends(userId, options) {
-    return { success: true, data: [] };
-  }
+       const { data: metrics, error } = await query;
+       
+       if (error) throw error;
 
-  async getEmailTypeBreakdown(userId, options) {
-    return { success: true, data: [] };
-  }
+       // Group by template
+       const templateStats = {};
+       metrics.forEach(metric => {
+         const templateId = metric.template_id;
+         if (!templateStats[templateId]) {
+           templateStats[templateId] = {
+             templateId,
+             templateName: metric.template_name,
+             totalSent: 0,
+             delivered: 0,
+             opened: 0,
+             clicked: 0,
+             replied: 0
+           };
+         }
+         
+         const stats = templateStats[templateId];
+         stats.totalSent++;
+         if (metric.is_delivered) stats.delivered++;
+         if (metric.is_opened) stats.opened++;
+         if (metric.is_clicked) stats.clicked++;
+         if (metric.is_replied) stats.replied++;
+       });
+
+       // Calculate rates
+       return Object.values(templateStats).map(stats => ({
+         ...stats,
+         deliveryRate: stats.totalSent > 0 ? (stats.delivered / stats.totalSent * 100).toFixed(1) : 0,
+         openRate: stats.delivered > 0 ? (stats.opened / stats.delivered * 100).toFixed(1) : 0,
+         clickRate: stats.opened > 0 ? (stats.clicked / stats.opened * 100).toFixed(1) : 0,
+         responseRate: stats.delivered > 0 ? (stats.replied / stats.delivered * 100).toFixed(1) : 0
+       })).sort((a, b) => b.totalSent - a.totalSent);
+     } catch (error) {
+       Logger.error('Failed to get template performance:', error);
+       return [];
+     }
+   }
+
+   async getResponseTimeMetrics(userId, options = {}) {
+     try {
+       const { dateFrom, dateTo } = options;
+       
+       let query = supabase
+         .from('email_performance_metrics')
+         .select('response_time_hours')
+         .eq('user_id', userId)
+         .not('response_time_hours', 'is', null);
+
+       if (dateFrom && dateTo) {
+         query = query
+           .gte('sent_at', dateFrom)
+           .lte('sent_at', dateTo);
+       }
+
+       const { data: metrics, error } = await query;
+       
+       if (error) throw error;
+
+       if (metrics.length === 0) {
+         return { average: 0, median: 0, distribution: [] };
+       }
+
+       const responseTimes = metrics.map(m => m.response_time_hours).sort((a, b) => a - b);
+       const average = responseTimes.reduce((sum, time) => sum + time, 0) / responseTimes.length;
+       const median = responseTimes[Math.floor(responseTimes.length / 2)];
+
+       // Create distribution buckets
+       const distribution = [
+         { range: '0-1h', count: responseTimes.filter(t => t <= 1).length },
+         { range: '1-4h', count: responseTimes.filter(t => t > 1 && t <= 4).length },
+         { range: '4-24h', count: responseTimes.filter(t => t > 4 && t <= 24).length },
+         { range: '1-3d', count: responseTimes.filter(t => t > 24 && t <= 72).length },
+         { range: '3d+', count: responseTimes.filter(t => t > 72).length }
+       ];
+
+       return {
+         average: average.toFixed(1),
+         median: median.toFixed(1),
+         distribution
+       };
+     } catch (error) {
+       Logger.error('Failed to get response time metrics:', error);
+       return { average: 0, median: 0, distribution: [] };
+     }
+   }
+
+   async getDeliveryMetrics(userId, options = {}) {
+     try {
+       const { dateFrom, dateTo } = options;
+       
+       let query = supabase
+         .from('email_performance_metrics')
+         .select('is_delivered, is_bounced, is_spam')
+         .eq('user_id', userId);
+
+       if (dateFrom && dateTo) {
+         query = query
+           .gte('sent_at', dateFrom)
+           .lte('sent_at', dateTo);
+       }
+
+       const { data: metrics, error } = await query;
+       
+       if (error) throw error;
+
+       if (metrics.length === 0) {
+         return { rate: 0, bounceRate: 0, spamRate: 0 };
+       }
+
+       const total = metrics.length;
+       const delivered = metrics.filter(m => m.is_delivered).length;
+       const bounced = metrics.filter(m => m.is_bounced).length;
+       const spam = metrics.filter(m => m.is_spam).length;
+
+       return {
+         rate: (delivered / total * 100).toFixed(1),
+         bounceRate: (bounced / total * 100).toFixed(1),
+         spamRate: (spam / total * 100).toFixed(1)
+       };
+     } catch (error) {
+       Logger.error('Failed to get delivery metrics:', error);
+       return { rate: 0, bounceRate: 0, spamRate: 0 };
+     }
+   }
+
+   async getEngagementMetrics(userId, options = {}) {
+     try {
+       const { dateFrom, dateTo } = options;
+       
+       let query = supabase
+         .from('email_performance_metrics')
+         .select('is_delivered, is_opened, is_clicked, is_replied')
+         .eq('user_id', userId);
+
+       if (dateFrom && dateTo) {
+         query = query
+           .gte('sent_at', dateFrom)
+           .lte('sent_at', dateTo);
+       }
+
+       const { data: metrics, error } = await query;
+       
+       if (error) throw error;
+
+       if (metrics.length === 0) {
+         return { openRate: 0, clickRate: 0, replyRate: 0 };
+       }
+
+       const delivered = metrics.filter(m => m.is_delivered);
+       const opened = metrics.filter(m => m.is_opened);
+       const clicked = metrics.filter(m => m.is_clicked);
+       const replied = metrics.filter(m => m.is_replied);
+
+       return {
+         openRate: delivered.length > 0 ? (opened.length / delivered.length * 100).toFixed(1) : 0,
+         clickRate: opened.length > 0 ? (clicked.length / opened.length * 100).toFixed(1) : 0,
+         replyRate: delivered.length > 0 ? (replied.length / delivered.length * 100).toFixed(1) : 0
+       };
+     } catch (error) {
+       Logger.error('Failed to get engagement metrics:', error);
+       return { openRate: 0, clickRate: 0, replyRate: 0 };
+     }
+   }
+
+   async getCommunicationHistory(userId, options = {}) {
+     try {
+       const { dateFrom, dateTo, limit = 50 } = options;
+       
+       let query = supabase
+         .from('email_activity_timeline')
+         .select(`
+           id,
+           activity_type,
+           activity_data,
+           created_at,
+           client_id
+         `)
+         .eq('user_id', userId)
+         .order('created_at', { ascending: false });
+
+       if (dateFrom && dateTo) {
+         query = query
+           .gte('created_at', dateFrom)
+           .lte('created_at', dateTo);
+       }
+
+       if (limit) {
+         query = query.limit(limit);
+       }
+
+       const { data: history, error } = await query;
+       
+       if (error) throw error;
+
+       return history.map(item => ({
+         id: item.id,
+         type: item.activity_type,
+         clientId: item.client_id,
+         clientName: item.activity_data?.client_name || 'Unknown',
+         subject: item.activity_data?.subject || '',
+         timestamp: item.created_at,
+         metadata: item.activity_data
+       }));
+     } catch (error) {
+       Logger.error('Failed to get communication history:', error);
+       return [];
+     }
+   }
+
+   async getClientEngagementMetrics(userId, options = {}) {
+     try {
+       const { dateFrom, dateTo } = options;
+       
+       let query = supabase
+         .from('client_communication_analytics')
+         .select('*')
+         .eq('user_id', userId)
+         .order('engagement_score', { ascending: false });
+
+       if (dateFrom && dateTo) {
+         query = query
+           .gte('last_communication', dateFrom)
+           .lte('last_communication', dateTo);
+       }
+
+       const { data: engagement, error } = await query;
+       
+       if (error) throw error;
+
+       return engagement.map(client => ({
+         clientId: client.client_id,
+         clientName: client.client_name,
+         engagementScore: client.engagement_score,
+         totalEmails: client.total_emails,
+         responseRate: client.response_rate,
+         avgResponseTime: client.avg_response_time_hours,
+         lastCommunication: client.last_communication
+       }));
+     } catch (error) {
+       Logger.error('Failed to get client engagement metrics:', error);
+       return [];
+     }
+   }
+
+  // Helper methods for processing activity data
+   processTimelineData(activities, timeframe) {
+     const grouped = {};
+     activities.forEach(activity => {
+       const date = new Date(activity.created_at);
+       let key;
+       
+       if (timeframe === 'hourly') {
+         key = date.toISOString().slice(0, 13) + ':00:00.000Z';
+       } else {
+         key = date.toISOString().slice(0, 10);
+       }
+       
+       if (!grouped[key]) {
+         grouped[key] = { date: key, count: 0, activities: [] };
+       }
+       grouped[key].count++;
+       grouped[key].activities.push(activity);
+     });
+     
+     return Object.values(grouped).sort((a, b) => new Date(a.date) - new Date(b.date));
+   }
+
+   getHourlyDistribution(activities) {
+     const hourCounts = Array.from({ length: 24 }, (_, i) => ({ hour: i, count: 0 }));
+     
+     activities.forEach(activity => {
+       const hour = new Date(activity.created_at).getHours();
+       hourCounts[hour].count++;
+     });
+     
+     return hourCounts;
+   }
+
+   getDailyTrends(activities) {
+     const dailyData = {};
+     
+     activities.forEach(activity => {
+       const date = new Date(activity.created_at).toISOString().slice(0, 10);
+       if (!dailyData[date]) {
+         dailyData[date] = { date, sent: 0, received: 0, total: 0 };
+       }
+       
+       dailyData[date].total++;
+       if (activity.activity_type === 'email_sent') {
+         dailyData[date].sent++;
+       } else if (activity.activity_type === 'email_received') {
+         dailyData[date].received++;
+       }
+     });
+     
+     return Object.values(dailyData).sort((a, b) => new Date(a.date) - new Date(b.date));
+   }
+
+   getTypeBreakdown(activities) {
+     const typeBreakdown = {};
+     
+     activities.forEach(activity => {
+       const type = activity.activity_data?.template_category || activity.activity_type || 'general';
+       if (!typeBreakdown[type]) {
+         typeBreakdown[type] = { type, count: 0, percentage: 0 };
+       }
+       typeBreakdown[type].count++;
+     });
+     
+     const total = activities.length;
+     Object.values(typeBreakdown).forEach(item => {
+       item.percentage = total > 0 ? ((item.count / total) * 100).toFixed(1) : 0;
+     });
+     
+     return Object.values(typeBreakdown).sort((a, b) => b.count - a.count);
+   }
 
   async getTopClientsByEmailVolume(userId, options) {
     return { success: true, data: [] };
