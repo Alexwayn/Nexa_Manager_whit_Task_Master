@@ -8,8 +8,8 @@ import {
   ChartBarIcon,
 } from '@heroicons/react/24/outline';
 import {
-  useOrganizationBypass as useOrganization,
-  useOrganizationListBypass as useOrganizationList,
+  useOrganization,
+  useOrganizationList,
 } from '@clerk/clerk-react';
 import { OrganizationProfile, CreateOrganization } from '@clerk/clerk-react';
 import { useTranslation } from 'react-i18next';

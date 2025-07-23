@@ -1000,30 +1000,6 @@ class BusinessEmailIntegration {
     }
 
     return actions;
-  }ion: 'escalate_payment',
-        });
-      }
-    } else if (activity.quote_id && quote) {
-      if (quote.status === 'sent') {
-        actions.push({
-          type: 'follow_up',
-          label: 'Follow Up on Quote',
-          priority: 'medium',
-          action: 'follow_up_quote',
-        });
-      }
-      
-      if (quote.due_date && new Date(quote.due_date) < new Date() && quote.status === 'sent') {
-        actions.push({
-          type: 'renewal',
-          label: 'Renew Expired Quote',
-          priority: 'medium',
-          action: 'renew_quote',
-        });
-      }
-    }
-
-    return actions;
   }
 
   /**
@@ -1815,81 +1791,6 @@ class BusinessEmailIntegration {
       };
     } catch (error) {
       Logger.error('Error in bulk send business emails:', error);
-      return {
-        success: false,
-        error: error.message,
-      };
-    }
-  }
-          try {
-            const emailService = await this.getEmailManagementService();
-            const result = await emailService.sendEmail(userId, {
-              to: recipient.email,
-              subject: recipient.subject || `Business Update`,
-              templateId,
-              customMessage,
-              clientId: recipient.clientId,
-            });
-
-            // Log the activity
-            if (result.success) {
-              await businessEmailLogger.logActivity(userId, {
-                clientId: recipient.clientId,
-                type: emailType,
-                status: 'sent',
-                recipientEmail: recipient.email,
-                subject: recipient.subject || `Business Update`,
-                templateType: templateId,
-                details: {
-                  bulk_send: true,
-                  batch_number: i + 1,
-                  custom_message: customMessage,
-                },
-              });
-            }
-
-            return {
-              recipient: recipient.email,
-              clientId: recipient.clientId,
-              success: result.success,
-              error: result.error,
-            };
-          } catch (error) {
-            return {
-              recipient: recipient.email,
-              clientId: recipient.clientId,
-              success: false,
-              error: error.message,
-            };
-          }
-        });
-
-        const batchResults = await Promise.all(batchPromises);
-        results.push(...batchResults);
-
-        // Delay between batches to avoid rate limiting
-        if (i < batches.length - 1) {
-          await new Promise(resolve => setTimeout(resolve, delayBetweenBatches));
-        }
-      }
-
-      const successCount = results.filter(r => r.success).length;
-      const failureCount = results.filter(r => !r.success).length;
-
-      return {
-        success: true,
-        data: {
-          results,
-          summary: {
-            total: results.length,
-            successful: successCount,
-            failed: failureCount,
-            successRate: (successCount / results.length) * 100,
-          },
-        },
-      };
-    } catch (error) {
-      Logger.error('Error bulk sending business emails:', error);
       return {
         success: false,
         error: error.message,

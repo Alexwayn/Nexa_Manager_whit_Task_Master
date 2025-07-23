@@ -1513,9 +1513,7 @@ export class InvoiceService {
       throw error;
     }
   }
-}
 
-export default InvoiceService;
   // ==================== EMAIL INTEGRATION METHODS ====================
 
   /**
