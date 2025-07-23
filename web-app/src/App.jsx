@@ -4,6 +4,7 @@ import { Toaster } from 'react-hot-toast';
 import { ClerkProvider } from '@clerk/clerk-react';
 import { ThemeProvider } from '@context/OptimizedThemeContext';
 import { OrganizationProvider } from '@context/OrganizationContext';
+import { EmailProvider } from '@context/EmailContext';
 import { QueryProvider } from "./providers/QueryProvider";
 import { WebSocketProvider } from './providers/WebSocketProvider';
 import AppRouter from '@router/AppRouter';
@@ -157,9 +158,11 @@ function App() {
             <ClerkProviderWithRouter>
               <ThemeProvider>
                 <OrganizationProvider>
-                  <AppRouter />
-                  <FloatingMicrophone />
-                  <Toaster position='top-right' />
+                  <EmailProvider>
+                    <AppRouter />
+                    <FloatingMicrophone />
+                    <Toaster position='top-right' />
+                  </EmailProvider>
                 </OrganizationProvider>
               </ThemeProvider>
             </ClerkProviderWithRouter>

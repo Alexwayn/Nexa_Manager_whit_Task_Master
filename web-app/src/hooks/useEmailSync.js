@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { useAuth } from '@context/AuthContext';
+import { useUser } from '@clerk/clerk-react';
 import { useEmailContext } from '@context/EmailContext';
 import { useWebSocketContext } from '@providers/WebSocketProvider';
 import emailSyncService from '@lib/emailSyncService';
@@ -16,7 +16,7 @@ export const useEmailSync = (options = {}) => {
     immediate = true,
   } = options;
 
-  const { user } = useAuth();
+  const { user } = useUser();
   const { loadEmails, addNotification } = useEmailContext();
   const { subscribe, isConnected } = useWebSocketContext();
   

@@ -19,42 +19,175 @@ import {
   PhoneIcon,
   EnvelopeIcon,
   HomeIcon,
+  Cog6ToothIcon,
+  ArrowPathIcon,
+  FolderIcon,
+  TagIcon,
+  MagnifyingGlassIcon,
+  ShieldCheckIcon,
+  UserGroupIcon,
+  ClipboardDocumentListIcon,
+  ClockIcon,
 } from '@heroicons/react/24/outline';
 import { StarIcon as StarSolidIcon, CheckIcon } from '@heroicons/react/24/solid';
+import { useEmailContext } from '@context/EmailContext';
+import { useEmails } from '@hooks/useEmails';
+import { useEmailComposer } from '@hooks/useEmailComposer';
+import EmailComposer from '@components/email/EmailComposer';
+import EmailSettings from '@components/email/EmailSettings';
+import EmailSecuritySettings from '@components/EmailSecuritySettings';
+import EmailSecurityIndicator from '@components/EmailSecurityIndicator';
+import AutomationDashboard from '@components/email/AutomationDashboard';
+import emailManagementService from '@lib/emailManagementService';
 
 export default function Email() {
   const { t } = useTranslation('email');
   const navigate = useNavigate();
-  const [selectedFolder, setSelectedFolder] = useState('inbox');
-  const [selectedEmail, setSelectedEmail] = useState(null);
+  
+  // Email context and hooks
+  const {
+    emails,
+    selectedEmail,
+    emailsLoading,
+    emailsError,
+    folders,
+    selectedFolder,
+    searchQuery: contextSearchQuery,
+    filters,
+    composerOpen,
+    selectEmail,
+    selectFolder,
+    setSearchQuery,
+    openComposer,
+    closeComposer,
+    refresh,
+    loadEmails,
+  } = useEmailContext();
+
+  const {
+    markAsRead,
+    deleteEmail,
+    sendEmail,
+    loadMore,
+    hasMoreEmails,
+  } = useEmails();
+
+  const {
+    emailData: composerData,
+    setEmailData: setComposerData,
+    sendEmail: sendComposerEmail,
+    saveDraft,
+    isValid: isComposerValid,
+    loading: composerLoading,
+  } = useEmailComposer();
+  
   const [selectedEmails, setSelectedEmails] = useState(new Set());
   const [replyText, setReplyText] = useState('');
+  const [showSettings, setShowSettings] = useState(false);
+  const [showSecuritySettings, setShowSecuritySettings] = useState(false);
+  const [replyToEmail, setReplyToEmail] = useState(null);
+  const [activeTab, setActiveTab] = useState('inbox');
   const replyInputRef = useRef(null);
 
-  // Mock data
-  const folders = [
-    { id: 'inbox', name: 'Inbox', icon: InboxIcon, count: 24, active: true },
-    { id: 'starred', name: 'Starred', icon: StarIcon, count: null },
-    { id: 'sent', name: 'Sent', icon: PaperAirplaneIcon, count: null },
-    { id: 'drafts', name: 'Drafts', icon: DocumentTextIcon, count: null },
-    { id: 'spam', name: 'Spam', icon: FlagIcon, count: 12 },
-    { id: 'trash', name: 'Trash', icon: TrashIcon, count: null },
-  ];
+  // Get emails from context and apply filters
+  const filteredEmails = React.useMemo(() => {
+    let filtered = emails;
 
-  const labels = [
-    { id: 'clients', name: 'Clients', color: 'bg-green-500' },
-    { id: 'important', name: 'Important', color: 'bg-blue-500' },
-    { id: 'personal', name: 'Personal', color: 'bg-yellow-500' },
-    { id: 'projects', name: 'Projects', color: 'bg-purple-500' },
-  ];
+    // Apply folder filter
+    if (selectedFolder !== 'inbox') {
+      filtered = filtered.filter(email => {
+        switch (selectedFolder) {
+          case 'sent':
+            return email.folder === 'sent';
+          case 'drafts':
+            return email.folder === 'drafts';
+          case 'spam':
+            return email.folder === 'spam';
+          case 'trash':
+            return email.folder === 'trash';
+          case 'starred':
+            return email.isStarred;
+          default:
+            return email.folder === selectedFolder;
+        }
+      });
+    }
 
+    // Apply search filter
+    if (contextSearchQuery) {
+      const query = contextSearchQuery.toLowerCase();
+      filtered = filtered.filter(email =>
+        email.subject?.toLowerCase().includes(query) ||
+        email.sender?.toLowerCase().includes(query) ||
+        email.preview?.toLowerCase().includes(query) ||
+        email.content?.toLowerCase().includes(query)
+      );
+    }
+
+    // Apply other filters
+    if (filters.isRead !== null) {
+      filtered = filtered.filter(email => email.isRead === filters.isRead);
+    }
+
+    if (filters.isStarred !== null) {
+      filtered = filtered.filter(email => email.isStarred === filters.isStarred);
+    }
+
+    if (filters.hasAttachments !== null) {
+      filtered = filtered.filter(email => 
+        filters.hasAttachments ? email.attachments?.length > 0 : !email.attachments?.length
+      );
+    }
+
+    if (filters.labels?.length > 0) {
+      filtered = filtered.filter(email =>
+        email.labels?.some(label => filters.labels.includes(label))
+      );
+    }
+
+    return filtered;
+  }, [emails, selectedFolder, contextSearchQuery, filters]);
+
+  // Use folders from context with icons
+  const foldersWithIcons = React.useMemo(() => {
+    return folders.map(folder => ({
+      ...folder,
+      icon: {
+        'inbox': InboxIcon,
+        'starred': StarIcon,
+        'sent': PaperAirplaneIcon,
+        'drafts': DocumentTextIcon,
+        'spam': FlagIcon,
+        'trash': TrashIcon,
+      }[folder.id] || FolderIcon
+    }));
+  }, [folders]);
+
+  // Use labels from context or default labels
+  const emailLabels = React.useMemo(() => {
+    return [
+      { id: 'clients', name: 'Clients', color: 'bg-green-500' },
+      { id: 'business', name: 'Business', color: 'bg-blue-500' },
+      { id: 'important', name: 'Important', color: 'bg-yellow-500' },
+      { id: 'personal', name: 'Personal', color: 'bg-purple-500' },
+    ];
+  }, []);
+
+  // Email folders for organization
   const emailFolders = [
+    { id: 'projects', name: 'Projects', icon: FolderIcon },
+    { id: 'clients', name: 'Clients', icon: UserGroupIcon },
     { id: 'invoices', name: 'Invoices', icon: DocumentTextIcon },
-    { id: 'receipts', name: 'Receipts', icon: DocumentTextIcon },
-    { id: 'archives', name: 'Archives', icon: ArchiveBoxIcon },
+    { id: 'quotes', name: 'Quotes', icon: ClipboardDocumentListIcon },
   ];
 
-  const emails = [
+  // Tab configuration
+  const tabs = [
+    { id: 'inbox', name: 'Inbox', icon: InboxIcon },
+    { id: 'automation', name: 'Automation', icon: ClockIcon },
+  ];
+
+  const mockEmails = [
     {
       id: 1,
       sender: 'Acme Corporation',
@@ -191,17 +324,39 @@ Email: sarah.johnson@acmecorp.com`,
 
   // Set first email as selected by default
   React.useEffect(() => {
-    if (emails.length > 0 && !selectedEmail) {
-      setSelectedEmail(emails[0]);
+    if (filteredEmails.length > 0 && !selectedEmail) {
+      selectEmail(filteredEmails[0]);
     }
-  }, []);
+  }, [filteredEmails, selectedEmail, selectEmail]);
 
-  const handleEmailSelect = email => {
-    setSelectedEmail(email);
-    // Mark as read when selected
+  // Load emails when component mounts or folder changes
+  React.useEffect(() => {
+    loadEmails();
+  }, [selectedFolder, loadEmails]);
+
+  // Handle search
+  const handleSearch = (query) => {
+    setSearchQuery(query); // Update context
+  };
+
+  // Handle folder selection
+  const handleFolderSelect = (folderId) => {
+    selectFolder(folderId);
+    setSelectedEmails([]);
+  };
+
+  // Handle email selection
+  const handleEmailSelect = async (email) => {
+    selectEmail(email);
+    
+    // Mark as read if not already read
     if (!email.isRead) {
-      // In a real app, you'd update this via an API call
-      email.isRead = true;
+      try {
+        await emailManagementService.markAsRead(email.id, true);
+        // The context will handle updating the email state via WebSocket or refresh
+      } catch (error) {
+        console.error('Error marking email as read:', error);
+      }
     }
   };
 
@@ -215,24 +370,115 @@ Email: sarah.johnson@acmecorp.com`,
     setSelectedEmails(newSelected);
   };
 
-  const handleStarToggle = emailId => {
-    // In a real app, you'd update this via an API call
-    const email = emails.find(e => e.id === emailId);
-    if (email) {
-      email.isStarred = !email.isStarred;
+  // Handle email starring
+  const handleStarToggle = async (emailId, isStarred) => {
+    try {
+      await emailManagementService.updateEmail(emailId, { isStarred: !isStarred });
+      // The context will handle updating the email state
+    } catch (error) {
+      console.error('Error toggling star:', error);
     }
   };
 
-  const handleReplySubmit = () => {
-    if (replyText.trim()) {
-      // In a real app, you'd send this via an API call
-      console.log('Sending reply:', replyText);
-      setReplyText('');
+  // Handle bulk actions
+  const handleBulkAction = async (action) => {
+    if (selectedEmails.length === 0) return;
+
+    try {
+      const emailIds = Array.from(selectedEmails);
+      
+      switch (action) {
+        case 'delete':
+          await Promise.all(emailIds.map(id => emailManagementService.deleteEmail(id)));
+          break;
+        case 'markRead':
+          await Promise.all(emailIds.map(id => emailManagementService.markAsRead(id, true)));
+          break;
+        case 'markUnread':
+          await Promise.all(emailIds.map(id => emailManagementService.markAsRead(id, false)));
+          break;
+        case 'star':
+          await Promise.all(emailIds.map(id => emailManagementService.updateEmail(id, { isStarred: true })));
+          break;
+        case 'unstar':
+          await Promise.all(emailIds.map(id => emailManagementService.updateEmail(id, { isStarred: false })));
+          break;
+        default:
+          console.log('Unknown bulk action:', action);
+      }
+      setSelectedEmails([]);
+      // Refresh emails to show updated state
+      loadEmails();
+    } catch (error) {
+      console.error('Error performing bulk action:', error);
+    }
+  };
+
+  // Handle reply
+  const handleReplySubmit = async () => {
+    if (!selectedEmail || !replyText.trim()) return;
+
+    try {
+      const replyData = {
+        to: selectedEmail.email,
+        subject: `Re: ${selectedEmail.subject}`,
+        text: replyText,
+        inReplyTo: selectedEmail.id,
+      };
+
+      const result = await emailManagementService.sendEmail(replyData);
+      
+      if (result.success) {
+        setReplyText('');
+        // Optionally show success message
+        console.log('Reply sent successfully');
+      } else {
+        console.error('Error sending reply:', result.error);
+      }
+    } catch (error) {
+      console.error('Error sending reply:', error);
+    }
+  };
+
+  // Handle compose new email
+  const handleCompose = () => {
+    openComposer();
+  };
+
+  // Handle refresh
+  const handleRefresh = () => {
+    refresh();
+  };
+
+  // Handle reply
+  const handleReply = (email, replyAll = false, forward = false) => {
+    setReplyToEmail({
+      ...email,
+      replyAll,
+      forward
+    });
+    openComposer();
+  };
+
+  // Format timestamp
+  const formatTimestamp = (timestamp) => {
+    if (!timestamp) return '';
+    
+    const date = new Date(timestamp);
+    const now = new Date();
+    const diffInHours = (now - date) / (1000 * 60 * 60);
+    
+    if (diffInHours < 24) {
+      return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    } else if (diffInHours < 48) {
+      return 'Yesterday';
+    } else {
+      return date.toLocaleDateString();
     }
   };
 
   const getLabelBadge = labelId => {
-    const label = labels.find(l => l.id === labelId);
+    const label = emailLabels.find(l => l.id === labelId);
     if (!label) return null;
 
     const colorClasses = {
@@ -299,7 +545,10 @@ Email: sarah.johnson@acmecorp.com`,
         <div className='w-60 bg-white border-r border-gray-200 flex flex-col'>
           {/* Compose Button */}
           <div className='p-4'>
-            <button className='w-full bg-blue-600 text-white rounded-md px-4 py-2 flex items-center justify-center hover:bg-blue-700 transition-colors'>
+            <button 
+              onClick={handleCompose}
+              className='w-full bg-blue-600 text-white rounded-md px-4 py-2 flex items-center justify-center hover:bg-blue-700 transition-colors'
+            >
               <PencilIcon className='h-5 w-5 mr-2' />
               Compose
             </button>
@@ -307,14 +556,14 @@ Email: sarah.johnson@acmecorp.com`,
 
           {/* Folders */}
           <div className='px-4 pb-2'>
-            {folders.map(folder => {
+            {foldersWithIcons.map(folder => {
               const Icon = folder.icon;
               const isActive = selectedFolder === folder.id;
 
               return (
                 <div
                   key={folder.id}
-                  onClick={() => setSelectedFolder(folder.id)}
+                  onClick={() => handleFolderSelect(folder.id)}
                   className={`flex items-center justify-between px-3 py-2 rounded-md cursor-pointer transition-colors ${
                     isActive ? 'bg-blue-50 text-blue-700' : 'text-gray-600 hover:bg-gray-50'
                   }`}
@@ -352,7 +601,7 @@ Email: sarah.johnson@acmecorp.com`,
               </span>
               <PlusIcon className='h-4 w-4 text-gray-400' />
             </div>
-            {labels.map(label => (
+            {emailLabels.map(label => (
               <div
                 key={label.id}
                 className='flex items-center px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-md cursor-pointer'
@@ -389,154 +638,285 @@ Email: sarah.johnson@acmecorp.com`,
         {/* Email List */}
         <div className='w-96 bg-white border-r border-gray-200 flex flex-col'>
           {/* Email List Header */}
-          <div className='p-3 border-b border-gray-200 flex items-center justify-between'>
-            <div className='flex items-center space-x-2'>
-              <input
-                type='checkbox'
-                className='rounded border-gray-300'
-                onChange={e => {
-                  // Handle select all
-                }}
-              />
-              <button className='p-1 hover:bg-gray-100 rounded'>
-                <ArchiveBoxIcon className='h-5 w-5 text-gray-500' />
-              </button>
+          <div className='p-3 border-b border-gray-200'>
+            <div className='flex items-center justify-between mb-3'>
+              <h2 className='text-lg font-semibold text-gray-900'>{t('title')}</h2>
+              <div className='flex items-center space-x-2'>
+                <button
+                  onClick={handleRefresh}
+                  disabled={emailsLoading}
+                  className='p-2 text-gray-400 hover:text-gray-600 transition-colors disabled:opacity-50'
+                  title={t('refresh')}
+                >
+                  <ArrowPathIcon className={`h-5 w-5 ${emailsLoading ? 'animate-spin' : ''}`} />
+                </button>
+                <button
+                  onClick={() => setShowSettings(true)}
+                  className='p-2 text-gray-400 hover:text-gray-600 transition-colors'
+                  title={t('settings')}
+                >
+                  <Cog6ToothIcon className='h-5 w-5' />
+                </button>
+                <button
+                  onClick={() => setShowSecuritySettings(true)}
+                  className='p-2 text-gray-400 hover:text-gray-600 transition-colors'
+                  title="Security Settings"
+                >
+                  <ShieldCheckIcon className='h-5 w-5' />
+                </button>
+              </div>
             </div>
-            <div className='flex items-center space-x-2'>
-              <button className='p-1 hover:bg-gray-100 rounded'>
-                <EllipsisHorizontalIcon className='h-5 w-5 text-gray-500' />
-              </button>
-              <button className='p-1 hover:bg-gray-100 rounded'>
-                <TrashIcon className='h-5 w-5 text-gray-500' />
-              </button>
+            
+            {/* Search */}
+            <div className='mb-3'>
+              <div className='relative'>
+                <MagnifyingGlassIcon className='absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400' />
+                <input
+                  type='text'
+                  placeholder={t('searchPlaceholder')}
+                  value={contextSearchQuery}
+                  onChange={(e) => handleSearch(e.target.value)}
+                  className='w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent'
+                />
+              </div>
+            </div>
+
+            {/* Bulk Actions */}
+            <div className='flex items-center justify-between'>
+              <div className='flex items-center space-x-2'>
+                <input
+                  type='checkbox'
+                  className='rounded border-gray-300'
+                  onChange={e => {
+                    // Handle select all
+                  }}
+                />
+                <button className='p-1 hover:bg-gray-100 rounded'>
+                  <ArchiveBoxIcon className='h-5 w-5 text-gray-500' />
+                </button>
+              </div>
+              <div className='flex items-center space-x-2'>
+                {selectedEmails.length > 0 && (
+                  <>
+                    <span className='text-sm text-gray-500'>
+                      {selectedEmails.length} selected
+                    </span>
+                    <button
+                      onClick={() => handleBulkAction('markRead')}
+                      className='p-1 hover:bg-gray-100 rounded'
+                      title='Mark as read'
+                    >
+                      <CheckIcon className='h-5 w-5 text-gray-500' />
+                    </button>
+                  </>
+                )}
+                <button className='p-1 hover:bg-gray-100 rounded'>
+                  <EllipsisHorizontalIcon className='h-5 w-5 text-gray-500' />
+                </button>
+                <button
+                  onClick={() => handleBulkAction('delete')}
+                  className='p-1 hover:bg-gray-100 rounded hover:text-red-600'
+                >
+                  <TrashIcon className='h-5 w-5 text-gray-500' />
+                </button>
+              </div>
             </div>
           </div>
 
           {/* Email List Items */}
-          <div className='flex-1 overflow-y-auto'>
-            {emails.map(email => (
-              <div
-                key={email.id}
-                onClick={() => handleEmailSelect(email)}
-                className={`p-3 border-b border-gray-200 cursor-pointer hover:bg-gray-50 ${
-                  selectedEmail?.id === email.id ? 'bg-blue-50 border-l-4 border-l-blue-600' : ''
-                } ${!email.isRead ? 'bg-blue-50' : ''}`}
-              >
-                <div className='flex items-start justify-between mb-1'>
-                  <div className='flex items-center space-x-2'>
-                    <input
-                      type='checkbox'
-                      checked={selectedEmails.has(email.id)}
-                      onChange={e => handleEmailCheck(email.id, e.target.checked)}
-                      className='rounded border-gray-300'
-                      onClick={e => e.stopPropagation()}
-                    />
+           <div className='flex-1 overflow-y-auto'>
+             {emailsLoading && emails.length === 0 ? (
+               <div className="flex items-center justify-center h-32">
+                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+               </div>
+             ) : emailsError ? (
+               <div className="flex items-center justify-center h-32 text-red-600">
+                 <p>{emailsError}</p>
+               </div>
+             ) : filteredEmails.length === 0 ? (
+               <div className="flex items-center justify-center h-32 text-gray-500">
+                 <p>{contextSearchQuery ? t('noSearchResults') : t('noEmails')}</p>
+               </div>
+             ) : (
+               <>
+                 {filteredEmails.map(email => (
+                   <div
+                     key={email.id}
+                     onClick={() => handleEmailSelect(email)}
+                     className={`p-3 border-b border-gray-200 cursor-pointer hover:bg-gray-50 ${
+                       selectedEmail?.id === email.id ? 'bg-blue-50 border-l-4 border-l-blue-600' : ''
+                     } ${!email.isRead ? 'bg-blue-50' : ''}`}
+                   >
+                     <div className='flex items-start justify-between mb-1'>
+                       <div className='flex items-center space-x-2'>
+                         <input
+                           type='checkbox'
+                           checked={selectedEmails.includes(email.id)}
+                           onChange={e => {
+                             e.stopPropagation();
+                             if (e.target.checked) {
+                               setSelectedEmails([...selectedEmails, email.id]);
+                             } else {
+                               setSelectedEmails(selectedEmails.filter(id => id !== email.id));
+                             }
+                           }}
+                           className='rounded border-gray-300'
+                         />
+                         <button
+                           onClick={e => {
+                             e.stopPropagation();
+                             handleStarToggle(email.id, !email.isStarred);
+                           }}
+                           className='p-1'
+                         >
+                           {email.isStarred ? (
+                             <StarSolidIcon className='h-5 w-5 text-yellow-400' />
+                           ) : (
+                             <StarIcon className='h-5 w-5 text-gray-400' />
+                           )}
+                         </button>
+                       </div>
+                       <span className='text-caption text-gray-500'>
+                         {formatTimestamp(email.receivedAt || email.sentAt)}
+                       </span>
+                     </div>
+
+                     <div className='flex items-center space-x-2 mb-1'>
+                       <span className={`font-medium ${!email.isRead ? 'text-black' : 'text-gray-900'}`}>
+                         {email.sender?.name || email.sender?.email || 'Unknown Sender'}
+                       </span>
+                       {email.labels && email.labels.map(labelId => getLabelBadge(labelId))}
+                       <EmailSecurityIndicator email={email} />
+                     </div>
+
+                     <div
+                       className={`font-semibold mb-1 ${!email.isRead ? 'text-blue-700' : 'text-gray-900'}`}
+                     >
+                       {email.subject}
+                     </div>
+
+                     <div className='text-body text-gray-600 line-clamp-2'>
+                       {email.preview || (email.content?.text || email.content?.html)?.substring(0, 100) + '...'}
+                     </div>
+                   </div>
+                 ))}
+                 
+                 {/* Load More Button */}
+                 {hasMoreEmails && (
+                   <div className="p-4 text-center">
+                     <button
+                       onClick={loadMore}
+                       disabled={emailsLoading}
+                       className="text-blue-600 hover:text-blue-800 disabled:opacity-50"
+                     >
+                       {emailsLoading ? 'Loading...' : 'Load More'}
+                     </button>
+                   </div>
+                 )}
+               </>
+             )}
+           </div>
+        </div>
+
+        {/* Main Content Area */}
+        <div className='flex-1 flex flex-col bg-white'>
+          {/* Tab Navigation */}
+          <div className='border-b border-gray-200'>
+            <nav className='-mb-px flex space-x-8 px-6'>
+              {tabs.map((tab) => {
+                const Icon = tab.icon;
+                const isActive = activeTab === tab.id;
+                return (
+                  <button
+                    key={tab.id}
+                    onClick={() => setActiveTab(tab.id)}
+                    className={`py-4 px-1 border-b-2 font-medium text-sm flex items-center space-x-2 ${
+                      isActive
+                        ? 'border-blue-500 text-blue-600'
+                        : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                    }`}
+                  >
+                    <Icon className='h-5 w-5' />
+                    <span>{tab.name}</span>
+                  </button>
+                );
+              })}
+            </nav>
+          </div>
+
+          {/* Tab Content */}
+          {activeTab === 'inbox' ? (
+            /* Email Content */
+            <div className='flex-1 flex flex-col'>
+              {selectedEmail ? (
+            <>
+              {/* Email Header */}
+              <div className='p-6 border-b border-gray-200'>
+                <div className='flex items-center justify-between mb-4'>
+                  <div className='flex items-center space-x-3'>
                     <button
-                      onClick={e => {
-                        e.stopPropagation();
-                        handleStarToggle(email.id);
-                      }}
-                      className='p-1'
+                      onClick={() => handleStarToggle(selectedEmail.id, !selectedEmail.isStarred)}
+                      className='p-2 hover:bg-gray-100 rounded-full'
                     >
-                      {email.isStarred ? (
+                      {selectedEmail.isStarred ? (
                         <StarSolidIcon className='h-5 w-5 text-yellow-400' />
                       ) : (
                         <StarIcon className='h-5 w-5 text-gray-400' />
                       )}
                     </button>
+                    <button
+                      onClick={() => handleReply(selectedEmail)}
+                      className='p-2 hover:bg-gray-100 rounded-full'
+                    >
+                      <ArrowUturnLeftIcon className='h-5 w-5 text-gray-600' />
+                    </button>
+                    <button
+                       onClick={() => handleBulkAction('delete', [selectedEmail.id])}
+                       className='p-2 hover:bg-gray-100 rounded-full'
+                     >
+                      <TrashIcon className='h-5 w-5 text-gray-600' />
+                    </button>
                   </div>
-                  <span className='text-caption text-gray-500'>{email.time}</span>
-                </div>
-
-                <div className='flex items-center space-x-2 mb-1'>
-                  <span className={`font-medium ${!email.isRead ? 'text-black' : 'text-gray-900'}`}>
-                    {email.sender}
+                  <span className='text-sm text-gray-500'>
+                    {formatTimestamp(selectedEmail.receivedAt || selectedEmail.sentAt)}
                   </span>
-                  {email.labels.map(labelId => getLabelBadge(labelId))}
                 </div>
 
-                <div
-                  className={`font-semibold mb-1 ${!email.isRead ? 'text-blue-700' : 'text-gray-900'}`}
-                >
-                  {email.subject}
-                </div>
-
-                <div className='text-body text-gray-600 line-clamp-2'>{email.preview}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Email Content */}
-        <div className='flex-1 flex flex-col bg-white'>
-          {selectedEmail ? (
-            <>
-              {/* Email Header */}
-              <div className='p-6 border-b border-gray-200'>
-                <div className='flex items-center justify-between mb-4'>
-                  <div className='flex items-center space-x-7'>
-                    <button className='p-2 hover:bg-gray-100 rounded'>
-                      <ArchiveBoxIcon className='h-5 w-5 text-gray-500' />
-                    </button>
-                    <button className='p-2 hover:bg-gray-100 rounded'>
-                      <TrashIcon className='h-5 w-5 text-gray-500' />
-                    </button>
-                    <button className='p-2 hover:bg-gray-100 rounded'>
-                      <FlagIcon className='h-5 w-5 text-gray-500' />
-                    </button>
-                    <button className='p-2 hover:bg-gray-100 rounded'>
-                      <EllipsisHorizontalIcon className='h-5 w-5 text-gray-500' />
-                    </button>
+                <div className='flex items-start space-x-4'>
+                  <div className='w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white font-semibold'>
+                    {(selectedEmail.sender?.name || selectedEmail.sender?.email || 'U').charAt(0).toUpperCase()}
                   </div>
-                  <button className='p-2 hover:bg-gray-100 rounded'>
-                    <EllipsisHorizontalIcon className='h-5 w-5 text-gray-500' />
-                  </button>
-                </div>
-
-                <h1 className='text-page-title font-semibold text-gray-900 mb-4'>
-                  {selectedEmail.subject}
-                </h1>
-
-                <div className='flex items-center space-x-4'>
-                  <img
-                    src={selectedEmail.avatar}
-                    alt={selectedEmail.sender}
-                    className='w-12 h-12 rounded-full'
-                  />
                   <div className='flex-1'>
-                    <div className='flex items-center space-x-2'>
-                      <span className='font-medium text-gray-900'>{selectedEmail.sender}</span>
-                      <span className='text-gray-600'>&lt;{selectedEmail.email}&gt;</span>
+                    <div className='flex items-center justify-between'>
+                      <div>
+                        <h3 className='font-semibold text-gray-900'>
+                          {selectedEmail.sender?.name || selectedEmail.sender?.email || 'Unknown Sender'}
+                        </h3>
+                        <p className='text-sm text-gray-600'>
+                          {selectedEmail.sender?.email}
+                        </p>
+                      </div>
+                      {selectedEmail.labels && selectedEmail.labels.length > 0 && (
+                        <div className='flex items-center space-x-1'>
+                          {selectedEmail.labels.map(labelId => getLabelBadge(labelId))}
+                        </div>
+                      )}
                     </div>
-                    <div className='flex items-center space-x-2 text-body text-gray-600'>
-                      <span>To: John Doe</span>
-                      <span>•</span>
-                      <span>
-                        {selectedEmail.date}, {selectedEmail.time}
-                      </span>
-                    </div>
-                  </div>
-                  <div className='flex items-center space-x-2'>
-                    {selectedEmail.isStarred && (
-                      <StarSolidIcon className='h-5 w-5 text-yellow-400' />
-                    )}
-                    <button className='p-2 hover:bg-gray-100 rounded'>
-                      <ArrowUturnLeftIcon className='h-5 w-5 text-gray-500' />
-                    </button>
-                    <button className='p-2 hover:bg-gray-100 rounded'>
-                      <EllipsisHorizontalIcon className='h-5 w-5 text-gray-500' />
-                    </button>
-                    <button className='p-2 hover:bg-gray-100 rounded'>
-                      <EllipsisHorizontalIcon className='h-5 w-5 text-gray-500' />
-                    </button>
+                    <h2 className='text-xl font-semibold text-gray-900 mt-2'>
+                      {selectedEmail.subject}
+                    </h2>
                   </div>
                 </div>
               </div>
 
-              {/* Email Content */}
-              <div className='flex-1 overflow-y-auto p-6'>
-                <div className='space-y-4 max-w-none'>
-                  {selectedEmail.content ? (
+              {/* Email Body */}
+              <div className='flex-1 p-6 overflow-y-auto'>
+                <div className='prose max-w-none'>
+                  {selectedEmail.content?.html ? (
+                    <div dangerouslySetInnerHTML={{ __html: selectedEmail.content.html }} />
+                  ) : selectedEmail.content?.text ? (
+                    <div className='whitespace-pre-wrap'>{selectedEmail.content.text}</div>
+                  ) : selectedEmail.content ? (
                     selectedEmail.content.split('\n\n').map((paragraph, index) => {
                       if (paragraph.includes('•')) {
                         // Handle bullet points
@@ -564,80 +944,113 @@ Email: sarah.johnson@acmecorp.com`,
                       return null;
                     })
                   ) : (
-                    <p className='text-gray-900 leading-relaxed'>{selectedEmail.preview}</p>
+                    <p className='text-gray-500'>No content available</p>
                   )}
                 </div>
 
                 {/* Attachments */}
                 {selectedEmail.attachments && selectedEmail.attachments.length > 0 && (
-                  <div className='mt-8 border-t border-gray-200 pt-6'>
-                    <div className='flex items-center space-x-2 mb-4'>
-                      <PaperClipIcon className='h-5 w-5 text-gray-500' />
-                      <span className='font-medium text-gray-900'>
-                        {selectedEmail.attachments.length} Attachments
-                      </span>
-                    </div>
-                    <div className='flex space-x-4'>
+                  <div className='mt-6 pt-6 border-t border-gray-200'>
+                    <h4 className='font-medium text-gray-900 mb-3'>
+                      Attachments ({selectedEmail.attachments.length})
+                    </h4>
+                    <div className='space-y-2'>
                       {selectedEmail.attachments.map((attachment, index) => (
                         <div
                           key={index}
-                          className='border border-gray-200 rounded-md p-3 flex items-center space-x-3 hover:bg-gray-50 cursor-pointer'
+                          className='flex items-center space-x-3 p-3 bg-gray-50 rounded-lg'
                         >
-                          {getAttachmentIcon(attachment.type)}
-                          <div>
-                            <div className='font-medium text-body text-gray-900'>
-                              {attachment.name}
-                            </div>
-                            <div className='text-caption text-gray-500'>{attachment.size}</div>
+                          <PaperClipIcon className='h-5 w-5 text-gray-400' />
+                          <div className='flex-1'>
+                            <p className='text-sm font-medium text-gray-900'>
+                              {attachment.filename || attachment.name}
+                            </p>
+                            <p className='text-xs text-gray-500'>
+                              {attachment.size ? `${Math.round(attachment.size / 1024)} KB` : 'Unknown size'}
+                            </p>
                           </div>
+                          <button className='text-blue-600 hover:text-blue-800 text-sm font-medium'>
+                            Download
+                          </button>
                         </div>
                       ))}
                     </div>
                   </div>
                 )}
+              </div>
 
-                {/* Reply Section */}
-                <div className='mt-8 border-t border-gray-200 pt-6'>
-                  <div className='bg-gray-50 border border-gray-200 rounded-md p-4'>
-                    <div className='flex items-center justify-between mb-4'>
-                      <span className='font-medium text-gray-900'>Reply</span>
-                      <PaperClipIcon className='h-5 w-5 text-gray-500' />
-                    </div>
-                    <textarea
-                      ref={replyInputRef}
-                      value={replyText}
-                      onChange={e => setReplyText(e.target.value)}
-                      placeholder='Click here to compose a reply...'
-                      className='w-full h-32 p-3 border border-gray-300 rounded-md resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
-                    />
-                    <div className='flex justify-end mt-4'>
-                      <button
-                        onClick={handleReplySubmit}
-                        className='bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors flex items-center space-x-2 text-body'
-                      >
-                        <span>Send</span>
-                        <PaperAirplaneIcon className='h-4 w-4' />
-                      </button>
-                    </div>
-                  </div>
+              {/* Reply Section */}
+              <div className='p-6 border-t border-gray-200'>
+                <div className='flex items-center space-x-3 mb-4'>
+                  <button
+                    onClick={() => handleReply(selectedEmail)}
+                    className='px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700'
+                  >
+                    Reply
+                  </button>
+                  <button
+                    onClick={() => handleReply(selectedEmail, true)}
+                    className='px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50'
+                  >
+                    Reply All
+                  </button>
+                  <button
+                    onClick={() => handleReply(selectedEmail, false, true)}
+                    className='px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50'
+                  >
+                    Forward
+                  </button>
                 </div>
               </div>
             </>
           ) : (
             <div className='flex-1 flex items-center justify-center'>
               <div className='text-center'>
-                <EnvelopeIcon className='h-16 w-16 text-gray-400 mx-auto mb-4' />
-                <h3 className='text-card-title font-medium text-gray-900 mb-2'>
-                  No email selected
-                </h3>
-                <p className='text-body text-gray-500'>
-                  Select an email from the list to view its contents
-                </p>
+                <EnvelopeIcon className='h-16 w-16 text-gray-300 mx-auto mb-4' />
+                <h3 className='text-lg font-medium text-gray-900 mb-2'>No email selected</h3>
+                <p className='text-gray-500'>Select an email from the list to view its content</p>
               </div>
             </div>
           )}
+            </div>
+        ) : (
+          /* Automation Tab Content */
+          <div className='flex-1'>
+            <AutomationDashboard />
+          </div>
+        )}
         </div>
       </div>
+
+      {/* Email Composer Modal */}
+      {composerOpen && (
+        <EmailComposer
+          isOpen={composerOpen}
+          onClose={() => closeComposer()}
+          replyTo={replyToEmail}
+          onSent={() => {
+            closeComposer();
+            setReplyToEmail(null);
+            handleRefresh();
+          }}
+        />
+      )}
+
+      {/* Email Settings Modal */}
+      {showSettings && (
+        <EmailSettings
+          isOpen={showSettings}
+          onClose={() => setShowSettings(false)}
+        />
+      )}
+
+      {/* Email Security Settings Modal */}
+      {showSecuritySettings && (
+        <EmailSecuritySettings
+          isOpen={showSecuritySettings}
+          onClose={() => setShowSecuritySettings(false)}
+        />
+      )}
 
       {/* Footer */}
       <Footer />

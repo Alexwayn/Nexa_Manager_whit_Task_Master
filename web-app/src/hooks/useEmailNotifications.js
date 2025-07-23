@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { useAuth } from '@context/AuthContext';
+import { useUser } from '@clerk/clerk-react';
 import { useEmailContext } from '@context/EmailContext';
 import { useWebSocketContext } from '@providers/WebSocketProvider';
 import emailNotificationService from '@lib/emailNotificationService';
@@ -10,7 +10,7 @@ import Logger from '@utils/Logger';
  * Handles real-time email notifications and user preferences
  */
 export const useEmailNotifications = () => {
-  const { user } = useAuth();
+  const { user } = useUser();
   const { notifications, addNotification, removeNotification, markNotificationRead } = useEmailContext();
   const { subscribe, isConnected } = useWebSocketContext();
   

@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useEmailContext } from '@context/EmailContext';
 import emailManagementService from '@lib/emailManagementService';
-import { useAuth } from '@context/AuthContext';
+import { useUser } from '@clerk/clerk-react';
 import Logger from '@utils/Logger';
 
 /**
@@ -16,7 +16,7 @@ export const useEmails = (options = {}) => {
     filters = null,
   } = options;
 
-  const { user } = useAuth();
+  const { user } = useUser();
   const {
     emails,
     selectedEmail,

@@ -1,6 +1,7 @@
 import emailProviderService from '@lib/emailProviderService';
 import emailStorageService from '@lib/emailStorageService';
 import emailTemplateService from '@lib/emailTemplateService';
+import emailSecurityService from '@lib/emailSecurityService';
 import { supabase } from '@lib/supabaseClient';
 import Logger from '@utils/Logger';
 
@@ -21,6 +22,9 @@ class EmailManagementService {
     try {
       // Initialize storage tables
       await emailStorageService.initializeTables();
+      
+      // Initialize email security service
+      await emailSecurityService.initializeEncryption(userId);
       
       // Load user's email accounts and start sync if configured
       const accounts = await this.getEmailAccounts(userId);
@@ -88,6 +92,27 @@ class EmailManagementService {
           await this.markAsRead(emailId, userId, true);
           result.data.isRead = true;
         }
+
+        // Perform security analysis on the email
+        try {
+          const securityAnalysis = await emailSecurityService.analyzeEmailSecurity(result.data, userId);
+          result.data.securityAnalysis = securityAnalysis;
+          
+          // Log email access for audit trail
+          await emailSecurityService.logEmailSecurityEvent({
+            action: 'EMAIL_ACCESSED',
+            userId,
+            emailId,
+            details: { 
+              riskScore: securityAnalysis.riskScore,
+              hasSecurityWarnings: securityAnalysis.riskScore > 40
+            },
+            severity: securityAnalysis.riskScore > 70 ? 'HIGH' : 'LOW'
+          });
+        } catch (securityError) {
+          Logger.warn('Security analysis failed for email:', emailId, securityError);
+          // Don't fail the entire request if security analysis fails
+        }
       }
 
       return result;
@@ -129,6 +154,39 @@ class EmailManagementService {
         }
       }
 
+      // Encrypt sensitive content if marked as confidential
+      let encryptedContent = null;
+      if (emailData.isConfidential || emailData.encryptContent) {
+        try {
+          const contentToEncrypt = processedEmailData.html || processedEmailData.text;
+          encryptedContent = await emailSecurityService.encryptEmailContent(contentToEncrypt, userId);
+          
+          // Log encryption event
+          await emailSecurityService.logEmailSecurityEvent({
+            action: 'EMAIL_CONTENT_ENCRYPTED',
+            userId,
+            details: { 
+              recipient: processedEmailData.to,
+              subject: processedEmailData.subject,
+              hasAttachments: (processedEmailData.attachments || []).length > 0
+            },
+            severity: 'MEDIUM'
+          });
+        } catch (encryptionError) {
+          Logger.error('Failed to encrypt email content:', encryptionError);
+          // Continue without encryption but log the failure
+          await emailSecurityService.logEmailSecurityEvent({
+            action: 'EMAIL_ENCRYPTION_FAILED',
+            userId,
+            details: { 
+              recipient: processedEmailData.to,
+              error: encryptionError.message
+            },
+            severity: 'HIGH'
+          });
+        }
+      }
+
       // Send via email provider
       const sendResult = await emailProviderService.sendEmail(processedEmailData);
       
@@ -150,12 +208,14 @@ class EmailManagementService {
           content: {
             text: processedEmailData.text,
             html: processedEmailData.html,
+            encrypted: encryptedContent, // Store encrypted version if available
           },
           attachments: processedEmailData.attachments || [],
           labels: emailData.labels || [],
           isRead: true,
           isStarred: false,
           isImportant: emailData.isImportant || false,
+          isConfidential: emailData.isConfidential || false,
           receivedAt: new Date().toISOString(),
           sentAt: new Date().toISOString(),
           clientId: emailData.clientId || null,
@@ -164,6 +224,21 @@ class EmailManagementService {
         };
 
         const storeResult = await emailStorageService.storeEmail(sentEmail);
+        
+        // Log email sending for security audit
+        await emailSecurityService.logEmailSecurityEvent({
+          action: 'EMAIL_SENT',
+          userId,
+          emailId: storeResult.data?.id,
+          details: {
+            recipient: processedEmailData.to,
+            subject: processedEmailData.subject,
+            hasAttachments: (processedEmailData.attachments || []).length > 0,
+            isConfidential: emailData.isConfidential || false,
+            templateUsed: emailData.templateId || null
+          },
+          severity: 'LOW'
+        });
         
         // Log business email activity if related documents are present
         if (emailData.relatedDocuments && emailData.relatedDocuments.length > 0) {
@@ -222,11 +297,39 @@ class EmailManagementService {
    */
   async deleteEmail(emailId, userId, permanent = false) {
     try {
+      // Get email details before deletion for security logging
+      const emailResult = await emailStorageService.getEmail(emailId, userId);
+      const emailData = emailResult.success ? emailResult.data : null;
+
       if (permanent) {
+        // For permanent deletion, ensure secure cleanup of encrypted content
+        if (emailData && emailData.content && emailData.content.encrypted) {
+          try {
+            // Securely delete encrypted content
+            await emailSecurityService.secureDeleteEncryptedContent(emailData.content.encrypted);
+          } catch (cleanupError) {
+            Logger.warn('Failed to securely delete encrypted content:', cleanupError);
+          }
+        }
+
         // Permanently delete from database
         const result = await emailStorageService.deleteEmail(emailId, userId);
         
         if (result.success) {
+          // Log permanent deletion for security audit
+          await emailSecurityService.logEmailSecurityEvent({
+            action: 'EMAIL_PERMANENTLY_DELETED',
+            userId,
+            emailId,
+            details: {
+              subject: emailData?.subject || 'Unknown',
+              sender: emailData?.sender?.email || 'Unknown',
+              hadEncryptedContent: !!(emailData?.content?.encrypted),
+              deletionTimestamp: new Date().toISOString()
+            },
+            severity: 'MEDIUM'
+          });
+
           this.emitEvent('email:deleted', { userId, emailId, permanent: true });
         }
         
@@ -236,6 +339,19 @@ class EmailManagementService {
         const result = await this.moveToFolder(emailId, userId, 'trash');
         
         if (result.success) {
+          // Log soft deletion for security audit
+          await emailSecurityService.logEmailSecurityEvent({
+            action: 'EMAIL_MOVED_TO_TRASH',
+            userId,
+            emailId,
+            details: {
+              subject: emailData?.subject || 'Unknown',
+              sender: emailData?.sender?.email || 'Unknown',
+              hasEncryptedContent: !!(emailData?.content?.encrypted)
+            },
+            severity: 'LOW'
+          });
+
           this.emitEvent('email:deleted', { userId, emailId, permanent: false });
         }
         
@@ -243,6 +359,20 @@ class EmailManagementService {
       }
     } catch (error) {
       Logger.error('Error deleting email:', error);
+      
+      // Log deletion failure for security audit
+      await emailSecurityService.logEmailSecurityEvent({
+        action: 'EMAIL_DELETION_FAILED',
+        userId,
+        emailId,
+        details: {
+          error: error.message,
+          permanent,
+          timestamp: new Date().toISOString()
+        },
+        severity: 'HIGH'
+      });
+
       return {
         success: false,
         error: error.message,
@@ -1364,462 +1494,6 @@ class EmailManagementService {
     this.eventListeners.clear();
 
     Logger.info('Email management service cleaned up');
-  }
-}
-
-export default new EmailManagementService();  /**
-   *
- ENHANCED BUSINESS INTEGRATION METHODS
-   */
-
-  /**
-   * Connect with existing invoice email functionality
-   */
-  async integrateInvoiceEmail(userId, invoiceId, recipientEmail, options = {}) {
-    try {
-      const {
-        templateId,
-        customMessage,
-        attachPdf = true,
-        sendReminder = false,
-        reminderType = 'gentle',
-        useNewSystem = true,
-      } = options;
-
-      let result;
-      if (useNewSystem) {
-        // Use new email management system
-        result = await this.sendInvoiceEmail(userId, invoiceId, recipientEmail, templateId, customMessage);
-      } else {
-        // Use existing invoice service
-        const { InvoiceService } = await import('./invoiceService.js');
-        
-        if (sendReminder) {
-          result = await InvoiceService.sendPaymentReminder(invoiceId, userId, reminderType, {
-            customMessage,
-            attachPdf,
-          });
-        } else {
-          result = await InvoiceService.generateAndEmailInvoicePDF(invoiceId, userId, {
-            to: recipientEmail,
-            template: templateId,
-            customMessage,
-            attachPdf,
-          });
-        }
-      }
-
-      // Log the activity in our email management system
-      if (result.success) {
-        const { data: invoice } = await supabase
-          .from('invoices')
-          .select('*, clients(*)')
-          .eq('id', invoiceId)
-          .single();
-
-        if (invoice) {
-          await this.logEmailActivity(userId, {
-            invoiceId,
-            clientId: invoice.client_id,
-            type: sendReminder ? `reminder_${reminderType}` : 'invoice_sent',
-            status: 'sent',
-            recipientEmail,
-            subject: `Invoice ${invoice.invoice_number}`,
-            templateType: templateId || 'invoice',
-            details: {
-              attachPdf,
-              customMessage: customMessage || null,
-              system_used: useNewSystem ? 'new' : 'legacy',
-            },
-          });
-        }
-      }
-
-      return result;
-    } catch (error) {
-      Logger.error('Error integrating invoice email:', error);
-      return {
-        success: false,
-        error: error.message,
-      };
-    }
-  }
-
-  /**
-   * Connect with existing quote email functionality
-   */
-  async integrateQuoteEmail(userId, quoteId, recipientEmail, options = {}) {
-    try {
-      const {
-        templateId,
-        customMessage,
-        emailType = 'quote_sent',
-        useNewSystem = true,
-      } = options;
-
-      let result;
-      if (useNewSystem) {
-        // Use new email management system
-        result = await this.sendQuoteEmail(userId, quoteId, recipientEmail, templateId, customMessage);
-      } else {
-        // Use existing quote service
-        const { default: QuoteService } = await import('./quoteService.js');
-        
-        result = await QuoteService.sendQuoteEmail(quoteId, userId, {
-          to: recipientEmail,
-          template: templateId,
-          customMessage,
-          emailType,
-        });
-      }
-
-      // Log the activity in our email management system
-      if (result.success) {
-        const { data: quote } = await supabase
-          .from('quotes')
-          .select('*, clients(*)')
-          .eq('id', quoteId)
-          .single();
-
-        if (quote) {
-          await this.logEmailActivity(userId, {
-            quoteId,
-            clientId: quote.client_id,
-            type: emailType,
-            status: 'sent',
-            recipientEmail,
-            subject: `Quote ${quote.quote_number}`,
-            templateType: templateId || 'quote',
-            details: {
-              customMessage: customMessage || null,
-              emailType,
-              system_used: useNewSystem ? 'new' : 'legacy',
-            },
-          });
-        }
-      }
-
-      return result;
-    } catch (error) {
-      Logger.error('Error integrating quote email:', error);
-      return {
-        success: false,
-        error: error.message,
-      };
-    }
-  }
-
-  /**
-   * Get comprehensive client email history with business document context
-   */
-  async getEnhancedClientEmailHistory(userId, clientId, options = {}) {
-    try {
-      const {
-        limit = 50,
-        offset = 0,
-        dateFrom,
-        dateTo,
-        documentType, // 'invoice', 'quote', or null for all
-        includeDocuments = true,
-      } = options;
-
-      // Get email activity from our logging system
-      let activityQuery = supabase
-        .from('email_activity')
-        .select(`
-          *,
-          clients(id, full_name, email, company_name),
-          invoices(id, invoice_number, total_amount, status, issue_date, due_date),
-          quotes(id, quote_number, total_amount, status, issue_date, due_date)
-        `)
-        .eq('user_id', userId)
-        .eq('client_id', clientId)
-        .order('sent_at', { ascending: false })
-        .range(offset, offset + limit - 1);
-
-      // Apply filters
-      if (dateFrom) {
-        activityQuery = activityQuery.gte('sent_at', dateFrom);
-      }
-      if (dateTo) {
-        activityQuery = activityQuery.lte('sent_at', dateTo);
-      }
-      if (documentType) {
-        if (documentType === 'invoice') {
-          activityQuery = activityQuery.not('invoice_id', 'is', null);
-        } else if (documentType === 'quote') {
-          activityQuery = activityQuery.not('quote_id', 'is', null);
-        }
-      }
-
-      const { data: activity, error: activityError } = await activityQuery;
-
-      if (activityError) {
-        throw activityError;
-      }
-
-      // Get emails from the email management system
-      const emailsResult = await this.getEmailsByClient(userId, clientId, {
-        limit,
-        offset,
-        dateFrom,
-        dateTo,
-      });
-
-      // Get total count for pagination
-      const { count: totalActivity } = await supabase
-        .from('email_activity')
-        .select('*', { count: 'exact', head: true })
-        .eq('user_id', userId)
-        .eq('client_id', clientId);
-
-      // Combine and organize data
-      const combinedHistory = {
-        businessEmails: activity || [],
-        regularEmails: emailsResult.success ? emailsResult.data : [],
-        summary: {
-          totalBusinessEmails: totalActivity || 0,
-          totalRegularEmails: emailsResult.success ? emailsResult.total : 0,
-          recentActivity: (activity || []).slice(0, 10),
-        },
-      };
-
-      return {
-        success: true,
-        data: combinedHistory,
-        pagination: {
-          total: totalActivity || 0,
-          limit,
-          offset,
-          hasMore: (totalActivity || 0) > offset + limit,
-        },
-      };
-    } catch (error) {
-      Logger.error('Error getting enhanced client email history:', error);
-      return {
-        success: false,
-        error: error.message,
-      };
-    }
-  }
-
-  /**
-   * Get business email analytics and insights
-   */
-  async getBusinessEmailAnalytics(userId, options = {}) {
-    try {
-      const {
-        dateFrom,
-        dateTo,
-        clientId,
-        documentType,
-      } = options;
-
-      let query = supabase
-        .from('email_activity')
-        .select(`
-          *,
-          clients(full_name, company_name),
-          invoices(invoice_number, total_amount, status),
-          quotes(quote_number, total_amount, status)
-        `)
-        .eq('user_id', userId)
-        .order('sent_at', { ascending: false });
-
-      // Apply filters
-      if (dateFrom) {
-        query = query.gte('sent_at', dateFrom);
-      }
-      if (dateTo) {
-        query = query.lte('sent_at', dateTo);
-      }
-      if (clientId) {
-        query = query.eq('client_id', clientId);
-      }
-      if (documentType === 'invoice') {
-        query = query.not('invoice_id', 'is', null);
-      } else if (documentType === 'quote') {
-        query = query.not('quote_id', 'is', null);
-      }
-
-      const { data: activity, error } = await query;
-
-      if (error) {
-        throw new Error(`Failed to get business email analytics: ${error.message}`);
-      }
-
-      // Calculate comprehensive analytics
-      const analytics = {
-        totalEmails: activity.length,
-        emailsByType: this.groupBy(activity, 'type'),
-        emailsByStatus: this.groupBy(activity, 'status'),
-        emailsByClient: this.groupClientEmails(activity),
-        emailsByMonth: this.groupByMonth(activity),
-        documentBreakdown: {
-          invoices: activity.filter(a => a.invoice_id).length,
-          quotes: activity.filter(a => a.quote_id).length,
-        },
-        recentActivity: activity.slice(0, 20),
-        topClients: this.getTopClientsByEmailCount(activity),
-        successRate: this.calculateEmailSuccessRate(activity),
-      };
-
-      return {
-        success: true,
-        data: {
-          activity,
-          analytics,
-        },
-      };
-    } catch (error) {
-      Logger.error('Error getting business email analytics:', error);
-      return {
-        success: false,
-        error: error.message,
-      };
-    }
-  }
-
-  // Helper methods for analytics
-  groupBy(items, field) {
-    const groups = {};
-    items.forEach(item => {
-      const value = item[field] || 'unknown';
-      groups[value] = (groups[value] || 0) + 1;
-    });
-    return groups;
-  }
-
-  groupByMonth(items) {
-    const groups = {};
-    items.forEach(item => {
-      const month = new Date(item.sent_at).toISOString().substring(0, 7);
-      groups[month] = (groups[month] || 0) + 1;
-    });
-    return groups;
-  }
-
-  groupClientEmails(activity) {
-    const groups = {};
-    activity.forEach(item => {
-      if (item.clients) {
-        const clientName = item.clients.full_name || item.clients.company_name || 'Unknown';
-        groups[clientName] = (groups[clientName] || 0) + 1;
-      }
-    });
-    return groups;
-  }
-
-  getTopClientsByEmailCount(activity, limit = 10) {
-    const clientCounts = this.groupBy(activity, 'client_id');
-    return Object.entries(clientCounts)
-      .sort(([,a], [,b]) => b - a)
-      .slice(0, limit)
-      .map(([clientId, count]) => ({ clientId, count }));
-  }
-
-  calculateEmailSuccessRate(activity) {
-    if (activity.length === 0) return 0;
-    const successful = activity.filter(a => a.status === 'sent' || a.status === 'delivered').length;
-    return (successful / activity.length) * 100;
-  }
-
-  /**
-   * Migrate existing business email data to new system
-   */
-  async migrateBusinessEmailData(userId) {
-    try {
-      Logger.info('Starting business email data migration for user:', userId);
-      
-      // Get existing invoices that likely had emails sent
-      const { data: invoices } = await supabase
-        .from('invoices')
-        .select(`
-          id,
-          invoice_number,
-          client_id,
-          status,
-          created_at,
-          updated_at,
-          clients(email, full_name)
-        `)
-        .eq('user_id', userId)
-        .in('status', ['sent', 'paid', 'overdue'])
-        .not('clients.email', 'is', null);
-
-      // Get existing quotes that likely had emails sent
-      const { data: quotes } = await supabase
-        .from('quotes')
-        .select(`
-          id,
-          quote_number,
-          client_id,
-          status,
-          created_at,
-          updated_at,
-          clients(email, full_name)
-        `)
-        .eq('user_id', userId)
-        .in('status', ['sent', 'accepted', 'rejected'])
-        .not('clients.email', 'is', null);
-
-      let migratedCount = 0;
-
-      // Migrate invoice email activities
-      for (const invoice of invoices || []) {
-        await this.logEmailActivity(userId, {
-          invoiceId: invoice.id,
-          clientId: invoice.client_id,
-          type: 'invoice_sent',
-          status: 'sent',
-          recipientEmail: invoice.clients.email,
-          subject: `Invoice ${invoice.invoice_number}`,
-          templateType: 'invoice',
-          details: {
-            migrated: true,
-            originalDate: invoice.updated_at || invoice.created_at,
-            invoice_status: invoice.status,
-          },
-          sentAt: invoice.updated_at || invoice.created_at,
-        });
-        migratedCount++;
-      }
-
-      // Migrate quote email activities
-      for (const quote of quotes || []) {
-        await this.logEmailActivity(userId, {
-          quoteId: quote.id,
-          clientId: quote.client_id,
-          type: 'quote_sent',
-          status: 'sent',
-          recipientEmail: quote.clients.email,
-          subject: `Quote ${quote.quote_number}`,
-          templateType: 'quote',
-          details: {
-            migrated: true,
-            originalDate: quote.updated_at || quote.created_at,
-            quote_status: quote.status,
-          },
-          sentAt: quote.updated_at || quote.created_at,
-        });
-        migratedCount++;
-      }
-
-      Logger.info(`Business email data migration completed. Migrated ${migratedCount} records.`);
-
-      return {
-        success: true,
-        migratedCount,
-        invoiceCount: invoices?.length || 0,
-        quoteCount: quotes?.length || 0,
-      };
-    } catch (error) {
-      Logger.error('Error migrating business email data:', error);
-      return {
-        success: false,
-        error: error.message,
-      };
-    }
   }
 }
 

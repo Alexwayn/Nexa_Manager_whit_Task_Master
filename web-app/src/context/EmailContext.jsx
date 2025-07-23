@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useReducer, useEffect, useCallback, useRef } from 'react';
 import emailManagementService from '@lib/emailManagementService';
-import { useAuth } from '@context/AuthContext';
-import { useWebSocketContext } from '@providers/WebSocketProvider';
+import { useUser } from '@clerk/clerk-react';
+import { useWebSocketContext } from '../providers/WebSocketProvider';
 import Logger from '@utils/Logger';
 
 /**
@@ -314,7 +314,7 @@ const EmailContext = createContext(null);
  */
 export const EmailProvider = ({ children }) => {
   const [state, dispatch] = useReducer(emailReducer, initialState);
-  const { user } = useAuth();
+  const { user } = useUser();
   const { subscribe, isConnected } = useWebSocketContext();
   const syncTimeoutRef = useRef(null);
   const unsubscribeRefs = useRef([]);

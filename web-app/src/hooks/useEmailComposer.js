@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import emailManagementService from '@lib/emailManagementService';
 import emailAttachmentService from '@lib/emailAttachmentService';
-import { useAuth } from '@context/AuthContext';
+import { useUser } from '@clerk/clerk-react';
 import { useEmailContext } from '@context/EmailContext';
 import Logger from '@utils/Logger';
 
@@ -10,7 +10,7 @@ import Logger from '@utils/Logger';
  * Handles email data, validation, drafts, and sending with context integration
  */
 export const useEmailComposer = (initialData = {}) => {
-  const { user } = useAuth();
+  const { user } = useUser();
   const {
     composerOpen,
     composerData,

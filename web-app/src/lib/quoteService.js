@@ -844,10 +844,6 @@ export class QuoteService {
       };
     }
   }
-}
-
-export default QuoteService;
-
   /**
    * Get quote email history
    * @param {string} quoteId - Quote ID
@@ -928,3 +924,5 @@ export default QuoteService;
     }
   }
 }
+
+export default QuoteService;
