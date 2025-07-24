@@ -210,7 +210,7 @@ const EmailList = ({
             </div>
             <div className="flex items-center space-x-2">
               {email.hasAttachments && (
-                <PaperClipIcon className="h-4 w-4 text-gray-400" />
+                <PaperClipIcon className="h-4 w-4 text-gray-400" data-testid="paper-clip-icon" />
               )}
               <span className="text-sm text-gray-500">
                 {formatTime(email.receivedAt)}

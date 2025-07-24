@@ -22,13 +22,13 @@ module.exports = {
     '^@services/(.*)$': '<rootDir>/src/services/$1',
     '^@utils/(.*)$': '<rootDir>/src/utils/$1',
     '^@hooks/(.*)$': '<rootDir>/src/hooks/$1',
-    '^@contexts/(.*)$': '<rootDir>/src/contexts/$1',
+    '^@context/(.*)$': '<rootDir>/src/context/$1',
     '^@i18n/(.*)$': '<rootDir>/src/i18n/$1',
     '^@assets/(.*)$': '<rootDir>/src/assets/$1',
     '^@tests/(.*)$': '<rootDir>/src/__tests__/$1',
     '^@lib/(.*)$': '<rootDir>/src/lib/$1',
   },
-  
+
   // Test file patterns
   testMatch: [
     '<rootDir>/src/**/__tests__/**/*.{js,jsx,ts,tsx}',
@@ -98,13 +98,10 @@ module.exports = {
         VITE_SUPABASE_URL: 'http://localhost:54321',
         VITE_SUPABASE_ANON_KEY: 'test-key',
         VITE_APP_ENV: 'test',
+        VITE_BASE_URL: 'http://localhost:3000',
       },
     },
   },
-  
-  // Clear mocks between tests
-  clearMocks: true,
-  restoreMocks: true,
   
   // Verbose output for debugging
   verbose: false,

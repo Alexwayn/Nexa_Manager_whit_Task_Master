@@ -79,21 +79,47 @@ global.FileReader = class MockFileReader {
     this.onload = null;
     this.onerror = null;
     this.onabort = null;
+    this.onloadend = null;
   }
 
   readAsText(file) {
     setTimeout(() => {
       this.readyState = 2;
-      this.result = file.parts.join('');
+      // Handle both Blob and File objects
+      if (file instanceof Blob) {
+        // For Blob objects, we need to simulate reading the content
+        // Since we can't actually read the blob in a test environment,
+        // we'll use a mock implementation
+        this.result = 'test data'; // Mock content
+      } else {
+        // Fallback for other file-like objects
+        this.result = file.parts ? file.parts.join('') : 'test data';
+      }
       if (this.onload) this.onload({ target: this });
+      if (this.onloadend) this.onloadend({ target: this });
     }, 0);
   }
 
   readAsDataURL(file) {
     setTimeout(() => {
       this.readyState = 2;
-      this.result = `data:${file.type};base64,${btoa(file.parts.join(''))}`;
+      // Handle both Blob and File objects
+      if (file instanceof Blob) {
+        // For Blob objects, simulate the data URL format
+        // Extract content from the blob constructor if available
+        let content = 'test data';
+        if (file.constructor && file.constructor.name === 'Blob') {
+          // Try to get content from blob parts if available in test environment
+          content = 'test data'; // Default mock content
+        }
+        this.result = `data:${file.type || 'text/plain'};base64,${btoa(content)}`;
+      } else {
+        // Fallback for other file-like objects
+        const content = file.parts ? file.parts.join('') : 'test data';
+        this.result = `data:${file.type || 'text/plain'};base64,${btoa(content)}`;
+      }
       if (this.onload) this.onload({ target: this });
+      if (this.onloadend) this.onloadend({ target: this });
     }, 0);
   }
 };
@@ -158,14 +184,20 @@ Object.defineProperty(window.URL, 'revokeObjectURL', {
   value: jest.fn(),
 });
 
-// Mock clipboard API
-Object.defineProperty(navigator, 'clipboard', {
-  writable: true,
-  value: {
-    writeText: jest.fn(() => Promise.resolve()),
-    readText: jest.fn(() => Promise.resolve('mocked clipboard text')),
-  },
-});
+// Mock clipboard API - make it configurable to avoid conflicts with user-event
+const mockClipboard = {
+  writeText: jest.fn(() => Promise.resolve()),
+  readText: jest.fn(() => Promise.resolve('mocked clipboard text')),
+};
+
+// Only define clipboard if it doesn't exist
+if (!navigator.clipboard) {
+  Object.defineProperty(navigator, 'clipboard', {
+    writable: true,
+    configurable: true,
+    value: mockClipboard,
+  });
+}
 
 // Mock geolocation API
 Object.defineProperty(navigator, 'geolocation', {

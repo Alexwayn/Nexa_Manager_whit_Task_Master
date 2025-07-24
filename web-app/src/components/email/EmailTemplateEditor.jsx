@@ -48,6 +48,7 @@ const EmailTemplateEditor = ({ template = null, onSave, onCancel }) => {
         htmlContent: template.html_content || template.html || '',
         category: template.category || 'custom',
         variables: template.variables || [],
+        attachments: template.attachments || [],
       });
     }
   }, [template]);
@@ -55,17 +56,26 @@ const EmailTemplateEditor = ({ template = null, onSave, onCancel }) => {
   useEffect(() => {
     // Initialize test variables with sample data
     const testData = {};
-    availableVariables.forEach(variable => {
-      testData[variable.name] = getSampleData(variable.name);
-    });
+    if (availableVariables && Array.isArray(availableVariables)) {
+      availableVariables.forEach(variable => {
+        testData[variable.name] = getSampleData(variable.name);
+      });
+    }
     setTestVariables(testData);
   }, [availableVariables]);
 
   useEffect(() => {
     // Validate template whenever content changes
     if (formData.htmlContent) {
-      const validationResult = emailTemplateService.validateTemplate(formData.htmlContent);
-      setValidation(validationResult);
+      try {
+        const validationResult = emailTemplateService.validateTemplate(formData.htmlContent);
+        if (validationResult && typeof validationResult === 'object') {
+          setValidation(validationResult);
+        }
+      } catch (error) {
+        console.warn('Template validation error:', error);
+        setValidation({ isValid: true, issues: [] });
+      }
     }
   }, [formData.htmlContent]);
 

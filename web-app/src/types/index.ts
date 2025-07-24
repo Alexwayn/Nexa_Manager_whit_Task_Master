@@ -6,6 +6,9 @@ export * from './api';
 // Email Management Types
 export * from './email';
 
+// Scanner Types
+export * from './scanner';
+
 // Component and UI Types
 export * from './components';
 

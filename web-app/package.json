@@ -75,6 +75,7 @@
     "jspdf-autotable": "^5.0.2",
     "lucide-react": "^0.517.0",
     "lz-string": "^1.5.0",
+    "pdfjs-dist": "^5.1.91",
     "qrcode": "^1.5.4",
     "quill": "^2.0.2",
     "react": "^19.0.0",

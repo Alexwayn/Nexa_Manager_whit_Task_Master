@@ -9,6 +9,7 @@ A comprehensive business management platform built with React, Vite, and Supabas
 - 🧾 **Invoice & Quotes** - Professional billing system with PDF generation
 - 📅 **Calendar** - Event and appointment management
 - 📧 **Email Management** - Integrated email system with templates, IMAP/SMTP support, and business document integration
+- 📄 **Document Scanner** - Advanced AI-powered document digitization with multi-provider OCR architecture, intelligent fallback systems, camera capture, file upload, and comprehensive Supabase-integrated document management with full-text search, metadata tracking, and secure storage
 - 📈 **Reports** - Detailed business insights and analytics
 - 🌍 **Multi-language** - Full Italian and English support
 - 🔐 **Secure Authentication** - Powered by Clerk with MFA support
@@ -99,12 +100,13 @@ npm run format       # Format code with Prettier
 
 ### Tech Stack
 
-- **Frontend**: React 18, Vite, TailwindCSS
+- **Frontend**: React 19, Vite, TailwindCSS
 - **Backend**: Supabase (PostgreSQL, Auth, Storage)
 - **Authentication**: Clerk
 - **Internationalization**: i18next
 - **Charts**: Chart.js
 - **PDF Generation**: jsPDF
+- **Document Processing**: Advanced AI-powered OCR with multi-provider architecture (OpenAI Vision, Qwen) featuring intelligent fallback, rate limiting, real-time processing status, and comprehensive Supabase-integrated storage with full-text search and metadata management
 - **Icons**: Lucide React
 
 ## 🌍 Internationalization

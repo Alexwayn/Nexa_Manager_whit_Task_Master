@@ -19,6 +19,7 @@ A comprehensive business management platform built with React 19, TypeScript, an
 - 🧾 Invoice and quote generation with PDF export
 - 📅 Calendar and event management
 - 📧 **Email Management System** - Full-featured email client with IMAP/SMTP support
+- 📄 **Document Scanner** - Advanced AI-powered document digitization with multi-provider OCR architecture, intelligent fallback systems, and comprehensive Supabase-integrated document management
 - 📈 Advanced reporting and analytics
 - 🌍 Multi-language support (Italian/English)
 - 🔐 Secure authentication with MFA
@@ -112,6 +113,7 @@ npm run playwright:test # Run E2E tests
 src/
 ├── components/         # React components by feature
 │   ├── email/         # Email management components
+│   ├── scanner/       # Document scanner components
 │   ├── analytics/     # Dashboard and reporting
 │   ├── clients/       # CRM components
 │   ├── financial/     # Invoice/quote components
@@ -122,7 +124,8 @@ src/
 ├── context/           # React Context providers
 ├── types/             # TypeScript definitions
 │   ├── api.ts         # Base API types
-│   └── email.ts       # Email system types
+│   ├── email.ts       # Email system types
+│   └── scanner.ts     # Document scanner types
 ├── utils/             # Utility functions
 └── config/            # Application configuration
 ```
@@ -148,6 +151,10 @@ VITE_SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
 
 # Clerk Authentication
 VITE_CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
+
+# OCR Provider Configuration (Optional)
+VITE_OPENAI_API_KEY=your_openai_api_key
+VITE_QWEN_API_KEY=your_qwen_api_key
 
 # Email Configuration (Optional)
 VITE_EMAIL_ENCRYPTION_KEY=your_encryption_key
@@ -205,6 +212,86 @@ __tests__/
 - **Content Security Policy**: CSP headers for XSS protection
 - **Environment Variables**: Sensitive configuration stored securely
 
+## 📄 Document Scanner System
+
+### Overview
+The document scanner system provides AI-powered document digitization capabilities with a complete user interface and advanced OCR architecture:
+
+- **Camera Capture**: Real-time camera access with document edge detection guides and capture preview
+- **File Upload**: Drag-and-drop interface supporting JPG, PNG, and PDF files (up to 10MB)
+- **Advanced AI-Powered OCR**: Multi-provider architecture with intelligent fallback systems
+  - **OpenAI Vision API**: GPT-4 Vision with high accuracy and table detection
+  - **Qwen OCR API**: Cost-effective alternative with competitive performance
+  - **Intelligent Fallback**: Automatic provider switching and degradation strategies
+  - **Rate Limiting**: Per-provider quota management and request throttling
+  - **Error Recovery**: Comprehensive retry logic with exponential backoff
+- **Image Processing**: Automatic enhancement, edge detection, and document optimization
+- **Comprehensive Document Storage**: Full Supabase integration with PostgreSQL backend
+  - **Multi-file Management**: Original, enhanced, and PDF versions with automatic bucket management
+  - **Advanced Search**: Full-text search across document content with metadata filtering
+  - **Access Control**: Row Level Security (RLS) with complete user data isolation
+  - **Audit Trails**: Complete access logging and activity tracking
+  - **Statistics & Analytics**: Document usage metrics and storage analytics
+  - **Temporary Storage**: Secure temporary file handling with automatic cleanup
+- **Real-time Processing**: Live status updates during image processing, OCR, and document saving
+- **Error Handling**: Comprehensive error management with user-friendly feedback and recovery
+- **Business Integration**: Direct integration with client records and project management
+
+### TypeScript Interfaces
+
+The scanner system uses comprehensive TypeScript interfaces located in `src/types/scanner.ts`:
+
+#### Core Types
+- `ProcessedDocument` - Main document entity with metadata and processing results
+- `OCRResult` - OCR processing results with confidence scores and structured data
+- `OCRProvider` - Enumeration of available OCR service providers
+- `SharingSettings` - Document sharing configuration and access control
+- `DocumentStatus` - Processing status tracking
+
+#### Services
+- `CameraService` - Camera access and image capture functionality
+- `FileUploadService` - File validation and processing
+- `ImageProcessingService` - Image enhancement and document optimization
+- `AIOCRService` - AI-powered text extraction with multiple providers
+- `DocumentStorageService` - Document persistence and retrieval
+
+#### Configuration
+- `ScannerConfig` - Feature configuration and provider settings
+- `OCRProviderConfig` - Provider-specific API configuration
+- `ImageProcessingConfig` - Image processing parameters
+
+### Implementation Status
+
+✅ **Project Structure** - Complete
+- Directory structure and component exports
+- TypeScript interfaces and service definitions
+- Configuration scaffolding
+
+✅ **Scanner UI Components** - Complete
+- ScannerPage with tabbed interface (camera/upload)
+- Real-time processing status indicators
+- Comprehensive error handling with user feedback
+- Document preview and review workflow
+- Integration with useScanner hook for state management
+
+✅ **AI OCR Service Architecture** - Complete
+- Multi-provider OCR factory with OpenAI Vision and Qwen integration
+- Intelligent fallback service with degradation strategies
+- Comprehensive error handling and retry mechanisms
+- Real-time provider status monitoring and health checks
+
+✅ **Document Storage & Management** - Complete
+- Full Supabase integration with PostgreSQL backend
+- Multi-bucket storage for permanent and temporary files
+- Advanced search and filtering with full-text capabilities
+- Access logging and audit trails with RLS security
+- Statistics and analytics with storage optimization
+
+🔄 **In Development**
+- CameraCapture, FileUpload, and DocumentPreview component implementations
+- Image processing service implementation
+- Error handling and optimization
+
 ### 🚨 Current Security Status
 - ✅ Authentication bypass system completely removed from all route protection
 - ✅ Both `ProtectedRoute` and `OrganizationProtectedRoute` use real Clerk authentication with consistent `/login` redirects
@@ -213,6 +300,7 @@ __tests__/
 - ✅ RLS policies implemented and tested
 - ✅ Organization-based access control active
 - ✅ Secure credential management for email accounts
+- ✅ Document scanner storage with comprehensive Supabase integration
 
 ## 🌍 Internationalization
 

@@ -42,9 +42,9 @@ const EmailPerformanceMonitor = ({ className = '' }) => {
         
         setStats({
           cache: {
-            hitRate: cacheStats.hitRate || 0,
-            totalItems: cacheStats.totalItems || 0,
-            memoryUsage: cacheStats.memoryUsage || 0,
+            hitRate: parseFloat(cacheStats.hitRate) || 0,
+            totalItems: cacheStats.cacheSize || 0,
+            memoryUsage: parseFloat(cacheStats.memoryUsageMB) * 1024 * 1024 || 0,
           },
           sync: {
             isOnline: syncStats.isOnline || false,
@@ -52,9 +52,9 @@ const EmailPerformanceMonitor = ({ className = '' }) => {
             lastSyncTime: syncStats.lastSyncTime || null,
           },
           performance: {
-            avgLoadTime: cacheStats.avgLoadTime || 0,
-            totalRequests: cacheStats.hits + cacheStats.misses || 0,
-            errorRate: cacheStats.errorRate || 0,
+            avgLoadTime: 0, // Not available in current service
+            totalRequests: (cacheStats.hits || 0) + (cacheStats.misses || 0),
+            errorRate: 0, // Not available in current service
           },
         });
       } catch (error) {

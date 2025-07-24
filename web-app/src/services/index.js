@@ -1,5 +1,8 @@
 // Services exports
 export { default as websocketService } from './websocketService';
+
+// Scanner services
+export * from './scanner';
 export { default as apiService } from './apiService';
 export { default as authService } from './authService';
 export { default as supabaseService } from './supabaseService';
