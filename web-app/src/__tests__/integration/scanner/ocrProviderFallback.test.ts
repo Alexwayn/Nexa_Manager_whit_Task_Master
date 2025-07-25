@@ -183,7 +183,7 @@ describe('OCR Provider Fallback Integration Tests', () => {
       const mockFallbackProvider = {
         isAvailable: jest.fn(() => true),
         extractText: jest.fn().mockResolvedValue(mockFallbackResult),
-        getStatus: jest.fn(() => ({ available: true, quotaRemaining: null, rateLimited: false }))
+        getStatus: jest.fn(() => ({ available: true, quotaRemaining: undefined, rateLimited: false }))
       };
 
       jest.spyOn(OCRProviderFactory, 'getProvider').mockImplementation((provider) => {
@@ -448,7 +448,7 @@ describe('OCR Provider Fallback Integration Tests', () => {
           provider: OCRProvider.Fallback,
           text: 'Local processing result'
         }),
-        getStatus: jest.fn(() => ({ available: true, quotaRemaining: null, rateLimited: false }))
+        getStatus: jest.fn(() => ({ available: true, quotaRemaining: undefined, rateLimited: false }))
       };
 
       jest.spyOn(OCRProviderFactory, 'getProvider').mockImplementation((provider) => {
@@ -505,7 +505,7 @@ describe('OCR Provider Fallback Integration Tests', () => {
       const providerStatuses = new Map<OCRProvider, ProviderStatus>([
         [OCRProvider.OpenAI, { available: true, quotaRemaining: 1000, rateLimited: false }],
         [OCRProvider.Qwen, { available: true, quotaRemaining: 50, rateLimited: false }],
-        [OCRProvider.Fallback, { available: true, quotaRemaining: null, rateLimited: false }]
+        [OCRProvider.Fallback, { available: true, quotaRemaining: undefined, rateLimited: false }]
       ]);
 
       jest.spyOn(OCRProviderFactory, 'getAllProviderStatuses').mockReturnValue(providerStatuses);
@@ -520,7 +520,7 @@ describe('OCR Provider Fallback Integration Tests', () => {
       const providerStatuses = new Map<OCRProvider, ProviderStatus>([
         [OCRProvider.OpenAI, { available: false, quotaRemaining: 0, rateLimited: true }],
         [OCRProvider.Qwen, { available: false, quotaRemaining: 0, rateLimited: true }],
-        [OCRProvider.Fallback, { available: true, quotaRemaining: null, rateLimited: false }]
+        [OCRProvider.Fallback, { available: true, quotaRemaining: undefined, rateLimited: false }]
       ]);
 
       jest.spyOn(OCRProviderFactory, 'getAllProviderStatuses').mockReturnValue(providerStatuses);
@@ -583,8 +583,7 @@ describe('OCR Provider Fallback Integration Tests', () => {
         provider: OCRProvider.OpenAI,
         enhanceImage: true,
         detectTables: true,
-        language: 'en',
-        customPrompt: 'Extract invoice data'
+        language: 'en'
       };
 
       await fallbackService.extractTextWithFallback(imageBlob, providerOptions);
@@ -649,7 +648,7 @@ describe('OCR Provider Fallback Integration Tests', () => {
       const mockFallbackProvider = {
         isAvailable: jest.fn(() => true),
         extractText: jest.fn().mockResolvedValue(mockFallbackResult),
-        getStatus: jest.fn(() => ({ available: true, quotaRemaining: null, rateLimited: false }))
+        getStatus: jest.fn(() => ({ available: true, quotaRemaining: undefined, rateLimited: false }))
       };
 
       jest.spyOn(OCRProviderFactory, 'getProvider').mockImplementation((provider) => {

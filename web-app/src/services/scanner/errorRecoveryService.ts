@@ -526,7 +526,8 @@ export class ErrorRecoveryService {
 
     // Capture error context in Sentry
     if (attempt === 1) {
-      captureError(error, {
+      const errorToCapture = error instanceof Error ? error : new Error(error.message || 'Unknown OCR error');
+      captureError(errorToCapture, {
         component: 'ErrorRecoveryService',
         action: 'error_recovery_initiated',
         extra: {

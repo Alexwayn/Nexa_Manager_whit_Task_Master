@@ -107,6 +107,10 @@ describe('Error Handling and Recovery Integration Tests', () => {
       size: 2048,
       type: 'image/jpeg'
     },
+    enhancedFile: {
+      url: 'https://example.com/enhanced/test.jpg',
+      size: 1800
+    },
     textContent: 'Sample document text',
     ocrConfidence: 0.95,
     ocrLanguage: 'en',

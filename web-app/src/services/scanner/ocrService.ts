@@ -95,7 +95,7 @@ export class AIOCRService implements IAIOCRService {
             return basicResult;
           }
         },
-        options?.priority || 0,
+        options?.priority || 0, // use priority from options or default to 0
         options?.timeout || 30000
       );
 

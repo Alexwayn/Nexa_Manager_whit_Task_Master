@@ -84,6 +84,8 @@ export interface OCROptions {
   language?: string;
   timeout?: number;
   maxRetries?: number;
+  priority?: number;
+  customPrompt?: string;
 }
 
 export interface OCRResult {

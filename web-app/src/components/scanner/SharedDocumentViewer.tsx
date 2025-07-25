@@ -88,12 +88,12 @@ const SharedDocumentViewer: React.FC<SharedDocumentViewerProps> = ({ shareToken:
 
       if (result.success) {
         // Trigger download of the enhanced file
-        const link = document.createElement('a');
+        const link = window.document.createElement('a');
         link.href = document.enhancedFile.url;
         link.download = `${document.title}.${getFileExtension(document.enhancedFile.url)}`;
-        document.body.appendChild(link);
+        window.document.body.appendChild(link);
         link.click();
-        document.body.removeChild(link);
+        window.document.body.removeChild(link);
       } else {
         setError(result.error || t('scanner.sharing.errors.downloadFailure'));
       }
@@ -121,10 +121,6 @@ const SharedDocumentViewer: React.FC<SharedDocumentViewerProps> = ({ shareToken:
 
   const canDownload = (): boolean => {
     return accessLevel === 'download' || accessLevel === 'edit';
-  };
-
-  const canEdit = (): boolean => {
-    return accessLevel === 'edit';
   };
 
   const getAccessLevelIcon = (level: AccessLevel) => {
@@ -302,9 +298,10 @@ const SharedDocumentViewer: React.FC<SharedDocumentViewerProps> = ({ shareToken:
         <div className="bg-white rounded-lg shadow-sm">
           <DocumentPreview
             document={document}
-            showMetadata={false}
-            allowEdit={canEdit()}
-            className="rounded-lg"
+            onEdit={() => {}}
+            onSave={() => {}}
+            onCancel={() => {}}
+            showOCRResults={true}
           />
         </div>
 

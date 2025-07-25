@@ -214,7 +214,6 @@ const onScannerError = (error: Error, errorInfo: { componentStack: string }) => 
     extra: {
       componentStack,
       errorBoundary: true,
-      scannerContext: true,
       timestamp: new Date().toISOString(),
       userAgent: navigator.userAgent,
       url: window.location.href,
@@ -236,14 +235,14 @@ const onScannerError = (error: Error, errorInfo: { componentStack: string }) => 
 export const ScannerErrorBoundary: React.FC<{
   children: React.ReactNode;
   fallback?: React.ComponentType<ScannerErrorFallbackProps>;
-  onError?: (error: Error, errorInfo: { componentStack: string }) => void;
+  onError?: (error: Error, errorInfo: React.ErrorInfo) => void;
 }> = ({
   children,
   fallback: CustomFallback,
   onError: customOnError,
 }) => {
   const handleError = React.useCallback(
-    (error: Error, errorInfo: { componentStack: string }) => {
+    (error: Error, errorInfo: React.ErrorInfo) => {
       // Call our enhanced error handler
       onScannerError(error, errorInfo);
 
@@ -292,7 +291,7 @@ export const withScannerErrorBoundary = <P extends object>(
     const displayName = componentName || Component.displayName || Component.name || 'ScannerComponent';
 
     const handleError = React.useCallback(
-      (error: Error, errorInfo: { componentStack: string }) => {
+      (error: Error, errorInfo: React.ErrorInfo) => {
         captureError(error, {
           component: displayName,
           action: 'scanner_component_error',
@@ -328,7 +327,6 @@ export const useScannerErrorHandler = () => {
     captureError(error, {
       component: 'useScannerErrorHandler',
       action: 'manual_scanner_error_trigger',
-      scannerContext: true,
       ...context,
     });
 

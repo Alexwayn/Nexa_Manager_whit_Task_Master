@@ -461,6 +461,10 @@ describe('Document Scanner Integration Tests', () => {
           size: 1024,
           type: 'image/jpeg'
         },
+        enhancedFile: {
+          url: 'https://example.com/enhanced-test.jpg',
+          size: 2048
+        },
         textContent: 'Test content',
         ocrConfidence: 0.9,
         ocrLanguage: 'en',
@@ -685,6 +689,10 @@ describe('Document Scanner Integration Tests', () => {
           size: imageBlob.size,
           type: 'image/jpeg'
         },
+        enhancedFile: {
+          url: 'https://example.com/enhanced-test.jpg',
+          size: imageBlob.size * 2
+        },
         textContent: ocrResult.text,
         ocrConfidence: ocrResult.confidence,
         ocrLanguage: 'en',
@@ -734,6 +742,10 @@ describe('Document Scanner Integration Tests', () => {
           name: 'test.jpg',
           size: 1024,
           type: 'image/jpeg'
+        },
+        enhancedFile: {
+          url: 'https://example.com/enhanced-test.jpg',
+          size: 2048
         },
         textContent: ocrResult.text,
         ocrConfidence: ocrResult.confidence,

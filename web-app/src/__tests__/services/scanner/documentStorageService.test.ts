@@ -4,7 +4,8 @@ import {
   DocumentFilters, 
   DocumentListResult,
   DocumentStatus,
-  AccessLevel
+  AccessLevel,
+  SharedUser
 } from '@/types/scanner';
 
 // Mock the supabase client directly
@@ -55,11 +56,11 @@ describe('DocumentStorageService', () => {
     ocrConfidence: 0.95,
     ocrLanguage: 'en',
     status: DocumentStatus.Complete,
-    processingErrors: null,
+    processingErrors: undefined,
     sharingSettings: {
       isShared: false,
       accessLevel: AccessLevel.View,
-      sharedWith: []
+      sharedWith: [] as SharedUser[]
     },
     accessLog: []
   };
@@ -88,16 +89,15 @@ describe('DocumentStorageService', () => {
     ocr_confidence: 0.95,
     ocr_language: 'en',
     status: DocumentStatus.Complete,
-    processing_errors: null,
+    processing_errors: undefined,
     sharing_settings: {
       isShared: false,
       accessLevel: AccessLevel.View,
-      sharedWith: []
+      sharedWith: [] as SharedUser[]
     },
     access_log: []
   };
 
-  const mockDocuments = [mockDocument];
   const mockDbRecords = [mockDbRecord];
 
   beforeEach(async () => {

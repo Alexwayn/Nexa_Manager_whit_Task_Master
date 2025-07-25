@@ -331,7 +331,7 @@ export class DocumentStorageService implements IDocumentStorageService {
         ocrConfidence: record.ocr_confidence,
         ocrLanguage: record.ocr_language,
         status: record.status as DocumentStatus,
-        processingErrors: record.processing_errors,
+        processingErrors: record.processing_errors || undefined,
         sharingSettings: record.sharing_settings,
         accessLog: record.access_log || []
       }));

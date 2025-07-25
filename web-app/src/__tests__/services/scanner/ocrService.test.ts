@@ -380,7 +380,6 @@ describe('AIOCRService', () => {
     it('should queue request with correct parameters', async () => {
       const options: OCROptions = {
         provider: OCRProvider.Qwen,
-        priority: 5,
         timeout: 25000
       };
 
@@ -389,7 +388,7 @@ describe('AIOCRService', () => {
       expect(mockRateLimitingInstance.queueRequest).toHaveBeenCalledWith(
         OCRProvider.Qwen,
         expect.any(Function),
-        5,
+        0, // default priority
         25000
       );
     });
@@ -402,6 +401,23 @@ describe('AIOCRService', () => {
         expect.any(Function),
         0, // default priority
         30000 // default timeout
+      );
+    });
+
+    it('should use custom priority when specified in options', async () => {
+      const options: OCROptions = {
+        provider: OCRProvider.Qwen,
+        timeout: 25000,
+        priority: 5
+      };
+
+      await service.extractText(mockBlob, options);
+
+      expect(mockRateLimitingInstance.queueRequest).toHaveBeenCalledWith(
+        OCRProvider.Qwen,
+        expect.any(Function),
+        5, // custom priority
+        25000
       );
     });
   });
