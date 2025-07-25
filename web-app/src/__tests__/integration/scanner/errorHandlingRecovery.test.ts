@@ -4,7 +4,7 @@ import { DocumentStorageService } from '@/services/scanner/documentStorageServic
 import BatchProcessingService from '@/services/scanner/batchProcessingService';
 import RateLimitingService from '@/services/scanner/rateLimitingService';
 import ResultCacheService from '@/services/scanner/resultCacheService';
-import { OCRProvider, OCRResult, ProcessedDocument } from '@/types/scanner';
+import { OCRProvider, OCRResult, ProcessedDocument, DocumentStatus, AccessLevel } from '@/types/scanner';
 
 // Mock dependencies
 jest.mock('@/utils/Logger');
@@ -110,10 +110,10 @@ describe('Error Handling and Recovery Integration Tests', () => {
     textContent: 'Sample document text',
     ocrConfidence: 0.95,
     ocrLanguage: 'en',
-    status: 'complete',
+    status: DocumentStatus.Complete,
     sharingSettings: {
       isShared: false,
-      accessLevel: 'view',
+      accessLevel: AccessLevel.View,
       sharedWith: []
     },
     accessLog: []

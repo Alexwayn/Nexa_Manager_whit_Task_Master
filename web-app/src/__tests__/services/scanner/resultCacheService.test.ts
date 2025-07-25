@@ -1,5 +1,5 @@
 import ResultCacheService from '@/services/scanner/resultCacheService';
-import { OCRProvider, OCRResult, ProcessedDocument } from '@/types/scanner';
+import { OCRProvider, OCRResult, ProcessedDocument, DocumentStatus, AccessLevel } from '@/types/scanner';
 
 // Mock dependencies
 jest.mock('@/utils/Logger');
@@ -63,10 +63,10 @@ describe('ResultCacheService', () => {
     textContent: 'Extracted text content from document',
     ocrConfidence: 0.95,
     ocrLanguage: 'en',
-    status: 'complete',
+    status: DocumentStatus.Complete,
     sharingSettings: {
       isShared: false,
-      accessLevel: 'view',
+      accessLevel: AccessLevel.View,
       sharedWith: []
     },
     accessLog: []

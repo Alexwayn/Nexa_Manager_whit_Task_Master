@@ -4,7 +4,7 @@ import { DocumentStorageService } from '@/services/scanner/documentStorageServic
 import BatchProcessingService from '@/services/scanner/batchProcessingService';
 import RateLimitingService from '@/services/scanner/rateLimitingService';
 import ResultCacheService from '@/services/scanner/resultCacheService';
-import { OCRProvider, OCRResult, ProcessedDocument, OCROptions } from '@/types/scanner';
+import { OCRProvider, OCRResult, ProcessedDocument, OCROptions, DocumentStatus, AccessLevel } from '@/types/scanner';
 
 // Mock external dependencies
 jest.mock('@/utils/Logger');
@@ -194,10 +194,10 @@ describe('Document Scanner Integration Tests', () => {
         textContent: ocrResult.text,
         ocrConfidence: ocrResult.confidence,
         ocrLanguage: 'en',
-        status: 'complete',
+        status: DocumentStatus.Complete,
         sharingSettings: {
           isShared: false,
-          accessLevel: 'view',
+          accessLevel: AccessLevel.View,
           sharedWith: []
         },
         accessLog: []
@@ -464,10 +464,10 @@ describe('Document Scanner Integration Tests', () => {
         textContent: 'Test content',
         ocrConfidence: 0.9,
         ocrLanguage: 'en',
-        status: 'complete',
+        status: DocumentStatus.Complete,
         sharingSettings: {
           isShared: false,
-          accessLevel: 'view',
+          accessLevel: AccessLevel.View,
           sharedWith: []
         },
         accessLog: []
@@ -688,10 +688,10 @@ describe('Document Scanner Integration Tests', () => {
         textContent: ocrResult.text,
         ocrConfidence: ocrResult.confidence,
         ocrLanguage: 'en',
-        status: 'complete',
+        status: DocumentStatus.Complete,
         sharingSettings: {
           isShared: false,
-          accessLevel: 'view',
+          accessLevel: AccessLevel.View,
           sharedWith: []
         },
         accessLog: []
@@ -738,10 +738,10 @@ describe('Document Scanner Integration Tests', () => {
         textContent: ocrResult.text,
         ocrConfidence: ocrResult.confidence,
         ocrLanguage: 'en',
-        status: 'complete',
+        status: DocumentStatus.Complete,
         sharingSettings: {
           isShared: false,
-          accessLevel: 'view',
+          accessLevel: AccessLevel.View,
           sharedWith: []
         },
         accessLog: []

@@ -3,7 +3,8 @@ import {
   ProcessedDocument, 
   DocumentFilters, 
   DocumentListResult,
-  DocumentStatus 
+  DocumentStatus,
+  AccessLevel
 } from '@/types/scanner';
 
 // Mock the supabase client directly
@@ -53,11 +54,11 @@ describe('DocumentStorageService', () => {
     textContent: 'Extracted text content from document',
     ocrConfidence: 0.95,
     ocrLanguage: 'en',
-    status: 'complete' as DocumentStatus,
+    status: DocumentStatus.Complete,
     processingErrors: null,
     sharingSettings: {
       isShared: false,
-      accessLevel: 'view' as const,
+      accessLevel: AccessLevel.View,
       sharedWith: []
     },
     accessLog: []
@@ -86,11 +87,11 @@ describe('DocumentStorageService', () => {
     text_content: 'Extracted text content from document',
     ocr_confidence: 0.95,
     ocr_language: 'en',
-    status: 'complete',
+    status: DocumentStatus.Complete,
     processing_errors: null,
     sharing_settings: {
       isShared: false,
-      accessLevel: 'view',
+      accessLevel: AccessLevel.View,
       sharedWith: []
     },
     access_log: []
@@ -670,10 +671,10 @@ describe('DocumentStorageService', () => {
         text_content: 'Extracted text',
         ocr_confidence: 0.95,
         ocr_language: 'en',
-        status: 'complete',
+        status: DocumentStatus.Complete,
         sharing_settings: {
           isShared: false,
-          accessLevel: 'view',
+          accessLevel: AccessLevel.View,
           sharedWith: []
         },
         access_log: []
