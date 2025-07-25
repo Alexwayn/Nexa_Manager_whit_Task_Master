@@ -19,6 +19,7 @@ scanner/
 │   ├── cameraService.ts         # Camera access and control
 │   ├── fileUploadService.ts     # File validation and processing
 │   ├── imageProcessingService.ts # Image enhancement and optimization
+│   ├── imageOptimizationService.ts # Advanced image optimization for API cost reduction
 │   ├── ocrService.ts            # Main OCR orchestration service
 │   ├── ocrProviderFactory.ts    # OCR provider factory and management
 │   ├── fallbackOCRService.ts    # Fallback logic and degradation strategies
@@ -55,11 +56,18 @@ scanner/
 - Upload progress tracking
 
 ### 🖼️ Image Processing
-- Automatic image enhancement
-- Document edge detection and cropping
-- Contrast and brightness adjustment
-- Shadow removal and noise reduction
-- Multi-page PDF handling
+- **Advanced Image Optimization** - Comprehensive optimization service for API cost reduction
+  - Smart compression with quality preservation
+  - Resolution optimization for OCR accuracy
+  - Format conversion (JPEG, PNG, WebP)
+  - Batch processing capabilities
+  - Size estimation and compression analysis
+- **Document Enhancement** - Automatic image enhancement for better OCR results
+  - Contrast and brightness adjustment optimized for text recognition
+  - Shadow removal and noise reduction
+  - Progressive JPEG support for web display
+- **Multi-format Support** - Document edge detection and cropping
+- **PDF Handling** - Multi-page PDF processing and conversion
 
 ### 🤖 AI-Powered OCR
 - **Multi-Provider Architecture** with factory pattern for extensibility:
@@ -272,6 +280,171 @@ interface ProviderStatus {
   lastError?: string;
 }
 ```
+
+## Image Optimization Service
+
+### Overview
+
+The `ImageOptimizationService` is a singleton service that provides comprehensive image optimization capabilities designed to reduce API costs while maintaining OCR accuracy. It uses HTML5 Canvas for client-side processing and supports multiple optimization strategies.
+
+### Key Features
+
+#### 🎯 OCR-Optimized Processing
+- **Smart Compression**: Balances file size reduction with OCR accuracy
+- **Resolution Optimization**: Automatically calculates optimal dimensions (max 2048x2048)
+- **Format Conversion**: Converts images to optimal formats (JPEG for photos, PNG for documents)
+- **Enhancement for OCR**: Applies contrast and brightness adjustments to improve text recognition
+
+#### 📊 Batch Processing
+- **Multiple Image Support**: Process multiple images simultaneously
+- **Progress Tracking**: Individual processing results with error handling
+- **Consistent Quality**: Applies same optimization parameters across batch
+
+#### 🔍 Analysis & Recommendations
+- **Size Estimation**: Predict optimization results without full processing
+- **Compression Analysis**: Detailed before/after comparison with metrics
+- **Smart Recommendations**: Suggests optimal settings based on image characteristics
+- **Performance Metrics**: Processing time and compression ratio tracking
+
+#### 🖼️ Multiple Output Formats
+- **OCR Optimization**: High-quality images optimized for text extraction (max 5MB)
+- **Web Display**: Compressed images for UI display (max 1MB)
+- **Thumbnails**: Small preview images for quick loading (max 100KB)
+
+### TypeScript Interface
+
+```typescript
+interface OptimizationOptions {
+  maxWidth?: number;           // Maximum width in pixels
+  maxHeight?: number;          // Maximum height in pixels
+  quality?: number;            // Compression quality (0.0-1.0)
+  format?: 'jpeg' | 'png' | 'webp';  // Output format
+  maxFileSize?: number;        // Maximum file size in bytes
+  preserveAspectRatio?: boolean;      // Maintain original aspect ratio
+  enableProgressive?: boolean;        // Enable progressive JPEG
+}
+
+interface OptimizationResult {
+  optimizedImage: Blob;        // Optimized image blob
+  originalSize: number;        // Original file size
+  optimizedSize: number;       // Optimized file size
+  compressionRatio: number;    // Compression ratio (original/optimized)
+  dimensions: {
+    original: { width: number; height: number };
+    optimized: { width: number; height: number };
+  };
+  format: string;              // Output format used
+  processingTime: number;      // Processing time in milliseconds
+}
+```
+
+### Usage Examples
+
+#### Basic OCR Optimization
+```typescript
+import ImageOptimizationService from '@/services/scanner/imageOptimizationService';
+
+const optimizationService = ImageOptimizationService.getInstance();
+
+// Optimize image for OCR processing
+const result = await optimizationService.optimizeForOCR(imageBlob, {
+  maxWidth: 2048,
+  maxHeight: 2048,
+  quality: 0.85,
+  format: 'jpeg'
+});
+
+console.log(`Reduced size from ${result.originalSize} to ${result.optimizedSize} bytes`);
+console.log(`Compression ratio: ${result.compressionRatio.toFixed(2)}x`);
+```
+
+#### Web Display Optimization
+```typescript
+// Optimize for web display
+const displayResult = await optimizationService.optimizeForDisplay(imageBlob, {
+  maxWidth: 800,
+  maxHeight: 600,
+  quality: 0.8
+});
+
+// Create thumbnail
+const thumbnailResult = await optimizationService.createThumbnail(imageBlob, 150);
+```
+
+#### Batch Processing
+```typescript
+// Process multiple images
+const images = [blob1, blob2, blob3];
+const results = await optimizationService.batchOptimize(images, {
+  maxWidth: 1600,
+  quality: 0.8
+});
+
+results.forEach((result, index) => {
+  console.log(`Image ${index + 1}: ${result.compressionRatio.toFixed(2)}x compression`);
+});
+```
+
+#### Analysis and Recommendations
+```typescript
+// Get optimization recommendations
+const analysis = await optimizationService.getOptimizationRecommendations(imageBlob);
+
+console.log('Recommendations:', analysis.recommendations);
+console.log('Suggested options:', analysis.suggestedOptions);
+console.log('Estimated savings:', analysis.estimatedSavings, 'bytes');
+
+// Estimate optimization without processing
+const estimation = await optimizationService.estimateOptimization(imageBlob, {
+  quality: 0.7,
+  maxWidth: 1600
+});
+
+console.log('Estimated size:', estimation.estimatedSize);
+console.log('Estimated savings:', estimation.estimatedSavings);
+```
+
+### Advanced Features
+
+#### Smart Quality Reduction
+The service automatically reduces quality iteratively if the target file size isn't met:
+
+```typescript
+// Will automatically reduce quality to meet 2MB limit
+const result = await optimizationService.optimizeForOCR(largeImage, {
+  maxFileSize: 2 * 1024 * 1024  // 2MB limit
+});
+```
+
+#### OCR Enhancement
+For JPEG format, the service applies OCR-specific enhancements:
+- Slight contrast increase (1.1x multiplier)
+- Brightness adjustment (+5 units)
+- High-quality image smoothing
+
+#### Performance Optimization
+- **Singleton Pattern**: Single instance for memory efficiency
+- **Canvas Reuse**: Reuses HTML5 Canvas for multiple operations
+- **Even Dimensions**: Ensures width/height are even numbers for better compression
+- **Resource Cleanup**: Automatic cleanup of object URLs and canvas resources
+
+### Integration with OCR Pipeline
+
+The Image Optimization Service integrates seamlessly with the OCR processing pipeline:
+
+1. **Pre-OCR Processing**: Images are optimized before being sent to OCR providers
+2. **Provider-Specific Optimization**: Different settings for OpenAI (2048x2048, 20MB) vs Qwen (1920x1920, 10MB)
+3. **Cost Reduction**: Reduces API costs by minimizing image sizes while maintaining accuracy
+4. **Error Recovery**: Provides fallback optimization strategies for failed OCR requests
+
+### Performance Metrics
+
+The service tracks comprehensive metrics for optimization analysis:
+- **Processing Time**: Time taken for optimization
+- **Compression Ratio**: Original size / optimized size
+- **Quality Assessment**: Before/after quality comparison
+- **Memory Usage**: Canvas memory management
+- **Error Rates**: Failed optimization tracking
 
 ## Configuration
 

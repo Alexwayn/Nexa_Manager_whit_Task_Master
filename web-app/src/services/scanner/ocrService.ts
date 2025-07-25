@@ -9,14 +9,21 @@ import type {
 import { OCRProvider } from '@/types/scanner';
 import { OCRProviderFactory } from './ocrProviderFactory';
 import { FallbackOCRService, type FallbackStrategy } from './fallbackOCRService';
+import RateLimitingService from './rateLimitingService';
+import ResultCacheService from './resultCacheService';
+import Logger from '@/utils/Logger';
 
 export class AIOCRService implements IAIOCRService {
   private preferredProvider: OCRProvider = OCRProvider.OpenAI;
   private initialized = false;
   private fallbackService: FallbackOCRService;
+  private rateLimitingService: RateLimitingService;
+  private cacheService: ResultCacheService;
 
   constructor() {
     this.fallbackService = new FallbackOCRService();
+    this.rateLimitingService = RateLimitingService.getInstance();
+    this.cacheService = ResultCacheService.getInstance();
     this.initialize();
   }
 
@@ -43,20 +50,72 @@ export class AIOCRService implements IAIOCRService {
   async extractText(image: Blob, options?: OCROptions): Promise<OCRResult> {
     await this.initialize();
 
-    // Use fallback service for robust extraction with automatic retry and degradation
-    const fallbackStrategy: Partial<FallbackStrategy> = {
-      providerPriority: [
-        options?.provider || this.preferredProvider,
-        ...this.getAlternativeProviders(options?.provider || this.preferredProvider)
-      ],
-      maxRetries: options?.maxRetries || 3
-    };
+    // Check cache first
+    const cacheKey = this.cacheService.generateOCRKey(image, options);
+    const cachedResult = await this.cacheService.getCachedOCRResult(cacheKey);
+    
+    if (cachedResult) {
+      Logger.info('OCR result served from cache', { 
+        provider: cachedResult.provider,
+        cacheKey: cacheKey.substring(0, 20) + '...'
+      });
+      return cachedResult;
+    }
 
+    const targetProvider = options?.provider || this.preferredProvider;
+
+    // Use rate limiting service to queue the request
     try {
-      return await this.fallbackService.extractTextWithFallback(image, options, fallbackStrategy);
+      const result = await this.rateLimitingService.queueRequest(
+        targetProvider,
+        async () => {
+          // Use fallback service for robust extraction with automatic retry and degradation
+          const fallbackStrategy: Partial<FallbackStrategy> = {
+            providerPriority: [
+              targetProvider,
+              ...this.getAlternativeProviders(targetProvider)
+            ],
+            maxRetries: options?.maxRetries || 3
+          };
+
+          try {
+            const extractionResult = await this.fallbackService.extractTextWithFallback(image, options, fallbackStrategy);
+            
+            // Cache the result
+            await this.cacheService.cacheOCRResult(cacheKey, extractionResult);
+            
+            return extractionResult;
+          } catch (error) {
+            // If fallback service fails, try one more time with basic extraction
+            const basicResult = await this.attemptBasicExtraction(image, options);
+            
+            // Cache even basic results to avoid repeated failures
+            await this.cacheService.cacheOCRResult(cacheKey, basicResult);
+            
+            return basicResult;
+          }
+        },
+        options?.priority || 0,
+        options?.timeout || 30000
+      );
+
+      return result;
     } catch (error) {
-      // If fallback service fails, try one more time with basic extraction
-      return this.attemptBasicExtraction(image, options);
+      Logger.error('OCR extraction failed after rate limiting', error);
+      
+      // Return a fallback result rather than throwing
+      return {
+        text: '[OCR Extraction Failed]\n\nText extraction failed due to rate limiting or service unavailability. Please try again later or manually enter the text content.',
+        confidence: 0.1,
+        provider: targetProvider,
+        processingTime: 0,
+        error: {
+          code: 'RATE_LIMITED_FAILURE',
+          message: error instanceof Error ? error.message : 'Rate limiting failure',
+          provider: targetProvider,
+          retryable: true
+        }
+      };
     }
   }
 

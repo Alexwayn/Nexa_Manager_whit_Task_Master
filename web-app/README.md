@@ -19,7 +19,7 @@ A comprehensive business management platform built with React 19, TypeScript, an
 - 🧾 Invoice and quote generation with PDF export
 - 📅 Calendar and event management
 - 📧 **Email Management System** - Full-featured email client with IMAP/SMTP support
-- 📄 **Document Scanner** - Advanced AI-powered document digitization with multi-provider OCR architecture, intelligent fallback systems, and comprehensive Supabase-integrated document management
+- 📄 **Document Scanner** - Advanced AI-powered document digitization with multi-provider OCR architecture, intelligent fallback systems, comprehensive image optimization for API cost reduction, and comprehensive Supabase-integrated document management
 - 📈 Advanced reporting and analytics
 - 🌍 Multi-language support (Italian/English)
 - 🔐 Secure authentication with MFA
@@ -225,6 +225,13 @@ The document scanner system provides AI-powered document digitization capabiliti
   - **Intelligent Fallback**: Automatic provider switching and degradation strategies
   - **Rate Limiting**: Per-provider quota management and request throttling
   - **Error Recovery**: Comprehensive retry logic with exponential backoff
+- **Advanced Image Optimization**: Comprehensive optimization service for API cost reduction
+  - Smart compression with quality preservation (OCR: max 2048x2048, 5MB)
+  - Web display optimization (max 800x600, 1MB) and thumbnail generation (150px, 100KB)
+  - Batch processing with error handling and progress tracking
+  - Analysis and recommendation system with size estimation
+  - OCR-specific enhancements (contrast, brightness, smoothing)
+  - Multiple format support (JPEG, PNG, WebP) with progressive JPEG
 - **Image Processing**: Automatic enhancement, edge detection, and document optimization
 - **Comprehensive Document Storage**: Full Supabase integration with PostgreSQL backend
   - **Multi-file Management**: Original, enhanced, and PDF versions with automatic bucket management

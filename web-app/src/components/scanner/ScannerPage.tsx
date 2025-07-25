@@ -7,6 +7,8 @@ import type { ScannerProps } from './types';
 import CameraCapture from './CameraCapture';
 import FileUpload from './FileUpload';
 import DocumentPreview from './DocumentPreview';
+import { ScannerErrorBoundary } from './ScannerErrorBoundary';
+import { useErrorNotifications, NotificationContainer } from './ErrorNotification';
 
 type ScannerTab = 'camera' | 'upload';
 
@@ -20,6 +22,7 @@ const ScannerPage: React.FC<ScannerProps> = ({
   const [error, setError] = useState<string | null>(null);
   
   const scanner = useScanner();
+  const { notifications } = useErrorNotifications();
 
   // Check camera support and set default tab
   useEffect(() => {
@@ -73,35 +76,39 @@ const ScannerPage: React.FC<ScannerProps> = ({
     scanner.currentStep === ScannerStep.Saving;
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <div className="bg-white shadow-sm border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="py-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <h1 className="text-2xl font-bold text-gray-900">Document Scanner</h1>
-                <p className="mt-1 text-sm text-gray-500">
-                  Scan or upload documents to digitize and extract text
-                </p>
-              </div>
-              
-              {/* Status indicator */}
-              {isLoading && (
-                <div className="flex items-center space-x-2 text-blue-600">
-                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600"></div>
-                  <span className="text-sm font-medium">
-                    {scanner.currentStep === ScannerStep.Processing && 'Processing image...'}
-                    {scanner.currentStep === ScannerStep.OCR && 'Extracting text...'}
-                    {scanner.currentStep === ScannerStep.Saving && 'Saving document...'}
-                    {scanner.isProcessing && scanner.currentStep === ScannerStep.Idle && 'Loading...'}
-                  </span>
+    <ScannerErrorBoundary>
+      <div className="min-h-screen bg-gray-50">
+        {/* Notification Container */}
+        <NotificationContainer notifications={notifications} position="top-right" />
+        
+        {/* Header */}
+        <div className="bg-white shadow-sm border-b border-gray-200">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="py-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h1 className="text-2xl font-bold text-gray-900">Document Scanner</h1>
+                  <p className="mt-1 text-sm text-gray-500">
+                    Scan or upload documents to digitize and extract text
+                  </p>
                 </div>
-              )}
+                
+                {/* Status indicator */}
+                {isLoading && (
+                  <div className="flex items-center space-x-2 text-blue-600">
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600"></div>
+                    <span className="text-sm font-medium">
+                      {scanner.currentStep === ScannerStep.Processing && 'Processing image...'}
+                      {scanner.currentStep === ScannerStep.OCR && 'Extracting text...'}
+                      {scanner.currentStep === ScannerStep.Saving && 'Saving document...'}
+                      {scanner.isProcessing && scanner.currentStep === ScannerStep.Idle && 'Loading...'}
+                    </span>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
       {/* Error Alert */}
       {error && (
@@ -244,6 +251,7 @@ const ScannerPage: React.FC<ScannerProps> = ({
         )}
       </div>
     </div>
+    </ScannerErrorBoundary>
   );
 };
 

@@ -106,7 +106,7 @@ npm run format       # Format code with Prettier
 - **Internationalization**: i18next
 - **Charts**: Chart.js
 - **PDF Generation**: jsPDF
-- **Document Processing**: Advanced AI-powered OCR with multi-provider architecture (OpenAI Vision, Qwen) featuring intelligent fallback, rate limiting, real-time processing status, and comprehensive Supabase-integrated storage with full-text search and metadata management
+- **Document Processing**: Advanced AI-powered OCR with multi-provider architecture (OpenAI Vision, Qwen) featuring intelligent fallback, rate limiting, comprehensive image optimization for API cost reduction, real-time processing status, and comprehensive Supabase-integrated storage with full-text search and metadata management
 - **Icons**: Lucide React
 
 ## 🌍 Internationalization

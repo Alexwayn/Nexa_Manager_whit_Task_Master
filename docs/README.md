@@ -37,6 +37,7 @@ docs/
 
 ### 📄 Document Scanner System
 - [Scanner System Overview](../web-app/docs/SCANNER_SYSTEM.md) - Complete system architecture and features
+- [Image Optimization Service](../web-app/docs/IMAGE_OPTIMIZATION_SERVICE.md) - Comprehensive image optimization for API cost reduction
 - [OCR Provider Factory](../web-app/docs/OCR_PROVIDER_FACTORY.md) - Multi-provider OCR architecture and implementation
 - [Scanner API Documentation](../web-app/docs/SCANNER_API.md) - Comprehensive API reference for OCR services
 - [Database Schema](../web-app/docs/DATABASE_SCANNER_SCHEMA.md) - Complete database schema and storage architecture
@@ -62,7 +63,7 @@ docs/
 - ✅ Invoice management
 - ✅ Client management
 - 🆕 **Email Management System** - Comprehensive email client with IMAP/SMTP support
-- 🔄 **Document Scanner System** - AI-powered document digitization with advanced multi-provider OCR architecture (UI complete, OCR services complete, document storage complete, remaining components in development)
+- 🔄 **Document Scanner System** - AI-powered document digitization with advanced multi-provider OCR architecture (UI complete, OCR services complete, image optimization complete, document storage complete, remaining components in development)
 - 🔄 Ongoing improvements and optimizations
 
 ### 🔐 Security Status

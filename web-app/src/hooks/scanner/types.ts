@@ -66,6 +66,7 @@ export interface UseScannerReturn {
   isProcessing: boolean;
   currentStep: ScannerStep;
   processedDocument: ProcessedDocument | null;
+  lastError: Error | null;
   
   // Actions
   processDocument: (image: Blob) => Promise<void>;
