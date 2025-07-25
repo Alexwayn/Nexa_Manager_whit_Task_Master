@@ -383,7 +383,7 @@ const DocumentAccessHistory: React.FC<DocumentAccessHistoryProps> = ({
                         {t('scanner.accessHistory.stats.totalAccesses')}
                       </p>
                       <p className="text-2xl font-semibold text-gray-900">
-                        {statistics.totalAccesses}
+                        {statistics.totalViews}
                       </p>
                     </div>
                   </div>
@@ -399,7 +399,7 @@ const DocumentAccessHistory: React.FC<DocumentAccessHistoryProps> = ({
                         {t('scanner.accessHistory.stats.uniqueUsers')}
                       </p>
                       <p className="text-2xl font-semibold text-gray-900">
-                        {statistics.uniqueUsers}
+                        {statistics.uniqueViewers}
                       </p>
                     </div>
                   </div>
@@ -415,7 +415,7 @@ const DocumentAccessHistory: React.FC<DocumentAccessHistoryProps> = ({
                         {t('scanner.accessHistory.stats.views')}
                       </p>
                       <p className="text-2xl font-semibold text-gray-900">
-                        {statistics.viewCount}
+                        {statistics.totalViews}
                       </p>
                     </div>
                   </div>
@@ -431,7 +431,7 @@ const DocumentAccessHistory: React.FC<DocumentAccessHistoryProps> = ({
                         {t('scanner.accessHistory.stats.downloads')}
                       </p>
                       <p className="text-2xl font-semibold text-gray-900">
-                        {statistics.downloadCount}
+                        {statistics.totalDownloads}
                       </p>
                     </div>
                   </div>
@@ -439,13 +439,13 @@ const DocumentAccessHistory: React.FC<DocumentAccessHistoryProps> = ({
               </div>
 
               {/* Top accessors */}
-              {statistics.topAccessors.length > 0 && (
+              {statistics.topViewers.length > 0 && (
                 <div className="bg-white rounded-lg border border-gray-200 p-6">
                   <h3 className="text-lg font-medium text-gray-900 mb-4">
                     {t('scanner.accessHistory.stats.topAccessors')}
                   </h3>
                   <div className="space-y-3">
-                    {statistics.topAccessors.map((accessor, index) => (
+                    {statistics.topViewers.map((accessor, index) => (
                       <div key={accessor.userEmail} className="flex items-center justify-between">
                         <div className="flex items-center space-x-3">
                           <div className="flex-shrink-0 w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center">
@@ -466,7 +466,7 @@ const DocumentAccessHistory: React.FC<DocumentAccessHistoryProps> = ({
                         </div>
                         <div className="text-sm text-gray-600">
                           {t('scanner.accessHistory.stats.accessCount', {
-                            count: accessor.accessCount
+                            count: accessor.viewCount
                           })}
                         </div>
                       </div>
@@ -476,13 +476,13 @@ const DocumentAccessHistory: React.FC<DocumentAccessHistoryProps> = ({
               )}
 
               {/* Recent activity */}
-              {statistics.recentAccesses.length > 0 && (
+              {statistics.recentActivity.length > 0 && (
                 <div className="bg-white rounded-lg border border-gray-200 p-6">
                   <h3 className="text-lg font-medium text-gray-900 mb-4">
                     {t('scanner.accessHistory.stats.recentActivity')}
                   </h3>
                   <div className="space-y-3">
-                    {statistics.recentAccesses.slice(0, 10).map((event) => (
+                    {statistics.recentActivity.slice(0, 10).map((event) => (
                       <div key={event.id} className="flex items-center justify-between">
                         <div className="flex items-center space-x-3">
                           <div className={`p-1 rounded ${getActionColor(event.action)}`}>

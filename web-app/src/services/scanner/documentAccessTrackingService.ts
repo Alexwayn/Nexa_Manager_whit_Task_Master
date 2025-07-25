@@ -2,39 +2,7 @@
 import { supabase } from '@/lib/supabaseClient';
 import Logger from '@/utils/Logger';
 import emailNotificationService from '@/lib/emailNotificationService';
-import type { AccessLogEntry, ProcessedDocument } from '@/types/scanner';
-
-export interface AccessEvent {
-  id: string;
-  documentId: string;
-  shareId?: string;
-  userId?: string;
-  userEmail?: string;
-  action: 'view' | 'download' | 'edit' | 'share' | 'revoke_share';
-  ipAddress?: string;
-  userAgent?: string;
-  timestamp: Date;
-  metadata?: Record<string, any>;
-}
-
-export interface AccessStatistics {
-  totalAccesses: number;
-  uniqueUsers: number;
-  viewCount: number;
-  downloadCount: number;
-  editCount: number;
-  shareCount: number;
-  recentAccesses: AccessEvent[];
-  topAccessors: {
-    userEmail: string;
-    accessCount: number;
-    lastAccess: Date;
-  }[];
-  accessTrends: {
-    date: string;
-    count: number;
-  }[];
-}
+import type { AccessLogEntry, ProcessedDocument, AccessEvent, AccessStatistics } from '@/types/scanner';
 
 export interface NotificationPreferences {
   userId: string;
@@ -59,14 +27,14 @@ export class DocumentAccessTrackingService {
       const accessRecord = {
         id: this.generateAccessId(),
         document_id: event.documentId,
-        share_id: event.shareId || null,
+        share_id: null, // shareId is not part of AccessEvent interface
         user_id: event.userId || null,
         user_email: event.userEmail || null,
         action: event.action,
         ip_address: event.ipAddress || null,
         user_agent: event.userAgent || null,
         timestamp: new Date().toISOString(),
-        metadata: event.metadata || {}
+        metadata: event.details || {}
       };
 
       const { error } = await supabase
@@ -152,14 +120,13 @@ export class DocumentAccessTrackingService {
       const accessHistory: AccessEvent[] = (data || []).map(record => ({
         id: record.id,
         documentId: record.document_id,
-        shareId: record.share_id,
-        userId: record.user_id,
-        userEmail: record.user_email,
+        userId: record.user_id || record.user_email || 'anonymous',
+        userEmail: record.user_email || '',
         action: record.action,
+        timestamp: new Date(record.timestamp),
         ipAddress: record.ip_address,
         userAgent: record.user_agent,
-        timestamp: new Date(record.timestamp),
-        metadata: record.metadata
+        details: record.metadata
       }));
 
       return {
@@ -273,48 +240,47 @@ export class DocumentAccessTrackingService {
     });
 
     // Get top accessors
-    const topAccessors = Array.from(userAccessCounts.entries())
+    const topViewers = Array.from(userAccessCounts.entries())
       .map(([userEmail, data]) => ({
+        userId: userEmail,
         userEmail,
-        accessCount: data.count,
+        viewCount: data.count,
         lastAccess: data.lastAccess
       }))
-      .sort((a, b) => b.accessCount - a.accessCount)
+      .sort((a, b) => b.viewCount - a.viewCount)
       .slice(0, 10);
 
     // Get access trends (last 30 days)
-    const accessTrends = Array.from(dailyAccesses.entries())
-      .map(([date, count]) => ({ date, count }))
-      .sort((a, b) => a.date.localeCompare(b.date))
-      .slice(-30);
+    const viewsByDate: Record<string, number> = {};
+    Array.from(dailyAccesses.entries())
+      .slice(-30)
+      .forEach(([date, count]) => {
+        viewsByDate[date] = count;
+      });
 
     // Get recent accesses
-    const recentAccesses: AccessEvent[] = accessLogs
+    const recentActivity: AccessEvent[] = accessLogs
       .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
       .slice(0, 20)
       .map(log => ({
         id: log.id,
         documentId: log.document_id,
-        shareId: log.share_id,
-        userId: log.user_id,
-        userEmail: log.user_email,
+        userId: log.user_id || log.user_email || 'anonymous',
+        userEmail: log.user_email || '',
         action: log.action,
+        timestamp: new Date(log.timestamp),
         ipAddress: log.ip_address,
         userAgent: log.user_agent,
-        timestamp: new Date(log.timestamp),
-        metadata: log.metadata
+        details: log.metadata
       }));
 
     return {
-      totalAccesses: accessLogs.length,
-      uniqueUsers: uniqueUsers.size,
-      viewCount,
-      downloadCount,
-      editCount,
-      shareCount,
-      recentAccesses,
-      topAccessors,
-      accessTrends
+      totalViews: viewCount,
+      uniqueViewers: uniqueUsers.size,
+      totalDownloads: downloadCount,
+      recentActivity,
+      topViewers,
+      viewsByDate
     };
   }
 

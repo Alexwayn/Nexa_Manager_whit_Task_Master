@@ -96,7 +96,8 @@ const DocumentSearch: React.FC<DocumentSearchProps> = ({
       // Load clients
       const clientsResult = await clientService.getClients({ userId, limit: 100 });
       if (clientsResult.data) {
-        setClients(clientsResult.data.map(client => ({ 
+        const clientsArray = Array.isArray(clientsResult.data) ? clientsResult.data : [clientsResult.data];
+        setClients(clientsArray.map(client => ({ 
           id: client.id, 
           name: client.displayName || client.full_name 
         })));

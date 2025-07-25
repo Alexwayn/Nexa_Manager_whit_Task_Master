@@ -494,7 +494,7 @@ describe('ImageProcessingService', () => {
       // Simulate image loading error
       setTimeout(() => {
         if (mockImage.onerror) {
-          mockImage.onerror();
+          (mockImage.onerror as () => void)();
         }
       }, 0);
 

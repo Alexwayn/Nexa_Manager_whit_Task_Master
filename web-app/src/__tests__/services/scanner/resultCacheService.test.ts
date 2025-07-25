@@ -1,5 +1,5 @@
 import ResultCacheService from '@/services/scanner/resultCacheService';
-import { OCRProvider, OCRResult, ProcessedDocument, DocumentStatus, AccessLevel } from '@/types/scanner';
+import { OCRProvider, OCRResult, ProcessedDocument, DocumentStatus, AccessLevel, CacheOptions, CacheStats } from '@/types/scanner';
 
 // Mock dependencies
 jest.mock('@/utils/Logger');

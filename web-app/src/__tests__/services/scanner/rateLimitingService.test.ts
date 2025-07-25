@@ -1,5 +1,5 @@
 import RateLimitingService from '@/services/scanner/rateLimitingService';
-import { OCRProvider } from '@/types/scanner';
+import { OCRProvider, RateLimitConfig } from '@/types/scanner';
 
 // Mock dependencies
 jest.mock('@/utils/Logger');
@@ -352,11 +352,11 @@ describe('RateLimitingService', () => {
     it('should handle errors in status reporting gracefully', () => {
       // Mock an error in token bucket access
       const originalGet = Map.prototype.get;
-      Map.prototype.get = jest.fn().mockImplementation(function(key) {
+      Map.prototype.get = jest.fn().mockImplementation((key) => {
         if (key === OCRProvider.OpenAI) {
           throw new Error('Mock error');
         }
-        return originalGet.call(this, key);
+        return originalGet.call(Map.prototype, key);
       });
 
       const statuses = service.getAllRateLimitStatus();

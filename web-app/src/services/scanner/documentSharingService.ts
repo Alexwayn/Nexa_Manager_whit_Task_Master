@@ -32,7 +32,6 @@ export interface DocumentShare {
   documentId: string;
   sharedBy: string;
   sharedWith: string;
-  sharedWithEmail: string;
   accessLevel: AccessLevel;
   shareToken: string;
   publicLink?: string;
@@ -40,8 +39,15 @@ export interface DocumentShare {
   expiresAt?: Date;
   createdAt: Date;
   lastAccessedAt?: Date;
-  accessCount: number;
+  accessCount?: number;
   isActive: boolean;
+  permissions: {
+    canView: boolean;
+    canDownload: boolean;
+    canEdit: boolean;
+    canShare: boolean;
+    canDelete: boolean;
+  };
 }
 
 export interface AccessTrackingData {
@@ -503,8 +509,7 @@ export class DocumentSharingService {
         id: share.id,
         documentId: share.document_id,
         sharedBy: share.shared_by,
-        sharedWith: share.shared_with || '',
-        sharedWithEmail: share.shared_with_email,
+        sharedWith: share.shared_with_email || share.shared_with || '',
         accessLevel: share.access_level as AccessLevel,
         shareToken: share.share_token,
         publicLink: share.public_link,
@@ -513,7 +518,14 @@ export class DocumentSharingService {
         createdAt: new Date(share.created_at),
         lastAccessedAt: share.last_accessed_at ? new Date(share.last_accessed_at) : undefined,
         accessCount: share.access_count,
-        isActive: share.is_active
+        isActive: share.is_active,
+        permissions: {
+          canView: true,
+          canDownload: share.access_level === AccessLevel.Download || share.access_level === AccessLevel.Edit,
+          canEdit: share.access_level === AccessLevel.Edit,
+          canShare: false,
+          canDelete: false
+        }
       }));
 
       return { success: true, shares: mappedShares };

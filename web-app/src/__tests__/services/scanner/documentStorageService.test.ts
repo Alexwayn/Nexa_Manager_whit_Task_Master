@@ -13,7 +13,15 @@ jest.mock('@/lib/supabaseClient', () => ({
   supabase: {
     from: jest.fn(),
     storage: {
-      from: jest.fn(),
+      from: jest.fn(() => ({
+        upload: jest.fn() as jest.MockedFunction<any>,
+        getPublicUrl: jest.fn() as jest.MockedFunction<any>,
+        download: jest.fn() as jest.MockedFunction<any>,
+        remove: jest.fn() as jest.MockedFunction<any>,
+        list: jest.fn() as jest.MockedFunction<any>,
+        createSignedUrl: jest.fn() as jest.MockedFunction<any>,
+        createSignedUrls: jest.fn() as jest.MockedFunction<any>
+      })),
       listBuckets: jest.fn(),
       createBucket: jest.fn()
     }
@@ -162,9 +170,9 @@ describe('DocumentStorageService', () => {
       
       // Make all chainable methods return the same query object
       Object.keys(query).forEach(key => {
-        if (typeof query[key] === 'function' && 
+        if (typeof (query as any)[key] === 'function' && 
             !['single', 'maybeSingle', 'then', 'catch', 'finally', 'csv', 'geojson', 'explain', 'rollback'].includes(key)) {
-          query[key] = jest.fn().mockReturnValue(query);
+          (query as any)[key] = jest.fn().mockReturnValue(query);
         }
       });
       
@@ -603,9 +611,9 @@ describe('DocumentStorageService', () => {
   describe('file storage integration', () => {
     it('should upload file to storage', async () => {
       const mockFile = new Blob(['file content'], { type: 'image/jpeg' });
-      const mockStorageBucket = supabase.storage.from();
+      const mockStorageBucket = supabase.storage.from('scanner-documents');
 
-      mockStorageBucket.upload.mockResolvedValue({
+      (mockStorageBucket.upload as jest.MockedFunction<any>).mockResolvedValue({
         data: { path: 'documents/test-file.jpg' },
         error: null
       });
@@ -615,14 +623,14 @@ describe('DocumentStorageService', () => {
       const uploadPath = 'documents/test-file.jpg';
       const result = await mockStorageBucket.upload(uploadPath, mockFile);
 
-      expect(result.data.path).toBe(uploadPath);
+      expect(result.data!.path).toBe(uploadPath);
       expect(mockStorageBucket.upload).toHaveBeenCalledWith(uploadPath, mockFile);
     });
 
     it('should get public URL for file', async () => {
-      const mockStorageBucket = supabase.storage.from();
+      const mockStorageBucket = supabase.storage.from('scanner-documents');
 
-      mockStorageBucket.getPublicUrl.mockReturnValue({
+      (mockStorageBucket.getPublicUrl as jest.MockedFunction<any>).mockReturnValue({
         data: { publicUrl: 'https://example.com/documents/test-file.jpg' }
       });
 
@@ -633,9 +641,9 @@ describe('DocumentStorageService', () => {
 
     it('should handle upload error', async () => {
       const mockFile = new Blob(['file content'], { type: 'image/jpeg' });
-      const mockStorageBucket = supabase.storage.from();
+      const mockStorageBucket = supabase.storage.from('scanner-documents');
 
-      mockStorageBucket.upload.mockResolvedValue({
+      (mockStorageBucket.upload as jest.MockedFunction<any>).mockResolvedValue({
         data: null,
         error: { message: 'Upload failed', statusCode: '413' }
       });
@@ -643,7 +651,7 @@ describe('DocumentStorageService', () => {
       const result = await mockStorageBucket.upload('documents/test-file.jpg', mockFile);
 
       expect(result.error).toBeTruthy();
-      expect(result.error.message).toBe('Upload failed');
+      expect(result.error!.message).toBe('Upload failed');
     });
   });
 

@@ -199,7 +199,7 @@ describe('Error Handling and Recovery Integration Tests', () => {
 
     it('should handle connection refused errors with fallback', async () => {
       // Mock connection error
-      jest.spyOn(ocrService, 'extractText').mockImplementation(async (image, options) => {
+      jest.spyOn(ocrService, 'extractText').mockImplementation(async (_image, options) => {
         if (options?.provider === OCRProvider.OpenAI) {
           throw new Error('ECONNREFUSED: Connection refused');
         }
@@ -443,7 +443,7 @@ describe('Error Handling and Recovery Integration Tests', () => {
       // Simulate image loading error
       setTimeout(() => {
         if (mockImage.onerror) {
-          mockImage.onerror();
+          (mockImage.onerror as () => void)();
         }
       }, 0);
 

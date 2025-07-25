@@ -13,9 +13,9 @@ jest.mock('@/services/scanner/resultCacheService');
 jest.mock('@/utils/Logger');
 
 const mockOCRProviderFactory = OCRProviderFactory as jest.Mocked<typeof OCRProviderFactory>;
-const mockFallbackOCRService = FallbackOCRService as jest.MockedClass<typeof FallbackOCRService>;
-const mockRateLimitingService = RateLimitingService as jest.MockedClass<typeof RateLimitingService>;
-const mockResultCacheService = ResultCacheService as jest.MockedClass<typeof ResultCacheService>;
+const mockFallbackOCRService = FallbackOCRService as any;
+const mockRateLimitingService = RateLimitingService as any;
+const mockResultCacheService = ResultCacheService as any;
 
 describe('AIOCRService', () => {
   let service: AIOCRService;
@@ -67,8 +67,8 @@ describe('AIOCRService', () => {
     } as any;
 
     // Setup static method mocks
-    mockRateLimitingService.getInstance.mockReturnValue(mockRateLimitingInstance);
-    mockResultCacheService.getInstance.mockReturnValue(mockCacheInstance);
+    (mockRateLimitingService.getInstance as jest.Mock).mockReturnValue(mockRateLimitingInstance);
+    (mockResultCacheService.getInstance as jest.Mock).mockReturnValue(mockCacheInstance);
     mockFallbackOCRService.mockImplementation(() => mockFallbackInstance);
 
     // Setup OCRProviderFactory mocks

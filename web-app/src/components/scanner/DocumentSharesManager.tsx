@@ -203,7 +203,7 @@ const DocumentSharesManager: React.FC<DocumentSharesManagerProps> = ({
                   </div>
                   <div>
                     <p className="text-sm font-medium text-gray-900">
-                      {share.sharedWithEmail}
+                      {share.sharedWith}
                     </p>
                     <p className="text-xs text-gray-500">
                       {t('scanner.sharing.sharedOn', { date: formatDate(share.createdAt) })}
@@ -221,7 +221,7 @@ const DocumentSharesManager: React.FC<DocumentSharesManagerProps> = ({
 
                   <div className="flex items-center space-x-4 text-xs text-gray-500">
                     <span>
-                      {t('scanner.sharing.accessCount', { count: share.accessCount })}
+                      {t('scanner.sharing.accessCount', { count: share.accessCount || 0 })}
                     </span>
                     {share.lastAccessedAt && (
                       <span>

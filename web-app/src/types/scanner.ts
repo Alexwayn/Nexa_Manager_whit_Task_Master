@@ -315,3 +315,83 @@ export interface APIRequirements {
   maxDimensions?: { width: number; height: number };
   supportedFormats?: string[];
 }
+
+// Document Access and Sharing Types
+export interface AccessEvent {
+  id: string;
+  documentId: string;
+  userId: string;
+  userEmail: string;
+  action: string;
+  timestamp: Date;
+  ipAddress?: string;
+  userAgent?: string;
+  details?: Record<string, any>;
+}
+
+export interface AccessStatistics {
+  totalViews: number;
+  uniqueViewers: number;
+  totalDownloads: number;
+  recentActivity: AccessEvent[];
+  viewsByDate: Record<string, number>;
+  topViewers: Array<{
+    userId: string;
+    userEmail: string;
+    viewCount: number;
+    lastAccess: Date;
+  }>;
+}
+
+export interface DocumentShare {
+  id: string;
+  documentId: string;
+  sharedBy: string;
+  sharedWith: string;
+  accessLevel: AccessLevel;
+  createdAt: Date;
+  expiresAt?: Date;
+  isActive: boolean;
+  shareToken?: string;
+  publicLink?: string;
+  permissions: SharePermissions;
+  message?: string;
+  accessCount?: number;
+  lastAccessedAt?: Date;
+}
+
+export interface SharePermissions {
+  canView: boolean;
+  canDownload: boolean;
+  canEdit: boolean;
+  canShare: boolean;
+  canDelete: boolean;
+}
+
+// Rate Limiting Types
+export interface RateLimitConfig {
+  requestsPerMinute: number;
+  requestsPerHour: number;
+  requestsPerDay: number;
+  burstCapacity?: number;
+  refillRate?: number; // tokens per second
+}
+
+// Cache Types
+export interface CacheOptions {
+  ttl?: number; // Time to live in milliseconds
+  maxSize?: number; // Maximum cache size in bytes
+  maxEntries?: number; // Maximum number of entries
+  enablePersistence?: boolean; // Store in localStorage
+  compressionEnabled?: boolean; // Compress large entries
+}
+
+export interface CacheStats {
+  totalEntries: number;
+  totalSize: number;
+  hitRate: number;
+  missRate: number;
+  oldestEntry: number;
+  newestEntry: number;
+  averageAccessCount: number;
+}

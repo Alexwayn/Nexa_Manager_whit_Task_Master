@@ -221,7 +221,7 @@ describe('Document Scanner Integration Tests', () => {
       ];
 
       jest.spyOn(imageProcessingService, 'parsePDF').mockResolvedValue(mockPages);
-      jest.spyOn(ocrService, 'extractText').mockImplementation(async (image, options) => ({
+      jest.spyOn(ocrService, 'extractText').mockImplementation(async (image, _options) => ({
         ...mockOCRResult,
         text: `Page content for ${mockPages.indexOf(image as Blob) + 1}`,
         processingTime: 1000
@@ -323,9 +323,14 @@ describe('Document Scanner Integration Tests', () => {
     });
 
     it('should use fallback provider when all AI providers fail', async () => {
+      const providerCalls: OCRProvider[] = [];
+      
       // Mock all AI providers failing
-      jest.spyOn(ocrService, 'extractText').mockImplementation(async (image, options) => {
-        if (options?.provider === OCRProvider.Fallback) {
+      jest.spyOn(ocrService, 'extractText').mockImplementation(async (_image, options) => {
+        const provider = options?.provider || OCRProvider.OpenAI;
+        providerCalls.push(provider);
+        
+        if (provider === OCRProvider.Fallback) {
           return {
             text: '[Manual Input Required]\n\nPlease manually enter the text content from this document.',
             confidence: 0.1,
@@ -355,7 +360,7 @@ describe('Document Scanner Integration Tests', () => {
     it('should respect provider priority in fallback chain', async () => {
       const providerCalls: OCRProvider[] = [];
       
-      jest.spyOn(ocrService, 'extractText').mockImplementation(async (image, options) => {
+      jest.spyOn(ocrService, 'extractText').mockImplementation(async (_image, options) => {
         const provider = options?.provider || OCRProvider.OpenAI;
         providerCalls.push(provider);
         

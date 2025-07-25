@@ -244,7 +244,7 @@ export const ScannerErrorBoundary: React.FC<{
   const handleError = React.useCallback(
     (error: Error, errorInfo: React.ErrorInfo) => {
       // Call our enhanced error handler
-      onScannerError(error, errorInfo);
+      onScannerError(error, { componentStack: errorInfo.componentStack || '' });
 
       // Call custom error handler if provided
       if (customOnError) {
