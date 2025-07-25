@@ -18,28 +18,33 @@ export interface EnvVars {
  * Works in both Vite (import.meta.env) and Jest (process.env) environments
  */
 export function getEnvVar(key: string, defaultValue?: string): string | undefined {
-  // In Vite environment, use import.meta.env
-  try {
-    if (import.meta && import.meta.env) {
-      return import.meta.env[key] || defaultValue;
+  // In Vite environment, use import.meta.env first
+  if (typeof import.meta !== 'undefined' && import.meta.env) {
+    const value = import.meta.env[key];
+    if (value !== undefined) {
+      return value || defaultValue;
     }
-  } catch (error) {
-    // import.meta might not be available in some environments
   }
 
-  // In Jest environment, use process.env
+  // In Jest/Node environment, use process.env
   if (typeof process !== 'undefined' && process.env) {
-    return process.env[key] || defaultValue;
+    const value = process.env[key];
+    if (value !== undefined) {
+      return value || defaultValue;
+    }
   }
 
-  // Fallback for other environments
-  try {
-    // Check if window has the environment variables (for some build systems)
-    if (typeof window !== 'undefined' && (window as any).__VITE_ENV__) {
-      return (window as any).__VITE_ENV__[key] || defaultValue;
+  // In browser environment, try to access Vite's environment variables
+  // This will be handled by Vite's build process in production
+  if (typeof window !== 'undefined') {
+    try {
+      // Check if window has the environment variables (for some build systems)
+      if ((window as any).__VITE_ENV__) {
+        return (window as any).__VITE_ENV__[key] || defaultValue;
+      }
+    } catch (error) {
+      // Ignore errors
     }
-  } catch (error) {
-    // Ignore errors
   }
 
   return defaultValue;
