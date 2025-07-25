@@ -29,7 +29,7 @@ import {
   ExternalLink,
 } from 'lucide-react';
 import { HomeIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
-import nexaLogo from '@assets/logo_nexa.png';
+import nexaLogo from '../../../assets/logos/logo_nexa.png';
 import { useTranslation } from 'react-i18next';
 import { useUser } from '@clerk/clerk-react';
 import { useNavigate } from 'react-router-dom';

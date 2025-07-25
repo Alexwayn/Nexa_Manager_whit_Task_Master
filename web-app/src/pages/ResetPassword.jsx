@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@clerk/clerk-react';
 import { InformationCircleIcon } from '@heroicons/react/24/outline';
-import nexaLogo from '@assets/logo_nexa.png';
+import nexaLogo from '../../../assets/logos/logo_nexa.png';
 import ErrorBoundary from '../components/common/ErrorBoundary';
 
 export default function ResetPassword() {

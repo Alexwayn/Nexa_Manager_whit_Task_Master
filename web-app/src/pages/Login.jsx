@@ -13,7 +13,7 @@ import {
   UserGroupIcon,
   CheckIcon,
 } from '@heroicons/react/24/outline';
-import nexaLogo from '@assets/logo_nexa_footer.png';
+import nexaLogo from '../../../assets/logos/logo_nexa_footer.png';
 
 const Login = () => {
   const { isSignedIn } = useAuth();

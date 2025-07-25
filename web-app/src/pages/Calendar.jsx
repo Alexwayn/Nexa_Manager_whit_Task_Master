@@ -65,8 +65,8 @@ import {
   TrashIcon,
   HomeIcon,
 } from '@heroicons/react/24/outline';
-import nexaFooterLogo from '@assets/logo_nexa_footer.png';
-import nexaLogo from '@assets/logo_nexa.png';
+import nexaFooterLogo from '../../../assets/logos/logo_nexa_footer.png';
+import nexaLogo from '../../../assets/logos/logo_nexa.png';
 
 export default function Calendar() {
   const { t } = useTranslation(['calendar', 'common']);

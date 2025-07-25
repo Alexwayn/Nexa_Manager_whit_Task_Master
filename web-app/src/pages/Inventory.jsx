@@ -41,8 +41,8 @@ import {
   FunnelIcon,
 } from '@heroicons/react/24/outline';
 import { Search, ChevronDown, Eye, MapPin } from 'lucide-react';
-import nexaFooterLogo from '@assets/logo_nexa_footer.png';
-import nexaLogo from '@assets/logo_nexa.png';
+import nexaFooterLogo from '../../../assets/logos/logo_nexa_footer.png';
+import nexaLogo from '../../../assets/logos/logo_nexa.png';
 import { useTranslation } from 'react-i18next';
 import ErrorBoundary from '../components/common/ErrorBoundary';
 

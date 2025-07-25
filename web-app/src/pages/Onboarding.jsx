@@ -13,7 +13,7 @@ import {
   CreditCardIcon,
   CheckCircleIcon,
 } from '@heroicons/react/24/outline';
-import nexaLogo from '@assets/logo_nexa.png';
+import nexaLogo from '../../../assets/logos/logo_nexa.png';
 
 export default function Onboarding() {
   const { isLoaded, isSignedIn } = useAuth();

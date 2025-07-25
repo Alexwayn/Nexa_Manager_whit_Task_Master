@@ -29,8 +29,8 @@ import {
   ChevronRightIcon,
 } from '@heroicons/react/24/outline';
 import { useTheme } from '@context/OptimizedThemeContext';
-import nexaLogo from '@assets/logo_nexa.png';
-import nexaLogoCollapsed from '@assets/logo_nexa_mager.png';
+import nexaLogo from '../../../../assets/logos/logo_nexa.png';
+import nexaLogoCollapsed from '../../../../assets/logos/logo_nexa_mager.png';
 
 // Remove the separate SidebarContent function to avoid hooks order issues
 

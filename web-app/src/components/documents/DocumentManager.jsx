@@ -21,7 +21,7 @@ import PDFGenerator from '@components/PDFGenerator';
 import ReceiptUpload from '@components/ReceiptUpload';
 import DocumentSharing from '@components/DocumentSharing';
 import EmailManager from '@components/EmailManager';
-import nexaLogo from '@assets/logo_nexa.png';
+import nexaLogo from '../../../../assets/logos/logo_nexa.png';
 import Logger from '@utils/Logger';
 
 import { useTranslation } from 'react-i18next';

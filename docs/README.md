@@ -1,59 +1,55 @@
 # Nexa Manager Documentation
 
-This directory contains all project documentation organized by category.
+This directory contains comprehensive documentation for the Nexa Manager project, organized by category for easy navigation.
 
 ## 📁 Directory Structure
 
 ```
 docs/
-├── setup/              # Setup and installation guides
-├── database/           # Database documentation
-├── deployment/         # Deployment guides
-├── development/        # Development guides
-├── api/               # API documentation
-└── troubleshooting/   # Problem resolution guides
+├── api/                # API documentation and integration guides
+├── architecture/       # System architecture and design documentation
+├── development/        # Development guides, setup, and workflows
+├── deployment/         # Deployment procedures and configurations
+├── user-guides/        # End-user documentation and tutorials
+├── decisions/          # Architecture Decision Records (ADRs)
+└── templates/          # Documentation templates and standards
 ```
 
 ## 📚 Quick Links
 
 ### 🚀 Project Overview
-- [Project Status Summary](PROJECT_STATUS_SUMMARY.md) - Comprehensive project state overview
-- [Authentication Status](AUTHENTICATION_STATUS.md) - Current security migration progress
+- [Project Status Summary](development/PROJECT_STATUS_SUMMARY.md) - Comprehensive project state overview
+- [Authentication Status](development/AUTHENTICATION_STATUS.md) - Current security migration progress
 
-### 🛠️ Setup Guides
-- [AWS Setup Guide](setup/AWS_SETUP_GUIDE.md)
-- [Supabase Setup](setup/README_SUPABASE.md)
-- [Domain Setup](setup/DOMAIN_SETUP_CHECKLIST.md)
+### 🛠️ Setup & Development
+- [Development Setup](development/README.md) - Complete development environment setup
+- [AWS Setup Guide](development/setup/AWS_SETUP_GUIDE.md)
+- [OAuth Setup Guide](development/setup/OAUTH_SETUP_GUIDE.md)
+- [MFA Implementation Guide](development/setup/MFA_IMPLEMENTATION_GUIDE.md)
+- [Sentry Setup](development/setup/SENTRY_SETUP.md)
 
-### 👨‍💻 Development
-- [Authentication Migration Guide](development/AUTHENTICATION_MIGRATION_GUIDE.md) - Step-by-step migration process
-- [Translation Management](development/README_TRANSLATE.md)
-- [Motiff MCP Setup](development/MOTIFF_MCP_SETUP.md)
+### 📧 API Documentation
+- [Email System API](api/EMAIL_SYSTEM.md) - Complete email system documentation
+- [Email API Reference](api/EMAIL_API.md) - Detailed API endpoints
+- [Scanner API](api/SCANNER_API.md) - Document scanner API reference
+- [Reporting Framework](api/REPORTING_FRAMEWORK.md) - Reporting system API
 
-### 📧 Email Management System
-- [Email System Overview](../web-app/docs/EMAIL_SYSTEM.md)
-- [Email API Documentation](../web-app/docs/EMAIL_API.md)
-- [TypeScript Types](../web-app/docs/TYPESCRIPT_TYPES.md)
+### 🏗️ Architecture & Implementation
+- [System Architecture](architecture/README.md) - Overall system design
+- [TypeScript Types](architecture/TYPESCRIPT_TYPES.md) - Type definitions and interfaces
+- [Database Schema](architecture/database/DATABASE_SCANNER_SCHEMA.md) - Database design
+- [Document Sharing](architecture/implementations/DOCUMENT_SHARING.md) - Document sharing system
+- [Scanner System](architecture/implementations/SCANNER_SYSTEM.md) - Scanner architecture
+- [OCR Provider Factory](architecture/implementations/OCR_PROVIDER_FACTORY.md) - OCR system design
 
-### 📄 Document Scanner System
-- [Scanner System Overview](../web-app/docs/SCANNER_SYSTEM.md) - Complete system architecture and features
-- [Image Optimization Service](../web-app/docs/IMAGE_OPTIMIZATION_SERVICE.md) - Comprehensive image optimization for API cost reduction
-- [OCR Provider Factory](../web-app/docs/OCR_PROVIDER_FACTORY.md) - Multi-provider OCR architecture and implementation
-- [Scanner API Documentation](../web-app/docs/SCANNER_API.md) - Comprehensive API reference for OCR services
-- [Database Schema](../web-app/docs/DATABASE_SCANNER_SCHEMA.md) - Complete database schema and storage architecture
-- [ScannerPage Implementation Guide](../web-app/docs/SCANNER_PAGE_IMPLEMENTATION.md) - Detailed component implementation
-- [Scanner Feature README](../web-app/src/components/scanner/README.md) - Component implementation status
-- [Scanner Types Documentation](../web-app/src/types/scanner.ts) - TypeScript interfaces and types
-- [Scanner Implementation Tasks](../.kiro/specs/document-scanner/tasks.md) - Development progress tracking
-- [Document Sharing System](../web-app/docs/DOCUMENT_SHARING.md) - Comprehensive document sharing documentation
+### 🚀 Deployment & Monitoring
+- [Deployment Guide](deployment/README.md) - Deployment procedures
+- [Monitoring Setup](deployment/monitoring/monitoring-setup.md) - System monitoring
+- [SSL/Domain Troubleshooting](deployment/troubleshooting/SSL_CLERK_DOMAIN_FIX.md)
 
-### 🗄️ Database
-- [Database Schema](database/README.md)
-- [RLS Security](database/RLS_SECURITY_DOCUMENTATION.md)
-
-### 🔧 Troubleshooting
-- [Common Issues](troubleshooting/ERRORI_RISOLTI_SUMMARY.md)
-- [Settings Fixes](troubleshooting/SETTINGS_FIXES_SUMMARY.md)
+### 🧪 Testing & Quality
+- [Testing Guide](development/testing/TESTING.md) - Testing strategies and setup
+- [Code Review Process](development/workflows/code-review-process.md)
 
 ## 🔧 Project Status
 
