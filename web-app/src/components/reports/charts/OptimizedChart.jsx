@@ -13,9 +13,9 @@ import {
   Filler,
 } from 'chart.js';
 import { Bar, Line, Pie, Doughnut } from 'react-chartjs-2';
-import { useIntersectionObserver } from '@hooks/useIntersectionObserver';
-import LoadingSkeleton from '@components/common/LoadingSkeleton';
-import { ChartErrorFallback } from '@components/common/ErrorBoundary';
+import { useIntersectionObserver } from '@shared/hooks/useIntersectionObserver';
+import LoadingSkeleton from '@shared/components/feedback/LoadingSkeleton';
+import { ChartErrorFallback } from '@shared/components/feedback/ErrorBoundary';
 
 // Register Chart.js components
 ChartJS.register(

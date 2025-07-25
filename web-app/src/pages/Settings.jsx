@@ -20,7 +20,7 @@ import {
 // import { UserProfile } from '@clerk/clerk-react'; // Disabled for development mode
 import { supabase } from '@lib/supabaseClient';
 import Logger from '@utils/Logger';
-import { useTranslation } from '@hooks/useTranslation';
+import { useTranslation } from '@shared/hooks/useTranslation';
 import { useAuth, useUser } from '@clerk/clerk-react';
 import Footer from '@components/shared/Footer';
 import { businessService } from '@lib/businessService';

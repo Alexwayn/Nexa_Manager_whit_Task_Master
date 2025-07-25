@@ -1,8 +1,8 @@
 import React, { Suspense } from 'react';
 import { Routes, Route } from 'react-router-dom';
-import ProtectedRoute from '@components/auth/ProtectedRoute';
-import Layout from '@components/dashboard/Layout';
-import ErrorBoundary from '@components/common/ErrorBoundary';
+import ProtectedRoute from '@features/auth/components/ProtectedRoute';
+import Layout from '@features/dashboard/components/Layout';
+import ErrorBoundary from '@shared/components/feedback/ErrorBoundary';
 import { publicRoutes, testRoutes, protectedRoutes, defaultRoutes } from './routeConfig';
 
 /**

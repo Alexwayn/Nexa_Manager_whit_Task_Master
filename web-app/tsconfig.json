@@ -5,6 +5,9 @@
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "module": "ESNext",
     "skipLibCheck": true,
+    "allowJs": true,
+    "checkJs": false,
+    "noImplicitAny": false,
     "types": ["vite/client", "jest", "@testing-library/jest-dom"],
 
     /* Bundler mode */
@@ -34,7 +37,18 @@
       "@assets/*": ["./src/assets/*"],
       "@styles/*": ["./src/styles/*"],
       "@i18n/*": ["./src/i18n/*"],
-      "@types/*": ["./src/types/*"]
+      "@types/*": ["./src/types/*"],
+      "@features/*": ["./src/features/*"],
+      "@shared/*": ["./src/shared/*"],
+      "@auth/*": ["./src/features/auth/*"],
+      "@clients/*": ["./src/features/clients/*"],
+      "@financial/*": ["./src/features/financial/*"],
+      "@email/*": ["./src/features/email/*"],
+      "@documents/*": ["./src/features/documents/*"],
+      "@calendar/*": ["./src/features/calendar/*"],
+      "@scanner/*": ["./src/features/scanner/*"],
+      "@dashboard/*": ["./src/features/dashboard/*"],
+      "@analytics/*": ["./src/features/analytics/*"]
     }
   },
   "include": ["src", "src/types"],

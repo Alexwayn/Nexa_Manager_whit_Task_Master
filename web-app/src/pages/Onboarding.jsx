@@ -3,8 +3,8 @@ import { useForm } from 'react-hook-form';
 import { useAuth, useUser } from '@clerk/clerk-react';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import ErrorBoundary from '@components/common/ErrorBoundary';
-import { businessService } from '@lib/businessService';
+import ErrorBoundary from '@shared/components/feedback/ErrorBoundary';
+import { businessService } from "@features/clients/services/businessService";
 import {
   BuildingOfficeIcon,
   UserCircleIcon,

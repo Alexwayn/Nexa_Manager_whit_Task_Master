@@ -9,7 +9,7 @@ import { QueryProvider } from "./providers/QueryProvider";
 import { WebSocketProvider } from './providers/WebSocketProvider';
 import AppRouter from '@router/AppRouter';
 import FloatingMicrophone from '@components/shared/FloatingMicrophone';
-import ErrorBoundary from '@components/common/ErrorBoundary';
+import ErrorBoundary from '@shared/components/feedback/ErrorBoundary';
 // import LanguageForcer from '@components/debug/LanguageForcer'; // Removed debug component
 
 import { initToolbar } from '@stagewise/toolbar';

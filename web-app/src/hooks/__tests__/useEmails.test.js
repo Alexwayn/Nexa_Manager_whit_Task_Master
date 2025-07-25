@@ -3,10 +3,10 @@ import { useEmails } from '../useEmails';
 import { EmailProvider } from '@context/EmailContext';
 import { AuthProvider } from '@context/AuthContext';
 import { WebSocketProvider } from '@providers/WebSocketProvider';
-import emailManagementService from '@lib/emailManagementService';
+import emailManagementService from '@features/email/services/emailManagementService';
 
 // Mock dependencies
-jest.mock('@lib/emailManagementService');
+jest.mock('@features/email/services/emailManagementService');
 jest.mock('@utils/Logger');
 
 // Mock providers

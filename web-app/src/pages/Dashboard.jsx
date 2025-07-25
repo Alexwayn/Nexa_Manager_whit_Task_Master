@@ -2,8 +2,8 @@ import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { useAuth, useUser } from '@clerk/clerk-react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import ErrorBoundary from '@components/common/ErrorBoundary';
-import Footer from '@components/shared/Footer';
+import ErrorBoundary from '@shared/components/feedback/ErrorBoundary';
+import Footer from '@shared/components/layout/Footer';
 
 import {
   Search,
@@ -41,11 +41,11 @@ import nexaFooterLogo from '../../../assets/logos/logo_nexa_footer.png';
 import nexaLogo from '../../../assets/logos/logo_nexa.png';
 
 // Import hooks
-import { useRealtimeDashboard } from '@hooks/useRealtimeDashboard';
+import { useRealtimeDashboard } from '@features/dashboard/hooks/useRealtimeDashboard';
 import useDateRange from '@hooks/useDateRange';
 
 // Import services
-import clientService from '@lib/clientService';
+import clientService from '@features/clients/services/clientService';
 import { supabase } from '@lib/supabaseClient';
 
 const Dashboard = () => {

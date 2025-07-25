@@ -1,14 +1,32 @@
-// Utility Types for Better Type Safety
+// Utility Types
 
 /**
- * Make specific properties optional
+ * Function types
  */
-export type PartialBy<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
+export type AsyncFunction<T = any, R = any> = (...args: T[]) => Promise<R>;
+export type SyncFunction<T = any, R = any> = (...args: T[]) => R;
+export type AnyFunction = (...args: any[]) => any;
 
 /**
- * Make specific properties required
+ * Event handler types
  */
-export type RequiredBy<T, K extends keyof T> = T & Required<Pick<T, K>>;
+export type EventHandler<T = any> = (event: T) => void;
+export type AsyncEventHandler<T = any> = (event: T) => Promise<void>;
+
+/**
+ * Promise utility types
+ */
+export type PromiseValue<T> = T extends Promise<infer U> ? U : T;
+
+/**
+ * Array utility types
+ */
+export type ArrayElement<T> = T extends (infer U)[] ? U : never;
+
+/**
+ * Object utility types
+ */
+export type ValueOf<T> = T[keyof T];
 
 /**
  * Deep partial type
@@ -18,105 +36,41 @@ export type DeepPartial<T> = {
 };
 
 /**
- * Deep readonly type
+ * Partial by specific keys
  */
-export type DeepReadonly<T> = {
-  readonly [P in keyof T]: T[P] extends object ? DeepReadonly<T[P]> : T[P];
-};
+export type PartialBy<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
 
 /**
- * Non-nullable type
+ * Required by specific keys
  */
-export type NonNullable<T> = T extends null | undefined ? never : T;
+export type RequiredBy<T, K extends keyof T> = Omit<T, K> & Required<Pick<T, K>>;
 
 /**
- * Extract keys of specific type
+ * Brand type for type safety
  */
-export type KeysOfType<T, U> = {
-  [K in keyof T]: T[K] extends U ? K : never;
-}[keyof T];
-
-/**
- * Function type helpers
- */
-export type AsyncFunction<T extends any[] = any[], R = any> = (...args: T) => Promise<R>;
-export type SyncFunction<T extends any[] = any[], R = any> = (...args: T) => R;
-export type AnyFunction<T extends any[] = any[], R = any> =
-  | AsyncFunction<T, R>
-  | SyncFunction<T, R>;
-
-/**
- * Event handler types
- */
-export type EventHandler<T = Event> = (event: T) => void;
-export type AsyncEventHandler<T = Event> = (event: T) => Promise<void>;
-
-/**
- * Promise-related types
- */
-export type PromiseValue<T> = T extends Promise<infer U> ? U : T;
-export type Awaited<T> = T extends Promise<infer U> ? U : T;
-
-/**
- * Array element type
- */
-export type ArrayElement<T> = T extends (infer U)[] ? U : never;
-
-/**
- * Object value types
- */
-export type ValueOf<T> = T[keyof T];
-
-/**
- * Conditional type helpers
- */
-export type If<C extends boolean, T, F> = C extends true ? T : F;
-export type Not<C extends boolean> = C extends true ? false : true;
-export type And<A extends boolean, B extends boolean> = A extends true ? B : false;
-export type Or<A extends boolean, B extends boolean> = A extends true ? true : B;
+export type Brand<T, B> = T & { __brand: B };
 
 /**
  * String manipulation types
  */
-export type Capitalize<S extends string> = S extends `${infer F}${infer R}`
-  ? `${Uppercase<F>}${R}`
+export type Capitalize<S extends string> = S extends `${infer F}${infer R}` 
+  ? `${Uppercase<F>}${R}` 
   : S;
 
-export type Uncapitalize<S extends string> = S extends `${infer F}${infer R}`
-  ? `${Lowercase<F>}${R}`
+export type Uncapitalize<S extends string> = S extends `${infer F}${infer R}` 
+  ? `${Lowercase<F>}${R}` 
   : S;
-
-/**
- * Union type helpers
- */
-export type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends (
-  k: infer I,
-) => void
-  ? I
-  : never;
-
-export type LastOf<T> =
-  UnionToIntersection<T extends any ? () => T : never> extends () => infer R ? R : never;
-
-/**
- * Tuple type helpers
- */
-export type Head<T extends readonly any[]> = T extends readonly [any, ...any[]] ? T[0] : never;
-export type Tail<T extends readonly any[]> = T extends readonly [any, ...infer U] ? U : [];
-export type Last<T extends readonly any[]> = T extends readonly [...any[], infer U] ? U : never;
 
 /**
  * Object manipulation types
  */
 export type Merge<T, U> = Omit<T, keyof U> & U;
+
 export type Override<T, U> = Omit<T, keyof U> & U;
 
 /**
- * Brand types for type safety
+ * Branded ID types for type safety
  */
-export type Brand<T, B> = T & { readonly __brand: B };
-
-// Common branded types
 export type UserId = Brand<string, 'UserId'>;
 export type ClientId = Brand<string, 'ClientId'>;
 export type InvoiceId = Brand<string, 'InvoiceId'>;
@@ -124,7 +78,7 @@ export type PaymentId = Brand<string, 'PaymentId'>;
 export type EventId = Brand<string, 'EventId'>;
 
 /**
- * API-related utility types
+ * API utility types
  */
 export type ApiMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 
@@ -138,26 +92,29 @@ export interface ApiRequestConfig {
 }
 
 /**
- * React Hook types
+ * React Hook utility types
  */
-export type UseStateReturn<T> = [T, React.Dispatch<React.SetStateAction<T>>];
-export type UseEffectDeps = React.DependencyList | undefined;
+export type UseStateReturn<T> = [T, (value: T | ((prev: T) => T)) => void];
 
-/**
- * Custom hook return types
- */
+export type UseEffectDeps = React.DependencyList;
+
 export interface AsyncHookReturn<T, E = Error> {
   data: T | null;
   loading: boolean;
   error: E | null;
-  refresh: () => Promise<void>;
+  refetch: () => Promise<void>;
 }
 
-export interface PaginatedHookReturn<T, E = Error> extends AsyncHookReturn<T[], E> {
-  hasMore: boolean;
+export interface PaginatedHookReturn<T> extends AsyncHookReturn<T[]> {
+  pagination: {
+    page: number;
+    limit: number;
+    total: number;
+    hasMore: boolean;
+  };
   loadMore: () => Promise<void>;
-  total: number;
-  page: number;
+  setPage: (page: number) => void;
+  setLimit: (limit: number) => void;
 }
 
 export interface FormHookReturn<T> {
@@ -166,27 +123,28 @@ export interface FormHookReturn<T> {
   touched: Record<keyof T, boolean>;
   isSubmitting: boolean;
   isValid: boolean;
-  setFieldValue: (field: keyof T, value: T[keyof T]) => void;
-  setFieldError: (field: keyof T, error: string) => void;
-  setFieldTouched: (field: keyof T, touched: boolean) => void;
-  handleSubmit: (onSubmit: (values: T) => void | Promise<void>) => void;
-  reset: () => void;
+  isDirty: boolean;
+  setValue: <K extends keyof T>(field: K, value: T[K]) => void;
+  setError: <K extends keyof T>(field: K, error: string) => void;
+  setTouched: <K extends keyof T>(field: K, touched: boolean) => void;
+  handleSubmit: (onSubmit: (values: T) => void | Promise<void>) => (e?: React.FormEvent) => void;
+  reset: (values?: Partial<T>) => void;
 }
 
 /**
- * Storage types
+ * Storage utility types
  */
 export interface StorageItem<T = any> {
   value: T;
   timestamp: number;
-  expires?: number;
+  expiry?: number;
 }
 
 export type StorageKey = string;
-export type StorageValue = string | number | boolean | object | null;
+export type StorageValue = any;
 
 /**
- * Logger types
+ * Logging utility types
  */
 export type LogLevel = 'debug' | 'info' | 'warn' | 'error';
 
@@ -195,33 +153,33 @@ export interface LogEntry {
   message: string;
   timestamp: number;
   context?: Record<string, any>;
-  stack?: string;
+  error?: Error;
 }
 
 /**
- * Performance types
+ * Performance utility types
  */
 export interface PerformanceMetric {
   name: string;
   value: number;
-  unit: 'ms' | 'bytes' | 'count' | 'percentage';
+  unit: 'ms' | 'bytes' | 'count';
   timestamp: number;
-  context?: Record<string, any>;
+  tags?: Record<string, string>;
 }
 
 /**
- * Theme types
+ * Theme utility types
  */
 export type ColorScheme = 'light' | 'dark' | 'system';
-export type ThemeSize = 'sm' | 'md' | 'lg';
-export type ThemeVariant = 'primary' | 'secondary' | 'success' | 'warning' | 'danger' | 'info';
+export type ThemeSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+export type ThemeVariant = 'primary' | 'secondary' | 'success' | 'warning' | 'error' | 'info';
 
 /**
- * Routing types
+ * Routing utility types
  */
 export interface RouteConfig {
   path: string;
-  component: React.ComponentType<any>;
+  component: React.ComponentType;
   exact?: boolean;
   protected?: boolean;
   roles?: string[];
@@ -229,54 +187,68 @@ export interface RouteConfig {
   meta?: Record<string, any>;
 }
 
-export type NavigationState = 'idle' | 'loading' | 'submitting';
+export interface NavigationState {
+  currentPath: string;
+  previousPath?: string;
+  params: Record<string, string>;
+  query: Record<string, string>;
+}
 
 /**
- * Error types
+ * Error utility types
  */
-export interface AppError {
-  code: string;
-  message: string;
+export interface AppError extends Error {
+  code?: string;
+  statusCode?: number;
   context?: Record<string, any>;
   timestamp: number;
-  recoverable: boolean;
 }
 
 export type ErrorBoundaryFallback = React.ComponentType<{
   error: Error;
-  resetErrorBoundary: () => void;
+  resetError: () => void;
 }>;
 
 /**
- * Generic CRUD types
+ * CRUD utility types
  */
-export interface CrudOperations<T, CreateData = Partial<T>, UpdateData = Partial<T>> {
-  create: (data: CreateData) => Promise<T>;
+export interface CrudOperations<T> {
+  create: (data: Omit<T, 'id' | 'created_at' | 'updated_at'>) => Promise<T>;
   read: (id: string) => Promise<T>;
-  update: (id: string, data: UpdateData) => Promise<T>;
+  update: (id: string, data: Partial<T>) => Promise<T>;
   delete: (id: string) => Promise<void>;
-  list: (filters?: Record<string, any>) => Promise<T[]>;
+  list: (params?: any) => Promise<T[]>;
 }
 
 /**
- * Environment types
+ * Environment utility types
  */
 export type Environment = 'development' | 'staging' | 'production';
 
 export interface EnvironmentConfig {
+  NODE_ENV: Environment;
   API_URL: string;
-  APP_ENV: Environment;
-  DEBUG: boolean;
-  VERSION: string;
-  BUILD_TIME: string;
+  APP_URL: string;
+  DATABASE_URL?: string;
+  REDIS_URL?: string;
+  [key: string]: string | undefined;
 }
 
 /**
- * Feature flag types
+ * Feature flag utility types
  */
-export type FeatureFlag = string;
 export type FeatureFlagValue = boolean | string | number | object;
 
-export interface FeatureFlags {
-  [key: FeatureFlag]: FeatureFlagValue;
+export interface FeatureFlag {
+  key: string;
+  value: FeatureFlagValue;
+  enabled: boolean;
+  description?: string;
+  conditions?: Array<{
+    property: string;
+    operator: 'equals' | 'not_equals' | 'contains' | 'greater_than' | 'less_than';
+    value: any;
+  }>;
 }
+
+export type FeatureFlags = Record<string, FeatureFlag>;

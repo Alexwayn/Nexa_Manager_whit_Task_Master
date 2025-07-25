@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import Footer from '@components/shared/Footer';
-import ErrorBoundary from '@components/common/ErrorBoundary';
+import Footer from '@shared/components/layout/Footer';
+import ErrorBoundary from '@shared/components/feedback/ErrorBoundary';
 // Add modal imports
 import DocumentUploadModal from '@components/documents/DocumentUploadModal';
 import CreateFolderModal from '@components/documents/CreateFolderModal';

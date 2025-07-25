@@ -37,7 +37,7 @@ import InvoiceService from '@lib/invoiceService';
 import InvoiceAnalyticsService from '@lib/invoiceAnalyticsService';
 import InvoiceModal from '@components/financial/InvoiceModal';
 import ViewInvoiceModal from '@components/financial/ViewInvoiceModal';
-import { getUserIdForUuidTables } from '@utils/userIdConverter';
+import { getUserIdForUuidTables } from '@shared/utils/userIdConverter';
 import Logger from '@utils/Logger';
 import Footer from '@components/shared/Footer';
 

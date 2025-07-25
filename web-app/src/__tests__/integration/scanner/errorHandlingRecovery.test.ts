@@ -1,9 +1,9 @@
-import { AIOCRService } from '@/services/scanner/ocrService';
-import { ImageProcessingService } from '@/services/scanner/imageProcessingService';
-import { DocumentStorageService } from '@/services/scanner/documentStorageService';
-import BatchProcessingService from '@/services/scanner/batchProcessingService';
-import RateLimitingService from '@/services/scanner/rateLimitingService';
-import ResultCacheService from '@/services/scanner/resultCacheService';
+import { AIOCRService } from '@/services/scanner';
+import { ImageProcessingService } from '@/services/scanner';
+import { DocumentStorageService } from '@/services/scanner';
+import { BatchProcessingService } from '@/services/scanner';
+import { RateLimitingService } from '@/services/scanner';
+import { ResultCacheService } from '@/services/scanner';
 import { OCRProvider, OCRResult, ProcessedDocument, DocumentStatus, AccessLevel } from '@/types/scanner';
 
 // Mock dependencies

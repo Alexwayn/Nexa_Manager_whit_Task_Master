@@ -39,6 +39,8 @@ export default defineConfig(({ mode }) => {
       alias: {
         '@': path.resolve(__dirname, './src'),
         '@components': path.resolve(__dirname, './src/components'),
+        '@shared': path.resolve(__dirname, './src/shared'),
+        '@features': path.resolve(__dirname, './src/features'),
         '@lib': path.resolve(__dirname, './src/lib'),
         '@utils': path.resolve(__dirname, './src/utils'),
         '@pages': path.resolve(__dirname, './src/pages'),
@@ -51,6 +53,16 @@ export default defineConfig(({ mode }) => {
         '@services': path.resolve(__dirname, './src/services'),
         '@router': path.resolve(__dirname, './src/router'),
         '@hoc': path.resolve(__dirname, './src/components/hoc'),
+        // Feature-specific aliases to match tsconfig.json
+        '@auth': path.resolve(__dirname, './src/features/auth'),
+        '@clients': path.resolve(__dirname, './src/features/clients'),
+        '@financial': path.resolve(__dirname, './src/features/financial'),
+        '@email': path.resolve(__dirname, './src/features/email'),
+        '@documents': path.resolve(__dirname, './src/features/documents'),
+        '@calendar': path.resolve(__dirname, './src/features/calendar'),
+        '@scanner': path.resolve(__dirname, './src/features/scanner'),
+        '@dashboard': path.resolve(__dirname, './src/features/dashboard'),
+        '@analytics': path.resolve(__dirname, './src/features/analytics'),
       },
     },
     esbuild: {

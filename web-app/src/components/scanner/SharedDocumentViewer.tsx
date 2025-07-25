@@ -8,7 +8,7 @@ import {
   ExclamationTriangleIcon,
   ShieldExclamationIcon
 } from '@heroicons/react/24/outline';
-import { documentSharingService } from '@/services/scanner';
+import { DocumentSharingService } from '@/services/scanner';
 import type { ProcessedDocument, AccessLevel } from '@/types/scanner';
 import { useTranslation } from '@/hooks/useTranslation';
 import DocumentPreview from './DocumentPreview';
@@ -16,6 +16,8 @@ import DocumentPreview from './DocumentPreview';
 interface SharedDocumentViewerProps {
   shareToken?: string; // Can be passed as prop or from URL params
 }
+
+const documentSharingService = new DocumentSharingService();
 
 const SharedDocumentViewer: React.FC<SharedDocumentViewerProps> = ({ shareToken: propShareToken }) => {
   const { t } = useTranslation();

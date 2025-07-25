@@ -1,6 +1,6 @@
 import React, { Suspense, lazy } from 'react';
-import LoadingSkeleton from '@components/common/LoadingSkeleton';
-import ErrorBoundary from '@components/common/ErrorBoundary';
+import LoadingSkeleton from '@shared/components/feedback/LoadingSkeleton';
+import ErrorBoundary from '@shared/components/feedback/ErrorBoundary';
 import { bundleAnalyzer } from '@utils/performance';
 
 // Lazy load the main Reports component

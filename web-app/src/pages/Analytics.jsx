@@ -7,8 +7,8 @@ import invoiceAnalyticsService from '@lib/invoiceAnalyticsService';
 import financialService from '@lib/financialService';
 import clientService from '@lib/clientService';
 import Logger from '@utils/Logger';
-import { getUserIdForUuidTables } from '@utils/userIdConverter';
-import ErrorBoundary from '@components/common/ErrorBoundary';
+import { getUserIdForUuidTables } from '@shared/utils/userIdConverter';
+import ErrorBoundary from '@shared/components/feedback/ErrorBoundary';
 import InteractiveAnalyticsCard from '../components/InteractiveAnalyticsCard';
 import {
   ChevronDownIcon,

@@ -214,7 +214,6 @@ const ScannerPage: React.FC<ScannerProps> = ({
                 <CameraCapture
                   onCapture={handleCameraCapture}
                   onError={handleError}
-                  isActive={activeTab === 'camera' && !isLoading}
                 />
               )}
               

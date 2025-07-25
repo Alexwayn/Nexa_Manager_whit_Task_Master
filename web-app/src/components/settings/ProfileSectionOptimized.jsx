@@ -2,9 +2,9 @@ import React, { memo, useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import SettingsFormSection from '@components/settings/SettingsFormSection';
 import FileUploadField from '@components/settings/FileUploadField';
-import ComponentErrorBoundary from '@components/common/ComponentErrorBoundary';
-import { useProfile } from '@hooks/useProfile';
-import { useFileUpload } from '@hooks/useFileUpload';
+import ComponentErrorBoundary from '@shared/components/feedback/ComponentErrorBoundary';
+import { useProfile } from '@shared/hooks/useProfile';
+import { useFileUpload } from '@shared/hooks/useFileUpload';
 
 const ProfileSectionOptimized = memo(({ setNotification }) => {
   const { t } = useTranslation('settings');

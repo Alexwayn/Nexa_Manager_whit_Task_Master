@@ -32,6 +32,18 @@ module.exports = {
     '^@assets/(.*)$': '<rootDir>/../../web-app/src/assets/$1',
     '^@tests/(.*)$': '<rootDir>/../../web-app/src/__tests__/$1',
     '^@lib/(.*)$': '<rootDir>/../../web-app/src/lib/$1',
+    '^@types/(.*)$': '<rootDir>/../../web-app/src/types/$1',
+    '^@features/(.*)$': '<rootDir>/../../web-app/src/features/$1',
+    '^@shared/(.*)$': '<rootDir>/../../web-app/src/shared/$1',
+    '^@auth/(.*)$': '<rootDir>/../../web-app/src/features/auth/$1',
+    '^@clients/(.*)$': '<rootDir>/../../web-app/src/features/clients/$1',
+    '^@financial/(.*)$': '<rootDir>/../../web-app/src/features/financial/$1',
+    '^@email/(.*)$': '<rootDir>/../../web-app/src/features/email/$1',
+    '^@documents/(.*)$': '<rootDir>/../../web-app/src/features/documents/$1',
+    '^@calendar/(.*)$': '<rootDir>/../../web-app/src/features/calendar/$1',
+    '^@scanner/(.*)$': '<rootDir>/../../web-app/src/features/scanner/$1',
+    '^@dashboard/(.*)$': '<rootDir>/../../web-app/src/features/dashboard/$1',
+    '^@analytics/(.*)$': '<rootDir>/../../web-app/src/features/analytics/$1',
   },
 
   // Test file patterns

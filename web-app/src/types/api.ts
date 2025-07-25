@@ -1,46 +1,7 @@
-// API Response Types for Supabase and External Services
+// API and Business Logic Types
 
 /**
- * Standard API response wrapper
- */
-export interface ApiResponse<T = any> {
-  data: T | null;
-  error: ApiError | null;
-  status: number;
-  message?: string;
-}
-
-/**
- * API Error structure
- */
-export interface ApiError {
-  code: string;
-  message: string;
-  details?: any;
-  hint?: string;
-}
-
-/**
- * Pagination metadata
- */
-export interface PaginationMeta {
-  page: number;
-  limit: number;
-  total: number;
-  totalPages: number;
-  hasNext: boolean;
-  hasPrev: boolean;
-}
-
-/**
- * Paginated response
- */
-export interface PaginatedResponse<T> extends ApiResponse<T[]> {
-  meta: PaginationMeta;
-}
-
-/**
- * Database row base interface
+ * Base entity interface for all database entities
  */
 export interface BaseEntity {
   id: string;
@@ -49,14 +10,53 @@ export interface BaseEntity {
 }
 
 /**
- * User profile from Supabase Auth
+ * API Response wrapper
+ */
+export interface ApiResponse<T = any> {
+  data: T;
+  success: boolean;
+  message?: string;
+  meta?: {
+    total?: number;
+    page?: number;
+    limit?: number;
+    hasMore?: boolean;
+  };
+}
+
+/**
+ * API Error response
+ */
+export interface ApiError {
+  error: string;
+  message: string;
+  statusCode: number;
+  details?: any;
+}
+
+/**
+ * Paginated response
+ */
+export interface PaginatedResponse<T> {
+  data: T[];
+  pagination: {
+    page: number;
+    limit: number;
+    total: number;
+    totalPages: number;
+    hasNext: boolean;
+    hasPrev: boolean;
+  };
+}
+
+/**
+ * User Profile
  */
 export interface UserProfile extends BaseEntity {
   email: string;
   first_name: string;
   last_name: string;
-  company_name?: string;
-  phone?: string;
+  avatar_url?: string;
   role: 'admin' | 'user' | 'viewer';
   is_active: boolean;
   last_login?: string;
@@ -64,110 +64,65 @@ export interface UserProfile extends BaseEntity {
 }
 
 /**
- * User preferences
+ * User Preferences
  */
 export interface UserPreferences {
   theme: 'light' | 'dark' | 'system';
-  language: 'en' | 'it';
+  language: string;
   timezone: string;
-  notifications: NotificationSettings;
-  dashboard_layout?: DashboardLayout;
+  notifications: {
+    email: boolean;
+    push: boolean;
+    desktop: boolean;
+  };
+  dashboard: {
+    layout: string;
+    widgets: string[];
+  };
 }
 
 /**
- * Notification settings
- */
-export interface NotificationSettings {
-  email_enabled: boolean;
-  push_enabled: boolean;
-  invoice_reminders: boolean;
-  payment_confirmations: boolean;
-  system_updates: boolean;
-}
-
-/**
- * Dashboard layout configuration
- */
-export interface DashboardLayout {
-  widgets: WidgetConfiguration[];
-  layout: 'grid' | 'list' | 'custom';
-}
-
-export interface WidgetConfiguration {
-  id: string;
-  type: 'kpi' | 'chart' | 'table' | 'calendar';
-  position: { x: number; y: number; w: number; h: number };
-  settings: Record<string, any>;
-  visible: boolean;
-}
-
-/**
- * Client/Customer entity
+ * Client entity
  */
 export interface Client extends BaseEntity {
   name: string;
   email: string;
   phone?: string;
+  address?: string;
   company?: string;
-  address?: Address;
-  tax_code?: string;
-  vat_number?: string;
-  payment_terms: number; // days
-  is_active: boolean;
+  tax_id?: string;
+  status: 'active' | 'inactive' | 'suspended';
   notes?: string;
   tags: string[];
-  total_revenue: number;
-  total_invoices: number;
-  last_transaction?: string;
-}
-
-/**
- * Address structure
- */
-export interface Address {
-  street: string;
-  city: string;
-  state?: string;
-  postal_code: string;
-  country: string;
 }
 
 /**
  * Invoice entity
  */
 export interface Invoice extends BaseEntity {
+  invoice_number: string;
   client_id: string;
   client?: Client;
-  invoice_number: string;
-  status: InvoiceStatus;
-  issue_date: string;
-  due_date: string;
-  payment_date?: string;
-  subtotal: number;
+  amount: number;
   tax_amount: number;
-  discount_amount: number;
   total_amount: number;
   currency: string;
-  notes?: string;
-  terms?: string;
+  status: InvoiceStatus;
+  due_date: string;
+  issued_date: string;
+  paid_date?: string;
   items: InvoiceItem[];
-  payments: Payment[];
+  notes?: string;
 }
 
-export type InvoiceStatus = 'draft' | 'sent' | 'viewed' | 'paid' | 'overdue' | 'cancelled';
+export type InvoiceStatus = 'draft' | 'sent' | 'paid' | 'overdue' | 'cancelled';
 
-/**
- * Invoice item
- */
 export interface InvoiceItem {
   id: string;
   description: string;
   quantity: number;
   unit_price: number;
-  tax_rate: number;
-  discount_rate: number;
   total: number;
-  product_id?: string;
 }
 
 /**
@@ -177,37 +132,28 @@ export interface Payment extends BaseEntity {
   invoice_id: string;
   amount: number;
   currency: string;
-  payment_date: string;
-  payment_method: PaymentMethod;
-  reference?: string;
-  notes?: string;
+  method: PaymentMethod;
   status: PaymentStatus;
+  transaction_id?: string;
+  processed_at?: string;
+  notes?: string;
 }
 
-export type PaymentMethod =
-  | 'cash'
-  | 'bank_transfer'
-  | 'credit_card'
-  | 'paypal'
-  | 'stripe'
-  | 'other';
+export type PaymentMethod = 'cash' | 'check' | 'bank_transfer' | 'credit_card' | 'paypal' | 'other';
 export type PaymentStatus = 'pending' | 'completed' | 'failed' | 'refunded';
 
 /**
- * Product/Service entity
+ * Product entity
  */
 export interface Product extends BaseEntity {
   name: string;
   description?: string;
   price: number;
   currency: string;
-  tax_rate: number;
-  category_id?: string;
+  category?: string;
   sku?: string;
   is_active: boolean;
-  inventory_tracked: boolean;
-  stock_quantity?: number;
-  unit: string;
+  tax_rate?: number;
 }
 
 /**
@@ -215,159 +161,84 @@ export interface Product extends BaseEntity {
  */
 export interface Document extends BaseEntity {
   name: string;
-  type: DocumentType;
   file_path: string;
   file_size: number;
   mime_type: string;
   client_id?: string;
   invoice_id?: string;
-  is_public: boolean;
-  expires_at?: string;
+  category: string;
   tags: string[];
+  is_public: boolean;
 }
-
-export type DocumentType = 'invoice' | 'receipt' | 'contract' | 'estimate' | 'other';
 
 /**
- * Analytics data structures
+ * Calendar Event entity
+ */
+export interface CalendarEvent extends BaseEntity {
+  title: string;
+  description?: string;
+  start_time: string;
+  end_time: string;
+  all_day: boolean;
+  location?: string;
+  client_id?: string;
+  attendees: string[];
+  status: 'scheduled' | 'completed' | 'cancelled';
+  reminder_minutes?: number;
+}
+
+/**
+ * Analytics Metrics
  */
 export interface AnalyticsMetrics {
-  revenue: RevenueMetrics;
-  clients: ClientMetrics;
-  invoices: InvoiceMetrics;
-  payments: PaymentMetrics;
+  revenue: {
+    total: number;
+    monthly: number;
+    growth: number;
+  };
+  clients: {
+    total: number;
+    active: number;
+    new: number;
+  };
+  invoices: {
+    total: number;
+    paid: number;
+    pending: number;
+    overdue: number;
+  };
+  payments: {
+    total: number;
+    thisMonth: number;
+    avgProcessingTime: number;
+  };
 }
 
-export interface RevenueMetrics {
-  total: number;
-  period_change: number;
-  monthly_trend: TrendDataPoint[];
-  by_client: ClientRevenue[];
-}
-
-export interface ClientMetrics {
-  total_active: number;
-  new_this_period: number;
-  churn_rate: number;
-  top_clients: Client[];
-}
-
-export interface InvoiceMetrics {
-  total_sent: number;
-  total_paid: number;
-  overdue_count: number;
-  average_payment_time: number;
-  status_distribution: StatusDistribution[];
-}
-
-export interface PaymentMetrics {
-  total_collected: number;
-  pending_amount: number;
-  payment_methods: PaymentMethodStats[];
-}
-
+/**
+ * Trend Data Point
+ */
 export interface TrendDataPoint {
   date: string;
   value: number;
   label?: string;
 }
 
-export interface ClientRevenue {
-  client: Client;
-  revenue: number;
-  invoice_count: number;
-}
-
-export interface StatusDistribution {
-  status: InvoiceStatus;
-  count: number;
-  percentage: number;
-}
-
-export interface PaymentMethodStats {
-  method: PaymentMethod;
-  count: number;
-  total_amount: number;
-}
-
 /**
- * Calendar/Event types
+ * Form State
  */
-export interface CalendarEvent extends BaseEntity {
-  title: string;
-  description?: string;
-  start_date: string;
-  end_date: string;
-  all_day: boolean;
-  client_id?: string;
-  invoice_id?: string;
-  type: EventType;
-  status: EventStatus;
-  location?: string;
-  attendees: EventAttendee[];
-  reminders: EventReminder[];
-}
-
-export type EventType = 'meeting' | 'deadline' | 'follow_up' | 'payment_due' | 'other';
-export type EventStatus = 'scheduled' | 'confirmed' | 'cancelled' | 'completed';
-
-export interface EventAttendee {
-  email: string;
-  name?: string;
-  status: 'pending' | 'accepted' | 'declined';
-  is_organizer: boolean;
-}
-
-export interface EventReminder {
-  type: 'email' | 'popup';
-  minutes_before: number;
+export interface FormState<T = any> {
+  data: T;
+  errors: Record<string, string>;
+  isSubmitting: boolean;
+  isValid: boolean;
+  isDirty: boolean;
 }
 
 /**
- * Form validation types
+ * Validation Error
  */
 export interface ValidationError {
   field: string;
   message: string;
-  code: string;
-}
-
-export interface FormState<T = any> {
-  data: T;
-  errors: ValidationError[];
-  isSubmitting: boolean;
-  isDirty: boolean;
-  isValid: boolean;
-}
-
-/**
- * Chart data types
- */
-export interface ChartDataPoint {
-  label: string;
-  value: number;
-  color?: string;
-  metadata?: Record<string, any>;
-}
-
-export interface ChartConfiguration {
-  type: 'line' | 'bar' | 'pie' | 'doughnut' | 'area';
-  data: ChartDataPoint[];
-  options: ChartOptions;
-}
-
-export interface ChartOptions {
-  responsive: boolean;
-  maintainAspectRatio: boolean;
-  plugins: {
-    legend: {
-      display: boolean;
-      position: 'top' | 'bottom' | 'left' | 'right';
-    };
-    title: {
-      display: boolean;
-      text: string;
-    };
-  };
-  scales?: Record<string, any>;
+  code?: string;
 }

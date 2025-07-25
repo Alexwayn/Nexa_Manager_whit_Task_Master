@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import SettingsFormSection from '@components/settings/SettingsFormSection';
 import SettingsTable from '@components/settings/SettingsTable';
-import { useUserSessions } from '@hooks/useUserSessions';
+import { useUserSessions } from '@shared/hooks/useUserSessions';
 
 const SecuritySection = ({ setNotification }) => {
   const { t } = useTranslation('settings');

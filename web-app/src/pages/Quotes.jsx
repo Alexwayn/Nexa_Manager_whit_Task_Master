@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Footer from '@components/shared/Footer';
-import ErrorBoundary from '@components/common/ErrorBoundary';
+import ErrorBoundary from '@shared/components/feedback/ErrorBoundary';
 import QuoteModal from '@components/financial/QuoteModal';
 import QuoteDetailModal from '@components/financial/QuoteDetailModal';
 import QuoteStatusBadge from '@components/financial/QuoteStatusBadge';

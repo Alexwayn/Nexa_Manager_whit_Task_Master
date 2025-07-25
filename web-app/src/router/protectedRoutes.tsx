@@ -1,7 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
-import ProtectedRoute from '@components/auth/ProtectedRoute';
-import OrganizationProtectedRoute from '@components/auth/OrganizationProtectedRoute';
-import { AdminRequired } from '@components/auth/UnauthorizedAccess';
+import ProtectedRoute from '@features/auth/components/ProtectedRoute';
+import OrganizationProtectedRoute from '@features/auth/components/OrganizationProtectedRoute';
+import { AdminRequired } from '@features/auth/components/UnauthorizedAccess';
 
 // Import lazy-loaded components
 import { lazy } from 'react';
@@ -193,7 +193,7 @@ export const MixedRoutes = () => (
  */
 
 // Using withAuth HOC
-import { withAuth, withAdminAuth, withOrgAuth } from '@components/auth/withAuth';
+import { withAuth, withAdminAuth, withOrgAuth } from '@/features/auth/components/withAuth';
 
 // Basic component with auth
 const MyComponent = ({ user, isAuthenticated }: any) => (
@@ -213,7 +213,7 @@ export const OrgComponent = withOrgAuth(MyComponent);
  */
 
 // Using auth hooks
-import { useAuthGuard, useAdminGuard, useOrgGuard } from '@hooks/useAuthGuard';
+import { useAuthGuard, useAdminGuard, useOrgGuard } from '@/features/auth/hooks/useAuthGuard';
 
 export const HookBasedComponent = () => {
   const { isAuthenticated, user, redirect } = useAuthGuard();

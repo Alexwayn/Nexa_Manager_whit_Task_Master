@@ -7,7 +7,7 @@ import {
   ExclamationTriangleIcon
 } from '@heroicons/react/24/outline';
 import { documentAccessTrackingService } from '@/services/scanner';
-import type { NotificationPreferences } from '@/services/scanner/documentAccessTrackingService';
+import type { NotificationPreferences } from '@/services/scanner/types';
 import { useTranslation } from '@/hooks/useTranslation';
 
 interface DocumentNotificationSettingsProps {

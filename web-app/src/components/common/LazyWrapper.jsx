@@ -1,6 +1,6 @@
 import React, { Suspense } from 'react';
 import { useTranslation } from 'react-i18next';
-import ErrorBoundary from '@components/common/ErrorBoundary';
+import ErrorBoundary from '@shared/components/feedback/ErrorBoundary';
 
 const LoadingFallback = ({ message, size = 'medium' }) => {
   const { t } = useTranslation('common');

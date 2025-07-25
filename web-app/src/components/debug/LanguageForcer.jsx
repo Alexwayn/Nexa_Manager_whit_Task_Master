@@ -4,7 +4,7 @@ import {
   forceItalianLanguage,
   debugLanguageSettings,
   resetLanguageSettings,
-} from '@utils/languageUtils';
+} from '@shared/utils/languageUtils';
 
 const LanguageForcer = () => {
   const { i18n, t } = useTranslation('inventory');

@@ -1,6 +1,6 @@
 // Document search component with advanced search capabilities
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import { useDebounce } from '@/hooks/useDebounce';
+import { useDebounce } from '../../hooks/useDebounce';
 import { 
   MagnifyingGlassIcon, 
   FunnelIcon, 
@@ -11,9 +11,10 @@ import {
   DocumentTextIcon,
   AdjustmentsHorizontalIcon
 } from '@heroicons/react/24/outline';
-import { documentSearchService, type SearchResult, type SearchOptions, type SearchField } from '@/services/scanner/documentSearchService';
-import { documentTaggingService } from '@/services/scanner/documentTaggingService';
-import clientService from '@/lib/clientService';
+import { documentSearchService, type SearchResult, type SearchOptions, type SearchField } from '@/features/scanner/services';
+import { documentTaggingService } from '@/features/scanner/services';
+import clientService from '../../features/clients/services/clientService';
+import type { Client } from '../../features/clients/services/clientService';
 import type { ProcessedDocument } from '@/types/scanner';
 
 interface DocumentSearchProps {
@@ -91,13 +92,13 @@ const DocumentSearch: React.FC<DocumentSearchProps> = ({
     try {
       // Load categories
       const categoriesData = await documentTaggingService.getDocumentCategories();
-      setCategories(categoriesData.map(cat => ({ id: cat.id, name: cat.name })));
+      setCategories(categoriesData.map((cat: any) => ({ id: cat.id, name: cat.name })));
 
       // Load clients
       const clientsResult = await clientService.getClients({ userId, limit: 100 });
       if (clientsResult.data) {
         const clientsArray = Array.isArray(clientsResult.data) ? clientsResult.data : [clientsResult.data];
-        setClients(clientsArray.map(client => ({ 
+        setClients(clientsArray.map((client: Client) => ({ 
           id: client.id, 
           name: client.displayName || client.full_name 
         })));
@@ -105,7 +106,7 @@ const DocumentSearch: React.FC<DocumentSearchProps> = ({
 
       // Load user tags
       const userTags = await documentTaggingService.getUserTags(userId);
-      setAvailableTags(userTags.map(tag => tag.name));
+      setAvailableTags(userTags.map((tag: any) => tag.name));
     } catch (error) {
       console.error('Failed to load filter options:', error);
     }
@@ -115,7 +116,7 @@ const DocumentSearch: React.FC<DocumentSearchProps> = ({
   const loadRecentSearches = async () => {
     try {
       const analytics = await documentSearchService.getSearchAnalytics(userId, 7);
-      setRecentSearches(analytics.topQueries.slice(0, 5).map(q => q.query));
+      setRecentSearches(analytics.topQueries.slice(0, 5).map((q: any) => q.query));
     } catch (error) {
       console.error('Failed to load recent searches:', error);
     }
@@ -151,7 +152,7 @@ const DocumentSearch: React.FC<DocumentSearchProps> = ({
 
       setResults(searchResult.results);
       setShowResults(true);
-      setSuggestions(searchResult.suggestions.map(s => s.query));
+      setSuggestions(searchResult.suggestions.map((s: any) => s.query));
       
       if (onSearchResults) {
         onSearchResults(searchResult.results);
@@ -460,7 +461,7 @@ const DocumentSearch: React.FC<DocumentSearchProps> = ({
                           <FolderIcon className="h-3 w-3 mr-1" />
                           {result.document.category}
                         </span>
-                        {result.document.tags.slice(0, 2).map(tag => (
+                        {result.document.tags.slice(0, 2).map((tag: string) => (
                           <span key={tag} className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800">
                             <TagIcon className="h-3 w-3 mr-1" />
                             {tag}

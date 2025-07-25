@@ -1,4 +1,4 @@
-import { ImageProcessingService } from '@/services/scanner/imageProcessingService';
+import { ImageProcessingService } from '@/services/scanner';
 import { 
   EnhancedImage, 
   DocumentBounds, 

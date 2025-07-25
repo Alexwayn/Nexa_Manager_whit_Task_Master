@@ -3,10 +3,10 @@ import { render, screen, act } from '@testing-library/react';
 import { EmailProvider, useEmailContext } from '../EmailContext';
 import { AuthProvider } from '../AuthContext';
 import { WebSocketProvider } from '@providers/WebSocketProvider';
-import emailManagementService from '@lib/emailManagementService';
+import emailManagementService from '@features/email/services/emailManagementService';
 
 // Mock dependencies
-jest.mock('@lib/emailManagementService');
+jest.mock('@features/email/services/emailManagementService');
 jest.mock('@utils/Logger');
 jest.mock('@providers/WebSocketProvider', () => ({
   WebSocketProvider: ({ children }) => <div data-testid="websocket-provider">{children}</div>,

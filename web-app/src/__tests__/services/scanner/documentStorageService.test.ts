@@ -1,4 +1,4 @@
-import { DocumentStorageService } from '@/services/scanner/documentStorageService';
+import { DocumentStorageService } from '@/services/scanner';
 import { 
   ProcessedDocument, 
   DocumentFilters, 

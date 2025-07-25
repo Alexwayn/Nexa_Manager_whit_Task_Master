@@ -12,7 +12,7 @@ import {
   Mail,
   Phone,
 } from 'lucide-react';
-import ErrorBoundary from '../components/common/ErrorBoundary';
+import ErrorBoundary from '@shared/components/feedback/ErrorBoundary';
 
 const Security = () => {
   const { t } = useTranslation('security');

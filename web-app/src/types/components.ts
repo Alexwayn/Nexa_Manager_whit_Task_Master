@@ -1,81 +1,74 @@
-// Component Props and UI-specific Types
+// Component and UI Types
 
-import { ReactNode, ComponentPropsWithoutRef, ElementType } from 'react';
-import { Client, Invoice, Payment, CalendarEvent, ChartConfiguration } from './api';
+import { ReactNode, ComponentProps, HTMLAttributes } from 'react';
 
 /**
- * Common props for all components
+ * Base component props
  */
 export interface BaseComponentProps {
   className?: string;
   children?: ReactNode;
+  id?: string;
   'data-testid'?: string;
 }
 
 /**
  * Polymorphic component props
  */
-export type PolymorphicProps<T extends ElementType> = {
+export type PolymorphicProps<T extends React.ElementType> = {
   as?: T;
-} & ComponentPropsWithoutRef<T>;
+} & ComponentProps<T>;
 
 /**
- * Button component variants and sizes
+ * Button component props
  */
 export interface ButtonProps extends BaseComponentProps {
-  variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger';
+  variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'destructive';
   size?: 'sm' | 'md' | 'lg';
   disabled?: boolean;
   loading?: boolean;
-  fullWidth?: boolean;
-  icon?: ReactNode;
-  iconPosition?: 'left' | 'right';
   onClick?: () => void;
   type?: 'button' | 'submit' | 'reset';
 }
 
 /**
- * Input field props
+ * Input component props
  */
 export interface InputProps extends BaseComponentProps {
-  type?: 'text' | 'email' | 'password' | 'number' | 'tel' | 'url' | 'search';
+  type?: 'text' | 'email' | 'password' | 'number' | 'tel' | 'url';
   placeholder?: string;
-  value?: string | number;
-  defaultValue?: string | number;
+  value?: string;
+  defaultValue?: string;
   disabled?: boolean;
-  readOnly?: boolean;
   required?: boolean;
   error?: string;
-  hint?: string;
   label?: string;
-  prefix?: ReactNode;
-  suffix?: ReactNode;
   onChange?: (value: string) => void;
-  onBlur?: () => void;
-  onFocus?: () => void;
 }
 
 /**
- * Select/Dropdown props
+ * Select option
  */
 export interface SelectOption {
   value: string | number;
   label: string;
   disabled?: boolean;
-  icon?: ReactNode;
 }
 
+/**
+ * Select component props
+ */
 export interface SelectProps extends BaseComponentProps {
   options: SelectOption[];
   value?: string | number;
   defaultValue?: string | number;
   placeholder?: string;
   disabled?: boolean;
-  searchable?: boolean;
-  multiple?: boolean;
-  clearable?: boolean;
+  required?: boolean;
   error?: string;
   label?: string;
+  multiple?: boolean;
+  searchable?: boolean;
   onChange?: (value: string | number | (string | number)[]) => void;
 }
 
@@ -87,96 +80,93 @@ export interface ModalProps extends BaseComponentProps {
   onClose: () => void;
   title?: string;
   size?: 'sm' | 'md' | 'lg' | 'xl' | 'full';
-  closable?: boolean;
-  hideCloseButton?: boolean;
-  footer?: ReactNode;
-  centered?: boolean;
+  closeOnOverlayClick?: boolean;
+  closeOnEscape?: boolean;
 }
 
 /**
- * Table component types
+ * Table column definition
  */
 export interface TableColumn<T = any> {
   key: string;
   title: string;
   dataIndex?: keyof T;
-  width?: number | string;
-  fixed?: 'left' | 'right';
-  sortable?: boolean;
-  filterable?: boolean;
   render?: (value: any, record: T, index: number) => ReactNode;
+  sortable?: boolean;
+  width?: string | number;
   align?: 'left' | 'center' | 'right';
 }
 
+/**
+ * Table component props
+ */
 export interface TableProps<T = any> extends BaseComponentProps {
   columns: TableColumn<T>[];
   data: T[];
   loading?: boolean;
-  pagination?: PaginationProps;
+  pagination?: {
+    current: number;
+    pageSize: number;
+    total: number;
+    onChange: (page: number, pageSize: number) => void;
+  };
   rowKey?: keyof T | ((record: T) => string);
   onRowClick?: (record: T, index: number) => void;
-  selectedRows?: string[];
-  onSelectionChange?: (selectedKeys: string[]) => void;
-  emptyText?: string;
-  size?: 'sm' | 'md' | 'lg';
 }
 
-export interface PaginationProps {
+/**
+ * Pagination component props
+ */
+export interface PaginationProps extends BaseComponentProps {
   current: number;
   total: number;
   pageSize: number;
   showSizeChanger?: boolean;
   showQuickJumper?: boolean;
   showTotal?: boolean;
-  onChange?: (page: number, pageSize: number) => void;
+  onChange: (page: number, pageSize: number) => void;
 }
 
 /**
  * Chart component props
  */
 export interface ChartProps extends BaseComponentProps {
-  config: ChartConfiguration;
+  type: 'line' | 'bar' | 'pie' | 'doughnut' | 'area';
+  data: any;
+  options?: any;
   height?: number;
   width?: number;
-  loading?: boolean;
-  error?: string;
-  onDataPointClick?: (dataPoint: any, index: number) => void;
 }
 
 /**
- * Date picker props
+ * Date picker component props
  */
 export interface DatePickerProps extends BaseComponentProps {
-  value?: Date | string;
-  defaultValue?: Date | string;
-  format?: string;
-  disabled?: boolean;
+  value?: string | Date;
+  defaultValue?: string | Date;
   placeholder?: string;
+  disabled?: boolean;
+  required?: boolean;
   error?: string;
   label?: string;
-  minDate?: Date;
-  maxDate?: Date;
+  format?: string;
   showTime?: boolean;
   range?: boolean;
-  onChange?: (date: Date | Date[] | null) => void;
+  onChange?: (date: string | Date | [string | Date, string | Date]) => void;
 }
 
 /**
- * File upload props
+ * File upload component props
  */
 export interface FileUploadProps extends BaseComponentProps {
   accept?: string;
   multiple?: boolean;
-  maxSize?: number; // in bytes
+  maxSize?: number;
   maxFiles?: number;
   disabled?: boolean;
   error?: string;
   label?: string;
-  hint?: string;
-  onUpload?: (files: File[]) => void;
-  onError?: (error: string) => void;
-  progress?: number;
-  uploading?: boolean;
+  onChange?: (files: File[]) => void;
 }
 
 /**
@@ -185,175 +175,197 @@ export interface FileUploadProps extends BaseComponentProps {
 export interface CardProps extends BaseComponentProps {
   title?: string;
   subtitle?: string;
-  extra?: ReactNode;
-  footer?: ReactNode;
-  bordered?: boolean;
+  actions?: ReactNode;
   hoverable?: boolean;
-  loading?: boolean;
-  actions?: ReactNode[];
+  bordered?: boolean;
 }
 
 /**
- * Badge/Tag props
+ * Badge component props
  */
 export interface BadgeProps extends BaseComponentProps {
-  count?: number;
-  color?: 'primary' | 'secondary' | 'success' | 'warning' | 'danger' | 'info';
-  dot?: boolean;
-  showZero?: boolean;
+  variant?: 'default' | 'success' | 'warning' | 'error' | 'info';
   size?: 'sm' | 'md' | 'lg';
+  dot?: boolean;
 }
 
+/**
+ * Tag component props
+ */
 export interface TagProps extends BaseComponentProps {
-  color?: 'primary' | 'secondary' | 'success' | 'warning' | 'danger' | 'info';
-  variant?: 'filled' | 'outline' | 'soft';
-  size?: 'sm' | 'md' | 'lg';
+  color?: string;
   closable?: boolean;
   onClose?: () => void;
 }
 
 /**
- * Alert/Notification props
+ * Alert component props
  */
 export interface AlertProps extends BaseComponentProps {
-  type?: 'success' | 'warning' | 'error' | 'info';
+  type: 'success' | 'info' | 'warning' | 'error';
   title?: string;
-  description?: string;
+  message: string;
   closable?: boolean;
   onClose?: () => void;
-  action?: ReactNode;
-  icon?: ReactNode;
 }
 
 /**
- * Client-specific component props
+ * Client card component props
  */
 export interface ClientCardProps extends BaseComponentProps {
-  client: Client;
-  onEdit?: (client: Client) => void;
-  onDelete?: (client: Client) => void;
-  onView?: (client: Client) => void;
-  compact?: boolean;
-  showActions?: boolean;
-}
-
-export interface ClientFormProps extends BaseComponentProps {
-  initialData?: Partial<Client>;
-  onSubmit?: (data: Client) => void;
-  onCancel?: () => void;
-  loading?: boolean;
-  mode?: 'create' | 'edit' | 'view';
+  client: {
+    id: string;
+    name: string;
+    email: string;
+    company?: string;
+    status: string;
+  };
+  onEdit?: (id: string) => void;
+  onDelete?: (id: string) => void;
+  onView?: (id: string) => void;
 }
 
 /**
- * Invoice-specific component props
+ * Client form component props
+ */
+export interface ClientFormProps extends BaseComponentProps {
+  initialData?: any;
+  onSubmit: (data: any) => void;
+  onCancel?: () => void;
+  loading?: boolean;
+}
+
+/**
+ * Invoice card component props
  */
 export interface InvoiceCardProps extends BaseComponentProps {
-  invoice: Invoice;
-  onEdit?: (invoice: Invoice) => void;
-  onDelete?: (invoice: Invoice) => void;
-  onView?: (invoice: Invoice) => void;
-  onMarkPaid?: (invoice: Invoice) => void;
-  onSend?: (invoice: Invoice) => void;
-  compact?: boolean;
-  showActions?: boolean;
+  invoice: {
+    id: string;
+    invoice_number: string;
+    client_name: string;
+    amount: number;
+    status: string;
+    due_date: string;
+  };
+  onEdit?: (id: string) => void;
+  onDelete?: (id: string) => void;
+  onView?: (id: string) => void;
+  onPay?: (id: string) => void;
 }
 
+/**
+ * Invoice form component props
+ */
 export interface InvoiceFormProps extends BaseComponentProps {
-  initialData?: Partial<Invoice>;
-  clients?: Client[];
-  onSubmit?: (data: Invoice) => void;
+  initialData?: any;
+  onSubmit: (data: any) => void;
   onCancel?: () => void;
   loading?: boolean;
-  mode?: 'create' | 'edit' | 'view';
 }
 
 /**
- * Payment-specific component props
+ * Payment modal component props
  */
 export interface PaymentModalProps extends ModalProps {
-  invoice?: Invoice;
-  payment?: Payment;
-  onSubmit?: (data: Payment) => void;
-  loading?: boolean;
+  invoice: {
+    id: string;
+    invoice_number: string;
+    amount: number;
+    client_name: string;
+  };
+  onPayment: (data: any) => void;
 }
 
 /**
- * Calendar-specific component props
+ * Calendar component props
  */
 export interface CalendarProps extends BaseComponentProps {
-  events: CalendarEvent[];
+  events: Array<{
+    id: string;
+    title: string;
+    start: string;
+    end: string;
+    color?: string;
+  }>;
   view?: 'month' | 'week' | 'day';
-  date?: Date;
-  onDateChange?: (date: Date) => void;
-  onViewChange?: (view: 'month' | 'week' | 'day') => void;
-  onEventClick?: (event: CalendarEvent) => void;
-  onEventCreate?: (event: Partial<CalendarEvent>) => void;
-  editable?: boolean;
-}
-
-export interface EventModalProps extends ModalProps {
-  event?: CalendarEvent;
-  clients?: Client[];
-  onSubmit?: (data: CalendarEvent) => void;
-  loading?: boolean;
-  mode?: 'create' | 'edit' | 'view';
+  onEventClick?: (event: any) => void;
+  onDateClick?: (date: string) => void;
+  onEventDrop?: (event: any, newDate: string) => void;
 }
 
 /**
- * Dashboard-specific component props
+ * Event modal component props
+ */
+export interface EventModalProps extends ModalProps {
+  event?: any;
+  onSave: (data: any) => void;
+  onDelete?: (id: string) => void;
+}
+
+/**
+ * KPI card component props
  */
 export interface KPICardProps extends BaseComponentProps {
   title: string;
   value: string | number;
-  unit?: string;
   change?: number;
-  changeType?: 'increase' | 'decrease' | 'neutral';
+  changeType?: 'increase' | 'decrease';
   icon?: ReactNode;
-  loading?: boolean;
-  trend?: TrendData[];
-  color?: 'primary' | 'secondary' | 'success' | 'warning' | 'danger' | 'info';
-}
-
-export interface TrendData {
-  label: string;
-  value: number;
+  color?: string;
 }
 
 /**
- * Layout component props
+ * Trend data
  */
-export interface SidebarProps extends BaseComponentProps {
-  collapsed?: boolean;
-  onToggle?: () => void;
-  items: SidebarItem[];
-  activeItem?: string;
-  onItemClick?: (item: SidebarItem) => void;
+export interface TrendData {
+  labels: string[];
+  datasets: Array<{
+    label: string;
+    data: number[];
+    color?: string;
+  }>;
 }
 
+/**
+ * Sidebar component props
+ */
+export interface SidebarProps extends BaseComponentProps {
+  items: SidebarItem[];
+  collapsed?: boolean;
+  onToggle?: () => void;
+}
+
+/**
+ * Sidebar item
+ */
 export interface SidebarItem {
-  key: string;
+  id: string;
   label: string;
   icon?: ReactNode;
   path?: string;
   children?: SidebarItem[];
-  badge?: number;
-  disabled?: boolean;
+  badge?: string | number;
+  active?: boolean;
 }
 
+/**
+ * Navbar component props
+ */
 export interface NavbarProps extends BaseComponentProps {
   title?: string;
   user?: {
     name: string;
-    email: string;
     avatar?: string;
+    email: string;
   };
-  onLogout?: () => void;
-  onProfileClick?: () => void;
   notifications?: NotificationItem[];
+  onUserMenuClick?: () => void;
   onNotificationClick?: (notification: NotificationItem) => void;
 }
 
+/**
+ * Notification item
+ */
 export interface NotificationItem {
   id: string;
   title: string;
@@ -368,26 +380,7 @@ export interface NotificationItem {
 }
 
 /**
- * Form-specific component props
- */
-export interface FormFieldProps extends BaseComponentProps {
-  name: string;
-  label?: string;
-  required?: boolean;
-  error?: string;
-  hint?: string;
-  touched?: boolean;
-}
-
-export interface FormSectionProps extends BaseComponentProps {
-  title?: string;
-  description?: string;
-  collapsible?: boolean;
-  defaultExpanded?: boolean;
-}
-
-/**
- * Loading and Error states
+ * Loading component props
  */
 export interface LoadingProps extends BaseComponentProps {
   size?: 'sm' | 'md' | 'lg';
@@ -395,8 +388,11 @@ export interface LoadingProps extends BaseComponentProps {
   overlay?: boolean;
 }
 
+/**
+ * Empty state component props
+ */
 export interface EmptyStateProps extends BaseComponentProps {
-  title?: string;
+  title: string;
   description?: string;
   icon?: ReactNode;
   action?: {
@@ -405,13 +401,16 @@ export interface EmptyStateProps extends BaseComponentProps {
   };
 }
 
+/**
+ * Error boundary component props
+ */
 export interface ErrorBoundaryProps extends BaseComponentProps {
   fallback?: ReactNode;
   onError?: (error: Error, errorInfo: any) => void;
 }
 
 /**
- * Theme and styling
+ * Theme configuration
  */
 export interface ThemeConfig {
   colors: {
@@ -419,31 +418,36 @@ export interface ThemeConfig {
     secondary: string;
     success: string;
     warning: string;
-    danger: string;
+    error: string;
     info: string;
-    light: string;
-    dark: string;
+    background: string;
+    surface: string;
+    text: string;
   };
-  spacing: Record<string, string>;
-  typography: {
-    fontFamily: string;
-    fontSize: Record<string, string>;
-    fontWeight: Record<string, number>;
+  fonts: {
+    primary: string;
+    secondary: string;
   };
-  borderRadius: Record<string, string>;
-  shadows: Record<string, string>;
+  spacing: {
+    xs: string;
+    sm: string;
+    md: string;
+    lg: string;
+    xl: string;
+  };
+  borderRadius: {
+    sm: string;
+    md: string;
+    lg: string;
+  };
 }
 
 /**
- * Responsive breakpoints
+ * Breakpoint
  */
-export type Breakpoint = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
+export type Breakpoint = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 
-export interface ResponsiveValue<T> {
-  xs?: T;
-  sm?: T;
-  md?: T;
-  lg?: T;
-  xl?: T;
-  '2xl'?: T;
-}
+/**
+ * Responsive value
+ */
+export type ResponsiveValue<T> = T | Partial<Record<Breakpoint, T>>;

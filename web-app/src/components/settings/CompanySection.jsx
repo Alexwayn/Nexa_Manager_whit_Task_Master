@@ -3,8 +3,8 @@ import { useTranslation } from 'react-i18next';
 import { supabase } from '@lib/supabaseClient';
 import SettingsFormSection from '@components/settings/SettingsFormSection';
 import FileUploadField from '@components/settings/FileUploadField';
-import { useProfile } from '@hooks/useProfile';
-import { useFileUpload } from '@hooks/useFileUpload';
+import { useProfile } from '@shared/hooks/useProfile';
+import { useFileUpload } from '@shared/hooks/useFileUpload';
 
 const CompanySection = ({ user, company, onCompanyUpdate, onImageUpload }) => {
   const { t } = useTranslation('settings');

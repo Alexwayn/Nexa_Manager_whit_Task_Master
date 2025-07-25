@@ -4,7 +4,7 @@
  */
 
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { useIntersectionObserver } from '@hooks/useIntersectionObserver';
+import { useIntersectionObserver } from '@shared/hooks/useIntersectionObserver';
 import { useMemoryTracker } from '@utils/memoryOptimization';
 import LoadingSkeleton from './LoadingSkeleton';
 

@@ -1,9 +1,10 @@
-import { AIOCRService } from '@/services/scanner/ocrService';
-import { ImageProcessingService } from '@/services/scanner/imageProcessingService';
-import { DocumentStorageService } from '@/services/scanner/documentStorageService';
-import BatchProcessingService from '@/services/scanner/batchProcessingService';
-import RateLimitingService from '@/services/scanner/rateLimitingService';
-import ResultCacheService from '@/services/scanner/resultCacheService';
+import { AIOCRService } from '@/services/scanner';
+import { ImageProcessingService } from '@/services/scanner';
+import { DocumentStorageService } from '@/services/scanner';
+import { BatchProcessingService } from '@/services/scanner';
+import { RateLimitingService } from '@/services/scanner';
+import { ResultCacheService } from '@/services/scanner';
+import { BatchJobStatus } from '@/features/scanner/services/batchProcessingService';
 import { OCRProvider, OCRResult, ProcessedDocument, OCROptions, DocumentStatus, AccessLevel } from '@/types/scanner';
 
 // Mock external dependencies
@@ -640,7 +641,7 @@ describe('Document Scanner Integration Tests', () => {
 
     it('should maintain performance under concurrent load', async () => {
       // Simulate multiple concurrent batch jobs
-      const jobs = [];
+      const jobs: string[] = [];
       
       for (let i = 0; i < 5; i++) {
         const files = Array.from({ length: 5 }, (_, j) => 
@@ -664,7 +665,7 @@ describe('Document Scanner Integration Tests', () => {
       jobs.forEach(jobId => {
         const job = batchProcessingService.getJobStatus(jobId);
         expect(job?.progress.completed).toBe(5);
-        expect(job?.status).toBe('completed');
+        expect(job?.status).toBe(BatchJobStatus.COMPLETED);
       });
     });
   });

@@ -1,313 +1,195 @@
-import { ComponentType } from 'react';
-import { useAuth, useUser } from '@clerk/clerk-react';
-import { useOrganizationContext } from '@context/OrganizationContext';
-import { Navigate, useLocation } from 'react-router-dom';
-import Logger from '@utils/Logger';
+import React, { ComponentType } from 'react';
+import { Navigate } from 'react-router-dom';
 
-interface AuthProps {
+// Mock authentication context - replace with your actual auth implementation
+interface User {
+  id: string;
+  firstName?: string;
+  lastName?: string;
+  email: string;
+  role?: string;
+  permissions?: string[];
+  organizationId?: string;
+}
+
+interface AuthState {
   isAuthenticated: boolean;
-  user: any;
-  organization: any;
-  userRole: string | null;
-  isAdmin: boolean;
-  isMember: boolean;
-  hasRole: (role: string) => boolean;
-  hasPermission: (permission: string) => boolean;
-  hasAllPermissions: (permissions: string[]) => boolean;
+  user: User | null;
   isLoading: boolean;
 }
 
-interface WithAuthOptions {
-  requiredRole?: 'admin' | 'basic_member' | string;
-  requiredPermissions?: string[];
-  organizationRequired?: boolean;
-  adminOnly?: boolean;
-  redirectTo?: string;
-  loadingComponent?: ComponentType;
-  unauthorizedComponent?: ComponentType<{ reason: string }>;
+// Mock auth state - replace with your actual auth context/store
+const mockAuthState: AuthState = {
+  isAuthenticated: true, // Set to false to test redirect behavior
+  user: {
+    id: '1',
+    firstName: 'John',
+    lastName: 'Doe',
+    email: 'john@example.com',
+    role: 'admin',
+    permissions: ['manage_users', 'view_analytics', 'manage_billing'],
+    organizationId: 'org-1'
+  },
+  isLoading: false
+};
+
+// Get auth state - replace with your actual auth implementation
+const getAuthState = (): AuthState => {
+  // This should come from your auth context, Redux store, or auth service
+  return mockAuthState;
+};
+
+interface WithAuthProps {
+  user: User | null;
+  isAuthenticated: boolean;
+  isLoading: boolean;
 }
 
 /**
- * Higher-Order Component for Authentication and Authorization
- *
- * Wraps components with authentication logic and provides auth-related props.
- * Supports role-based and permission-based access control.
- *
- * @param WrappedComponent - Component to wrap with auth logic
- * @param options - Authentication and authorization options
- * @returns Enhanced component with authentication
+ * Basic authentication HOC
+ * Redirects to login if user is not authenticated
  */
 export function withAuth<P extends object>(
-  WrappedComponent: ComponentType<P & AuthProps>,
-  options: WithAuthOptions = {},
-) {
-  const {
-    requiredRole,
-    requiredPermissions = [],
-    organizationRequired = false,
-    adminOnly = false,
-    redirectTo = '/login',
-    loadingComponent: LoadingComponent,
-    unauthorizedComponent: UnauthorizedComponent,
-  } = options;
+  WrappedComponent: ComponentType<P & WithAuthProps>
+): ComponentType<P> {
+  return function AuthenticatedComponent(props: P) {
+    const { isAuthenticated, user, isLoading } = getAuthState();
 
-  const WithAuthComponent = (props: P) => {
-    const { isLoaded, isSignedIn } = useAuth();
-    const { user } = useUser();
-    const location = useLocation();
-    const {
-      organization,
-      isLoaded: orgLoaded,
-      isInitialized,
-      hasRole,
-      isAdmin,
-      isMember,
-      getUserRole,
-      needsOrganizationSelection,
-      needsOrganizationCreation,
-    } = useOrganizationContext();
-
-    const isLoading = !isLoaded || !orgLoaded || !isInitialized;
-
-    // Loading state
     if (isLoading) {
-      if (LoadingComponent) {
-        return <LoadingComponent />;
-      }
       return (
-        <div className='flex justify-center items-center h-screen'>
-          <div className='animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600'></div>
-          <p className='ml-3 text-blue-600'>Loading...</p>
+        <div className="flex items-center justify-center min-h-screen">
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-500"></div>
         </div>
       );
     }
 
-    // Authentication check
-    if (!isSignedIn || !user) {
-      Logger.warn('withAuth: User not authenticated, redirecting');
+    if (!isAuthenticated) {
+      return <Navigate to="/login" replace />;
+    }
+
+    return (
+      <WrappedComponent
+        {...props}
+        user={user}
+        isAuthenticated={isAuthenticated}
+        isLoading={isLoading}
+      />
+    );
+  };
+}
+
+/**
+ * Admin authentication HOC
+ * Requires user to be authenticated and have admin role
+ */
+export function withAdminAuth<P extends object>(
+  WrappedComponent: ComponentType<P & WithAuthProps>
+): ComponentType<P> {
+  return function AdminAuthenticatedComponent(props: P) {
+    const { isAuthenticated, user, isLoading } = getAuthState();
+
+    if (isLoading) {
       return (
-        <Navigate
-          to={redirectTo}
-          state={{ returnTo: location.pathname + location.search }}
-          replace
-        />
+        <div className="flex items-center justify-center min-h-screen">
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-500"></div>
+        </div>
       );
     }
 
-    // Onboarding check
-    const hasCompletedOnboarding = user.unsafeMetadata?.onboardingComplete === true;
-    const isOnOnboardingPage = location.pathname === '/onboarding';
-
-    if (!hasCompletedOnboarding && !isOnOnboardingPage) {
-      return <Navigate to='/onboarding' replace />;
+    if (!isAuthenticated) {
+      return <Navigate to="/login" replace />;
     }
 
-    // Organization requirements
-    if (organizationRequired) {
-      if (needsOrganizationCreation) {
-        return <Navigate to='/organization' state={{ action: 'create' }} replace />;
-      }
+    if (user?.role !== 'admin') {
+      return <Navigate to="/unauthorized" replace />;
+    }
 
-      if (needsOrganizationSelection) {
-        return <Navigate to='/organization' state={{ action: 'select' }} replace />;
-      }
+    return (
+      <WrappedComponent
+        {...props}
+        user={user}
+        isAuthenticated={isAuthenticated}
+        isLoading={isLoading}
+      />
+    );
+  };
+}
 
-      if (!organization || !isMember()) {
-        if (UnauthorizedComponent) {
-          return <UnauthorizedComponent reason='Organization membership required' />;
-        }
-        return (
-          <Navigate
-            to='/dashboard'
-            state={{
-              error: 'You do not have access to this organization.',
-              returnTo: location.pathname + location.search,
-            }}
-            replace
+/**
+ * Organization authentication HOC
+ * Requires user to be authenticated and belong to an organization
+ */
+export function withOrgAuth<P extends object>(
+  WrappedComponent: ComponentType<P & WithAuthProps>
+): ComponentType<P> {
+  return function OrgAuthenticatedComponent(props: P) {
+    const { isAuthenticated, user, isLoading } = getAuthState();
+
+    if (isLoading) {
+      return (
+        <div className="flex items-center justify-center min-h-screen">
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-500"></div>
+        </div>
+      );
+    }
+
+    if (!isAuthenticated) {
+      return <Navigate to="/login" replace />;
+    }
+
+    if (!user?.organizationId) {
+      return <Navigate to="/setup-organization" replace />;
+    }
+
+    return (
+      <WrappedComponent
+        {...props}
+        user={user}
+        isAuthenticated={isAuthenticated}
+        isLoading={isLoading}
+      />
+    );
+  };
+}
+
+// Component to show when admin access is required
+export const AdminRequired: React.FC = () => (
+  <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50">
+    <div className="max-w-md w-full bg-white shadow-lg rounded-lg p-6 text-center">
+      <div className="mb-4">
+        <svg
+          className="mx-auto h-12 w-12 text-red-500"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.732-.833-2.5 0L4.268 18.5c-.77.833.192 2.5 1.732 2.5z"
           />
-        );
-      }
-    }
+        </svg>
+      </div>
+      <h2 className="text-xl font-semibold text-gray-900 mb-2">
+        Admin Access Required
+      </h2>
+      <p className="text-gray-600 mb-4">
+        You need administrator privileges to access this page.
+      </p>
+      <button
+        onClick={() => window.history.back()}
+        className="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-md transition-colors"
+      >
+        Go Back
+      </button>
+    </div>
+  </div>
+);
 
-    // Role-based access control
-    if (adminOnly && !isAdmin()) {
-      const reason = 'Administrator access required';
-      if (UnauthorizedComponent) {
-        return <UnauthorizedComponent reason={reason} />;
-      }
-      return (
-        <Navigate
-          to='/dashboard'
-          state={{
-            error: reason,
-            returnTo: location.pathname + location.search,
-          }}
-          replace
-        />
-      );
-    }
-
-    if (requiredRole && !hasRole(requiredRole)) {
-      const userRole = getUserRole();
-      const reason = `This page requires ${requiredRole} access. Your current role: ${userRole || 'none'}.`;
-      if (UnauthorizedComponent) {
-        return <UnauthorizedComponent reason={reason} />;
-      }
-      return (
-        <Navigate
-          to='/dashboard'
-          state={{
-            error: reason,
-            returnTo: location.pathname + location.search,
-          }}
-          replace
-        />
-      );
-    }
-
-    // Permission-based access control
-    const userPermissions = getUserPermissions(getUserRole());
-
-    const hasPermission = (permission: string): boolean => {
-      return userPermissions.includes(permission);
-    };
-
-    const hasAllPermissions = (permissions: string[]): boolean => {
-      return permissions.every(permission => userPermissions.includes(permission));
-    };
-
-    if (requiredPermissions.length > 0 && !hasAllPermissions(requiredPermissions)) {
-      const missingPermissions = requiredPermissions.filter(
-        permission => !hasPermission(permission),
-      );
-      const reason = `Missing required permissions: ${missingPermissions.join(', ')}`;
-
-      if (UnauthorizedComponent) {
-        return <UnauthorizedComponent reason={reason} />;
-      }
-      return (
-        <Navigate
-          to='/dashboard'
-          state={{
-            error: reason,
-            returnTo: location.pathname + location.search,
-          }}
-          replace
-        />
-      );
-    }
-
-    // All checks passed - create auth props
-    const authProps: AuthProps = {
-      isAuthenticated: isSignedIn,
-      user,
-      organization,
-      userRole: getUserRole(),
-      isAdmin: isAdmin(),
-      isMember: isMember(),
-      hasRole,
-      hasPermission,
-      hasAllPermissions,
-      isLoading: false,
-    };
-
-    Logger.debug('withAuth: Access granted', {
-      userId: user.id,
-      organizationId: organization?.id,
-      userRole: getUserRole(),
-      path: location.pathname,
-    });
-
-    return <WrappedComponent {...props} {...authProps} />;
-  };
-
-  WithAuthComponent.displayName = `withAuth(${WrappedComponent.displayName || WrappedComponent.name})`;
-
-  return WithAuthComponent;
-}
-
-/**
- * Helper function to get user permissions based on role
- */
-function getUserPermissions(role: string | null): string[] {
-  const rolePermissions: Record<string, string[]> = {
-    admin: [
-      'read',
-      'write',
-      'delete',
-      'manage_users',
-      'manage_organization',
-      'view_analytics',
-      'export_data',
-      'manage_billing',
-      'access_reports',
-      'manage_settings',
-      'manage_quotes',
-      'manage_invoices',
-      'manage_clients',
-      'manage_inventory',
-      'access_advanced_reports',
-    ],
-    basic_member: [
-      'read',
-      'write',
-      'view_analytics',
-      'access_reports',
-      'manage_quotes',
-      'manage_invoices',
-      'manage_clients',
-    ],
-  };
-
-  return rolePermissions[role || ''] || [];
-}
-
-/**
- * Predefined auth decorators for common use cases
- */
-
-// Admin-only decorator
-export const withAdminAuth = <P extends object>(Component: ComponentType<P & AuthProps>) =>
-  withAuth(Component, { adminOnly: true, organizationRequired: true });
-
-// Organization member decorator
-export const withOrgAuth = <P extends object>(Component: ComponentType<P & AuthProps>) =>
-  withAuth(Component, { organizationRequired: true });
-
-// Role-specific decorators
-export const withRole =
-  <P extends object>(role: string) =>
-  (Component: ComponentType<P & AuthProps>) =>
-    withAuth(Component, { requiredRole: role, organizationRequired: true });
-
-// Permission-specific decorator
-export const withPermissions =
-  <P extends object>(permissions: string[]) =>
-  (Component: ComponentType<P & AuthProps>) =>
-    withAuth(Component, { requiredPermissions: permissions });
-
-/**
- * Example usage:
- *
- * // Basic usage
- * const ProtectedComponent = withAuth(MyComponent);
- *
- * // Admin-only component
- * const AdminComponent = withAdminAuth(MyAdminComponent);
- *
- * // Role-specific component
- * const ManagerComponent = withRole('manager')(MyManagerComponent);
- *
- * // Permission-specific component
- * const ReportsComponent = withPermissions(['view_analytics', 'access_reports'])(MyReportsComponent);
- *
- * // Custom options
- * const CustomProtectedComponent = withAuth(MyComponent, {
- *   requiredRole: 'admin',
- *   requiredPermissions: ['manage_users'],
- *   organizationRequired: true,
- *   redirectTo: '/unauthorized',
- *   loadingComponent: CustomLoader,
- *   unauthorizedComponent: CustomUnauthorized
- * });
- */
+export default {
+  withAuth,
+  withAdminAuth,
+  withOrgAuth,
+  AdminRequired
+};

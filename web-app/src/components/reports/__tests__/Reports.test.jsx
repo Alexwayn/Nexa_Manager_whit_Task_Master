@@ -53,12 +53,12 @@ jest.mock('@utils/performance', () => ({
   },
 }));
 
-jest.mock('@components/common/ErrorBoundary', () => ({
+jest.mock('@shared/components/feedback/ErrorBoundary', () => ({
   ChartErrorFallback: ({ children }) => children || <div>Chart Error</div>,
   default: ({ children }) => children,
 }));
 
-jest.mock('@hooks/useIntersectionObserver', () => ({
+jest.mock('@shared/hooks/useIntersectionObserver', () => ({
   useIntersectionObserver: jest.fn(() => ({
     ref: { current: null },
     isIntersecting: true,

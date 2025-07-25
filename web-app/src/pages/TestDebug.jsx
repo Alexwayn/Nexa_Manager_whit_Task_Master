@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '@lib/supabaseClient';
 import { useAuth, useUser } from '@clerk/clerk-react';
-import ErrorBoundary from '../components/common/ErrorBoundary';
+import ErrorBoundary from '@shared/components/feedback/ErrorBoundary';
 
 // Simple test function to replace the missing testSupabaseConnection
 const testSupabaseConnection = async () => {

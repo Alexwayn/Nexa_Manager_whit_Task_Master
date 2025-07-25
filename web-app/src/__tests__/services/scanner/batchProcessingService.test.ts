@@ -1,14 +1,17 @@
-import BatchProcessingService, { 
+import { BatchProcessingService } from '@/services/scanner';
+import { 
+  BatchJobStatus 
+} from '@/features/scanner/services/batchProcessingService';
+import type { 
   BatchJob, 
   BatchProcessingOptions, 
   BatchProgress, 
   BatchResult, 
-  BatchError, 
-  BatchJobStatus 
-} from '@/services/scanner/batchProcessingService';
-import { AIOCRService } from '@/services/scanner/ocrService';
-import ImageOptimizationService from '@/services/scanner/imageOptimizationService';
-import ResultCacheService from '@/services/scanner/resultCacheService';
+  BatchError
+} from '@/features/scanner/services/batchProcessingService';
+import { AIOCRService } from '@/services/scanner';
+import { ImageOptimizationService } from '@/services/scanner';
+import { ResultCacheService } from '@/services/scanner';
 import { OCRProvider, OCRResult } from '@/types/scanner';
 
 // Mock dependencies

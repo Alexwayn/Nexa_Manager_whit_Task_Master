@@ -17,7 +17,7 @@ import {
 } from 'lucide-react';
 import emailAnalyticsService from '@lib/emailAnalyticsService';
 import { useToast } from '@/hooks/use-toast';
-import { formatNumber, formatPercentage, formatDate } from '@utils/formatters';
+import { formatNumber, formatPercentage, formatDate } from '@shared/utils/formatters';
 
 const CHART_COLORS = ['#8884d8', '#82ca9d', '#ffc658', '#ff7300', '#8dd1e1', '#d084d0'];
 

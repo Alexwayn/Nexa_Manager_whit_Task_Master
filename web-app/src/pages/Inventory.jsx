@@ -44,7 +44,7 @@ import { Search, ChevronDown, Eye, MapPin } from 'lucide-react';
 import nexaFooterLogo from '../../../assets/logos/logo_nexa_footer.png';
 import nexaLogo from '../../../assets/logos/logo_nexa.png';
 import { useTranslation } from 'react-i18next';
-import ErrorBoundary from '../components/common/ErrorBoundary';
+import ErrorBoundary from '@shared/components/feedback/ErrorBoundary';
 
 export default function Inventory() {
   const { t, ready } = useTranslation('inventory');

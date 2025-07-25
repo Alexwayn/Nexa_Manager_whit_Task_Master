@@ -2,8 +2,8 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import SettingsFormSection from '@components/settings/SettingsFormSection';
 import FileUploadField from '@components/settings/FileUploadField';
-import { useProfile } from '@hooks/useProfile';
-import { useFileUpload } from '@hooks/useFileUpload';
+import { useProfile } from '@shared/hooks/useProfile';
+import { useFileUpload } from '@shared/hooks/useFileUpload';
 
 const ProfileSection = ({ setNotification }) => {
   const { t } = useTranslation('settings');

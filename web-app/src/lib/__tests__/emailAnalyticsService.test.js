@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import emailAnalyticsService from '@lib/emailAnalyticsService';
-import emailErrorHandler from '@lib/emailErrorHandler';
+import emailErrorHandler from '@features/email/services/emailErrorHandler';
 import { supabase } from '@lib/supabaseClient';
 
 // Mock dependencies
@@ -21,7 +21,7 @@ vi.mock('@lib/supabaseClient', () => ({
   },
 }));
 
-vi.mock('@lib/emailErrorHandler', () => ({
+vi.mock('@features/email/services/emailErrorHandler', () => ({
   default: {
     withErrorHandling: vi.fn((fn, options) => fn()),
   },

@@ -2,10 +2,10 @@ import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import EmailAnalyticsDashboard from '@components/EmailAnalyticsDashboard';
-import emailManagementService from '@lib/emailManagementService';
+import emailManagementService from '@features/email/services/emailManagementService';
 
 // Mock dependencies
-vi.mock('@lib/emailManagementService', () => ({
+vi.mock('@features/email/services/emailManagementService', () => ({
   default: {
     getEmailAnalytics: vi.fn(),
     getEmailPerformanceMetrics: vi.fn(),

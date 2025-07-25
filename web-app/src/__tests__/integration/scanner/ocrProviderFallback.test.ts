@@ -1,8 +1,8 @@
-import { OCRProviderFactory } from '@/services/scanner/ocrProviderFactory';
-import { FallbackOCRService } from '@/services/scanner/fallbackOCRService';
-import { AIOCRService } from '@/services/scanner/ocrService';
-import RateLimitingService from '@/services/scanner/rateLimitingService';
-import { OCRProvider, OCRResult, OCROptions, ProviderStatus } from '@/types/scanner';
+import { OCRProviderFactory } from '../../../features/scanner/services/ocrProviderFactory';
+import { FallbackOCRService } from '../../../features/scanner/services/fallbackOCRService';
+import { AIOCRService } from '../../../features/scanner/services/ocrService';
+import { RateLimitingService } from '../../../features/scanner/services/rateLimitingService';
+import { OCRProvider, OCRResult, OCROptions, ProviderStatus } from '../../../types/scanner';
 
 // Mock dependencies
 jest.mock('@/utils/Logger');
@@ -678,8 +678,8 @@ describe('OCR Provider Fallback Integration Tests', () => {
       expect(results).toHaveLength(10);
       
       // Some should succeed with primary provider, some should fallback
-      const successfulResults = results.filter(r => r.provider === OCRProvider.OpenAI);
-      const fallbackResults = results.filter(r => r.provider === OCRProvider.Fallback);
+      const successfulResults = results.filter((r: OCRResult) => r.provider === OCRProvider.OpenAI);
+      const fallbackResults = results.filter((r: OCRResult) => r.provider === OCRProvider.Fallback);
 
       expect(successfulResults.length).toBeGreaterThan(0);
       expect(fallbackResults.length).toBeGreaterThan(0);

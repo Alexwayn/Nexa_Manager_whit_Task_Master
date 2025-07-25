@@ -32,6 +32,18 @@ module.exports = {
     '^@assets/(.*)$': '<rootDir>/src/assets/$1',
     '^@tests/(.*)$': '<rootDir>/src/__tests__/$1',
     '^@lib/(.*)$': '<rootDir>/src/lib/$1',
+    '^@types/(.*)$': '<rootDir>/src/types/$1',
+    '^@features/(.*)$': '<rootDir>/src/features/$1',
+    '^@shared/(.*)$': '<rootDir>/src/shared/$1',
+    '^@auth/(.*)$': '<rootDir>/src/features/auth/$1',
+    '^@clients/(.*)$': '<rootDir>/src/features/clients/$1',
+    '^@financial/(.*)$': '<rootDir>/src/features/financial/$1',
+    '^@email/(.*)$': '<rootDir>/src/features/email/$1',
+    '^@documents/(.*)$': '<rootDir>/src/features/documents/$1',
+    '^@calendar/(.*)$': '<rootDir>/src/features/calendar/$1',
+    '^@scanner/(.*)$': '<rootDir>/src/features/scanner/$1',
+    '^@dashboard/(.*)$': '<rootDir>/src/features/dashboard/$1',
+    '^@analytics/(.*)$': '<rootDir>/src/features/analytics/$1',
   },
 
   // Test file patterns

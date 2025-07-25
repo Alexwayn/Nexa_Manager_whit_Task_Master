@@ -6,7 +6,7 @@ import Calendar from '@components/calendar/Calendar';
 import EventModal from '@components/calendar/EventModal';
 import { getEvents, deleteEvent, EVENT_TYPES, EVENT_PRIORITIES } from '@lib/eventService';
 import Logger from '@utils/Logger';
-import ErrorBoundary from '@components/common/ErrorBoundary';
+import ErrorBoundary from '@shared/components/feedback/ErrorBoundary';
 
 /**
  * CalendarPage Component - Main calendar page with event management

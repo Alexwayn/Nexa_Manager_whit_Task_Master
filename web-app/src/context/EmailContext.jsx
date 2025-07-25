@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useReducer, useEffect, useCallback, useRef } from 'react';
-import emailManagementService from '@lib/emailManagementService';
+import emailManagementService from '@features/email/services/emailManagementService';
 import { useUser } from '@clerk/clerk-react';
 import { useWebSocketContext } from '../providers/WebSocketProvider';
 import Logger from '@utils/Logger';

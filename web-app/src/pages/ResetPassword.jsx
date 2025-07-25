@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@clerk/clerk-react';
 import { InformationCircleIcon } from '@heroicons/react/24/outline';
 import nexaLogo from '../../../assets/logos/logo_nexa.png';
-import ErrorBoundary from '../components/common/ErrorBoundary';
+import ErrorBoundary from '@shared/components/feedback/ErrorBoundary';
 
 export default function ResetPassword() {
   const { t } = useTranslation('login');

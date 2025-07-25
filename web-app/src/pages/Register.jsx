@@ -3,7 +3,7 @@ import { useAuth } from '@clerk/clerk-react';
 import { SignUp } from '@clerk/clerk-react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import ErrorBoundary from '@components/common/ErrorBoundary';
+import ErrorBoundary from '@shared/components/feedback/ErrorBoundary';
 import {
   ChartBarIcon,
   DocumentTextIcon,
