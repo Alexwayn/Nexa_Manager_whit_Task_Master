@@ -3,16 +3,23 @@ frontend:
   phases:
     preBuild:
       commands:
+        - nvm use 20
+        - node --version
+        - npm --version
         - echo "Installing dependencies for monorepo..."
         - npm ci
         - echo "Pre-build setup completed successfully!"
     build:
       commands:
         - echo "Building Nexa Manager application..."
+        - echo "Current directory:" && pwd
+        - echo "Listing root directory:" && ls -la
+        - echo "Checking web-app directory:" && ls -la web-app/
         - npm run build
         - echo "Build completed successfully!"
+        - echo "Checking build output:" && ls -la web-app/dist/
         - echo "Copying redirect rules..."
-        - cp web-app/public/_redirects web-app/dist/
+        - cp web-app/public/_redirects web-app/dist/ || echo "No _redirects file found, skipping..."
         - ls -la web-app/dist/
     postBuild:
       commands:
@@ -48,4 +55,4 @@ frontend:
     - pattern: '**/*.html'
       headers:
         - key: 'Cache-Control'
-          value: 'public, max-age=3600' 
+          value: 'public, max-age=3600'

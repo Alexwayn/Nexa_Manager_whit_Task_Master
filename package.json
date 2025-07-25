@@ -36,6 +36,10 @@
   ],
   "author": "Alex Ventures Studio",
   "license": "MIT",
+  "engines": {
+    "node": ">=20.0.0",
+    "npm": ">=10.0.0"
+  },
   "devDependencies": {
     "concurrently": "^8.2.2"
   },
