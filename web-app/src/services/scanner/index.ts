@@ -7,6 +7,8 @@ export { OCRResultHandler } from './ocrResultHandler';
 export { DocumentStorageService } from './documentStorageService';
 export { DocumentTaggingService, documentTaggingService } from './documentTaggingService';
 export { DocumentSearchService, documentSearchService } from './documentSearchService';
+export { DocumentSharingService, documentSharingService } from './documentSharingService';
+export { DocumentAccessTrackingService, documentAccessTrackingService } from './documentAccessTrackingService';
 export { OCRProviderFactory, type IOCRProvider, type OCRProviderConfig } from './ocrProviderFactory';
 export { FallbackOCRService, type FallbackStrategy, DegradationAction } from './fallbackOCRService';
 export * from './types';

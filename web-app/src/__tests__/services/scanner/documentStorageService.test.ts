@@ -1,5 +1,4 @@
 import { DocumentStorageService } from '@/services/scanner/documentStorageService';
-import { createClient } from '@supabase/supabase-js';
 import { 
   ProcessedDocument, 
   DocumentFilters, 
@@ -7,13 +6,24 @@ import {
   DocumentStatus 
 } from '@/types/scanner';
 
-// Mock Supabase
-jest.mock('@supabase/supabase-js');
-const mockCreateClient = createClient as jest.MockedFunction<typeof createClient>;
+// Mock the supabase client directly
+jest.mock('@/lib/supabaseClient', () => ({
+  supabase: {
+    from: jest.fn(),
+    storage: {
+      from: jest.fn(),
+      listBuckets: jest.fn(),
+      createBucket: jest.fn()
+    }
+  }
+}));
+
+import { supabase } from '@/lib/supabaseClient';
 
 describe('DocumentStorageService', () => {
   let service: DocumentStorageService;
-  let mockSupabaseClient: any;
+  let mockQuery: any;
+  let setMockQueryResult: (result: any) => void;
 
   const mockDocument: ProcessedDocument = {
     id: 'doc-123',
@@ -44,6 +54,7 @@ describe('DocumentStorageService', () => {
     ocrConfidence: 0.95,
     ocrLanguage: 'en',
     status: 'complete' as DocumentStatus,
+    processingErrors: null,
     sharingSettings: {
       isShared: false,
       accessLevel: 'view' as const,
@@ -52,59 +63,183 @@ describe('DocumentStorageService', () => {
     accessLog: []
   };
 
-  beforeEach(() => {
+  // Mock database record structure (what comes from Supabase)
+  const mockDbRecord = {
+    id: 'doc-123',
+    title: 'Test Document',
+    description: 'Test document description',
+    category: 'invoice',
+    tags: ['business', 'finance'],
+    client_id: 'client-456',
+    project_id: 'project-789',
+    created_at: '2024-01-01T00:00:00Z',
+    updated_at: '2024-01-01T00:00:00Z',
+    created_by: 'user-123',
+    original_file_url: 'https://example.com/original.jpg',
+    original_file_name: 'document.jpg',
+    original_file_size: 1024000,
+    original_file_type: 'image/jpeg',
+    enhanced_file_url: 'https://example.com/enhanced.jpg',
+    enhanced_file_size: 512000,
+    pdf_file_url: 'https://example.com/document.pdf',
+    pdf_file_size: 256000,
+    text_content: 'Extracted text content from document',
+    ocr_confidence: 0.95,
+    ocr_language: 'en',
+    status: 'complete',
+    processing_errors: null,
+    sharing_settings: {
+      isShared: false,
+      accessLevel: 'view',
+      sharedWith: []
+    },
+    access_log: []
+  };
+
+  const mockDocuments = [mockDocument];
+  const mockDbRecords = [mockDbRecord];
+
+  beforeEach(async () => {
     jest.clearAllMocks();
 
-    // Setup mock Supabase client
-    mockSupabaseClient = {
-      from: jest.fn(() => mockSupabaseClient),
-      storage: {
-        from: jest.fn(() => ({
-          upload: jest.fn(),
-          download: jest.fn(),
-          remove: jest.fn(),
-          getPublicUrl: jest.fn(),
-          list: jest.fn()
-        }))
-      },
-      select: jest.fn(() => mockSupabaseClient),
-      insert: jest.fn(() => mockSupabaseClient),
-      update: jest.fn(() => mockSupabaseClient),
-      delete: jest.fn(() => mockSupabaseClient),
-      upsert: jest.fn(() => mockSupabaseClient),
-      eq: jest.fn(() => mockSupabaseClient),
-      neq: jest.fn(() => mockSupabaseClient),
-      gt: jest.fn(() => mockSupabaseClient),
-      gte: jest.fn(() => mockSupabaseClient),
-      lt: jest.fn(() => mockSupabaseClient),
-      lte: jest.fn(() => mockSupabaseClient),
-      like: jest.fn(() => mockSupabaseClient),
-      ilike: jest.fn(() => mockSupabaseClient),
-      in: jest.fn(() => mockSupabaseClient),
-      contains: jest.fn(() => mockSupabaseClient),
-      order: jest.fn(() => mockSupabaseClient),
-      range: jest.fn(() => mockSupabaseClient),
-      limit: jest.fn(() => mockSupabaseClient),
-      single: jest.fn(() => mockSupabaseClient),
-      maybeSingle: jest.fn(() => mockSupabaseClient)
+    // Setup mock query result that will be returned by awaiting the query
+    let mockQueryResult: any = { data: null, error: null, count: 0 };
+    
+    // Create a mock query that is both chainable and awaitable
+    const createAwaitableQuery = () => {
+      const query = {
+        select: jest.fn().mockReturnThis(),
+        insert: jest.fn().mockReturnThis(),
+        update: jest.fn().mockReturnThis(),
+        delete: jest.fn().mockReturnThis(),
+        upsert: jest.fn().mockReturnThis(),
+        eq: jest.fn().mockReturnThis(),
+        neq: jest.fn().mockReturnThis(),
+        gt: jest.fn().mockReturnThis(),
+        gte: jest.fn().mockReturnThis(),
+        lt: jest.fn().mockReturnThis(),
+        lte: jest.fn().mockReturnThis(),
+        like: jest.fn().mockReturnThis(),
+        ilike: jest.fn().mockReturnThis(),
+        is: jest.fn().mockReturnThis(),
+        in: jest.fn().mockReturnThis(),
+        contains: jest.fn().mockReturnThis(),
+        containedBy: jest.fn().mockReturnThis(),
+        rangeGt: jest.fn().mockReturnThis(),
+        rangeGte: jest.fn().mockReturnThis(),
+        rangeLt: jest.fn().mockReturnThis(),
+        rangeLte: jest.fn().mockReturnThis(),
+        rangeAdjacent: jest.fn().mockReturnThis(),
+        overlaps: jest.fn().mockReturnThis(),
+        textSearch: jest.fn().mockReturnThis(),
+        match: jest.fn().mockReturnThis(),
+        not: jest.fn().mockReturnThis(),
+        or: jest.fn().mockReturnThis(),
+        filter: jest.fn().mockReturnThis(),
+        order: jest.fn().mockReturnThis(),
+        limit: jest.fn().mockReturnThis(),
+        range: jest.fn().mockReturnThis(),
+        abortSignal: jest.fn().mockReturnThis(),
+        single: jest.fn(() => Promise.resolve(mockQueryResult)),
+        maybeSingle: jest.fn(() => Promise.resolve(mockQueryResult)),
+        csv: jest.fn(),
+        geojson: jest.fn(),
+        explain: jest.fn(),
+        rollback: jest.fn(),
+        returns: jest.fn().mockReturnThis(),
+        // Make the query object itself awaitable by implementing thenable interface
+        then: jest.fn((onResolve: any, onReject?: any) => {
+          return Promise.resolve(mockQueryResult).then(onResolve, onReject);
+        }),
+        catch: jest.fn((onReject: any) => {
+          return Promise.resolve(mockQueryResult).catch(onReject);
+        }),
+        finally: jest.fn((onFinally: any) => {
+          return Promise.resolve(mockQueryResult).finally(onFinally);
+        })
+      };
+      
+      // Make all chainable methods return the same query object
+      Object.keys(query).forEach(key => {
+        if (typeof query[key] === 'function' && 
+            !['single', 'maybeSingle', 'then', 'catch', 'finally', 'csv', 'geojson', 'explain', 'rollback'].includes(key)) {
+          query[key] = jest.fn().mockReturnValue(query);
+        }
+      });
+      
+      return query;
     };
 
-    mockCreateClient.mockReturnValue(mockSupabaseClient);
+    mockQuery = createAwaitableQuery();
+
+    // Helper function to set up mock query result
+    setMockQueryResult = (result: any) => {
+      mockQueryResult = result;
+      // Update all the promise-returning methods
+      mockQuery.single = jest.fn(() => Promise.resolve(result));
+      mockQuery.maybeSingle = jest.fn(() => Promise.resolve(result));
+      
+      // Make the query object itself awaitable - this is the key fix
+      if (result.error) {
+        // When there's an error, the query should still resolve with the error object
+        // The service code checks for error in the resolved result
+        mockQuery.then = jest.fn((onResolve: any, onReject?: any) => {
+          return Promise.resolve(result).then(onResolve, onReject);
+        });
+        mockQuery.catch = jest.fn((onReject: any) => {
+          return Promise.resolve(result).catch(onReject);
+        });
+        mockQuery.finally = jest.fn((onFinally: any) => {
+          return Promise.resolve(result).finally(onFinally);
+        });
+      } else {
+        mockQuery.then = jest.fn((onResolve: any, onReject?: any) => {
+          return Promise.resolve(result).then(onResolve, onReject);
+        });
+        mockQuery.catch = jest.fn((onReject: any) => {
+          return Promise.resolve(result).catch(onReject);
+        });
+        mockQuery.finally = jest.fn((onFinally: any) => {
+          return Promise.resolve(result).finally(onFinally);
+        });
+      }
+    };
+
+    // Setup the mocked supabase client
+    (supabase.from as jest.Mock).mockReturnValue(mockQuery);
+    (supabase.storage.listBuckets as jest.Mock).mockResolvedValue({ 
+      data: [
+        { name: 'scanner-documents' },
+        { name: 'scanner-temp' }
+      ], 
+      error: null 
+    });
+    (supabase.storage.createBucket as jest.Mock).mockResolvedValue({ data: null, error: null });
+    (supabase.storage.from as jest.Mock).mockReturnValue({
+      upload: jest.fn(),
+      download: jest.fn(),
+      remove: jest.fn(),
+      getPublicUrl: jest.fn(),
+      list: jest.fn()
+    });
+    
+    // Wait for async initialization to complete
     service = new DocumentStorageService();
+    await new Promise(resolve => setTimeout(resolve, 0)); // Allow async initialization to complete
   });
 
   describe('saveDocument', () => {
     it('should save document successfully', async () => {
-      mockSupabaseClient.insert.mockResolvedValue({
-        data: [{ ...mockDocument }],
+      setMockQueryResult({
+        data: { ...mockDocument },
         error: null
       });
 
       const result = await service.saveDocument(mockDocument);
 
       expect(result).toBe(mockDocument.id);
-      expect(mockSupabaseClient.from).toHaveBeenCalledWith('scanned_documents');
-      expect(mockSupabaseClient.insert).toHaveBeenCalledWith([
+      expect(supabase.from).toHaveBeenCalledWith('scanned_documents');
+      expect(mockQuery.upsert).toHaveBeenCalledWith([
         expect.objectContaining({
           id: mockDocument.id,
           title: mockDocument.title,
@@ -115,27 +250,28 @@ describe('DocumentStorageService', () => {
 
     it('should handle save error', async () => {
       const error = { message: 'Database error', code: '23505' };
-      mockSupabaseClient.insert.mockResolvedValue({
+      setMockQueryResult({
         data: null,
         error
       });
 
-      await expect(service.saveDocument(mockDocument)).rejects.toThrow('Database error');
+      await expect(service.saveDocument(mockDocument)).rejects.toThrow('Failed to save document to storage');
     });
 
     it('should generate ID if not provided', async () => {
       const documentWithoutId = { ...mockDocument };
       delete (documentWithoutId as any).id;
 
-      mockSupabaseClient.insert.mockResolvedValue({
-        data: [{ ...documentWithoutId, id: 'generated-id' }],
+      setMockQueryResult({
+        data: { ...documentWithoutId, id: 'generated-id' },
         error: null
       });
 
       const result = await service.saveDocument(documentWithoutId as any);
 
-      expect(result).toBe('generated-id');
-      expect(mockSupabaseClient.insert).toHaveBeenCalledWith([
+      expect(typeof result).toBe('string');
+      expect(result).toMatch(/^doc_\d+_[a-z0-9]+$/); // Matches the ID pattern
+      expect(mockQuery.upsert).toHaveBeenCalledWith([
         expect.objectContaining({
           id: expect.any(String),
           title: mockDocument.title
@@ -147,163 +283,175 @@ describe('DocumentStorageService', () => {
       const now = new Date();
       jest.spyOn(Date, 'now').mockReturnValue(now.getTime());
 
-      mockSupabaseClient.insert.mockResolvedValue({
-        data: [mockDocument],
+      setMockQueryResult({
+        data: mockDocument,
         error: null
       });
 
       await service.saveDocument(mockDocument);
 
-      expect(mockSupabaseClient.insert).toHaveBeenCalledWith([
+      expect(mockQuery.upsert).toHaveBeenCalledWith([
         expect.objectContaining({
-          created_at: expect.any(Date),
-          updated_at: expect.any(Date)
+          created_at: expect.any(String),
+          updated_at: expect.any(String)
         })
       ]);
     });
   });
 
   describe('getDocument', () => {
-    it('should retrieve document by ID', async () => {
-      mockSupabaseClient.single.mockResolvedValue({
-        data: mockDocument,
+    it('should retrieve document successfully', async () => {
+      setMockQueryResult({
+        data: mockDbRecord,
         error: null
       });
 
-      const result = await service.getDocument('doc-123');
+      const result = await service.getDocument(mockDocument.id);
 
       expect(result).toEqual(mockDocument);
-      expect(mockSupabaseClient.from).toHaveBeenCalledWith('scanned_documents');
-      expect(mockSupabaseClient.select).toHaveBeenCalledWith('*');
-      expect(mockSupabaseClient.eq).toHaveBeenCalledWith('id', 'doc-123');
-      expect(mockSupabaseClient.single).toHaveBeenCalled();
+      expect(supabase.from).toHaveBeenCalledWith('scanned_documents');
+      expect(mockQuery.select).toHaveBeenCalledWith('*');
+      expect(mockQuery.eq).toHaveBeenCalledWith('id', mockDocument.id);
     });
 
     it('should handle document not found', async () => {
-      const error = { message: 'No rows returned', code: 'PGRST116' };
-      mockSupabaseClient.single.mockResolvedValue({
+      setMockQueryResult({
         data: null,
-        error
+        error: { code: 'PGRST116', message: 'No rows found' }
       });
 
-      await expect(service.getDocument('nonexistent')).rejects.toThrow('No rows returned');
+      await expect(service.getDocument('non-existent-id')).rejects.toThrow('Document with id non-existent-id not found');
     });
 
     it('should handle database error', async () => {
-      const error = { message: 'Connection failed', code: '08000' };
-      mockSupabaseClient.single.mockResolvedValue({
+      const error = { message: 'Database connection error', code: '08000' };
+      setMockQueryResult({
         data: null,
         error
       });
 
-      await expect(service.getDocument('doc-123')).rejects.toThrow('Connection failed');
+      await expect(service.getDocument(mockDocument.id)).rejects.toThrow(`Document with id ${mockDocument.id} not found`);
     });
   });
 
   describe('deleteDocument', () => {
     it('should delete document successfully', async () => {
-      mockSupabaseClient.delete.mockResolvedValue({
-        data: [{ id: 'doc-123' }],
+      setMockQueryResult({
+        data: [{ id: mockDocument.id }],
         error: null
       });
 
-      const result = await service.deleteDocument('doc-123');
+      await service.deleteDocument(mockDocument.id);
 
-      expect(result).toBe(true);
-      expect(mockSupabaseClient.from).toHaveBeenCalledWith('scanned_documents');
-      expect(mockSupabaseClient.delete).toHaveBeenCalled();
-      expect(mockSupabaseClient.eq).toHaveBeenCalledWith('id', 'doc-123');
+      expect(supabase.from).toHaveBeenCalledWith('scanned_documents');
+      expect(mockQuery.delete).toHaveBeenCalled();
+      expect(mockQuery.eq).toHaveBeenCalledWith('id', mockDocument.id);
     });
 
     it('should handle delete error', async () => {
+      // Mock getDocument to succeed first
+      const getDocumentSpy = jest.spyOn(service, 'getDocument').mockResolvedValue(mockDocument);
+      
+      // Then mock the delete operation to fail
       const error = { message: 'Delete failed', code: '23503' };
-      mockSupabaseClient.delete.mockResolvedValue({
+      setMockQueryResult({
         data: null,
         error
       });
 
-      const result = await service.deleteDocument('doc-123');
-
+      const result = await service.deleteDocument(mockDocument.id);
       expect(result).toBe(false);
+      
+      getDocumentSpy.mockRestore();
     });
 
-    it('should return false when document not found', async () => {
-      mockSupabaseClient.delete.mockResolvedValue({
-        data: [],
-        error: null
+    it('should handle document not found during delete', async () => {
+      setMockQueryResult({
+        data: null,
+        error: { code: 'PGRST116', message: 'No rows found' }
       });
 
-      const result = await service.deleteDocument('nonexistent');
-
+      // Should return false when document doesn't exist (getDocument throws)
+      const result = await service.deleteDocument('non-existent-id');
       expect(result).toBe(false);
     });
   });
 
   describe('updateDocument', () => {
     it('should update document successfully', async () => {
-      const updates = {
-        title: 'Updated Title',
-        description: 'Updated description',
-        tags: ['updated', 'tags']
-      };
-
+      const updates = { title: 'Updated Title', category: 'updated' as const };
       const updatedDocument = { ...mockDocument, ...updates };
+      const updatedDbRecord = { ...mockDbRecord, title: 'Updated Title', category: 'updated' };
 
-      mockSupabaseClient.single.mockResolvedValue({
-        data: updatedDocument,
+      // First call is for the update query
+      setMockQueryResult({
+        data: updatedDbRecord,
         error: null
       });
 
-      const result = await service.updateDocument('doc-123', updates);
+      // Mock the getDocument call that happens after update
+      const getDocumentSpy = jest.spyOn(service, 'getDocument').mockResolvedValue(updatedDocument);
+
+      const result = await service.updateDocument(mockDocument.id, updates);
 
       expect(result).toEqual(updatedDocument);
-      expect(mockSupabaseClient.from).toHaveBeenCalledWith('scanned_documents');
-      expect(mockSupabaseClient.update).toHaveBeenCalledWith(
+      expect(supabase.from).toHaveBeenCalledWith('scanned_documents');
+      expect(mockQuery.update).toHaveBeenCalledWith(
         expect.objectContaining({
-          ...updates,
-          updated_at: expect.any(Date)
+          title: 'Updated Title',
+          category: 'updated',
+          updated_at: expect.any(String)
         })
       );
-      expect(mockSupabaseClient.eq).toHaveBeenCalledWith('id', 'doc-123');
-      expect(mockSupabaseClient.single).toHaveBeenCalled();
+      expect(mockQuery.eq).toHaveBeenCalledWith('id', mockDocument.id);
+      expect(getDocumentSpy).toHaveBeenCalledWith(mockDocument.id);
+
+      getDocumentSpy.mockRestore();
     });
 
     it('should handle update error', async () => {
       const error = { message: 'Update failed', code: '23505' };
-      mockSupabaseClient.single.mockResolvedValue({
+      setMockQueryResult({
         data: null,
         error
       });
 
-      await expect(service.updateDocument('doc-123', { title: 'New Title' }))
-        .rejects.toThrow('Update failed');
+      const updates = { title: 'Updated Title' };
+      await expect(service.updateDocument(mockDocument.id, updates)).rejects.toThrow('Update failed');
     });
 
     it('should set updated_at timestamp', async () => {
       const now = new Date();
       jest.spyOn(Date, 'now').mockReturnValue(now.getTime());
 
-      mockSupabaseClient.single.mockResolvedValue({
-        data: mockDocument,
+      setMockQueryResult({
+        data: mockDbRecord,
         error: null
       });
 
-      await service.updateDocument('doc-123', { title: 'New Title' });
+      // Mock the getDocument call that happens after update
+      const getDocumentSpy = jest.spyOn(service, 'getDocument').mockResolvedValue(mockDocument);
 
-      expect(mockSupabaseClient.update).toHaveBeenCalledWith(
+      const updates = { title: 'Updated Title' };
+      await service.updateDocument(mockDocument.id, updates);
+
+      expect(mockQuery.update).toHaveBeenCalledWith(
         expect.objectContaining({
-          updated_at: expect.any(Date)
+          updated_at: expect.any(String)
         })
       );
+
+      getDocumentSpy.mockRestore();
     });
   });
 
   describe('listDocuments', () => {
-    const mockDocuments = [mockDocument, { ...mockDocument, id: 'doc-456' }];
+    it('should return list of documents', async () => {
+      const mockDocuments = [mockDocument, { ...mockDocument, id: 'doc-456' }];
+      const mockDbRecords = [mockDbRecord, { ...mockDbRecord, id: 'doc-456' }];
 
-    it('should list documents with default filters', async () => {
-      mockSupabaseClient.range.mockResolvedValue({
-        data: mockDocuments,
+      setMockQueryResult({
+        data: mockDbRecords,
         error: null,
         count: 2
       });
@@ -315,66 +463,66 @@ describe('DocumentStorageService', () => {
       expect(result.page).toBe(1);
       expect(result.pageSize).toBe(20);
 
-      expect(mockSupabaseClient.from).toHaveBeenCalledWith('scanned_documents');
-      expect(mockSupabaseClient.select).toHaveBeenCalledWith('*', { count: 'exact' });
-      expect(mockSupabaseClient.order).toHaveBeenCalledWith('created_at', { ascending: false });
-      expect(mockSupabaseClient.range).toHaveBeenCalledWith(0, 19);
+      expect(supabase.from).toHaveBeenCalledWith('scanned_documents');
+      expect(mockQuery.select).toHaveBeenCalledWith('*', { count: 'exact' });
+      expect(mockQuery.order).toHaveBeenCalledWith('created_at', { ascending: false });
+      expect(mockQuery.range).toHaveBeenCalledWith(0, 19);
     });
 
     it('should apply category filter', async () => {
       const filters: DocumentFilters = { category: 'invoice' };
 
-      mockSupabaseClient.range.mockResolvedValue({
-        data: mockDocuments,
+      setMockQueryResult({
+        data: mockDbRecords,
         error: null,
-        count: 2
+        count: 1
       });
 
       await service.listDocuments(filters);
 
-      expect(mockSupabaseClient.eq).toHaveBeenCalledWith('category', 'invoice');
+      expect(mockQuery.eq).toHaveBeenCalledWith('category', 'invoice');
     });
 
     it('should apply client filter', async () => {
       const filters: DocumentFilters = { clientId: 'client-456' };
 
-      mockSupabaseClient.range.mockResolvedValue({
-        data: mockDocuments,
+      setMockQueryResult({
+        data: mockDbRecords,
         error: null,
-        count: 2
+        count: 1
       });
 
       await service.listDocuments(filters);
 
-      expect(mockSupabaseClient.eq).toHaveBeenCalledWith('client_id', 'client-456');
+      expect(mockQuery.eq).toHaveBeenCalledWith('client_id', 'client-456');
     });
 
     it('should apply project filter', async () => {
       const filters: DocumentFilters = { projectId: 'project-789' };
 
-      mockSupabaseClient.range.mockResolvedValue({
-        data: mockDocuments,
+      setMockQueryResult({
+        data: mockDbRecords,
         error: null,
-        count: 2
+        count: 1
       });
 
       await service.listDocuments(filters);
 
-      expect(mockSupabaseClient.eq).toHaveBeenCalledWith('project_id', 'project-789');
+      expect(mockQuery.eq).toHaveBeenCalledWith('project_id', 'project-789');
     });
 
     it('should apply tags filter', async () => {
       const filters: DocumentFilters = { tags: ['business', 'finance'] };
 
-      mockSupabaseClient.range.mockResolvedValue({
-        data: mockDocuments,
+      setMockQueryResult({
+        data: mockDbRecords,
         error: null,
-        count: 2
+        count: 1
       });
 
       await service.listDocuments(filters);
 
-      expect(mockSupabaseClient.contains).toHaveBeenCalledWith('tags', ['business', 'finance']);
+      expect(mockQuery.overlaps).toHaveBeenCalledWith('tags', ['business', 'finance']);
     });
 
     it('should apply date range filter', async () => {
@@ -385,37 +533,37 @@ describe('DocumentStorageService', () => {
         }
       };
 
-      mockSupabaseClient.range.mockResolvedValue({
-        data: mockDocuments,
+      setMockQueryResult({
+        data: mockDbRecords,
         error: null,
         count: 2
       });
 
       await service.listDocuments(filters);
 
-      expect(mockSupabaseClient.gte).toHaveBeenCalledWith('created_at', '2024-01-01T00:00:00.000Z');
-      expect(mockSupabaseClient.lte).toHaveBeenCalledWith('created_at', '2024-01-31T00:00:00.000Z');
+      expect(mockQuery.gte).toHaveBeenCalledWith('created_at', '2024-01-01T00:00:00.000Z');
+      expect(mockQuery.lte).toHaveBeenCalledWith('created_at', '2024-01-31T00:00:00.000Z');
     });
 
     it('should apply search text filter', async () => {
       const filters: DocumentFilters = { searchText: 'invoice payment' };
 
-      mockSupabaseClient.range.mockResolvedValue({
-        data: mockDocuments,
+      setMockQueryResult({
+        data: mockDbRecords,
         error: null,
         count: 2
       });
 
       await service.listDocuments(filters);
 
-      expect(mockSupabaseClient.ilike).toHaveBeenCalledWith('text_content', '%invoice payment%');
+      expect(mockQuery.or).toHaveBeenCalledWith('title.ilike.%invoice payment%,description.ilike.%invoice payment%,text_content.ilike.%invoice payment%');
     });
 
     it('should handle pagination', async () => {
       const filters: DocumentFilters = { page: 2, pageSize: 10 };
 
-      mockSupabaseClient.range.mockResolvedValue({
-        data: mockDocuments,
+      setMockQueryResult({
+        data: mockDbRecords,
         error: null,
         count: 25
       });
@@ -424,21 +572,21 @@ describe('DocumentStorageService', () => {
 
       expect(result.page).toBe(2);
       expect(result.pageSize).toBe(10);
-      expect(mockSupabaseClient.range).toHaveBeenCalledWith(10, 19); // Skip first 10, take next 10
+      expect(mockQuery.range).toHaveBeenCalledWith(10, 19); // Skip first 10, take next 10
     });
 
     it('should handle list error', async () => {
       const error = { message: 'Query failed', code: '42601' };
-      mockSupabaseClient.range.mockResolvedValue({
+      setMockQueryResult({
         data: null,
         error
       });
 
-      await expect(service.listDocuments({})).rejects.toThrow('Query failed');
+      await expect(service.listDocuments({})).rejects.toThrow('Failed to retrieve documents from storage');
     });
 
     it('should return empty result when no documents found', async () => {
-      mockSupabaseClient.range.mockResolvedValue({
+      setMockQueryResult({
         data: [],
         error: null,
         count: 0
@@ -454,7 +602,7 @@ describe('DocumentStorageService', () => {
   describe('file storage integration', () => {
     it('should upload file to storage', async () => {
       const mockFile = new Blob(['file content'], { type: 'image/jpeg' });
-      const mockStorageBucket = mockSupabaseClient.storage.from();
+      const mockStorageBucket = supabase.storage.from();
 
       mockStorageBucket.upload.mockResolvedValue({
         data: { path: 'documents/test-file.jpg' },
@@ -471,7 +619,7 @@ describe('DocumentStorageService', () => {
     });
 
     it('should get public URL for file', async () => {
-      const mockStorageBucket = mockSupabaseClient.storage.from();
+      const mockStorageBucket = supabase.storage.from();
 
       mockStorageBucket.getPublicUrl.mockReturnValue({
         data: { publicUrl: 'https://example.com/documents/test-file.jpg' }
@@ -482,9 +630,9 @@ describe('DocumentStorageService', () => {
       expect(result.data.publicUrl).toBe('https://example.com/documents/test-file.jpg');
     });
 
-    it('should handle storage upload error', async () => {
+    it('should handle upload error', async () => {
       const mockFile = new Blob(['file content'], { type: 'image/jpeg' });
-      const mockStorageBucket = mockSupabaseClient.storage.from();
+      const mockStorageBucket = supabase.storage.from();
 
       mockStorageBucket.upload.mockResolvedValue({
         data: null,

@@ -89,6 +89,17 @@
   "daysAgo": "{{count}} giorni fa",
   "startDate": "Data Inizio",
   "endDate": "Data Fine",
+  "time": {
+    "justNow": "Proprio ora",
+    "minutesAgo": "{{count}} minuti fa",
+    "hoursAgo": "{{count}} ore fa",
+    "daysAgo": "{{count}} giorni fa"
+  },
+  "anonymous": "Anonimo",
+  "filters": "Filtri",
+  "clearFilters": "Cancella Filtri",
+  "all": "Tutti",
+  "goHome": "Vai alla Home",
   "quotes": {
     "tabs": {
       "details": "Dettagli",

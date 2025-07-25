@@ -27,10 +27,8 @@ const mockEnv = {
   VITE_QWEN_API_KEY: 'test-qwen-key'
 };
 
-Object.defineProperty(import.meta, 'env', {
-  value: mockEnv,
-  writable: true
-});
+// Set environment variables for Jest
+Object.assign(process.env, mockEnv);
 
 describe('OCR Provider Fallback Integration Tests', () => {
   let ocrService: AIOCRService;

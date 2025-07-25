@@ -9,7 +9,7 @@ A comprehensive business management platform built with React, Vite, and Supabas
 - 🧾 **Invoice & Quotes** - Professional billing system with PDF generation
 - 📅 **Calendar** - Event and appointment management
 - 📧 **Email Management** - Integrated email system with templates, IMAP/SMTP support, and business document integration
-- 📄 **Document Scanner** - Advanced AI-powered document digitization with multi-provider OCR architecture, intelligent fallback systems, camera capture, file upload, and comprehensive Supabase-integrated document management with full-text search, metadata tracking, and secure storage
+- 📄 **Document Scanner** - Advanced AI-powered document digitization with multi-provider OCR architecture, intelligent fallback systems, comprehensive batch processing capabilities, camera capture, file upload, comprehensive Supabase-integrated document management with full-text search, metadata tracking, secure storage, and comprehensive document sharing with permission-based access controls
 - 📈 **Reports** - Detailed business insights and analytics
 - 🌍 **Multi-language** - Full Italian and English support
 - 🔐 **Secure Authentication** - Powered by Clerk with MFA support
@@ -83,6 +83,8 @@ VITE_CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
 - [Database Documentation](docs/database/) - Schema and migrations
 - [Development Guides](docs/development/) - Development workflows
 - [API Documentation](docs/api/) - API reference
+- [Document Scanner System](web-app/docs/SCANNER_SYSTEM.md) - Complete scanner documentation
+- [Testing Documentation](web-app/docs/TESTING.md) - Comprehensive testing guide
 - [Troubleshooting](docs/troubleshooting/) - Common issues and solutions
 
 ## 🛠️ Development
@@ -106,7 +108,7 @@ npm run format       # Format code with Prettier
 - **Internationalization**: i18next
 - **Charts**: Chart.js
 - **PDF Generation**: jsPDF
-- **Document Processing**: Advanced AI-powered OCR with multi-provider architecture (OpenAI Vision, Qwen) featuring intelligent fallback, rate limiting, comprehensive image optimization for API cost reduction, real-time processing status, and comprehensive Supabase-integrated storage with full-text search and metadata management
+- **Document Processing**: Advanced AI-powered OCR with multi-provider architecture (OpenAI Vision, Qwen) featuring intelligent fallback, rate limiting, comprehensive batch processing with job management, comprehensive image optimization for API cost reduction, real-time processing status, comprehensive Supabase-integrated storage with full-text search and metadata management, and secure document sharing with permission-based access controls
 - **Icons**: Lucide React
 
 ## 🌍 Internationalization

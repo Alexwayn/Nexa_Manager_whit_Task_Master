@@ -15,6 +15,11 @@ module.exports = {
     '^.+\\.(jpg|jpeg|png|gif|svg)$': 'jest-transform-stub',
   },
   
+  // Transform ignore patterns
+  transformIgnorePatterns: [
+    'node_modules/(?!(@supabase|isows|ws)/)',
+  ],
+  
   // Module name mapping
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
@@ -99,9 +104,14 @@ module.exports = {
         VITE_SUPABASE_ANON_KEY: 'test-key',
         VITE_APP_ENV: 'test',
         VITE_BASE_URL: 'http://localhost:3000',
+        VITE_OPENAI_API_KEY: 'test-openai-key',
+        VITE_QWEN_API_KEY: 'test-qwen-key',
       },
     },
   },
+  
+  // Environment variables for process.env
+  setupFiles: ['<rootDir>/src/jest.env.js'],
   
   // Verbose output for debugging
   verbose: false,

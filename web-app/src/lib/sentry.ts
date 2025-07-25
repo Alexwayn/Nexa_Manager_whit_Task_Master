@@ -1,12 +1,9 @@
 import * as Sentry from '@sentry/react';
-
-// Environment configuration
-const isProduction = import.meta.env.PROD;
-const isDevelopment = import.meta.env.DEV;
+import { getEnvVar, isDevelopment, isProduction } from '@/utils/env';
 
 // Sentry DSN - In production, this should come from environment variables
 // For now, using a placeholder that would be configured in production
-const SENTRY_DSN = import.meta.env.VITE_SENTRY_DSN || '';
+const SENTRY_DSN = getEnvVar('VITE_SENTRY_DSN') || '';
 
 export interface SentryConfig {
   dsn: string;
@@ -21,9 +18,9 @@ export interface SentryConfig {
 export const sentryConfig: SentryConfig = {
   dsn: SENTRY_DSN,
   environment:
-    import.meta.env.VITE_SENTRY_ENVIRONMENT || (isProduction ? 'production' : 'development'),
-  tracesSampleRate: isProduction ? 0.1 : 1.0,
-  replaysSessionSampleRate: isProduction ? 0.1 : 0.5,
+    getEnvVar('VITE_SENTRY_ENVIRONMENT') || (isProduction() ? 'production' : 'development'),
+  tracesSampleRate: isProduction() ? 0.1 : 1.0,
+  replaysSessionSampleRate: isProduction() ? 0.1 : 0.5,
   replaysOnErrorSampleRate: 1.0,
   maxBreadcrumbs: 100,
   attachStacktrace: true,
@@ -33,7 +30,7 @@ export const initSentry = (): void => {
   // Skip initialization if DSN is not provided
   if (!sentryConfig.dsn) {
     // In development, don't show warning to reduce console noise
-    if (isDevelopment) {
+    if (isDevelopment()) {
       console.debug('Sentry DSN not provided. Error monitoring is disabled.');
     }
     return;
@@ -50,12 +47,12 @@ export const initSentry = (): void => {
       attachStacktrace: sentryConfig.attachStacktrace,
 
       // Release information
-      release: import.meta.env.VITE_APP_VERSION || '1.0.0',
+      release: getEnvVar('VITE_APP_VERSION') || '1.0.0',
 
       // Performance monitoring
       beforeSend(event) {
         // Filter out development-only errors
-        if (isDevelopment) {
+        if (isDevelopment()) {
           // Filter out common development warnings
           if (event.message?.includes('ResizeObserver loop')) {
             return null;
@@ -80,7 +77,7 @@ export const initSentry = (): void => {
       // Configure breadcrumb filtering
       beforeBreadcrumb(breadcrumb) {
         // Filter out noisy breadcrumbs in development
-        if (isDevelopment && breadcrumb.category === 'console') {
+        if (isDevelopment() && breadcrumb.category === 'console') {
           return null;
         }
 
@@ -88,7 +85,7 @@ export const initSentry = (): void => {
       },
     });
 
-    if (isDevelopment) {
+    if (isDevelopment()) {
       console.log('Sentry initialized for development');
     }
   } catch (error) {
@@ -209,7 +206,7 @@ export const sentryPerformance = {
       op,
       finish: () => {
         // Log completion for debugging
-        if (isDevelopment) {
+        if (isDevelopment()) {
           console.log(`Transaction completed: ${name} (${op})`);
         }
       },
@@ -227,7 +224,7 @@ export const sentryPerformance = {
         if (result && typeof result.then === 'function') {
           return result.finally(() => {
             const end = globalThis.performance?.now ? globalThis.performance.now() : Date.now();
-            if (isDevelopment) {
+            if (isDevelopment()) {
               console.log(`Function ${name} took ${end - start}ms`);
             }
           });
@@ -235,14 +232,14 @@ export const sentryPerformance = {
 
         // Handle synchronous functions
         const end = globalThis.performance?.now ? globalThis.performance.now() : Date.now();
-        if (isDevelopment) {
+        if (isDevelopment()) {
           console.log(`Function ${name} took ${end - start}ms`);
         }
 
         return result;
       } catch (error) {
         const end = globalThis.performance?.now ? globalThis.performance.now() : Date.now();
-        if (isDevelopment) {
+        if (isDevelopment()) {
           console.log(`Function ${name} failed after ${end - start}ms`);
         }
         throw error;

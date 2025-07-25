@@ -19,7 +19,7 @@ A comprehensive business management platform built with React 19, TypeScript, an
 - 🧾 Invoice and quote generation with PDF export
 - 📅 Calendar and event management
 - 📧 **Email Management System** - Full-featured email client with IMAP/SMTP support
-- 📄 **Document Scanner** - Advanced AI-powered document digitization with multi-provider OCR architecture, intelligent fallback systems, comprehensive image optimization for API cost reduction, and comprehensive Supabase-integrated document management
+- 📄 **Document Scanner** - Advanced AI-powered document digitization with multi-provider OCR architecture, intelligent fallback systems, comprehensive batch processing with job management and progress tracking, comprehensive image optimization for API cost reduction, comprehensive Supabase-integrated document management, and secure document sharing with permission-based access controls
 - 📈 Advanced reporting and analytics
 - 🌍 Multi-language support (Italian/English)
 - 🔐 Secure authentication with MFA
@@ -169,6 +169,9 @@ VITE_EMAIL_STORAGE_BUCKET=email-attachments
 
 ## 📚 Documentation
 
+- [Document Scanner System](docs/SCANNER_SYSTEM.md) - Complete scanner architecture and usage
+- [Image Optimization Service](docs/IMAGE_OPTIMIZATION_SERVICE.md) - Advanced image optimization guide
+- [Testing Documentation](docs/TESTING.md) - Comprehensive testing guide and coverage
 - [Email System Documentation](docs/EMAIL_SYSTEM.md)
 - [API Documentation](docs/reports/API.md)
 - [Architecture Decision Records](docs/adr/)
@@ -243,6 +246,13 @@ The document scanner system provides AI-powered document digitization capabiliti
 - **Real-time Processing**: Live status updates during image processing, OCR, and document saving
 - **Error Handling**: Comprehensive error management with user-friendly feedback and recovery
 - **Business Integration**: Direct integration with client records and project management
+- **Document Sharing**: Secure document sharing with permission-based access controls
+  - **Access Level Management**: View, download, and edit permissions
+  - **Public Link Generation**: Secure shareable links with optional expiration
+  - **Email Notifications**: Automated notifications for sharing events
+  - **Activity Tracking**: Comprehensive access logging and audit trails
+  - **Multi-User Support**: Share with multiple recipients simultaneously
+  - **External User Support**: Share with users outside the organization
 
 ### TypeScript Interfaces
 
@@ -259,7 +269,11 @@ The scanner system uses comprehensive TypeScript interfaces located in `src/type
 - `CameraService` - Camera access and image capture functionality
 - `FileUploadService` - File validation and processing
 - `ImageProcessingService` - Image enhancement and document optimization
+- `ImageOptimizationService` - Advanced image optimization for API cost reduction
 - `AIOCRService` - AI-powered text extraction with multiple providers
+- `BatchProcessingService` - Multi-document processing with job management
+- `RateLimitingService` - Request throttling and quota management
+- `ResultCacheService` - OCR result caching with persistence
 - `DocumentStorageService` - Document persistence and retrieval
 
 #### Configuration
@@ -284,8 +298,18 @@ The scanner system uses comprehensive TypeScript interfaces located in `src/type
 ✅ **AI OCR Service Architecture** - Complete
 - Multi-provider OCR factory with OpenAI Vision and Qwen integration
 - Intelligent fallback service with degradation strategies
+- Comprehensive batch processing service with job management
+- Rate limiting and quota management with token bucket algorithm
+- Result caching service with persistence and eviction policies
 - Comprehensive error handling and retry mechanisms
 - Real-time provider status monitoring and health checks
+
+✅ **Image Processing & Optimization** - Complete
+- Advanced image optimization service for API cost reduction
+- OCR-optimized processing with smart compression
+- Web display optimization and thumbnail generation
+- Batch processing capabilities with error handling
+- Analysis and recommendation system with size estimation
 
 ✅ **Document Storage & Management** - Complete
 - Full Supabase integration with PostgreSQL backend
@@ -294,10 +318,17 @@ The scanner system uses comprehensive TypeScript interfaces located in `src/type
 - Access logging and audit trails with RLS security
 - Statistics and analytics with storage optimization
 
+✅ **Testing & Quality Assurance** - Complete
+- Comprehensive unit test suite for all core services
+- Integration tests for end-to-end workflows
+- Error handling and recovery testing
+- Provider fallback mechanism testing
+- Performance and scalability testing
+
 🔄 **In Development**
 - CameraCapture, FileUpload, and DocumentPreview component implementations
-- Image processing service implementation
-- Error handling and optimization
+- Document sharing functionality with permission management
+- Advanced error boundaries and user experience improvements
 
 ### 🚨 Current Security Status
 - ✅ Authentication bypass system completely removed from all route protection

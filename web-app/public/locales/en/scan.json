@@ -73,5 +73,139 @@
     "filesSelected": "{{count}} files selected successfully!",
     "uploadSuccess": "Documents uploaded successfully!",
     "uploadError": "Error uploading documents. Please try again."
+  },
+  "sharing": {
+    "title": "Share Document",
+    "recipients": "Recipients",
+    "emailPlaceholder": "Enter email address",
+    "addRecipient": "Add another recipient",
+    "message": "Message",
+    "messagePlaceholder": "Add a message for recipients (optional)",
+    "allowPublicLink": "Generate public link",
+    "expiresAt": "Expires at",
+    "share": "Share Document",
+    "sharing": "Sharing...",
+    "copyLink": "Copy link",
+    "documentInfo": "Category: {{category}} • Created: {{created}}",
+    "accessLevel": {
+      "view": "View Only",
+      "download": "View & Download",
+      "edit": "Full Access",
+      "viewDescription": "Can view the document only",
+      "downloadDescription": "Can view and download the document",
+      "editDescription": "Can view, download, and edit the document"
+    },
+    "success": {
+      "title": "Document Shared Successfully",
+      "message": "Recipients will receive an email notification with access to the document."
+    },
+    "error": {
+      "title": "Sharing Failed"
+    },
+    "errors": {
+      "noValidRecipients": "Please add at least one valid email address",
+      "invalidEmail": "Please enter a valid email address",
+      "shareFailure": "Failed to share document. Please try again.",
+      "loadSharesFailure": "Failed to load document shares",
+      "revokeFailure": "Failed to revoke document access",
+      "accessDenied": "Access denied or document not found",
+      "loadDocumentFailure": "Failed to load shared document",
+      "downloadFailure": "Failed to download document",
+      "invalidShareToken": "Invalid or expired share link"
+    },
+    "activeShares": "Active Shares",
+    "noShares": {
+      "title": "No active shares",
+      "description": "This document hasn't been shared with anyone yet."
+    },
+    "sharedOn": "Shared on {{date}}",
+    "accessCount": "{{count}} access",
+    "accessCount_plural": "{{count}} accesses",
+    "lastAccessed": "Last accessed {{date}}",
+    "expires": "Expires {{date}}",
+    "expired": "Expired {{date}}",
+    "revokeAccess": "Revoke access",
+    "sharedDocument": "Shared Document",
+    "loadingDocument": "Loading shared document...",
+    "documentNotFound": "Document not found"
+  },
+  "document": {
+    "category": "Category",
+    "created": "Created",
+    "fileSize": "File Size",
+    "ocrConfidence": "OCR Confidence",
+    "description": "Description",
+    "tags": "Tags",
+    "extractedText": "Extracted Text"
+  },
+  "accessHistory": {
+    "tabs": {
+      "history": "Access History",
+      "statistics": "Statistics"
+    },
+    "actions": {
+      "view": "Viewed",
+      "download": "Downloaded",
+      "edit": "Edited",
+      "share": "Shared",
+      "revokeShare": "Revoked Share"
+    },
+    "filters": {
+      "action": "Action",
+      "userEmail": "User Email",
+      "userEmailPlaceholder": "Filter by email...",
+      "dateRange": "Date Range"
+    },
+    "noActivity": {
+      "title": "No activity yet",
+      "description": "Document access activity will appear here."
+    },
+    "stats": {
+      "totalAccesses": "Total Accesses",
+      "uniqueUsers": "Unique Users",
+      "views": "Views",
+      "downloads": "Downloads",
+      "topAccessors": "Top Accessors",
+      "recentActivity": "Recent Activity",
+      "lastAccess": "Last access: {{date}}",
+      "accessCount": "{{count}} access",
+      "accessCount_plural": "{{count}} accesses"
+    },
+    "errors": {
+      "loadAccessHistoryFailure": "Failed to load access history"
+    }
+  },
+  "notifications": {
+    "title": "Notification Settings",
+    "saved": "Settings saved",
+    "saveError": "Failed to save",
+    "documentActivity": {
+      "title": "Document Activity",
+      "access": "Document Access",
+      "accessDescription": "Notify when someone views your shared documents",
+      "download": "Document Downloads",
+      "downloadDescription": "Notify when someone downloads your shared documents",
+      "share": "Document Sharing",
+      "shareDescription": "Notify when your documents are shared with others"
+    },
+    "digest": {
+      "title": "Activity Digest",
+      "daily": "Daily Digest",
+      "dailyDescription": "Receive a daily summary of document activity",
+      "weekly": "Weekly Report",
+      "weeklyDescription": "Receive a weekly report of document activity"
+    },
+    "delivery": {
+      "title": "Delivery Method",
+      "email": "Email Notifications",
+      "emailDescription": "Receive notifications via email",
+      "inApp": "In-App Notifications",
+      "inAppDescription": "Show notifications in the application"
+    },
+    "helpText": "You can customize which document activities trigger notifications and how you receive them.",
+    "errors": {
+      "loadPreferencesFailure": "Failed to load notification preferences",
+      "updatePreferencesFailure": "Failed to update notification preferences"
+    }
   }
 }

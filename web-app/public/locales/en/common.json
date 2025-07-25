@@ -89,6 +89,17 @@
   "daysAgo": "{{count}} days ago",
   "startDate": "Start Date",
   "endDate": "End Date",
+  "time": {
+    "justNow": "Just now",
+    "minutesAgo": "{{count}} minutes ago",
+    "hoursAgo": "{{count}} hours ago",
+    "daysAgo": "{{count}} days ago"
+  },
+  "anonymous": "Anonymous",
+  "filters": "Filters",
+  "clearFilters": "Clear Filters",
+  "all": "All",
+  "goHome": "Go Home",
 
   "details": "Details",
   "loadingInteractiveCharts": "Loading interactive charts...",

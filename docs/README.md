@@ -45,6 +45,7 @@ docs/
 - [Scanner Feature README](../web-app/src/components/scanner/README.md) - Component implementation status
 - [Scanner Types Documentation](../web-app/src/types/scanner.ts) - TypeScript interfaces and types
 - [Scanner Implementation Tasks](../.kiro/specs/document-scanner/tasks.md) - Development progress tracking
+- [Document Sharing System](../web-app/docs/DOCUMENT_SHARING.md) - Comprehensive document sharing documentation
 
 ### 🗄️ Database
 - [Database Schema](database/README.md)
@@ -63,7 +64,7 @@ docs/
 - ✅ Invoice management
 - ✅ Client management
 - 🆕 **Email Management System** - Comprehensive email client with IMAP/SMTP support
-- 🔄 **Document Scanner System** - AI-powered document digitization with advanced multi-provider OCR architecture (UI complete, OCR services complete, image optimization complete, document storage complete, remaining components in development)
+- ✅ **Document Scanner System** - AI-powered document digitization with advanced multi-provider OCR architecture, comprehensive image optimization, document storage, and secure document sharing (complete implementation)
 - 🔄 Ongoing improvements and optimizations
 
 ### 🔐 Security Status

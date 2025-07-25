@@ -37,5 +37,139 @@
   },
   "notifications": {
     "uploadSuccess": "{{count}} ricevute caricate con successo!"
+  },
+  "sharing": {
+    "title": "Condividi Documento",
+    "recipients": "Destinatari",
+    "emailPlaceholder": "Inserisci indirizzo email",
+    "addRecipient": "Aggiungi altro destinatario",
+    "message": "Messaggio",
+    "messagePlaceholder": "Aggiungi un messaggio per i destinatari (opzionale)",
+    "allowPublicLink": "Genera link pubblico",
+    "expiresAt": "Scade il",
+    "share": "Condividi Documento",
+    "sharing": "Condivisione...",
+    "copyLink": "Copia link",
+    "documentInfo": "Categoria: {{category}} • Creato: {{created}}",
+    "accessLevel": {
+      "view": "Solo Visualizzazione",
+      "download": "Visualizza e Scarica",
+      "edit": "Accesso Completo",
+      "viewDescription": "Può solo visualizzare il documento",
+      "downloadDescription": "Può visualizzare e scaricare il documento",
+      "editDescription": "Può visualizzare, scaricare e modificare il documento"
+    },
+    "success": {
+      "title": "Documento Condiviso con Successo",
+      "message": "I destinatari riceveranno una notifica email con l'accesso al documento."
+    },
+    "error": {
+      "title": "Condivisione Fallita"
+    },
+    "errors": {
+      "noValidRecipients": "Aggiungi almeno un indirizzo email valido",
+      "invalidEmail": "Inserisci un indirizzo email valido",
+      "shareFailure": "Impossibile condividere il documento. Riprova.",
+      "loadSharesFailure": "Impossibile caricare le condivisioni del documento",
+      "revokeFailure": "Impossibile revocare l'accesso al documento",
+      "accessDenied": "Accesso negato o documento non trovato",
+      "loadDocumentFailure": "Impossibile caricare il documento condiviso",
+      "downloadFailure": "Impossibile scaricare il documento",
+      "invalidShareToken": "Link di condivisione non valido o scaduto"
+    },
+    "activeShares": "Condivisioni Attive",
+    "noShares": {
+      "title": "Nessuna condivisione attiva",
+      "description": "Questo documento non è ancora stato condiviso con nessuno."
+    },
+    "sharedOn": "Condiviso il {{date}}",
+    "accessCount": "{{count}} accesso",
+    "accessCount_plural": "{{count}} accessi",
+    "lastAccessed": "Ultimo accesso {{date}}",
+    "expires": "Scade {{date}}",
+    "expired": "Scaduto {{date}}",
+    "revokeAccess": "Revoca accesso",
+    "sharedDocument": "Documento Condiviso",
+    "loadingDocument": "Caricamento documento condiviso...",
+    "documentNotFound": "Documento non trovato"
+  },
+  "document": {
+    "category": "Categoria",
+    "created": "Creato",
+    "fileSize": "Dimensione File",
+    "ocrConfidence": "Confidenza OCR",
+    "description": "Descrizione",
+    "tags": "Tag",
+    "extractedText": "Testo Estratto"
+  },
+  "accessHistory": {
+    "tabs": {
+      "history": "Cronologia Accessi",
+      "statistics": "Statistiche"
+    },
+    "actions": {
+      "view": "Visualizzato",
+      "download": "Scaricato",
+      "edit": "Modificato",
+      "share": "Condiviso",
+      "revokeShare": "Condivisione Revocata"
+    },
+    "filters": {
+      "action": "Azione",
+      "userEmail": "Email Utente",
+      "userEmailPlaceholder": "Filtra per email...",
+      "dateRange": "Intervallo Date"
+    },
+    "noActivity": {
+      "title": "Nessuna attività ancora",
+      "description": "L'attività di accesso al documento apparirà qui."
+    },
+    "stats": {
+      "totalAccesses": "Accessi Totali",
+      "uniqueUsers": "Utenti Unici",
+      "views": "Visualizzazioni",
+      "downloads": "Download",
+      "topAccessors": "Principali Utilizzatori",
+      "recentActivity": "Attività Recente",
+      "lastAccess": "Ultimo accesso: {{date}}",
+      "accessCount": "{{count}} accesso",
+      "accessCount_plural": "{{count}} accessi"
+    },
+    "errors": {
+      "loadAccessHistoryFailure": "Impossibile caricare la cronologia degli accessi"
+    }
+  },
+  "notifications": {
+    "title": "Impostazioni Notifiche",
+    "saved": "Impostazioni salvate",
+    "saveError": "Salvataggio fallito",
+    "documentActivity": {
+      "title": "Attività Documento",
+      "access": "Accesso Documento",
+      "accessDescription": "Notifica quando qualcuno visualizza i tuoi documenti condivisi",
+      "download": "Download Documento",
+      "downloadDescription": "Notifica quando qualcuno scarica i tuoi documenti condivisi",
+      "share": "Condivisione Documento",
+      "shareDescription": "Notifica quando i tuoi documenti vengono condivisi con altri"
+    },
+    "digest": {
+      "title": "Riepilogo Attività",
+      "daily": "Riepilogo Giornaliero",
+      "dailyDescription": "Ricevi un riepilogo giornaliero dell'attività dei documenti",
+      "weekly": "Report Settimanale",
+      "weeklyDescription": "Ricevi un report settimanale dell'attività dei documenti"
+    },
+    "delivery": {
+      "title": "Metodo di Consegna",
+      "email": "Notifiche Email",
+      "emailDescription": "Ricevi notifiche via email",
+      "inApp": "Notifiche In-App",
+      "inAppDescription": "Mostra notifiche nell'applicazione"
+    },
+    "helpText": "Puoi personalizzare quali attività dei documenti attivano le notifiche e come le ricevi.",
+    "errors": {
+      "loadPreferencesFailure": "Impossibile caricare le preferenze di notifica",
+      "updatePreferencesFailure": "Impossibile aggiornare le preferenze di notifica"
+    }
   }
 }

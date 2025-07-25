@@ -1,4 +1,11 @@
-import BatchProcessingService from '@/services/scanner/batchProcessingService';
+import BatchProcessingService, { 
+  BatchJob, 
+  BatchProcessingOptions, 
+  BatchProgress, 
+  BatchResult, 
+  BatchError, 
+  BatchJobStatus 
+} from '@/services/scanner/batchProcessingService';
 import { AIOCRService } from '@/services/scanner/ocrService';
 import ImageOptimizationService from '@/services/scanner/imageOptimizationService';
 import ResultCacheService from '@/services/scanner/resultCacheService';
@@ -12,8 +19,8 @@ jest.mock('@/utils/Logger');
 jest.mock('@/lib/sentry');
 
 const mockAIOCRService = AIOCRService as jest.MockedClass<typeof AIOCRService>;
-const mockImageOptimizationService = ImageOptimizationService as jest.MockedClass<typeof ImageOptimizationService>;
-const mockResultCacheService = ResultCacheService as jest.MockedClass<typeof ResultCacheService>;
+const mockImageOptimizationService = ImageOptimizationService as any;
+const mockResultCacheService = ResultCacheService as any;
 
 describe('BatchProcessingService', () => {
   let service: BatchProcessingService;
@@ -72,8 +79,8 @@ describe('BatchProcessingService', () => {
 
     // Setup static method mocks
     mockAIOCRService.mockImplementation(() => mockOCRInstance);
-    mockImageOptimizationService.getInstance.mockReturnValue(mockOptimizationInstance);
-    mockResultCacheService.getInstance.mockReturnValue(mockCacheInstance);
+    jest.spyOn(mockImageOptimizationService, 'getInstance').mockReturnValue(mockOptimizationInstance);
+    jest.spyOn(mockResultCacheService, 'getInstance').mockReturnValue(mockCacheInstance);
 
     service = BatchProcessingService.getInstance();
   });

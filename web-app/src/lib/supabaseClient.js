@@ -1,9 +1,10 @@
 import { createClient } from '@supabase/supabase-js';
 import Logger from '@utils/Logger';
+import { getEnvVar } from '@/utils/env';
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
-const supabaseServiceRoleKey = import.meta.env.VITE_SUPABASE_SERVICE_ROLE_KEY;
+const supabaseUrl = getEnvVar('VITE_SUPABASE_URL');
+const supabaseAnonKey = getEnvVar('VITE_SUPABASE_ANON_KEY');
+const supabaseServiceRoleKey = getEnvVar('VITE_SUPABASE_SERVICE_ROLE_KEY');
 
 // Enhanced debugging for deployment environments
 const debugEnvVars = () => {
@@ -18,15 +19,6 @@ const debugEnvVars = () => {
   if (supabaseAnonKey) {
     Logger.info('Supabase Anon Key (first 20 chars):', supabaseAnonKey.substring(0, 20) + '...');
   }
-
-  // List all environment variables starting with VITE_
-  const viteVars = {};
-  Object.keys(import.meta.env).forEach(key => {
-    if (key.startsWith('VITE_')) {
-      viteVars[key] = import.meta.env[key] ? 'Set' : 'Missing';
-    }
-  });
-  Logger.info('All VITE_ environment variables:', viteVars);
 };
 
 // Run debug check

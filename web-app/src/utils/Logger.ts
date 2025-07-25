@@ -3,6 +3,8 @@
  * Provides consistent logging across the application with different log levels
  */
 
+import { isDevelopment } from './env';
+
 const LOG_LEVELS = {
   ERROR: 0,
   WARN: 1,
@@ -20,18 +22,8 @@ class Logger {
     // Default to INFO level, can be configured via environment variable
     this.level = LOG_LEVELS.INFO;
 
-    // Environment detection - simplified for browser use
-    let isDevelopment = false;
-
-    // Use Vite's import.meta.env for browser environment
-    try {
-      isDevelopment = import.meta.env.MODE === 'development';
-    } catch (error) {
-      // Fallback to false for production builds
-      isDevelopment = false;
-    }
-
-    if (isDevelopment) {
+    // Use environment utility for cross-environment compatibility
+    if (isDevelopment()) {
       this.level = LOG_LEVELS.DEBUG;
     }
   }

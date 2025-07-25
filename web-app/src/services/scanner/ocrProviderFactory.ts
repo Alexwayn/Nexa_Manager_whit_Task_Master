@@ -8,6 +8,7 @@ import type {
   TableData 
 } from '@/types/scanner';
 import { OCRProvider } from '@/types/scanner';
+import { getEnvVar } from '@/utils/env';
 
 // Base OCR Provider interface
 export interface IOCRProvider {
@@ -122,7 +123,7 @@ export class OCRProviderFactory {
     const configs = new Map<OCRProvider, OCRProviderConfig>();
 
     // OpenAI configuration
-    const openaiKey = import.meta.env.VITE_OPENAI_API_KEY;
+    const openaiKey = getEnvVar('VITE_OPENAI_API_KEY');
     if (openaiKey) {
       configs.set(OCRProvider.OpenAI, {
         apiKey: openaiKey,
@@ -137,7 +138,7 @@ export class OCRProviderFactory {
     }
 
     // Qwen configuration
-    const qwenKey = import.meta.env.VITE_QWEN_API_KEY;
+    const qwenKey = getEnvVar('VITE_QWEN_API_KEY');
     if (qwenKey) {
       configs.set(OCRProvider.Qwen, {
         apiKey: qwenKey,
