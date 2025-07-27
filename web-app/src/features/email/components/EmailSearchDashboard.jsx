@@ -9,13 +9,13 @@ import {
   InboxIcon,
 } from '@heroicons/react/24/outline';
 import { useTranslation } from 'react-i18next';
-import { useEmailSearch } from '../../hooks/useEmailSearch';
-import { useEmails } from '../../hooks/useEmails';
+import { useEmailSearch } from '../hooks/useEmailSearch';
+import { useEmails } from '../hooks/useEmails';
 import EmailSearch from './EmailSearch';
 import EmailSearchResults from './EmailSearchResults';
-import { Button } from '../ui/Button';
-import { Card } from '../ui/Card';
-import { Badge } from '../ui/Badge';
+import { Button } from '@shared/components';
+import { Card } from '@shared/components';
+import { Badge } from '@shared/components';
 
 /**
  * Email Search Dashboard Component

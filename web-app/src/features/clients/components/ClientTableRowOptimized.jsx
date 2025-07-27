@@ -9,7 +9,7 @@ import {
   DocumentTextIcon,
   CurrencyEuroIcon,
 } from '@heroicons/react/24/outline';
-import ComponentErrorBoundary from '@shared/components/feedback/ComponentErrorBoundary';
+import ComponentErrorBoundary from '@shared/components';
 import { useTranslation } from 'react-i18next';
 
 const ClientTableRowOptimized = memo(

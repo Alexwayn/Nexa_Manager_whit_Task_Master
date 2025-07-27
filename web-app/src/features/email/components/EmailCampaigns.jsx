@@ -12,7 +12,7 @@ import {
   CalendarIcon,
   ClockIcon
 } from '@heroicons/react/24/outline';
-import { useEmailCampaigns } from '@hooks/useEmailAutomation';
+import { useEmailCampaigns } from '@features/email';
 import { format } from 'date-fns';
 
 const EmailCampaigns = () => {

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ChartBarIcon, ClockIcon, ServerIcon, CpuChipIcon } from '@heroicons/react/24/outline';
-import emailCacheService from '@lib/emailCacheService';
-import emailSyncService from '@lib/emailSyncService';
+import { emailCacheService, emailSyncService } from '@features/email';
 
 /**
  * EmailPerformanceMonitor - Component for monitoring email system performance

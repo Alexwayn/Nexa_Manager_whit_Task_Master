@@ -11,7 +11,7 @@ import {
   CogIcon,
   BoltIcon,
 } from '@heroicons/react/24/outline';
-import emailQueueService from '@lib/emailQueueService';
+import emailQueueService from '../services/emailQueueService';
 import { useTranslation } from 'react-i18next';
 
 const EmailQueueManager = () => {

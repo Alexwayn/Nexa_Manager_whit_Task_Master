@@ -1,0 +1,102 @@
+/* ========================================
+   CARD COMPONENTS
+   ======================================== */
+
+@layer components {
+  .card {
+    @apply rounded-lg border bg-white text-gray-900 shadow-sm dark:border-gray-800 dark:bg-gray-800 dark:text-gray-50;
+  }
+
+  .card-header {
+    @apply flex flex-col space-y-1.5 p-6;
+  }
+
+  .card-title {
+    @apply text-2xl font-semibold leading-none tracking-tight;
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    font-weight: 700;
+  }
+
+  .card-description {
+    @apply text-sm text-gray-500 dark:text-gray-400;
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    font-weight: 500;
+  }
+
+  .card-content {
+    @apply p-6 pt-0;
+  }
+
+  .card-footer {
+    @apply flex items-center p-6 pt-0;
+  }
+
+  /* Dashboard specific styles */
+  .dashboard-card {
+    @apply relative overflow-hidden rounded-xl bg-white p-6 shadow-sm transition-all duration-300 hover:shadow-lg dark:bg-gray-800;
+  }
+
+  .dashboard-card:hover {
+    @apply transform scale-[1.02];
+  }
+
+  .dashboard-card::before {
+    content: '';
+    @apply absolute inset-0 bg-gradient-to-r from-blue-500/5 to-purple-500/5 opacity-0 transition-opacity duration-300;
+  }
+
+  .dashboard-card:hover::before {
+    @apply opacity-100;
+  }
+
+  .card-icon {
+    @apply h-12 w-12 rounded-lg bg-gradient-to-r from-blue-500 to-purple-600 p-3 text-white shadow-lg;
+  }
+
+  .card-icon:hover {
+    @apply transform scale-110 transition-transform duration-200;
+  }
+
+  /* Hover glow effect for cards */
+  .card-hover-glow {
+    @apply relative transition-all duration-300;
+  }
+
+  .card-hover-glow::before {
+    content: '';
+    @apply absolute -inset-0.5 rounded-lg bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 opacity-0 blur transition-opacity duration-300;
+    z-index: -1;
+  }
+
+  .card-hover-glow:hover::before {
+    @apply opacity-20;
+  }
+
+  /* Enhanced KPI Card Styles */
+  .kpi-card {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.7));
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 
+      0 8px 32px rgba(0, 0, 0, 0.1),
+      inset 0 1px 0 rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(10px);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .kpi-card:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 
+      0 20px 40px rgba(0, 0, 0, 0.15),
+      inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  }
+
+  /* Glassmorphism Effect */
+  .glass-effect {
+    background: rgba(255, 255, 255, 0.25);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+  }
+}

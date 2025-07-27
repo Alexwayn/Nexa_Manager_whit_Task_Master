@@ -22,23 +22,23 @@ import {
   TrashIcon,
 } from '@heroicons/react/24/outline';
 import { useTranslation } from 'react-i18next';
-import Footer from '@components/shared/Footer';
+import Footer from '@shared/components/Footer';
 
 // Custom hooks for separation of concerns
-import { useClients } from '@hooks/useClients';
+import { useClients } from '@features/clients/hooks/useClients';
 
 // Import optimized components
-import ClientModal from '@components/clients/ClientModal';
-import DeleteConfirmationModal from '@components/clients/DeleteConfirmationModal';
-import ErrorBoundary, { withErrorBoundary } from '@shared/components/feedback/ErrorBoundary';
+import { ClientModal } from '@features/clients';
+import { DeleteConfirmationModal } from '@features/clients';
+import { ErrorBoundary } from '@shared/components';
 
 // Import services for export and reporting
-import clientService from '@lib/clientService';
+import { clientService } from '@features/clients';
 import { notify } from '@lib/uiUtils';
 import Logger from '@utils/Logger';
 
 // Lazy load heavy components for better performance
-const InvoiceModal = lazy(() => import('@components/clients/InvoiceModal'));
+const InvoiceModal = lazy(() => import('@features/clients').then(module => ({ default: module.InvoiceModal })));
 
 // Loading component for suspense
 const LoadingSpinner = ({ className = 'h-8 w-8' }) => (

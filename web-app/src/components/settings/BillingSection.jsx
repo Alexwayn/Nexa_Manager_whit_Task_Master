@@ -1,8 +1,8 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { CreditCardIcon, PlusIcon, ArrowUpTrayIcon } from '@heroicons/react/24/outline';
-import SettingsFormSection from '@components/settings/SettingsFormSection';
-import SettingsTable from '@components/settings/SettingsTable';
+import SettingsFormSection from './SettingsFormSection';
+import SettingsTable from './SettingsTable';
 
 const BillingSection = ({ setNotification }) => {
   const { t } = useTranslation('settings');

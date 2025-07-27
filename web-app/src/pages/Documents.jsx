@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import Footer from '@shared/components/layout/Footer';
-import ErrorBoundary from '@shared/components/feedback/ErrorBoundary';
+import { Footer } from '@shared/components';
+import { ErrorBoundary } from '@shared/components';
 // Add modal imports
-import DocumentUploadModal from '@components/documents/DocumentUploadModal';
-import CreateFolderModal from '@components/documents/CreateFolderModal';
-import ShareDocumentsModal from '@components/documents/ShareDocumentsModal';
-import DocumentAnalyticsModal from '@components/documents/DocumentAnalyticsModal';
+import DocumentUploadModal from '@features/documents/components/DocumentUploadModal';
+import CreateFolderModal from '@features/documents/components/CreateFolderModal';
+import ShareDocumentsModal from '@features/documents/components/ShareDocumentsModal';
+import DocumentAnalyticsModal from '@features/documents/components/DocumentAnalyticsModal';
 import {
   CloudArrowUpIcon,
   DocumentDuplicateIcon,
@@ -41,7 +41,7 @@ import {
 } from '@heroicons/react/24/solid';
 import { Doughnut } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
-import '../styles/typography-improvements.css';
+// Typography styles are now imported globally through shared styles
 
 // Register Chart.js components
 ChartJS.register(ArcElement, Tooltip, Legend);

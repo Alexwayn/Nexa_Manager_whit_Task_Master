@@ -11,7 +11,7 @@ export { default as ClientSearchFilter } from './components/ClientFilters'; // U
 export { default as ClientTable } from './components/ClientTable';
 export { default as ClientTableRow } from './components/ClientTable'; // Using ClientTable.jsx as fallback
 export { default as ClientTableRowOptimized } from './components/ClientTable'; // Using ClientTable.jsx as fallback
-export { default as DeleteConfirmationModal } from './components/ClientModal'; // Using ClientModal.jsx as fallback
+export { default as DeleteConfirmationModal } from './components/DeleteConfirmationModal';
 export { default as InvoiceModal } from './components/ClientModal'; // Using ClientModal.jsx as fallback
 
 // Hooks

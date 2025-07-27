@@ -14,7 +14,7 @@ import {
   CheckIcon,
   XMarkIcon
 } from '@heroicons/react/24/outline';
-import reportingService from '../../lib/reportingService';
+import { reportingService } from '@shared/services';
 
 const ReportHistory = ({ isOpen, onClose }) => {
   const [reports, setReports] = useState([]);

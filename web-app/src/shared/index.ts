@@ -1,19 +1,30 @@
-// Shared resources - cross-cutting concerns used across features
+// Shared Module Public API
+// This file exports all shared utilities, components, hooks, and configurations
 
-// Components
+// Export components
 export * from './components';
 
-// Hooks
+// Export hooks
 export * from './hooks';
 
-// Utilities
+// Export utilities
 export * from './utils';
 
-// Types
+// Export types
 export * from './types';
 
-// Constants
+// Export constants (with alias for BREAKPOINTS to avoid conflict)
 export * from './constants';
 
-// Services (existing)
+// Export services
 export * from './services';
+
+// Export styles (with alias for BREAKPOINTS to avoid conflict)
+export {
+  THEME_COLORS,
+  SPACING,
+  BREAKPOINTS as STYLE_BREAKPOINTS
+} from './styles';
+
+// Export types separately for isolated modules
+export type { CSSProperties } from 'react';

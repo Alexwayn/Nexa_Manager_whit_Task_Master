@@ -8,7 +8,7 @@ import {
   ArrowDownTrayIcon,
   FunnelIcon,
 } from '@heroicons/react/24/outline';
-import LoadingSkeleton from '@shared/components/feedback/LoadingSkeleton';
+import { LoadingSkeleton } from '@shared/components';
 import { usePerformanceMonitor } from '@utils/performance';
 
 // Row height constants

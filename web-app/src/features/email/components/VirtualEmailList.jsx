@@ -11,7 +11,7 @@ import {
 } from '@heroicons/react/24/outline';
 import { StarIcon as StarSolidIcon } from '@heroicons/react/24/solid';
 import { useTranslation } from 'react-i18next';
-import EmailSecurityIndicator from '../EmailSecurityIndicator';
+import EmailSecurityIndicator from '../../../components/EmailSecurityIndicator';
 
 /**
  * VirtualEmailList Component - High-performance virtual scrolling email list

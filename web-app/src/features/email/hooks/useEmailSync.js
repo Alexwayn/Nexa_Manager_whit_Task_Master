@@ -1,9 +1,9 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useUser } from '@clerk/clerk-react';
-import { useEmailContext } from '@context/EmailContext';
-import { useWebSocketContext } from '@providers/WebSocketProvider';
-import emailSyncService from '@lib/emailSyncService';
-import Logger from '@utils/Logger';
+import { useEmailContext } from '@shared/hooks/providers';
+import { useWebSocketContext } from '../../../providers/WebSocketProvider';
+import { emailSyncService } from '@features/email';
+import Logger from '@shared/utils/logger';
 
 /**
  * Custom hook for email synchronization

@@ -1,7 +1,7 @@
-import { QuotePdfService } from '@features/financial/services/quotePdfService';
+import { quotePdfService } from '@features/financial';
 import { supabase } from '@lib/supabaseClient';
 import Logger from '@utils/Logger';
-import emailProviderService from '@features/email/services/emailProviderService';
+import { emailProviderService } from '@features/email';
 
 /**
  * EmailService - Professional email management with templates and tracking
@@ -409,7 +409,6 @@ ${data.companyName}
       const template = this.getEmailTemplate(templateType, emailData);
 
       // Generate PDF attachment
-      const quotePdfService = new QuotePdfService();
       const pdfBlob = await quotePdfService.generateBlob(quote);
       const pdfBase64 = await this.blobToBase64(pdfBlob);
 

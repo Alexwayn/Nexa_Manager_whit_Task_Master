@@ -2,14 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, useNavigate } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { ClerkProvider } from '@clerk/clerk-react';
-import { ThemeProvider } from '@context/OptimizedThemeContext';
-import { OrganizationProvider } from '@context/OrganizationContext';
-import { EmailProvider } from '@context/EmailContext';
+import { ThemeProvider, OrganizationProvider, EmailProvider } from '@/shared/hooks';
 import { QueryProvider } from "./providers/QueryProvider";
 import { WebSocketProvider } from './providers/WebSocketProvider';
 import AppRouter from '@router/AppRouter';
-import FloatingMicrophone from '@components/shared/FloatingMicrophone';
-import ErrorBoundary from '@shared/components/feedback/ErrorBoundary';
+import FloatingMicrophone from './components/shared/FloatingMicrophone';
+import { ErrorBoundary } from '@shared/components';
 // import LanguageForcer from '@components/debug/LanguageForcer'; // Removed debug component
 
 import { initToolbar } from '@stagewise/toolbar';

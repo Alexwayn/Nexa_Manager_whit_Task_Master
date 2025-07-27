@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import Footer from '@components/shared/Footer';
+import Footer from '@shared/components/Footer';
 import {
   CameraIcon,
   CloudArrowUpIcon,

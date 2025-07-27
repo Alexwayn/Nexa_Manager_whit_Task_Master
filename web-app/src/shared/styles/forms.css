@@ -1,0 +1,82 @@
+/* ========================================
+   FORM COMPONENTS
+   ======================================== */
+
+@layer components {
+  .input {
+    @apply flex h-10 w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-gray-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-700 dark:bg-gray-800 dark:ring-offset-gray-900 dark:placeholder:text-gray-400;
+  }
+}
+
+/* Stili per tutti gli input nei form */
+input[type='text'],
+input[type='email'],
+input[type='tel'],
+input[type='password'],
+input[type='number'],
+input[type='date'],
+input[type='search'],
+textarea,
+select {
+  padding: 0.75rem 1rem !important;
+  height: auto !important;
+  min-height: 2.75rem !important;
+  font-size: 1rem !important;
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif !important;
+  font-weight: 400 !important;
+}
+
+/* Aggiustamenti per le label */
+label {
+  margin-bottom: 0.5rem !important;
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif !important;
+  font-weight: 500 !important;
+}
+
+/* Stile per i gruppi di form */
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+/* Stile specifico per il container degli input */
+.input-container {
+  width: 100%;
+  position: relative;
+}
+
+/* Stili per titoli dei form */
+.form-title {
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif !important;
+  font-weight: 700 !important;
+}
+
+/* Stili per i pulsanti nei form */
+button {
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif !important;
+  font-weight: 500 !important;
+}
+
+/* Range slider styling */
+.slider::-webkit-slider-track {
+  @apply h-1 rounded-lg bg-gray-200 dark:bg-gray-700;
+}
+
+.slider::-webkit-slider-thumb {
+  @apply h-4 w-4 cursor-pointer rounded-full bg-blue-600 shadow appearance-none;
+}
+
+.slider::-moz-range-track {
+  @apply h-1 rounded-lg bg-gray-200 dark:bg-gray-700;
+}
+
+.slider::-moz-range-thumb {
+  @apply h-4 w-4 cursor-pointer rounded-full bg-blue-600 shadow border-none;
+}
+
+.slider:focus::-webkit-slider-thumb {
+  @apply ring-2 ring-blue-500 ring-offset-2;
+}
+
+.slider:focus::-moz-range-thumb {
+  @apply ring-2 ring-blue-500 ring-offset-2;
+}

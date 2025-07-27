@@ -3,7 +3,7 @@ import { useAuth } from '@clerk/clerk-react';
 import { SignIn } from '@clerk/clerk-react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import ErrorBoundary from '@shared/components/feedback/ErrorBoundary';
+import { ErrorBoundary } from '@shared/components';
 import {
   ChartBarIcon,
   DocumentTextIcon,
@@ -13,7 +13,7 @@ import {
   UserGroupIcon,
   CheckIcon,
 } from '@heroicons/react/24/outline';
-import nexaLogo from '../../../assets/logos/logo_nexa_footer.png';
+import nexaLogo from '@assets/logos/logo_nexa_footer.png';
 
 const Login = () => {
   const { isSignedIn } = useAuth();

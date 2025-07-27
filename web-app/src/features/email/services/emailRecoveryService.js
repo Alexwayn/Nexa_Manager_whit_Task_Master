@@ -1,8 +1,8 @@
-import emailErrorHandler from '@features/email/services/emailErrorHandler';
-import emailOfflineService from '@features/email/services/emailOfflineService';
+import { emailErrorHandler } from '@features/email';
+import { emailOfflineService } from '@features/email';
 import { supabase } from '@lib/supabaseClient';
 import Logger from '@utils/Logger';
-import { notify } from '@shared/utils/uiUtils';
+import { notify } from '@shared/utils';
 
 /**
  * Email Recovery Service

@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import Footer from '@components/shared/Footer';
+import Footer from '@shared/components/Footer';
 import {
   PencilIcon,
   InboxIcon,
@@ -30,22 +30,22 @@ import {
   ClockIcon,
 } from '@heroicons/react/24/outline';
 import { StarIcon as StarSolidIcon, CheckIcon } from '@heroicons/react/24/solid';
-import { useEmailContext } from '../context/EmailContext';
-import { useEmails } from '../hooks/useEmails';
-import { useEmailComposer } from '../hooks/useEmailComposer';
-import { useEmailPerformance, useEmailVirtualization } from '../hooks/useEmailPerformance';
-import EmailComposer from '../components/email/EmailComposer';
-import EmailSettings from '../components/email/EmailSettings';
+import { useEmailContext } from '@/shared/hooks/providers';
+import { useEmails } from '@features/email/hooks/useEmails';
+import { useEmailComposer } from '@features/email/hooks/useEmailComposer';
+import { useEmailPerformance, useEmailVirtualization } from '@features/email/hooks/useEmailPerformance';
+import EmailComposer from '@features/email/components/EmailComposer';
+import EmailSettings from '@features/email/components/EmailSettings';
 import EmailSecuritySettings from '../components/EmailSecuritySettings';
 import EmailSecurityIndicator from '../components/EmailSecurityIndicator';
-import AutomationDashboard from '../components/email/AutomationDashboard';
-import EmailSearchDashboard from '../components/email/EmailSearchDashboard';
-import VirtualEmailList from '../components/email/VirtualEmailList';
-import EmailPerformanceMonitor from '../components/email/EmailPerformanceMonitor';
-import EmailErrorBoundary from '../components/email/EmailErrorBoundary';
-import emailManagementService from '../lib/emailManagementService';
-import emailSyncService from '../lib/emailSyncService';
-import emailCacheService from '../lib/emailCacheService';
+import AutomationDashboard from '@features/email/components/AutomationDashboard';
+import EmailSearchDashboard from '@features/email/components/EmailSearchDashboard';
+import VirtualEmailList from '@features/email/components/VirtualEmailList';
+import EmailPerformanceMonitor from '@features/email/components/EmailPerformanceMonitor';
+import EmailErrorBoundary from '@features/email/components/EmailErrorBoundary';
+import { emailManagementService } from '@features/email';
+import emailSyncService from '@features/email/services/emailSyncService';
+import { emailCacheService } from '@features/email';
 
 export default function Email() {
   const { t } = useTranslation('email');

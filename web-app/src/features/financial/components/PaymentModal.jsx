@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { InvoiceService } from '@lib/invoiceService';
+import { InvoiceService } from '../services/invoiceService';
 import Logger from '@utils/Logger';
 
 /**

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import TaxCalculator from '@components/financial/TaxCalculator';
-import PDFGenerator from '@components/documents/PDFGenerator';
+import { TaxCalculator } from '@features/financial';
+import { PDFGenerator } from '@features/documents';
 
 const TaxAndPDFTest = () => {
   const [activeTab, setActiveTab] = useState('tax');

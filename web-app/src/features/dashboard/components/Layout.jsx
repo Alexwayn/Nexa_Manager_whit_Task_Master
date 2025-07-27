@@ -3,7 +3,7 @@ import { Outlet } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import Sidebar from './Sidebar';
 import Navbar from './Navbar';
-import { useTheme } from '@context/OptimizedThemeContext';
+import { useTheme } from '@shared/hooks/providers';
 
 export default function Layout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);

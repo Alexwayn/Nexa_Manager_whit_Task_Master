@@ -6,7 +6,7 @@ import QuoteStatusBadge from './QuoteStatusBadge';
 import QuoteApprovalActions from './QuoteApprovalActions';
 import QuoteStatusHistory from './QuoteStatusHistory';
 import DigitalSignature from './DigitalSignature';
-import { QuoteService } from '@lib/quoteService';
+import { QuoteService } from '../services/quoteService';
 import Logger from '@utils/Logger';
 
 /**

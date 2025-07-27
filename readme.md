@@ -20,14 +20,45 @@ A comprehensive business management platform built with React, Vite, and Supabas
 
 ```
 nexa-manager/
-├── web-app/           # Main React application
-│   ├── src/           # Source code
-│   ├── public/        # Static assets and translations
-│   └── docs/          # Web app specific documentation
-├── docs/              # Project documentation
-├── scripts/           # Utility scripts (i18n, etc.)
-├── reports/           # Generated reports
-└── README.md          # This file
+├── web-app/                    # Main React application
+│   ├── src/
+│   │   ├── app/               # Application core (store, routing)
+│   │   ├── components/        # Reusable UI components
+│   │   ├── features/          # Feature-based modules
+│   │   │   ├── analytics/     # Analytics and reporting
+│   │   │   ├── auth/          # Authentication components
+│   │   │   ├── calendar/      # Calendar and events
+│   │   │   ├── clients/       # Client management
+│   │   │   ├── dashboard/     # Dashboard components
+│   │   │   ├── documents/     # Document management & scanner
+│   │   │   ├── email/         # Email system
+│   │   │   ├── financial/     # Invoices, quotes, payments
+│   │   │   ├── organization/  # Organization management
+│   │   │   └── reports/       # Business reports
+│   │   ├── hooks/             # Custom React hooks
+│   │   ├── lib/               # External library configurations
+│   │   ├── pages/             # Page components
+│   │   ├── providers/         # Context providers
+│   │   ├── router/            # Routing configuration
+│   │   ├── services/          # API services
+│   │   ├── shared/            # Shared utilities and components
+│   │   │   ├── components/    # Shared UI components
+│   │   │   ├── hooks/         # Shared hooks and contexts
+│   │   │   ├── styles/        # Global styles
+│   │   │   └── utils/         # Utility functions
+│   │   ├── types/             # TypeScript type definitions
+│   │   └── utils/             # General utilities
+│   ├── public/                # Static assets and translations
+│   └── docs/                  # Web app specific documentation
+├── .config/                   # Configuration files
+│   ├── cursor/                # Cursor IDE configuration
+│   ├── taskmaster/            # Task Master configuration
+│   └── vscode/                # VS Code configuration
+├── docs/                      # Project documentation
+├── tools/                     # Development tools and scripts
+├── supabase/                  # Supabase configuration and migrations
+├── reports/                   # Generated reports
+└── README.md                  # This file
 ```
 
 ## 🚀 Quick Start
@@ -134,6 +165,26 @@ Translation files are located in `web-app/public/locales/`.
 - 🔄 **In Progress**: Updating remaining 20+ components to use real Clerk hooks
 - ✅ RLS policies implemented for data protection
 - ✅ Secure credential management
+
+## 🆕 Recent Updates & Improvements
+
+### Project Reorganization (Latest)
+- ✅ **Complete codebase restructuring** - Migrated from monolithic to feature-based architecture
+- ✅ **Modular feature organization** - Each feature (analytics, auth, calendar, clients, dashboard, documents, email, financial, organization, reports) now has its own dedicated module
+- ✅ **Shared components system** - Centralized reusable components in `src/shared/`
+- ✅ **Improved maintainability** - Clear separation of concerns and better code organization
+- ✅ **Enhanced developer experience** - Easier navigation and feature development
+
+### UI/UX Improvements
+- ✅ **Quote Modal Integration** - Fixed "Create Quote" button to open modal instead of navigation
+- ✅ **Consistent Modal Patterns** - Standardized modal behavior across the application
+- ✅ **Responsive Design Updates** - Enhanced mobile and tablet experience
+
+### Technical Improvements
+- ✅ **TypeScript Integration** - Improved type safety across components
+- ✅ **Performance Optimizations** - Better component structure and loading patterns
+- ✅ **Code Quality** - Consistent coding standards and best practices
+- ✅ **Documentation Updates** - Comprehensive project structure documentation
 
 ## 📄 License
 

@@ -1,6 +1,6 @@
 import { supabase } from '@lib/supabaseClient';
 import logger from '@utils/Logger';
-import { securityService } from '@features/auth/services/securityService';
+import { securityService } from '@features/auth';
 
 /**
  * Email Security Service
@@ -46,7 +46,7 @@ class EmailSecurityService {
     // This is a simplified implementation
     // In production, use proper key derivation with salt and iterations
     const encoder = new TextEncoder();
-    const data = encoder.encode(userId + process.env.VITE_ENCRYPTION_SALT || 'default-salt');
+    const data = encoder.encode(userId + import.meta.env.VITE_ENCRYPTION_SALT || 'default-salt');
     const hashBuffer = await crypto.subtle.digest('SHA-256', data);
     return await crypto.subtle.importKey(
       'raw',

@@ -1,6 +1,6 @@
-import emailManagementService from '@features/email/services/emailManagementService';
-import emailProviderService from '@lib/emailProviderService';
-import emailCacheService from '@lib/emailCacheService';
+import { emailManagementService } from '@features/email';
+import { emailProviderService } from '@features/email';
+import { emailCacheService } from '@features/email';
 import { supabase } from '@lib/supabaseClient';
 import Logger from '@utils/Logger';
 

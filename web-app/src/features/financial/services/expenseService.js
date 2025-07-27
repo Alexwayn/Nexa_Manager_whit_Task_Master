@@ -1,6 +1,6 @@
 import { supabase } from '@lib/supabaseClient';
 import Logger from '@utils/Logger';
-import { getUserIdForUuidTables, convertClerkIdToUuid } from '@shared/utils/helpers/userIdConverter';
+import { getUserIdForUuidTables, convertClerkIdToUuid } from '@shared/utils';
 
 /**
  * Expense Service

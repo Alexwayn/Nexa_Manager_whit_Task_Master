@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { PlusIcon, MagnifyingGlassIcon, FunnelIcon } from '@heroicons/react/24/outline';
-import Layout from '@components/dashboard/Layout';
-import Calendar from '@components/calendar/Calendar';
-import EventModal from '@components/calendar/EventModal';
-import { getEvents, deleteEvent, EVENT_TYPES, EVENT_PRIORITIES } from '@lib/eventService';
-import Logger from '@utils/Logger';
-import ErrorBoundary from '@shared/components/feedback/ErrorBoundary';
+import { DashboardFilters as Layout } from '@features/dashboard';
+import { CalendarView as Calendar, EventModal, eventService } from '@features/calendar';
+import Logger from '@shared/utils/logger';
+import { ErrorBoundary } from '@shared/components';
+
+const { getEvents, deleteEvent, EVENT_TYPES, EVENT_PRIORITIES } = eventService;
 
 /**
  * CalendarPage Component - Main calendar page with event management

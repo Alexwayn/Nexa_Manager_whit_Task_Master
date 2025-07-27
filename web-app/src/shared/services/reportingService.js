@@ -1,7 +1,7 @@
 import { supabase } from '@lib/supabaseClient';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
-import invoiceAnalyticsService from '@lib/invoiceAnalyticsService';
+import { invoiceAnalyticsService } from '@features/financial';
 import Logger from '@utils/Logger';
 
 /**

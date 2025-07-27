@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { useAuth, useUser } from '@clerk/clerk-react';
-import { useOrganizationContext } from '@context/OrganizationContext';
+import { useOrganizationContext } from '@/shared/hooks';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Logger from '@utils/Logger';
 

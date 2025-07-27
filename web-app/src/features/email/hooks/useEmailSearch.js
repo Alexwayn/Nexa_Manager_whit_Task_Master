@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useAuth } from '@clerk/clerk-react';
-import emailSearchService from '../lib/emailSearchService';
-import { useEmailContext } from '../context/EmailContext';
+import emailSearchService from '../services/emailSearchService';
+import { useEmailContext } from '@shared/hooks/providers';
 
 /**
  * Custom hook for email search functionality

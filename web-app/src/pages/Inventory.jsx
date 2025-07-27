@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Footer from '@components/shared/Footer';
-import InventorySidebar from '@components/inventory/InventorySidebar';
-import RecentActivities from '@components/inventory/RecentActivities';
-import QuickActions from '@components/inventory/QuickActions';
-import InventoryByCategory from '@components/inventory/InventoryByCategory';
-import InventoryValueTrend from '@components/inventory/InventoryValueTrend';
-import AddItemModal from '@components/inventory/AddItemModal';
-import ManageCategoriesModal from '@components/inventory/ManageCategoriesModal';
-import ExportInventoryModal from '@components/inventory/ExportInventoryModal';
-import StockAlertsModal from '@components/inventory/StockAlertsModal';
-import ReportsModal from '@components/inventory/ReportsModal';
-import ReorderModal from '@components/inventory/ReorderModal';
+import Footer from '@shared/components/Footer';
+import InventorySidebar from '../components/inventory/InventorySidebar';
+import RecentActivities from '../components/inventory/RecentActivities';
+import QuickActions from '../components/inventory/QuickActions';
+import InventoryByCategory from '../components/inventory/InventoryByCategory';
+import InventoryValueTrend from '../components/inventory/InventoryValueTrend';
+import AddItemModal from '../components/inventory/AddItemModal';
+import ManageCategoriesModal from '../components/inventory/ManageCategoriesModal';
+import ExportInventoryModal from '../components/inventory/ExportInventoryModal';
+import StockAlertsModal from '../components/inventory/StockAlertsModal';
+import ReportsModal from '../components/inventory/ReportsModal';
+import ReorderModal from '../components/inventory/ReorderModal';
 import {
   PlusIcon,
   ArrowDownTrayIcon,
@@ -41,10 +41,10 @@ import {
   FunnelIcon,
 } from '@heroicons/react/24/outline';
 import { Search, ChevronDown, Eye, MapPin } from 'lucide-react';
-import nexaFooterLogo from '../../../assets/logos/logo_nexa_footer.png';
-import nexaLogo from '../../../assets/logos/logo_nexa.png';
+import nexaFooterLogo from '@assets/logos/logo_nexa_footer.png';
+import nexaLogo from '@assets/logos/logo_nexa.png';
 import { useTranslation } from 'react-i18next';
-import ErrorBoundary from '@shared/components/feedback/ErrorBoundary';
+import { ErrorBoundary } from '@shared/components';
 
 export default function Inventory() {
   const { t, ready } = useTranslation('inventory');

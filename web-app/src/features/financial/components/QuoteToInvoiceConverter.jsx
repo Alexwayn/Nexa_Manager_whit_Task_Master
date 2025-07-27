@@ -10,7 +10,7 @@ import {
   DocumentTextIcon,
   XMarkIcon,
 } from '@heroicons/react/24/outline';
-import { QuoteService } from '@lib/quoteService';
+import { QuoteService } from '../services/quoteService';
 import Logger from '@utils/Logger';
 
 const QuoteToInvoiceConverter = ({ isOpen, onClose, quote, onConversionSuccess }) => {

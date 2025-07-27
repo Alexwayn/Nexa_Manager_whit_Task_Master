@@ -12,7 +12,7 @@ import {
 } from '@heroicons/react/24/outline';
 import { supabase } from '@lib/supabaseClient';
 import { businessService } from '@lib/businessService';
-import FileUploadField from '@components/settings/FileUploadField';
+import FileUploadField from './FileUploadField';
 
 export default function CompanySettings({ showNotification }) {
   const { t } = useTranslation('settings');

@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Responsive, WidthProvider } from 'react-grid-layout';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
-import '@styles/dashboard.css';
+// Dashboard styles are now imported globally through shared styles
 
 // Icons
 import {
@@ -35,11 +35,11 @@ import {
 } from 'lucide-react';
 
 // Components
-import EnhancedKPICard from '@components/analytics/EnhancedKPICard';
-import AdvancedTimePeriodSelector from '@components/analytics/AdvancedTimePeriodSelector';
-import ClientAnalyticsWidgets from '@components/analytics/ClientAnalyticsWidgets';
-import ComparativeAnalytics from '@components/analytics/ComparativeAnalytics';
-import ErrorBoundary from '@shared/components/feedback/ErrorBoundary';
+import { EnhancedKPICard } from '@features/analytics';
+import { AdvancedTimePeriodSelector } from '@features/analytics';
+import { ClientAnalyticsWidgets } from '@features/analytics';
+import { AnalyticsMetrics as ComparativeAnalytics } from '@features/analytics';
+import { ErrorBoundary } from '@shared/components';
 
 // Charts
 import {
@@ -58,10 +58,10 @@ import {
 import { Line, Doughnut, Bar } from 'react-chartjs-2';
 
 // Services and Hooks
-import financialService from '@lib/financialService';
-import clientService from '@lib/clientService';
-import exportService from '@lib/exportService';
-import useRealtimeDashboard from '@hooks/useRealtimeDashboard';
+import { financialService } from '@features/financial';
+import { clientService } from '@features/clients';
+import { exportService } from '@shared/services';
+import { useRealtimeDashboard } from '@features/dashboard';
 import Logger from '@utils/Logger';
 
 // Register Chart.js components

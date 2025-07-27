@@ -1,11 +1,11 @@
-import emailProviderService from '@features/email/services/emailProviderService';
-import emailStorageService from '@features/email/services/emailStorageService';
-import emailTemplateService from '@features/email/services/emailTemplateService';
-import emailSecurityService from '@features/email/services/emailSecurityService';
-import emailErrorHandler from '@features/email/services/emailErrorHandler';
-import emailOfflineService from '@features/email/services/emailOfflineService';
-import emailRecoveryService from '@features/email/services/emailRecoveryService';
-import emailAnalyticsService from '@features/email/services/emailAnalyticsService';
+import { emailProviderService } from '@features/email';
+import { emailStorageService } from '@features/email';
+import { emailTemplateService } from '@features/email';
+import { emailSecurityService } from '@features/email';
+import { emailErrorHandler } from '@features/email';
+import { emailOfflineService } from '@features/email';
+import { emailRecoveryService } from '@features/email';
+import { emailAnalyticsService } from '@features/email';
 import { supabase } from '@lib/supabaseClient';
 import Logger from '@utils/Logger';
 

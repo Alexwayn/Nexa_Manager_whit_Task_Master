@@ -1,11 +1,11 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useAuth, useUser } from '@clerk/clerk-react';
 import { realtimeService } from '@shared/services/realtimeService';
-import financialService from '@features/financial/services/financialService';
-import clientService from '@features/clients/services/clientService';
+import { financialService } from '@features/financial';
+import { clientService } from '@features/clients';
 import Logger from '@utils/Logger';
 import { supabase } from '@lib/supabaseClient';
-import { getUserIdForUuidTables } from '@shared/utils/helpers/userIdConverter';
+import { getUserIdForUuidTables } from '@shared/utils';
 
 /**
  * Custom hook for real-time dashboard data updates

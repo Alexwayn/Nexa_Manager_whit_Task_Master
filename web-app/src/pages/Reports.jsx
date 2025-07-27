@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import Footer from '../components/shared/Footer';
+import Footer from '@shared/components/Footer';
 import ReportScheduler from '../components/reports/ReportScheduler';
 import ReportHistory from '../components/reports/ReportHistory';
 import CustomReportBuilder from '../components/reports/CustomReportBuilder';
@@ -53,10 +53,10 @@ import {
   useScheduleReport,
   usePrefetchReports,
   useReportCache,
-} from '../hooks/useReportsQuery';
+} from '../features/financial/hooks/useReportsQuery';
 import { usePerformanceMonitor } from '../utils/performance.js';
 import Logger from '../utils/Logger.ts';
-import reportingService from '../lib/reportingService.js';
+import reportingService from '@shared/services/reportingService';
 
 // Define data structures using JSDoc comments
 /**

@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import EmailAnalyticsDashboard from '@components/EmailAnalyticsDashboard';
-import emailManagementService from '@features/email/services/emailManagementService';
+import emailManagementService from '@features/email';
 
 // Mock dependencies
 vi.mock('@features/email/services/emailManagementService', () => ({

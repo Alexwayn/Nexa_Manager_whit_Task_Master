@@ -1,0 +1,213 @@
+/* ========================================
+   THEME VARIABLES
+   ======================================== */
+
+:root {
+  /* Light theme variables */
+  --toast-bg: #ffffff;
+  --toast-color: #1f2937;
+  --toast-border: #e5e7eb;
+
+  /* Scrollbar styling */
+  --scrollbar-width: 6px;
+  --scrollbar-track: #f1f5f9;
+  --scrollbar-thumb: #cbd5e1;
+  --scrollbar-thumb-hover: #94a3b8;
+
+  /* Accessibility - High Contrast Colors */
+  --hc-bg-primary: #000000;
+  --hc-bg-secondary: #ffffff;
+  --hc-text-primary: #ffffff;
+  --hc-text-secondary: #000000;
+  --hc-border: #ffffff;
+  --hc-focus: #ffff00;
+  --hc-link: #ffff00;
+  --hc-link-visited: #ff00ff;
+  --hc-button-bg: #ffffff;
+  --hc-button-text: #000000;
+  --hc-error: #ff0000;
+  --hc-success: #00ff00;
+  --hc-warning: #ffff00;
+
+  /* Font size variables */
+  --font-scale-small: 0.875;
+  --font-scale-medium: 1;
+  --font-scale-large: 1.125;
+  --font-scale-xlarge: 1.25;
+}
+
+.dark {
+  /* Dark theme variables */
+  --toast-bg: #374151;
+  --toast-color: #f9fafb;
+  --toast-border: #4b5563;
+
+  /* Scrollbar styling for dark mode */
+  --scrollbar-track: #374151;
+  --scrollbar-thumb: #6b7280;
+  --scrollbar-thumb-hover: #9ca3af;
+}
+
+/* ============================================ */
+/*           ENHANCED ACCESSIBILITY STYLES     */
+/* ============================================ */
+
+/* High Contrast Mode */
+.high-contrast {
+  --bg-primary: var(--hc-bg-primary);
+  --bg-secondary: var(--hc-bg-secondary);
+  --text-primary: var(--hc-text-primary);
+  --text-secondary: var(--hc-text-secondary);
+  --border-color: var(--hc-border);
+  --focus-color: var(--hc-focus);
+}
+
+.high-contrast * {
+  background-color: var(--hc-bg-primary) !important;
+  color: var(--hc-text-primary) !important;
+  border-color: var(--hc-border) !important;
+}
+
+.high-contrast button {
+  background-color: var(--hc-button-bg) !important;
+  color: var(--hc-button-text) !important;
+  border: 2px solid var(--hc-border) !important;
+}
+
+.high-contrast a {
+  color: var(--hc-link) !important;
+  text-decoration: underline !important;
+}
+
+.high-contrast a:visited {
+  color: var(--hc-link-visited) !important;
+}
+
+.high-contrast *:focus,
+.high-contrast *:focus-visible {
+  outline: 3px solid var(--hc-focus) !important;
+  outline-offset: 2px !important;
+  box-shadow: none !important;
+}
+
+.high-contrast input,
+.high-contrast textarea,
+.high-contrast select {
+  background-color: var(--hc-bg-secondary) !important;
+  color: var(--hc-text-secondary) !important;
+  border: 2px solid var(--hc-border) !important;
+}
+
+.high-contrast .bg-red-500,
+.high-contrast .text-red-500,
+.high-contrast .border-red-500 {
+  background-color: var(--hc-error) !important;
+  color: var(--hc-text-secondary) !important;
+  border-color: var(--hc-error) !important;
+}
+
+.high-contrast .bg-green-500,
+.high-contrast .text-green-500,
+.high-contrast .border-green-500 {
+  background-color: var(--hc-success) !important;
+  color: var(--hc-text-secondary) !important;
+  border-color: var(--hc-success) !important;
+}
+
+.high-contrast .bg-yellow-500,
+.high-contrast .text-yellow-500,
+.high-contrast .border-yellow-500 {
+  background-color: var(--hc-warning) !important;
+  color: var(--hc-text-secondary) !important;
+  border-color: var(--hc-warning) !important;
+}
+
+/* Font Size Scaling */
+.font-small {
+  font-size: calc(1rem * var(--font-scale-small));
+}
+
+.font-small h1 { font-size: calc(2.25rem * var(--font-scale-small)); }
+.font-small h2 { font-size: calc(1.875rem * var(--font-scale-small)); }
+.font-small h3 { font-size: calc(1.5rem * var(--font-scale-small)); }
+.font-small h4 { font-size: calc(1.25rem * var(--font-scale-small)); }
+.font-small h5 { font-size: calc(1.125rem * var(--font-scale-small)); }
+.font-small h6 { font-size: calc(1rem * var(--font-scale-small)); }
+.font-small p, .font-small span, .font-small div { font-size: calc(1rem * var(--font-scale-small)); }
+.font-small button { font-size: calc(0.875rem * var(--font-scale-small)); }
+
+.font-medium {
+  font-size: calc(1rem * var(--font-scale-medium));
+}
+
+.font-medium h1 { font-size: calc(2.25rem * var(--font-scale-medium)); }
+.font-medium h2 { font-size: calc(1.875rem * var(--font-scale-medium)); }
+.font-medium h3 { font-size: calc(1.5rem * var(--font-scale-medium)); }
+.font-medium h4 { font-size: calc(1.25rem * var(--font-scale-medium)); }
+.font-medium h5 { font-size: calc(1.125rem * var(--font-scale-medium)); }
+.font-medium h6 { font-size: calc(1rem * var(--font-scale-medium)); }
+.font-medium p, .font-medium span, .font-medium div { font-size: calc(1rem * var(--font-scale-medium)); }
+.font-medium button { font-size: calc(0.875rem * var(--font-scale-medium)); }
+
+.font-large {
+  font-size: calc(1rem * var(--font-scale-large));
+}
+
+.font-large h1 { font-size: calc(2.25rem * var(--font-scale-large)); }
+.font-large h2 { font-size: calc(1.875rem * var(--font-scale-large)); }
+.font-large h3 { font-size: calc(1.5rem * var(--font-scale-large)); }
+.font-large h4 { font-size: calc(1.25rem * var(--font-scale-large)); }
+.font-large h5 { font-size: calc(1.125rem * var(--font-scale-large)); }
+.font-large h6 { font-size: calc(1rem * var(--font-scale-large)); }
+.font-large p, .font-large span, .font-large div { font-size: calc(1rem * var(--font-scale-large)); }
+.font-large button { font-size: calc(0.875rem * var(--font-scale-large)); }
+
+.font-xlarge {
+  font-size: calc(1rem * var(--font-scale-xlarge));
+}
+
+.font-xlarge h1 { font-size: calc(2.25rem * var(--font-scale-xlarge)); }
+.font-xlarge h2 { font-size: calc(1.875rem * var(--font-scale-xlarge)); }
+.font-xlarge h3 { font-size: calc(1.5rem * var(--font-scale-xlarge)); }
+.font-xlarge h4 { font-size: calc(1.25rem * var(--font-scale-xlarge)); }
+.font-xlarge h5 { font-size: calc(1.125rem * var(--font-scale-xlarge)); }
+.font-xlarge h6 { font-size: calc(1rem * var(--font-scale-xlarge)); }
+.font-xlarge p, .font-xlarge span, .font-xlarge div { font-size: calc(1rem * var(--font-scale-xlarge)); }
+.font-xlarge button { font-size: calc(0.875rem * var(--font-scale-xlarge)); }
+
+/* Color Blindness Simulation */
+.color-blind-protanopia {
+  filter: url('#protanopia-filter');
+}
+
+.color-blind-deuteranopia {
+  filter: url('#deuteranopia-filter');
+}
+
+.color-blind-tritanopia {
+  filter: url('#tritanopia-filter');
+}
+
+/* Enhanced Motion Reduction */
+.reduce-motion *,
+.reduce-motion *::before,
+.reduce-motion *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}
+
+.reduce-motion .animate-spin,
+.reduce-motion .animate-ping,
+.reduce-motion .animate-pulse,
+.reduce-motion .animate-bounce {
+  animation: none !important;
+}
+
+/* Enhanced Focus Indicators for High Contrast */
+.high-contrast *:focus-visible {
+  outline: 4px solid var(--hc-focus) !important;
+  outline-offset: 2px !important;
+  box-shadow: 0 0 0 6px rgba(255, 255, 0, 0.3) !important;
+}

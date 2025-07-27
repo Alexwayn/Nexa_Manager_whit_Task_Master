@@ -1,6 +1,6 @@
 import React from 'react';
 import EmailViewer from './EmailViewer';
-import useEmailViewer from '@hooks/useEmailViewer';
+import { useEmailViewer } from '../hooks/useEmailViewer';
 
 /**
  * EmailViewerContainer - Container component that manages email viewer state

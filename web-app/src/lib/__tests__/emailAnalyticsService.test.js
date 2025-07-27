@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import emailAnalyticsService from '@lib/emailAnalyticsService';
-import emailErrorHandler from '@features/email/services/emailErrorHandler';
+import emailErrorHandler from '@features/email';
 import { supabase } from '@lib/supabaseClient';
 
 // Mock dependencies

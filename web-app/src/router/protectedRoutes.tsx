@@ -1,7 +1,5 @@
 import { Routes, Route } from 'react-router-dom';
-import ProtectedRoute from '@features/auth/components/ProtectedRoute';
-import OrganizationProtectedRoute from '@features/auth/components/OrganizationProtectedRoute';
-import { AdminRequired } from '@features/auth/components/UnauthorizedAccess';
+import { ProtectedRoute, OrganizationProtectedRoute, UnauthorizedAccess } from '@features/auth';
 
 // Import lazy-loaded components
 import { lazy } from 'react';
@@ -68,7 +66,7 @@ export const AdminRoutes = () => (
         <OrganizationProtectedRoute
           adminOnly={true}
           fallbackUrl='/dashboard'
-          unauthorizedComponent={() => <AdminRequired />}
+          unauthorizedComponent={() => <UnauthorizedAccess />}
         >
           <OrganizationManagement />
         </OrganizationProtectedRoute>
@@ -230,7 +228,7 @@ export const AdminOnlyComponent = () => {
   const { hasAccess } = useAdminGuard();
 
   if (!hasAccess) {
-    return <AdminRequired />;
+    return <UnauthorizedAccess />;
   }
 
   return <div>Admin content here</div>;

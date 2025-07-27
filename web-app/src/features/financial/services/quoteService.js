@@ -730,7 +730,7 @@ export class QuoteService {
       }
 
       // Use business email integration
-      const businessEmailIntegration = await import('./businessEmailIntegration.js');
+      const businessEmailIntegration = await import('../../email/services/businessEmailIntegration.js');
       const emailResult = await businessEmailIntegration.default.sendQuoteEmail(
         userId,
         quoteId,
@@ -815,7 +815,7 @@ export class QuoteService {
         throw new Error('No recipient email address provided');
       }
 
-      const businessEmailIntegration = await import('./businessEmailIntegration.js');
+      const businessEmailIntegration = await import('../../email/services/businessEmailIntegration.js');
       const emailResult = await businessEmailIntegration.default.sendQuoteEmail(
         userId,
         quoteId,
@@ -859,7 +859,7 @@ export class QuoteService {
       }
 
       // Get email history from business email logger
-      const businessEmailLogger = await import('./businessEmailLogger.js');
+      const businessEmailLogger = await import('../../email/services/businessEmailLogger.js');
       const historyResult = await businessEmailLogger.default.getDocumentEmailHistory(
         userId, 
         'quote', 
@@ -896,7 +896,7 @@ export class QuoteService {
       const quotes = await this.getQuotes(userId, { clientId });
 
       // Get email activity for this client's quotes
-      const clientEmailService = await import('./clientEmailService.js');
+      const clientEmailService = await import('../../clients/services/clientEmailService.js');
       const emailHistory = await clientEmailService.default.getClientEmailHistory(
         userId, 
         clientId, 

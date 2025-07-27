@@ -1,6 +1,6 @@
 import { supabase } from '@lib/supabaseClient';
-import TaxCalculationService from '@lib/taxCalculationService';
-import PDFGenerationService from '@lib/pdfGenerationService';
+import TaxCalculationService from './taxCalculationService';
+import PDFGenerationService from '../../documents/services/pdfGenerationService';
 import Logger from '@utils/Logger';
 
 // Note: Using the standard supabase client with RLS policies
@@ -998,7 +998,7 @@ export class InvoiceService {
       }
 
       // Use business email integration
-      const businessEmailIntegration = await import('./businessEmailIntegration.js');
+      const businessEmailIntegration = await import('../../email/services/businessEmailIntegration.js');
       const emailResult = await businessEmailIntegration.default.sendInvoiceEmail(
         userId,
         invoiceId,
@@ -1051,7 +1051,7 @@ export class InvoiceService {
       }
 
       // Get email history from business email logger
-      const businessEmailLogger = await import('./businessEmailLogger.js');
+      const businessEmailLogger = await import('../../email/services/businessEmailLogger.js');
       const historyResult = await businessEmailLogger.default.getDocumentEmailHistory(
         userId, 
         'invoice', 
@@ -1088,7 +1088,7 @@ export class InvoiceService {
       const invoices = await this.getInvoices(userId, { client_id: clientId });
 
       // Get email activity for this client's invoices
-      const clientEmailService = await import('./clientEmailService.js');
+      const clientEmailService = await import('../../clients/services/clientEmailService.js');
       const emailHistory = await clientEmailService.default.getClientEmailHistory(
         userId, 
         clientId, 
@@ -1241,7 +1241,7 @@ export class InvoiceService {
       }
 
       // Use new business email integration
-      const businessEmailIntegration = await import('./businessEmailIntegration.js');
+      const businessEmailIntegration = await import('../../email/services/businessEmailIntegration.js');
       const emailResult = await businessEmailIntegration.default.sendInvoiceEmail(
         userId,
         invoiceId,
@@ -1537,7 +1537,7 @@ export class InvoiceService {
       }
 
       // Use business email integration
-      const businessEmailIntegration = await import('./businessEmailIntegration.js');
+      const businessEmailIntegration = await import('../../email/services/businessEmailIntegration.js');
       const emailResult = await businessEmailIntegration.default.sendInvoiceEmail(
         userId,
         invoiceId,
@@ -1601,7 +1601,7 @@ export class InvoiceService {
       }
 
       // Use business email integration
-      const businessEmailIntegration = await import('./businessEmailIntegration.js');
+      const businessEmailIntegration = await import('../../email/services/businessEmailIntegration.js');
       const emailResult = await businessEmailIntegration.default.sendInvoiceEmail(
         userId,
         invoiceId,
@@ -1658,7 +1658,7 @@ export class InvoiceService {
       }
 
       // Generate PDF using existing PDF service
-      const PDFGenerationService = await import('./pdfGenerationService.js');
+      const PDFGenerationService = await import('../../documents/services/pdfGenerationService.js');
       const pdfResult = await PDFGenerationService.default.generateInvoicePDF(invoice);
 
       if (!pdfResult.success) {
@@ -1705,7 +1705,7 @@ export class InvoiceService {
       }
 
       // Get email history from business email logger
-      const businessEmailLogger = await import('./businessEmailLogger.js');
+      const businessEmailLogger = await import('../../email/services/businessEmailLogger.js');
       const historyResult = await businessEmailLogger.default.getDocumentEmailHistory(
         userId, 
         'invoice', 

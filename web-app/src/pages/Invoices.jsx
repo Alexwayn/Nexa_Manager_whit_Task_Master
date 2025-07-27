@@ -29,17 +29,17 @@ import {
   ExternalLink,
 } from 'lucide-react';
 import { HomeIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
-import nexaLogo from '../../../assets/logos/logo_nexa.png';
+import nexaLogo from '@assets/logos/logo_nexa.png';
 import { useTranslation } from 'react-i18next';
 import { useUser } from '@clerk/clerk-react';
 import { useNavigate } from 'react-router-dom';
-import InvoiceService from '@lib/invoiceService';
-import InvoiceAnalyticsService from '@lib/invoiceAnalyticsService';
-import InvoiceModal from '@components/financial/InvoiceModal';
-import ViewInvoiceModal from '@components/financial/ViewInvoiceModal';
-import { getUserIdForUuidTables } from '@shared/utils/userIdConverter';
+import InvoiceService from '@features/financial/services/invoiceService';
+import InvoiceAnalyticsService from '@features/financial/services/invoiceAnalyticsService';
+import { InvoiceModal, QuoteModal } from '@features/financial';
+import { ViewInvoiceModal } from '@features/financial';
+import { getUserIdForUuidTables } from '@shared/utils';
 import Logger from '@utils/Logger';
-import Footer from '@components/shared/Footer';
+import Footer from '@shared/components/Footer';
 
 const InvoicesPage = () => {
   // Always call ALL hooks first, in the same order every render
@@ -68,6 +68,7 @@ const InvoicesPage = () => {
 
   // Modal states
   const [isInvoiceModalOpen, setIsInvoiceModalOpen] = useState(false);
+  const [isQuoteModalOpen, setIsQuoteModalOpen] = useState(false);
   const [isViewInvoiceModalOpen, setIsViewInvoiceModalOpen] = useState(false);
   const [selectedInvoice, setSelectedInvoice] = useState(null);
   const [selectedClient, setSelectedClient] = useState(null);
@@ -298,8 +299,24 @@ const InvoicesPage = () => {
     loadInvoices();
   };
 
+  const handleCloseQuoteModal = () => {
+    setIsQuoteModalOpen(false);
+  };
+
+  const handleQuoteCreated = newQuote => {
+    Logger.info('New quote created:', newQuote);
+    // Optionally refresh data or show success message
+    setIsQuoteModalOpen(false);
+  };
+
+  const handleQuoteUpdated = updatedQuote => {
+    Logger.info('Quote updated:', updatedQuote);
+    // Optionally refresh data or show success message
+    setIsQuoteModalOpen(false);
+  };
+
   const handleCreateQuote = () => {
-    navigate('/quotes?action=new');
+    setIsQuoteModalOpen(true);
   };
 
   const handleSendReminders = () => {
@@ -1616,6 +1633,14 @@ const InvoicesPage = () => {
         client={selectedClient}
         onInvoiceCreated={handleInvoiceCreated}
         onInvoiceUpdated={handleInvoiceUpdated}
+      />
+
+      {/* Quote Modal */}
+      <QuoteModal
+        isOpen={isQuoteModalOpen}
+        onClose={handleCloseQuoteModal}
+        onQuoteCreated={handleQuoteCreated}
+        onQuoteUpdated={handleQuoteUpdated}
       />
 
       {/* View Invoice Modal */}

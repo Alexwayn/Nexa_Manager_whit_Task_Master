@@ -27,30 +27,45 @@
     /* Path Mapping */
     "baseUrl": ".",
     "paths": {
+      // Base paths
       "@/*": ["./src/*"],
-      "@components/*": ["./src/components/*"],
-      "@lib/*": ["./src/lib/*"],
-      "@utils/*": ["./src/utils/*"],
-      "@pages/*": ["./src/pages/*"],
-      "@hooks/*": ["./src/hooks/*"],
-      "@context/*": ["./src/context/*"],
-      "@assets/*": ["./src/assets/*"],
-      "@styles/*": ["./src/styles/*"],
-      "@i18n/*": ["./src/i18n/*"],
-      "@types/*": ["./src/types/*"],
-      "@features/*": ["./src/features/*"],
+      
+      // Feature-based structure
+      "@/features/*": ["./src/features/*"],
+      "@/shared/*": ["./src/shared/*"],
+      "@/pages/*": ["./src/pages/*"],
+      
+      // Shared module paths
+      "@/shared/components/*": ["./src/shared/components/*"],
+      "@/shared/hooks/*": ["./src/shared/hooks/*"],
+      "@/shared/services/*": ["./src/shared/services/*"],
+      "@/shared/utils/*": ["./src/shared/utils/*"],
+      "@/shared/types/*": ["./src/shared/types/*"],
+      "@/shared/constants/*": ["./src/shared/constants/*"],
+      "@/shared/styles/*": ["./src/shared/styles/*"],
+      
+      // Legacy paths for backward compatibility (to be removed gradually)
+      "@components/*": ["./src/shared/components/*"],
       "@shared/*": ["./src/shared/*"],
-      "@auth/*": ["./src/features/auth/*"],
-      "@clients/*": ["./src/features/clients/*"],
-      "@financial/*": ["./src/features/financial/*"],
-      "@email/*": ["./src/features/email/*"],
-      "@documents/*": ["./src/features/documents/*"],
-      "@calendar/*": ["./src/features/calendar/*"],
-      "@scanner/*": ["./src/features/scanner/*"],
-      "@dashboard/*": ["./src/features/dashboard/*"],
-      "@analytics/*": ["./src/features/analytics/*"]
+      "@features/*": ["./src/features/*"],
+      "@utils/*": ["./src/utils/*"],
+      "@hooks/*": ["./src/shared/hooks/*"],
+      "@types/*": ["./src/shared/types/*"],
+      "@services/*": ["./src/shared/services/*"],
+      "@assets/*": ["./src/assets/*"],
+      "@styles/*": ["./src/shared/styles/*"],
+      "@lib/*": ["./src/lib/*"],
+      "@scanner/*": ["./src/features/scanner/*"]
     }
   },
   "include": ["src", "src/types"],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "build",
+    "**/__tests__/**",
+    "**/*.test.*",
+    "**/*.spec.*"
+  ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

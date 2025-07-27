@@ -9,7 +9,7 @@ import {
   PauseIcon,
   ExclamationTriangleIcon
 } from '@heroicons/react/24/outline';
-import { useAutomationStats } from '@hooks/useEmailAutomation';
+import { useAutomationStats } from '@features/email';
 import EmailScheduler from './EmailScheduler';
 import AutomationRules from './AutomationRules';
 import FollowUpReminders from './FollowUpReminders';

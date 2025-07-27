@@ -3,8 +3,8 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@clerk/clerk-react';
 import { InformationCircleIcon } from '@heroicons/react/24/outline';
-import nexaLogo from '../../../assets/logos/logo_nexa.png';
-import ErrorBoundary from '@shared/components/feedback/ErrorBoundary';
+import nexaLogo from '@assets/logos/logo_nexa.png';
+import { ErrorBoundary } from '@shared/components';
 
 export default function ResetPassword() {
   const { t } = useTranslation('login');

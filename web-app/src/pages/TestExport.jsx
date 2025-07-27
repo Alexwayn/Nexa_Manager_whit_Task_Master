@@ -1,5 +1,5 @@
 import React from 'react';
-import ExportButtons from '@components/documents/ExportButtons';
+import { PDFGenerator } from '@features/documents';
 
 const TestExport = () => {
   // Dati di test per le transazioni

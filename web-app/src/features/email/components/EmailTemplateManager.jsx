@@ -10,7 +10,7 @@ import {
   MagnifyingGlassIcon,
   FunnelIcon,
 } from '@heroicons/react/24/outline';
-import emailTemplateService from '@lib/emailTemplateService';
+import emailTemplateService from '../services/emailTemplateService';
 import EmailTemplateEditor from './EmailTemplateEditor';
 import { useTranslation } from 'react-i18next';
 

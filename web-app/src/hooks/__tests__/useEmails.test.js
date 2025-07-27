@@ -1,9 +1,8 @@
 import { renderHook, act } from '@testing-library/react';
 import { useEmails } from '../useEmails';
-import { EmailProvider } from '@context/EmailContext';
-import { AuthProvider } from '@context/AuthContext';
+import { EmailProvider, AuthProvider } from '@/shared/state/providers';
 import { WebSocketProvider } from '@providers/WebSocketProvider';
-import emailManagementService from '@features/email/services/emailManagementService';
+import emailManagementService from '@features/email';
 
 // Mock dependencies
 jest.mock('@features/email/services/emailManagementService');

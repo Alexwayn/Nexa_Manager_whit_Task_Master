@@ -14,5 +14,5 @@ export { default as EventInvitations } from './components/EventModal'; // Using 
 
 // Services
 export { default as eventService } from './services/eventService.js';
-export { default as eventInvitationService } from './services/eventInvitationService.js';
+export { default as EventInvitationService } from './services/eventInvitationService.js';
 export * as recurringEventsService from './services/recurringEventsService.js';

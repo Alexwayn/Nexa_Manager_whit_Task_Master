@@ -6,7 +6,7 @@ import {
   EyeIcon,
   EyeSlashIcon,
 } from '@heroicons/react/24/outline';
-import AdvancedTimePeriodSelector from '@components/analytics/AdvancedTimePeriodSelector';
+import { AdvancedTimePeriodSelector } from '@features/analytics';
 
 // Import react-grid-layout
 import { Responsive, WidthProvider } from 'react-grid-layout';

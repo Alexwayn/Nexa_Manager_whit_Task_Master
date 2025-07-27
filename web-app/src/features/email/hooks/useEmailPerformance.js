@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import emailCacheService from '@lib/emailCacheService';
+import { emailCacheService } from '@features/email';
 import Logger from '@utils/Logger';
 
 /**

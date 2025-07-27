@@ -1,7 +1,7 @@
 import Logger from '@utils/Logger';
-import { supabase } from './supabaseClient';
+import { supabase } from '@lib/supabaseClient';
 import businessEmailLogger from './businessEmailLogger.js';
-import clientEmailService from './clientEmailService.js';
+import clientEmailService from '../../clients/services/clientEmailService.js';
 
 /**
  * Business Email Integration Service

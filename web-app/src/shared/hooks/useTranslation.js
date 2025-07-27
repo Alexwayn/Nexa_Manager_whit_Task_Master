@@ -6,7 +6,7 @@ import {
   translateWithFallback,
   formatTranslation,
   preloadComponentTranslations,
-} from '../utils/translationUtils';
+} from '../../utils/translationUtils';
 
 /**
  * Enhanced useTranslation hook with dynamic loading and fallbacks

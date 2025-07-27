@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import PDFGenerationService from '@lib/pdfGenerationService';
+import PDFGenerationService from '../services/pdfGenerationService';
 import { useTranslation } from 'react-i18next';
 
 const PDFGenerator = () => {

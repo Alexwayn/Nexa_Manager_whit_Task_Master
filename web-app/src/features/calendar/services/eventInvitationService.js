@@ -1,5 +1,5 @@
 import { supabase } from '@lib/supabaseClient';
-import emailService from '@features/email/services/emailService';
+import { emailManagementService } from '@features/email';
 import Logger from '@utils/Logger';
 
 /**
@@ -142,7 +142,7 @@ export class EventInvitationService {
       text: this.generateInvitationEmailText(event, invitation, rsvpUrl, options),
     };
 
-    return await emailService.sendEmail(emailData);
+    return await emailManagementService.sendEmail(emailData);
   }
 
   /**

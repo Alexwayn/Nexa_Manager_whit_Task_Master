@@ -2,12 +2,11 @@ import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { QueryClient, QueryProvider } from '@tanstack/react-query';
-import { vi } from 'vitest';
 import ReportScheduler from '../ReportScheduler';
-import * as reportingService from '../../../services/reportingService';
+import * as reportingService from '@/services\reportingService';
 
 // Mock services
-vi.mock('../../../services/reportingService');
+jest.mock('../../../services/reportingService');
 
 // Mock data
 const mockSchedules = [

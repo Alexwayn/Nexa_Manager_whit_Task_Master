@@ -3,13 +3,13 @@ import { useAuth } from '@hooks/useAuth';
 import Logger from '@utils/Logger';
 import { useTranslation } from 'react-i18next';
 
-import SettingsLoadingSpinner from '@components/settings/SettingsLoadingSpinner';
-import SettingsTabNavigation from '@components/settings/SettingsTabNavigation';
-import ProfileSection from '@components/settings/ProfileSection';
-import SecuritySection from '@components/settings/SecuritySection';
-import NotificationsSection from '@components/settings/NotificationsSection';
-import BillingSection from '@components/settings/BillingSection';
-import CompanySection from '@components/settings/CompanySection';
+import SettingsLoadingSpinner from '../components/settings/SettingsLoadingSpinner';
+import SettingsTabNavigation from '../components/settings/SettingsTabNavigation';
+import ProfileSection from '../components/settings/ProfileSection';
+import SecuritySection from '../components/settings/SecuritySection';
+import NotificationsSection from '../components/settings/NotificationsSection';
+import BillingSection from '../components/settings/BillingSection';
+import CompanySection from '../components/settings/CompanySection';
 
 const SettingsRefactored = () => {
   const { user, loading } = useAuth();

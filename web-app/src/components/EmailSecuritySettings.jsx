@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Shield, Lock, Eye, AlertTriangle, Key, FileText, Download } from 'lucide-react';
-import { emailSecurityService } from '../lib/emailSecurityService';
+import { emailSecurityService } from '@features/email';
 import { useUser } from '@clerk/clerk-react';
 
 const EmailSecuritySettings = () => {

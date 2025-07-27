@@ -12,7 +12,7 @@ import {
   SparklesIcon,
   CloudArrowUpIcon,
 } from '@heroicons/react/24/outline';
-import emailTemplateService from '@lib/emailTemplateService';
+import emailTemplateService from '../services/emailTemplateService';
 import EmailAttachmentManager from './EmailAttachmentManager';
 import { useTranslation } from 'react-i18next';
 

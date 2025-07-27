@@ -1,5 +1,5 @@
 import React from 'react';
-import FinancialForecast from '@components/FinancialForecast';
+import FinancialForecast from './FinancialForecast';
 
 const TestFinancialForecast = () => {
   return (

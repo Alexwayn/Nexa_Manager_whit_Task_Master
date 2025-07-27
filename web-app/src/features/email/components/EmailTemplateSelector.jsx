@@ -6,7 +6,7 @@ import {
   EyeIcon,
   CheckIcon,
 } from '@heroicons/react/24/outline';
-import { useEmailTemplates } from '@shared/hooks/useEmailTemplates';
+import { useEmailTemplates } from '../hooks/useEmailTemplates';
 import { useTranslation } from 'react-i18next';
 
 const EmailTemplateSelector = ({ 

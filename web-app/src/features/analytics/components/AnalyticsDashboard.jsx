@@ -33,11 +33,11 @@ import {
   Legend,
   Filler,
 } from 'chart.js';
-import financialService from '@lib/financialService';
-import AdvancedTimePeriodSelector from '@components/analytics/AdvancedTimePeriodSelector';
-import DashboardLayoutManager from '@components/dashboard/DashboardLayoutManager';
+import financialService from '../../financial/services/financialService';
+import { AdvancedTimePeriodSelector } from '@features/analytics';
+import { DashboardLayout as DashboardLayoutManager } from '@features/dashboard';
 import Logger from '@utils/Logger';
-import EnhancedKPICard from '@components/analytics/EnhancedKPICard';
+import { EnhancedKPICard } from '@features/analytics';
 
 // Register Chart.js components
 ChartJS.register(

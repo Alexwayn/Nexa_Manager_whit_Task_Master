@@ -16,12 +16,12 @@ import {
   TableCellsIcon,
   ArchiveBoxIcon,
 } from '@heroicons/react/24/solid';
-import documentService from '@lib/documentService';
-import PDFGenerator from '@components/PDFGenerator';
-import ReceiptUpload from '@components/ReceiptUpload';
-import DocumentSharing from '@components/DocumentSharing';
-import EmailManager from '@components/EmailManager';
-import nexaLogo from '../../../../assets/logos/logo_nexa.png';
+import documentService from '../services/documentService';
+import PDFGenerator from './PDFGenerator';
+import ReceiptUpload from './ReceiptUpload';
+import DocumentSharing from './DocumentSharing';
+import EmailManager from '../../email/components/EmailManager';
+import nexaLogo from '@assets/logos/logo_nexa.png';
 import Logger from '@utils/Logger';
 
 import { useTranslation } from 'react-i18next';

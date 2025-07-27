@@ -3,8 +3,8 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '@clerk/clerk-react';
 import { useSupabaseWithClerk } from '@lib/supabaseClerkClient';
-import Footer from '@components/shared/Footer';
-import { EVENT_TYPES } from '@lib/eventService';
+import Footer from '@shared/components/Footer';
+import { EVENT_TYPES } from '@features/calendar/services/eventService';
 import Logger from '@utils/Logger';
 import {
   ChevronLeft,
@@ -65,8 +65,8 @@ import {
   TrashIcon,
   HomeIcon,
 } from '@heroicons/react/24/outline';
-import nexaFooterLogo from '../../../assets/logos/logo_nexa_footer.png';
-import nexaLogo from '../../../assets/logos/logo_nexa.png';
+import nexaFooterLogo from '@assets/logos/logo_nexa_footer.png';
+import nexaLogo from '@assets/logos/logo_nexa.png';
 
 export default function Calendar() {
   const { t } = useTranslation(['calendar', 'common']);

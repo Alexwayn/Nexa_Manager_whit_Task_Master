@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
-import { Button } from '@/components/ui/Button';
-import { Badge } from '@/components/ui/Badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/Select';
-import { DatePickerWithRange } from '@/components/ui/date-picker';
+import { Card, CardContent, CardHeader, CardTitle } from '@shared/components';
+import { Button } from '@shared/components';
+import { Badge } from '@shared/components';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@shared/components';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@shared/components';
+import { DatePickerWithRange } from '@shared/components';
 import { 
   BarChart, Bar, LineChart, Line, PieChart, Pie, Cell, 
   XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,
@@ -15,8 +15,8 @@ import {
   Clock, Target, Eye, MousePointer, Reply, Download, RefreshCw,
   Calendar, Filter, BarChart3, PieChart as PieChartIcon
 } from 'lucide-react';
-import emailAnalyticsService from '@lib/emailAnalyticsService';
-import { useToast } from '@/hooks/use-toast';
+import { emailAnalyticsService } from '@features/email';
+import { useToast } from '@shared/hooks';
 import { formatNumber, formatPercentage, formatDate } from '@shared/utils/formatters';
 
 const CHART_COLORS = ['#8884d8', '#82ca9d', '#ffc658', '#ff7300', '#8dd1e1', '#d084d0'];

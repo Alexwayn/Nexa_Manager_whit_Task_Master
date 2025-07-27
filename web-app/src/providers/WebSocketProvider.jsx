@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useState, useCallback, useRef } from 'react';
 import websocketService from '../services/websocketService';
-import { getWebSocketUrl, CONNECTION_STATES } from '../config/websocket';
+import { getWebSocketUrl, CONNECTION_STATES } from '../shared/utils/websocket';
 import { toast } from 'react-hot-toast';
 
 /**

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import SettingsFormSection from '@components/settings/SettingsFormSection';
-import FileUploadField from '@components/settings/FileUploadField';
+import SettingsFormSection from './SettingsFormSection';
+import FileUploadField from './FileUploadField';
 import { useProfile } from '@shared/hooks/useProfile';
 import { useFileUpload } from '@shared/hooks/useFileUpload';
 

@@ -1,8 +1,8 @@
 import React, { memo, useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import SettingsFormSection from '@components/settings/SettingsFormSection';
-import FileUploadField from '@components/settings/FileUploadField';
-import ComponentErrorBoundary from '@shared/components/feedback/ComponentErrorBoundary';
+import SettingsFormSection from './SettingsFormSection';
+import FileUploadField from './FileUploadField';
+import ComponentErrorBoundary from '@shared/components';
 import { useProfile } from '@shared/hooks/useProfile';
 import { useFileUpload } from '@shared/hooks/useFileUpload';
 

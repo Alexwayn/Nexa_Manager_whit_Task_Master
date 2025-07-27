@@ -10,7 +10,7 @@ import {
   EyeIcon,
   TrashIcon,
 } from '@heroicons/react/24/outline';
-import emailAttachmentService from '@lib/emailAttachmentService';
+import emailAttachmentService from '../services/emailAttachmentService';
 
 const EmailAttachmentManager = ({
   attachments = [],

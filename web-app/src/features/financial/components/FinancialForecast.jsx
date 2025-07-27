@@ -21,7 +21,7 @@ import {
   Legend,
   Filler,
 } from 'chart.js';
-import EnhancedKPICard from '@components/analytics/EnhancedKPICard';
+import { EnhancedKPICard } from '@features/analytics';
 
 // Registra i componenti Chart.js
 ChartJS.register(

@@ -5,7 +5,7 @@ import {
   AtSymbolIcon,
   ExclamationTriangleIcon,
 } from '@heroicons/react/24/outline';
-import { useClients } from '@hooks/useClients';
+import { useClients } from '../../clients/hooks/useClients';
 
 const EmailRecipientInput = ({
   value = '',

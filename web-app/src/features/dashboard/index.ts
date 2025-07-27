@@ -1,7 +1,8 @@
 // Dashboard Feature - Public API
 
 // Components
-export { default as DashboardLayout } from './components/DashboardLayoutManager';
+export { default as DashboardLayoutManager } from './components/DashboardLayoutManager';
+export { default as DashboardLayout } from './components/Layout';
 export { default as DashboardMetrics } from './components/EnhancedDashboard';
 export { default as DashboardCharts } from './components/ClassicViewEnhanced';
 export { default as DashboardFilters } from './components/Layout';

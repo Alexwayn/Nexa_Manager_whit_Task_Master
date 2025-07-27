@@ -13,9 +13,9 @@ import {
 } from '@heroicons/react/24/outline';
 import { StarIcon as StarSolidIcon } from '@heroicons/react/24/solid';
 import { useTranslation } from 'react-i18next';
-import { Button } from '../ui/Button';
-import { Badge } from '../ui/Badge';
-import { Checkbox } from '../ui/Checkbox';
+import { Button } from '../../../shared/components/Button';
+import { Badge } from '../../../shared/components/Badge';
+import { Checkbox } from '../../../shared/components/Checkbox';
 
 /**
  * Email Search Results Component

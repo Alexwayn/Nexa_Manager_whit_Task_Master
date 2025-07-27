@@ -8,10 +8,11 @@ import {
   Cog6ToothIcon,
   ArrowRightOnRectangleIcon,
 } from '@heroicons/react/24/outline';
-import { useTheme } from '@context/OptimizedThemeContext';
+import { useTheme } from '@shared/hooks/providers';
 import LanguageSwitcher from '@components/common/LanguageSwitcher';
 import { useClerk, useUser } from '@clerk/clerk-react';
 import { NotificationCenter } from '@components/notifications';
+import nexaLogo from '@assets/logos/logo_nexa.png';
 
 export default function Navbar({ onOpenSidebar, sidebarCollapsed = false }) {
   const { t } = useTranslation('navigation');
@@ -85,7 +86,7 @@ export default function Navbar({ onOpenSidebar, sidebarCollapsed = false }) {
               className='flex-shrink-0 flex items-center ml-4 lg:ml-0'
               aria-label={t('goToHome')}
             >
-              <img className='h-8 w-auto' src='/assets/logos/logo_nexa.png' alt={t('logoAlt')} />
+              <img className='h-8 w-auto' src={nexaLogo} alt={t('logoAlt')} />
               <span className='sr-only'>{t('companyName')}</span>
             </Link>
           </div>

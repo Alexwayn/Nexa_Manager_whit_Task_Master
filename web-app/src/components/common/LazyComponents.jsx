@@ -47,7 +47,7 @@ export const DashboardLayoutManager = lazy(() => import('../DashboardLayoutManag
 // Example usage patterns:
 /*
 // Basic lazy loading with LazyWrapper
-import LazyWrapper from '@shared/components/feedback/LazyWrapper';
+import LazyWrapper from '@shared/components';
 import { AnalyticsDashboard } from '@components/common/LazyComponents';
 
 const MyComponent = () => (
@@ -57,7 +57,7 @@ const MyComponent = () => (
 );
 
 // Advanced lazy loading with custom error handling
-import ErrorBoundary from '@shared/components/feedback/ErrorBoundary';
+import ErrorBoundary from '@shared/components';
 import { DocumentManager } from '@components/common/LazyComponents';
 
 const DocumentSection = () => (

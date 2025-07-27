@@ -1,5 +1,5 @@
 import { supabase } from '@lib/supabaseClient';
-import logger from '@shared/utils/logger';
+import Logger from '@utils/Logger';
 
 // User roles and permissions management
 export const ROLES = {
@@ -99,7 +99,7 @@ class SecurityService {
 
       return data?.roles?.name || ROLES.USER;
     } catch (error) {
-      logger.error('Error getting user role:', error);
+      Logger.error('Error getting user role:', error);
       return ROLES.USER; // Default role
     }
   }
@@ -147,7 +147,7 @@ class SecurityService {
 
       return data;
     } catch (error) {
-      logger.error('Error updating user role:', error);
+      Logger.error('Error updating user role:', error);
       throw error;
     }
   }
@@ -187,7 +187,7 @@ class SecurityService {
 
       if (error) throw error;
     } catch (error) {
-      logger.error('Error logging security event:', error);
+      Logger.error('Error logging security event:', error);
     }
   }
 
@@ -228,7 +228,7 @@ class SecurityService {
       if (error) throw error;
       return data;
     } catch (error) {
-      logger.error('Error getting audit logs:', error);
+      Logger.error('Error getting audit logs:', error);
       throw error;
     }
   }
@@ -264,7 +264,7 @@ class SecurityService {
 
       return { success: true, backupCodes };
     } catch (error) {
-      logger.error('Error enabling 2FA:', error);
+      Logger.error('Error enabling 2FA:', error);
       throw error;
     }
   }
@@ -290,7 +290,7 @@ class SecurityService {
 
       return { success: true };
     } catch (error) {
-      logger.error('Error disabling 2FA:', error);
+      Logger.error('Error disabling 2FA:', error);
       throw error;
     }
   }
@@ -302,7 +302,7 @@ class SecurityService {
       // Mock implementation - replace with actual TOTP verification
       return code === '123456'; // For demo purposes
     } catch (error) {
-      logger.error('Error verifying 2FA code:', error);
+      Logger.error('Error verifying 2FA code:', error);
       return false;
     }
   }
@@ -334,7 +334,7 @@ class SecurityService {
 
       if (insertError) throw insertError;
     } catch (error) {
-      logger.error('Error saving backup codes:', error);
+      Logger.error('Error saving backup codes:', error);
       throw error;
     }
   }
@@ -345,7 +345,7 @@ class SecurityService {
 
       if (error) throw error;
     } catch (error) {
-      logger.error('Error clearing backup codes:', error);
+      Logger.error('Error clearing backup codes:', error);
       throw error;
     }
   }
@@ -389,7 +389,7 @@ class SecurityService {
 
       return { success: true, backupId: data[0]?.id };
     } catch (error) {
-      logger.error('Error creating security backup:', error);
+      Logger.error('Error creating security backup:', error);
       throw error;
     }
   }
@@ -426,7 +426,7 @@ class SecurityService {
 
       return { success: true };
     } catch (error) {
-      logger.error('Error restoring security backup:', error);
+      Logger.error('Error restoring security settings:', error);
       throw error;
     }
   }
@@ -444,7 +444,7 @@ class SecurityService {
       if (error) throw error;
       return data || [];
     } catch (error) {
-      logger.error('Error getting user sessions:', error);
+      Logger.error('Error getting user sessions:', error);
       return [];
     }
   }
@@ -469,7 +469,7 @@ class SecurityService {
 
       return { success: true };
     } catch (error) {
-      logger.error('Error revoking session:', error);
+      Logger.error('Error revoking session:', error);
       throw error;
     }
   }
@@ -497,7 +497,7 @@ class SecurityService {
 
       return { success: true };
     } catch (error) {
-      logger.error('Error revoking all sessions:', error);
+      Logger.error('Error revoking all sessions:', error);
       throw error;
     }
   }

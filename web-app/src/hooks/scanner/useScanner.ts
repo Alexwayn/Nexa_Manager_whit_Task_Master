@@ -30,7 +30,7 @@ export const useScanner = (): UseScannerReturn => {
       await new Promise(resolve => setTimeout(resolve, 1000));
       
       // Simulate occasional failures for testing error handling
-      if (process.env.NODE_ENV === 'development' && Math.random() < 0.1) {
+      if (import.meta.env.DEV && Math.random() < 0.1) {
         throw new Error('Simulated processing error for testing');
       }
       
@@ -120,7 +120,7 @@ export const useScanner = (): UseScannerReturn => {
       await new Promise(resolve => setTimeout(resolve, 500));
       
       // Simulate occasional failures for testing error handling
-      if (process.env.NODE_ENV === 'development' && Math.random() < 0.05) {
+      if (import.meta.env.DEV && Math.random() < 0.05) {
         throw new Error('Simulated storage error for testing');
       }
       

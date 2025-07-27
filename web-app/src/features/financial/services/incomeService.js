@@ -1,6 +1,6 @@
 import { supabase } from '@lib/supabaseClient';
 import Logger from '@utils/Logger';
-import { getUserIdForUuidTables } from '@shared/utils/helpers/userIdConverter';
+import { getUserIdForUuidTables } from '@shared/utils';
 
 /**
  * Servizio per la gestione delle entrate

@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { emailAutomationService } from '@lib/emailAutomationService';
+import { emailAutomationService } from '@features/email';
 import { useAuth } from '@clerk/clerk-react';
 import { toast } from 'react-hot-toast';
 

@@ -3,7 +3,7 @@
  * Provides consistent logging across the application with different log levels
  */
 
-import { isDevelopment } from './env';
+import { isDevelopment } from '@/utils/env';
 
 const LOG_LEVELS = {
   ERROR: 0,

@@ -633,6 +633,194 @@ export const cancelEventNotifications = async eventId => {
 };
 
 /**
+ * Send event notification
+ * @param {Object} event - Event object
+ * @param {string} type - Notification type ('created', 'updated', 'reminder')
+ * @param {Object} options - Additional options
+ * @returns {Promise<boolean>} Success status
+ */
+export const sendEventNotification = async (event, type = 'created', options = {}) => {
+  try {
+    const { userId = event.user_id, notificationTypes = [NOTIFICATION_TYPES.EMAIL, NOTIFICATION_TYPES.IN_APP] } = options;
+
+    // Get user preferences
+    const preferences = await getUserNotificationPreferences(userId);
+
+    let subject, message;
+    switch (type) {
+      case 'created':
+        subject = `Event Created: ${event.title}`;
+        message = `Your event "${event.title}" has been created for ${event.date}${event.start_time ? ` at ${event.start_time}` : ''}.`;
+        break;
+      case 'updated':
+        subject = `Event Updated: ${event.title}`;
+        message = `Your event "${event.title}" has been updated. Date: ${event.date}${event.start_time ? ` at ${event.start_time}` : ''}.`;
+        break;
+      case 'reminder':
+        subject = `Reminder: ${event.title}`;
+        message = `This is a reminder for your upcoming event "${event.title}" on ${event.date}${event.start_time ? ` at ${event.start_time}` : ''}.`;
+        break;
+      default:
+        subject = event.title;
+        message = `Notification for event: ${event.title}`;
+    }
+
+    const results = [];
+
+    for (const notificationType of notificationTypes) {
+      // Check if user has this notification type enabled
+      const isEnabled = 
+        (notificationType === NOTIFICATION_TYPES.EMAIL && preferences.email_enabled) ||
+        (notificationType === NOTIFICATION_TYPES.PUSH && preferences.push_enabled) ||
+        (notificationType === NOTIFICATION_TYPES.SMS && preferences.sms_enabled) ||
+        (notificationType === NOTIFICATION_TYPES.IN_APP && preferences.in_app_enabled);
+
+      if (!isEnabled) continue;
+
+      let recipient;
+      switch (notificationType) {
+        case NOTIFICATION_TYPES.EMAIL:
+          recipient = preferences.notification_email || 'user@example.com';
+          break;
+        case NOTIFICATION_TYPES.SMS:
+          recipient = preferences.phone_number || '';
+          break;
+        case NOTIFICATION_TYPES.PUSH:
+        case NOTIFICATION_TYPES.IN_APP:
+          recipient = userId;
+          break;
+        default:
+          recipient = userId;
+      }
+
+      const notification = {
+        user_id: userId,
+        event_id: event.id,
+        notification_type: notificationType,
+        recipient,
+        subject,
+        message,
+      };
+
+      const success = await sendNotification(notification);
+      results.push({ type: notificationType, success });
+    }
+
+    return results.every(r => r.success);
+  } catch (error) {
+    Logger.error('Error in sendEventNotification:', error);
+    return false;
+  }
+};
+
+/**
+ * Send event reminder
+ * @param {Object} event - Event object
+ * @param {number} reminderMinutes - Minutes before event
+ * @param {Object} options - Additional options
+ * @returns {Promise<boolean>} Success status
+ */
+export const sendEventReminder = async (event, reminderMinutes = 15, options = {}) => {
+  try {
+    const { userId = event.user_id } = options;
+
+    // Create a reminder object
+    const reminder = {
+      reminder_minutes: reminderMinutes,
+      notification_type: NOTIFICATION_TYPES.EMAIL, // Default to email
+    };
+
+    // Generate notification content
+    const { subject, message } = generateNotificationContent(event, reminder);
+
+    // Get user preferences
+    const preferences = await getUserNotificationPreferences(userId);
+
+    const notification = {
+      user_id: userId,
+      event_id: event.id,
+      notification_type: NOTIFICATION_TYPES.EMAIL,
+      recipient: preferences.notification_email || 'user@example.com',
+      subject,
+      message,
+    };
+
+    return await sendNotification(notification);
+  } catch (error) {
+    Logger.error('Error in sendEventReminder:', error);
+    return false;
+  }
+};
+
+/**
+ * Send event cancellation notification
+ * @param {Object} event - Event object
+ * @param {string} reason - Cancellation reason
+ * @param {Object} options - Additional options
+ * @returns {Promise<boolean>} Success status
+ */
+export const sendEventCancellation = async (event, reason = '', options = {}) => {
+  try {
+    const { userId = event.user_id, notificationTypes = [NOTIFICATION_TYPES.EMAIL, NOTIFICATION_TYPES.IN_APP] } = options;
+
+    // Get user preferences
+    const preferences = await getUserNotificationPreferences(userId);
+
+    const subject = `Event Cancelled: ${event.title}`;
+    const message = `Your event "${event.title}" scheduled for ${event.date}${event.start_time ? ` at ${event.start_time}` : ''} has been cancelled.${reason ? ` Reason: ${reason}` : ''}`;
+
+    const results = [];
+
+    for (const notificationType of notificationTypes) {
+      // Check if user has this notification type enabled
+      const isEnabled = 
+        (notificationType === NOTIFICATION_TYPES.EMAIL && preferences.email_enabled) ||
+        (notificationType === NOTIFICATION_TYPES.PUSH && preferences.push_enabled) ||
+        (notificationType === NOTIFICATION_TYPES.SMS && preferences.sms_enabled) ||
+        (notificationType === NOTIFICATION_TYPES.IN_APP && preferences.in_app_enabled);
+
+      if (!isEnabled) continue;
+
+      let recipient;
+      switch (notificationType) {
+        case NOTIFICATION_TYPES.EMAIL:
+          recipient = preferences.notification_email || 'user@example.com';
+          break;
+        case NOTIFICATION_TYPES.SMS:
+          recipient = preferences.phone_number || '';
+          break;
+        case NOTIFICATION_TYPES.PUSH:
+        case NOTIFICATION_TYPES.IN_APP:
+          recipient = userId;
+          break;
+        default:
+          recipient = userId;
+      }
+
+      const notification = {
+        user_id: userId,
+        event_id: event.id,
+        notification_type: notificationType,
+        recipient,
+        subject,
+        message,
+      };
+
+      const success = await sendNotification(notification);
+      results.push({ type: notificationType, success });
+    }
+
+    // Also cancel any pending notifications for this event
+    await cancelEventNotifications(event.id);
+
+    return results.every(r => r.success);
+  } catch (error) {
+    Logger.error('Error in sendEventCancellation:', error);
+    return false;
+  }
+};
+
+/**
  * Get notification statistics for a user
  * @param {string} userId - User ID (optional, defaults to current user)
  * @returns {Promise<Object>} Notification statistics

@@ -1,7 +1,7 @@
-import emailErrorHandler from '@features/email/services/emailErrorHandler';
+import { emailErrorHandler } from '@features/email';
 import { supabase } from '@lib/supabaseClient';
 import Logger from '@utils/Logger';
-import { notify } from '@shared/utils/uiUtils';
+import { notify } from '@shared/utils';
 
 /**
  * Enhanced Email Offline Service

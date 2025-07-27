@@ -7,7 +7,7 @@ import {
   Cog6ToothIcon,
   UserGroupIcon,
 } from '@heroicons/react/24/outline';
-import { useOrganizationContext } from '@context/OrganizationContext';
+import { useOrganizationContext } from '@/shared/state/providers';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import Logger from '@utils/Logger';

@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
-import emailManagementService from '@features/email/services/emailManagementService';
+import { emailManagementService } from '@features/email';
 import { useAuth } from '@clerk/clerk-react';
 import Logger from '@utils/Logger';
 

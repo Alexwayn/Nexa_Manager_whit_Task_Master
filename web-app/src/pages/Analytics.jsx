@@ -1,14 +1,14 @@
 import React, { useState, useEffect, useMemo, useCallback, lazy, Suspense } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import Footer from '@components/shared/Footer';
+import Footer from '@shared/components/Footer';
 import { useAuth, useUser } from '@clerk/clerk-react';
-import invoiceAnalyticsService from '@lib/invoiceAnalyticsService';
-import financialService from '@lib/financialService';
-import clientService from '@lib/clientService';
+import { invoiceAnalyticsService } from '@features/financial';
+import { financialService } from '@features/financial';
+import { clientService } from '@features/clients';
 import Logger from '@utils/Logger';
-import { getUserIdForUuidTables } from '@shared/utils/userIdConverter';
-import ErrorBoundary from '@shared/components/feedback/ErrorBoundary';
+import { getUserIdForUuidTables } from '@shared/utils';
+import { ErrorBoundary } from '@shared/components';
 import InteractiveAnalyticsCard from '../components/InteractiveAnalyticsCard';
 import {
   ChevronDownIcon,
@@ -29,12 +29,12 @@ import {
   ChevronRightIcon,
   HeartIcon,
 } from '@heroicons/react/24/outline';
-import nexaLogo from '../../../assets/logos/logo_nexa.png';
+import nexaLogo from '@assets/logos/logo_nexa.png';
 
 // Lazy load heavy components
-const ReportsDashboard = lazy(() => import('@components/analytics/ReportsDashboard'));
-const AdvancedVisualizations = lazy(() => import('@components/analytics/AdvancedVisualizations'));
-const InteractiveFinancialCharts = lazy(() => import('@components/analytics/InteractiveFinancialCharts'));
+const ReportsDashboard = lazy(() => import('@features/analytics').then(module => ({ default: module.AnalyticsReports })));
+const AdvancedVisualizations = lazy(() => import('@features/analytics').then(module => ({ default: module.AdvancedVisualizations })));
+const InteractiveFinancialCharts = lazy(() => import('@features/analytics').then(module => ({ default: module.AnalyticsCharts })));
 
 // Cache for analytics data
 const analyticsCache = new Map();

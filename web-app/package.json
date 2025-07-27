@@ -21,16 +21,42 @@
     "test:coverage": "jest --config ../.config/jest/jest.config.cjs --coverage",
     "test:ci": "jest --config ../.config/jest/jest.config.cjs --ci --coverage --watchAll=false",
     "test:debug": "jest --config ../.config/jest/jest.config.cjs --detectOpenHandles --forceExit",
-    "test:unit": "jest --config ../.config/jest/jest.config.cjs --testPathPattern=unit",
-    "test:integration": "jest --config ../.config/jest/jest.config.cjs --testPathPattern=integration",
-    "test:e2e": "jest --config ../.config/jest/jest.config.cjs --testPathPattern=e2e",
-    "test:services": "jest --config ../.config/jest/jest.config.cjs --testPathPattern=services",
-    "test:components": "jest --config ../.config/jest/jest.config.cjs --testPathPattern=components",
-    "test:utils": "jest --config ../.config/jest/jest.config.cjs --testPathPattern=utils",
+    "test:unit": "jest --config ../.config/jest/jest.config.cjs --testPathPatterns=unit",
+    "test:integration": "jest --config ../.config/jest/jest.config.cjs --testPathPatterns=integration",
+    "test:e2e": "jest --config ../.config/jest/jest.config.cjs --testPathPatterns=e2e",
+    "test:services": "jest --config ../.config/jest/jest.config.cjs --testPathPatterns=services",
+    "test:components": "jest --config ../.config/jest/jest.config.cjs --testPathPatterns=components",
+    "test:utils": "jest --config ../.config/jest/jest.config.cjs --testPathPatterns=utils",
     "test:coverage-threshold": "jest --config ../.config/jest/jest.config.cjs --coverage --coverageThreshold='{}'",
     "test:update-snapshots": "jest --config ../.config/jest/jest.config.cjs --updateSnapshot",
     "test:clear-cache": "jest --config ../.config/jest/jest.config.cjs --clearCache",
-    "test:a11y": "jest --config ../.config/jest/jest.config.cjs --testPathPattern=accessibility",
+    "test:a11y": "jest --config ../.config/jest/jest.config.cjs --testPathPatterns=accessibility",
+    "test:auth": "jest --config ../.config/jest/jest.config.cjs --testPathPatterns=features/auth",
+    "test:analytics": "jest --config ../.config/jest/jest.config.cjs --testPathPatterns=features/analytics",
+    "test:calendar": "jest --config ../.config/jest/jest.config.cjs --testPathPatterns=features/calendar",
+    "test:clients": "jest --config ../.config/jest/jest.config.cjs --testPathPatterns=features/clients",
+    "test:dashboard": "jest --config ../.config/jest/jest.config.cjs --testPathPatterns=features/dashboard",
+    "test:documents": "jest --config ../.config/jest/jest.config.cjs --testPathPatterns=features/documents",
+    "test:email": "jest --config ../.config/jest/jest.config.cjs --testPathPatterns=features/email",
+    "test:financial": "jest --config ../.config/jest/jest.config.cjs --testPathPatterns=features/financial",
+    "test:scanner": "jest --config ../.config/jest/jest.config.cjs --testPathPatterns=features/scanner",
+    "test:shared": "jest --config ../.config/jest/jest.config.cjs --testPathPatterns=shared",
+    "test:architecture": "jest --config ../.config/jest/jest.config.cjs --testPathPatterns=architecture",
+    "validate:feature-api": "node scripts/validate-feature-api.js",
+    "validate:structure": "npm run test:architecture",
+    "lint:architecture": "eslint . --ext ts,tsx,js,jsx --config ../.config/eslint/eslint.config.js --no-eslintrc",
+    "validate:build": "node scripts/validate-build.js",
+    "build:validate": "npm run validate:build",
+    "test:coverage:auth": "jest --config ../.config/jest/jest.config.cjs --testPathPatterns=features/auth --coverage --collectCoverageFrom='src/features/auth/**/*.{js,jsx,ts,tsx}'",
+    "test:coverage:analytics": "jest --config ../.config/jest/jest.config.cjs --testPathPatterns=features/analytics --coverage --collectCoverageFrom='src/features/analytics/**/*.{js,jsx,ts,tsx}'",
+    "test:coverage:calendar": "jest --config ../.config/jest/jest.config.cjs --testPathPatterns=features/calendar --coverage --collectCoverageFrom='src/features/calendar/**/*.{js,jsx,ts,tsx}'",
+    "test:coverage:clients": "jest --config ../.config/jest/jest.config.cjs --testPathPatterns=features/clients --coverage --collectCoverageFrom='src/features/clients/**/*.{js,jsx,ts,tsx}'",
+    "test:coverage:dashboard": "jest --config ../.config/jest/jest.config.cjs --testPathPatterns=features/dashboard --coverage --collectCoverageFrom='src/features/dashboard/**/*.{js,jsx,ts,tsx}'",
+    "test:coverage:documents": "jest --config ../.config/jest/jest.config.cjs --testPathPatterns=features/documents --coverage --collectCoverageFrom='src/features/documents/**/*.{js,jsx,ts,tsx}'",
+    "test:coverage:email": "jest --config ../.config/jest/jest.config.cjs --testPathPatterns=features/email --coverage --collectCoverageFrom='src/features/email/**/*.{js,jsx,ts,tsx}'",
+    "test:coverage:financial": "jest --config ../.config/jest/jest.config.cjs --testPathPatterns=features/financial --coverage --collectCoverageFrom='src/features/financial/**/*.{js,jsx,ts,tsx}'",
+    "test:coverage:scanner": "jest --config ../.config/jest/jest.config.cjs --testPathPatterns=features/scanner --coverage --collectCoverageFrom='src/features/scanner/**/*.{js,jsx,ts,tsx}'",
+    "test:coverage:shared": "jest --config ../.config/jest/jest.config.cjs --testPathPatterns=shared --coverage --collectCoverageFrom='src/shared/**/*.{js,jsx,ts,tsx}'",
     "test:reports": "node scripts/test-reports.js",
     "test:reports:unit": "node scripts/test-reports.js unit",
     "test:reports:integration": "node scripts/test-reports.js integration",
@@ -132,6 +158,7 @@
     "dotenv": "^16.5.0",
     "eslint": "^9.22.0",
     "eslint-config-prettier": "^10.1.5",
+    "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-prettier": "^5.5.0",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^5.2.0",
@@ -155,14 +182,18 @@
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
-      "eslint --fix",
-      "prettier --write"
+      "eslint --fix --config ../.config/eslint/eslint.config.js",
+      "prettier --write --config ../.config/prettier/.prettierrc",
+      "npm run test:architecture --passWithNoTests"
     ],
     "*.{json,css,md}": [
-      "prettier --write"
+      "prettier --write --config ../.config/prettier/.prettierrc"
     ],
     "*.{ts,tsx}": [
       "tsc --noEmit"
+    ],
+    "src/features/*/index.ts": [
+      "npm run validate:feature-api --passWithNoTests"
     ]
   },
   "resolutions": {

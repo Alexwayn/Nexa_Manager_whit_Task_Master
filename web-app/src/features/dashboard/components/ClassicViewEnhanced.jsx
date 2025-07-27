@@ -35,7 +35,7 @@ import {
 } from 'lucide-react';
 
 // Import hooks
-import { useRealtimeDashboard } from '@hooks/useRealtimeDashboard';
+import { useRealtimeDashboard } from '@features/dashboard';
 import useDateRange from '@hooks/useDateRange';
 
 /**

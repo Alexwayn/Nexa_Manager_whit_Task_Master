@@ -9,8 +9,8 @@ import {
   UserIcon,
   ExclamationTriangleIcon,
 } from '@heroicons/react/24/outline';
-import { createEvent, updateEvent, EVENT_TYPES, EVENT_PRIORITIES } from '@lib/eventService';
-import clientService from '@lib/clientService';
+import { createEvent, updateEvent, EVENT_TYPES, EVENT_PRIORITIES } from '../services/eventService';
+import clientService from '../../clients/services/clientService';
 import Logger from '@utils/Logger';
 
 const EventModal = ({ isOpen, onClose, event, defaultDate, onEventSaved }) => {

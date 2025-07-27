@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth, useUser } from '@clerk/clerk-react';
-import Footer from '@components/shared/Footer';
-import nexaLogo from '../../../assets/logos/logo_nexa.png';
-import ErrorBoundary from '@shared/components/feedback/ErrorBoundary';
+import Footer from '@shared/components/Footer';
+import nexaLogo from '@assets/logos/logo_nexa.png';
+import { ErrorBoundary } from '@shared/components';
 import {
   HomeIcon,
   ChevronDownIcon,

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
-import { EventInvitationService } from '@features/calendar/services/eventInvitationService';
+import { EventInvitationService } from '@features/calendar';
 import { useTranslation } from 'react-i18next';
 
 /**

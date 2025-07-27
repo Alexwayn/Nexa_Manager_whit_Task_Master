@@ -11,9 +11,8 @@ import {
   KeyIcon,
   BoltIcon,
 } from '@heroicons/react/24/outline';
-import { useEmailContext } from '@context/EmailContext';
-import emailSyncService from '@lib/emailSyncService';
-import emailCacheService from '@lib/emailCacheService';
+import { useEmailContext } from '@shared/hooks/providers';
+import { emailSyncService, emailCacheService } from '@features/email';
 
 export default function EmailSettings({ isOpen, onClose }) {
   const { addNotification } = useEmailContext();

@@ -1,7 +1,7 @@
 import { supabase } from '@lib/supabaseClient';
-import { InvoiceService, INVOICE_STATUS } from '@lib/invoiceService';
-import emailService from '@lib/emailService';
-import Logger from '@utils/Logger';
+import { InvoiceService, INVOICE_STATUS } from './invoiceService';
+import { emailService } from '@features/email';
+import Logger from '@shared/utils/logger';
 
 /**
  * Invoice Lifecycle Service - Automated invoice lifecycle management
@@ -288,7 +288,7 @@ export class InvoiceLifecycleService {
       const customMessage = this.getOverdueReminderMessage(reminderType, invoice, daysOverdue);
 
       // Use new business email integration
-      const businessEmailIntegration = await import('./businessEmailIntegration.js');
+      const businessEmailIntegration = await import('../../email/services/businessEmailIntegration.js');
       const result = await businessEmailIntegration.default.sendPaymentReminder(
         invoice.user_id,
         invoice.id,

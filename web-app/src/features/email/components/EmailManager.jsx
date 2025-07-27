@@ -11,7 +11,7 @@ import {
   UserGroupIcon,
   ChartBarIcon,
 } from '@heroicons/react/24/outline';
-import emailService from '@lib/emailService';
+import emailService from '../services/emailService';
 import EmailCampaignManager from './EmailCampaignManager';
 import EmailProviderSettings from './EmailProviderSettings';
 import EmailSignatureManager from './EmailSignatureManager';

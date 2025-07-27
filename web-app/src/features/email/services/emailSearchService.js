@@ -1,5 +1,5 @@
-import { supabase } from './supabaseClient';
-import Logger from './logger';
+import { supabase } from '@lib/supabaseClient';
+import Logger from '@shared/utils/logger';
 
 /**
  * Comprehensive Email Search Service

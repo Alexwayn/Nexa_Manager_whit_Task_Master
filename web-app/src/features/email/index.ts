@@ -34,7 +34,7 @@ export { useEmails } from './hooks/useEmails.js';
 export { useEmailComposer } from './hooks/useEmailComposer.js';
 export { useEmailTemplates } from './hooks/useEmailTemplates.js';
 export { useEmailList } from './hooks/useEmailList.js';
-export { useEmailAutomation } from './hooks/useEmailAutomation.js';
+export { useEmailAutomation, useEmailScheduling, useFollowUpReminders, useEmailCampaigns, useAutomationStats } from './hooks/useEmailAutomation.js';
 export { useEmailNotifications } from './hooks/useEmailNotifications.js';
 export { useEmailPerformance } from './hooks/useEmailPerformance.js';
 export { useEmailSearch } from './hooks/useEmailSearch.js';

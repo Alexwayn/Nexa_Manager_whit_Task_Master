@@ -1,7 +1,7 @@
 import React, { useState, useEffect, Fragment } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
-import logger from '../../utils/Logger';
+import Logger from '@utils/Logger';
 
 const ClientModal = ({ isOpen, onClose, onSave, client }) => {
   const [formData, setFormData] = useState({

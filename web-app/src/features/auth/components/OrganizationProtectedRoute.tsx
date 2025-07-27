@@ -1,7 +1,7 @@
 import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth, useUser } from '@clerk/clerk-react';
 import { ReactNode, ReactElement } from 'react';
-import { useOrganizationContext } from '@context/OrganizationContext';
+import { useOrganizationContext } from '@/shared/hooks';
 import Logger from '@utils/Logger';
 
 interface OrganizationProtectedRouteProps {

@@ -4,8 +4,8 @@
  * Updated: 2025-01-25 - Simplified version for immediate functionality
  */
 
-import { supabase } from './supabaseClient';
-import Logger from '../utils/Logger';
+import { supabase } from '@lib/supabaseClient';
+import Logger from '../utils/logger';
 
 // Helper function to get current user from Clerk
 const getCurrentUser = () => {

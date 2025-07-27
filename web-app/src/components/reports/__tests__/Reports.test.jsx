@@ -142,9 +142,9 @@ import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { QueryClient, QueryProvider } from '@tanstack/react-query';
 import { MemoryRouter } from 'react-router-dom';
-import Reports from '../../../pages/Reports';
-import * as reportingService from '../../../services/reportingService';
-import * as invoiceAnalyticsService from '../../../lib/invoiceAnalyticsService';
+import Reports from '@/pages\Reports';
+import * as reportingService from '@/services\reportingService';
+import * as invoiceAnalyticsService from '@/lib\invoiceAnalyticsService';
 
 // Mock services
 jest.mock('../../../services/reportingService');

@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
-import emailTemplateService from '@lib/emailTemplateService';
-import { useEmailContext } from '@context/EmailContext';
+import { emailTemplateService } from '@features/email';
+import { useEmailContext } from '@shared/hooks/providers';
 
 /**
  * Enhanced custom hook for managing email templates

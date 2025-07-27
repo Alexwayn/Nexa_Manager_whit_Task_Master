@@ -1,11 +1,11 @@
 import { supabase } from '@lib/supabaseClient';
-import { createEvent } from '@lib/eventService';
+import { createEvent } from './eventService';
 import {
   sendEventNotification,
   sendEventReminder,
   sendEventCancellation,
-} from '@lib/notificationService';
-import Logger from '@utils/Logger';
+} from '@shared/services';
+import Logger from '@shared/utils/logger';
 
 /**
  * Recurring Events Service - Advanced Recurring Event Management

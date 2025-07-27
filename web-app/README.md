@@ -169,9 +169,9 @@ VITE_EMAIL_STORAGE_BUCKET=email-attachments
 
 ## 📚 Documentation
 
-- [Document Scanner System](docs/SCANNER_SYSTEM.md) - Complete scanner architecture and usage
-- [Image Optimization Service](docs/IMAGE_OPTIMIZATION_SERVICE.md) - Advanced image optimization guide
-- [Testing Documentation](docs/TESTING.md) - Comprehensive testing guide and coverage
+- [Document Scanner System](web-app/src/features/scanner/README.md) - Complete scanner architecture and usage
+- [Scanner API Documentation](docs/api/scanner.md) - Comprehensive API reference
+- [Testing Documentation](docs/development/testing.md) - Testing patterns and best practices
 - [Email System Documentation](docs/EMAIL_SYSTEM.md)
 - [API Documentation](docs/reports/API.md)
 - [Architecture Decision Records](docs/adr/)
@@ -181,12 +181,17 @@ VITE_EMAIL_STORAGE_BUCKET=email-attachments
 
 ### Test Structure
 ```
-__tests__/
-├── components/        # Component tests
-├── hooks/            # Hook tests
-├── services/         # Service layer tests
-├── utils/            # Utility tests
-└── e2e/              # End-to-end tests
+web-app/src/
+├── __tests__/                    # Global test utilities and setup
+│   ├── utils/                   # Test helper functions
+│   ├── mocks/                   # Global mocks
+│   └── setup.ts                 # Jest setup configuration
+├── features/                    # Feature-based tests
+│   ├── auth/__tests__/          # Authentication tests
+│   ├── scanner/__tests__/       # Scanner system tests
+│   ├── email/__tests__/         # Email system tests
+│   └── clients/__tests__/       # Client management tests
+└── shared/__tests__/            # Shared component tests
 ```
 
 ### Testing Libraries
@@ -194,6 +199,36 @@ __tests__/
 - **E2E Tests**: Playwright
 - **Coverage**: Jest coverage reports
 - **Accessibility**: @testing-library/jest-dom
+- **Mocking**: Jest mocks with custom utilities
+
+### Environment Variable Testing
+
+For consistent testing across different environments, services use environment variable mocking:
+
+```typescript
+// Standard pattern for mocking environment variables in tests
+jest.mock('@/utils/env', () => ({
+  getEnvVar: jest.fn((key, defaultValue = '') => {
+    const envVars = {
+      VITE_OPENAI_API_KEY: 'test-openai-key',
+      VITE_QWEN_API_KEY: 'test-qwen-key',
+      VITE_AZURE_VISION_KEY: 'test-azure-key',
+      VITE_SUPABASE_URL: 'https://test.supabase.co',
+      VITE_SUPABASE_ANON_KEY: 'test-anon-key'
+    };
+    return envVars[key] || defaultValue;
+  }),
+  isDevelopment: jest.fn(() => false),
+  isProduction: jest.fn(() => true),
+  isTestEnvironment: jest.fn(() => true)
+}));
+```
+
+This pattern ensures:
+- **Consistency**: All tests use the same environment variable values
+- **Isolation**: Tests don't depend on actual environment configuration
+- **Reliability**: Tests work in any environment (CI/CD, local, etc.)
+- **Flexibility**: Easy to override specific values for individual tests
 
 ## 🔒 Security
 
@@ -339,6 +374,7 @@ The scanner system uses comprehensive TypeScript interfaces located in `src/type
 - ✅ Organization-based access control active
 - ✅ Secure credential management for email accounts
 - ✅ Document scanner storage with comprehensive Supabase integration
+- ✅ Environment variable security with proper testing patterns
 
 ## 🌍 Internationalization
 

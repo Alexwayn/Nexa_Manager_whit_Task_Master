@@ -1,11 +1,10 @@
 import { renderHook, waitFor } from '@testing-library/react';
 import { QueryClient, QueryProvider } from '@tanstack/react-query';
-import { vi } from 'vitest';
 import { useReports, useReportMetrics, useReportGeneration, useScheduledReports } from '../useReports';
 import * as reportingService from '../../services/reportingService';
 
 // Mock services
-vi.mock('../../services/reportingService');
+jest.mock('../../services/reportingService');
 
 // Mock data
 const mockReports = [

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import SettingsFormSection from '@components/settings/SettingsFormSection';
+import SettingsFormSection from './SettingsFormSection';
 import { useNotifications } from '@hooks/useNotifications';
 
 const NotificationsSection = ({ setNotification }) => {

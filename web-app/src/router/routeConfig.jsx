@@ -30,7 +30,7 @@ const Voice = lazy(() => import('@pages/Voice'));
 const OrganizationManagement = lazy(() => import('@pages/OrganizationManagement'));
 
 // Testing components - also lazy loaded for better performance
-const TestRoute = lazy(() => import('@components/shared/TestRoute'));
+const TestRoute = lazy(() => import('../components/shared/TestRoute'));
 const TestDebug = lazy(() => import('@pages/TestDebug'));
 const TestAnalytics = lazy(() => import('@pages/TestAnalytics'));
 const TestExport = lazy(() => import('@pages/TestExport'));

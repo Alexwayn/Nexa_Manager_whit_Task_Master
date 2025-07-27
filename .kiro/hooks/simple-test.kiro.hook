@@ -1,0 +1,13 @@
+{
+  "enabled": true,
+  "name": "Simple Test",
+  "description": "Simple test hook",
+  "when": {
+    "type": "fileEdited",
+    "patterns": ["*.md"]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "File edited"
+  }
+}

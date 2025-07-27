@@ -7,6 +7,7 @@ import tseslint from '@typescript-eslint/eslint-plugin'
 import tsparser from '@typescript-eslint/parser'
 import prettier from 'eslint-plugin-prettier'
 import prettierConfig from 'eslint-config-prettier'
+import importPlugin from 'eslint-plugin-import'
 
 export default [
   {
@@ -57,6 +58,7 @@ export default [
       'react-refresh': reactRefresh,
       '@typescript-eslint': tseslint,
       prettier,
+      import: importPlugin,
     },
     rules: {
       ...js.configs.recommended.rules,
@@ -94,6 +96,89 @@ export default [
       // General rules
       'no-console': ['warn', { allow: ['warn', 'error'] }],
       'no-debugger': 'warn',
+      
+      // Architectural enforcement rules
+      'import/no-restricted-paths': [
+        'error',
+        {
+          zones: [
+            // Prevent direct imports between features (must use public API)
+            {
+              target: './src/features/*/!(index.ts|index.js)',
+              from: './src/features/*/!(components|hooks|services|types|utils|__tests__)/**',
+              message: 'Features should only import from other features through their public API (index.ts). Use import from "@/features/[feature-name]" instead.'
+            },
+            // Prevent features from importing internal parts of other features
+            {
+              target: './src/features/**',
+              from: './src/features/*/!(index.ts|index.js)',
+              except: ['./src/features/*/!(index.ts|index.js)'],
+              message: 'Features should only import from other features through their public API (index.ts). Use import from "@/features/[feature-name]" instead.'
+            },
+            // Prevent shared modules from importing feature-specific code
+            {
+              target: './src/shared/**',
+              from: './src/features/**',
+              message: 'Shared modules should not depend on specific features. Consider moving the functionality to shared or creating a proper abstraction.'
+            },
+            // Prevent deep imports into shared modules
+            {
+              target: './src/**',
+              from: './src/shared/*/!(index.ts|index.js)',
+              except: ['./src/shared/**'],
+              message: 'Use shared module public APIs through index.ts files. Import from "@/shared/[module-name]" instead.'
+            }
+          ]
+        }
+      ],
+      
+      // Enforce consistent import ordering
+      'import/order': [
+        'error',
+        {
+          groups: [
+            'builtin',
+            'external',
+            'internal',
+            'parent',
+            'sibling',
+            'index'
+          ],
+          pathGroups: [
+            {
+              pattern: '@/**',
+              group: 'internal',
+              position: 'before'
+            },
+            {
+              pattern: '@/features/**',
+              group: 'internal',
+              position: 'before'
+            },
+            {
+              pattern: '@/shared/**',
+              group: 'internal',
+              position: 'before'
+            }
+          ],
+          pathGroupsExcludedImportTypes: ['builtin'],
+          'newlines-between': 'always',
+          alphabetize: {
+            order: 'asc',
+            caseInsensitive: true
+          }
+        }
+      ],
+      
+      // Prevent circular dependencies
+      'import/no-cycle': ['error', { maxDepth: 10 }],
+      
+      // Ensure imports exist
+      'import/no-unresolved': 'error',
+      
+      // Prevent default exports (prefer named exports for better tree shaking)
+      'import/prefer-default-export': 'off',
+      'import/no-default-export': 'warn',
     },
   },
   // Logger utility - allow console methods

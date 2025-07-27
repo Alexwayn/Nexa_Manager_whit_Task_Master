@@ -3,8 +3,8 @@ import { useForm } from 'react-hook-form';
 import { useAuth, useUser } from '@clerk/clerk-react';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import ErrorBoundary from '@shared/components/feedback/ErrorBoundary';
-import { businessService } from "@features/clients/services/businessService";
+import { ErrorBoundary } from '@shared/components';
+import { businessService } from '@features/clients';
 import {
   BuildingOfficeIcon,
   UserCircleIcon,
@@ -13,7 +13,7 @@ import {
   CreditCardIcon,
   CheckCircleIcon,
 } from '@heroicons/react/24/outline';
-import nexaLogo from '../../../assets/logos/logo_nexa.png';
+import nexaLogo from '@assets/logos/logo_nexa.png';
 
 export default function Onboarding() {
   const { isLoaded, isSignedIn } = useAuth();

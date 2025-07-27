@@ -9,7 +9,7 @@ import {
   DocumentTextIcon,
 } from '@heroicons/react/24/outline';
 import { Mail, Clock, CheckCircle } from 'lucide-react';
-import emailService from '@lib/emailService';
+import emailService from '../../email/services/emailService';
 import DOMPurify from 'dompurify';
 import Logger from '@utils/Logger';
 

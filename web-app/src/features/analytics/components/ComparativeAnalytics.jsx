@@ -11,8 +11,8 @@ import {
   Equal,
 } from 'lucide-react';
 import { Line, Bar } from 'react-chartjs-2';
-import financialService from '@lib/financialService';
-import clientService from '@lib/clientService';
+import financialService from '../../financial/services/financialService';
+import clientService from '../../clients/services/clientService';
 
 const ComparativeAnalytics = ({
   currentDateRange,

@@ -31,7 +31,7 @@ import {
   MagnifyingGlassIcon,
   Squares2X2Icon,
 } from '@heroicons/react/24/outline';
-import financialService from '@lib/financialService';
+import financialService from '../../financial/services/financialService';
 import Logger from '@utils/Logger';
 
 // Register Chart.js components

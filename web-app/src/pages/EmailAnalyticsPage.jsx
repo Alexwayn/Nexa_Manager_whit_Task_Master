@@ -1,7 +1,7 @@
 import React from 'react';
 import { useUser } from '@clerk/clerk-react';
 import EmailAnalyticsDashboard from '@/components/EmailAnalyticsDashboard';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
+import { Card, CardContent, CardHeader, CardTitle } from '@shared/components';
 import { BarChart3, TrendingUp, Mail, Users } from 'lucide-react';
 
 const EmailAnalyticsPage = () => {

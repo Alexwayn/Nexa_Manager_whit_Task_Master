@@ -1,6 +1,6 @@
 import { supabase } from '@lib/supabaseClient';
-import emailTrackingService from '@features/email/services/emailTrackingService';
-import emailErrorHandler from '@features/email/services/emailErrorHandler';
+import { emailTrackingService } from '@features/email';
+import { emailErrorHandler } from '@features/email';
 import Logger from '@utils/Logger';
 
 /**

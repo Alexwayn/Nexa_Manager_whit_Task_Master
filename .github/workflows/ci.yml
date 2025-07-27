@@ -41,6 +41,12 @@ jobs:
     - name: Check Prettier formatting
       run: npm run format:check
       
+    - name: Run architectural validation
+      run: npm run test:architecture
+      
+    - name: Validate feature APIs
+      run: npm run validate:feature-api
+      
     - name: Run tests
       run: npm run test:ci
       env:

@@ -13,4 +13,6 @@ export { OCRProviderFactory, type IOCRProvider, type OCRProviderConfig } from '.
 export { FallbackOCRService, type FallbackStrategy, DegradationAction } from './fallbackOCRService';
 export { default as BatchProcessingService } from './batchProcessingService';
 export { default as ImageOptimizationService } from './imageOptimizationService';
+export { default as RateLimitingService } from './rateLimitingService';
+export { default as ResultCacheService } from './resultCacheService';
 export * from './types';

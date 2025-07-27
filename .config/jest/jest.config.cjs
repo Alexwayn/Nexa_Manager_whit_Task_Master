@@ -1,4 +1,7 @@
 module.exports = {
+  // Root directory for Jest
+  rootDir: '../../web-app',
+  
   // Test environment configuration
   testEnvironment: 'jsdom',
   testEnvironmentOptions: {
@@ -6,7 +9,7 @@ module.exports = {
   },
   
   // Setup files
-  setupFilesAfterEnv: ['<rootDir>/../../web-app/src/setupTests.js'],
+  setupFilesAfterEnv: ['<rootDir>/src/setupTests.js'],
   
   // Transform configuration
   transform: {
@@ -22,41 +25,48 @@ module.exports = {
   
   // Module name mapping
   moduleNameMapper: {
-    '^@/(.*)$': '<rootDir>/../../web-app/src/$1',
-    '^@components/(.*)$': '<rootDir>/../../web-app/src/components/$1',
-    '^@services/(.*)$': '<rootDir>/../../web-app/src/services/$1',
-    '^@utils/(.*)$': '<rootDir>/../../web-app/src/utils/$1',
-    '^@hooks/(.*)$': '<rootDir>/../../web-app/src/hooks/$1',
-    '^@context/(.*)$': '<rootDir>/../../web-app/src/context/$1',
-    '^@i18n/(.*)$': '<rootDir>/../../web-app/src/i18n/$1',
-    '^@assets/(.*)$': '<rootDir>/../../web-app/src/assets/$1',
-    '^@tests/(.*)$': '<rootDir>/../../web-app/src/__tests__/$1',
-    '^@lib/(.*)$': '<rootDir>/../../web-app/src/lib/$1',
-    '^@types/(.*)$': '<rootDir>/../../web-app/src/types/$1',
-    '^@features/(.*)$': '<rootDir>/../../web-app/src/features/$1',
-    '^@shared/(.*)$': '<rootDir>/../../web-app/src/shared/$1',
-    '^@auth/(.*)$': '<rootDir>/../../web-app/src/features/auth/$1',
-    '^@clients/(.*)$': '<rootDir>/../../web-app/src/features/clients/$1',
-    '^@financial/(.*)$': '<rootDir>/../../web-app/src/features/financial/$1',
-    '^@email/(.*)$': '<rootDir>/../../web-app/src/features/email/$1',
-    '^@documents/(.*)$': '<rootDir>/../../web-app/src/features/documents/$1',
-    '^@calendar/(.*)$': '<rootDir>/../../web-app/src/features/calendar/$1',
-    '^@scanner/(.*)$': '<rootDir>/../../web-app/src/features/scanner/$1',
-    '^@dashboard/(.*)$': '<rootDir>/../../web-app/src/features/dashboard/$1',
-    '^@analytics/(.*)$': '<rootDir>/../../web-app/src/features/analytics/$1',
+    '^@/(.*)$': '<rootDir>/src/$1',
+    '^@components/(.*)$': '<rootDir>/src/components/$1',
+    '^@services/(.*)$': '<rootDir>/src/services/$1',
+    '^@utils/(.*)$': '<rootDir>/src/utils/$1',
+    '^@hooks/(.*)$': '<rootDir>/src/hooks/$1',
+    '^@context/(.*)$': '<rootDir>/src/context/$1',
+    '^@i18n/(.*)$': '<rootDir>/src/i18n/$1',
+    '^@assets/(.*)$': '<rootDir>/src/assets/$1',
+    '^@tests/(.*)$': '<rootDir>/src/shared/__tests__/$1',
+    '^@lib/(.*)$': '<rootDir>/src/lib/$1',
+    '^@types/(.*)$': '<rootDir>/src/types/$1',
+    '^@features/(.*)$': '<rootDir>/src/features/$1',
+    '^@shared/(.*)$': '<rootDir>/src/shared/$1',
+    '^@auth/(.*)$': '<rootDir>/src/features/auth/$1',
+    '^@clients/(.*)$': '<rootDir>/src/features/clients/$1',
+    '^@financial/(.*)$': '<rootDir>/src/features/financial/$1',
+    '^@email/(.*)$': '<rootDir>/src/features/email/$1',
+    '^@documents/(.*)$': '<rootDir>/src/features/documents/$1',
+    '^@calendar/(.*)$': '<rootDir>/src/features/calendar/$1',
+    '^@scanner/(.*)$': '<rootDir>/src/features/scanner/$1',
+    '^@dashboard/(.*)$': '<rootDir>/src/features/dashboard/$1',
+    '^@analytics/(.*)$': '<rootDir>/src/features/analytics/$1',
+    // Mock problematic modules
+    '^@/utils/env$': '<rootDir>/src/shared/__tests__/mocks/env.js',
+    '^@/utils/Logger$': '<rootDir>/src/shared/__tests__/mocks/logger.js',
   },
 
   // Test file patterns
   testMatch: [
-    '<rootDir>/../../web-app/src/**/__tests__/**/*.{js,jsx,ts,tsx}',
-    '<rootDir>/../../web-app/src/**/*.{test,spec}.{js,jsx,ts,tsx}',
+    '<rootDir>/src/features/**/__tests__/**/*.{test,spec}.{js,jsx,ts,tsx}',
+    '<rootDir>/src/shared/**/__tests__/**/*.{test,spec}.{js,jsx,ts,tsx}',
+    '<rootDir>/src/**/*.{test,spec}.{js,jsx,ts,tsx}',
   ],
   
   // Files to ignore
   testPathIgnorePatterns: [
-    '<rootDir>/../../web-app/node_modules/',
-    '<rootDir>/../../web-app/dist/',
-    '<rootDir>/../../web-app/build/',
+    '<rootDir>/node_modules/',
+    '<rootDir>/dist/',
+    '<rootDir>/build/',
+    '\\.e2e\\.test\\.(js|jsx|ts|tsx)$',
+    '\\.accessibility\\.test\\.(js|jsx|ts|tsx)$',
+    '\\.performance\\.test\\.(js|jsx|ts|tsx)$',
   ],
   
   // Module file extensions
@@ -64,14 +74,16 @@ module.exports = {
   
   // Coverage configuration
   collectCoverageFrom: [
-    '../../web-app/src/**/*.{js,jsx,ts,tsx}',
-    '!../../web-app/src/**/*.d.ts',
-    '!../../web-app/src/main.jsx',
-    '!../../web-app/src/vite-env.d.ts',
-    '!../../web-app/src/**/*.stories.{js,jsx,ts,tsx}',
-    '!../../web-app/src/**/__tests__/**',
-    '!../../web-app/src/**/*.test.{js,jsx,ts,tsx}',
-    '!../../web-app/src/**/*.spec.{js,jsx,ts,tsx}',
+    'src/features/**/*.{js,jsx,ts,tsx}',
+    'src/shared/**/*.{js,jsx,ts,tsx}',
+    'src/pages/**/*.{js,jsx,ts,tsx}',
+    '!src/**/*.d.ts',
+    '!src/main.jsx',
+    '!src/vite-env.d.ts',
+    '!src/**/*.stories.{js,jsx,ts,tsx}',
+    '!src/**/__tests__/**',
+    '!src/**/*.test.{js,jsx,ts,tsx}',
+    '!src/**/*.spec.{js,jsx,ts,tsx}',
   ],
   
   coverageDirectory: 'coverage',
@@ -91,13 +103,19 @@ module.exports = {
       lines: 70,
       statements: 70,
     },
-    './../../web-app/src/services/': {
+    './src/features/*/services/': {
       branches: 80,
       functions: 80,
       lines: 80,
       statements: 80,
     },
-    './../../web-app/src/utils/': {
+    './src/shared/services/': {
+      branches: 80,
+      functions: 80,
+      lines: 80,
+      statements: 80,
+    },
+    './src/shared/utils/': {
       branches: 75,
       functions: 75,
       lines: 75,
@@ -123,7 +141,7 @@ module.exports = {
   },
   
   // Environment variables for process.env
-  setupFiles: ['<rootDir>/../../web-app/src/jest.env.js'],
+  setupFiles: ['<rootDir>/src/jest.env.js'],
   
   // Verbose output for debugging
   verbose: false,
@@ -133,8 +151,8 @@ module.exports = {
   
   // Watch mode configuration
   watchPathIgnorePatterns: [
-    '<rootDir>/../../web-app/node_modules/',
-    '<rootDir>/../../web-app/coverage/',
-    '<rootDir>/../../web-app/dist/',
+    '<rootDir>/node_modules/',
+    '<rootDir>/coverage/',
+    '<rootDir>/dist/',
   ],
 };

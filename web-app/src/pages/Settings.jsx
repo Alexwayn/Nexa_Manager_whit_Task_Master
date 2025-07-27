@@ -20,22 +20,23 @@ import {
 // import { UserProfile } from '@clerk/clerk-react'; // Disabled for development mode
 import { supabase } from '@lib/supabaseClient';
 import Logger from '@utils/Logger';
-import { useTranslation } from '@shared/hooks/useTranslation';
+import { useTranslation } from '@shared/hooks';
 import { useAuth, useUser } from '@clerk/clerk-react';
-import Footer from '@components/shared/Footer';
-import { businessService } from '@lib/businessService';
-import CompanySettings from '@components/settings/CompanySettingsFallback';
-import BillingSettings from '@components/settings/BillingSettingsFallback';
-import SecuritySettings from '@components/settings/SecuritySettingsFallback';
-import NotificationSettings from '@components/settings/NotificationSettingsFallback';
-import EmailSettings from '@components/settings/EmailSettingsFallback';
+import Footer from '@shared/components/Footer';
+import { businessService } from '@features/clients';
+import ProfileSettings from '../components/settings/ProfileSettings';
+import CompanySettings from '../components/settings/CompanySettingsFallback';
+import BillingSettings from '../components/settings/BillingSettingsFallback';
+import SecuritySettings from '../components/settings/SecuritySettingsFallback';
+import NotificationSettings from '../components/settings/NotificationSettingsFallback';
+import EmailSettings from '../components/settings/EmailSettingsFallback';
 // Using existing components (they work fine in demo mode)
-import AccessibilitySettings from '@components/settings/AccessibilitySettings';
-import BackupSettings from '@components/settings/BackupSettings';
-import IntegrationsSettings from '@components/settings/IntegrationsSettingsFallback';
-import RolesAndPermissionsSettings from '@components/settings/RolesAndPermissionsSettings';
-import TaxSettings from '@components/settings/TaxSettings';
-import DataExportSettings from '@components/settings/DataExportSettingsFallback';
+import AccessibilitySettings from '../components/settings/AccessibilitySettings';
+import BackupSettings from '../components/settings/BackupSettings';
+import IntegrationsSettings from '../components/settings/IntegrationsSettingsFallback';
+import RolesAndPermissionsSettings from '../components/settings/RolesAndPermissionsSettings';
+import TaxSettings from '../components/settings/TaxSettings';
+import DataExportSettings from '../components/settings/DataExportSettingsFallback';
 // SimpleTabTest removed - using real settings tabs only
 
 export default function Settings() {

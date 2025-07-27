@@ -18,7 +18,7 @@ import {
   EnvelopeIcon,
   Cog6ToothIcon,
 } from '@heroicons/react/24/solid';
-import Footer from '@components/shared/Footer';
+import { Footer } from '@shared/components';
 import { useTranslation } from 'react-i18next';
 
 const Voice = () => {

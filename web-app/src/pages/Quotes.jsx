@@ -1,14 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Footer from '@components/shared/Footer';
-import ErrorBoundary from '@shared/components/feedback/ErrorBoundary';
-import QuoteModal from '@components/financial/QuoteModal';
-import QuoteDetailModal from '@components/financial/QuoteDetailModal';
-import QuoteStatusBadge from '@components/financial/QuoteStatusBadge';
-import QuoteApprovalActions from '@components/financial/QuoteApprovalActions';
-import QuoteToInvoiceConverter from '@components/financial/QuoteToInvoiceConverter';
-import { QuoteService } from '@lib/quoteService';
-import { QuoteApprovalService } from '@lib/quoteApprovalService';
+import Footer from '@shared/components/Footer';
+import { ErrorBoundary } from '@shared/components';
+import QuoteModal from '@features/financial/components/QuoteModal';
+import { QuoteDetailModal } from '@features/financial';
+import { QuoteStatusBadge } from '@features/financial';
+import { QuoteApprovalActions } from '@features/financial';
+import { QuoteToInvoiceConverter } from '@features/financial';
+import { QuoteService } from '@features/financial/services/quoteService';
+import { QuoteApprovalService } from '@features/financial/services/quoteApprovalService';
 import { useUser } from '@clerk/clerk-react';
 import Logger from '@utils/Logger';
 import {
@@ -46,7 +46,7 @@ import {
   FileDown,
 } from 'lucide-react';
 import { HomeIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
-import nexaLogo from '../../../assets/logos/logo_nexa.png';
+import nexaLogo from '@assets/logos/logo_nexa.png';
 import { useTranslation } from 'react-i18next';
 
 const QuotesPage = () => {

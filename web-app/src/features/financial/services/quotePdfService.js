@@ -17,7 +17,7 @@
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import Logger from '@utils/Logger';
-import { businessService } from '@features/clients/services/businessService';
+import { businessService } from '@features/clients';
 
 /**
  * Service class for generating professional quote PDFs with custom templates

@@ -1,8 +1,7 @@
-import emailErrorHandler from '@features/email/services/emailErrorHandler';
-import emailProviderService from '@lib/emailProviderService';
+import { emailErrorHandler, emailProviderService } from '@features/email';
 import { supabase } from '@lib/supabaseClient';
-import Logger from '@utils/Logger';
-import { notify } from '@shared/utils/uiUtils';
+import Logger from '@shared/utils/logger';
+import { notify } from '@shared/utils';
 
 /**
  * Enhanced Email Queue Service with comprehensive error handling and recovery
@@ -348,8 +347,8 @@ class EnhancedEmailQueueService {
     const { userId, accountId } = item.data;
     
     // Trigger email sync
-    const emailSyncService = await import('@lib/emailSyncService');
-    const result = await emailSyncService.default.performSync(userId, [{ id: accountId }]);
+    const { emailSyncService } = await import('@features/email');
+    const result = await emailSyncService.performSync(userId, [{ id: accountId }]);
     
     if (!result.success) {
       throw new Error(result.error || 'Failed to sync emails');

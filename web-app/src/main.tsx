@@ -2,8 +2,7 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { initToolbar } from '@stagewise/toolbar';
 import './index.css';
-import './styles/forms.css';
-import './styles/rtl-support.css';
+// Form and RTL styles are now imported globally through shared styles
 import './i18n'; // Initialize i18n
 
 // Initialize Sentry as early as possible

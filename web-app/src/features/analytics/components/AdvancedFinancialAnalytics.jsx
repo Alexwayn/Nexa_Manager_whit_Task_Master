@@ -23,8 +23,8 @@ import {
   ReceiptRefundIcon,
   ChartPieIcon,
 } from '@heroicons/react/24/outline';
-import EnhancedKPICard from '@components/analytics/EnhancedKPICard';
-import InteractiveFinancialCharts from '@components/analytics/InteractiveFinancialCharts';
+import { EnhancedKPICard } from '@features/analytics';
+import InteractiveFinancialCharts from './InteractiveFinancialCharts';
 
 // Register Chart.js components
 ChartJS.register(

@@ -20,7 +20,7 @@ import {
   AdjustmentsHorizontalIcon,
   CheckCircleIcon,
 } from '@heroicons/react/24/outline';
-import SettingsTable from '@components/settings/SettingsTable';
+import SettingsTable from './SettingsTable';
 import {
   InvoiceSettingsService,
   TEMPLATE_TYPES,

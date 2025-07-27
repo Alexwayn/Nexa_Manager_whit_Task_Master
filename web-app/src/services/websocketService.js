@@ -19,7 +19,11 @@ class WebSocketService {
    * @param {string} url - WebSocket server URL
    * @param {Object} options - Connection options
    */
-  connect(url = import.meta.env.VITE_WS_URL || 'ws://localhost:8080', options = {}) {
+  connect(url, options = {}) {
+    // Use default URL if not provided
+    if (!url) {
+      url = import.meta.env.VITE_WS_URL || 'ws://localhost:8080';
+    }
     try {
       this.ws = new WebSocket(url);
       this.setupEventHandlers();

@@ -13,8 +13,8 @@ import {
 } from '@clerk/clerk-react';
 import { OrganizationProfile, CreateOrganization } from '@clerk/clerk-react';
 import { useTranslation } from 'react-i18next';
-import { useOrganizationContext } from '@context/OrganizationContext';
-import Layout from '@components/dashboard/Layout';
+import { useOrganizationContext } from '@/shared/hooks/providers';
+import { DashboardFilters as Layout } from '@features/dashboard';
 import Logger from '@utils/Logger';
 
 function classNames(...classes) {

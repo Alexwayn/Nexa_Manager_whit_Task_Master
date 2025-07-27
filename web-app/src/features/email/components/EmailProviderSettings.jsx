@@ -11,7 +11,7 @@ import {
   ChartBarIcon,
   InformationCircleIcon,
 } from '@heroicons/react/24/outline';
-import emailService from '@lib/emailService';
+import emailService from '../services/emailService';
 import { useTranslation } from 'react-i18next';
 
 const EmailProviderSettings = () => {

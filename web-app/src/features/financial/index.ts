@@ -1,5 +1,22 @@
 // Financial Feature - Public API
 
+// Hooks
+export { default as useChartData } from './hooks/useChartData.js';
+export { default as useReportData } from './hooks/useReportData.js';
+export { default as useReports } from './hooks/useReports.js';
+export { 
+  useReportMetrics, 
+  useReportHistory, 
+  useReportTemplates, 
+  useScheduledReports, 
+  useReportPreview, 
+  useGenerateReport, 
+  useScheduleReport, 
+  useDeleteReport, 
+  usePrefetchReports, 
+  useReportCache 
+} from './hooks/useReportsQuery.js';
+
 // Components
 export { default as DigitalSignature } from './components/DigitalSignature';
 export { default as FinancialForecast } from './components/FinancialForecast';

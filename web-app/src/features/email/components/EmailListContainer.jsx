@@ -1,6 +1,6 @@
 import React from 'react';
 import EmailList from './EmailList';
-import useEmailList from '@hooks/useEmailList';
+import useEmailList from '../hooks/useEmailList';
 
 /**
  * EmailListContainer - Container component that manages email list state

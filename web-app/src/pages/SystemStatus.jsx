@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import ErrorBoundary from '@shared/components/feedback/ErrorBoundary';
+import { ErrorBoundary } from '@shared/components';
 import {
   CheckCircle,
   AlertTriangle,

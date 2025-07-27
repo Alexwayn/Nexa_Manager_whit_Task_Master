@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useUser } from '@clerk/clerk-react';
-import { businessService } from '@lib/businessService';
+import { businessService } from '@features/clients';
 import Logger from '@utils/Logger';
 
 const TaxSettings = ({ showNotification }) => {

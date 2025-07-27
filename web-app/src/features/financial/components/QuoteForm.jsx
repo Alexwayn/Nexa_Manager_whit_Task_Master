@@ -17,9 +17,9 @@ import {
   Eye,
   Mail,
 } from 'lucide-react';
-import { QuoteService } from '@lib/quoteService';
-import { QuotePdfService } from '@lib/quotePdfService';
-import clientService from '@lib/clientService';
+import { QuoteService } from '../services/quoteService';
+import { QuotePdfService } from '../services/quotePdfService';
+import clientService from '../../clients/services/clientService';
 import { useUser } from '@clerk/clerk-react';
 import Logger from '@utils/Logger';
 

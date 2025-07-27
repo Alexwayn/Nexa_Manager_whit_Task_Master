@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import TaxCalculationService, { IVA_RATES, WITHHOLDING_RATES } from '@lib/taxCalculationService';
-import EnhancedKPICard from '@components/analytics/EnhancedKPICard';
+import TaxCalculationService, { IVA_RATES, WITHHOLDING_RATES } from '../services/taxCalculationService';
+import { EnhancedKPICard } from '@features/analytics';
 
 const TaxCalculator = () => {
   const { t } = useTranslation('transactions');

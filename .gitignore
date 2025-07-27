@@ -27,7 +27,6 @@ node_modules/
 # Configuration files (now in .config/)
 .vscode/
 .cursor/
-.kiro/
 .taskmaster/
 
 # Backup and temporary files

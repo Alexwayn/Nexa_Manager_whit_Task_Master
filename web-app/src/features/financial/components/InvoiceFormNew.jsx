@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useUser } from '@clerk/clerk-react';
 import { X, Eye, Download, Mail, Plus, Trash2, Calendar } from 'lucide-react';
-import InvoiceService from '@lib/invoiceService';
-import ClientService from '@lib/clientService';
+import InvoiceService from '../services/invoiceService';
+import ClientService from '../../clients/services/clientService';
 import Logger from '@utils/Logger';
 import { getUserIdForUuidTables } from '@shared/utils/userIdConverter';
 

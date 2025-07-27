@@ -1,6 +1,6 @@
 import Logger from '@utils/Logger';
 import { errorMonitor, ErrorType, ErrorSeverity } from '@utils/ErrorMonitor';
-import { notify } from '@shared/utils/uiUtils'; // Fixed import path
+import { notify } from '@shared/utils'; // Fixed import path
 
 /**
  * Email Error Handler - Comprehensive error handling and recovery for email operations

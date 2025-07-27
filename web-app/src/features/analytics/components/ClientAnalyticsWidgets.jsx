@@ -29,8 +29,8 @@ import {
 } from 'lucide-react';
 import { Chart as ChartJS, ArcElement, CategoryScale, LinearScale, BarElement, LineElement, PointElement, Title, Tooltip, Legend } from 'chart.js';
 import { Doughnut, Bar, Line } from 'react-chartjs-2';
-import clientService from '@lib/clientService';
-import invoiceAnalyticsService from '@lib/invoiceAnalyticsService';
+import clientService from '../../clients/services/clientService';
+import invoiceAnalyticsService from '../../financial/services/invoiceAnalyticsService';
 import Logger from '@utils/Logger';
 
 // Register Chart.js components

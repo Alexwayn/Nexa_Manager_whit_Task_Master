@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { InvoiceService } from '@lib/invoiceService';
-import EnhancedKPICard from '@components/analytics/EnhancedKPICard';
+import { InvoiceService } from '../services/invoiceService';
+import { EnhancedKPICard } from '@features/analytics';
 import Logger from '@utils/Logger';
 
 /**

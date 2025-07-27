@@ -11,7 +11,7 @@ import {
   BuildingOfficeIcon,
 } from '@heroicons/react/24/outline';
 import { StarIcon as StarIconSolid } from '@heroicons/react/24/solid';
-import emailSignatureService from '@lib/emailSignatureService';
+import emailSignatureService from '../services/emailSignatureService';
 
 const EmailSignatureManager = () => {
   const [signatures, setSignatures] = useState([]);

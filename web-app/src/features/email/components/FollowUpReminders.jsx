@@ -1,14 +1,19 @@
-import React, { useState } from 'react';
-import {
-  BellIcon,
+import React, { useState, useEffect } from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from '../../../shared/components/Card';
+import { Button } from '../../../shared/components/Button';
+import { Badge } from '../../../shared/components/Badge';
+import { Input, Textarea } from '../../../shared/components';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../../shared/components/Select';
+import { 
+  ClockIcon, 
+  BellIcon, 
   PlusIcon,
   CheckIcon,
-  ClockIcon,
   ExclamationTriangleIcon,
   CalendarIcon,
   EnvelopeIcon
 } from '@heroicons/react/24/outline';
-import { useFollowUpReminders } from '@hooks/useEmailAutomation';
+import { useFollowUpReminders } from '@features/email';
 import { format, isAfter, isBefore, addDays } from 'date-fns';
 
 const FollowUpReminders = ({ selectedEmailId = null }) => {

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ExclamationTriangleIcon, ArrowPathIcon, XMarkIcon } from '@heroicons/react/24/outline';
-import logger from '@lib/logger';
-import errorReportingService from '@lib/errorReportingService';
+import logger from '../../../utils/Logger';
+import errorReportingService from '../../../shared/services/errorReportingService';
 
 /**
  * EmailErrorBoundary - Error boundary component for email operations

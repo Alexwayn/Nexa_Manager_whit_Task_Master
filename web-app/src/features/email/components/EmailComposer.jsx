@@ -14,7 +14,7 @@ import {
 import EmailAttachmentManager from './EmailAttachmentManager';
 import EmailTemplateSelector from './EmailTemplateSelector';
 import EmailRecipientInput from './EmailRecipientInput';
-import { useEmailComposer } from '@hooks/useEmailComposer';
+import { useEmailComposer } from '@features/email';
 import { useTranslation } from 'react-i18next';
 
 const EmailComposer = ({

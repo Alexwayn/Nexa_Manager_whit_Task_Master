@@ -1,8 +1,8 @@
 import { useState, useEffect, useCallback } from 'react';
-import emailManagementService from '@features/email/services/emailManagementService';
-import emailAttachmentService from '@lib/emailAttachmentService';
+import { emailManagementService } from '@features/email';
+import { emailAttachmentService } from '@features/email';
 import { useUser } from '@clerk/clerk-react';
-import { useEmailContext } from '@context/EmailContext';
+import { useEmailContext } from '@shared/hooks/providers';
 import Logger from '@utils/Logger';
 
 /**

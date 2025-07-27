@@ -1,5 +1,5 @@
 import React from 'react';
-import AdvancedFinancialAnalytics from '@components/analytics/AdvancedFinancialAnalytics';
+import { PerformanceAnalytics } from '@features/analytics';
 
 const TestAnalytics = () => {
   // Dati di test per il componente

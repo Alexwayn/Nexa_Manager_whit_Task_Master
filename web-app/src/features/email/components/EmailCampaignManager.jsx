@@ -16,8 +16,8 @@ import {
   ExclamationTriangleIcon,
   ArrowUpTrayIcon,
 } from '@heroicons/react/24/outline';
-import emailCampaignService from '@lib/emailCampaignService';
-import emailTemplateService from '@lib/emailTemplateService';
+import emailCampaignService from '../services/emailCampaignService';
+import emailTemplateService from '../services/emailTemplateService';
 import EmailTemplateEditor from './EmailTemplateEditor';
 import EmailQueueManager from './EmailQueueManager';
 import { useTranslation } from 'react-i18next';

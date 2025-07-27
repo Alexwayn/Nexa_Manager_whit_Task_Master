@@ -4,8 +4,8 @@
  */
 
 import businessEmailIntegration from './businessEmailIntegration.js';
-import { InvoiceService } from '@features/financial/services/invoiceService.js';
-import { QuoteService } from '@features/financial/services/quoteService.js';
+import { InvoiceService } from '@features/financial';
+import { QuoteService } from '@features/financial';
 import clientEmailService from './clientEmailService.js';
 import businessEmailLogger from './businessEmailLogger.js';
 import Logger from '@utils/Logger';

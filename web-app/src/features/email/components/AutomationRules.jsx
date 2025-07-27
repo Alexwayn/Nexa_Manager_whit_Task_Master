@@ -10,7 +10,7 @@ import {
   ExclamationTriangleIcon,
   CheckCircleIcon
 } from '@heroicons/react/24/outline';
-import { useEmailAutomation } from '@hooks/useEmailAutomation';
+import { useEmailAutomation } from '@features/email';
 
 const AutomationRules = () => {
   const { rules, loading, createRule, updateRule, deleteRule, toggleRule } = useEmailAutomation();

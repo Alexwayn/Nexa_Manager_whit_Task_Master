@@ -16,13 +16,13 @@ import {
   DocumentTextIcon,
 } from '@heroicons/react/24/outline';
 import { StarIcon as StarSolidIcon } from '@heroicons/react/24/solid';
-import { useEmailSearch } from '../../hooks/useEmailSearch';
+import { useEmailSearch } from '../hooks/useEmailSearch';
 import { useTranslation } from 'react-i18next';
-import { Button } from '../ui/Button';
-import { Input } from '../ui/Input';
-import { Select } from '../ui/Select';
-import { Checkbox } from '../ui/Checkbox';
-import { Badge } from '../ui/Badge';
+import { Button } from '../../../shared/components/Button';
+import { Input } from '../../../shared/components';
+import { Select } from '../../../shared/components';
+import { Checkbox } from '../../../shared/components';
+import { Badge } from '../../../shared/components';
 
 /**
  * Comprehensive Email Search Component
