@@ -107,7 +107,9 @@ export default function Email() {
 
   // Get emails from context and apply filters
   const filteredEmails = React.useMemo(() => {
-    let filtered = emails;
+    // Ensure emails is always an array to prevent TypeError
+    const safeEmails = Array.isArray(emails) ? emails : [];
+    let filtered = safeEmails;
 
     // Apply folder filter
     if (selectedFolder !== 'inbox') {
@@ -398,7 +400,10 @@ Email: sarah.johnson@acmecorp.com`,
     // Mark as read if not already read
     if (!email.isRead) {
       try {
-        await emailManagementService.markAsRead(email.id, true);
+        const result = await emailManagementService.markAsRead(email.id, user.id, true);
+        if (!result.success) {
+          console.error('Error marking email as read:', result.error);
+        }
         // The context will handle updating the email state via WebSocket or refresh
       } catch (error) {
         console.error('Error marking email as read:', error);
@@ -419,7 +424,10 @@ Email: sarah.johnson@acmecorp.com`,
   // Handle email starring
   const handleStarToggle = async (emailId, isStarred) => {
     try {
-      await emailManagementService.updateEmail(emailId, { isStarred: !isStarred });
+      const result = await emailManagementService.starEmail(emailId, user.id, !isStarred);
+      if (!result.success) {
+        console.error('Error toggling star:', result.error);
+      }
       // The context will handle updating the email state
     } catch (error) {
       console.error('Error toggling star:', error);
@@ -432,26 +440,35 @@ Email: sarah.johnson@acmecorp.com`,
 
     try {
       const emailIds = Array.from(selectedEmails);
+      let results = [];
       
       switch (action) {
         case 'delete':
-          await Promise.all(emailIds.map(id => emailManagementService.deleteEmail(id)));
+          results = await Promise.all(emailIds.map(id => emailManagementService.deleteEmail(id, user.id, false)));
           break;
         case 'markRead':
-          await Promise.all(emailIds.map(id => emailManagementService.markAsRead(id, true)));
+          results = await Promise.all(emailIds.map(id => emailManagementService.markAsRead(id, user.id, true)));
           break;
         case 'markUnread':
-          await Promise.all(emailIds.map(id => emailManagementService.markAsRead(id, false)));
+          results = await Promise.all(emailIds.map(id => emailManagementService.markAsRead(id, user.id, false)));
           break;
         case 'star':
-          await Promise.all(emailIds.map(id => emailManagementService.updateEmail(id, { isStarred: true })));
+          results = await Promise.all(emailIds.map(id => emailManagementService.starEmail(id, user.id, true)));
           break;
         case 'unstar':
-          await Promise.all(emailIds.map(id => emailManagementService.updateEmail(id, { isStarred: false })));
+          results = await Promise.all(emailIds.map(id => emailManagementService.starEmail(id, user.id, false)));
           break;
         default:
           console.log('Unknown bulk action:', action);
+          return;
       }
+      
+      // Check for any failures
+      const failures = results.filter(result => !result.success);
+      if (failures.length > 0) {
+        console.error(`${failures.length} operations failed during bulk ${action}`);
+      }
+      
       setSelectedEmails([]);
       // Refresh emails to show updated state
       loadEmails();
@@ -772,7 +789,7 @@ Email: sarah.johnson@acmecorp.com`,
           {/* Email List Items */}
           <EmailErrorBoundary>
             <div className='flex-1 overflow-y-auto' ref={containerRef}>
-            {emailsLoading && emails.length === 0 ? (
+            {emailsLoading && (!Array.isArray(emails) || emails.length === 0) ? (
               <div className="flex items-center justify-center h-32">
                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
               </div>

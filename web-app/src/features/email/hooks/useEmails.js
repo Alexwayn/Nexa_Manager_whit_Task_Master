@@ -81,7 +81,8 @@ export const useEmails = (options = {}) => {
       
       if (result.success) {
         // Update email in context if it exists in current list
-        const emailIndex = emails.findIndex(e => e.id === emailId);
+        const safeEmails = Array.isArray(emails) ? emails : [];
+        const emailIndex = safeEmails.findIndex(e => e.id === emailId);
         if (emailIndex !== -1) {
           dispatch({
             type: 'UPDATE_EMAIL',
@@ -273,7 +274,8 @@ export const useEmails = (options = {}) => {
       const result = await emailManagementService.applyLabel(emailId, user.id, labelId);
       
       if (result.success) {
-        const email = emails.find(e => e.id === emailId);
+        const safeEmails = Array.isArray(emails) ? emails : [];
+        const email = safeEmails.find(e => e.id === emailId);
         if (email) {
           const updatedLabels = [...(email.labels || []), labelId];
           dispatch({
@@ -305,7 +307,8 @@ export const useEmails = (options = {}) => {
       const result = await emailManagementService.removeLabel(emailId, user.id, labelId);
       
       if (result.success) {
-        const email = emails.find(e => e.id === emailId);
+        const safeEmails = Array.isArray(emails) ? emails : [];
+        const email = safeEmails.find(e => e.id === emailId);
         if (email) {
           const updatedLabels = (email.labels || []).filter(l => l !== labelId);
           dispatch({
@@ -440,14 +443,15 @@ export const useEmails = (options = {}) => {
     }
   }, [user?.id]);
 
-  // Computed values
-  const unreadEmails = emails.filter(email => !email.isRead);
-  const starredEmails = emails.filter(email => email.isStarred);
-  const importantEmails = emails.filter(email => email.isImportant);
+  // Computed values - ensure emails is always an array
+  const safeEmails = Array.isArray(emails) ? emails : [];
+  const unreadEmails = safeEmails.filter(email => !email.isRead);
+  const starredEmails = safeEmails.filter(email => email.isStarred);
+  const importantEmails = safeEmails.filter(email => email.isImportant);
 
   return {
     // State
-    emails,
+    emails: safeEmails,
     selectedEmail,
     loading: emailsLoading || localLoading,
     error: emailsError || localError,

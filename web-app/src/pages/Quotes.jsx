@@ -194,12 +194,17 @@ const QuotesPage = () => {
       setIsLoading(true);
       const result = await QuoteService.createQuote(user.id, quoteData);
 
-      // Update quotes list
-      const updatedQuotes = [result, ...quotes];
-      setQuotes(updatedQuotes);
-      setFilteredQuotes(updatedQuotes);
+      if (result.success) {
+        // Update quotes list
+        const updatedQuotes = [result.data, ...quotes];
+        setQuotes(updatedQuotes);
+        setFilteredQuotes(updatedQuotes);
 
-      return result;
+        return result.data;
+      } else {
+        Logger.error('Failed to create quote:', result.error);
+        throw new Error(result.error || 'Failed to create quote');
+      }
     } catch (error) {
       Logger.error('Error creating quote:', error);
       throw error;
@@ -213,12 +218,17 @@ const QuotesPage = () => {
       setIsLoading(true);
       const result = await QuoteService.updateQuote(selectedQuote.id, user.id, quoteData);
 
-      // Update quotes list
-      const updatedQuotes = quotes.map(quote => (quote.id === selectedQuote.id ? result : quote));
-      setQuotes(updatedQuotes);
-      setFilteredQuotes(updatedQuotes);
+      if (result.success) {
+        // Update quotes list
+        const updatedQuotes = quotes.map(quote => (quote.id === selectedQuote.id ? result.data : quote));
+        setQuotes(updatedQuotes);
+        setFilteredQuotes(updatedQuotes);
 
-      return result;
+        return result.data;
+      } else {
+        Logger.error('Failed to update quote:', result.error);
+        throw new Error(result.error || 'Failed to update quote');
+      }
     } catch (error) {
       Logger.error('Error updating quote:', error);
       throw error;

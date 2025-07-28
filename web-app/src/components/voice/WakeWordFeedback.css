@@ -1,0 +1,262 @@
+.wake-word-feedback {
+  position: fixed;
+  z-index: 1000;
+  pointer-events: none;
+  transition: all 0.3s ease;
+}
+
+.wake-word-feedback.top-left {
+  top: 20px;
+  left: 20px;
+}
+
+.wake-word-feedback.top-right {
+  top: 20px;
+  right: 20px;
+}
+
+.wake-word-feedback.bottom-left {
+  bottom: 20px;
+  left: 20px;
+}
+
+.wake-word-feedback.bottom-right {
+  bottom: 20px;
+  right: 20px;
+}
+
+.wake-word-feedback.center {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.feedback-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  background: rgba(59, 130, 246, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 4px 20px rgba(59, 130, 246, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  min-width: 140px;
+}
+
+.feedback-container.detected {
+  background: rgba(34, 197, 94, 0.95);
+  box-shadow: 0 4px 20px rgba(34, 197, 94, 0.3);
+}
+
+.feedback-container.listening {
+  background: rgba(245, 158, 11, 0.95);
+  box-shadow: 0 4px 20px rgba(245, 158, 11, 0.3);
+}
+
+.feedback-icon {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.feedback-icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.feedback-status {
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+  margin: 0;
+}
+
+.feedback-confidence {
+  font-size: 12px;
+  opacity: 0.9;
+  text-align: center;
+  margin: 0;
+}
+
+.confidence-bar {
+  width: 80px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.confidence-fill {
+  height: 100%;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
+
+.feedback-container.small {
+  padding: 12px;
+  min-width: 120px;
+}
+
+.feedback-container.small .feedback-icon {
+  width: 28px;
+  height: 28px;
+}
+
+.feedback-container.small .feedback-icon svg {
+  width: 16px;
+  height: 16px;
+}
+
+.feedback-container.small .feedback-status {
+  font-size: 12px;
+}
+
+.feedback-container.small .feedback-confidence {
+  font-size: 10px;
+}
+
+.feedback-container.small .confidence-bar {
+  width: 60px;
+  height: 3px;
+}
+
+.feedback-container.large {
+  padding: 20px;
+  min-width: 160px;
+}
+
+.feedback-container.large .feedback-icon {
+  width: 40px;
+  height: 40px;
+}
+
+.feedback-container.large .feedback-icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.feedback-container.large .feedback-status {
+  font-size: 16px;
+}
+
+.feedback-container.large .feedback-confidence {
+  font-size: 14px;
+}
+
+.feedback-container.large .confidence-bar {
+  width: 100px;
+  height: 5px;
+}
+
+/* Animation for appearance */
+.wake-word-feedback.entering {
+  opacity: 0;
+  transform: scale(0.8);
+}
+
+.wake-word-feedback.entered {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.wake-word-feedback.exiting {
+  opacity: 0;
+  transform: scale(0.8);
+}
+
+/* Pulse animation for detected state */
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+.feedback-container.detected {
+  animation: pulse 0.6s ease-in-out;
+}
+
+/* Listening animation */
+@keyframes listening-pulse {
+  0%, 100% {
+    opacity: 0.8;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.feedback-container.listening .feedback-icon {
+  animation: listening-pulse 1.5s infinite;
+}
+
+/* Ripple effect for wake word detection */
+@keyframes ripple {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+.feedback-container.detected::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  border: 2px solid rgba(255, 255, 255, 0.6);
+  border-radius: 12px;
+  transform: translate(-50%, -50%);
+  animation: ripple 0.8s ease-out;
+  pointer-events: none;
+}
+
+/* Dark theme support */
+@media (prefers-color-scheme: dark) {
+  .feedback-container {
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .feedback-container {
+    border: 2px solid white;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  }
+  
+  .confidence-fill {
+    background: white;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .wake-word-feedback {
+    transition: opacity 0.2s ease;
+  }
+  
+  .feedback-container.detected,
+  .feedback-container.listening .feedback-icon {
+    animation: none;
+  }
+  
+  .feedback-container.detected::before {
+    animation: none;
+  }
+}

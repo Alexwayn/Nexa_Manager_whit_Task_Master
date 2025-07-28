@@ -10,6 +10,7 @@ A comprehensive business management platform built with React, Vite, and Supabas
 - 📅 **Calendar** - Event and appointment management
 - 📧 **Email Management** - Integrated email system with templates, IMAP/SMTP support, and business document integration
 - 📄 **Document Scanner** - Advanced AI-powered document digitization with multi-provider OCR architecture, intelligent fallback systems, comprehensive batch processing capabilities, camera capture, file upload, comprehensive Supabase-integrated document management with full-text search, metadata tracking, secure storage, and comprehensive document sharing with permission-based access controls
+- 🎤 **Voice Assistant** - AI-powered voice commands for hands-free navigation and task management with speech recognition, natural language processing, and voice feedback
 - 📈 **Reports** - Detailed business insights and analytics
 - 🌍 **Multi-language** - Full Italian and English support
 - 🔐 **Secure Authentication** - Powered by Clerk with MFA support
@@ -34,7 +35,8 @@ nexa-manager/
 │   │   │   ├── email/         # Email system
 │   │   │   ├── financial/     # Invoices, quotes, payments
 │   │   │   ├── organization/  # Organization management
-│   │   │   └── reports/       # Business reports
+│   │   │   ├── reports/       # Business reports
+│   │   │   └── voice-assistant/ # AI-powered voice commands
 │   │   ├── hooks/             # Custom React hooks
 │   │   ├── lib/               # External library configurations
 │   │   ├── pages/             # Page components
@@ -168,9 +170,18 @@ Translation files are located in `web-app/public/locales/`.
 
 ## 🆕 Recent Updates & Improvements
 
-### Project Reorganization (Latest)
+### Voice Assistant Implementation (Latest)
+- ✅ **AI-Powered Voice Commands** - Complete voice assistant with speech recognition and natural language processing
+- ✅ **Hands-Free Navigation** - Voice-controlled navigation throughout the application
+- ✅ **Task Management** - Voice commands for creating clients, invoices, quotes, and managing calendar events
+- ✅ **Voice Feedback** - Text-to-speech responses for user interactions
+- ✅ **Multi-Language Support** - Voice commands in both Italian and English
+- ✅ **Comprehensive Testing** - Full end-to-end test suite with 100% pass rate
+- ✅ **Analytics Integration** - Voice command usage tracking and analytics
+
+### Project Reorganization
 - ✅ **Complete codebase restructuring** - Migrated from monolithic to feature-based architecture
-- ✅ **Modular feature organization** - Each feature (analytics, auth, calendar, clients, dashboard, documents, email, financial, organization, reports) now has its own dedicated module
+- ✅ **Modular feature organization** - Each feature (analytics, auth, calendar, clients, dashboard, documents, email, financial, organization, reports, voice-assistant) now has its own dedicated module
 - ✅ **Shared components system** - Centralized reusable components in `src/shared/`
 - ✅ **Improved maintainability** - Clear separation of concerns and better code organization
 - ✅ **Enhanced developer experience** - Easier navigation and feature development

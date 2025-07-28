@@ -1,0 +1,261 @@
+{
+  "timestamp": "2025-07-28T06:01:30.739Z",
+  "summary": {
+    "totalTests": 17,
+    "passedTests": 17,
+    "failedTests": 0,
+    "pendingTests": 0,
+    "todoTests": 0,
+    "successRate": "100.00",
+    "failureRate": "0.00",
+    "totalTime": 0,
+    "averageTestTime": "0.00",
+    "status": "PASSED"
+  },
+  "testSuites": [
+    {
+      "name": "VoiceActivationButton.test.jsx",
+      "fullPath": "E:\\AlexVenturesStudio\\Nexa_Manager_whit_Task_Master\\web-app\\src\\__tests__\\components\\voice\\VoiceActivationButton.test.jsx",
+      "status": "unknown",
+      "duration": 738,
+      "numTests": 17,
+      "numPassing": 17,
+      "numFailing": 0,
+      "numPending": 0,
+      "numTodo": 0,
+      "tests": [
+        {
+          "title": "renders microphone icon when not listening",
+          "fullName": "VoiceActivationButton Rendering renders microphone icon when not listening",
+          "status": "passed",
+          "duration": 15,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceActivationButton",
+            "Rendering"
+          ]
+        },
+        {
+          "title": "renders stop icon when listening",
+          "fullName": "VoiceActivationButton Rendering renders stop icon when listening",
+          "status": "passed",
+          "duration": 2,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceActivationButton",
+            "Rendering"
+          ]
+        },
+        {
+          "title": "applies correct size classes",
+          "fullName": "VoiceActivationButton Rendering applies correct size classes",
+          "status": "passed",
+          "duration": 7,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceActivationButton",
+            "Rendering"
+          ]
+        },
+        {
+          "title": "applies custom className",
+          "fullName": "VoiceActivationButton Rendering applies custom className",
+          "status": "passed",
+          "duration": 3,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceActivationButton",
+            "Rendering"
+          ]
+        },
+        {
+          "title": "shows disabled state when voice assistant is disabled",
+          "fullName": "VoiceActivationButton States shows disabled state when voice assistant is disabled",
+          "status": "passed",
+          "duration": 2,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceActivationButton",
+            "States"
+          ]
+        },
+        {
+          "title": "shows disabled state when no microphone permission",
+          "fullName": "VoiceActivationButton States shows disabled state when no microphone permission",
+          "status": "passed",
+          "duration": 1,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceActivationButton",
+            "States"
+          ]
+        },
+        {
+          "title": "shows processing state",
+          "fullName": "VoiceActivationButton States shows processing state",
+          "status": "passed",
+          "duration": 2,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceActivationButton",
+            "States"
+          ]
+        },
+        {
+          "title": "shows listening state with pulsing animation",
+          "fullName": "VoiceActivationButton States shows listening state with pulsing animation",
+          "status": "passed",
+          "duration": 1,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceActivationButton",
+            "States"
+          ]
+        },
+        {
+          "title": "starts listening when clicked and not listening",
+          "fullName": "VoiceActivationButton Interactions starts listening when clicked and not listening",
+          "status": "passed",
+          "duration": 11,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceActivationButton",
+            "Interactions"
+          ]
+        },
+        {
+          "title": "stops listening when clicked and currently listening",
+          "fullName": "VoiceActivationButton Interactions stops listening when clicked and currently listening",
+          "status": "passed",
+          "duration": 4,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceActivationButton",
+            "Interactions"
+          ]
+        },
+        {
+          "title": "does not trigger action when disabled",
+          "fullName": "VoiceActivationButton Interactions does not trigger action when disabled",
+          "status": "passed",
+          "duration": 2,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceActivationButton",
+            "Interactions"
+          ]
+        },
+        {
+          "title": "handles keyboard activation with Enter key",
+          "fullName": "VoiceActivationButton Interactions handles keyboard activation with Enter key",
+          "status": "passed",
+          "duration": 14,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceActivationButton",
+            "Interactions"
+          ]
+        },
+        {
+          "title": "handles keyboard activation with Space key",
+          "fullName": "VoiceActivationButton Interactions handles keyboard activation with Space key",
+          "status": "passed",
+          "duration": 15,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceActivationButton",
+            "Interactions"
+          ]
+        },
+        {
+          "title": "has proper ARIA attributes",
+          "fullName": "VoiceActivationButton Accessibility has proper ARIA attributes",
+          "status": "passed",
+          "duration": 1,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceActivationButton",
+            "Accessibility"
+          ]
+        },
+        {
+          "title": "updates aria-label when listening",
+          "fullName": "VoiceActivationButton Accessibility updates aria-label when listening",
+          "status": "passed",
+          "duration": 2,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceActivationButton",
+            "Accessibility"
+          ]
+        },
+        {
+          "title": "has proper focus styles",
+          "fullName": "VoiceActivationButton Accessibility has proper focus styles",
+          "status": "passed",
+          "duration": 1,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceActivationButton",
+            "Accessibility"
+          ]
+        },
+        {
+          "title": "responds to provider state changes",
+          "fullName": "VoiceActivationButton Integration with VoiceAssistantProvider responds to provider state changes",
+          "status": "passed",
+          "duration": 1,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceActivationButton",
+            "Integration with VoiceAssistantProvider"
+          ]
+        }
+      ],
+      "failureMessage": null,
+      "coverage": null
+    }
+  ],
+  "coverage": null,
+  "performance": {
+    "totalDuration": 738,
+    "averageDuration": 738,
+    "slowestSuite": {
+      "name": "VoiceActivationButton.test.jsx",
+      "duration": 738,
+      "slow": false
+    },
+    "suitePerformance": [
+      {
+        "name": "VoiceActivationButton.test.jsx",
+        "duration": 738,
+        "slow": false
+      }
+    ]
+  },
+  "failures": [],
+  "warnings": [],
+  "environment": {
+    "nodeVersion": "v20.12.1",
+    "platform": "win32",
+    "arch": "x64",
+    "cpus": 24,
+    "memory": "32GB",
+    "cwd": "E:\\AlexVenturesStudio\\Nexa_Manager_whit_Task_Master\\web-app",
+    "env": "test"
+  },
+  "metadata": {
+    "jestVersion": "unknown",
+    "totalTime": 0,
+    "startTime": 1753682489664,
+    "success": true,
+    "numTotalTestSuites": 1,
+    "numPassedTestSuites": 1,
+    "numFailedTestSuites": 0,
+    "numTotalTests": 17,
+    "numPassedTests": 17,
+    "numFailedTests": 0,
+    "numPendingTests": 0,
+    "numTodoTests": 0
+  }
+}

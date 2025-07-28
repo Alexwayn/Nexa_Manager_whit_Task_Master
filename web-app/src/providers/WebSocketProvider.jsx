@@ -29,6 +29,13 @@ export const WebSocketProvider = ({ children, enabled = true }) => {
   const initializeWebSocket = useCallback(() => {
     if (!enabled || wsServiceRef.current) return;
 
+    // Skip WebSocket in development if no server URL is configured
+    if (import.meta.env.DEV && !import.meta.env.VITE_WS_URL) {
+      console.log('WebSocket disabled in development mode (no VITE_WS_URL configured)');
+      setConnectionState(CONNECTION_STATES.DISABLED);
+      return;
+    }
+
     const wsUrl = getWebSocketUrl();
     wsServiceRef.current = websocketService;
     wsServiceRef.current.connect(wsUrl);
@@ -82,10 +89,13 @@ export const WebSocketProvider = ({ children, enabled = true }) => {
     
     console.error('WebSocket error:', error);
     
-    toast.error('Connection error occurred', {
-      duration: 3000,
-      position: 'bottom-right'
-    });
+    // Only show error toast in production
+    if (!import.meta.env.DEV) {
+      toast.error('Connection error occurred', {
+        duration: 3000,
+        position: 'bottom-right'
+      });
+    }
   }, []);
 
   /**

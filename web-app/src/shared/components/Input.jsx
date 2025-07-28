@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import { cn } from '@shared/utils/cn';
 import { Label, Text } from './Typography';
 
-export const Input = React.forwardRef(
+export const Input = forwardRef(
   (
     {
       type = 'text',
@@ -51,7 +51,7 @@ export const Input = React.forwardRef(
 
 Input.displayName = 'Input';
 
-export const Textarea = React.forwardRef(
+export const Textarea = forwardRef(
   (
     {
       size = 'default',
@@ -100,7 +100,7 @@ export const Textarea = React.forwardRef(
 
 Textarea.displayName = 'Textarea';
 
-export const Select = React.forwardRef(
+export const Select = forwardRef(
   (
     {
       size = 'default',

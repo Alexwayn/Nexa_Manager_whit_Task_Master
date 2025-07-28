@@ -27,6 +27,7 @@ import {
   ChartPieIcon, // Added for Email Analytics
   ChevronDownIcon,
   ChevronRightIcon,
+  ChatBubbleLeftRightIcon, // Added for Voice Feedback
 } from '@heroicons/react/24/outline';
 import { useTheme } from '@shared/hooks/providers';
 import nexaLogo from '@assets/logos/logo_nexa.png';
@@ -81,13 +82,12 @@ export default function Sidebar({ onCloseSidebar, collapsed = false, onToggleCol
         { name: t('sidebar.emailAnalytics', 'Email Analytics'), href: '/email/analytics', icon: ChartPieIcon }
       ]
     },
-    { name: t('sidebar.scanner'), href: '/scan', icon: CameraIcon },
-    { name: t('sidebar.voice'), href: '/voice', icon: MicrophoneIcon },
   ];
 
   const tools = [
-    { name: t('sidebar.barcodeScan'), href: '/scan', icon: QrCodeIcon },
+    { name: t('sidebar.documentScanner', 'Document Scanner'), href: '/scan', icon: DocumentTextIcon },
     { name: t('sidebar.voiceCommand'), href: '/voice', icon: MicrophoneIcon },
+    { name: t('sidebar.voiceFeedback', 'Voice Feedback'), href: '/voice-feedback', icon: ChatBubbleLeftRightIcon },
   ];
 
   const settings = [{ name: t('sidebar.settings'), href: '/settings', icon: Cog6ToothIcon }];
@@ -163,55 +163,45 @@ export default function Sidebar({ onCloseSidebar, collapsed = false, onToggleCol
                   {item.subItems ? (
                     // Navigation item with sub-menu
                     <div>
-                      <button
-                        onClick={() => toggleSubMenu(item.name)}
-                        title={collapsed ? item.name : undefined}
-                        className={classNames(
-                          'text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-gray-100 dark:hover:bg-gray-700',
-                          'group flex w-full rounded-md p-2 text-nav-text transition-colors duration-200',
-                          collapsed ? 'justify-center' : 'gap-x-3 justify-between',
-                        )}
-                      >
-                        <div className={classNames('flex items-center', collapsed ? '' : 'gap-x-3')}>
+                      {/* Combined main item link and toggle button */}
+                      <div className='flex items-center'>
+                        <NavLink
+                          to={item.href}
+                          onClick={onCloseSidebar}
+                          title={collapsed ? item.name : undefined}
+                          className={({ isActive }) =>
+                            classNames(
+                              isActive
+                                ? 'bg-primary-100 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400'
+                                : 'text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-gray-100 dark:hover:bg-gray-700',
+                              'group flex rounded-md p-2 text-nav-text transition-colors duration-200 flex-1',
+                              collapsed ? 'justify-center' : 'gap-x-3',
+                            )
+                          }
+                        >
                           <item.icon className='h-6 w-6 shrink-0' aria-hidden='true' />
                           {!collapsed && <span>{item.name}</span>}
-                        </div>
+                        </NavLink>
+                        
+                        {/* Toggle button for sub-menu */}
                         {!collapsed && (
-                          <div className='flex items-center'>
+                          <button
+                            onClick={() => toggleSubMenu(item.name)}
+                            className='p-1.5 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors duration-200 mr-2'
+                            title={expandedMenus[item.name] ? 'Collapse menu' : 'Expand menu'}
+                          >
                             {expandedMenus[item.name] ? (
                               <ChevronDownIcon className='h-4 w-4' />
                             ) : (
                               <ChevronRightIcon className='h-4 w-4' />
                             )}
-                          </div>
+                          </button>
                         )}
-                      </button>
-                      
-                      {/* Main item link */}
-                      <NavLink
-                        to={item.href}
-                        onClick={onCloseSidebar}
-                        title={collapsed ? item.name : undefined}
-                        className={({ isActive }) =>
-                          classNames(
-                            isActive
-                              ? 'bg-primary-100 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400'
-                              : 'text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-gray-100 dark:hover:bg-gray-700',
-                            'group flex rounded-md p-2 text-nav-text transition-colors duration-200 mt-1',
-                            collapsed ? 'justify-center' : 'gap-x-3 ml-6',
-                          )
-                        }
-                      >
-                        {collapsed ? (
-                          <item.icon className='h-6 w-6 shrink-0' aria-hidden='true' />
-                        ) : (
-                          <span>{item.name}</span>
-                        )}
-                      </NavLink>
+                      </div>
 
                       {/* Sub-menu items */}
                       {!collapsed && expandedMenus[item.name] && (
-                        <ul className='ml-6 mt-1 space-y-1'>
+                        <ul className='ml-8 mt-1 space-y-1 border-l-2 border-gray-200 dark:border-gray-700 pl-4'>
                           {item.subItems.map(subItem => (
                             <li key={subItem.name}>
                               <NavLink
@@ -220,13 +210,13 @@ export default function Sidebar({ onCloseSidebar, collapsed = false, onToggleCol
                                 className={({ isActive }) =>
                                   classNames(
                                     isActive
-                                      ? 'bg-primary-100 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400'
+                                      ? 'bg-primary-50 dark:bg-primary-900/10 text-primary-600 dark:text-primary-400 border-l-2 border-primary-500'
                                       : 'text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-gray-50 dark:hover:bg-gray-700/50',
-                                    'group flex gap-x-3 rounded-md p-2 text-sm transition-colors duration-200',
+                                    'group flex gap-x-3 rounded-md p-2 text-sm transition-colors duration-200 relative',
                                   )
                                 }
                               >
-                                <subItem.icon className='h-5 w-5 shrink-0' aria-hidden='true' />
+                                <subItem.icon className='h-4 w-4 shrink-0' aria-hidden='true' />
                                 <span>{subItem.name}</span>
                               </NavLink>
                             </li>

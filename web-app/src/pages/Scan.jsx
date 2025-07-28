@@ -14,6 +14,7 @@ import {
   EyeIcon,
   ChevronRightIcon,
   HomeIcon,
+  XMarkIcon,
 } from '@heroicons/react/24/outline';
 import { notify } from '@lib/uiUtils';
 
@@ -31,6 +32,7 @@ export default function Scan() {
   const [autoCrop, setAutoCrop] = useState(true);
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [dragActive, setDragActive] = useState(false);
+  const [showHelpModal, setShowHelpModal] = useState(false);
 
   // Mock data for recent scans
   const recentScans = [
@@ -114,9 +116,9 @@ export default function Scan() {
   };
 
   const steps = [
-    { id: 1, name: 'Scan Document', active: currentStep === 1 },
-    { id: 2, name: 'Process OCR', active: currentStep === 2 },
-    { id: 3, name: 'Review & Export', active: currentStep === 3 },
+    { id: 1, name: t('steps.scan'), active: currentStep === 1 },
+    { id: 2, name: t('steps.process'), active: currentStep === 2 },
+    { id: 3, name: t('steps.review'), active: currentStep === 3 },
   ];
 
   return (
@@ -129,25 +131,31 @@ export default function Scan() {
             onClick={() => navigate('/dashboard')}
             className='text-blue-600 hover:text-blue-700 font-medium transition-colors'
           >
-            Dashboard
+            {t('breadcrumb.documents')}
           </button>
           <ChevronRightIcon className='h-4 w-4' />
-          <span className='text-gray-900 font-medium'>Scan</span>
+          <span className='text-gray-900 font-medium'>{t('breadcrumb.scanner')}</span>
         </div>
       </div>
 
       {/* Header */}
       <div className='bg-gray-50 px-6 py-6'>
         <div className='flex items-center justify-between'>
-          <h1 className='text-2xl font-semibold text-gray-900'>Document Scanner</h1>
+          <h1 className='text-2xl font-semibold text-gray-900'>{t('header.title')}</h1>
           <div className='flex space-x-3'>
-            <button className='inline-flex items-center px-4 py-2 border border-gray-300 rounded-md bg-white text-gray-700 hover:bg-gray-50 transition-colors'>
+            <button 
+              onClick={() => setShowHelpModal(true)}
+              className='inline-flex items-center px-4 py-2 border border-gray-300 rounded-md bg-white text-gray-700 hover:bg-gray-50 transition-colors'
+            >
               <QuestionMarkCircleIcon className='h-5 w-5 mr-2' />
-              Help
+              {t('actions.help')}
             </button>
-            <button className='inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors'>
+            <button 
+              onClick={handleBrowseFiles}
+              className='inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors'
+            >
               <CloudArrowUpIcon className='h-5 w-5 mr-2' />
-              Upload Document
+              {t('actions.uploadDocument')}
             </button>
           </div>
         </div>
@@ -189,7 +197,7 @@ export default function Scan() {
           <div className='grid grid-cols-1 lg:grid-cols-3 gap-8'>
             {/* Left Sidebar - Scan Options */}
             <div className='bg-blue-50 rounded-lg p-6'>
-              <h3 className='text-lg font-medium text-gray-900 mb-6'>Scan Options</h3>
+              <h3 className='text-lg font-medium text-gray-900 mb-6'>{t('scanOptions.title')}</h3>
 
               {/* Scan Type Options */}
               <div className='space-y-4 mb-6'>
@@ -206,9 +214,9 @@ export default function Scan() {
                       <CameraIcon className='h-5 w-5 text-blue-600' />
                     </div>
                     <div>
-                      <div className='font-medium text-gray-900'>Use Camera</div>
+                      <div className='font-medium text-gray-900'>{t('scanOptions.camera.title')}</div>
                       <div className='text-sm text-gray-600'>
-                        Capture document using your device camera
+                        {t('scanOptions.camera.description')}
                       </div>
                     </div>
                   </div>
@@ -227,8 +235,8 @@ export default function Scan() {
                       <CloudArrowUpIcon className='h-5 w-5 text-blue-600' />
                     </div>
                     <div>
-                      <div className='font-medium text-gray-900'>Upload File</div>
-                      <div className='text-sm text-gray-600'>Upload document from your device</div>
+                      <div className='font-medium text-gray-900'>{t('scanOptions.upload.title')}</div>
+                      <div className='text-sm text-gray-600'>{t('scanOptions.upload.description')}</div>
                     </div>
                   </div>
                 </div>
@@ -246,8 +254,8 @@ export default function Scan() {
                       <DocumentDuplicateIcon className='h-5 w-5 text-blue-600' />
                     </div>
                     <div>
-                      <div className='font-medium text-gray-900'>Recent Scans</div>
-                      <div className='text-sm text-gray-600'>View and reuse your recent scans</div>
+                      <div className='font-medium text-gray-900'>{t('scanOptions.recent.title')}</div>
+                      <div className='text-sm text-gray-600'>{t('scanOptions.recent.description')}</div>
                     </div>
                   </div>
                 </div>
@@ -256,7 +264,7 @@ export default function Scan() {
               {/* Document Type */}
               <div className='mb-4'>
                 <label className='block text-sm font-medium text-gray-700 mb-2'>
-                  Document Type
+                  {t('scanOptions.documentType')}
                 </label>
                 <div className='relative'>
                   <select
@@ -264,11 +272,11 @@ export default function Scan() {
                     onChange={e => setDocumentType(e.target.value)}
                     className='w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none'
                   >
-                    <option value='Invoice'>Invoice</option>
-                    <option value='Receipt'>Receipt</option>
-                    <option value='Contract'>Contract</option>
-                    <option value='Report'>Report</option>
-                    <option value='Other'>Other</option>
+                    <option value='Invoice'>{t('documentTypes.invoice')}</option>
+                    <option value='Receipt'>{t('documentTypes.receipt')}</option>
+                    <option value='Contract'>{t('documentTypes.contract')}</option>
+                    <option value='Report'>{t('documentTypes.report')}</option>
+                    <option value='Other'>{t('documentTypes.other')}</option>
                   </select>
                   <ChevronDownIcon className='absolute right-2 top-3 h-4 w-4 text-gray-400 pointer-events-none' />
                 </div>
@@ -276,18 +284,18 @@ export default function Scan() {
 
               {/* OCR Language */}
               <div>
-                <label className='block text-sm font-medium text-gray-700 mb-2'>OCR Language</label>
+                <label className='block text-sm font-medium text-gray-700 mb-2'>{t('scanOptions.ocrLanguage')}</label>
                 <div className='relative'>
                   <select
                     value={ocrLanguage}
                     onChange={e => setOcrLanguage(e.target.value)}
                     className='w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none'
                   >
-                    <option value='English'>English</option>
-                    <option value='Italian'>Italian</option>
-                    <option value='Spanish'>Spanish</option>
-                    <option value='French'>French</option>
-                    <option value='German'>German</option>
+                    <option value='English'>{t('languages.english')}</option>
+                    <option value='Italian'>{t('languages.italian')}</option>
+                    <option value='Spanish'>{t('languages.spanish')}</option>
+                    <option value='French'>{t('languages.french')}</option>
+                    <option value='German'>{t('languages.german')}</option>
                   </select>
                   <ChevronDownIcon className='absolute right-2 top-3 h-4 w-4 text-gray-400 pointer-events-none' />
                 </div>
@@ -307,21 +315,20 @@ export default function Scan() {
                 <div className='bg-blue-50 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-4'>
                   <CloudArrowUpIcon className='h-10 w-10 text-blue-600' />
                 </div>
-                <h3 className='text-xl font-medium text-gray-900 mb-2'>Upload Document</h3>
+                <h3 className='text-xl font-medium text-gray-900 mb-2'>{t('upload.title')}</h3>
                 <p className='text-gray-600 mb-6 max-w-md mx-auto'>
-                  Drag and drop your document here, or click to browse files. Supported formats:
-                  PDF, JPG, PNG, TIFF
+                  {t('upload.description')}
                 </p>
                 <button
                   onClick={handleBrowseFiles}
                   className='inline-flex items-center px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors'
                 >
                   <CloudArrowUpIcon className='h-5 w-5 mr-2' />
-                  Browse Files
+                  {t('upload.browseFiles')}
                 </button>
                 <div className='flex justify-between items-center mt-6 text-sm text-gray-600'>
-                  <span>Maximum file size: 10MB</span>
-                  <span>{uploadedFiles.length} files selected</span>
+                  <span>{t('upload.maxFileSize')}</span>
+                  <span>{uploadedFiles.length} {t('upload.filesSelected')}</span>
                 </div>
                 <div className='w-full bg-gray-200 rounded-full h-2 mt-4'>
                   <div className='bg-gray-300 h-2 rounded-full w-0'></div>
@@ -332,10 +339,10 @@ export default function Scan() {
               <div className='flex justify-between mt-6'>
                 <button className='inline-flex items-center px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 transition-colors'>
                   <ArrowLeftIcon className='h-5 w-5 mr-2' />
-                  Back
+                  {t('actions.back')}
                 </button>
                 <button className='inline-flex items-center px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors'>
-                  Continue
+                  {t('actions.continue')}
                   <ArrowRightIcon className='h-5 w-5 ml-2' />
                 </button>
               </div>
@@ -347,12 +354,12 @@ export default function Scan() {
       {/* Enhancement Options */}
       <div className='mx-6 mb-6'>
         <div className='bg-gray-50 border border-gray-200 rounded-lg p-6'>
-          <h3 className='text-lg font-medium text-gray-900 mb-4'>Enhancement Options</h3>
+          <h3 className='text-lg font-medium text-gray-900 mb-4'>{t('enhancementOptions.title')}</h3>
 
           {/* Brightness Control */}
           <div className='mb-4'>
             <div className='flex justify-between items-center mb-2'>
-              <label className='text-sm font-medium text-gray-700'>Brightness</label>
+              <label className='text-sm font-medium text-gray-700'>{t('enhancementOptions.brightness.title')}</label>
               <span className='text-sm text-gray-700'>{brightness}%</span>
             </div>
             <div className='relative'>
@@ -370,7 +377,7 @@ export default function Scan() {
           {/* Contrast Control */}
           <div className='mb-6'>
             <div className='flex justify-between items-center mb-2'>
-              <label className='text-sm font-medium text-gray-700'>Contrast</label>
+              <label className='text-sm font-medium text-gray-700'>{t('enhancementOptions.contrast.title')}</label>
               <span className='text-sm text-gray-700'>{contrast}%</span>
             </div>
             <div className='relative'>
@@ -396,7 +403,7 @@ export default function Scan() {
                 className='h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded'
               />
               <label htmlFor='auto-enhance' className='ml-2 text-sm text-gray-700'>
-                Auto-enhance document
+                {t('enhancementOptions.autoEnhance.title')}
               </label>
             </div>
             <div className='flex items-center'>
@@ -408,7 +415,7 @@ export default function Scan() {
                 className='h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded'
               />
               <label htmlFor='auto-crop' className='ml-2 text-sm text-gray-700'>
-                Auto-crop document edges
+                {t('enhancementOptions.autoCrop.title')}
               </label>
             </div>
           </div>
@@ -418,9 +425,9 @@ export default function Scan() {
       {/* Recent Scans */}
       <div className='mx-6 mb-6'>
         <div className='flex justify-between items-center mb-4'>
-          <h2 className='text-xl font-semibold text-gray-900'>Recent Scans</h2>
+          <h2 className='text-xl font-semibold text-gray-900'>{t('recentScans.title')}</h2>
           <button className='inline-flex items-center text-blue-600 hover:text-blue-700 transition-colors'>
-            View All
+            {t('recentScans.viewAll')}
             <ChevronRightIcon className='h-4 w-4 ml-1' />
           </button>
         </div>
@@ -440,7 +447,7 @@ export default function Scan() {
               <div className='p-4'>
                 <h4 className='font-medium text-gray-900 mb-1'>{scan.name}</h4>
                 <div className='flex justify-between items-center'>
-                  <span className='text-sm text-gray-600'>Scanned {scan.date}</span>
+                  <span className='text-sm text-gray-600'>{t('recentScans.scanned')} {scan.date}</span>
                   <div className='flex items-center text-blue-600'>
                     <DocumentTextIcon className='h-4 w-4 mr-1' />
                     <span className='text-sm'>{scan.type}</span>
@@ -461,6 +468,155 @@ export default function Scan() {
         onChange={handleFileInputChange}
         className='hidden'
       />
+
+      {/* Help Modal */}
+      {showHelpModal && (
+        <div className='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50'>
+          <div className='bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto'>
+            <div className='flex justify-between items-center p-6 border-b border-gray-200'>
+              <h2 className='text-xl font-semibold text-gray-900'>{t('help.modal.title')}</h2>
+              <button
+                onClick={() => setShowHelpModal(false)}
+                className='text-gray-400 hover:text-gray-600 transition-colors'
+              >
+                <XMarkIcon className='h-6 w-6' />
+              </button>
+            </div>
+            
+            <div className='p-6 space-y-6'>
+              {/* Getting Started */}
+              <div>
+                <h3 className='text-lg font-medium text-gray-900 mb-3'>{t('help.gettingStarted.title')}</h3>
+                <div className='bg-blue-50 border border-blue-200 rounded-lg p-4'>
+                  <p className='text-blue-800 mb-3'>{t('help.gettingStarted.description')}</p>
+                  <h4 className='font-medium text-blue-900 mb-2'>{t('help.gettingStarted.quickSteps.title')}</h4>
+                  <ol className='list-decimal list-inside text-blue-800 space-y-1'>
+                    <li>{t('help.gettingStarted.quickSteps.step1')}</li>
+                    <li>{t('help.gettingStarted.quickSteps.step2')}</li>
+                    <li>{t('help.gettingStarted.quickSteps.step3')}</li>
+                    <li>{t('help.gettingStarted.quickSteps.step4')}</li>
+                    <li>{t('help.gettingStarted.quickSteps.step5')}</li>
+                  </ol>
+                </div>
+              </div>
+
+              {/* Scan Methods */}
+              <div>
+                <h3 className='text-lg font-medium text-gray-900 mb-3'>{t('help.scanMethods.title')}</h3>
+                <div className='space-y-3'>
+                  <div className='flex items-start space-x-3'>
+                    <CameraIcon className='h-5 w-5 text-blue-600 mt-0.5' />
+                    <div>
+                      <h4 className='font-medium text-gray-900'>{t('help.scanMethods.camera.title')}</h4>
+                      <p className='text-sm text-gray-600'>{t('help.scanMethods.camera.description')}</p>
+                    </div>
+                  </div>
+                  <div className='flex items-start space-x-3'>
+                    <CloudArrowUpIcon className='h-5 w-5 text-blue-600 mt-0.5' />
+                    <div>
+                      <h4 className='font-medium text-gray-900'>{t('help.scanMethods.upload.title')}</h4>
+                      <p className='text-sm text-gray-600'>{t('help.scanMethods.upload.description')}</p>
+                    </div>
+                  </div>
+                  <div className='flex items-start space-x-3'>
+                    <DocumentDuplicateIcon className='h-5 w-5 text-blue-600 mt-0.5' />
+                    <div>
+                      <h4 className='font-medium text-gray-900'>{t('help.scanMethods.recent.title')}</h4>
+                      <p className='text-sm text-gray-600'>{t('help.scanMethods.recent.description')}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Document Types */}
+              <div>
+                <h3 className='text-lg font-medium text-gray-900 mb-3'>{t('help.documentTypes.title')}</h3>
+                <p className='text-sm text-gray-600 mb-3'>{t('help.documentTypes.description')}</p>
+                <div className='space-y-2 text-sm'>
+                  <div className='bg-gray-50 p-2 rounded'>{t('help.documentTypes.receipt')}</div>
+                  <div className='bg-gray-50 p-2 rounded'>{t('help.documentTypes.invoice')}</div>
+                  <div className='bg-gray-50 p-2 rounded'>{t('help.documentTypes.contract')}</div>
+                  <div className='bg-gray-50 p-2 rounded'>{t('help.documentTypes.report')}</div>
+                </div>
+              </div>
+
+              {/* Enhancement Options */}
+              <div>
+                <h3 className='text-lg font-medium text-gray-900 mb-3'>{t('help.enhancementOptions.title')}</h3>
+                <div className='space-y-2'>
+                  <div className='flex justify-between items-center'>
+                    <span className='text-gray-700'>{t('help.enhancementOptions.brightness.title')}</span>
+                    <span className='text-sm text-gray-500'>{t('help.enhancementOptions.brightness.description')}</span>
+                  </div>
+                  <div className='flex justify-between items-center'>
+                    <span className='text-gray-700'>{t('help.enhancementOptions.contrast.title')}</span>
+                    <span className='text-sm text-gray-500'>{t('help.enhancementOptions.contrast.description')}</span>
+                  </div>
+                  <div className='flex justify-between items-center'>
+                    <span className='text-gray-700'>{t('help.enhancementOptions.autoEnhance.title')}</span>
+                    <span className='text-sm text-gray-500'>{t('help.enhancementOptions.autoEnhance.description')}</span>
+                  </div>
+                  <div className='flex justify-between items-center'>
+                    <span className='text-gray-700'>{t('help.enhancementOptions.autoCrop.title')}</span>
+                    <span className='text-sm text-gray-500'>{t('help.enhancementOptions.autoCrop.description')}</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Supported Formats */}
+              <div>
+                <h3 className='text-lg font-medium text-gray-900 mb-3'>{t('help.supportedFormats.title')}</h3>
+                <div className='bg-gray-50 border border-gray-200 rounded-lg p-4'>
+                  <div className='space-y-3 text-sm'>
+                    <div>
+                      <h4 className='font-medium text-gray-900 mb-1'>{t('help.supportedFormats.input.title')}</h4>
+                      <div className='text-gray-600 space-y-1'>
+                        <div>{t('help.supportedFormats.input.pdf')}</div>
+                        <div>{t('help.supportedFormats.input.jpeg')}</div>
+                        <div>{t('help.supportedFormats.input.png')}</div>
+                        <div>{t('help.supportedFormats.input.tiff')}</div>
+                      </div>
+                    </div>
+                    <div>
+                      <h4 className='font-medium text-gray-900 mb-1'>{t('help.supportedFormats.output.title')}</h4>
+                      <div className='text-gray-600 space-y-1'>
+                        <div>{t('help.supportedFormats.output.searchablePdf')}</div>
+                        <div>{t('help.supportedFormats.output.plainText')}</div>
+                        <div>{t('help.supportedFormats.output.word')}</div>
+                        <div>{t('help.supportedFormats.output.excel')}</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Tips */}
+              <div>
+                <h3 className='text-lg font-medium text-gray-900 mb-3'>{t('help.tips.title')}</h3>
+                <div className='bg-yellow-50 border border-yellow-200 rounded-lg p-4'>
+                  <ul className='text-yellow-800 space-y-2 text-sm'>
+                    <li>{t('help.tips.goodLighting')}</li>
+                    <li>{t('help.tips.flatDocuments')}</li>
+                    <li>{t('help.tips.highResolution')}</li>
+                    <li>{t('help.tips.correctLanguage')}</li>
+                    <li>{t('help.tips.cleanDocuments')}</li>
+                    <li>{t('help.tips.maxFileSize')}</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div className='flex justify-end p-6 border-t border-gray-200'>
+              <button
+                onClick={() => setShowHelpModal(false)}
+                className='px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors'
+              >
+                {t('help.modal.gotIt')}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Footer */}
       <Footer />

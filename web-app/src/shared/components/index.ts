@@ -21,8 +21,7 @@ export { Tabs, TabsList, TabsTrigger, TabsContent } from './tabs.jsx';
 export { default as Footer } from './Footer.jsx';
 
 // Feedback Components
-export { default as ErrorBoundary } from './ErrorBoundary.jsx';
-export { ChartErrorFallback } from './ErrorBoundary.jsx';
+export { default as ErrorBoundary, withErrorBoundary, ChartErrorFallback, useErrorHandler, SentryErrorBoundary } from './ErrorBoundary.jsx';
 export { default as ComponentErrorBoundary } from './ComponentErrorBoundary.jsx';
 export { default as LoadingSkeleton } from './LoadingSkeleton.jsx';
 export { default as ConfirmationDialog } from './ConfirmationDialog.jsx';

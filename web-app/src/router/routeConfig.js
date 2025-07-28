@@ -27,6 +27,7 @@ const LegalNotice = lazy(() => import('@pages/LegalNotice'));
 const ProfileForm = lazy(() => import('@pages/ProfileForm'));
 const Scan = lazy(() => import('@pages/Scan'));
 const Voice = lazy(() => import('@pages/Voice'));
+const VoiceAssistantDemo = lazy(() => import('@pages/VoiceAssistantDemo'));
 const OrganizationManagement = lazy(() => import('@pages/OrganizationManagement'));
 const EmailAnalyticsPage = lazy(() => import('@pages/EmailAnalyticsPage'));
 
@@ -100,6 +101,11 @@ export const testRoutes = [
     path: '/tax-pdf-test',
     element: TaxAndPDFTest,
     name: 'Tax PDF Test',
+  },
+  {
+    path: '/voice-assistant-demo',
+    element: VoiceAssistantDemo,
+    name: 'Voice Assistant Demo',
   },
 ];
 

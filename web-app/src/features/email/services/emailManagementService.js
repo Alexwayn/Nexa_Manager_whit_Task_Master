@@ -1812,4 +1812,6 @@ class EmailManagementService {
   }
 }
 
-export default EmailManagementService;
+// Export an instance of the service
+const emailManagementService = new EmailManagementService();
+export default emailManagementService;

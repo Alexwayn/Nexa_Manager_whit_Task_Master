@@ -24,13 +24,23 @@ class WebSocketService {
     if (!url) {
       url = import.meta.env.VITE_WS_URL || 'ws://localhost:8080';
     }
+    
+    // Skip WebSocket connection in development if no server is available
+    if (import.meta.env.DEV && !import.meta.env.VITE_WS_URL) {
+      console.log('WebSocket disabled in development mode (no VITE_WS_URL configured)');
+      return;
+    }
+    
     try {
       this.ws = new WebSocket(url);
       this.setupEventHandlers();
       this.setupHeartbeat();
     } catch (error) {
-      console.error('WebSocket connection failed:', error);
-      this.handleReconnect();
+      console.warn('WebSocket connection failed:', error.message);
+      // Don't attempt reconnection in development if server is not available
+      if (!import.meta.env.DEV) {
+        this.handleReconnect();
+      }
     }
   }
 
@@ -61,18 +71,27 @@ class WebSocketService {
     };
 
     this.ws.onclose = (event) => {
-      console.log('WebSocket disconnected:', event.code, event.reason);
+      if (import.meta.env.DEV) {
+        console.log('WebSocket disconnected (development mode)');
+      } else {
+        console.log('WebSocket disconnected:', event.code, event.reason);
+      }
       this.isConnected = false;
       this.clearHeartbeat();
       this.emit('disconnected', event);
       
-      if (!event.wasClean) {
+      // Only attempt reconnection in production or when explicitly configured
+      if (!event.wasClean && !import.meta.env.DEV) {
         this.handleReconnect();
       }
     };
 
     this.ws.onerror = (error) => {
-      console.error('WebSocket error:', error);
+      if (import.meta.env.DEV) {
+        console.warn('WebSocket connection error (development mode - this is expected if no WebSocket server is running)');
+      } else {
+        console.error('WebSocket error:', error);
+      }
       this.emit('error', error);
     };
   }

@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import { cn } from '@shared/utils/cn';
 
-const Alert = React.forwardRef(({ className, variant = 'default', ...props }, ref) => (
+const Alert = forwardRef(({ className, variant = 'default', ...props }, ref) => (
   <div
     ref={ref}
     role="alert"
@@ -19,7 +19,7 @@ const Alert = React.forwardRef(({ className, variant = 'default', ...props }, re
 ));
 Alert.displayName = 'Alert';
 
-const AlertDescription = React.forwardRef(({ className, ...props }, ref) => (
+const AlertDescription = forwardRef(({ className, ...props }, ref) => (
   <div
     ref={ref}
     className={cn('text-sm [&_p]:leading-relaxed', className)}
@@ -28,7 +28,7 @@ const AlertDescription = React.forwardRef(({ className, ...props }, ref) => (
 ));
 AlertDescription.displayName = 'AlertDescription';
 
-const AlertTitle = React.forwardRef(({ className, ...props }, ref) => (
+const AlertTitle = forwardRef(({ className, ...props }, ref) => (
   <h5
     ref={ref}
     className={cn('mb-1 font-medium leading-none tracking-tight', className)}

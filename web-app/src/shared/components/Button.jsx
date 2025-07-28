@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import { cn } from '@shared/utils';
 import { ButtonText } from './Typography';
 
@@ -21,7 +21,7 @@ const buttonSizes = {
   icon: 'h-10 w-10',
 };
 
-export const Button = React.forwardRef(({
+export const Button = forwardRef(({
   variant = 'primary',
   size = 'default',
   className,

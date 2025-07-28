@@ -3,8 +3,21 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/nexa-logo.svg" />
+    <link rel="alternate icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" href="/nexa-logo.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Nexa Manager</title>
+    
+    <!-- Error handler for blocked requests -->
+    <script>
+      // Error handler for blocked requests
+      window.addEventListener('unhandledrejection', function(event) {
+        if (event.reason && event.reason.message && event.reason.message.includes('message channel closed')) {
+          console.warn('Message channel closed - this is usually safe to ignore');
+          event.preventDefault();
+        }
+      });
+    </script>
     
     <!-- Content Security Policy ottimizzata per sviluppo e stagewise -->
     <meta http-equiv="Content-Security-Policy" content="

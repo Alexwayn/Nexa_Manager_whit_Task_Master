@@ -30,7 +30,7 @@ import { useClients } from '@features/clients/hooks/useClients';
 // Import optimized components
 import { ClientModal } from '@features/clients';
 import { DeleteConfirmationModal } from '@features/clients';
-import { ErrorBoundary } from '@shared/components';
+import { ErrorBoundary, withErrorBoundary } from '@shared/components';
 
 // Import services for export and reporting
 import { clientService } from '@features/clients';

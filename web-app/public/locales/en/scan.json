@@ -14,6 +14,8 @@
   },
   "scanOptions": {
     "title": "Scan Options",
+    "documentType": "Document Type",
+    "ocrLanguage": "OCR Language",
     "camera": {
       "title": "Use Camera",
       "description": "Capture document using your device camera"
@@ -25,9 +27,7 @@
     "recent": {
       "title": "Recent Scans",
       "description": "View and reuse your recent scans"
-    },
-    "documentType": "Document Type",
-    "ocrLanguage": "OCR Language"
+    }
   },
   "documentTypes": {
     "invoice": "Invoice",
@@ -43,13 +43,19 @@
     "french": "French",
     "german": "German"
   },
+  "languages": {
+    "english": "English",
+    "italian": "Italian",
+    "spanish": "Spanish",
+    "french": "French",
+    "german": "German"
+  },
   "upload": {
     "title": "Upload Document",
-    "description": "Drag and drop your document here, or click to browse files. Supported formats: PDF, JPG, PNG, TIFF",
-    "browseButton": "Browse Files",
-    "maxSize": "Maximum file size: 10MB",
-    "filesSelected": "{{count}} files selected",
-    "dragActive": "Drop files here to upload"
+    "description": "Drag and drop your files here, or click to browse",
+    "browseFiles": "Browse Files",
+    "maxFileSize": "Maximum file size:",
+    "filesSelected": "files selected"
   },
   "enhancement": {
     "title": "Enhancement Options",
@@ -61,13 +67,100 @@
   "recentScans": {
     "title": "Recent Scans",
     "viewAll": "View All",
-    "scannedAgo": "Scanned {{time}} ago"
+    "scanned": "Scanned"
   },
   "actions": {
     "back": "Back",
     "continue": "Continue",
     "help": "Help",
     "uploadDocument": "Upload Document"
+  },
+  "help": {
+    "modal": {
+      "title": "Document Scanner Help",
+      "close": "Close",
+      "gotIt": "Got it!"
+    },
+    "gettingStarted": {
+      "title": "Getting Started",
+      "description": "The Document Scanner allows you to digitize and process physical documents with OCR (Optical Character Recognition) capabilities.",
+      "quickSteps": {
+        "title": "Quick Steps:",
+        "step1": "Choose your scan method (Camera, Upload, or Recent)",
+        "step2": "Select document type and OCR language",
+        "step3": "Upload or capture your document",
+        "step4": "Review and enhance if needed",
+        "step5": "Export your processed document"
+      }
+    },
+    "scanMethods": {
+      "title": "Scan Methods",
+      "camera": {
+        "title": "Camera Scan",
+        "description": "Use your device's camera to capture documents in real-time"
+      },
+      "upload": {
+        "title": "Upload Files",
+        "description": "Upload existing images or PDF files from your device"
+      },
+      "recent": {
+        "title": "Recent Scans",
+        "description": "Access and reprocess previously scanned documents"
+      }
+    },
+    "documentTypes": {
+      "title": "Document Types",
+      "description": "Select the appropriate document type for better OCR accuracy:",
+      "invoice": "📄 Invoice",
+      "receipt": "🧾 Receipt",
+      "contract": "📋 Contract",
+      "report": "📊 Report"
+    },
+    "enhancementOptions": {
+      "title": "Enhancement Options",
+      "brightness": {
+        "title": "Brightness",
+        "description": "Adjust document brightness"
+      },
+      "contrast": {
+        "title": "Contrast",
+        "description": "Enhance text clarity"
+      },
+      "autoEnhance": {
+        "title": "Auto-enhance",
+        "description": "Automatic image optimization"
+      },
+      "autoCrop": {
+        "title": "Auto-crop",
+        "description": "Automatically detect document edges"
+      }
+    },
+    "supportedFormats": {
+      "title": "Supported Formats",
+      "input": {
+        "title": "Input Formats:",
+        "pdf": "• PDF documents",
+        "jpeg": "• JPEG images",
+        "png": "• PNG images",
+        "tiff": "• TIFF images"
+      },
+      "output": {
+        "title": "Output Formats:",
+        "searchablePdf": "• Searchable PDF",
+        "plainText": "• Plain text",
+        "word": "• Word document",
+        "excel": "• Excel spreadsheet"
+      }
+    },
+    "tips": {
+      "title": "Tips for Best Results",
+      "goodLighting": "• Ensure good lighting when scanning",
+      "flatDocuments": "• Keep documents flat and straight",
+      "highResolution": "• Use high resolution images (300 DPI or higher)",
+      "correctLanguage": "• Select the correct language for OCR",
+      "cleanDocuments": "• Clean documents scan better than dirty ones",
+      "maxFileSize": "• Maximum file size is 10MB per document"
+    }
   },
   "notifications": {
     "filesSelected": "{{count}} files selected successfully!",

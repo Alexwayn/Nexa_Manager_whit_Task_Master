@@ -5,8 +5,10 @@ import { ClerkProvider } from '@clerk/clerk-react';
 import { ThemeProvider, OrganizationProvider, EmailProvider } from '@/shared/hooks';
 import { QueryProvider } from "./providers/QueryProvider";
 import { WebSocketProvider } from './providers/WebSocketProvider';
+import { VoiceAssistantProvider } from './providers/VoiceAssistantProvider';
 import AppRouter from '@router/AppRouter';
 import FloatingMicrophone from './components/shared/FloatingMicrophone';
+import VoiceAssistantOverlay from './components/voice/VoiceAssistantOverlay';
 import { ErrorBoundary } from '@shared/components';
 // import LanguageForcer from '@components/debug/LanguageForcer'; // Removed debug component
 
@@ -154,15 +156,18 @@ function App() {
         <WebSocketProvider enabled={true}>
           <Router>
             <ClerkProviderWithRouter>
-              <ThemeProvider>
-                <OrganizationProvider>
-                  <EmailProvider>
-                    <AppRouter />
-                    <FloatingMicrophone />
-                    <Toaster position='top-right' />
-                  </EmailProvider>
-                </OrganizationProvider>
-              </ThemeProvider>
+              <VoiceAssistantProvider>
+                <ThemeProvider>
+                  <OrganizationProvider>
+                    <EmailProvider>
+                      <AppRouter />
+                      <FloatingMicrophone />
+                      <VoiceAssistantOverlay />
+                      <Toaster position='top-right' />
+                    </EmailProvider>
+                  </OrganizationProvider>
+                </ThemeProvider>
+              </VoiceAssistantProvider>
             </ClerkProviderWithRouter>
           </Router>
         </WebSocketProvider>

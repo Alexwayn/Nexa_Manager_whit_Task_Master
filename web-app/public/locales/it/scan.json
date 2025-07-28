@@ -38,6 +38,74 @@
   "notifications": {
     "uploadSuccess": "{{count}} ricevute caricate con successo!"
   },
+  "scanOptions": {
+    "title": "Opzioni di Scansione",
+    "documentType": "Tipo di Documento",
+    "ocrLanguage": "Lingua OCR",
+    "camera": {
+      "title": "Usa Fotocamera",
+      "description": "Cattura il documento usando la fotocamera del dispositivo"
+    },
+    "upload": {
+      "title": "Carica File",
+      "description": "Carica documento dal tuo dispositivo"
+    },
+    "recent": {
+      "title": "Scansioni Recenti",
+      "description": "Visualizza e riutilizza le tue scansioni recenti"
+    }
+  },
+  "documentTypes": {
+    "invoice": "Fattura",
+    "receipt": "Ricevuta",
+    "contract": "Contratto",
+    "report": "Report",
+    "other": "Altro"
+  },
+  "languages": {
+    "english": "Inglese",
+    "italian": "Italiano",
+    "spanish": "Spagnolo",
+    "french": "Francese",
+    "german": "Tedesco"
+  },
+  "upload": {
+    "title": "Carica Documento",
+    "description": "Trascina e rilascia i tuoi file qui, o clicca per sfogliare",
+    "browseFiles": "Sfoglia File",
+    "maxFileSize": "Dimensione massima file:",
+    "filesSelected": "file selezionati"
+  },
+  "enhancementOptions": {
+    "title": "Opzioni di Miglioramento",
+    "brightness": {
+      "title": "Luminosità",
+      "description": "Regola la luminosità del documento"
+    },
+    "contrast": {
+      "title": "Contrasto",
+      "description": "Regola il contrasto del documento"
+    },
+    "autoEnhance": {
+      "title": "Migliora automaticamente documento",
+      "description": "Migliora automaticamente la qualità del documento"
+    },
+    "autoCrop": {
+      "title": "Ritaglia automaticamente bordi documento",
+      "description": "Ritaglia automaticamente i bordi del documento"
+    }
+  },
+  "recentScans": {
+    "title": "Scansioni Recenti",
+    "viewAll": "Visualizza Tutto",
+    "scanned": "Scansionato"
+  },
+  "actions": {
+    "back": "Indietro",
+    "continue": "Continua",
+    "help": "Aiuto",
+    "uploadDocument": "Carica Documento"
+  },
   "sharing": {
     "title": "Condividi Documento",
     "recipients": "Destinatari",
@@ -137,6 +205,91 @@
     },
     "errors": {
       "loadAccessHistoryFailure": "Impossibile caricare la cronologia degli accessi"
+    }
+  },
+  "help": {
+    "modal": {
+      "title": "Guida Scanner Documenti",
+      "gotIt": "Capito!"
+    },
+    "gettingStarted": {
+      "title": "Come Iniziare",
+      "description": "Lo Scanner Documenti ti permette di digitalizzare ed elaborare documenti fisici con capacità OCR (Riconoscimento Ottico dei Caratteri).",
+      "quickSteps": {
+        "step1": "Scegli il metodo di scansione (Fotocamera, Carica o Recenti)",
+        "step2": "Seleziona il tipo di documento e la lingua OCR",
+        "step3": "Carica o cattura il tuo documento",
+        "step4": "Rivedi e migliora se necessario",
+        "step5": "Esporta il documento elaborato"
+      }
+    },
+    "scanMethods": {
+      "title": "Metodi di Scansione",
+      "camera": {
+        "title": "Scansione Fotocamera",
+        "description": "Usa la fotocamera del dispositivo per scansionare documenti in tempo reale"
+      },
+      "upload": {
+        "title": "Carica File",
+        "description": "Carica immagini o PDF esistenti dal tuo dispositivo"
+      },
+      "recent": {
+        "title": "Scansioni Recenti",
+        "description": "Accedi rapidamente ai documenti scansionati di recente"
+      }
+    },
+    "documentTypes": {
+      "title": "Tipi di Documento",
+      "description": "Seleziona il tipo di documento appropriato per una migliore accuratezza OCR:",
+      "receipt": "Ricevute - Per tracciare spese e contabilità",
+      "invoice": "Fatture - Per documenti di fatturazione commerciale",
+      "contract": "Contratti - Per accordi legali e contratti",
+      "report": "📊 Report"
+    },
+    "enhancementOptions": {
+      "title": "Opzioni di Miglioramento",
+      "brightness": {
+        "title": "Luminosità",
+        "description": "Regola la luminosità del documento"
+      },
+      "contrast": {
+        "title": "Contrasto",
+        "description": "Migliora la chiarezza del testo"
+      },
+      "autoEnhance": {
+        "title": "Miglioramento Automatico",
+        "description": "Ottimizzazione automatica dell'immagine"
+      },
+      "autoCrop": {
+        "title": "Ritaglio Automatico",
+        "description": "Rileva automaticamente i bordi del documento"
+      }
+    },
+    "supportedFormats": {
+      "title": "Formati Supportati",
+      "input": {
+        "title": "Formati di Input:",
+        "pdf": "• Documenti PDF",
+        "jpeg": "• Immagini JPEG",
+        "png": "• Immagini PNG",
+        "tiff": "• Immagini TIFF"
+      },
+      "output": {
+        "title": "Formati di Output:",
+        "searchablePdf": "• PDF ricercabile",
+        "plainText": "• Testo semplice",
+        "wordDocument": "• Documento Word",
+        "excelSpreadsheet": "• Foglio di calcolo Excel"
+      }
+    },
+    "tips": {
+      "title": "Suggerimenti per Risultati Migliori",
+      "goodLighting": "• Assicurati una buona illuminazione durante la scansione",
+      "flatDocuments": "• Mantieni i documenti piatti e dritti",
+      "highResolution": "• Usa immagini ad alta risoluzione (300 DPI o superiore)",
+      "correctLanguage": "• Seleziona la lingua corretta per l'OCR",
+      "cleanDocuments": "• I documenti puliti si scansionano meglio di quelli sporchi",
+      "maxFileSize": "• La dimensione massima del file è 10MB per documento"
     }
   },
   "notifications": {

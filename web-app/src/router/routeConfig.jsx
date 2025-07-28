@@ -27,6 +27,9 @@ const LegalNotice = lazy(() => import('@pages/LegalNotice'));
 const ProfileForm = lazy(() => import('@pages/ProfileForm'));
 const Scan = lazy(() => import('@pages/Scan'));
 const Voice = lazy(() => import('@pages/Voice'));
+const VoiceCommandHelp = lazy(() => import('@components/voice/VoiceCommandHelp'));
+const VoiceAnalytics = lazy(() => import('@pages/VoiceAnalytics'));
+const VoiceFeedback = lazy(() => import('@pages/VoiceFeedback'));
 const OrganizationManagement = lazy(() => import('@pages/OrganizationManagement'));
 
 // Testing components - also lazy loaded for better performance
@@ -194,6 +197,26 @@ export const mainRoutes = [
     category: 'tools',
   },
   {
+    path: '/voice-analytics',
+    element: VoiceAnalytics,
+    name: 'Voice Analytics',
+    category: 'reports',
+    authConfig: {
+      organizationRequired: true,
+      requiredPermissions: ['view_analytics'],
+    },
+  },
+  {
+    path: '/voice-feedback',
+    element: VoiceFeedback,
+    name: 'Voice Feedback',
+    category: 'tools',
+    authConfig: {
+      organizationRequired: true,
+      requiredPermissions: ['view_analytics'],
+    },
+  },
+  {
     path: '/calendar',
     element: Calendar,
     name: 'Calendar',
@@ -244,6 +267,12 @@ export const supportRoutes = [
     path: '/help',
     element: HelpCenter,
     name: 'Help Center',
+    category: 'support',
+  },
+  {
+    path: '/voice-help',
+    element: VoiceCommandHelp,
+    name: 'Voice Commands Help',
     category: 'support',
   },
   {

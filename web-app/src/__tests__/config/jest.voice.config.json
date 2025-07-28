@@ -1,0 +1,90 @@
+{
+  "displayName": "Voice Assistant Tests",
+  "testEnvironment": "jsdom",
+  "rootDir": "../../../",
+  "moduleDirectories": ["node_modules", "<rootDir>/node_modules"],
+  "setupFilesAfterEnv": [
+    "<rootDir>/src/__tests__/config/voiceTestSetup.js",
+    "@testing-library/jest-dom"
+  ],
+  "testMatch": [
+    "<rootDir>/src/__tests__/**/*.test.{js,jsx,ts,tsx}",
+    "<rootDir>/src/features/voice/**/*.test.{js,jsx,ts,tsx}",
+    "<rootDir>/src/shared/services/voice/**/*.test.{js,jsx,ts,tsx}",
+    "<rootDir>/src/shared/hooks/voice/**/*.test.{js,jsx,ts,tsx}"
+  ],
+  "moduleNameMapper": {
+    "^@/(.*)$": "<rootDir>/src/$1",
+    "^@shared/(.*)$": "<rootDir>/src/shared/$1",
+    "^@features/(.*)$": "<rootDir>/src/features/$1",
+    "^@components/(.*)$": "<rootDir>/src/components/$1",
+    "^@services/(.*)$": "<rootDir>/src/services/$1",
+    "^@utils/(.*)$": "<rootDir>/src/utils/$1",
+    "^@hooks/(.*)$": "<rootDir>/src/hooks/$1",
+    "^@providers/(.*)$": "<rootDir>/src/providers/$1",
+    "^@types/(.*)$": "<rootDir>/src/types/$1",
+    "\\.(css|less|scss|sass)$": "identity-obj-proxy",
+    "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/src/__tests__/__mocks__/fileMock.js"
+  },
+  "transform": {
+    "^.+\\.(js|jsx|ts|tsx)$": ["babel-jest", {
+      "presets": [
+        ["@babel/preset-env", { "targets": { "node": "current" } }],
+        ["@babel/preset-react", { "runtime": "automatic" }],
+        "@babel/preset-typescript"
+      ],
+      "plugins": [
+        "@babel/plugin-transform-class-properties",
+        "@babel/plugin-transform-runtime"
+      ]
+    }]
+  },
+  "collectCoverageFrom": [
+    "src/features/voice/**/*.{js,jsx,ts,tsx}",
+    "src/shared/services/voice/**/*.{js,jsx,ts,tsx}",
+    "src/shared/hooks/voice/**/*.{js,jsx,ts,tsx}",
+    "src/components/voice/**/*.{js,jsx,ts,tsx}",
+    "src/providers/VoiceAssistantProvider.{js,jsx,ts,tsx}",
+    "!src/**/*.d.ts",
+    "!src/**/*.stories.{js,jsx,ts,tsx}",
+    "!src/**/*.config.{js,jsx,ts,tsx}",
+    "!src/**/__tests__/**",
+    "!src/**/node_modules/**"
+  ],
+  "coverageThreshold": {
+    "global": {
+      "statements": 90,
+      "branches": 85,
+      "functions": 90,
+      "lines": 90
+    }
+  },
+  "coverageReporters": [
+    "text",
+    "lcov",
+    "html",
+    "json-summary"
+  ],
+  "testTimeout": 10000,
+  "verbose": true,
+  "collectCoverage": false,
+  "coverageDirectory": "<rootDir>/coverage/voice",
+  "testResultsProcessor": "<rootDir>/src/__tests__/config/testResultsProcessor.js",
+  "maxWorkers": "50%",
+  "cache": true,
+  "cacheDirectory": "<rootDir>/node_modules/.cache/jest-voice",
+  "clearMocks": true,
+  "restoreMocks": true,
+  "resetMocks": false,
+  "errorOnDeprecated": true,
+  "testPathIgnorePatterns": [
+    "/node_modules/",
+    "/build/",
+    "/dist/",
+    "/coverage/"
+  ],
+  "modulePathIgnorePatterns": [
+    "/build/",
+    "/dist/"
+  ]
+}

@@ -116,10 +116,11 @@ export const useEmailPerformance = (options = {}) => {
    */
   const loadMore = useCallback(() => {
     if (!loading && hasMore) {
-      const currentPage = Math.floor(emails.length / pageSize);
+      const safeEmails = Array.isArray(emails) ? emails : [];
+      const currentPage = Math.floor(safeEmails.length / pageSize);
       loadEmails(currentPage, true);
     }
-  }, [loading, hasMore, emails.length, pageSize, loadEmails]);
+  }, [loading, hasMore, emails, pageSize, loadEmails]);
 
   /**
    * Refresh emails
@@ -201,11 +202,14 @@ export const useEmailPerformance = (options = {}) => {
    */
   const markAsRead = useCallback(async (emailIds) => {
     // Optimistic update
-    setEmails(prev => prev.map(email => 
-      emailIds.includes(email.id) 
-        ? { ...email, read: true }
-        : email
-    ));
+    setEmails(prev => {
+      const safePrev = Array.isArray(prev) ? prev : [];
+      return safePrev.map(email => 
+        emailIds.includes(email.id) 
+          ? { ...email, read: true }
+          : email
+      );
+    });
     
     try {
       const response = await fetch('/api/emails/mark-read', {
@@ -222,11 +226,14 @@ export const useEmailPerformance = (options = {}) => {
     } catch (error) {
       Logger.error('Error marking emails as read:', error);
       // Revert optimistic update
-      setEmails(prev => prev.map(email => 
-        emailIds.includes(email.id) 
-          ? { ...email, read: false }
-          : email
-      ));
+      setEmails(prev => {
+        const safePrev = Array.isArray(prev) ? prev : [];
+        return safePrev.map(email => 
+          emailIds.includes(email.id) 
+            ? { ...email, read: false }
+            : email
+        );
+      });
       throw error;
     }
   }, []);
@@ -235,13 +242,14 @@ export const useEmailPerformance = (options = {}) => {
    * Get performance statistics
    */
   const getPerformanceStats = useCallback(() => {
+    const safeEmails = Array.isArray(emails) ? emails : [];
     return {
       ...emailCacheService.getStats(),
       loadedEmails: loadedEmailsRef.current.size,
-      totalEmails: emails.length,
+      totalEmails: safeEmails.length,
       syncStatus,
     };
-  }, [emails.length, syncStatus]);
+  }, [emails, syncStatus]);
 
   // Initialize
   useEffect(() => {
@@ -295,14 +303,15 @@ export const useEmailVirtualization = (emails, containerHeight = 600, itemHeight
   const [scrollTop, setScrollTop] = useState(0);
   const [visibleRange, setVisibleRange] = useState({ start: 0, end: 0 });
   
-  const totalHeight = emails.length * itemHeight;
+  const safeEmails = Array.isArray(emails) ? emails : [];
+  const totalHeight = safeEmails.length * itemHeight;
   const visibleCount = Math.ceil(containerHeight / itemHeight);
   const bufferSize = Math.max(5, Math.floor(visibleCount * 0.5));
   
   useEffect(() => {
     const startIndex = Math.floor(scrollTop / itemHeight);
     const endIndex = Math.min(
-      emails.length - 1,
+      safeEmails.length - 1,
       startIndex + visibleCount + bufferSize
     );
     
@@ -310,13 +319,13 @@ export const useEmailVirtualization = (emails, containerHeight = 600, itemHeight
       start: Math.max(0, startIndex - bufferSize),
       end: endIndex,
     });
-  }, [scrollTop, emails.length, itemHeight, visibleCount, bufferSize]);
+  }, [scrollTop, safeEmails.length, itemHeight, visibleCount, bufferSize]);
   
   const handleScroll = useCallback((event) => {
     setScrollTop(event.target.scrollTop);
   }, []);
   
-  const visibleEmails = emails.slice(visibleRange.start, visibleRange.end + 1);
+  const visibleEmails = safeEmails.slice(visibleRange.start, visibleRange.end + 1);
   const offsetY = visibleRange.start * itemHeight;
   
   return {

@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import { cn } from '@shared/utils/cn';
 
-const Progress = React.forwardRef(({ className, value, ...props }, ref) => (
+const Progress = forwardRef(({ className, value, ...props }, ref) => (
   <div
     ref={ref}
     className={cn(

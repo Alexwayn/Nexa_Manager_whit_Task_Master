@@ -1,11 +1,17 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Search, Book, MessageCircle, Phone, Mail, ChevronDown, ChevronRight } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { Search, Book, MessageCircle, Phone, Mail, ChevronDown, ChevronRight, Mic } from 'lucide-react';
 
 const HelpCenter = () => {
   const { t } = useTranslation('helpCenter');
+  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
   const [expandedFaq, setExpandedFaq] = useState(null);
+
+  const handleVoiceHelpClick = () => {
+    navigate('/voice-help');
+  };
 
   const faqData = [
     {
@@ -92,7 +98,7 @@ const HelpCenter = () => {
 
       <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12'>
         {/* Quick Actions */}
-        <div className='grid md:grid-cols-3 gap-6 mb-12'>
+        <div className='grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12'>
           <div className='bg-white rounded-lg shadow-sm p-6 text-center hover:shadow-md transition-shadow'>
             <div className='bg-blue-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4'>
               <Book className='h-8 w-8 text-blue-600' />
@@ -133,6 +139,19 @@ const HelpCenter = () => {
             >
               {t('quickActions.phoneSupport.button')}
             </a>
+          </div>
+
+          <div className='bg-white rounded-lg shadow-sm p-6 text-center hover:shadow-md transition-shadow cursor-pointer' onClick={handleVoiceHelpClick}>
+            <div className='bg-orange-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4'>
+              <Mic className='h-8 w-8 text-orange-600' />
+            </div>
+            <h3 className='text-lg font-semibold text-gray-900 mb-2'>
+              Voice Commands
+            </h3>
+            <p className='text-gray-600 mb-4'>Learn all available voice commands and how to use them</p>
+            <span className='text-orange-600 hover:text-orange-700 font-medium'>
+              View Commands
+            </span>
           </div>
         </div>
 

@@ -165,7 +165,8 @@ export const CONNECTION_STATES = {
   DISCONNECTING: 'disconnecting',
   DISCONNECTED: 'disconnected',
   RECONNECTING: 'reconnecting',
-  ERROR: 'error'
+  ERROR: 'error',
+  DISABLED: 'disabled'
 };
 
 // Error codes

@@ -145,8 +145,9 @@ export const useEmailList = (options = {}) => {
 
   // Select all emails
   const selectAllEmails = useCallback((checked) => {
+    const safeEmails = Array.isArray(emails) ? emails : [];
     if (checked) {
-      setSelectedEmails(new Set(emails.map(email => email.id)));
+      setSelectedEmails(new Set(safeEmails.map(email => email.id)));
     } else {
       setSelectedEmails(new Set());
     }
@@ -155,16 +156,20 @@ export const useEmailList = (options = {}) => {
   // Star/unstar email
   const toggleStar = useCallback(async (emailId) => {
     try {
-      const email = emails.find(e => e.id === emailId);
+      const safeEmails = Array.isArray(emails) ? emails : [];
+      const email = safeEmails.find(e => e.id === emailId);
       if (!email) return;
 
       const result = await emailManagementService.starEmail(emailId, userId, !email.isStarred);
       
       if (result.success) {
         // Update local state
-        setEmails(prev => prev.map(e => 
-          e.id === emailId ? { ...e, isStarred: !e.isStarred } : e
-        ));
+        setEmails(prev => {
+          const safePrev = Array.isArray(prev) ? prev : [];
+          return safePrev.map(e => 
+            e.id === emailId ? { ...e, isStarred: !e.isStarred } : e
+          );
+        });
         
         // Update selected email if it's the same
         if (selectedEmail?.id === emailId) {
@@ -190,7 +195,10 @@ export const useEmailList = (options = {}) => {
             emailIds.map(id => emailManagementService.deleteEmail(id, userId))
           );
           // Remove deleted emails from local state
-          setEmails(prev => prev.filter(email => !emailIds.includes(email.id)));
+          setEmails(prev => {
+            const safePrev = Array.isArray(prev) ? prev : [];
+            return safePrev.filter(email => !emailIds.includes(email.id));
+          });
           break;
 
         case 'archive':
@@ -198,7 +206,10 @@ export const useEmailList = (options = {}) => {
             folderId: 'archived' 
           });
           if (folderId !== 'archived') {
-            setEmails(prev => prev.filter(email => !emailIds.includes(email.id)));
+            setEmails(prev => {
+              const safePrev = Array.isArray(prev) ? prev : [];
+              return safePrev.filter(email => !emailIds.includes(email.id));
+            });
           }
           break;
 
@@ -206,36 +217,48 @@ export const useEmailList = (options = {}) => {
           result = await emailManagementService.bulkUpdateEmails(emailIds, userId, { 
             isRead: true 
           });
-          setEmails(prev => prev.map(email => 
-            emailIds.includes(email.id) ? { ...email, isRead: true } : email
-          ));
+          setEmails(prev => {
+            const safePrev = Array.isArray(prev) ? prev : [];
+            return safePrev.map(email => 
+              emailIds.includes(email.id) ? { ...email, isRead: true } : email
+            );
+          });
           break;
 
         case 'markUnread':
           result = await emailManagementService.bulkUpdateEmails(emailIds, userId, { 
             isRead: false 
           });
-          setEmails(prev => prev.map(email => 
-            emailIds.includes(email.id) ? { ...email, isRead: false } : email
-          ));
+          setEmails(prev => {
+            const safePrev = Array.isArray(prev) ? prev : [];
+            return safePrev.map(email => 
+              emailIds.includes(email.id) ? { ...email, isRead: false } : email
+            );
+          });
           break;
 
         case 'star':
           result = await emailManagementService.bulkUpdateEmails(emailIds, userId, { 
             isStarred: true 
           });
-          setEmails(prev => prev.map(email => 
-            emailIds.includes(email.id) ? { ...email, isStarred: true } : email
-          ));
+          setEmails(prev => {
+            const safePrev = Array.isArray(prev) ? prev : [];
+            return safePrev.map(email => 
+              emailIds.includes(email.id) ? { ...email, isStarred: true } : email
+            );
+          });
           break;
 
         case 'unstar':
           result = await emailManagementService.bulkUpdateEmails(emailIds, userId, { 
             isStarred: false 
           });
-          setEmails(prev => prev.map(email => 
-            emailIds.includes(email.id) ? { ...email, isStarred: false } : email
-          ));
+          setEmails(prev => {
+            const safePrev = Array.isArray(prev) ? prev : [];
+            return safePrev.map(email => 
+              emailIds.includes(email.id) ? { ...email, isStarred: false } : email
+            );
+          });
           break;
 
         default:
@@ -263,7 +286,10 @@ export const useEmailList = (options = {}) => {
       if (result.success) {
         // Remove from current list if moving to different folder
         if (targetFolderId !== folderId) {
-          setEmails(prev => prev.filter(email => email.id !== emailId));
+          setEmails(prev => {
+            const safePrev = Array.isArray(prev) ? prev : [];
+            return safePrev.filter(email => email.id !== emailId);
+          });
           
           // Clear selection if moved email was selected
           if (selectedEmail?.id === emailId) {
@@ -271,9 +297,12 @@ export const useEmailList = (options = {}) => {
           }
         } else {
           // Update folder in local state
-          setEmails(prev => prev.map(email => 
-            email.id === emailId ? { ...email, folderId: targetFolderId } : email
-          ));
+          setEmails(prev => {
+            const safePrev = Array.isArray(prev) ? prev : [];
+            return safePrev.map(email => 
+              email.id === emailId ? { ...email, folderId: targetFolderId } : email
+            );
+          });
         }
       }
     } catch (err) {
@@ -300,12 +329,15 @@ export const useEmailList = (options = {}) => {
   }, [userId, folderId]); // Re-fetch when folder changes
 
   // Computed values
-  const stats = useMemo(() => ({
-    total,
-    unread: emails.filter(email => !email.isRead).length,
-    starred: emails.filter(email => email.isStarred).length,
-    selected: selectedEmails.size,
-  }), [emails, total, selectedEmails.size]);
+  const stats = useMemo(() => {
+    const safeEmails = Array.isArray(emails) ? emails : [];
+    return {
+      total,
+      unread: safeEmails.filter(email => !email.isRead).length,
+      starred: safeEmails.filter(email => email.isStarred).length,
+      selected: selectedEmails.size,
+    };
+  }, [emails, total, selectedEmails.size]);
 
   return {
     // Data
