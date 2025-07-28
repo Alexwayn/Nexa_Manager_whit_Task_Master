@@ -558,4 +558,4 @@ export const getEmailTemplateService = () => {
   return emailTemplateServiceInstance;
 };
 
-export default getEmailTemplateService();
+export default getEmailTemplateService;

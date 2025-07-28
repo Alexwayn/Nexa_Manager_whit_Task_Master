@@ -576,4 +576,4 @@ export const getEmailOfflineService = () => {
 };
 
 // Export default instance for backward compatibility
-export default getEmailOfflineService();
+export default getEmailOfflineService;

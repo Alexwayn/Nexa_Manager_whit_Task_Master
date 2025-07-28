@@ -266,4 +266,4 @@ export const getEmailCacheService = () => {
 };
 
 // Export default instance for backward compatibility
-export default getEmailCacheService();
+export default getEmailCacheService;

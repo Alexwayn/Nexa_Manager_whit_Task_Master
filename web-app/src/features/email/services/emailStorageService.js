@@ -707,4 +707,4 @@ export const getEmailStorageService = () => {
   return emailStorageServiceInstance;
 };
 
-export default getEmailStorageService();
+export default getEmailStorageService;

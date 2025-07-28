@@ -447,4 +447,4 @@ export const getEmailErrorHandler = () => {
 };
 
 // Export default instance for backward compatibility
-export default getEmailErrorHandler();
+export default getEmailErrorHandler;

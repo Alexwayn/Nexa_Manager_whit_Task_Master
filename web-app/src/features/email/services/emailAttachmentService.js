@@ -486,4 +486,4 @@ export const getEmailAttachmentService = () => {
   return emailAttachmentServiceInstance;
 };
 
-export default getEmailAttachmentService();
+export default getEmailAttachmentService;

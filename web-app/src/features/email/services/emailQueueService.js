@@ -384,4 +384,5 @@ export const getEmailQueueService = () => {
   return emailQueueServiceInstance;
 };
 
-export default getEmailQueueService();
+// Export the function for lazy initialization instead of calling it
+export default getEmailQueueService;

@@ -712,4 +712,5 @@ export const getEmailRecoveryService = () => {
   return emailRecoveryServiceInstance;
 };
 
-export default getEmailRecoveryService();
+// Export the function for lazy initialization instead of calling it
+export default getEmailRecoveryService;

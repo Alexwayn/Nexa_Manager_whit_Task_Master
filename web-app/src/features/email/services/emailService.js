@@ -1090,4 +1090,4 @@ export const getEmailService = () => {
   return emailServiceInstance;
 };
 
-export default getEmailService();
+export default getEmailService;

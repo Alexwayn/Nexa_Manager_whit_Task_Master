@@ -753,4 +753,4 @@ export const getEmailNotificationService = () => {
   return emailNotificationServiceInstance;
 };
 
-export default getEmailNotificationService();
+export default getEmailNotificationService;

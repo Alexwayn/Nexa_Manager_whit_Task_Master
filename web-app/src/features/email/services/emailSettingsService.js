@@ -703,4 +703,4 @@ export const getEmailSettingsService = () => {
   return emailSettingsServiceInstance;
 };
 
-export default getEmailSettingsService();
+export default getEmailSettingsService;

@@ -133,6 +133,7 @@ class EmailSignatureService {
   }
 }
 
+// Export singleton instance with lazy initialization
 let emailSignatureServiceInstance = null;
 
 export const getEmailSignatureService = () => {
@@ -142,4 +143,5 @@ export const getEmailSignatureService = () => {
   return emailSignatureServiceInstance;
 };
 
-export default getEmailSignatureService();
+// Export the function for lazy initialization instead of calling it
+export default getEmailSignatureService;

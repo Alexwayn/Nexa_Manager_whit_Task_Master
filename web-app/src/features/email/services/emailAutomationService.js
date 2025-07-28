@@ -987,7 +987,7 @@ export const getEmailAutomationService = () => {
 };
 
 // Export default instance for backward compatibility
-export default getEmailAutomationService();
+export default getEmailAutomationService;
 
 // Also export the named instance for backward compatibility
 export const emailAutomationService = getEmailAutomationService();

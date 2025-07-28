@@ -1960,4 +1960,5 @@ export const getBusinessEmailIntegration = () => {
   return businessEmailIntegrationInstance;
 };
 
-export default getBusinessEmailIntegration();
+// Export the function for lazy initialization instead of calling it
+export default getBusinessEmailIntegration;

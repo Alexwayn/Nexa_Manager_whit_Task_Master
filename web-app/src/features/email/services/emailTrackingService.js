@@ -930,4 +930,4 @@ export const getEmailTrackingService = () => {
   return emailTrackingServiceInstance;
 };
 
-export default getEmailTrackingService();
+export default getEmailTrackingService;

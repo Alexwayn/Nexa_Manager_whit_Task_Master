@@ -529,7 +529,7 @@ export const getEmailSecurityService = () => {
 };
 
 // Export default instance for backward compatibility
-export default getEmailSecurityService();
+export default getEmailSecurityService;
 
 // Also export the named instance for backward compatibility
 export const emailSecurityService = getEmailSecurityService();

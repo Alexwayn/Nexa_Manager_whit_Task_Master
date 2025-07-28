@@ -1061,4 +1061,4 @@ export const getEmailAnalyticsService = () => {
   return emailAnalyticsServiceInstance;
 };
 
-export default getEmailAnalyticsService();
+export default getEmailAnalyticsService;

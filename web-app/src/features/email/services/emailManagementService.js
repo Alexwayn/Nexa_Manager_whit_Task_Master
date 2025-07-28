@@ -1823,4 +1823,4 @@ export const getEmailManagementService = () => {
 };
 
 // Export default instance for backward compatibility
-export default getEmailManagementService();
+export default getEmailManagementService;

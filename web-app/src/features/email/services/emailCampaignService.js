@@ -761,4 +761,4 @@ export const getEmailCampaignService = () => {
   return emailCampaignServiceInstance;
 };
 
-export default getEmailCampaignService();
+export default getEmailCampaignService;
