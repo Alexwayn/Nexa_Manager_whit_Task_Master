@@ -371,9 +371,11 @@ class EmailQueueService {
 // Create singleton instance
 const emailQueueService = new EmailQueueService();
 
-// Auto-start the queue in production
+// Auto-start the queue in production (delayed to avoid temporal dead zone)
 if (import.meta.env.MODE === 'production') {
-  emailQueueService.startQueue();
+  setTimeout(() => {
+    emailQueueService.startQueue();
+  }, 0);
 }
 
 export default emailQueueService;
