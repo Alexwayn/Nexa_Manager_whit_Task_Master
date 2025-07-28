@@ -518,5 +518,18 @@ class EmailSecurityService {
   }
 }
 
-export const emailSecurityService = new EmailSecurityService();
-export default emailSecurityService;
+// Create singleton instance with lazy initialization
+let emailSecurityServiceInstance = null;
+
+export const getEmailSecurityService = () => {
+  if (!emailSecurityServiceInstance) {
+    emailSecurityServiceInstance = new EmailSecurityService();
+  }
+  return emailSecurityServiceInstance;
+};
+
+// Export default instance for backward compatibility
+export default getEmailSecurityService();
+
+// Also export the named instance for backward compatibility
+export const emailSecurityService = getEmailSecurityService();

@@ -1,9 +1,9 @@
-2025-07-28T06:19:56.356Z [INFO]: # Build environment configured with Large build compute type: 16GiB Memory, 8vCPUs, 128GB Disk Space
-2025-07-28T06:19:57.004Z [INFO]: # Cloning repository: git@github.com:Alexwayn/Nexa_Manager_whit_Task_Master.git
-2025-07-28T06:19:59.361Z [INFO]: 
-2025-07-28T06:19:59.361Z [INFO]: Cloning into 'Nexa_Manager_whit_Task_Master'...
-2025-07-28T06:19:59.362Z [INFO]: # Switching to commit: 5d6456d5f240013dda6bc02165ac1a7e0f4437b4
-2025-07-28T06:19:59.585Z [INFO]: Note: switching to '5d6456d5f240013dda6bc02165ac1a7e0f4437b4'.
+2025-07-28T23:17:44.185Z [INFO]: # Build environment configured with Large build compute type: 16GiB Memory, 8vCPUs, 128GB Disk Space
+2025-07-28T23:17:44.918Z [INFO]: # Cloning repository: git@github.com:Alexwayn/Nexa_Manager_whit_Task_Master.git
+2025-07-28T23:17:47.385Z [INFO]: 
+2025-07-28T23:17:47.478Z [INFO]: Cloning into 'Nexa_Manager_whit_Task_Master'...
+2025-07-28T23:17:47.479Z [INFO]: # Switching to commit: f7f5b46a4c94dfde124945f3b1c684d551ea9e27
+2025-07-28T23:17:47.702Z [INFO]: Note: switching to 'f7f5b46a4c94dfde124945f3b1c684d551ea9e27'.
                                  You are in 'detached HEAD' state. You can look around, make experimental
                                  changes and commit them, and you can discard any commits you make in this
                                  state without impacting any branches by switching back to a branch.
@@ -13,209 +13,209 @@
                                  Or undo this operation with:
                                  git switch -
                                  Turn off this advice by setting config variable advice.detachedHead to false
-                                 HEAD is now at 5d6456d  Complete Voice Assistant Implementation
-2025-07-28T06:19:59.788Z [INFO]: Successfully cleaned up Git credentials
-2025-07-28T06:19:59.789Z [INFO]: # Checking for Git submodules at: /codebuild/output/src2058078635/src/Nexa_Manager_whit_Task_Master/.gitmodules
-2025-07-28T06:19:59.796Z [INFO]: # Retrieving environment cache...
-2025-07-28T06:19:59.857Z [INFO]: # Retrieved environment cache
-2025-07-28T06:19:59.857Z [INFO]: ---- Setting Up SSM Secrets ----
-2025-07-28T06:19:59.857Z [INFO]: SSM params {"Path":"/amplify/d3r0on5x2958nv/main/","WithDecryption":true}
-2025-07-28T06:19:59.897Z [WARNING]: !Failed to set up process.env.secrets
-2025-07-28T06:20:00.852Z [INFO]: # No package override configuration found.
-2025-07-28T06:20:00.857Z [INFO]: # Retrieving cache...
-2025-07-28T06:20:09.545Z [INFO]: # Extracting cache...
-2025-07-28T06:20:27.409Z [INFO]: # Extraction completed
-2025-07-28T06:20:27.579Z [INFO]: # Retrieved cache
-2025-07-28T06:20:32.522Z [INFO]: ## Starting Backend Build
+                                 HEAD is now at f7f5b46 refactor: migrate email services to lazy initialization to fix temporal dead zone issues
+2025-07-28T23:17:47.787Z [INFO]: Successfully cleaned up Git credentials
+2025-07-28T23:17:47.788Z [INFO]: # Checking for Git submodules at: /codebuild/output/src2262552177/src/Nexa_Manager_whit_Task_Master/.gitmodules
+2025-07-28T23:17:47.795Z [INFO]: # Retrieving environment cache...
+2025-07-28T23:17:47.859Z [INFO]: # Retrieved environment cache
+2025-07-28T23:17:47.859Z [INFO]: ---- Setting Up SSM Secrets ----
+2025-07-28T23:17:47.859Z [INFO]: SSM params {"Path":"/amplify/d3r0on5x2958nv/main/","WithDecryption":true}
+2025-07-28T23:17:47.905Z [WARNING]: !Failed to set up process.env.secrets
+2025-07-28T23:17:48.948Z [INFO]: # No package override configuration found.
+2025-07-28T23:17:48.953Z [INFO]: # Retrieving cache...
+2025-07-28T23:17:59.041Z [INFO]: # Extracting cache...
+2025-07-28T23:18:16.957Z [INFO]: # Extraction completed
+2025-07-28T23:18:17.153Z [INFO]: # Retrieved cache
+2025-07-28T23:18:22.030Z [INFO]: ## Starting Backend Build
                                  ## Checking for associated backend environment...
                                  ## No backend environment association found, continuing...
                                  ## Completed Backend Build
-2025-07-28T06:20:32.527Z [INFO]: {"backendDuration": 0}
+2025-07-28T23:18:22.034Z [INFO]: {"backendDuration": 0}
                                  ## Starting Frontend Build
                                  # Starting phase: preBuild
                                  # Executing command: nvm use 20
-2025-07-28T06:20:38.343Z [INFO]: Now using node v20.19.0 (npm v10.8.2)
-2025-07-28T06:20:38.347Z [INFO]: # Executing command: node --version
-                                 v20.19.0
-2025-07-28T06:20:38.347Z [INFO]: # Executing command: npm --version
-2025-07-28T06:20:38.432Z [INFO]: 10.8.2
-2025-07-28T06:20:38.435Z [INFO]: # Executing command: echo "Installing dependencies for monorepo..."
+2025-07-28T23:18:29.549Z [INFO]: Now using node v20.19.0 (npm v10.8.2)
+2025-07-28T23:18:29.553Z [INFO]: # Executing command: node --version
+2025-07-28T23:18:29.553Z [INFO]: v20.19.0
+2025-07-28T23:18:29.554Z [INFO]: # Executing command: npm --version
+2025-07-28T23:18:29.638Z [INFO]: 10.8.2
+2025-07-28T23:18:29.641Z [INFO]: # Executing command: echo "Installing dependencies for monorepo..."
                                  Installing dependencies for monorepo...
-2025-07-28T06:20:38.435Z [INFO]: # Executing command: npm ci
-2025-07-28T06:20:57.139Z [WARNING]: npm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
-2025-07-28T06:20:57.557Z [WARNING]: npm warn deprecated lodash.isequal@4.5.0: This package is deprecated. Use require('node:util').isDeepStrictEqual instead.
-2025-07-28T06:20:57.612Z [WARNING]: npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
-2025-07-28T06:21:11.592Z [INFO]: added 1192 packages, and audited 1194 packages in 33s
-2025-07-28T06:21:11.596Z [INFO]: 249 packages are looking for funding
+2025-07-28T23:18:29.641Z [INFO]: # Executing command: npm ci
+2025-07-28T23:18:49.487Z [WARNING]: npm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
+2025-07-28T23:18:49.948Z [WARNING]: npm warn deprecated lodash.isequal@4.5.0: This package is deprecated. Use require('node:util').isDeepStrictEqual instead.
+2025-07-28T23:18:50.021Z [WARNING]: npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+2025-07-28T23:19:03.998Z [INFO]: added 1195 packages, and audited 1197 packages in 34s
+2025-07-28T23:19:04.002Z [INFO]: 248 packages are looking for funding
                                  run `npm fund` for details
-                                 3 vulnerabilities (2 moderate, 1 high)
+                                 3 vulnerabilities (1 low, 2 moderate)
                                  To address issues that do not require attention, run:
                                  npm audit fix
                                  To address all issues (including breaking changes), run:
                                  npm audit fix --force
                                  Run `npm audit` for details.
-2025-07-28T06:21:11.626Z [INFO]: # Executing command: echo "Pre-build setup completed successfully!"
+2025-07-28T23:19:04.030Z [INFO]: # Executing command: echo "Pre-build setup completed successfully!"
                                  Pre-build setup completed successfully!
-2025-07-28T06:21:11.626Z [INFO]: # Completed phase: preBuild
+2025-07-28T23:19:04.030Z [INFO]: # Completed phase: preBuild
                                  # Starting phase: build
                                  # Executing command: echo "Building Nexa Manager application..."
                                  Building Nexa Manager application...
                                  # Executing command: echo "Current directory:" && pwd
                                  Current directory:
-                                 /codebuild/output/src2058078635/src/Nexa_Manager_whit_Task_Master
+                                 /codebuild/output/src2262552177/src/Nexa_Manager_whit_Task_Master
                                  # Executing command: echo "Listing root directory:" && ls -la
                                  Listing root directory:
-2025-07-28T06:21:11.628Z [INFO]: total 904
-                                 drwxr-xr-x  18 amplify amplify   4096 Jul 28 06:20 .
-                                 drwxr-xr-x   3 amplify amplify     61 Jul 28 06:19 ..
-                                 drwxr-xr-x   9 amplify amplify    112 Jul 28 06:19 .config
-                                 -rw-r--r--   1 amplify amplify    315 Jul 28 06:19 .env.local.example
-                                 -rw-r--r--   1 amplify amplify   1602 Jul 28 06:19 .env.uttgt
-                                 drwxr-xr-x   2 amplify amplify     44 Jul 28 06:19 .expo
-                                 drwxr-xr-x   8 amplify amplify    163 Jul 28 06:19 .git
-                                 drwxr-xr-x   3 amplify amplify     23 Jul 28 06:19 .github
-                                 -rw-r--r--   1 amplify amplify    542 Jul 28 06:19 .gitignore
-                                 drwxr-xr-x   6 amplify amplify     64 Jul 28 06:19 .kiro
-                                 -rw-r--r--   1 amplify amplify      2 Jul 28 06:19 .nvmrc
-                                 drwxr-xr-x   9 amplify amplify    137 Jul 28 06:19 .roo
-                                 -rw-r--r--   1 amplify amplify   6831 Jul 28 06:19 .roomodes
-                                 drwxr-xr-x   4 amplify amplify     48 Jul 28 06:19 .superdesign
-                                 drwxr-xr-x   2 amplify amplify     26 Jul 28 06:19 .vercel
-                                 -rw-r--r--   1 amplify amplify  66971 Jul 28 06:19 .windsurfrules
-                                 -rw-r--r--   1 amplify amplify   7091 Jul 28 06:19 AUTHENTICATION_REMEDIATION_PLAN.md
-                                 -rw-r--r--   1 amplify amplify  20045 Jul 28 06:19 CLAUDE.md
-                                 -rwxrwxrwx   1 amplify amplify   3762 Jul 28 06:20 amplify.sh
-                                 -rw-r--r--   1 amplify amplify   1808 Jul 28 06:20 amplify.yml
-                                 drwxr-xr-x   6 amplify amplify     76 Jul 28 06:19 assets
-                                 -rw-r--r--   1 amplify amplify    438 Jul 28 06:19 check_existing_tables.sql
-                                 -rw-r--r--   1 amplify amplify    713 Jul 28 06:19 check_table_schemas.sql
-                                 drwxr-xr-x   9 amplify amplify    274 Jul 28 06:19 docs
-                                 -rw-r--r--   1 amplify amplify   3004 Jul 28 06:19 fit_txt.txt
-                                 -rw-r--r--   1 amplify amplify   5321 Jul 28 06:19 fix_remaining_bypasses.js
-                                 drwxr-xr-x 702 amplify amplify  20480 Jul 28 06:21 node_modules
-                                 -rw-r--r--   1 amplify amplify 631279 Jul 28 06:19 package-lock.json
-                                 -rw-r--r--   1 amplify amplify   1730 Jul 28 06:19 package.json
-                                 -rw-r--r--   1 amplify amplify   9832 Jul 28 06:19 readme.md
-                                 -rw-r--r--   1 amplify amplify  10302 Jul 28 06:19 readme_analytics.md
-                                 -rw-r--r--   1 amplify amplify  11480 Jul 28 06:19 remove_clerk_bypasses.js
-                                 drwxr-xr-x   2 amplify amplify    154 Jul 28 06:19 reports
-                                 -rw-r--r--   1 amplify amplify   3045 Jul 28 06:19 restore_rls_actual_tables.sql
-                                 -rw-r--r--   1 amplify amplify  17795 Jul 28 06:19 rls_policies_corrected.sql
-                                 -rw-r--r--   1 amplify amplify  14497 Jul 28 06:19 rls_policies_final.sql
-                                 -rw-r--r--   1 amplify amplify   6415 Jul 28 06:19 rls_restoration_safe.sql
-                                 drwxr-xr-x   2 amplify amplify     46 Jul 28 06:19 screenshot
-                                 -rw-r--r--   1 amplify amplify   1955 Jul 28 06:19 startup-check.js
-                                 drwxr-xr-x   4 amplify amplify     73 Jul 28 06:19 supabase
-                                 drwxr-xr-x   5 amplify amplify     53 Jul 28 06:19 tools
-                                 drwxr-xr-x  21 amplify amplify   4096 Jul 28 06:20 web-app
-2025-07-28T06:21:11.628Z [INFO]: # Executing command: echo "Checking web-app directory:" && ls -la web-app/
-2025-07-28T06:21:11.628Z [INFO]: Checking web-app directory:
-2025-07-28T06:21:11.630Z [INFO]: total 936
-                                 drwxr-xr-x 21 amplify amplify   4096 Jul 28 06:20 .
-                                 drwxr-xr-x 18 amplify amplify   4096 Jul 28 06:20 ..
-                                 drwxr-xr-x  2 amplify amplify     95 Jul 28 06:19 .clinerules
-                                 drwxr-xr-x  3 amplify amplify     35 Jul 28 06:19 .cursor
-                                 -rw-r--r--  1 amplify amplify     95 Jul 28 06:19 .env.development
-                                 -rw-r--r--  1 amplify amplify    636 Jul 28 06:19 .env.example
-                                 -rw-r--r--  1 amplify amplify    799 Jul 28 06:19 .env.production
-                                 drwxr-xr-x  3 amplify amplify     26 Jul 28 06:19 .github
-                                 -rw-r--r--  1 amplify amplify    915 Jul 28 06:19 .gitignore
-                                 drwxr-xr-x  2 amplify amplify     42 Jul 28 06:19 .husky
-                                 -rw-r--r--  1 amplify amplify    818 Jul 28 06:19 .prettierrc
-                                 drwxr-xr-x  9 amplify amplify    156 Jul 28 06:19 .roo
-                                 -rw-r--r--  1 amplify amplify   6837 Jul 28 06:19 .roomodes
-                                 drwxr-xr-x  5 amplify amplify     87 Jul 28 06:19 .taskmaster
-                                 drwxr-xr-x  3 amplify amplify     19 Jul 28 06:19 .trae
-                                 drwxr-xr-x  3 amplify amplify     35 Jul 28 06:19 .windsurf
-                                 -rw-r--r--  1 amplify amplify  16849 Jul 28 06:19 README.md
-                                 -rw-r--r--  1 amplify amplify   3748 Jul 28 06:19 REORGANIZATION_CLEANUP_STATUS.md
-                                 -rw-r--r--  1 amplify amplify   9096 Jul 28 06:19 VOICE_ASSISTANT_README.md
-                                 drwxr-xr-x  5 amplify amplify    113 Jul 28 06:19 amplify
-                                 drwxr-xr-x  3 amplify amplify     22 Jul 28 06:19 api
-                                 -rw-r--r--  1 amplify amplify    349 Jul 28 06:19 architecture-report.json
-                                 -rw-r--r--  1 amplify amplify    551 Jul 28 06:19 babel.config.cjs
-                                 -rw-r--r--  1 amplify amplify    990 Jul 28 06:19 commitlint.config.js
-                                 drwxr-xr-x  7 amplify amplify    290 Jul 28 06:19 coverage
-                                 -rw-r--r--  1 amplify amplify   7530 Jul 28 06:19 currency-converter.cjs
-                                 drwxr-xr-x  3 amplify amplify   4096 Jul 28 06:19 database
-                                 -rw-r--r--  1 amplify amplify      0 Jul 28 06:19 debug-permission.test.js
-                                 drwxr-xr-x  4 amplify amplify   4096 Jul 28 06:19 docs
-                                 -rw-r--r--  1 amplify amplify   5910 Jul 28 06:19 eslint.config.js
-                                 -rw-r--r--  1 amplify amplify 764509 Jul 28 06:19 health-report.json
-                                 -rw-r--r--  1 amplify amplify   3024 Jul 28 06:19 index.html
-                                 -rw-r--r--  1 amplify amplify   3700 Jul 28 06:19 jest.config.cjs
-                                 -rw-r--r--  1 amplify amplify   4741 Jul 28 06:19 jest.voice.config.json
-                                 drwxr-xr-x  3 amplify amplify     23 Jul 28 06:19 netlify
-                                 -rw-r--r--  1 amplify amplify    780 Jul 28 06:19 netlify.toml
-                                 drwxr-xr-x 45 amplify amplify   4096 Jul 28 06:21 node_modules
-                                 -rw-r--r--  1 amplify amplify  12000 Jul 28 06:19 package.json
-                                 -rw-r--r--  1 amplify amplify   4423 Jul 28 06:19 playwright.config.js
-                                 -rw-r--r--  1 amplify amplify     83 Jul 28 06:19 postcss.config.cjs
-                                 drwxr-xr-x  3 amplify amplify    108 Jul 28 06:19 public
-                                 -rw-r--r--  1 amplify amplify   1469 Jul 28 06:19 readme_fix_common.md
-                                 drwxr-xr-x  2 amplify amplify    247 Jul 28 06:19 scripts
-                                 drwxr-xr-x 18 amplify amplify   4096 Jul 28 06:19 src
-                                 drwxr-xr-x  3 amplify amplify     55 Jul 28 06:19 supabase
-                                 -rw-r--r--  1 amplify amplify   3376 Jul 28 06:19 tailwind.config.cjs
-                                 -rw-r--r--  1 amplify amplify   2142 Jul 28 06:19 tsconfig.json
-                                 -rw-r--r--  1 amplify amplify    305 Jul 28 06:19 tsconfig.node.json
-                                 -rw-r--r--  1 amplify amplify    942 Jul 28 06:19 vercel.json
-                                 -rw-r--r--  1 amplify amplify   7853 Jul 28 06:19 vite.config.ts
-2025-07-28T06:21:11.630Z [INFO]: # Executing command: npm run build
-2025-07-28T06:21:11.736Z [INFO]: > nexa-manager-with-task-master@1.0.0 build
+2025-07-28T23:19:04.032Z [INFO]: total 920
+                                 drwxr-xr-x  18 amplify amplify   4096 Jul 28 23:18 .
+                                 drwxr-xr-x   3 amplify amplify     61 Jul 28 23:17 ..
+                                 drwxr-xr-x   9 amplify amplify    112 Jul 28 23:17 .config
+                                 -rw-r--r--   1 amplify amplify    315 Jul 28 23:17 .env.local.example
+                                 -rw-r--r--   1 amplify amplify   1602 Jul 28 23:17 .env.uttgt
+                                 drwxr-xr-x   2 amplify amplify     44 Jul 28 23:17 .expo
+                                 drwxr-xr-x   8 amplify amplify    163 Jul 28 23:17 .git
+                                 drwxr-xr-x   3 amplify amplify     23 Jul 28 23:17 .github
+                                 -rw-r--r--   1 amplify amplify    542 Jul 28 23:17 .gitignore
+                                 drwxr-xr-x   6 amplify amplify     64 Jul 28 23:17 .kiro
+                                 -rw-r--r--   1 amplify amplify      2 Jul 28 23:17 .nvmrc
+                                 drwxr-xr-x   9 amplify amplify    137 Jul 28 23:17 .roo
+                                 -rw-r--r--   1 amplify amplify   6831 Jul 28 23:17 .roomodes
+                                 drwxr-xr-x   4 amplify amplify     48 Jul 28 23:17 .superdesign
+                                 drwxr-xr-x   2 amplify amplify     26 Jul 28 23:17 .vercel
+                                 -rw-r--r--   1 amplify amplify  66971 Jul 28 23:17 .windsurfrules
+                                 -rw-r--r--   1 amplify amplify   7091 Jul 28 23:17 AUTHENTICATION_REMEDIATION_PLAN.md
+                                 -rw-r--r--   1 amplify amplify  20045 Jul 28 23:17 CLAUDE.md
+                                 -rwxrwxrwx   1 amplify amplify   3762 Jul 28 23:18 amplify.sh
+                                 -rw-r--r--   1 amplify amplify   1808 Jul 28 23:17 amplify.yml
+                                 drwxr-xr-x   6 amplify amplify     76 Jul 28 23:17 assets
+                                 -rw-r--r--   1 amplify amplify    438 Jul 28 23:17 check_existing_tables.sql
+                                 -rw-r--r--   1 amplify amplify    713 Jul 28 23:17 check_table_schemas.sql
+                                 drwxr-xr-x   9 amplify amplify    274 Jul 28 23:17 docs
+                                 -rw-r--r--   1 amplify amplify  20478 Jul 28 23:17 fit_txt.txt
+                                 -rw-r--r--   1 amplify amplify   5321 Jul 28 23:17 fix_remaining_bypasses.js
+                                 drwxr-xr-x 693 amplify amplify  20480 Jul 28 23:19 node_modules
+                                 -rw-r--r--   1 amplify amplify 632422 Jul 28 23:17 package-lock.json
+                                 -rw-r--r--   1 amplify amplify   1730 Jul 28 23:17 package.json
+                                 -rw-r--r--   1 amplify amplify   9832 Jul 28 23:17 readme.md
+                                 -rw-r--r--   1 amplify amplify  10302 Jul 28 23:17 readme_analytics.md
+                                 -rw-r--r--   1 amplify amplify  11480 Jul 28 23:17 remove_clerk_bypasses.js
+                                 drwxr-xr-x   2 amplify amplify    154 Jul 28 23:17 reports
+                                 -rw-r--r--   1 amplify amplify   3045 Jul 28 23:17 restore_rls_actual_tables.sql
+                                 -rw-r--r--   1 amplify amplify  17795 Jul 28 23:17 rls_policies_corrected.sql
+                                 -rw-r--r--   1 amplify amplify  14497 Jul 28 23:17 rls_policies_final.sql
+                                 -rw-r--r--   1 amplify amplify   6415 Jul 28 23:17 rls_restoration_safe.sql
+                                 drwxr-xr-x   2 amplify amplify     46 Jul 28 23:17 screenshot
+                                 -rw-r--r--   1 amplify amplify   1955 Jul 28 23:17 startup-check.js
+                                 drwxr-xr-x   4 amplify amplify     73 Jul 28 23:17 supabase
+                                 drwxr-xr-x   5 amplify amplify     53 Jul 28 23:17 tools
+                                 drwxr-xr-x  21 amplify amplify   4096 Jul 28 23:17 web-app
+2025-07-28T23:19:04.032Z [INFO]: # Executing command: echo "Checking web-app directory:" && ls -la web-app/
+                                 Checking web-app directory:
+2025-07-28T23:19:04.033Z [INFO]: total 936
+                                 drwxr-xr-x 21 amplify amplify   4096 Jul 28 23:17 .
+                                 drwxr-xr-x 18 amplify amplify   4096 Jul 28 23:18 ..
+                                 drwxr-xr-x  2 amplify amplify     95 Jul 28 23:17 .clinerules
+                                 drwxr-xr-x  3 amplify amplify     35 Jul 28 23:17 .cursor
+                                 -rw-r--r--  1 amplify amplify     95 Jul 28 23:17 .env.development
+                                 -rw-r--r--  1 amplify amplify    636 Jul 28 23:17 .env.example
+                                 -rw-r--r--  1 amplify amplify    799 Jul 28 23:17 .env.production
+                                 drwxr-xr-x  3 amplify amplify     26 Jul 28 23:17 .github
+                                 -rw-r--r--  1 amplify amplify    915 Jul 28 23:17 .gitignore
+                                 drwxr-xr-x  2 amplify amplify     42 Jul 28 23:17 .husky
+                                 -rw-r--r--  1 amplify amplify    818 Jul 28 23:17 .prettierrc
+                                 drwxr-xr-x  9 amplify amplify    156 Jul 28 23:17 .roo
+                                 -rw-r--r--  1 amplify amplify   6837 Jul 28 23:17 .roomodes
+                                 drwxr-xr-x  5 amplify amplify     87 Jul 28 23:17 .taskmaster
+                                 drwxr-xr-x  3 amplify amplify     19 Jul 28 23:17 .trae
+                                 drwxr-xr-x  3 amplify amplify     35 Jul 28 23:17 .windsurf
+                                 -rw-r--r--  1 amplify amplify  16849 Jul 28 23:17 README.md
+                                 -rw-r--r--  1 amplify amplify   3748 Jul 28 23:17 REORGANIZATION_CLEANUP_STATUS.md
+                                 -rw-r--r--  1 amplify amplify   9096 Jul 28 23:17 VOICE_ASSISTANT_README.md
+                                 drwxr-xr-x  5 amplify amplify    113 Jul 28 23:17 amplify
+                                 drwxr-xr-x  3 amplify amplify     22 Jul 28 23:17 api
+                                 -rw-r--r--  1 amplify amplify    349 Jul 28 23:17 architecture-report.json
+                                 -rw-r--r--  1 amplify amplify    551 Jul 28 23:17 babel.config.cjs
+                                 -rw-r--r--  1 amplify amplify    990 Jul 28 23:17 commitlint.config.js
+                                 drwxr-xr-x  7 amplify amplify    290 Jul 28 23:17 coverage
+                                 -rw-r--r--  1 amplify amplify   7530 Jul 28 23:17 currency-converter.cjs
+                                 drwxr-xr-x  3 amplify amplify   4096 Jul 28 23:17 database
+                                 -rw-r--r--  1 amplify amplify      0 Jul 28 23:17 debug-permission.test.js
+                                 drwxr-xr-x  4 amplify amplify   4096 Jul 28 23:17 docs
+                                 -rw-r--r--  1 amplify amplify   5910 Jul 28 23:17 eslint.config.js
+                                 -rw-r--r--  1 amplify amplify 764509 Jul 28 23:17 health-report.json
+                                 -rw-r--r--  1 amplify amplify   3116 Jul 28 23:17 index.html
+                                 -rw-r--r--  1 amplify amplify   3700 Jul 28 23:17 jest.config.cjs
+                                 -rw-r--r--  1 amplify amplify   4741 Jul 28 23:17 jest.voice.config.json
+                                 drwxr-xr-x  3 amplify amplify     23 Jul 28 23:17 netlify
+                                 -rw-r--r--  1 amplify amplify    780 Jul 28 23:17 netlify.toml
+                                 drwxr-xr-x 55 amplify amplify   4096 Jul 28 23:19 node_modules
+                                 -rw-r--r--  1 amplify amplify  11994 Jul 28 23:17 package.json
+                                 -rw-r--r--  1 amplify amplify   4423 Jul 28 23:17 playwright.config.js
+                                 -rw-r--r--  1 amplify amplify     83 Jul 28 23:17 postcss.config.cjs
+                                 drwxr-xr-x  3 amplify amplify    108 Jul 28 23:17 public
+                                 -rw-r--r--  1 amplify amplify   1469 Jul 28 23:17 readme_fix_common.md
+                                 drwxr-xr-x  2 amplify amplify    247 Jul 28 23:17 scripts
+                                 drwxr-xr-x 18 amplify amplify   4096 Jul 28 23:17 src
+                                 drwxr-xr-x  3 amplify amplify     55 Jul 28 23:17 supabase
+                                 -rw-r--r--  1 amplify amplify   3376 Jul 28 23:17 tailwind.config.cjs
+                                 -rw-r--r--  1 amplify amplify   2142 Jul 28 23:17 tsconfig.json
+                                 -rw-r--r--  1 amplify amplify    305 Jul 28 23:17 tsconfig.node.json
+                                 -rw-r--r--  1 amplify amplify    942 Jul 28 23:17 vercel.json
+                                 -rw-r--r--  1 amplify amplify   7819 Jul 28 23:17 vite.config.ts
+2025-07-28T23:19:04.034Z [INFO]: # Executing command: npm run build
+2025-07-28T23:19:04.140Z [INFO]: > nexa-manager-with-task-master@1.0.0 build
                                  > cd web-app && npm run build
-2025-07-28T06:21:11.865Z [INFO]: > web-app@0.0.0 prebuild
+2025-07-28T23:19:04.276Z [INFO]: > web-app@1.0.1 prebuild
                                  > node scripts/prebuild.js
-2025-07-28T06:21:11.897Z [INFO]: 🔧 Running pre-build checks...
-2025-07-28T06:21:11.898Z [INFO]: ✅ nexa-logo.svg found
-                                 📝 Creating favicon.ico fallback...
-2025-07-28T06:21:11.898Z [INFO]: ℹ️  Consider adding a favicon.ico file for better browser compatibility
-                                 ✅ Pre-build checks completed successfully
-2025-07-28T06:21:11.900Z [INFO]: > web-app@0.0.0 build
-                                 > npm run prebuild && tsc && vite build
-2025-07-28T06:21:12.031Z [INFO]: > web-app@0.0.0 prebuild
-                                 > node scripts/prebuild.js
-2025-07-28T06:21:12.064Z [INFO]: 🔧 Running pre-build checks...
-2025-07-28T06:21:12.064Z [INFO]: ✅ nexa-logo.svg found
-2025-07-28T06:21:12.064Z [INFO]: 📝 Creating favicon.ico fallback...
+2025-07-28T23:19:04.308Z [INFO]: 🔧 Running pre-build checks...
+2025-07-28T23:19:04.308Z [INFO]: ✅ nexa-logo.svg found
+2025-07-28T23:19:04.308Z [INFO]: 📝 Creating favicon.ico fallback...
                                  ℹ️  Consider adding a favicon.ico file for better browser compatibility
                                  ✅ Pre-build checks completed successfully
-2025-07-28T06:21:20.017Z [INFO]: vite v6.3.5 building for production...
-2025-07-28T06:21:20.046Z [INFO]: [sentry-vite-plugin] Info: Sending telemetry data on issues and performance to Sentry. To disable telemetry, set `options.telemetry` to `false`.
-2025-07-28T06:21:20.337Z [INFO]: transforming...
-2025-07-28T06:21:23.795Z [WARNING]: A PostCSS plugin did not pass the `from` option to `postcss.parse`. This may cause imported assets to be incorrectly transformed. If you've recently added a PostCSS plugin that raised this warning, please contact the package author to fix the issue.
-2025-07-28T06:21:32.255Z [INFO]: ✓ 6520 modules transformed.
-2025-07-28T06:21:32.259Z [WARNING]: ✗ Build failed in 12.21s
+2025-07-28T23:19:04.311Z [INFO]: > web-app@1.0.1 build
+                                 > npm run prebuild && vite build
+2025-07-28T23:19:04.442Z [INFO]: > web-app@1.0.1 prebuild
+                                 > node scripts/prebuild.js
+2025-07-28T23:19:04.474Z [INFO]: 🔧 Running pre-build checks...
+2025-07-28T23:19:04.475Z [INFO]: ✅ nexa-logo.svg found
+2025-07-28T23:19:04.475Z [INFO]: 📝 Creating favicon.ico fallback...
+                                 ℹ️  Consider adding a favicon.ico file for better browser compatibility
+                                 ✅ Pre-build checks completed successfully
+2025-07-28T23:19:05.434Z [INFO]: vite v6.3.5 building for production...
+2025-07-28T23:19:05.464Z [INFO]: [sentry-vite-plugin] Info: Sending telemetry data on issues and performance to Sentry. To disable telemetry, set `options.telemetry` to `false`.
+2025-07-28T23:19:05.752Z [INFO]: transforming...
+2025-07-28T23:19:08.460Z [WARNING]: A PostCSS plugin did not pass the `from` option to `postcss.parse`. This may cause imported assets to be incorrectly transformed. If you've recently added a PostCSS plugin that raised this warning, please contact the package author to fix the issue.
+2025-07-28T23:19:18.404Z [INFO]: ✓ 6462 modules transformed.
+2025-07-28T23:19:18.408Z [WARNING]: ✗ Build failed in 12.95s
                                     error during build:
-                                    src/components/voice/VoiceFeedbackButton.jsx (4:9): "VoiceFeedbackModal" is not exported by "src/components/voice/VoiceFeedbackModal.jsx", imported by "src/components/voice/VoiceFeedbackButton.jsx".
-                                    file: /codebuild/output/src2058078635/src/Nexa_Manager_whit_Task_Master/web-app/src/components/voice/VoiceFeedbackButton.jsx:4:9
-                                    2: import { MessageSquare, ThumbsUp, ThumbsDown } from 'lucide-react';
-                                    3: import { useVoiceAssistant } from '@/providers/VoiceAssistantProvider';
-                                    4: import { VoiceFeedbackModal } from './VoiceFeedbackModal';
+                                    src/features/email/index.ts (52:39): "getEmailErrorHandler" is not exported by "src/features/email/services/emailErrorHandler.js", imported by "src/features/email/index.ts".
+                                    file: /codebuild/output/src2262552177/src/Nexa_Manager_whit_Task_Master/web-app/src/features/email/index.ts:52:39
+                                    50: export { default as emailCacheService, getEmailCacheService } from './services/emailCacheService.js';
+                                    51: export { default as emailCampaignService, getEmailCampaignService } from './services/emailCampaignService.js';
+                                    52: export { default as emailErrorHandler, getEmailErrorHandler } from './services/emailErrorHandler.js';
                                     ^
-                                    5:
-                                    6: /**
-                                    at getRollupError (file:///codebuild/output/src2058078635/src/Nexa_Manager_whit_Task_Master/node_modules/rollup/dist/es/shared/parseAst.js:401:41)
-                                    at error (file:///codebuild/output/src2058078635/src/Nexa_Manager_whit_Task_Master/node_modules/rollup/dist/es/shared/parseAst.js:397:42)
-                                    at Module.error (file:///codebuild/output/src2058078635/src/Nexa_Manager_whit_Task_Master/node_modules/rollup/dist/es/shared/node-entry.js:16811:16)
-                                    at Module.traceVariable (file:///codebuild/output/src2058078635/src/Nexa_Manager_whit_Task_Master/node_modules/rollup/dist/es/shared/node-entry.js:17260:29)
-                                    at ModuleScope.findVariable (file:///codebuild/output/src2058078635/src/Nexa_Manager_whit_Task_Master/node_modules/rollup/dist/es/shared/node-entry.js:14909:39)
-                                    at FunctionScope.findVariable (file:///codebuild/output/src2058078635/src/Nexa_Manager_whit_Task_Master/node_modules/rollup/dist/es/shared/node-entry.js:5633:38)
-                                    at FunctionBodyScope.findVariable (file:///codebuild/output/src2058078635/src/Nexa_Manager_whit_Task_Master/node_modules/rollup/dist/es/shared/node-entry.js:5633:38)
-                                    at Identifier.bind (file:///codebuild/output/src2058078635/src/Nexa_Manager_whit_Task_Master/node_modules/rollup/dist/es/shared/node-entry.js:5407:40)
-                                    at CallExpression.bind (file:///codebuild/output/src2058078635/src/Nexa_Manager_whit_Task_Master/node_modules/rollup/dist/es/shared/node-entry.js:2794:28)
-                                    at CallExpression.bind (file:///codebuild/output/src2058078635/src/Nexa_Manager_whit_Task_Master/node_modules/rollup/dist/es/shared/node-entry.js:11994:15)
-2025-07-28T06:21:32.320Z [WARNING]: npm error Lifecycle script `build` failed with error:
-2025-07-28T06:21:32.321Z [WARNING]: npm error code 1
-2025-07-28T06:21:32.321Z [WARNING]: npm error path /codebuild/output/src2058078635/src/Nexa_Manager_whit_Task_Master/web-app
-                                    npm error workspace web-app@0.0.0
-                                    npm error location /codebuild/output/src2058078635/src/Nexa_Manager_whit_Task_Master/web-app
+                                    53: export { default as emailNotificationService, getEmailNotificationService } from './services/emailNotificationService...
+                                    54: export { default as emailOfflineService, getEmailOfflineService } from './services/emailOfflineService.js';
+                                    at getRollupError (file:///codebuild/output/src2262552177/src/Nexa_Manager_whit_Task_Master/node_modules/rollup/dist/es/shared/parseAst.js:401:41)
+                                    at error (file:///codebuild/output/src2262552177/src/Nexa_Manager_whit_Task_Master/node_modules/rollup/dist/es/shared/parseAst.js:397:42)
+                                    at Module.error (file:///codebuild/output/src2262552177/src/Nexa_Manager_whit_Task_Master/node_modules/rollup/dist/es/shared/node-entry.js:16811:16)
+                                    at Module.getVariableForExportName (file:///codebuild/output/src2262552177/src/Nexa_Manager_whit_Task_Master/node_modules/rollup/dist/es/shared/node-entry.js:16975:29)
+                                    at Graph.warnForMissingExports (file:///codebuild/output/src2262552177/src/Nexa_Manager_whit_Task_Master/node_modules/rollup/dist/es/shared/node-entry.js:22587:47)
+                                    at Graph.sortModules (file:///codebuild/output/src2262552177/src/Nexa_Manager_whit_Task_Master/node_modules/rollup/dist/es/shared/node-entry.js:22581:14)
+                                    at Graph.build (file:///codebuild/output/src2262552177/src/Nexa_Manager_whit_Task_Master/node_modules/rollup/dist/es/shared/node-entry.js:22477:14)
+                                    at async file:///codebuild/output/src2262552177/src/Nexa_Manager_whit_Task_Master/node_modules/rollup/dist/es/shared/node-entry.js:23162:13
+                                    at async catchUnfinishedHookActions (file:///codebuild/output/src2262552177/src/Nexa_Manager_whit_Task_Master/node_modules/rollup/dist/es/shared/node-entry.js:22636:16)
+                                    at async rollupInternal (file:///codebuild/output/src2262552177/src/Nexa_Manager_whit_Task_Master/node_modules/rollup/dist/es/shared/node-entry.js:23157:5)
+2025-07-28T23:19:18.465Z [WARNING]: npm error Lifecycle script `build` failed with error:
+2025-07-28T23:19:18.465Z [WARNING]: npm error code 1
+2025-07-28T23:19:18.466Z [WARNING]: npm error path /codebuild/output/src2262552177/src/Nexa_Manager_whit_Task_Master/web-app
+                                    npm error workspace web-app@1.0.1
+2025-07-28T23:19:18.466Z [WARNING]: npm error location /codebuild/output/src2262552177/src/Nexa_Manager_whit_Task_Master/web-app
                                     npm error command failed
-2025-07-28T06:21:32.321Z [WARNING]: npm error command sh -c npm run prebuild && tsc && vite build
-2025-07-28T06:21:32.361Z [ERROR]: !!! Build failed
-2025-07-28T06:21:32.361Z [ERROR]: !!! Error: Command failed with exit code 1
-2025-07-28T06:21:32.361Z [INFO]: # Starting environment caching...
-2025-07-28T06:21:32.361Z [INFO]: # Uploading environment cache artifact...
-2025-07-28T06:21:32.457Z [INFO]: # Uploaded environment cache artifact
-2025-07-28T06:21:32.457Z [INFO]: # Environment caching completed
+                                    npm error command sh -c npm run prebuild && vite build
+2025-07-28T23:19:18.496Z [ERROR]: !!! Build failed
+2025-07-28T23:19:18.497Z [ERROR]: !!! Error: Command failed with exit code 1
+2025-07-28T23:19:18.497Z [INFO]: # Starting environment caching...
+2025-07-28T23:19:18.497Z [INFO]: # Uploading environment cache artifact...
+2025-07-28T23:19:18.584Z [INFO]: # Uploaded environment cache artifact
+2025-07-28T23:19:18.584Z [INFO]: # Environment caching completed
 

@@ -976,6 +976,18 @@ class EmailAutomationService {
   }
 }
 
-// Create and export singleton instance
-export const emailAutomationService = new EmailAutomationService();
-export default emailAutomationService;
+// Create and export singleton instance with lazy initialization
+let emailAutomationServiceInstance = null;
+
+export const getEmailAutomationService = () => {
+  if (!emailAutomationServiceInstance) {
+    emailAutomationServiceInstance = new EmailAutomationService();
+  }
+  return emailAutomationServiceInstance;
+};
+
+// Export default instance for backward compatibility
+export default getEmailAutomationService();
+
+// Also export the named instance for backward compatibility
+export const emailAutomationService = getEmailAutomationService();

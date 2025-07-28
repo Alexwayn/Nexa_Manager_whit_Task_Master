@@ -1812,6 +1812,15 @@ class EmailManagementService {
   }
 }
 
-// Export an instance of the service
-const emailManagementService = new EmailManagementService();
-export default emailManagementService;
+// Export an instance of the service with lazy initialization
+let emailManagementServiceInstance = null;
+
+export const getEmailManagementService = () => {
+  if (!emailManagementServiceInstance) {
+    emailManagementServiceInstance = new EmailManagementService();
+  }
+  return emailManagementServiceInstance;
+};
+
+// Export default instance for backward compatibility
+export default getEmailManagementService();

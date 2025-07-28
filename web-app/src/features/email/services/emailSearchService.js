@@ -610,6 +610,16 @@ class EmailSearchService {
   }
 }
 
-// Export singleton instance
-const emailSearchService = new EmailSearchService();
+// Export singleton instance with lazy initialization
+let emailSearchServiceInstance = null;
+
+export const getEmailSearchService = () => {
+  if (!emailSearchServiceInstance) {
+    emailSearchServiceInstance = new EmailSearchService();
+  }
+  return emailSearchServiceInstance;
+};
+
+// For backward compatibility
+const emailSearchService = getEmailSearchService();
 export default emailSearchService;

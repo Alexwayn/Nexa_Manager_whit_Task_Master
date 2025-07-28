@@ -565,6 +565,15 @@ class EmailOfflineService {
   }
 }
 
-// Export singleton instance
-const emailOfflineService = new EmailOfflineService();
-export default emailOfflineService;
+// Export singleton instance with lazy initialization
+let emailOfflineServiceInstance = null;
+
+export const getEmailOfflineService = () => {
+  if (!emailOfflineServiceInstance) {
+    emailOfflineServiceInstance = new EmailOfflineService();
+  }
+  return emailOfflineServiceInstance;
+};
+
+// Export default instance for backward compatibility
+export default getEmailOfflineService();

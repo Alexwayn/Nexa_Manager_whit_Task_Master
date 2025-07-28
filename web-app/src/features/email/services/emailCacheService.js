@@ -251,11 +251,19 @@ class EmailCacheService {
   }
 }
 
-// Create singleton instance
-const emailCacheService = new EmailCacheService({
-  maxCacheSize: 500,
-  maxMemoryMB: 50,
-  ttl: 30 * 60 * 1000, // 30 minutes
-});
+// Create singleton instance with lazy initialization
+let emailCacheServiceInstance = null;
 
-export default emailCacheService;
+export const getEmailCacheService = () => {
+  if (!emailCacheServiceInstance) {
+    emailCacheServiceInstance = new EmailCacheService({
+      maxCacheSize: 500,
+      maxMemoryMB: 50,
+      ttl: 30 * 60 * 1000, // 30 minutes
+    });
+  }
+  return emailCacheServiceInstance;
+};
+
+// Export default instance for backward compatibility
+export default getEmailCacheService();

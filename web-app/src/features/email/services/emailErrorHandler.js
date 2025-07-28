@@ -436,6 +436,15 @@ class EmailErrorHandler {
   }
 }
 
-// Export singleton instance
-const emailErrorHandler = new EmailErrorHandler();
-export default emailErrorHandler;
+// Export singleton instance with lazy initialization
+let emailErrorHandlerInstance = null;
+
+export const getEmailErrorHandler = () => {
+  if (!emailErrorHandlerInstance) {
+    emailErrorHandlerInstance = new EmailErrorHandler();
+  }
+  return emailErrorHandlerInstance;
+};
+
+// Export default instance for backward compatibility
+export default getEmailErrorHandler();

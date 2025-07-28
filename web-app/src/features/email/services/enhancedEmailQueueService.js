@@ -598,6 +598,16 @@ class EnhancedEmailQueueService {
   }
 }
 
-// Export singleton instance
-const enhancedEmailQueueService = new EnhancedEmailQueueService();
+// Export singleton instance with lazy initialization
+let enhancedEmailQueueServiceInstance = null;
+
+export const getEnhancedEmailQueueService = () => {
+  if (!enhancedEmailQueueServiceInstance) {
+    enhancedEmailQueueServiceInstance = new EnhancedEmailQueueService();
+  }
+  return enhancedEmailQueueServiceInstance;
+};
+
+// For backward compatibility
+const enhancedEmailQueueService = getEnhancedEmailQueueService();
 export default enhancedEmailQueueService;

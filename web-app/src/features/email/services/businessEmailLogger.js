@@ -374,4 +374,16 @@ class BusinessEmailLogger {
   }
 }
 
-export default new BusinessEmailLogger();
+// Export singleton instance with lazy initialization
+let businessEmailLoggerInstance = null;
+
+export const getBusinessEmailLogger = () => {
+  if (!businessEmailLoggerInstance) {
+    businessEmailLoggerInstance = new BusinessEmailLogger();
+  }
+  return businessEmailLoggerInstance;
+};
+
+// For backward compatibility
+const businessEmailLogger = getBusinessEmailLogger();
+export default businessEmailLogger;
