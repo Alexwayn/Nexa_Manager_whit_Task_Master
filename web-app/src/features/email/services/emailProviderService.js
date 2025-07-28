@@ -1193,4 +1193,13 @@ class EmailProviderService {
   }
 }
 
-export default new EmailProviderService();
+let emailProviderServiceInstance = null;
+
+export const getEmailProviderService = () => {
+  if (!emailProviderServiceInstance) {
+    emailProviderServiceInstance = new EmailProviderService();
+  }
+  return emailProviderServiceInstance;
+};
+
+export default getEmailProviderService();

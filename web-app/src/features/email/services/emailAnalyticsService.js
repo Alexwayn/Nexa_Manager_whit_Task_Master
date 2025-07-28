@@ -1,6 +1,6 @@
 import { supabase } from '@lib/supabaseClient';
-import { emailTrackingService } from '@features/email';
-import { emailErrorHandler } from '@features/email';
+import { getEmailTrackingService } from '@features/email';
+import { getEmailErrorHandler } from '@features/email';
 import Logger from '@utils/Logger';
 
 /**
@@ -1052,4 +1052,13 @@ class EmailAnalyticsService {
   }
 }
 
-export default new EmailAnalyticsService();
+let emailAnalyticsServiceInstance = null;
+
+export const getEmailAnalyticsService = () => {
+  if (!emailAnalyticsServiceInstance) {
+    emailAnalyticsServiceInstance = new EmailAnalyticsService();
+  }
+  return emailAnalyticsServiceInstance;
+};
+
+export default getEmailAnalyticsService();

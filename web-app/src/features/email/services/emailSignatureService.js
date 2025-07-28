@@ -133,4 +133,13 @@ class EmailSignatureService {
   }
 }
 
-export default new EmailSignatureService();
+let emailSignatureServiceInstance = null;
+
+export const getEmailSignatureService = () => {
+  if (!emailSignatureServiceInstance) {
+    emailSignatureServiceInstance = new EmailSignatureService();
+  }
+  return emailSignatureServiceInstance;
+};
+
+export default getEmailSignatureService();

@@ -549,4 +549,13 @@ class EmailTemplateService {
   }
 }
 
-export default new EmailTemplateService();
+let emailTemplateServiceInstance = null;
+
+export const getEmailTemplateService = () => {
+  if (!emailTemplateServiceInstance) {
+    emailTemplateServiceInstance = new EmailTemplateService();
+  }
+  return emailTemplateServiceInstance;
+};
+
+export default getEmailTemplateService();

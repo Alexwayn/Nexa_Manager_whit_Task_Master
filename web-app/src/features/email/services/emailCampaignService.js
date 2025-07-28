@@ -752,4 +752,13 @@ class EmailCampaignService {
   }
 }
 
-export default new EmailCampaignService();
+let emailCampaignServiceInstance = null;
+
+export const getEmailCampaignService = () => {
+  if (!emailCampaignServiceInstance) {
+    emailCampaignServiceInstance = new EmailCampaignService();
+  }
+  return emailCampaignServiceInstance;
+};
+
+export default getEmailCampaignService();

@@ -41,31 +41,31 @@ export { useEmailSearch } from './hooks/useEmailSearch.js';
 export { useEmailSync } from './hooks/useEmailSync.js';
 export { useEmailViewer } from './hooks/useEmailViewer.js';
 
-// Services
-export { default as emailService } from './services/emailService.js';
-export { default as emailManagementService } from './services/emailManagementService.js';
-export { default as emailAnalyticsService } from './services/emailAnalyticsService.js';
-export { default as emailAttachmentService } from './services/emailAttachmentService.js';
-export { default as emailAutomationService } from './services/emailAutomationService.js';
-export { default as emailCacheService } from './services/emailCacheService.js';
-export { default as emailCampaignService } from './services/emailCampaignService.js';
-export { default as emailErrorHandler } from './services/emailErrorHandler.js';
-export { default as emailNotificationService } from './services/emailNotificationService.js';
-export { default as emailOfflineService } from './services/emailOfflineService.js';
-export { default as emailProviderService } from './services/emailProviderService.js';
-export { default as emailQueueService } from './services/emailQueueService.js';
-export { default as emailRecoveryService } from './services/emailRecoveryService.js';
-export { default as emailSearchService } from './services/emailSearchService.js';
-export { default as emailSecurityService } from './services/emailSecurityService.js';
-export { default as emailSettingsService } from './services/emailSettingsService.js';
-export { default as emailSignatureService } from './services/emailSignatureService.js';
-export { default as emailStorageService } from './services/emailStorageService.js';
-export { default as emailSyncService } from './services/emailSyncService.js';
-export { default as emailTemplateService } from './services/emailTemplateService.js';
-export { default as emailTrackingService } from './services/emailTrackingService.js';
-export { default as enhancedEmailQueueService } from './services/enhancedEmailQueueService.js';
-export { default as businessEmailIntegration } from './services/businessEmailIntegration.js';
-export { default as businessEmailLogger } from './services/businessEmailLogger.js';
+// Services - Updated to use lazy initialization to prevent temporal dead zones
+export { default as emailService, getEmailService } from './services/emailService.js';
+export { default as emailManagementService, getEmailManagementService } from './services/emailManagementService.js';
+export { default as emailAnalyticsService, getEmailAnalyticsService } from './services/emailAnalyticsService.js';
+export { default as emailAttachmentService, getEmailAttachmentService } from './services/emailAttachmentService.js';
+export { default as emailAutomationService, getEmailAutomationService } from './services/emailAutomationService.js';
+export { default as emailCacheService, getEmailCacheService } from './services/emailCacheService.js';
+export { default as emailCampaignService, getEmailCampaignService } from './services/emailCampaignService.js';
+export { default as emailErrorHandler, getEmailErrorHandler } from './services/emailErrorHandler.js';
+export { default as emailNotificationService, getEmailNotificationService } from './services/emailNotificationService.js';
+export { default as emailOfflineService, getEmailOfflineService } from './services/emailOfflineService.js';
+export { default as emailProviderService, getEmailProviderService } from './services/emailProviderService.js';
+export { default as emailQueueService, getEmailQueueService } from './services/emailQueueService.js';
+export { default as emailRecoveryService, getEmailRecoveryService } from './services/emailRecoveryService.js';
+export { default as emailSearchService, getEmailSearchService } from './services/emailSearchService.js';
+export { default as emailSecurityService, getEmailSecurityService } from './services/emailSecurityService.js';
+export { default as emailSettingsService, getEmailSettingsService } from './services/emailSettingsService.js';
+export { default as emailSignatureService, getEmailSignatureService } from './services/emailSignatureService.js';
+export { default as emailStorageService, getEmailStorageService } from './services/emailStorageService.js';
+export { default as emailSyncService, getEmailSyncService } from './services/emailSyncService.js';
+export { default as emailTemplateService, getEmailTemplateService } from './services/emailTemplateService.js';
+export { default as emailTrackingService, getEmailTrackingService } from './services/emailTrackingService.js';
+export { default as enhancedEmailQueueService, getEnhancedEmailQueueService } from './services/enhancedEmailQueueService.js';
+export { default as businessEmailIntegration, getBusinessEmailIntegration } from './services/businessEmailIntegration.js';
+export { default as businessEmailLogger, getBusinessEmailLogger } from './services/businessEmailLogger.js';
 
 // Re-export types if any
 export type * from './services/emailService.js';

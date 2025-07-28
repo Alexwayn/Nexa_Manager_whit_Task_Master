@@ -1,7 +1,7 @@
 import { quotePdfService } from '@features/financial';
 import { supabase } from '@lib/supabaseClient';
 import Logger from '@utils/Logger';
-import { emailProviderService } from '@features/email';
+import { getEmailProviderService } from '@features/email';
 
 /**
  * EmailService - Professional email management with templates and tracking
@@ -967,7 +967,7 @@ ${data.companyName}
   async testEmailConfiguration(testEmail, provider = null) {
     try {
       // Use the new provider service for testing
-      const result = await emailProviderService.testConfiguration(testEmail, provider);
+      const result = await getEmailProviderService().testConfiguration(testEmail, provider);
 
       // Log the test in our activity
       if (result.success) {
@@ -999,7 +999,7 @@ ${data.companyName}
   async sendEmailWithProvider(emailData, provider = null) {
     try {
       // Use the enhanced provider service
-      const result = await emailProviderService.sendEmail({
+      const result = await getEmailProviderService().sendEmail({
         ...emailData,
         provider,
       });
@@ -1041,7 +1041,7 @@ ${data.companyName}
    * @returns {Object} Provider information
    */
   getProviderInfo(provider = null) {
-    return emailProviderService.getProviderInfo(provider);
+    return getEmailProviderService().getProviderInfo(provider);
   }
 
   /**
@@ -1049,7 +1049,7 @@ ${data.companyName}
    * @returns {Array} List of all available providers with their status
    */
   getAllProviders() {
-    return emailProviderService.getAllProviders();
+    return getEmailProviderService().getAllProviders();
   }
 
   /**
@@ -1058,7 +1058,7 @@ ${data.companyName}
    * @returns {boolean} Success status
    */
   setActiveProvider(provider) {
-    return emailProviderService.setActiveProvider(provider);
+    return getEmailProviderService().setActiveProvider(provider);
   }
 
   /**
@@ -1067,7 +1067,7 @@ ${data.companyName}
    * @returns {boolean} Configuration status
    */
   isProviderConfigured(provider) {
-    return emailProviderService.isProviderConfigured(provider);
+    return getEmailProviderService().isProviderConfigured(provider);
   }
 
   /**
@@ -1076,9 +1076,18 @@ ${data.companyName}
    * @returns {string} Estimated delivery time
    */
   getEstimatedDeliveryTime(provider = null) {
-    return emailProviderService.getEstimatedDeliveryTime(provider);
+    return getEmailProviderService().getEstimatedDeliveryTime(provider);
   }
 
 }
 
-export default new EmailService();
+let emailServiceInstance = null;
+
+export const getEmailService = () => {
+  if (!emailServiceInstance) {
+    emailServiceInstance = new EmailService();
+  }
+  return emailServiceInstance;
+};
+
+export default getEmailService();

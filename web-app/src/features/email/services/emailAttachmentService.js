@@ -477,4 +477,13 @@ class EmailAttachmentService {
   }
 }
 
-export default new EmailAttachmentService();
+let emailAttachmentServiceInstance = null;
+
+export const getEmailAttachmentService = () => {
+  if (!emailAttachmentServiceInstance) {
+    emailAttachmentServiceInstance = new EmailAttachmentService();
+  }
+  return emailAttachmentServiceInstance;
+};
+
+export default getEmailAttachmentService();

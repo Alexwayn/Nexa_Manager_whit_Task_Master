@@ -698,4 +698,13 @@ class EmailStorageService {
   }
 }
 
-export default new EmailStorageService();
+let emailStorageServiceInstance = null;
+
+export const getEmailStorageService = () => {
+  if (!emailStorageServiceInstance) {
+    emailStorageServiceInstance = new EmailStorageService();
+  }
+  return emailStorageServiceInstance;
+};
+
+export default getEmailStorageService();

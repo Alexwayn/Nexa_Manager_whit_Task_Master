@@ -744,4 +744,13 @@ class EmailNotificationService {
   }
 }
 
-export default new EmailNotificationService();
+let emailNotificationServiceInstance = null;
+
+export const getEmailNotificationService = () => {
+  if (!emailNotificationServiceInstance) {
+    emailNotificationServiceInstance = new EmailNotificationService();
+  }
+  return emailNotificationServiceInstance;
+};
+
+export default getEmailNotificationService();

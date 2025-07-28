@@ -1950,4 +1950,14 @@ class BusinessEmailIntegration {
   }
 }
 
-export default new BusinessEmailIntegration();
+// Export singleton instance with lazy initialization
+let businessEmailIntegrationInstance = null;
+
+export const getBusinessEmailIntegration = () => {
+  if (!businessEmailIntegrationInstance) {
+    businessEmailIntegrationInstance = new BusinessEmailIntegration();
+  }
+  return businessEmailIntegrationInstance;
+};
+
+export default getBusinessEmailIntegration();

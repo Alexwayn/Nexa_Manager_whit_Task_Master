@@ -921,4 +921,13 @@ class EmailTrackingService {
   }
 }
 
-export default new EmailTrackingService();
+let emailTrackingServiceInstance = null;
+
+export const getEmailTrackingService = () => {
+  if (!emailTrackingServiceInstance) {
+    emailTrackingServiceInstance = new EmailTrackingService();
+  }
+  return emailTrackingServiceInstance;
+};
+
+export default getEmailTrackingService();

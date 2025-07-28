@@ -694,4 +694,13 @@ class EmailSettingsService {
   }
 }
 
-export default new EmailSettingsService();
+let emailSettingsServiceInstance = null;
+
+export const getEmailSettingsService = () => {
+  if (!emailSettingsServiceInstance) {
+    emailSettingsServiceInstance = new EmailSettingsService();
+  }
+  return emailSettingsServiceInstance;
+};
+
+export default getEmailSettingsService();

@@ -368,14 +368,20 @@ class EmailQueueService {
   }
 }
 
-// Create singleton instance
-const emailQueueService = new EmailQueueService();
+// Export singleton instance with lazy initialization
+let emailQueueServiceInstance = null;
 
-// Auto-start the queue in production (delayed to avoid temporal dead zone)
-if (import.meta.env.MODE === 'production') {
-  setTimeout(() => {
-    emailQueueService.startQueue();
-  }, 0);
-}
+export const getEmailQueueService = () => {
+  if (!emailQueueServiceInstance) {
+    emailQueueServiceInstance = new EmailQueueService();
+    // Auto-start the queue in production (delayed to avoid temporal dead zone)
+    if (import.meta.env.MODE === 'production') {
+      setTimeout(() => {
+        emailQueueServiceInstance.startQueue();
+      }, 0);
+    }
+  }
+  return emailQueueServiceInstance;
+};
 
-export default emailQueueService;
+export default getEmailQueueService();

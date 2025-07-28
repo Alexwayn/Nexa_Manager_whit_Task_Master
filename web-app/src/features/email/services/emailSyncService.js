@@ -937,4 +937,13 @@ class EmailSyncService {
   }
 }
 
-export default new EmailSyncService();
+let emailSyncServiceInstance = null;
+
+export const getEmailSyncService = () => {
+  if (!emailSyncServiceInstance) {
+    emailSyncServiceInstance = new EmailSyncService();
+  }
+  return emailSyncServiceInstance;
+};
+
+export default getEmailSyncService();
