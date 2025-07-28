@@ -11,7 +11,7 @@ import {
   Download,
   RefreshCw
 } from 'lucide-react';
-import { voiceFeedbackService } from '@/services/voiceFeedbackService';
+import voiceFeedbackService from '@/services/voiceFeedbackService';
 
 /**
  * FeedbackAnalysisTools - Administrative tools for analyzing voice feedback

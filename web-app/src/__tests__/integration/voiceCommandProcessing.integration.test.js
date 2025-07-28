@@ -6,7 +6,7 @@ import i18n from '@/i18n';
 import { processVoiceCommand, executeVoiceCommand } from '@/utils/voiceCommands';
 import EmailCommandHandler from '@/utils/EmailCommandHandler';
 import VoiceAssistantProvider from '@/components/voice/VoiceAssistantProvider';
-import { voiceAnalyticsService } from '@/services/voiceAnalyticsService';
+import voiceAnalyticsService from '@/services/voiceAnalyticsService';
 
 // Mock dependencies
 jest.mock('react-router-dom', () => ({

@@ -10,8 +10,8 @@ import VoiceActivationButton from '@/components/voice/VoiceActivationButton';
 import VoiceIndicator from '@/components/voice/VoiceIndicator';
 import VoiceCommandHelp from '@/components/voice/VoiceCommandHelp';
 import VoiceFeedback from '@/pages/VoiceFeedback';
-import { voiceAnalyticsService } from '@/services/voiceAnalyticsService';
-import { voiceFeedbackService } from '@/services/voiceFeedbackService';
+import voiceAnalyticsService from '@/services/voiceAnalyticsService';
+import voiceFeedbackService from '@/services/voiceFeedbackService';
 import helpService from '@/services/helpService';
 
 // Mock services

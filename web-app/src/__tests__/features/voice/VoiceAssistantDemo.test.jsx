@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { BrowserRouter } from 'react-router-dom';
 import VoiceAssistantDemo from '@/features/voice/components/VoiceAssistantDemo';
 import { VoiceAssistantProvider } from '@/features/voice/providers/VoiceAssistantProvider';
-import { voiceAnalyticsService } from '@/services/voiceAnalyticsService';
+import voiceAnalyticsService from '@/services/voiceAnalyticsService';
 
 // Mock services
 jest.mock('@/services/voiceAnalyticsService');
