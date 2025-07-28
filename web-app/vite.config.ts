@@ -103,15 +103,12 @@ export default defineConfig(({ mode }) => {
       rollupOptions: {
         external: [],
         output: {
-          globals: {
-            'react': 'React',
-            'react-dom': 'ReactDOM'
-          },
+
           manualChunks: (id) => {
             // Vendor chunks
             if (id.includes('node_modules')) {
               if (id.includes('react') || id.includes('react-dom')) {
-                return 'react-vendor';
+                return 'vendor';
               }
               if (id.includes('react-router-dom')) {
                 return 'router';
