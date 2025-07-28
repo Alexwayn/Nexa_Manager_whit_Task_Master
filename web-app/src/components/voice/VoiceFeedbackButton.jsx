@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { MessageSquare, ThumbsUp, ThumbsDown } from 'lucide-react';
 import { useVoiceAssistant } from '@/providers/VoiceAssistantProvider';
-import { VoiceFeedbackModal } from './VoiceFeedbackModal';
+import VoiceFeedbackModal from './VoiceFeedbackModal';
 
 /**
  * VoiceFeedbackButton - Quick feedback collection button
@@ -97,7 +97,7 @@ export function VoiceFeedbackButton({
         <VoiceFeedbackModal
           isOpen={showModal}
           onClose={() => setShowModal(false)}
-          initialData={{
+          commandData={{
             command: command || '',
             action: action || ''
           }}
@@ -145,7 +145,7 @@ export function VoiceFeedbackFloatingButton({
         <VoiceFeedbackModal
           isOpen={showModal}
           onClose={() => setShowModal(false)}
-          initialData={{
+          commandData={{
             command: lastCommand || ''
           }}
         />
