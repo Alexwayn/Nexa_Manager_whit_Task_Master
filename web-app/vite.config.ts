@@ -80,11 +80,18 @@ export default defineConfig(({ mode }) => {
       include: [
         'react',
         'react-dom',
+        'react/jsx-runtime',
         '@headlessui/react',
         '@heroicons/react',
         'framer-motion'
       ],
       exclude: ['@stagewise/toolbar']
+    },
+    define: {
+      global: 'globalThis',
+      __DEV__: JSON.stringify(isDevelopment),
+      __SENTRY_DEBUG__: JSON.stringify(isDevelopment),
+      __SENTRY_TRACING__: JSON.stringify(true),
     },
     build: {
       target: 'esnext',
@@ -93,7 +100,12 @@ export default defineConfig(({ mode }) => {
       chunkSizeWarningLimit: 500,
       assetsInlineLimit: 4096, // Inline small assets
       rollupOptions: {
+        external: [],
         output: {
+          globals: {
+            'react': 'React',
+            'react-dom': 'ReactDOM'
+          },
           manualChunks: (id) => {
             // Vendor chunks
             if (id.includes('node_modules')) {
@@ -201,11 +213,6 @@ export default defineConfig(({ mode }) => {
             : [] // Don't drop console methods in development for Sentry
         }
       }
-    },
-    define: {
-      __DEV__: JSON.stringify(isDevelopment),
-      __SENTRY_DEBUG__: JSON.stringify(isDevelopment),
-      __SENTRY_TRACING__: JSON.stringify(true),
     },
     ...(isDevelopment && {
       server: {
