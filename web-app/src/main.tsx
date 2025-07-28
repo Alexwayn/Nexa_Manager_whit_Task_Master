@@ -1,7 +1,7 @@
 // Error handler - must be imported first
 import '@utils/error-handler';
 
-import { StrictMode } from 'react';
+import React, { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { initToolbar } from '@stagewise/toolbar';
 import './index.css';
