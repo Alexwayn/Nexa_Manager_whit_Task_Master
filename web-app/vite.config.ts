@@ -83,7 +83,8 @@ export default defineConfig(({ mode }) => {
         'react/jsx-runtime',
         '@headlessui/react',
         '@heroicons/react',
-        'framer-motion'
+        'framer-motion',
+        'recharts'
       ],
       exclude: ['@stagewise/toolbar']
     },
@@ -118,9 +119,10 @@ export default defineConfig(({ mode }) => {
               if (id.includes('@heroicons/react') || id.includes('lucide-react')) {
                 return 'ui-vendor';
               }
-              if (id.includes('chart.js') || id.includes('react-chartjs-2') || id.includes('recharts')) {
+              if (id.includes('chart.js') || id.includes('react-chartjs-2')) {
                 return 'charts';
               }
+
               if (id.includes('html2canvas') || id.includes('jspdf')) {
                 return 'pdf-canvas';
               }
