@@ -1,7 +1,7 @@
 import Logger from '@utils/Logger';
 import { supabase } from '@lib/supabaseClient';
-import businessEmailLogger from './businessEmailLogger.js';
-import clientEmailService from '../../clients/services/clientEmailService.js';
+import { getBusinessEmailLogger } from './businessEmailLogger.js';
+import { getClientEmailService } from '../../clients/services/clientEmailService.js';
 
 /**
  * Business Email Integration Service
@@ -152,7 +152,7 @@ class BusinessEmailIntegration {
 
       // Log email activity regardless of system used
       if (result.success) {
-        await businessEmailLogger.logInvoiceEmail(userId, invoiceId, {
+        await getBusinessEmailLogger().logInvoiceEmail(userId, invoiceId, {
           type: emailType,
           status: 'sent',
           recipientEmail,
@@ -283,7 +283,7 @@ class BusinessEmailIntegration {
 
       // Log email activity regardless of system used
       if (result.success) {
-        await businessEmailLogger.logQuoteEmail(userId, quoteId, {
+        await getBusinessEmailLogger().logQuoteEmail(userId, quoteId, {
           type: emailType,
           status: 'sent',
           recipientEmail,
@@ -383,7 +383,7 @@ class BusinessEmailIntegration {
   async getClientEmailHistory(userId, clientId, options = {}) {
     try {
       // Use the dedicated client email service for comprehensive history
-      const result = await clientEmailService.getClientEmailHistory(userId, clientId, options);
+      const result = await getClientEmailService().getClientEmailHistory(userId, clientId, options);
       
       if (!result.success) {
         return result;
@@ -1735,7 +1735,7 @@ class BusinessEmailIntegration {
 
             // Log the activity
             if (result.success && recipient.clientId) {
-              await businessEmailLogger.logActivity(userId, {
+              await getBusinessEmailLogger().logActivity(userId, {
                 clientId: recipient.clientId,
                 type: emailType,
                 status: 'sent',

@@ -348,4 +348,11 @@ class ClientEmailService {
   }
 }
 
-export default new ClientEmailService();
+let clientEmailService;
+
+export const getClientEmailService = () => {
+  if (!clientEmailService) {
+    clientEmailService = new ClientEmailService();
+  }
+  return clientEmailService;
+};

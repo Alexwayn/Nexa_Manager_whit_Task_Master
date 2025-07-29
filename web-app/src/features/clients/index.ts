@@ -22,5 +22,5 @@ export { useClientSearch } from './hooks/useClientSearch.js';
 
 // Services
 export { default as clientService } from './services/clientService.js';
-export { default as clientEmailService } from './services/clientEmailService.js';
+export { getClientEmailService as clientEmailService } from './services/clientEmailService.js';
 export { default as businessService } from './services/businessService.js';

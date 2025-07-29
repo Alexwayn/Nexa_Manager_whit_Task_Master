@@ -6,8 +6,8 @@
 import businessEmailIntegration from './businessEmailIntegration.js';
 import { InvoiceService } from '@features/financial';
 import { QuoteService } from '@features/financial';
-import clientEmailService from './clientEmailService.js';
-import businessEmailLogger from './businessEmailLogger.js';
+import { getClientEmailService } from '../../clients/services/clientEmailService.js';
+import { getBusinessEmailLogger } from './businessEmailLogger.js';
 import Logger from '@utils/Logger';
 
 class BusinessEmailIntegrationVerifier {
@@ -144,7 +144,7 @@ class BusinessEmailIntegrationVerifier {
 
     try {
       // Test getting client email history
-      const historyResult = await clientEmailService.getClientEmailHistory(
+      const historyResult = await getClientEmailService().getClientEmailHistory(
         this.userId,
         this.clientId,
         {
@@ -157,7 +157,7 @@ class BusinessEmailIntegrationVerifier {
       this.addTestResult('Client Email History', historyResult.success, historyResult.error);
 
       // Test client email analytics
-      const analyticsResult = await clientEmailService.getClientEmailAnalytics(
+      const analyticsResult = await getClientEmailService().getClientEmailAnalytics(
         this.userId,
         this.clientId
       );
@@ -165,7 +165,7 @@ class BusinessEmailIntegrationVerifier {
       this.addTestResult('Client Email Analytics', analyticsResult.success, analyticsResult.error);
 
       // Test client email filters
-      const filtersResult = await clientEmailService.getClientEmailFilters(
+      const filtersResult = await getClientEmailService().getClientEmailFilters(
         this.userId,
         this.clientId
       );
@@ -185,7 +185,7 @@ class BusinessEmailIntegrationVerifier {
 
     try {
       // Test logging invoice email activity
-      const invoiceLogResult = await businessEmailLogger.logInvoiceEmail(
+      const invoiceLogResult = await getBusinessEmailLogger().logInvoiceEmail(
         this.userId,
         this.invoiceId,
         {
@@ -204,7 +204,7 @@ class BusinessEmailIntegrationVerifier {
       this.addTestResult('Invoice Email Logging', invoiceLogResult.success, invoiceLogResult.error);
 
       // Test logging quote email activity
-      const quoteLogResult = await businessEmailLogger.logQuoteEmail(
+      const quoteLogResult = await getBusinessEmailLogger().logQuoteEmail(
         this.userId,
         this.quoteId,
         {
@@ -223,7 +223,7 @@ class BusinessEmailIntegrationVerifier {
       this.addTestResult('Quote Email Logging', quoteLogResult.success, quoteLogResult.error);
 
       // Test getting document email history
-      const docHistoryResult = await businessEmailLogger.getDocumentEmailHistory(
+      const docHistoryResult = await getBusinessEmailLogger().getDocumentEmailHistory(
         this.userId,
         'invoice',
         this.invoiceId
@@ -263,7 +263,7 @@ class BusinessEmailIntegrationVerifier {
       this.addTestResult('Client Business Email Filters', filtersResult.success, filtersResult.error);
 
       // Test email statistics
-      const statsResult = await businessEmailLogger.getEmailStatistics(
+      const statsResult = await getBusinessEmailLogger().getEmailStatistics(
         this.userId,
         {
           dateFrom: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(),
@@ -301,7 +301,7 @@ class BusinessEmailIntegrationVerifier {
       this.addTestResult('Quote Communication Summary', quoteSummaryResult.success, quoteSummaryResult.error);
 
       // Test comprehensive client communication summary
-      const clientSummaryResult = await clientEmailService.getClientCommunicationSummary(
+      const clientSummaryResult = await getClientEmailService().getClientCommunicationSummary(
         this.userId,
         this.clientId
       );
