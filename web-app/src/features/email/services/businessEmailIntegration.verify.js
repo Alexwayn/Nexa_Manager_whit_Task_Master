@@ -3,7 +3,8 @@
  * Tests the integration between email management system and existing business services
  */
 
-import businessEmailIntegration from './businessEmailIntegration.js';
+import getBusinessEmailIntegration from './businessEmailIntegration.js';
+const businessEmailIntegration = getBusinessEmailIntegration();
 import { InvoiceService } from '@features/financial';
 import { QuoteService } from '@features/financial';
 import { getClientEmailService } from '../../clients/services/clientEmailService.js';
@@ -244,7 +245,7 @@ class BusinessEmailIntegrationVerifier {
 
     try {
       // Test comprehensive business email analytics
-      const analyticsResult = await businessEmailIntegration.getBusinessDocumentEmailAnalytics(
+      const historyResult = await businessEmailIntegration.getBusinessDocumentEmailAnalytics(
         this.userId,
         {
           dateFrom: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(), // Last 30 days
