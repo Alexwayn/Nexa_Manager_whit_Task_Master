@@ -10,9 +10,18 @@
  * @returns {*} Environment variable value
  */
 export function getEnvVar(key, defaultValue = undefined) {
-  // In test environment, use process.env
+  // In test environment, use process.env or global.importMeta.env
   if (typeof process !== 'undefined' && process.env && process.env.NODE_ENV === 'test') {
+    // Check global.importMeta.env first (Jest mock)
+    if (typeof global !== 'undefined' && global.importMeta && global.importMeta.env) {
+      return global.importMeta.env[key] || process.env[key] || defaultValue;
+    }
     return process.env[key] || defaultValue;
+  }
+  
+  // In Vite environment, use import.meta.env
+  if (typeof import.meta !== 'undefined' && import.meta && import.meta.env) {
+    return import.meta.env[key] || defaultValue;
   }
   
   // Fallback to process.env if available (Node.js environment)

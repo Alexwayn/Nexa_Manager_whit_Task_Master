@@ -1,6 +1,9 @@
 const dotenv = require('dotenv');
 const path = require('path');
 
+// Set NODE_ENV to test
+process.env.NODE_ENV = 'test';
+
 dotenv.config({
   path: path.resolve(process.cwd(), '.env.test'),
 });

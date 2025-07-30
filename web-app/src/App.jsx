@@ -10,7 +10,7 @@ import AppRouter from '@router/AppRouter';
 import FloatingMicrophone from './components/shared/FloatingMicrophone';
 import VoiceAssistantOverlay from './components/voice/VoiceAssistantOverlay';
 import { ErrorBoundary } from '@shared/components';
-import { isDev } from '@/utils/env';
+import { getEnvVar, isDev } from '@/utils/env';
 // import LanguageForcer from '@components/debug/LanguageForcer'; // Removed debug component
 
 import { initToolbar } from '@stagewise/toolbar';
@@ -28,7 +28,7 @@ console.log('- Available languages:', i18n.languages);
 console.log('- localStorage language:', localStorage.getItem('nexa-language'));
 
 // Get the Clerk publishable key from environment variables
-const clerkPublishableKey = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
+const clerkPublishableKey = getEnvVar('VITE_CLERK_PUBLISHABLE_KEY');
 
 // Check if we're in development mode
 const isDevelopment = isDev();

@@ -14,7 +14,7 @@ module.exports = {
   
   // Transform configuration
   transform: {
-    '^.+\\.(js|jsx|ts|tsx)$': 'babel-jest',
+    '^.+\\.(js|jsx|ts|tsx)$': '<rootDir>/../.config/jest/import-meta-transformer.js',
     '^.+\\.css$': 'jest-transform-stub',
     '^.+\\.(jpg|jpeg|png|gif|svg)$': 'jest-transform-stub',
   },

@@ -3,8 +3,19 @@ import { useAuth } from '@clerk/clerk-react';
 import { useMemo } from 'react';
 import Logger from '@utils/Logger';
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+// Use environment variables with Jest compatibility
+const getEnvVar = (varName) => {
+  // In Jest environment or Node.js, use process.env
+  if (typeof process !== 'undefined' && process.env) {
+    return process.env[varName];
+  }
+  
+  // This will be handled by the transformer for browser environments
+  return import.meta.env[varName];
+};
+
+const supabaseUrl = getEnvVar('VITE_SUPABASE_URL');
+const supabaseAnonKey = getEnvVar('VITE_SUPABASE_ANON_KEY');
 
 if (!supabaseUrl || !supabaseAnonKey) {
   throw new Error('Missing Supabase environment variables');

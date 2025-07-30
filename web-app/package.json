@@ -168,6 +168,7 @@
     "axe-core": "^4.10.3",
     "babel-jest": "^30.0.2",
     "babel-plugin-transform-import-meta": "^2.3.3",
+    "babel-plugin-transform-vite-meta-env": "^1.0.3",
     "dotenv": "^16.6.1",
     "eslint": "^9.22.0",
     "eslint-config-prettier": "^10.1.5",
