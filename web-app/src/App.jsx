@@ -10,6 +10,7 @@ import AppRouter from '@router/AppRouter';
 import FloatingMicrophone from './components/shared/FloatingMicrophone';
 import VoiceAssistantOverlay from './components/voice/VoiceAssistantOverlay';
 import { ErrorBoundary } from '@shared/components';
+import { isDev } from '@/utils/env';
 // import LanguageForcer from '@components/debug/LanguageForcer'; // Removed debug component
 
 import { initToolbar } from '@stagewise/toolbar';
@@ -30,7 +31,7 @@ console.log('- localStorage language:', localStorage.getItem('nexa-language'));
 const clerkPublishableKey = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 
 // Check if we're in development mode
-const isDevelopment = import.meta.env.DEV;
+const isDevelopment = isDev();
 const isLocalhost =
   window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
 

@@ -1,18 +1,16 @@
 module.exports = {
   // Test environment configuration
   testEnvironment: 'jsdom',
-  testEnvironmentOptions: {
-    url: 'http://localhost:3000',
-  },
-  
-  // Setup files
+
+  // Setup files - order matters!
+  setupFiles: ['<rootDir>/src/jest.env.js'],
   setupFilesAfterEnv: ['<rootDir>/src/setupTests.js'],
   
   // Transform configuration
   transform: {
-    '^.+\\.(js|jsx|ts|tsx)$': 'babel-jest',
-    '^.+\\.css$': 'jest-transform-stub',
-    '^.+\\.(jpg|jpeg|png|gif|svg)$': 'jest-transform-stub',
+    '^.+\.(js|jsx|ts|tsx)$': '<rootDir>/jest-transformer.js',
+    '^.+\.css$': 'jest-transform-css',
+    '^.+\.(jpg|jpeg|png|gif|svg)$': 'jest-transform-stub',
   },
   
   // Transform ignore patterns
@@ -22,6 +20,37 @@ module.exports = {
   
   // Module name mapping
   moduleNameMapper: {
+    // React mock
+    '^react$': '<rootDir>/src/shared/__tests__/mocks/react.js',
+    
+    // Testing library mock
+    '^@testing-library/react$': '<rootDir>/src/shared/__tests__/mocks/testing-library-react.js',
+    
+    // React Query mock
+    '^@tanstack/react-query$': '<rootDir>/src/shared/__tests__/mocks/tanstack-react-query.js',
+    
+    // Environment utility mock - must be first to override all env imports
+    '^@/utils/env$': '<rootDir>/src/__tests__/mocks/env.js',
+    '^@utils/env$': '<rootDir>/src/__tests__/mocks/env.js',
+    
+    // WebSocket service mock to avoid import.meta issues
+    '^../services/websocketService$': '<rootDir>/src/__tests__/mocks/websocketService.js',
+    '^./services/websocketService$': '<rootDir>/src/__tests__/mocks/websocketService.js',
+    '^@/services/websocketService$': '<rootDir>/src/__tests__/mocks/websocketService.js',
+    '^@services/websocketService$': '<rootDir>/src/__tests__/mocks/websocketService.js',
+    '^.*websocketService$': '<rootDir>/src/__tests__/mocks/websocketService.js',
+    
+    // Existing service mocks
+    '^@shared/utils$': '<rootDir>/src/shared/__tests__/mocks/index.js',
+    '^.*\\/stores$': '<rootDir>/src/shared/__tests__/mocks/stores.js',
+    '^.*\\/middleware$': '<rootDir>/src/shared/__tests__/mocks/middleware.js',
+    '^.*\\/config$': '<rootDir>/src/shared/__tests__/mocks/config.js',
+    '^.*\\/scanner$': '<rootDir>/src/shared/__tests__/mocks/scanner.js',
+    '^.*\\/websocket$': '<rootDir>/src/shared/__tests__/mocks/websocket.js',
+    '^.*\\/performance$': '<rootDir>/src/shared/__tests__/mocks/performance.js',
+    '^.*\\/websocketService$': '<rootDir>/src/shared/__tests__/mocks/websocketService.js',
+    '^@assets/(.*)\\.(png|jpg|jpeg|gif|svg)$': 'jest-transform-stub',
+    '^@assets/(.*)$': '<rootDir>/../assets/$1',
     '^@/(.*)$': '<rootDir>/src/$1',
     '^@components/(.*)$': '<rootDir>/src/components/$1',
     '^@services/(.*)$': '<rootDir>/src/services/$1',
@@ -29,7 +58,6 @@ module.exports = {
     '^@hooks/(.*)$': '<rootDir>/src/hooks/$1',
     '^@context/(.*)$': '<rootDir>/src/context/$1',
     '^@i18n/(.*)$': '<rootDir>/src/i18n/$1',
-    '^@assets/(.*)$': '<rootDir>/src/assets/$1',
     '^@tests/(.*)$': '<rootDir>/src/__tests__/$1',
     '^@lib/(.*)$': '<rootDir>/src/lib/$1',
     '^@types/(.*)$': '<rootDir>/src/types/$1',
@@ -105,25 +133,29 @@ module.exports = {
     },
   },
   
-  // Timeout configuration
-  testTimeout: 10000,
-  
-  // Global variables
+  // Global variables for import.meta compatibility
   globals: {
     'import.meta': {
       env: {
+        NODE_ENV: 'test',
         VITE_SUPABASE_URL: 'http://localhost:54321',
         VITE_SUPABASE_ANON_KEY: 'test-key',
+        VITE_SUPABASE_SERVICE_ROLE_KEY: 'test-service-role-key',
         VITE_APP_ENV: 'test',
         VITE_BASE_URL: 'http://localhost:3000',
         VITE_OPENAI_API_KEY: 'test-openai-key',
         VITE_QWEN_API_KEY: 'test-qwen-key',
+        DEV: false,
+        PROD: false,
+        MODE: 'test'
       },
-    },
+      url: 'file:///test',
+      resolve: (id) => new URL(id, 'file:///test').href
+    }
   },
   
-  // Environment variables for process.env
-  setupFiles: ['<rootDir>/src/jest.env.js'],
+  // Timeout configuration
+  testTimeout: 10000,
   
   // Verbose output for debugging
   verbose: false,

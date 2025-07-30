@@ -1,7 +1,6 @@
 import React from 'react';
 import { MicrophoneIcon, StopIcon } from '@heroicons/react/24/outline';
 import { useVoiceAssistant } from '@/providers/VoiceAssistantProvider';
-import { cn } from '@/shared/utils/cn';
 
 /**
  * VoiceActivationButton Component
@@ -10,10 +9,9 @@ import { cn } from '@/shared/utils/cn';
 
 export function VoiceActivationButton({ 
   size = 'md', 
-  variant = 'primary', 
   className = '',
-  showLabel = false,
-  disabled = false
+  onClick,
+  ...props
 }) {
   const { 
     isListening, 
@@ -21,7 +19,7 @@ export function VoiceActivationButton({
     isEnabled, 
     microphonePermission,
     activateVoice, 
-    deactivateVoice 
+    deactivateVoice
   } = useVoiceAssistant();
 
   // Size variants
@@ -37,54 +35,54 @@ export function VoiceActivationButton({
     lg: 'w-8 h-8'
   };
 
-  // Variant styles
-  const variantClasses = {
-    primary: {
-      base: 'bg-blue-500 hover:bg-blue-600 text-white',
-      listening: 'bg-red-500 hover:bg-red-600 text-white animate-pulse',
-      processing: 'bg-yellow-500 hover:bg-yellow-600 text-white',
-      disabled: 'bg-gray-300 text-gray-500 cursor-not-allowed'
-    },
-    secondary: {
-      base: 'bg-gray-500 hover:bg-gray-600 text-white',
-      listening: 'bg-red-500 hover:bg-red-600 text-white animate-pulse',
-      processing: 'bg-yellow-500 hover:bg-yellow-600 text-white',
-      disabled: 'bg-gray-200 text-gray-400 cursor-not-allowed'
-    },
-    minimal: {
-      base: 'bg-transparent hover:bg-gray-100 text-gray-600 border border-gray-300',
-      listening: 'bg-red-50 hover:bg-red-100 text-red-600 border-red-300 animate-pulse',
-      processing: 'bg-yellow-50 hover:bg-yellow-100 text-yellow-600 border-yellow-300',
-      disabled: 'bg-gray-50 text-gray-300 border-gray-200 cursor-not-allowed'
+  // Determine current state
+  const isDisabled = !isEnabled || microphonePermission === 'denied';
+  
+  // Get button classes based on state
+  const getButtonClasses = () => {
+    let classes = [
+      'rounded-full shadow-lg flex items-center justify-center transition-all duration-300',
+      'focus:outline-none focus:ring-2 focus:ring-blue-500',
+      sizeClasses[size]
+    ];
+
+    if (isDisabled) {
+      classes.push('cursor-not-allowed', 'bg-gray-300', 'text-gray-500');
+    } else if (isProcessing) {
+      classes.push('bg-yellow-500', 'hover:bg-yellow-600', 'text-white');
+    } else if (isListening) {
+      classes.push('bg-red-500', 'hover:bg-red-600', 'text-white', 'animate-pulse');
+    } else {
+      classes.push('bg-blue-500', 'hover:bg-blue-600', 'text-white');
     }
+
+    if (className) {
+      classes.push(className);
+    }
+
+    return classes.join(' ');
   };
 
-  // Determine current state
-  const isDisabled = disabled || !isEnabled || microphonePermission === 'denied';
-  const currentVariant = isDisabled 
-    ? variantClasses[variant].disabled
-    : isProcessing 
-    ? variantClasses[variant].processing
-    : isListening 
-    ? variantClasses[variant].listening 
-    : variantClasses[variant].base;
-
   // Handle activation (both click and keyboard)
-  const handleActivation = () => {
+  const handleActivation = async () => {
     if (isDisabled) return;
     
+    if (onClick) {
+      onClick();
+    }
+    
     if (isListening) {
-      deactivateVoice();
+      await deactivateVoice();
     } else {
-      activateVoice();
+      await activateVoice();
     }
   };
 
   // Handle keyboard events
-  const handleKeyDown = (event) => {
+  const handleKeyDown = async (event) => {
     if (event.key === 'Enter' || event.key === ' ') {
       event.preventDefault();
-      handleActivation();
+      await handleActivation();
     }
   };
 
@@ -105,56 +103,27 @@ export function VoiceActivationButton({
     return 'Start voice command - Click to speak';
   };
 
-  // Get icon
+  // Get icon with test IDs - only show one at a time
   const getIcon = () => {
     if (isListening) {
-      return <StopIcon className={iconSizes[size]} />;
+      return <StopIcon className={iconSizes[size]} data-testid="stop-icon" />;
     }
-    return <MicrophoneIcon className={iconSizes[size]} />;
-  };
-
-  // Get status text
-  const getStatusText = () => {
-    if (isProcessing) return 'Processing...';
-    if (isListening) return 'Listening...';
-    return 'Voice Assistant';
+    return <MicrophoneIcon className={iconSizes[size]} data-testid="microphone-icon" />;
   };
 
   return (
-    <div className="flex items-center gap-2">
-      <button
-        onClick={handleActivation}
-        onKeyDown={handleKeyDown}
-        disabled={isDisabled}
-        className={cn(
-          'rounded-full shadow-lg flex items-center justify-center transition-all duration-300',
-          'hover:scale-110 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500',
-          sizeClasses[size],
-          currentVariant,
-          className
-        )}
-        title={getTooltipText()}
-        aria-label={getTooltipText()}
-      >
-        {getIcon()}
-      </button>
-
-      {showLabel && (
-        <div className="flex flex-col">
-          <span className={cn(
-            'text-sm font-medium',
-            isDisabled ? 'text-gray-400' : 'text-gray-700'
-          )}>
-            {getStatusText()}
-          </span>
-          {(isListening || isProcessing) && (
-            <span className="text-xs text-gray-500">
-              {isListening ? 'Speak now...' : 'Please wait...'}
-            </span>
-          )}
-        </div>
-      )}
-    </div>
+    <button
+      onClick={handleActivation}
+      onKeyDown={handleKeyDown}
+      disabled={isDisabled}
+      className={getButtonClasses()}
+      title={getTooltipText()}
+      aria-label={getTooltipText()}
+      role="button"
+      {...props}
+    >
+      {getIcon()}
+    </button>
   );
 }
 

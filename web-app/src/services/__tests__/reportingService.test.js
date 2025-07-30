@@ -1,14 +1,13 @@
-import { vi } from 'vitest';
-import * as reportingService from '../reportingService';
-import { supabase } from '../supabase';
+import * as reportingService from '@shared/services/reportingService';
+import { supabase } from '@lib/supabaseClient';
 
 // Mock Supabase
-vi.mock('../supabase', () => ({
+jest.mock('@lib/supabaseClient', () => ({
   supabase: {
-    from: vi.fn(),
-    rpc: vi.fn(),
+    from: jest.fn(),
+    rpc: jest.fn(),
     storage: {
-      from: vi.fn()
+      from: jest.fn()
     }
   }
 }));
@@ -76,13 +75,13 @@ const mockSchedules = [
 
 describe('reportingService', () => {
   beforeEach(() => {
-    vi.clearAllMocks();
+    jest.clearAllMocks();
   });
 
   describe('getReports', () => {
     it('fetches all reports successfully', async () => {
-      const mockSelect = vi.fn().mockReturnThis();
-      const mockOrder = vi.fn().mockResolvedValue({ data: mockReports, error: null });
+      const mockSelect = jest.fn().mockReturnThis();
+      const mockOrder = jest.fn().mockResolvedValue({ data: mockReports, error: null });
       
       supabase.from.mockReturnValue({
         select: mockSelect,
@@ -99,9 +98,9 @@ describe('reportingService', () => {
     });
 
     it('filters reports by type', async () => {
-      const mockSelect = vi.fn().mockReturnThis();
-      const mockEq = vi.fn().mockReturnThis();
-      const mockOrder = vi.fn().mockResolvedValue({ data: [mockReports[0]], error: null });
+      const mockSelect = jest.fn().mockReturnThis();
+      const mockEq = jest.fn().mockReturnThis();
+      const mockOrder = jest.fn().mockResolvedValue({ data: [mockReports[0]], error: null });
       
       supabase.from.mockReturnValue({
         select: mockSelect,
@@ -118,9 +117,9 @@ describe('reportingService', () => {
     });
 
     it('filters reports by status', async () => {
-      const mockSelect = vi.fn().mockReturnThis();
-      const mockEq = vi.fn().mockReturnThis();
-      const mockOrder = vi.fn().mockResolvedValue({ data: [mockReports[0]], error: null });
+      const mockSelect = jest.fn().mockReturnThis();
+      const mockEq = jest.fn().mockReturnThis();
+      const mockOrder = jest.fn().mockResolvedValue({ data: [mockReports[0]], error: null });
       
       supabase.from.mockReturnValue({
         select: mockSelect,
@@ -137,8 +136,8 @@ describe('reportingService', () => {
     });
 
     it('handles database errors', async () => {
-      const mockSelect = vi.fn().mockReturnThis();
-      const mockOrder = vi.fn().mockResolvedValue({ 
+      const mockSelect = jest.fn().mockReturnThis();
+      const mockOrder = jest.fn().mockResolvedValue({ 
         data: null, 
         error: { message: 'Database connection failed' } 
       });
@@ -198,8 +197,8 @@ describe('reportingService', () => {
     };
 
     it('generates report successfully', async () => {
-      const mockInsert = vi.fn().mockReturnThis();
-      const mockSelect = vi.fn().mockResolvedValue({ 
+      const mockInsert = jest.fn().mockReturnThis();
+      const mockSelect = jest.fn().mockResolvedValue({ 
         data: [{ id: 123, status: 'processing' }], 
         error: null 
       });
@@ -233,8 +232,8 @@ describe('reportingService', () => {
     });
 
     it('handles generation errors', async () => {
-      const mockInsert = vi.fn().mockReturnThis();
-      const mockSelect = vi.fn().mockResolvedValue({ 
+      const mockInsert = jest.fn().mockReturnThis();
+      const mockSelect = jest.fn().mockResolvedValue({ 
         data: null, 
         error: { message: 'Insert failed' } 
       });
@@ -273,7 +272,7 @@ describe('reportingService', () => {
 
   describe('downloadReport', () => {
     it('downloads report successfully', async () => {
-      const mockDownload = vi.fn().mockResolvedValue({ 
+      const mockDownload = jest.fn().mockResolvedValue({ 
         data: new Blob(['PDF content']), 
         error: null 
       });
@@ -290,7 +289,7 @@ describe('reportingService', () => {
     });
 
     it('handles download errors', async () => {
-      const mockDownload = vi.fn().mockResolvedValue({ 
+      const mockDownload = jest.fn().mockResolvedValue({ 
         data: null, 
         error: { message: 'File not found' } 
       });
@@ -305,8 +304,8 @@ describe('reportingService', () => {
 
   describe('getScheduledReports', () => {
     it('fetches scheduled reports successfully', async () => {
-      const mockSelect = vi.fn().mockReturnThis();
-      const mockOrder = vi.fn().mockResolvedValue({ data: mockSchedules, error: null });
+      const mockSelect = jest.fn().mockReturnThis();
+      const mockOrder = jest.fn().mockResolvedValue({ data: mockSchedules, error: null });
       
       supabase.from.mockReturnValue({
         select: mockSelect,
@@ -334,8 +333,8 @@ describe('reportingService', () => {
     };
 
     it('creates schedule successfully', async () => {
-      const mockInsert = vi.fn().mockReturnThis();
-      const mockSelect = vi.fn().mockResolvedValue({ 
+      const mockInsert = jest.fn().mockReturnThis();
+      const mockSelect = jest.fn().mockResolvedValue({ 
         data: [{ id: 1, ...scheduleData }], 
         error: null 
       });
@@ -370,9 +369,9 @@ describe('reportingService', () => {
   describe('updateSchedule', () => {
     it('updates schedule successfully', async () => {
       const updateData = { enabled: false };
-      const mockUpdate = vi.fn().mockReturnThis();
-      const mockEq = vi.fn().mockReturnThis();
-      const mockSelect = vi.fn().mockResolvedValue({ 
+      const mockUpdate = jest.fn().mockReturnThis();
+      const mockEq = jest.fn().mockReturnThis();
+      const mockSelect = jest.fn().mockResolvedValue({ 
         data: [{ id: 1, ...updateData }], 
         error: null 
       });
@@ -396,8 +395,8 @@ describe('reportingService', () => {
 
   describe('deleteSchedule', () => {
     it('deletes schedule successfully', async () => {
-      const mockDelete = vi.fn().mockReturnThis();
-      const mockEq = vi.fn().mockResolvedValue({ error: null });
+      const mockDelete = jest.fn().mockReturnThis();
+      const mockEq = jest.fn().mockResolvedValue({ error: null });
       
       supabase.from.mockReturnValue({
         delete: mockDelete,
@@ -414,8 +413,8 @@ describe('reportingService', () => {
     });
 
     it('handles delete errors', async () => {
-      const mockDelete = vi.fn().mockReturnThis();
-      const mockEq = vi.fn().mockResolvedValue({ 
+      const mockDelete = jest.fn().mockReturnThis();
+      const mockEq = jest.fn().mockResolvedValue({ 
         error: { message: 'Delete failed' } 
       });
       
@@ -507,8 +506,8 @@ describe('reportingService', () => {
 describe('reportingService Integration', () => {
   it('generates and downloads report end-to-end', async () => {
     // Mock successful generation
-    const mockInsert = vi.fn().mockReturnThis();
-    const mockSelect = vi.fn().mockResolvedValue({ 
+    const mockInsert = jest.fn().mockReturnThis();
+    const mockSelect = jest.fn().mockResolvedValue({ 
       data: [{ id: 123, status: 'completed', file_path: 'report_123.pdf' }], 
       error: null 
     });
@@ -520,7 +519,7 @@ describe('reportingService Integration', () => {
     mockInsert.mockReturnValue({ select: mockSelect });
 
     // Mock successful download
-    const mockDownload = vi.fn().mockResolvedValue({ 
+    const mockDownload = jest.fn().mockResolvedValue({ 
       data: new Blob(['PDF content']), 
       error: null 
     });
@@ -547,8 +546,8 @@ describe('reportingService Integration', () => {
 
   it('creates schedule and generates first report', async () => {
     // Mock schedule creation
-    const mockInsert = vi.fn().mockReturnThis();
-    const mockSelect = vi.fn().mockResolvedValue({ 
+    const mockInsert = jest.fn().mockReturnThis();
+    const mockSelect = jest.fn().mockResolvedValue({ 
       data: [{ id: 1, name: 'Test Schedule' }], 
       error: null 
     });

@@ -5,6 +5,34 @@
 
 import React from 'react';
 
+// Environment variable access that works in both Vite and Jest
+const getEnvVar = (key: string, defaultValue: string = ''): string => {
+  // In test environment, use process.env
+  if (typeof process !== 'undefined' && process.env && process.env.NODE_ENV === 'test') {
+    return process.env[key] || defaultValue;
+  }
+  
+  // Try to access import.meta.env safely
+  try {
+    if (typeof window !== 'undefined' && (window as any).importMeta && (window as any).importMeta.env) {
+      return (window as any).importMeta.env[key] || defaultValue;
+    }
+  } catch (e) {
+    // Ignore errors accessing import.meta
+  }
+  
+  // Fallback to process.env if available
+  if (typeof process !== 'undefined' && process.env) {
+    return process.env[key] || defaultValue;
+  }
+  
+  return defaultValue;
+};
+
+const isDev = (): boolean => {
+  return getEnvVar('MODE') === 'development' || getEnvVar('NODE_ENV') === 'development';
+};
+
 export interface ErrorReport {
   id: string;
   message: string;
@@ -172,7 +200,7 @@ class ErrorMonitor {
     }
 
     // Log to console in development
-    if (import.meta.env.MODE === 'development') {
+    if (isDev()) {
       this.logErrorToConsole(errorReport);
     }
 

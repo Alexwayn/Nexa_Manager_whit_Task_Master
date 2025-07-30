@@ -1,5 +1,8 @@
+/**
+ * @jest-environment jsdom
+ */
 import React from 'react';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor, renderHook } from '@testing-library/react';
 import EmailViewer from '../EmailViewer';
 
 const mockEmail = {
@@ -53,6 +56,7 @@ describe('EmailViewer', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
+
 
   it('renders email content correctly', () => {
     render(<EmailViewer {...defaultProps} />);

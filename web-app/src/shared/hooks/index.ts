@@ -14,7 +14,7 @@ export {
 export { useOrganizationContext } from './OrganizationContext.jsx';
 
 // Email Hooks
-export * from './EmailContext.jsx';
+export { EmailProvider } from './EmailContext.jsx';
 
 // Theme Hooks - Optimized Theme Context
 export { 

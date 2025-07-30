@@ -5,11 +5,10 @@
 
 import getBusinessEmailIntegration from './businessEmailIntegration.js';
 const businessEmailIntegration = getBusinessEmailIntegration();
-import { InvoiceService } from '@features/financial';
-import { QuoteService } from '@features/financial';
-import { getClientEmailService } from '../../clients/services/clientEmailService.js';
-import { getBusinessEmailLogger } from './businessEmailLogger.js';
-import Logger from '@utils/Logger';
+import { InvoiceService } from '../../financial/services/invoiceService.js';
+import { QuoteService } from '../../financial/services/quoteService.js';
+
+import Logger from '@/utils/Logger';
 
 class BusinessEmailIntegrationVerifier {
   constructor() {
@@ -145,7 +144,8 @@ class BusinessEmailIntegrationVerifier {
 
     try {
       // Test getting client email history
-      const historyResult = await getClientEmailService().getClientEmailHistory(
+      const clientEmailService = await businessEmailIntegration.getClientEmailService();
+      const historyResult = await clientEmailService.getClientEmailHistory(
         this.userId,
         this.clientId,
         {
@@ -158,7 +158,7 @@ class BusinessEmailIntegrationVerifier {
       this.addTestResult('Client Email History', historyResult.success, historyResult.error);
 
       // Test client email analytics
-      const analyticsResult = await getClientEmailService().getClientEmailAnalytics(
+      const analyticsResult = await clientEmailService.getClientEmailAnalytics(
         this.userId,
         this.clientId
       );
@@ -166,7 +166,7 @@ class BusinessEmailIntegrationVerifier {
       this.addTestResult('Client Email Analytics', analyticsResult.success, analyticsResult.error);
 
       // Test client email filters
-      const filtersResult = await getClientEmailService().getClientEmailFilters(
+      const filtersResult = await clientEmailService.getClientEmailFilters(
         this.userId,
         this.clientId
       );
@@ -186,7 +186,8 @@ class BusinessEmailIntegrationVerifier {
 
     try {
       // Test logging invoice email activity
-      const invoiceLogResult = await getBusinessEmailLogger().logInvoiceEmail(
+      const businessEmailLogger = await businessEmailIntegration.getBusinessEmailLogger();
+      const invoiceLogResult = await businessEmailLogger.logInvoiceEmail(
         this.userId,
         this.invoiceId,
         {
@@ -205,7 +206,7 @@ class BusinessEmailIntegrationVerifier {
       this.addTestResult('Invoice Email Logging', invoiceLogResult.success, invoiceLogResult.error);
 
       // Test logging quote email activity
-      const quoteLogResult = await getBusinessEmailLogger().logQuoteEmail(
+      const quoteLogResult = await businessEmailLogger.logQuoteEmail(
         this.userId,
         this.quoteId,
         {
@@ -224,7 +225,7 @@ class BusinessEmailIntegrationVerifier {
       this.addTestResult('Quote Email Logging', quoteLogResult.success, quoteLogResult.error);
 
       // Test getting document email history
-      const docHistoryResult = await getBusinessEmailLogger().getDocumentEmailHistory(
+      const docHistoryResult = await businessEmailLogger.getDocumentEmailHistory(
         this.userId,
         'invoice',
         this.invoiceId
@@ -264,7 +265,7 @@ class BusinessEmailIntegrationVerifier {
       this.addTestResult('Client Business Email Filters', filtersResult.success, filtersResult.error);
 
       // Test email statistics
-      const statsResult = await getBusinessEmailLogger().getEmailStatistics(
+      const statsResult = await businessEmailLogger.getEmailStatistics(
         this.userId,
         {
           dateFrom: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(),
@@ -302,7 +303,7 @@ class BusinessEmailIntegrationVerifier {
       this.addTestResult('Quote Communication Summary', quoteSummaryResult.success, quoteSummaryResult.error);
 
       // Test comprehensive client communication summary
-      const clientSummaryResult = await getClientEmailService().getClientCommunicationSummary(
+      const clientSummaryResult = await clientEmailService.getClientCommunicationSummary(
         this.userId,
         this.clientId
       );

@@ -30,7 +30,7 @@ export {
 
 // Other utilities
 export * from './uiUtils';
-export * from './logger';
+export { default as Logger } from './logger';
 export * from './cn';
 export * from './languageUtils';
 export * from './userIdConverter';

@@ -4,10 +4,7 @@ import '@testing-library/jest-dom';
 import EmailListContainer from '../EmailListContainer';
 
 // Mock hooks
-jest.mock('@hooks/useEmailList', () => ({
-  __esModule: true,
-  default: jest.fn(),
-}));
+jest.mock('@hooks/useEmailList', () => jest.fn());
 
 // Mock EmailList component
 jest.mock('@components/email/EmailList', () => {
@@ -54,7 +51,7 @@ jest.mock('@components/email/EmailList', () => {
   };
 });
 
-const mockUseEmailList = require('@hooks/useEmailList').default;
+import useEmailList from '@hooks/useEmailList';
 
 // Default mock implementation for useEmailList
 const defaultMockReturn = {
@@ -121,7 +118,7 @@ describe('EmailListContainer', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    mockUseEmailList.mockReturnValue(defaultMockReturn);
+    useEmailList.mockReturnValue(defaultMockReturn);
   });
 
   describe('Rendering', () => {
@@ -131,41 +128,47 @@ describe('EmailListContainer', () => {
       expect(screen.getByTestId('mock-email-list')).toBeInTheDocument();
     });
 
-    test('should show loading state', () => {
-      mockUseEmailList.mockReturnValue({
+        test('should show loading state', async () => {
+            useEmailList.mockReturnValue({
         ...defaultMockReturn,
         loading: true,
       });
 
       render(<EmailListContainer {...defaultProps} />);
-      
-      expect(screen.getByTestId('mock-email-list')).toBeInTheDocument();
-      expect(screen.getByTestId('mock-email-list')).toHaveAttribute('data-loading', 'true');
+
+      await waitFor(() => {
+        expect(screen.getByTestId('mock-email-list')).toBeInTheDocument();
+        expect(screen.getByTestId('mock-email-list')).toHaveAttribute('data-loading', 'true');
+      });
     });
 
-    test('should show error state', () => {
-      mockUseEmailList.mockReturnValue({
+        test('should show error state', async () => {
+            useEmailList.mockReturnValue({
         ...defaultMockReturn,
         error: 'Failed to load emails',
       });
 
       render(<EmailListContainer {...defaultProps} />);
-      
-      expect(screen.getByText('Error loading emails')).toBeInTheDocument();
-      expect(screen.getByText('Failed to load emails')).toBeInTheDocument();
-      expect(screen.getByText('Try Again')).toBeInTheDocument();
+
+      await waitFor(() => {
+        expect(screen.getByText('Error loading emails')).toBeInTheDocument();
+        expect(screen.getByText('Failed to load emails')).toBeInTheDocument();
+        expect(screen.getByText('Try Again')).toBeInTheDocument();
+      });
     });
 
-    test('should show emails when loaded', () => {
-      mockUseEmailList.mockReturnValue({
+        test('should show emails when loaded', async () => {
+            useEmailList.mockReturnValue({
         ...defaultMockReturn,
         emails: sampleEmails,
       });
 
       render(<EmailListContainer {...defaultProps} />);
-      
-      expect(screen.getByTestId('mock-email-list')).toBeInTheDocument();
-      expect(screen.getByText('2 emails')).toBeInTheDocument();
+
+      await waitFor(() => {
+        expect(screen.getByTestId('mock-email-list')).toBeInTheDocument();
+        expect(screen.getByText('2 emails')).toBeInTheDocument();
+      });
     });
 
     test('should pass correct props to EmailList', () => {

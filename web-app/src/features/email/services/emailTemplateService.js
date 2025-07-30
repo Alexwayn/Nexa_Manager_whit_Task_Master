@@ -1,5 +1,6 @@
 import { supabase } from '@lib/supabaseClient';
 import Logger from '@utils/Logger';
+import { getEnvVar } from '@/utils/env';
 
 /**
  * EmailTemplateService - Manages email templates with WYSIWYG editing and variables
@@ -286,7 +287,7 @@ class EmailTemplateService {
    */
   convertToAbsoluteUrls(html) {
     // This would need to be configured with your actual domain
-    const baseUrl = import.meta.env.VITE_BASE_URL || 'https://your-domain.com';
+    const baseUrl = getEnvVar('VITE_BASE_URL') || 'https://your-domain.com';
 
     return html
       .replace(/src="\/([^"]+)"/g, `src="${baseUrl}/€1"`)

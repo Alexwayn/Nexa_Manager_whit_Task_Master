@@ -1,6 +1,7 @@
 import Logger from '@utils/Logger';
 import emailCampaignService from './emailCampaignService';
 import emailTrackingService from './emailTrackingService';
+import { getEnvVar } from '@/utils/env';
 
 class EmailQueueService {
   constructor() {
@@ -375,7 +376,7 @@ export const getEmailQueueService = () => {
   if (!emailQueueServiceInstance) {
     emailQueueServiceInstance = new EmailQueueService();
     // Auto-start the queue in production (delayed to avoid temporal dead zone)
-    if (import.meta.env.MODE === 'production') {
+    if (getEnvVar('MODE') === 'production') {
       setTimeout(() => {
         emailQueueServiceInstance.startQueue();
       }, 0);

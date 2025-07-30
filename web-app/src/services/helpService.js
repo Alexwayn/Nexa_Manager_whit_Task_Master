@@ -612,13 +612,459 @@ export function getTroubleshootingGuide() {
   };
 }
 
+/**
+ * Get voice commands from cache or API
+ * @returns {Object} Response with success status and data
+ */
+export const getVoiceCommands = async () => {
+  try {
+    // Try to get from cache first
+    const cached = localStorage.getItem('voice_commands_cache');
+    if (cached) {
+      try {
+        const commands = JSON.parse(cached);
+        return { success: true, data: commands };
+      } catch (error) {
+        console.warn('Corrupted cache data, fetching from API');
+      }
+    }
+
+    // Fetch from API if no cache
+    try {
+      const response = await fetch('/api/voice-commands');
+      const commands = await response.json();
+      
+      // Cache the results
+      localStorage.setItem('voice_commands_cache', JSON.stringify(commands));
+      
+      return { success: true, data: commands };
+    } catch (apiError) {
+      // If API fails, try to return cached data even if corrupted
+      if (cached) {
+        try {
+          const commands = JSON.parse(cached);
+          return { success: true, data: commands };
+        } catch (parseError) {
+          // Return default commands if everything fails
+          const defaultCommands = Object.values(COMMAND_REFERENCE)
+            .flatMap(category => category.commands);
+          return { success: true, data: defaultCommands };
+        }
+      }
+      
+      return { 
+        success: false, 
+        error: `Failed to fetch voice commands: ${apiError.message}` 
+      };
+    }
+  } catch (error) {
+    return { 
+      success: false, 
+      error: `Error getting voice commands: ${error.message}` 
+    };
+  }
+};
+
+/**
+ * Search commands with async interface for tests
+ * @param {string} query - Search query
+ * @param {string} category - Optional category filter
+ * @returns {Object} Response with success status and data
+ */
+export const searchVoiceCommands = async (query, category = '') => {
+  try {
+    const commands = await getVoiceCommands();
+    if (!commands.success) {
+      return commands;
+    }
+
+    let results = commands.data;
+
+    // Filter by category if provided
+    if (category) {
+      results = results.filter(cmd => cmd.category === category);
+    }
+
+    // Filter by query if provided
+    if (query) {
+      const normalizedQuery = query.toLowerCase().trim();
+      results = results.filter(cmd => {
+        return cmd.command.toLowerCase().includes(normalizedQuery) ||
+               cmd.description.toLowerCase().includes(normalizedQuery) ||
+               (cmd.aliases && cmd.aliases.some(alias => 
+                 alias.toLowerCase().includes(normalizedQuery)
+               )) ||
+               (cmd.examples && cmd.examples.some(example => 
+                 example.toLowerCase().includes(normalizedQuery)
+               ));
+      });
+    }
+
+    return { success: true, data: results };
+  } catch (error) {
+    return { 
+      success: false, 
+      error: `Error searching commands: ${error.message}` 
+    };
+  }
+};
+
+/**
+ * Get command categories
+ * @returns {Object} Response with success status and data
+ */
+export const getCommandCategories = async () => {
+  try {
+    const commands = await getVoiceCommands();
+    if (!commands.success) {
+      return commands;
+    }
+
+    const categories = [...new Set(commands.data.map(cmd => cmd.category))];
+    return { success: true, data: categories };
+  } catch (error) {
+    return { 
+      success: false, 
+      error: `Error getting command categories: ${error.message}` 
+    };
+  }
+};
+
+/**
+ * Get popular commands based on usage count
+ * @param {number} limit - Maximum number of commands to return
+ * @returns {Object} Response with success status and data
+ */
+export const getPopularCommands = async (limit = 10) => {
+  try {
+    const commands = await getVoiceCommands();
+    if (!commands.success) {
+      return commands;
+    }
+
+    // Sort by usage count (default to 0 if not set)
+    const sortedCommands = commands.data
+      .map(cmd => ({ ...cmd, usageCount: cmd.usageCount || 0 }))
+      .sort((a, b) => b.usageCount - a.usageCount)
+      .slice(0, limit);
+
+    return { success: true, data: sortedCommands };
+  } catch (error) {
+    return { 
+      success: false, 
+      error: `Error getting popular commands: ${error.message}` 
+    };
+  }
+};
+
+/**
+ * Update command usage count
+ * @param {string} commandId - Command ID to update
+ * @returns {Object} Response with success status
+ */
+export const updateCommandUsage = async (commandId) => {
+  try {
+    const commands = await getVoiceCommands();
+    if (!commands.success) {
+      return commands;
+    }
+
+    const commandIndex = commands.data.findIndex(cmd => cmd.id === commandId);
+    if (commandIndex === -1) {
+      return { 
+        success: false, 
+        error: 'Command not found' 
+      };
+    }
+
+    // Update usage count
+    commands.data[commandIndex].usageCount = (commands.data[commandIndex].usageCount || 0) + 1;
+
+    // Save back to cache
+    localStorage.setItem('voice_commands_cache', JSON.stringify(commands.data));
+
+    return { success: true };
+  } catch (error) {
+    return { 
+      success: false, 
+      error: `Error updating command usage: ${error.message}` 
+    };
+  }
+};
+
+/**
+ * Get command suggestions based on partial input
+ * @param {string} input - Partial command input
+ * @param {number} limit - Maximum number of suggestions
+ * @returns {Object} Response with success status and data
+ */
+export const getCommandSuggestions = async (input, limit = 10) => {
+  try {
+    const commands = await getVoiceCommands();
+    if (!commands.success) {
+      return commands;
+    }
+
+    const normalizedInput = input.toLowerCase().trim();
+    const suggestions = commands.data
+      .filter(cmd => {
+        return cmd.command.toLowerCase().startsWith(normalizedInput) ||
+               (cmd.aliases && cmd.aliases.some(alias => 
+                 alias.toLowerCase().startsWith(normalizedInput)
+               ));
+      })
+      .slice(0, limit);
+
+    return { success: true, data: suggestions };
+  } catch (error) {
+    return { 
+      success: false, 
+      error: `Error getting command suggestions: ${error.message}` 
+    };
+  }
+};
+
+/**
+ * Export commands in specified format
+ * @param {string} format - Export format (json, csv)
+ * @returns {Object} Response with success status and data
+ */
+export const exportCommands = async (format) => {
+  try {
+    if (!['json', 'csv'].includes(format.toLowerCase())) {
+      return { 
+        success: false, 
+        error: 'Unsupported format. Use json or csv.' 
+      };
+    }
+
+    const commands = await getVoiceCommands();
+    if (!commands.success) {
+      return commands;
+    }
+
+    let exportData;
+    if (format.toLowerCase() === 'json') {
+      exportData = JSON.stringify(commands.data, null, 2);
+    } else {
+      // CSV format
+      const headers = ['command', 'category', 'description'];
+      const csvRows = [headers.join(',')];
+      
+      commands.data.forEach(cmd => {
+        const row = [
+          `"${cmd.command}"`,
+          `"${cmd.category}"`,
+          `"${cmd.description}"`
+        ];
+        csvRows.push(row.join(','));
+      });
+      
+      exportData = csvRows.join('\n');
+    }
+
+    return { success: true, data: exportData };
+  } catch (error) {
+    return { 
+      success: false, 
+      error: `Error exporting commands: ${error.message}` 
+    };
+  }
+};
+
+/**
+ * Import commands from data
+ * @param {string|Array} importData - Data to import
+ * @param {string} format - Import format (json, csv)
+ * @returns {Object} Response with success status and import count
+ */
+export const importCommands = async (importData, format) => {
+  try {
+    let commands;
+    
+    if (format.toLowerCase() === 'json') {
+      try {
+        commands = typeof importData === 'string' 
+          ? JSON.parse(importData) 
+          : importData;
+      } catch (parseError) {
+        return { 
+          success: false, 
+          error: 'Invalid JSON format' 
+        };
+      }
+    } else {
+      return { 
+        success: false, 
+        error: 'CSV import not implemented yet' 
+      };
+    }
+
+    // Validate command structure
+    if (!Array.isArray(commands)) {
+      return { 
+        success: false, 
+        error: 'Invalid command structure - expected array' 
+      };
+    }
+
+    let importedCount = 0;
+    const existingCommands = await getVoiceCommands();
+    
+    for (const cmd of commands) {
+      if (!cmd.command || !cmd.category) {
+        return { 
+          success: false, 
+          error: 'Invalid command structure - missing required fields' 
+        };
+      }
+      importedCount++;
+    }
+
+    // In a real implementation, you would save these to the backend
+    // For now, just return success with count
+    return { 
+      success: true, 
+      imported: importedCount 
+    };
+  } catch (error) {
+    return { 
+      success: false, 
+      error: `Error importing commands: ${error.message}` 
+    };
+  }
+};
+
+/**
+ * Clear voice commands cache
+ * @returns {Object} Response with success status
+ */
+export const clearCache = async () => {
+  try {
+    localStorage.removeItem('voice_commands_cache');
+    return { success: true };
+  } catch (error) {
+    return { 
+      success: false, 
+      error: `Error clearing cache: ${error.message}` 
+    };
+  }
+};
+
+/**
+ * Get help topics
+ * @returns {Object} Response with success status and data
+ */
+export const getHelpTopics = async () => {
+  try {
+    const topics = [
+      {
+        id: 'voice-commands',
+        title: 'Voice Commands',
+        category: 'voice',
+        description: 'Learn about available voice commands'
+      },
+      {
+        id: 'voice-setup',
+        title: 'Voice Setup',
+        category: 'voice',
+        description: 'Set up and configure voice assistant'
+      },
+      {
+        id: 'navigation',
+        title: 'Navigation',
+        category: 'general',
+        description: 'Navigate through the application'
+      },
+      {
+        id: 'troubleshooting',
+        title: 'Troubleshooting',
+        category: 'support',
+        description: 'Common issues and solutions'
+      }
+    ];
+
+    return { success: true, data: topics };
+  } catch (error) {
+    return { 
+      success: false, 
+      error: `Error getting help topics: ${error.message}` 
+    };
+  }
+};
+
+/**
+ * Get command history
+ * @param {number} limit - Maximum number of history entries
+ * @returns {Object} Response with success status and data
+ */
+export const getCommandHistory = async (limit = 100) => {
+  try {
+    const historyData = localStorage.getItem('command_history');
+    const history = historyData ? JSON.parse(historyData) : [];
+    
+    const limitedHistory = history.slice(0, limit);
+    return { success: true, data: limitedHistory };
+  } catch (error) {
+    return { 
+      success: false, 
+      error: `Error getting command history: ${error.message}` 
+    };
+  }
+};
+
+/**
+ * Add command to history
+ * @param {string} command - Command to add
+ * @param {boolean} success - Whether command was successful
+ * @returns {Object} Response with success status
+ */
+export const addToCommandHistory = async (command, success = true) => {
+  try {
+    const historyData = localStorage.getItem('command_history');
+    const history = historyData ? JSON.parse(historyData) : [];
+    
+    const entry = {
+      command,
+      success,
+      timestamp: new Date().toISOString()
+    };
+    
+    history.unshift(entry);
+    
+    // Keep only last 100 entries
+    const limitedHistory = history.slice(0, 100);
+    
+    localStorage.setItem('command_history', JSON.stringify(limitedHistory));
+    
+    return { success: true };
+  } catch (error) {
+    return { 
+      success: false, 
+      error: `Error adding to command history: ${error.message}` 
+    };
+  }
+};
+
 export default {
   COMMAND_CATEGORIES,
   COMMAND_REFERENCE,
   searchCommands,
+  searchVoiceCommands,
   getCommandsByCategory,
   getAllCategories,
   getContextualHelp,
   getQuickStartGuide,
-  getTroubleshootingGuide
+  getTroubleshootingGuide,
+  getVoiceCommands,
+  getCommandCategories,
+  getPopularCommands,
+  updateCommandUsage,
+  getCommandSuggestions,
+  exportCommands,
+  importCommands,
+  clearCache,
+  getHelpTopics,
+  getCommandHistory,
+  addToCommandHistory
 };

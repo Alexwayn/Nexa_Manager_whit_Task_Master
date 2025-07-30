@@ -1,22 +1,21 @@
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import EmailAnalyticsDashboard from '@components/EmailAnalyticsDashboard';
 import emailManagementService from '@features/email';
 
 // Mock dependencies
-vi.mock('@features/email/services/emailManagementService', () => ({
+jest.mock('@features/email/services/emailManagementService', () => ({
   default: {
-    getEmailAnalytics: vi.fn(),
-    getEmailPerformanceMetrics: vi.fn(),
-    getClientCommunicationAnalytics: vi.fn(),
-    getEmailActivityMetrics: vi.fn(),
-    generateEmailReport: vi.fn(),
-    getRealTimeEmailMetrics: vi.fn(),
+    getEmailAnalytics: jest.fn(),
+    getEmailPerformanceMetrics: jest.fn(),
+    getClientCommunicationAnalytics: jest.fn(),
+    getEmailActivityMetrics: jest.fn(),
+    generateEmailReport: jest.fn(),
+    getRealTimeEmailMetrics: jest.fn(),
   },
 }));
 
-vi.mock('recharts', () => ({
+jest.mock('recharts', () => ({
   BarChart: ({ children }) => <div data-testid="bar-chart">{children}</div>,
   LineChart: ({ children }) => <div data-testid="line-chart">{children}</div>,
   PieChart: ({ children }) => <div data-testid="pie-chart">{children}</div>,
@@ -33,7 +32,7 @@ vi.mock('recharts', () => ({
   ResponsiveContainer: ({ children }) => <div data-testid="responsive-container">{children}</div>,
 }));
 
-vi.mock('@components/ui/date-picker', () => ({
+jest.mock('@components/ui/date-picker', () => ({
   default: ({ onDateChange, value }) => (
     <div data-testid="date-picker">
       <button onClick={() => onDateChange({ from: new Date('2024-01-01'), to: new Date('2024-01-31') })}>
@@ -96,7 +95,7 @@ const renderWithRouter = (component) => {
 
 describe('EmailAnalyticsDashboard', () => {
   beforeEach(() => {
-    vi.clearAllMocks();
+    jest.clearAllMocks();
     emailManagementService.getEmailAnalytics.mockResolvedValue(mockAnalyticsData);
     emailManagementService.getEmailPerformanceMetrics.mockResolvedValue({
       success: true,

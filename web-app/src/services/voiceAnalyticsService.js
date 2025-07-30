@@ -3,7 +3,7 @@
  * Tracks voice command usage, recognition failures, and provides analytics data
  */
 
-import Logger from '@/shared/utils/logger';
+import Logger from '@/utils/Logger';
 
 class VoiceAnalyticsService {
   constructor() {

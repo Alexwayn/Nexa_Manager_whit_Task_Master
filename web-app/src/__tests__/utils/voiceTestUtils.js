@@ -107,7 +107,7 @@ export const setupVoiceServiceMocks = () => {
         success: true,
         data: createMockVoiceCommands()
       }),
-      searchCommands: jest.fn().mockResolvedValue({
+      searchVoiceCommands: jest.fn().mockResolvedValue({
         success: true,
         data: []
       }),

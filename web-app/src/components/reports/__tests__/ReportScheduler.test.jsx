@@ -69,7 +69,7 @@ describe('ReportScheduler Component', () => {
   const user = userEvent.setup();
 
   beforeEach(() => {
-    vi.clearAllMocks();
+    jest.clearAllMocks();
     reportingService.getScheduledReports.mockResolvedValue(mockSchedules);
     reportingService.createSchedule.mockResolvedValue(mockNewSchedule);
     reportingService.updateSchedule.mockResolvedValue({ ...mockSchedules[0], enabled: false });
@@ -368,7 +368,7 @@ describe('ReportScheduler Component', () => {
 
   it('deletes schedule with confirmation', async () => {
     // Mock window.confirm
-    global.confirm = vi.fn(() => true);
+    global.confirm = jest.fn(() => true);
 
     render(
       <TestWrapper>
@@ -395,7 +395,7 @@ describe('ReportScheduler Component', () => {
 
   it('cancels delete when user declines confirmation', async () => {
     // Mock window.confirm to return false
-    global.confirm = vi.fn(() => false);
+    global.confirm = jest.fn(() => false);
 
     render(
       <TestWrapper>

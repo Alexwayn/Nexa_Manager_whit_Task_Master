@@ -1,7 +1,6 @@
 import Logger from '@utils/Logger';
 import { supabase } from '@lib/supabaseClient';
-import { getBusinessEmailLogger } from './businessEmailLogger.js';
-import { getClientEmailService } from '../../clients/services/clientEmailService.js';
+
 
 /**
  * Business Email Integration Service
@@ -14,6 +13,15 @@ import { getClientEmailService } from '../../clients/services/clientEmailService
  * - Business email analytics and reporting
  */
 class BusinessEmailIntegration {
+  async getBusinessEmailLogger() {
+    const { getBusinessEmailLogger } = await import('./businessEmailLogger.js');
+    return getBusinessEmailLogger();
+  }
+
+  async getClientEmailService() {
+    const { getClientEmailService } = await import('../../clients/services/clientEmailService.js');
+    return getClientEmailService();
+  }
   constructor() {
     this.emailManagementService = null;
     this.invoiceService = null;
@@ -152,7 +160,7 @@ class BusinessEmailIntegration {
 
       // Log email activity regardless of system used
       if (result.success) {
-        await getBusinessEmailLogger().logInvoiceEmail(userId, invoiceId, {
+        await (await this.getBusinessEmailLogger()).logInvoiceEmail(userId, invoiceId, {
           type: emailType,
           status: 'sent',
           recipientEmail,
@@ -283,7 +291,7 @@ class BusinessEmailIntegration {
 
       // Log email activity regardless of system used
       if (result.success) {
-        await getBusinessEmailLogger().logQuoteEmail(userId, quoteId, {
+        await (await this.getBusinessEmailLogger()).logQuoteEmail(userId, quoteId, {
           type: emailType,
           status: 'sent',
           recipientEmail,
@@ -383,7 +391,7 @@ class BusinessEmailIntegration {
   async getClientEmailHistory(userId, clientId, options = {}) {
     try {
       // Use the dedicated client email service for comprehensive history
-      const result = await getClientEmailService().getClientEmailHistory(userId, clientId, options);
+      const result = await (await this.getClientEmailService()).getClientEmailHistory(userId, clientId, options);
       
       if (!result.success) {
         return result;
@@ -1735,7 +1743,7 @@ class BusinessEmailIntegration {
 
             // Log the activity
             if (result.success && recipient.clientId) {
-              await getBusinessEmailLogger().logActivity(userId, {
+              await (await this.getBusinessEmailLogger()).logActivity(userId, {
                 clientId: recipient.clientId,
                 type: emailType,
                 status: 'sent',

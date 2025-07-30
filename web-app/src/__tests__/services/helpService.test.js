@@ -2,7 +2,7 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { BrowserRouter } from 'react-router-dom';
 import helpService from '@/services/helpService';
-import { Logger } from '@/utils/logger';
+import { Logger } from '@/utils/Logger';
 
 // Mock Logger
 jest.mock('@/utils/logger');
@@ -112,7 +112,7 @@ describe('helpService', () => {
     });
   });
 
-  describe('searchCommands', () => {
+  describe('searchVoiceCommands', () => {
     const mockCommands = [
       {
         id: 'nav-dashboard',
@@ -135,7 +135,7 @@ describe('helpService', () => {
     });
 
     it('searches commands by query', async () => {
-      const result = await helpService.searchCommands('dashboard');
+      const result = await helpService.searchVoiceCommands('dashboard');
 
       expect(result.success).toBe(true);
       expect(result.data).toHaveLength(1);
@@ -143,7 +143,7 @@ describe('helpService', () => {
     });
 
     it('searches commands by category', async () => {
-      const result = await helpService.searchCommands('', 'navigation');
+      const result = await helpService.searchVoiceCommands('', 'navigation');
 
       expect(result.success).toBe(true);
       expect(result.data).toHaveLength(1);
@@ -151,7 +151,7 @@ describe('helpService', () => {
     });
 
     it('searches commands by both query and category', async () => {
-      const result = await helpService.searchCommands('create', 'action');
+      const result = await helpService.searchVoiceCommands('create', 'action');
 
       expect(result.success).toBe(true);
       expect(result.data).toHaveLength(1);
@@ -159,14 +159,14 @@ describe('helpService', () => {
     });
 
     it('returns empty results for no matches', async () => {
-      const result = await helpService.searchCommands('nonexistent');
+      const result = await helpService.searchVoiceCommands('nonexistent');
 
       expect(result.success).toBe(true);
       expect(result.data).toHaveLength(0);
     });
 
     it('searches in command examples', async () => {
-      const result = await helpService.searchCommands('show dashboard');
+      const result = await helpService.searchVoiceCommands('show dashboard');
 
       expect(result.success).toBe(true);
       expect(result.data).toHaveLength(1);
@@ -174,7 +174,7 @@ describe('helpService', () => {
     });
 
     it('performs case-insensitive search', async () => {
-      const result = await helpService.searchCommands('DASHBOARD');
+      const result = await helpService.searchVoiceCommands('DASHBOARD');
 
       expect(result.success).toBe(true);
       expect(result.data).toHaveLength(1);
@@ -535,7 +535,7 @@ describe('helpService', () => {
       localStorage.getItem.mockReturnValue(JSON.stringify(largeCommandSet));
 
       const startTime = Date.now();
-      const result = await helpService.searchCommands('command 500');
+      const result = await helpService.searchVoiceCommands('command 500');
       const endTime = Date.now();
 
       expect(result.success).toBe(true);

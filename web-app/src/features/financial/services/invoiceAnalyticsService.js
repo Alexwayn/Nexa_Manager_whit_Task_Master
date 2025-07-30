@@ -1,17 +1,19 @@
 import { supabase } from '@lib/supabaseClient';
 import { createClient } from '@supabase/supabase-js';
 import Logger from '@utils/Logger';
+import { getEnvVar } from '@/utils/env';
 
 // Create a service role client for bypassing RLS
-const supabaseServiceRole = createClient(
-  import.meta.env.VITE_SUPABASE_URL,
-  import.meta.env.VITE_SUPABASE_SERVICE_ROLE_KEY,
-  {
-    auth: {
-      persistSession: false,
-    },
-  },
-);
+const supabaseUrl = getEnvVar('VITE_SUPABASE_URL');
+const supabaseServiceRoleKey = getEnvVar('VITE_SUPABASE_SERVICE_ROLE_KEY');
+
+const supabaseServiceRole = supabaseUrl && supabaseServiceRoleKey
+  ? createClient(supabaseUrl, supabaseServiceRoleKey, {
+      auth: {
+        persistSession: false,
+      },
+    })
+  : null;
 
 /**
  * Invoice Analytics Service - Advanced analytics and reporting for invoice data
@@ -30,6 +32,14 @@ class InvoiceAnalyticsService {
   }
 
   /**
+   * Get the appropriate Supabase client (service role if available, otherwise regular client)
+   * @returns {Object} Supabase client
+   */
+  _getSupabaseClient() {
+    return supabaseServiceRole || supabase;
+  }
+
+  /**
    * Get comprehensive revenue analytics with trend analysis
    * @param {string} userId - User ID to filter invoices
    * @param {string} startDate - Start date for the analysis period
@@ -39,7 +49,8 @@ class InvoiceAnalyticsService {
    */
   async getRevenueAnalytics(userId, startDate, endDate, groupBy = 'monthly') {
     try {
-      const { data: invoices, error } = await supabaseServiceRole
+      const client = this._getSupabaseClient();
+      const { data: invoices, error } = await client
         .from('invoices')
         .select(
           `
@@ -96,7 +107,8 @@ class InvoiceAnalyticsService {
    */
   async getClientAnalytics(userId, startDate, endDate) {
     try {
-      const { data: invoices, error } = await supabaseServiceRole
+      const client = this._getSupabaseClient();
+      const { data: invoices, error } = await client
         .from('invoices')
         .select(
           `
@@ -149,7 +161,8 @@ class InvoiceAnalyticsService {
    */
   async getInvoicePerformance(userId, startDate, endDate) {
     try {
-      const { data: invoices, error } = await supabaseServiceRole
+      const client = this._getSupabaseClient();
+      const { data: invoices, error } = await client
         .from('invoices')
         .select('*')
         .eq('user_id', userId)
@@ -224,7 +237,8 @@ class InvoiceAnalyticsService {
       futureDate.setMonth(futureDate.getMonth() + months);
 
       // Get unpaid invoices
-      const { data: unpaidInvoices, error: unpaidError } = await supabaseServiceRole
+      const client = this._getSupabaseClient();
+      const { data: unpaidInvoices, error: unpaidError } = await client
         .from('invoices')
         .select('*')
         .eq('user_id', userId)
@@ -264,7 +278,8 @@ class InvoiceAnalyticsService {
    */
   async getAgingReport(userId) {
     try {
-      const { data: invoices, error } = await supabaseServiceRole
+      const client = this._getSupabaseClient();
+      const { data: invoices, error } = await client
         .from('invoices')
         .select('*')
         .eq('user_id', userId)
@@ -323,7 +338,8 @@ class InvoiceAnalyticsService {
       const endOfYear = new Date(today.getFullYear(), 11, 31);
 
       // Get all invoices for this year for the specific user
-      const { data: invoices, error } = await supabaseServiceRole
+      const client = this._getSupabaseClient();
+      const { data: invoices, error } = await client
         .from('invoices')
         .select('*')
         .eq('user_id', userId)

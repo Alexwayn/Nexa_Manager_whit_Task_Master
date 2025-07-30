@@ -1,12 +1,13 @@
 import { supabase } from '@lib/supabaseClient';
 import Logger from '@utils/Logger';
+import { getEnvVar } from '@/utils/env';
 
 /**
  * EmailTrackingService - Handles email tracking, analytics, and pixel generation
  */
 class EmailTrackingService {
   constructor() {
-    this.baseUrl = import.meta.env.VITE_BASE_URL || 'https://your-domain.com';
+    this.baseUrl = getEnvVar('VITE_BASE_URL') || 'https://your-domain.com';
     this.pixelCache = new Map();
     this.eventQueue = [];
     this.batchSize = 10;

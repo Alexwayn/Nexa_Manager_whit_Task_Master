@@ -1,6 +1,7 @@
 // Simplified Supabase client configuration
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import Logger from '@utils/Logger';
+import { getEnvVar, getMode, isDev } from '@/utils/env';
 
 // Translation function - to be integrated with i18n system
 const t = (key: string, params?: Record<string, unknown>): string => {
@@ -34,8 +35,9 @@ const t = (key: string, params?: Record<string, unknown>): string => {
 };
 
 // Get environment variables - NO HARDCODED FALLBACKS for security
-const supabaseUrl: string = import.meta.env.VITE_SUPABASE_URL || '';
-const supabaseAnonKey: string = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
+const supabaseUrl: string = getEnvVar('VITE_SUPABASE_URL') || '';
+const supabaseAnonKey: string = getEnvVar('VITE_SUPABASE_ANON_KEY') || '';
+const supabaseServiceRoleKey: string = getEnvVar('VITE_SUPABASE_SERVICE_ROLE_KEY') || '';
 
 // Validate that required environment variables are set
 if (!supabaseUrl) {
@@ -47,7 +49,7 @@ if (!supabaseAnonKey) {
 }
 
 // Only log in development
-if (import.meta.env.MODE === 'development') {
+if (isDev()) {
   Logger.info(t('supabase.debug.urlLog'), supabaseUrl);
   Logger.info(
     t('supabase.debug.anonKeyLog'),
@@ -61,12 +63,21 @@ export const supabase: SupabaseClient = createClient(supabaseUrl, supabaseAnonKe
     persistSession: true,
     storage: localStorage,
     autoRefreshToken: true,
-    debug: import.meta.env.MODE === 'development', // Only enable debug in development
+    debug: isDev(), // Only enable debug in development
   },
   realtime: {
     timeout: 60000,
   },
 });
+
+// Admin client with service role key (bypasses RLS)
+export const supabaseAdmin: SupabaseClient | null = supabaseServiceRoleKey
+  ? createClient(supabaseUrl, supabaseServiceRoleKey, {
+      auth: {
+        persistSession: false,
+      },
+    })
+  : null;
 
 // Types for connection test result
 interface ConnectionTestResult {
@@ -113,7 +124,7 @@ export const testSupabaseConnection = async (): Promise<ConnectionTestResult> =>
 };
 
 // Development helpers
-if (import.meta.env.MODE === 'development') {
+if (isDev()) {
   (window as any).supabase = supabase;
   (window as any).testSupabaseConnection = testSupabaseConnection;
   Logger.info(t('supabase.debug.clientAvailable'));

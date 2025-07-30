@@ -5,7 +5,7 @@
  */
 
 import { supabase } from '@lib/supabaseClient';
-import Logger from '../utils/logger';
+import Logger from '@/utils/Logger';
 
 // Helper function to get current user from Clerk
 const getCurrentUser = () => {

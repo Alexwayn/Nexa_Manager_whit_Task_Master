@@ -557,6 +557,74 @@ export class ReportingService {
   }
 
   /**
+   * Get available report types
+   */
+  async getReportTypes() {
+    return [
+      { value: 'revenue', label: 'Report Entrate', description: 'Analisi delle entrate per periodo' },
+      { value: 'expenses', label: 'Report Spese', description: 'Analisi delle spese per categoria' },
+      { value: 'client', label: 'Report Clienti', description: 'Analisi dei clienti e progetti' },
+      { value: 'project', label: 'Report Progetti', description: 'Stato e performance dei progetti' }
+    ];
+  }
+
+  /**
+   * Generate a report based on parameters
+   */
+  async generateReport(params: {
+    type: string;
+    startDate: string;
+    endDate: string;
+    format: string;
+    name?: string;
+  }) {
+    // Simulate report generation
+    const reportId = `report_${Date.now()}`;
+    const reportName = params.name || `${params.type}_report_${new Date().toISOString().split('T')[0]}`;
+    
+    return {
+      id: reportId,
+      name: reportName,
+      type: params.type,
+      format: params.format,
+      status: 'completed',
+      downloadUrl: `/api/reports/download/${reportId}.${params.format.toLowerCase()}`,
+      createdAt: new Date().toISOString(),
+      size: '2.5 MB'
+    };
+  }
+
+  /**
+   * Validate report parameters
+   */
+  async validateReportParams(params: {
+    type: string;
+    startDate: string;
+    endDate: string;
+    format: string;
+  }) {
+    const validTypes = ['revenue', 'expenses', 'client', 'project'];
+    const validFormats = ['PDF', 'Excel', 'CSV'];
+    
+    if (!validTypes.includes(params.type)) {
+      return { valid: false, error: 'Invalid report type' };
+    }
+    
+    if (!validFormats.includes(params.format)) {
+      return { valid: false, error: 'Invalid format' };
+    }
+    
+    const startDate = new Date(params.startDate);
+    const endDate = new Date(params.endDate);
+    
+    if (startDate >= endDate) {
+      return { valid: false, error: 'Start date must be before end date' };
+    }
+    
+    return { valid: true };
+  }
+
+  /**
    * Refresh reporting cache (future implementation)
    */
   async refreshCache(): Promise<string> {

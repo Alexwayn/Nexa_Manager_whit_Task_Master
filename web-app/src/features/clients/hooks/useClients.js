@@ -3,6 +3,30 @@ import { useAuth, useUser } from '@clerk/clerk-react';
 import { supabase, withUserContext } from '@lib/supabaseClient';
 // import Logger from '@utils/Logger';
 
+// Environment variable access that works in both Vite and Jest
+const getEnvVar = (key, defaultValue = '') => {
+  // In test environment, use process.env
+  if (typeof process !== 'undefined' && process.env && process.env.NODE_ENV === 'test') {
+    return process.env[key] || defaultValue;
+  }
+  
+  // Try to access import.meta.env safely
+  try {
+    if (typeof window !== 'undefined' && window.importMeta && window.importMeta.env) {
+      return window.importMeta.env[key] || defaultValue;
+    }
+  } catch (e) {
+    // Ignore errors accessing import.meta
+  }
+  
+  // Fallback to process.env if available
+  if (typeof process !== 'undefined' && process.env) {
+    return process.env[key] || defaultValue;
+  }
+  
+  return defaultValue;
+};
+
 // Sample data for development/fallback
 const SAMPLE_CLIENTS = [
   {
@@ -171,21 +195,21 @@ export function useClients() {
 
       // Simple insert with user_id (trigger issue is now fixed)
       console.log('Attempting insert with user_id...');
-      console.log('Supabase URL:', import.meta.env.VITE_SUPABASE_URL);
-      console.log('Supabase Key exists:', !!import.meta.env.VITE_SUPABASE_ANON_KEY);
+      console.log('Supabase URL:', getEnvVar('VITE_SUPABASE_URL'));
+      console.log('Supabase Key exists:', !!getEnvVar('VITE_SUPABASE_ANON_KEY'));
       console.log(
         'Supabase Key first 20 chars:',
-        import.meta.env.VITE_SUPABASE_ANON_KEY?.substring(0, 20),
+        getEnvVar('VITE_SUPABASE_ANON_KEY')?.substring(0, 20),
       );
 
       // Test with a direct fetch to bypass Supabase client
       try {
         console.log('Testing direct fetch...');
-        const directResponse = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/rest/v1/clients`, {
+        const directResponse = await fetch(`${getEnvVar('VITE_SUPABASE_URL')}/rest/v1/clients`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            apikey: import.meta.env.VITE_SUPABASE_ANON_KEY,
+            apikey: getEnvVar('VITE_SUPABASE_ANON_KEY'),
             Prefer: 'return=representation',
           },
           body: JSON.stringify(newClient),

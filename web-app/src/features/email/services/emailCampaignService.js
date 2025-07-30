@@ -2,13 +2,14 @@ import { supabase } from '@lib/supabaseClient';
 import emailTemplateService from './emailTemplateService';
 import emailService from './emailService';
 import Logger from '@utils/Logger';
+import { getEnvVar } from '@/utils/env';
 
 /**
  * EmailCampaignService - Manages bulk email campaigns with tracking and analytics
  */
 class EmailCampaignService {
   constructor() {
-    this.baseTrackingUrl = import.meta.env.VITE_BASE_URL || 'https://your-domain.com';
+    this.baseTrackingUrl = getEnvVar('VITE_BASE_URL') || 'https://your-domain.com';
     this.maxBatchSize = 50; // Maximum emails per batch
     this.sendDelay = 1000; // Delay between batches in milliseconds
   }

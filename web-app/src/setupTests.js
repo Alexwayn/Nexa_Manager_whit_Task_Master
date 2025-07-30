@@ -2,23 +2,90 @@
 // allows you to do things like:
 // expect(element).toHaveTextContent(/react/i)
 // learn more: https://github.com/testing-library/jest-dom
-require('@testing-library/jest-dom');
+import 'regenerator-runtime/runtime';
+// Mock the configure function if it doesn't exist
+import { configure } from '@testing-library/dom';
 
-// Mock environment variables for testing
+// Set up environment variables for tests
+
+// Ensure configure exists and is a function
+if (typeof configure !== 'function') {
+  // Create a mock configure function
+  global.configure = () => {};
+}
+
+require('@testing-library/jest-dom/extend-expect');
+
+// Environment variables setup - ensure these are set before any imports
+process.env.NODE_ENV = 'test';
 process.env.VITE_SUPABASE_URL = 'http://localhost:54321';
 process.env.VITE_SUPABASE_ANON_KEY = 'test-key';
+process.env.VITE_SUPABASE_SERVICE_ROLE_KEY = 'test-service-role-key';
 process.env.VITE_APP_ENV = 'test';
+process.env.VITE_BASE_URL = 'http://localhost:3000';
+process.env.VITE_OPENAI_API_KEY = 'test-openai-key';
+process.env.VITE_QWEN_API_KEY = 'test-qwen-key';
 
-// Handle import.meta for Vite compatibility
-if (typeof global.importMeta === 'undefined') {
-  global.importMeta = {
-    env: {
-      VITE_SUPABASE_URL: 'http://localhost:54321',
-      VITE_SUPABASE_ANON_KEY: 'test-key',
-      VITE_APP_ENV: 'test',
-    },
-  };
-}
+// Enhanced import.meta polyfill for Vite compatibility
+const mockImportMeta = {
+  env: {
+    NODE_ENV: 'test',
+    VITE_SUPABASE_URL: 'http://localhost:54321',
+    VITE_SUPABASE_ANON_KEY: 'test-key',
+    VITE_SUPABASE_SERVICE_ROLE_KEY: 'test-service-role-key',
+    VITE_APP_ENV: 'test',
+    VITE_BASE_URL: 'http://localhost:3000',
+    VITE_OPENAI_API_KEY: 'test-openai-key',
+    VITE_QWEN_API_KEY: 'test-qwen-key',
+    DEV: false,
+    PROD: false,
+    MODE: 'test',
+    
+    // Additional environment variables for comprehensive coverage
+    VITE_API_BASE_URL: 'http://localhost:3001',
+    VITE_WS_URL: 'ws://localhost:8080',
+    VITE_CLERK_PUBLISHABLE_KEY: 'test-clerk-key',
+    VITE_EMAIL_PROVIDER: 'sendgrid',
+    VITE_SENDGRID_API_KEY: 'test-sendgrid-key',
+    VITE_FROM_EMAIL: 'test@example.com',
+    VITE_FROM_NAME: 'Test App',
+    VITE_AWS_ACCESS_KEY_ID: 'test-aws-access-key',
+    VITE_AWS_SECRET_ACCESS_KEY: 'test-aws-secret-key',
+    VITE_AWS_REGION: 'us-east-1',
+    VITE_MAILGUN_API_KEY: 'test-mailgun-key',
+    VITE_MAILGUN_DOMAIN: 'test.mailgun.org',
+    VITE_POSTMARK_SERVER_TOKEN: 'test-postmark-token',
+    VITE_SMTP_HOST: 'smtp.test.com',
+    VITE_SMTP_PORT: '587',
+    VITE_SMTP_USER: 'test@example.com',
+    VITE_SMTP_PASS: 'test-password',
+    VITE_SMTP_SECURE: 'false',
+    VITE_IMAP_HOST: 'imap.test.com',
+    VITE_GMAIL_CLIENT_ID: 'test-gmail-client-id',
+    VITE_GMAIL_CLIENT_SECRET: 'test-gmail-client-secret',
+    VITE_OUTLOOK_CLIENT_ID: 'test-outlook-client-id',
+    VITE_OUTLOOK_CLIENT_SECRET: 'test-outlook-client-secret',
+    VITE_ENCRYPTION_SALT: 'test-salt',
+    VITE_ENABLE_DEMO_MODE: 'true'
+  },
+  url: 'file:///test',
+  resolve: (id) => new URL(id, 'file:///test').href
+};
+
+// Set up global import.meta mock
+global.importMeta = mockImportMeta;
+
+// Mock import.meta syntax for ES modules
+Object.defineProperty(global, 'import', {
+  value: {
+    meta: mockImportMeta
+  },
+  writable: true,
+  configurable: true
+});
+
+// Also update process.env for compatibility
+Object.assign(process.env, mockImportMeta.env);
 
 // Define window.location.origin for JSDOM
 if (typeof window !== 'undefined' && !window.location.origin) {

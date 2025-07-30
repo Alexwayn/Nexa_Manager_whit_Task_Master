@@ -1,4 +1,5 @@
 import Logger from '@utils/Logger';
+import { getEnvVar } from '@/utils/env';
 
 /**
  * EmailProviderService - Comprehensive email provider service with IMAP/SMTP support
@@ -84,7 +85,7 @@ class EmailProviderService {
    * Get the currently active email provider
    */
   getActiveProvider() {
-    const provider = import.meta.env.VITE_EMAIL_PROVIDER || 'sendgrid';
+    const provider = getEnvVar('VITE_EMAIL_PROVIDER') || 'sendgrid';
     return this.providers[provider] ? provider : 'sendgrid';
   }
 
@@ -123,7 +124,7 @@ class EmailProviderService {
    * Send email using SendGrid
    */
   async sendWithSendGrid(emailData) {
-    const apiKey = import.meta.env.VITE_SENDGRID_API_KEY;
+    const apiKey = getEnvVar('VITE_SENDGRID_API_KEY');
     if (!apiKey) {
       return await this.sendWithMockProvider(emailData, 'SendGrid API key not configured');
     }
@@ -137,8 +138,8 @@ class EmailProviderService {
           },
         ],
         from: {
-          email: emailData.from || import.meta.env.VITE_FROM_EMAIL || 'noreply@nexamanager.com',
-          name: emailData.fromName || import.meta.env.VITE_FROM_NAME || 'Nexa Manager',
+          email: emailData.from || getEnvVar('VITE_FROM_EMAIL') || 'noreply@nexamanager.com',
+          name: emailData.fromName || getEnvVar('VITE_FROM_NAME') || 'Nexa Manager',
         },
         content: [
           {
@@ -205,9 +206,9 @@ class EmailProviderService {
    * Send email using AWS SES
    */
   async sendWithSES(emailData) {
-    const accessKey = import.meta.env.VITE_AWS_ACCESS_KEY_ID;
-    const secretKey = import.meta.env.VITE_AWS_SECRET_ACCESS_KEY;
-    const region = import.meta.env.VITE_AWS_REGION || 'us-east-1';
+    const accessKey = getEnvVar('VITE_AWS_ACCESS_KEY_ID');
+    const secretKey = getEnvVar('VITE_AWS_SECRET_ACCESS_KEY');
+    const region = getEnvVar('VITE_AWS_REGION') || 'us-east-1';
 
     if (!accessKey || !secretKey) {
       return await this.sendWithMockProvider(emailData, 'AWS credentials not configured');
@@ -216,7 +217,7 @@ class EmailProviderService {
     try {
       // This is a simplified example - in production, you'd use AWS SDK
       const payload = {
-        Source: emailData.from || import.meta.env.VITE_FROM_EMAIL || 'noreply@nexamanager.com',
+        Source: emailData.from || getEnvVar('VITE_FROM_EMAIL') || 'noreply@nexamanager.com',
         Destination: {
           ToAddresses: [emailData.to],
         },
@@ -261,8 +262,8 @@ class EmailProviderService {
    * Send email using Mailgun
    */
   async sendWithMailgun(emailData) {
-    const apiKey = import.meta.env.VITE_MAILGUN_API_KEY;
-    const domain = import.meta.env.VITE_MAILGUN_DOMAIN;
+    const apiKey = getEnvVar('VITE_MAILGUN_API_KEY');
+    const domain = getEnvVar('VITE_MAILGUN_DOMAIN');
 
     if (!apiKey || !domain) {
       return await this.sendWithMockProvider(emailData, 'Mailgun credentials not configured');
@@ -272,7 +273,7 @@ class EmailProviderService {
       const formData = new FormData();
       formData.append(
         'from',
-        emailData.from || import.meta.env.VITE_FROM_EMAIL || 'noreply@nexamanager.com',
+        emailData.from || getEnvVar('VITE_FROM_EMAIL') || 'noreply@nexamanager.com',
       );
       formData.append('to', emailData.to);
       formData.append('subject', emailData.subject);
@@ -319,7 +320,7 @@ class EmailProviderService {
    * Send email using Postmark
    */
   async sendWithPostmark(emailData) {
-    const serverToken = import.meta.env.VITE_POSTMARK_SERVER_TOKEN;
+    const serverToken = getEnvVar('VITE_POSTMARK_SERVER_TOKEN');
 
     if (!serverToken) {
       return await this.sendWithMockProvider(emailData, 'Postmark server token not configured');
@@ -327,7 +328,7 @@ class EmailProviderService {
 
     try {
       const payload = {
-        From: emailData.from || import.meta.env.VITE_FROM_EMAIL || 'noreply@nexamanager.com',
+        From: emailData.from || getEnvVar('VITE_FROM_EMAIL') || 'noreply@nexamanager.com',
         To: emailData.to,
         Subject: emailData.subject,
         TextBody: emailData.text || this.htmlToText(emailData.html),
@@ -766,11 +767,11 @@ class EmailProviderService {
 
   getSmtpConfig() {
     return {
-      host: import.meta.env.VITE_SMTP_HOST,
-      port: parseInt(import.meta.env.VITE_SMTP_PORT) || 587,
-      username: import.meta.env.VITE_SMTP_USER,
-      password: import.meta.env.VITE_SMTP_PASS,
-      secure: import.meta.env.VITE_SMTP_SECURE === 'true',
+      host: getEnvVar('VITE_SMTP_HOST'),
+      port: parseInt(getEnvVar('VITE_SMTP_PORT')) || 587,
+      username: getEnvVar('VITE_SMTP_USER'),
+      password: getEnvVar('VITE_SMTP_PASS'),
+      secure: getEnvVar('VITE_SMTP_SECURE') === 'true',
     };
   }
 
@@ -935,21 +936,21 @@ class EmailProviderService {
   isProviderConfigured(provider) {
     switch (provider) {
       case 'sendgrid':
-        return !!import.meta.env.VITE_SENDGRID_API_KEY;
+        return !!getEnvVar('VITE_SENDGRID_API_KEY');
       case 'ses':
         return !!(
-          import.meta.env.VITE_AWS_ACCESS_KEY_ID && import.meta.env.VITE_AWS_SECRET_ACCESS_KEY
+          getEnvVar('VITE_AWS_ACCESS_KEY_ID') && getEnvVar('VITE_AWS_SECRET_ACCESS_KEY')
         );
       case 'mailgun':
-        return !!(import.meta.env.VITE_MAILGUN_API_KEY && import.meta.env.VITE_MAILGUN_DOMAIN);
+        return !!(getEnvVar('VITE_MAILGUN_API_KEY') && getEnvVar('VITE_MAILGUN_DOMAIN'));
       case 'postmark':
-        return !!import.meta.env.VITE_POSTMARK_SERVER_TOKEN;
+        return !!getEnvVar('VITE_POSTMARK_SERVER_TOKEN');
       case 'imap_smtp':
-        return !!(import.meta.env.VITE_IMAP_HOST && import.meta.env.VITE_SMTP_HOST);
+        return !!(getEnvVar('VITE_IMAP_HOST') && getEnvVar('VITE_SMTP_HOST'));
       case 'gmail':
-        return !!(import.meta.env.VITE_GMAIL_CLIENT_ID && import.meta.env.VITE_GMAIL_CLIENT_SECRET);
+        return !!(getEnvVar('VITE_GMAIL_CLIENT_ID') && getEnvVar('VITE_GMAIL_CLIENT_SECRET'));
       case 'outlook':
-        return !!(import.meta.env.VITE_OUTLOOK_CLIENT_ID && import.meta.env.VITE_OUTLOOK_CLIENT_SECRET);
+        return !!(getEnvVar('VITE_OUTLOOK_CLIENT_ID') && getEnvVar('VITE_OUTLOOK_CLIENT_SECRET'));
       default:
         return true; // Mock provider is always "configured"
     }
@@ -1033,7 +1034,7 @@ class EmailProviderService {
    * Get webhook URLs for tracking (if supported)
    */
   getWebhookUrls() {
-    const baseUrl = import.meta.env.VITE_BASE_URL || 'https://your-domain.com';
+    const baseUrl = getEnvVar('VITE_BASE_URL') || 'https://your-domain.com';
 
     return {
       sendgrid: `${baseUrl}/api/webhooks/sendgrid`,

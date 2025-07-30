@@ -3,6 +3,34 @@ import websocketService from '../services/websocketService';
 import { getWebSocketUrl, CONNECTION_STATES } from '../shared/utils/websocket';
 import { toast } from 'react-hot-toast';
 
+// Environment variable access that works in both Vite and Jest
+const getEnvVar = (key, defaultValue = '') => {
+  // In test environment, use process.env
+  if (typeof process !== 'undefined' && process.env && process.env.NODE_ENV === 'test') {
+    return process.env[key] || defaultValue;
+  }
+  
+  // Try to access import.meta.env safely
+  try {
+    if (typeof window !== 'undefined' && window.importMeta && window.importMeta.env) {
+      return window.importMeta.env[key] || defaultValue;
+    }
+  } catch (e) {
+    // Ignore errors accessing import.meta
+  }
+  
+  // Fallback to process.env if available
+  if (typeof process !== 'undefined' && process.env) {
+    return process.env[key] || defaultValue;
+  }
+  
+  return defaultValue;
+};
+
+const isDev = () => {
+  return getEnvVar('DEV', false) || getEnvVar('NODE_ENV') === 'development';
+};
+
 /**
  * WebSocket Context
  */
@@ -30,7 +58,7 @@ export const WebSocketProvider = ({ children, enabled = true }) => {
     if (!enabled || wsServiceRef.current) return;
 
     // Skip WebSocket in development if no server URL is configured
-    if (import.meta.env.DEV && !import.meta.env.VITE_WS_URL) {
+    if (isDev() && !getEnvVar('VITE_WS_URL')) {
       console.log('WebSocket disabled in development mode (no VITE_WS_URL configured)');
       setConnectionState(CONNECTION_STATES.DISABLED);
       return;
@@ -90,7 +118,7 @@ export const WebSocketProvider = ({ children, enabled = true }) => {
     console.error('WebSocket error:', error);
     
     // Only show error toast in production
-    if (!import.meta.env.DEV) {
+    if (!isDev()) {
       toast.error('Connection error occurred', {
         duration: 3000,
         position: 'bottom-right'

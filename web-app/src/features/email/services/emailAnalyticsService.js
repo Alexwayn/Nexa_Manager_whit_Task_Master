@@ -1,7 +1,12 @@
 import { supabase } from '@lib/supabaseClient';
-import { getEmailTrackingService } from '@features/email';
-import { getEmailErrorHandler } from '@features/email';
+import { getEmailErrorHandler } from './emailErrorHandler';
+import { getEmailTrackingService } from './emailTrackingService';
 import Logger from '@utils/Logger';
+
+// Get the error handler instance
+const emailErrorHandler = getEmailErrorHandler();
+// Get the tracking service instance
+const emailTrackingService = getEmailTrackingService();
 
 /**
  * EmailAnalyticsService - Comprehensive email analytics and reporting

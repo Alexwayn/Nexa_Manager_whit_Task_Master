@@ -3,10 +3,16 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { QueryClient, QueryProvider } from '@tanstack/react-query';
 import ReportGenerator from '../ReportGenerator';
-import * as reportingService from '@/services\reportingService';
+import { reportingService } from '@/services/reportingService';
 
 // Mock services
-jest.mock('../../../services/reportingService');
+jest.mock('@/services/reportingService', () => ({
+  reportingService: {
+    getReportTypes: jest.fn(),
+    generateReport: jest.fn(),
+    validateReportParams: jest.fn(),
+  }
+}));
 
 // Mock data
 const mockReportTypes = [
@@ -44,10 +50,8 @@ const TestWrapper = ({ children }) => {
 };
 
 describe('ReportGenerator Component', () => {
-  const user = userEvent.setup();
-
   beforeEach(() => {
-    vi.clearAllMocks();
+    jest.clearAllMocks();
     reportingService.getReportTypes.mockResolvedValue(mockReportTypes);
     reportingService.generateReport.mockResolvedValue(mockGeneratedReport);
     reportingService.validateReportParams.mockResolvedValue({ valid: true });
@@ -81,7 +85,7 @@ describe('ReportGenerator Component', () => {
 
     // Check if report types are loaded in select
     const typeSelect = screen.getByLabelText('Tipo Report');
-    await user.click(typeSelect);
+    await userEvent.click(typeSelect);
     
     expect(screen.getByText('Report Entrate')).toBeInTheDocument();
     expect(screen.getByText('Report Spese')).toBeInTheDocument();
@@ -96,7 +100,7 @@ describe('ReportGenerator Component', () => {
 
     // Try to submit without filling required fields
     const generateBtn = screen.getByText('Genera Report');
-    await user.click(generateBtn);
+    await userEvent.click(generateBtn);
 
     await waitFor(() => {
       expect(screen.getByText('Seleziona un tipo di report')).toBeInTheDocument();
@@ -115,11 +119,11 @@ describe('ReportGenerator Component', () => {
     );
 
     // Set end date before start date
-    await user.type(screen.getByLabelText('Data Inizio'), '2024-01-31');
-    await user.type(screen.getByLabelText('Data Fine'), '2024-01-01');
+    await userEvent.type(screen.getByLabelText('Data Inizio'), '2024-01-31');
+    await userEvent.type(screen.getByLabelText('Data Fine'), '2024-01-01');
 
     const generateBtn = screen.getByText('Genera Report');
-    await user.click(generateBtn);
+    await userEvent.click(generateBtn);
 
     await waitFor(() => {
       expect(screen.getByText('La data fine deve essere successiva alla data inizio')).toBeInTheDocument();
@@ -135,19 +139,19 @@ describe('ReportGenerator Component', () => {
 
     // Fill form
     const typeSelect = screen.getByLabelText('Tipo Report');
-    await user.click(typeSelect);
-    await user.click(screen.getByText('Report Entrate'));
+    await userEvent.click(typeSelect);
+    await userEvent.click(screen.getByText('Report Entrate'));
 
-    await user.type(screen.getByLabelText('Data Inizio'), '2024-01-01');
-    await user.type(screen.getByLabelText('Data Fine'), '2024-01-31');
+    await userEvent.type(screen.getByLabelText('Data Inizio'), '2024-01-01');
+    await userEvent.type(screen.getByLabelText('Data Fine'), '2024-01-31');
 
     const formatSelect = screen.getByLabelText('Formato');
-    await user.click(formatSelect);
-    await user.click(screen.getByText('PDF'));
+    await userEvent.click(formatSelect);
+    await userEvent.click(screen.getByText('PDF'));
 
     // Submit form
     const generateBtn = screen.getByText('Genera Report');
-    await user.click(generateBtn);
+    await userEvent.click(generateBtn);
 
     await waitFor(() => {
       expect(reportingService.generateReport).toHaveBeenCalledWith({
@@ -177,14 +181,14 @@ describe('ReportGenerator Component', () => {
 
     // Fill and submit form
     const typeSelect = screen.getByLabelText('Tipo Report');
-    await user.click(typeSelect);
-    await user.click(screen.getByText('Report Entrate'));
+    await userEvent.click(typeSelect);
+    await userEvent.click(screen.getByText('Report Entrate'));
 
-    await user.type(screen.getByLabelText('Data Inizio'), '2024-01-01');
-    await user.type(screen.getByLabelText('Data Fine'), '2024-01-31');
+    await userEvent.type(screen.getByLabelText('Data Inizio'), '2024-01-01');
+    await userEvent.type(screen.getByLabelText('Data Fine'), '2024-01-31');
 
     const generateBtn = screen.getByText('Genera Report');
-    await user.click(generateBtn);
+    await userEvent.click(generateBtn);
 
     // Check loading state
     expect(screen.getByText('Generazione in corso...')).toBeInTheDocument();
@@ -202,14 +206,14 @@ describe('ReportGenerator Component', () => {
 
     // Fill and submit form
     const typeSelect = screen.getByLabelText('Tipo Report');
-    await user.click(typeSelect);
-    await user.click(screen.getByText('Report Entrate'));
+    await userEvent.click(typeSelect);
+    await userEvent.click(screen.getByText('Report Entrate'));
 
-    await user.type(screen.getByLabelText('Data Inizio'), '2024-01-01');
-    await user.type(screen.getByLabelText('Data Fine'), '2024-01-31');
+    await userEvent.type(screen.getByLabelText('Data Inizio'), '2024-01-01');
+    await userEvent.type(screen.getByLabelText('Data Fine'), '2024-01-31');
 
     const generateBtn = screen.getByText('Genera Report');
-    await user.click(generateBtn);
+    await userEvent.click(generateBtn);
 
     await waitFor(() => {
       expect(screen.getByText('Errore nella generazione del report')).toBeInTheDocument();
@@ -225,17 +229,17 @@ describe('ReportGenerator Component', () => {
 
     // Fill form with custom name
     const nameInput = screen.getByLabelText('Nome Report (opzionale)');
-    await user.type(nameInput, 'Custom Revenue Report');
+    await userEvent.type(nameInput, 'Custom Revenue Report');
 
     const typeSelect = screen.getByLabelText('Tipo Report');
-    await user.click(typeSelect);
-    await user.click(screen.getByText('Report Entrate'));
+    await userEvent.click(typeSelect);
+    await userEvent.click(screen.getByText('Report Entrate'));
 
-    await user.type(screen.getByLabelText('Data Inizio'), '2024-01-01');
-    await user.type(screen.getByLabelText('Data Fine'), '2024-01-31');
+    await userEvent.type(screen.getByLabelText('Data Inizio'), '2024-01-01');
+    await userEvent.type(screen.getByLabelText('Data Fine'), '2024-01-31');
 
     const generateBtn = screen.getByText('Genera Report');
-    await user.click(generateBtn);
+    await userEvent.click(generateBtn);
 
     await waitFor(() => {
       expect(reportingService.generateReport).toHaveBeenCalledWith(
@@ -255,18 +259,18 @@ describe('ReportGenerator Component', () => {
 
     // Test Excel format
     const formatSelect = screen.getByLabelText('Formato');
-    await user.click(formatSelect);
-    await user.click(screen.getByText('Excel'));
+    await userEvent.click(formatSelect);
+    await userEvent.click(screen.getByText('Excel'));
 
     const typeSelect = screen.getByLabelText('Tipo Report');
-    await user.click(typeSelect);
-    await user.click(screen.getByText('Report Entrate'));
+    await userEvent.click(typeSelect);
+    await userEvent.click(screen.getByText('Report Entrate'));
 
-    await user.type(screen.getByLabelText('Data Inizio'), '2024-01-01');
-    await user.type(screen.getByLabelText('Data Fine'), '2024-01-31');
+    await userEvent.type(screen.getByLabelText('Data Inizio'), '2024-01-01');
+    await userEvent.type(screen.getByLabelText('Data Fine'), '2024-01-31');
 
     const generateBtn = screen.getByText('Genera Report');
-    await user.click(generateBtn);
+    await userEvent.click(generateBtn);
 
     await waitFor(() => {
       expect(reportingService.generateReport).toHaveBeenCalledWith(
@@ -286,14 +290,14 @@ describe('ReportGenerator Component', () => {
 
     // Fill and submit form
     const typeSelect = screen.getByLabelText('Tipo Report');
-    await user.click(typeSelect);
-    await user.click(screen.getByText('Report Entrate'));
+    await userEvent.click(typeSelect);
+    await userEvent.click(screen.getByText('Report Entrate'));
 
-    await user.type(screen.getByLabelText('Data Inizio'), '2024-01-01');
-    await user.type(screen.getByLabelText('Data Fine'), '2024-01-31');
+    await userEvent.type(screen.getByLabelText('Data Inizio'), '2024-01-01');
+    await userEvent.type(screen.getByLabelText('Data Fine'), '2024-01-31');
 
     const generateBtn = screen.getByText('Genera Report');
-    await user.click(generateBtn);
+    await userEvent.click(generateBtn);
 
     await waitFor(() => {
       expect(screen.getByText('Report generato con successo!')).toBeInTheDocument();
@@ -313,14 +317,14 @@ describe('ReportGenerator Component', () => {
 
     // Generate report
     const typeSelect = screen.getByLabelText('Tipo Report');
-    await user.click(typeSelect);
-    await user.click(screen.getByText('Report Entrate'));
+    await userEvent.click(typeSelect);
+    await userEvent.click(screen.getByText('Report Entrate'));
 
-    await user.type(screen.getByLabelText('Data Inizio'), '2024-01-01');
-    await user.type(screen.getByLabelText('Data Fine'), '2024-01-31');
+    await userEvent.type(screen.getByLabelText('Data Inizio'), '2024-01-01');
+    await userEvent.type(screen.getByLabelText('Data Fine'), '2024-01-31');
 
     const generateBtn = screen.getByText('Genera Report');
-    await user.click(generateBtn);
+    await userEvent.click(generateBtn);
 
     await waitFor(() => {
       expect(screen.getByText('Scarica Report')).toBeInTheDocument();
@@ -334,13 +338,18 @@ describe('ReportGenerator Component', () => {
 // Integration tests
 describe('ReportGenerator Integration', () => {
   it('integrates with report scheduling', async () => {
-    const onSchedule = vi.fn();
+    const onSchedule = jest.fn();
     
     render(
       <TestWrapper>
         <ReportGenerator onSchedule={onSchedule} />
       </TestWrapper>
     );
+
+    // Wait for report types to load
+    await waitFor(() => {
+      expect(reportingService.getReportTypes).toHaveBeenCalled();
+    });
 
     // Generate report and schedule
     const typeSelect = screen.getByLabelText('Tipo Report');

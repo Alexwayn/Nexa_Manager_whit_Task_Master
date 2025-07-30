@@ -119,10 +119,10 @@
     "pdfjs-dist": "^5.1.91",
     "qrcode": "^1.5.4",
     "quill": "^2.0.2",
-    "react": "^18.0.0",
+    "react": "18.3.1",
     "react-chartjs-2": "^5.3.0",
     "react-date-range": "^2.0.1",
-    "react-dom": "^18.0.0",
+    "react-dom": "18.3.1",
     "react-error-boundary": "^4.0.0",
     "react-grid-layout": "^1.5.1",
     "react-hook-form": "^7.61.1",
@@ -141,6 +141,7 @@
     "@axe-core/playwright": "^4.10.2",
     "@axe-core/react": "^4.10.2",
     "@babel/core": "^7.27.4",
+    "@babel/plugin-syntax-import-meta": "^7.10.4",
     "@babel/plugin-transform-class-properties": "^7.27.1",
     "@babel/plugin-transform-runtime": "^7.28.0",
     "@babel/preset-env": "^7.28.0",
@@ -152,9 +153,9 @@
     "@playwright/test": "^1.54.1",
     "@stagewise/toolbar": "^0.5.0",
     "@stagewise/toolbar-react": "^0.5.0",
-    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^16.3.0",
-    "@testing-library/user-event": "^14.6.1",
+    "@testing-library/user-event": "^12.8.3",
     "@types/dompurify": "^3.0.5",
     "@types/jest": "^30.0.0",
     "@types/node": "^24.0.3",
@@ -166,7 +167,8 @@
     "autoprefixer": "^10.4.21",
     "axe-core": "^4.10.3",
     "babel-jest": "^30.0.2",
-    "dotenv": "^16.5.0",
+    "babel-plugin-transform-import-meta": "^2.3.3",
+    "dotenv": "^16.6.1",
     "eslint": "^9.22.0",
     "eslint-config-prettier": "^10.1.5",
     "eslint-plugin-import": "^2.32.0",
@@ -207,8 +209,7 @@
       "npm run validate:feature-api --passWithNoTests"
     ]
   },
-  "resolutions": {
-    "glob": "^10.0.0",
-    "inflight": "^1.0.6"
+  "overrides": {
+    "@testing-library/dom": "8.20.1"
   }
 }

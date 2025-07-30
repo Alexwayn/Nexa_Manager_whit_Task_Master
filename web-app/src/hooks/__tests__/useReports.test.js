@@ -1,5 +1,5 @@
 import { renderHook, waitFor } from '@testing-library/react';
-import { QueryClient, QueryProvider } from '@tanstack/react-query';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useReports, useReportMetrics, useReportGeneration, useScheduledReports } from '../useReports';
 import * as reportingService from '../../services/reportingService';
 
@@ -60,15 +60,15 @@ const createWrapper = () => {
   });
 
   return ({ children }) => (
-    <QueryProvider client={queryClient}>
+    <QueryClientProvider client={queryClient}>
       {children}
-    </QueryProvider>
+    </QueryClientProvider>
   );
 };
 
 describe('useReports Hook', () => {
   beforeEach(() => {
-    vi.clearAllMocks();
+    jest.clearAllMocks();
     reportingService.getReports.mockResolvedValue(mockReports);
   });
 
@@ -162,7 +162,7 @@ describe('useReports Hook', () => {
 
 describe('useReportMetrics Hook', () => {
   beforeEach(() => {
-    vi.clearAllMocks();
+    jest.clearAllMocks();
     reportingService.getReportMetrics.mockResolvedValue(mockMetrics);
   });
 
@@ -244,7 +244,7 @@ describe('useReportMetrics Hook', () => {
 
 describe('useReportGeneration Hook', () => {
   beforeEach(() => {
-    vi.clearAllMocks();
+    jest.clearAllMocks();
     reportingService.generateReport.mockResolvedValue({
       id: 123,
       status: 'processing',
@@ -341,7 +341,7 @@ describe('useReportGeneration Hook', () => {
   });
 
   it('calls onSuccess callback', async () => {
-    const onSuccess = vi.fn();
+    const onSuccess = jest.fn();
     const { result } = renderHook(() => useReportGeneration({ onSuccess }), {
       wrapper: createWrapper()
     });
@@ -366,7 +366,7 @@ describe('useReportGeneration Hook', () => {
 
   it('calls onError callback', async () => {
     const error = new Error('Generation failed');
-    const onError = vi.fn();
+    const onError = jest.fn();
     reportingService.generateReport.mockRejectedValue(error);
 
     const { result } = renderHook(() => useReportGeneration({ onError }), {
@@ -387,7 +387,7 @@ describe('useReportGeneration Hook', () => {
 
 describe('useScheduledReports Hook', () => {
   beforeEach(() => {
-    vi.clearAllMocks();
+    jest.clearAllMocks();
     reportingService.getScheduledReports.mockResolvedValue(mockSchedules);
     reportingService.createSchedule.mockResolvedValue({ id: 2, name: 'New Schedule' });
     reportingService.updateSchedule.mockResolvedValue({ id: 1, enabled: false });

@@ -4,6 +4,7 @@ import '@utils/error-handler';
 import React, { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { initToolbar } from '@stagewise/toolbar';
+import { getMode } from '@/utils/env';
 import './index.css';
 // Form and RTL styles are now imported globally through shared styles
 import './i18n'; // Initialize i18n
@@ -38,7 +39,7 @@ const stagewiseConfig = {
 
 function setupStagewise() {
   // Only initialize once and only in development mode
-  if (import.meta.env.MODE === 'development') {
+  if (getMode() === 'development') {
     initToolbar(stagewiseConfig);
   }
 }

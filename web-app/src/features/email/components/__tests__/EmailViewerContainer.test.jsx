@@ -9,6 +9,8 @@ import { jest } from '@jest/globals';
 import EmailViewerContainer from '../EmailViewerContainer';
 
 // Mock the useEmailViewer hook
+import useEmailViewer from '@hooks/useEmailViewer';
+
 const mockEmailViewerReturn = {
   loading: false,
   error: null,
@@ -28,10 +30,7 @@ const mockEmailViewerReturn = {
   toggleThreadView: jest.fn(),
 };
 
-jest.mock('@hooks/useEmailViewer', () => ({
-  __esModule: true,
-  default: () => mockEmailViewerReturn,
-}));
+jest.mock('@hooks/useEmailViewer', () => jest.fn());
 
 jest.mock('@components/email/EmailViewer', () => {
   return function MockEmailViewer({ 
@@ -177,26 +176,35 @@ describe('EmailViewerContainer', () => {
   });
 
   describe('Rendering', () => {
-    test('should render email viewer container', () => {
+        test('should render email viewer container', async () => {
+            useEmailViewer.mockReturnValue(mockEmailViewerReturn);
       render(<EmailViewerContainer {...defaultProps} />);
 
-      expect(screen.getByTestId('email-viewer')).toBeInTheDocument();
-      expect(screen.getByText('Important Meeting')).toBeInTheDocument();
-      expect(screen.getByText('From: john@example.com')).toBeInTheDocument();
+      await waitFor(() => {
+        expect(screen.getByTestId('email-viewer')).toBeInTheDocument();
+        expect(screen.getByText('Important Meeting')).toBeInTheDocument();
+        expect(screen.getByText('From: john@example.com')).toBeInTheDocument();
+      });
     });
 
-    test('should render with no email', () => {
+        test('should render with no email', async () => {
+            useEmailViewer.mockReturnValue(mockEmailViewerReturn);
       render(<EmailViewerContainer {...defaultProps} email={null} />);
 
-      expect(screen.getByTestId('no-email')).toBeInTheDocument();
-      expect(screen.getByText('No email selected')).toBeInTheDocument();
+      await waitFor(() => {
+        expect(screen.getByTestId('no-email')).toBeInTheDocument();
+        expect(screen.getByText('No email selected')).toBeInTheDocument();
+      });
     });
 
-    test('should apply custom className', () => {
+        test('should apply custom className', async () => {
+            useEmailViewer.mockReturnValue(mockEmailViewerReturn);
       render(<EmailViewerContainer {...defaultProps} className="custom-class" />);
 
-      const container = screen.getByTestId('email-viewer');
-      expect(container).toHaveClass('custom-class');
+      await waitFor(() => {
+        const container = screen.getByTestId('email-viewer');
+        expect(container).toHaveClass('custom-class');
+      });
     });
 
     test('should show thread emails when showThread is true', () => {
