@@ -1,4 +1,4 @@
-const { getEnvVar, isDevelopment, isProduction } = require('../env');
+import { getEnvVar, isDevelopment, isProduction } from '../env.js';
 
 describe('Environment Utility', () => {
   beforeEach(() => {

@@ -27,7 +27,7 @@
     "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/src/__tests__/__mocks__/fileMock.js"
   },
   "transform": {
-    "^.+\\.(js|jsx|ts|tsx)$": ["babel-jest", {
+    "^.+\\.(js|jsx|ts|tsx|mjs)$": ["babel-jest", {
       "presets": [
         ["@babel/preset-env", { "targets": { "node": "current" } }],
         ["@babel/preset-react", { "runtime": "automatic" }],
@@ -69,7 +69,7 @@
   "verbose": true,
   "collectCoverage": false,
   "coverageDirectory": "<rootDir>/coverage/voice",
-  "testResultsProcessor": "<rootDir>/src/__tests__/config/testResultsProcessor.js",
+  "testResultsProcessor": "<rootDir>/src/__tests__/config/testResultsProcessor.cjs",
   "maxWorkers": "50%",
   "cache": true,
   "cacheDirectory": "<rootDir>/node_modules/.cache/jest-voice",

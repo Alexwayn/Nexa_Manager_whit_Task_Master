@@ -1,6 +1,6 @@
-import { supabase } from '@lib/supabaseClient';
+import { supabase } from '@/lib/supabaseClient';
 import { emailManagementService } from '@features/email';
-import Logger from '@utils/Logger';
+import Logger from '@/utils/Logger';
 
 /**
  * Event Invitation Service - Handles invitations, RSVP, and attendee management

@@ -1,5 +1,5 @@
-import { supabase } from '@lib/supabaseClient';
-import Logger from '@utils/Logger';
+import { supabase } from '@/lib/supabaseClient';
+import Logger from '@/utils/Logger';
 
 /**
  * EmailSettingsService - Comprehensive email management system
@@ -703,4 +703,323 @@ export const getEmailSettingsService = () => {
   return emailSettingsServiceInstance;
 };
 
-export default getEmailSettingsService;
+// Create a wrapper that matches the test expectations
+const emailSettingsServiceWrapper = {
+  // General Settings
+  async getSettings(userId) {
+    try {
+      const service = getEmailSettingsService();
+      const settings = await service.getEmailSettings();
+      return {
+        success: true,
+        data: {
+          signature: settings.signature || '',
+          auto_reply_enabled: settings.auto_reply_enabled || false,
+          read_receipts: settings.read_receipts || true,
+          threading_enabled: settings.threading_enabled || true,
+          preview_pane: settings.preview_pane || 'right',
+          emails_per_page: settings.emails_per_page || 25,
+          ...settings
+        }
+      };
+    } catch (error) {
+      return { success: false, error: error.message };
+    }
+  },
+
+  async updateSettings(userId, updates) {
+    try {
+      // Validate settings
+      const validation = this._validateSettings(updates);
+      if (!validation.isValid) {
+        return { success: false, error: `Invalid settings: ${validation.errors.join(', ')}` };
+      }
+
+      const service = getEmailSettingsService();
+      await service.saveEmailSettings({ user_id: userId, ...updates });
+      return { success: true };
+    } catch (error) {
+      return { success: false, error: error.message };
+    }
+  },
+
+  async resetToDefaults(userId) {
+    try {
+      const defaultSettings = {
+        user_id: userId,
+        signature: '',
+        auto_reply_enabled: false,
+        read_receipts: true,
+        threading_enabled: true,
+        preview_pane: 'right',
+        emails_per_page: 25
+      };
+      
+      const service = getEmailSettingsService();
+      await service.saveEmailSettings(defaultSettings);
+      return { success: true };
+    } catch (error) {
+      return { success: false, error: error.message };
+    }
+  },
+
+  // Signature Management
+  async updateSignature(userId, signature) {
+    try {
+      if (signature.length > 1000) {
+        return { success: false, error: 'Signature too long (max 1000 characters)' };
+      }
+
+      // Basic HTML sanitization
+      const sanitizedSignature = signature
+        .replace(/<script[^>]*>.*?<\/script>/gi, '')
+        .replace(/<iframe[^>]*>.*?<\/iframe>/gi, '')
+        .replace(/javascript:/gi, '');
+
+      const service = getEmailSettingsService();
+      await service.saveEmailSettings({ user_id: userId, signature: sanitizedSignature });
+      return { 
+        success: true, 
+        data: { signature: sanitizedSignature }
+      };
+    } catch (error) {
+      return { success: false, error: error.message };
+    }
+  },
+
+  async applySignatureTemplate(userId, template) {
+    try {
+      let signature = template.content;
+      
+      // Replace template variables
+      Object.keys(template.variables).forEach(key => {
+        const placeholder = `{{${key}}}`;
+        signature = signature.replace(new RegExp(placeholder, 'g'), template.variables[key]);
+      });
+
+      const service = getEmailSettingsService();
+      await service.saveEmailSettings({ user_id: userId, signature });
+      return { 
+        success: true, 
+        data: { signature }
+      };
+    } catch (error) {
+      return { success: false, error: error.message };
+    }
+  },
+
+  // Auto-Reply Settings
+  async configureAutoReply(userId, autoReplyConfig) {
+    try {
+      // Validate dates
+      if (autoReplyConfig.start_date && autoReplyConfig.end_date) {
+        const startDate = new Date(autoReplyConfig.start_date);
+        const endDate = new Date(autoReplyConfig.end_date);
+        if (endDate <= startDate) {
+          return { success: false, error: 'Invalid date range: end date must be after start date' };
+        }
+      }
+
+      const service = getEmailSettingsService();
+      await service.saveEmailSettings({ 
+        user_id: userId, 
+        auto_reply_enabled: autoReplyConfig.enabled,
+        auto_reply_config: autoReplyConfig
+      });
+      return { success: true };
+    } catch (error) {
+      return { success: false, error: error.message };
+    }
+  },
+
+  async disableAutoReply(userId) {
+    try {
+      const service = getEmailSettingsService();
+      await service.saveEmailSettings({ 
+        user_id: userId, 
+        auto_reply_enabled: false
+      });
+      return { success: true };
+    } catch (error) {
+      return { success: false, error: error.message };
+    }
+  },
+
+  async isAutoReplyActive(userId) {
+    try {
+      const service = getEmailSettingsService();
+      const settings = await service.getEmailSettings();
+      
+      let active = settings.auto_reply_enabled || false;
+      
+      // Check date range if configured
+      if (active && settings.auto_reply_config) {
+        const config = settings.auto_reply_config;
+        if (config.start_date && config.end_date) {
+          const now = new Date();
+          const startDate = new Date(config.start_date);
+          const endDate = new Date(config.end_date);
+          active = now >= startDate && now <= endDate;
+        }
+      }
+
+      return { 
+        success: true, 
+        data: { active }
+      };
+    } catch (error) {
+      return { success: false, error: error.message };
+    }
+  },
+
+  // Notification Settings
+  async configureNotifications(userId, notificationConfig) {
+    try {
+      // Validate quiet hours
+      if (notificationConfig.quiet_hours_enabled) {
+        const timeRegex = /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/;
+        if (!timeRegex.test(notificationConfig.quiet_hours_start) || 
+            !timeRegex.test(notificationConfig.quiet_hours_end)) {
+          return { success: false, error: 'Invalid time format for quiet hours' };
+        }
+      }
+
+      const service = getEmailSettingsService();
+      await service.saveEmailSettings({ 
+        user_id: userId, 
+        notification_settings: notificationConfig
+      });
+      return { success: true };
+    } catch (error) {
+      return { success: false, error: error.message };
+    }
+  },
+
+  async shouldSendNotification(userId, notificationType) {
+    try {
+      const service = getEmailSettingsService();
+      const settings = await service.getEmailSettings();
+      
+      const notificationSettings = settings.notification_settings || {};
+      let allowed = notificationSettings[notificationType] !== false;
+
+      // Check quiet hours
+      if (allowed && notificationSettings.quiet_hours_enabled) {
+        const now = new Date();
+        const currentHour = now.getHours();
+        const startHour = parseInt(notificationSettings.quiet_hours_start?.split(':')[0] || '22');
+        const endHour = parseInt(notificationSettings.quiet_hours_end?.split(':')[0] || '8');
+        
+        if (startHour > endHour) {
+          // Quiet hours span midnight
+          allowed = !(currentHour >= startHour || currentHour < endHour);
+        } else {
+          allowed = !(currentHour >= startHour && currentHour < endHour);
+        }
+      }
+
+      return { 
+        success: true, 
+        data: { allowed }
+      };
+    } catch (error) {
+      return { success: false, error: error.message };
+    }
+  },
+
+  // Display Settings
+  async configureDisplay(userId, displayConfig) {
+    try {
+      // Validate display settings
+      const validation = this._validateDisplaySettings(displayConfig);
+      if (!validation.isValid) {
+        return { success: false, error: `Invalid display settings: ${validation.errors.join(', ')}` };
+      }
+
+      const service = getEmailSettingsService();
+      await service.saveEmailSettings({ 
+        user_id: userId, 
+        display_settings: displayConfig
+      });
+      return { success: true };
+    } catch (error) {
+      return { success: false, error: error.message };
+    }
+  },
+
+  async getTheme(userId) {
+    try {
+      const service = getEmailSettingsService();
+      const settings = await service.getEmailSettings();
+      const theme = settings.display_settings?.theme || 'light';
+      
+      return { 
+        success: true, 
+        data: { theme }
+      };
+    } catch (error) {
+      return { success: false, error: error.message };
+    }
+  },
+
+  // Security Settings
+  async configureSecurity(userId, securityConfig) {
+    try {
+      const service = getEmailSettingsService();
+      await service.saveEmailSettings({ 
+        user_id: userId, 
+        security_settings: securityConfig
+      });
+      return { success: true };
+    } catch (error) {
+      return { success: false, error: error.message };
+    }
+  },
+
+  // Validation helpers
+  _validateSettings(settings) {
+    const errors = [];
+    
+    if (settings.emails_per_page !== undefined) {
+      if (settings.emails_per_page < 1 || settings.emails_per_page > 100) {
+        errors.push('emails_per_page must be between 1 and 100');
+      }
+    }
+    
+    if (settings.preview_pane !== undefined) {
+      const validPositions = ['left', 'right', 'bottom', 'hidden'];
+      if (!validPositions.includes(settings.preview_pane)) {
+        errors.push('preview_pane must be one of: left, right, bottom, hidden');
+      }
+    }
+
+    return {
+      isValid: errors.length === 0,
+      errors
+    };
+  },
+
+  _validateDisplaySettings(settings) {
+    const errors = [];
+    
+    if (settings.emails_per_page !== undefined) {
+      if (settings.emails_per_page < 1 || settings.emails_per_page > 200) {
+        errors.push('emails_per_page must be between 1 and 200');
+      }
+    }
+    
+    if (settings.theme !== undefined) {
+      const validThemes = ['light', 'dark', 'auto'];
+      if (!validThemes.includes(settings.theme)) {
+        errors.push('theme must be one of: light, dark, auto');
+      }
+    }
+
+    return {
+      isValid: errors.length === 0,
+      errors
+    };
+  }
+};
+
+export default emailSettingsServiceWrapper;

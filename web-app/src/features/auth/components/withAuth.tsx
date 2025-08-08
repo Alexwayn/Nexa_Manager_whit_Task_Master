@@ -2,7 +2,7 @@ import { ComponentType } from 'react';
 import { useAuth, useUser } from '@clerk/clerk-react';
 import { useOrganizationContext } from '@/shared/hooks';
 import { Navigate, useLocation } from 'react-router-dom';
-import Logger from '@utils/Logger';
+import Logger from '@/utils/Logger';
 
 interface AuthProps {
   isAuthenticated: boolean;

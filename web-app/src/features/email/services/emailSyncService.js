@@ -1,8 +1,8 @@
 import { emailManagementService } from '@features/email';
 import { emailProviderService } from '@features/email';
 import { emailCacheService } from '@features/email';
-import { supabase } from '@lib/supabaseClient';
-import Logger from '@utils/Logger';
+import { supabase } from '@/lib/supabaseClient';
+import Logger from '@/utils/Logger';
 
 /**
  * Email Synchronization Service

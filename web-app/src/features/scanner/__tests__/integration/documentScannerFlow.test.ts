@@ -81,6 +81,7 @@ Object.defineProperty(window, 'localStorage', {
 });
 
 describe('Document Scanner Integration Tests', () => {
+  jest.useFakeTimers();
   let ocrService: AIOCRService;
   let imageProcessingService: ImageProcessingService;
   let documentStorageService: DocumentStorageService;
@@ -124,7 +125,7 @@ describe('Document Scanner Integration Tests', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    jest.useFakeTimers();
+
 
     // Setup DOM mocks
     mockCanvas.getContext.mockReturnValue(mockContext);
@@ -150,7 +151,6 @@ describe('Document Scanner Integration Tests', () => {
   });
 
   afterEach(() => {
-    jest.useRealTimers();
     batchProcessingService.dispose();
     rateLimitingService.dispose();
     cacheService.dispose();

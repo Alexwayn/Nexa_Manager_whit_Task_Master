@@ -6,8 +6,8 @@ import {
   PlusIcon,
 } from '@heroicons/react/24/outline';
 import ReceiptUpload from '@components/ReceiptUpload';
-import { notify } from '@lib/uiUtils';
-import Logger from '@utils/Logger';
+import { notify } from '@/lib/uiUtils';
+import Logger from '@/utils/Logger';
 import { useTranslation } from 'react-i18next';
 
 /**

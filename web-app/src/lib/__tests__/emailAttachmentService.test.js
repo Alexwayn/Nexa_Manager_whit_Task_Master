@@ -2,12 +2,12 @@
  * @jest-environment jsdom
  */
 
-import emailAttachmentService from '../emailAttachmentService';
+import emailAttachmentService from '../../features/email/services/emailAttachmentService';
 import { supabase } from '../supabaseClient';
-import Logger from '@utils/Logger';
+import Logger from '@/utils/Logger';
 
 // Mock dependencies
-jest.mock('../supabaseClient', () => ({
+jest.mock('@/lib/supabaseClient', () => ({
   supabase: {
     from: jest.fn(() => ({
       select: jest.fn(() => ({
@@ -53,7 +53,7 @@ jest.mock('../supabaseClient', () => ({
   },
 }));
 
-jest.mock('@utils/Logger', () => ({
+jest.mock('@/utils/Logger', () => ({
   error: jest.fn(),
   warn: jest.fn(),
   info: jest.fn(),

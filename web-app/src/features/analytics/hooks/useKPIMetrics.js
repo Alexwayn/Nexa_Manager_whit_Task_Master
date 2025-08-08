@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useUser } from '@clerk/clerk-react';
-import Logger from '@utils/Logger';
+import Logger from '@/utils/Logger';
 
 /**
  * Custom hook for managing KPI metrics

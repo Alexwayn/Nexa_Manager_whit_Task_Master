@@ -3,7 +3,7 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { QueryClient, QueryProvider } from '@tanstack/react-query';
 import ReportScheduler from '../ReportScheduler';
-import * as reportingService from '@/services\reportingService';
+import * as reportingService from '@/services/reportingService';
 
 // Mock services
 jest.mock('../../../services/reportingService');

@@ -1,4 +1,4 @@
-import { supabase } from '@lib/supabaseClient';
+import { supabase } from '@/lib/supabaseClient';
 import Logger from '@shared/utils/logger';
 import emailManagementService from './emailManagementService';
 import emailTemplateService from './emailTemplateService';

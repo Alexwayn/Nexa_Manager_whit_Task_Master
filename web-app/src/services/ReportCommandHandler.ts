@@ -1,12 +1,12 @@
 import { reportingService } from '@shared/services';
-import Logger from '@utils/Logger';
+import Logger from '@/utils/Logger';
 
 /**
  * ReportCommandHandler - Handles voice commands for report generation and management
  * Supports revenue reports, client reports, tax reports, aging reports, and custom reports
  */
-export class ReportCommandHandler {
-  private reportCommands = {
+
+export const reportCommands = {
     // Revenue report commands
     'generate revenue report': { action: 'generateRevenue', type: 'revenue' },
     'create revenue report': { action: 'generateRevenue', type: 'revenue' },
@@ -74,61 +74,49 @@ export class ReportCommandHandler {
     'show reports': { action: 'navigate', destination: '/reports' },
     'reports page': { action: 'navigate', destination: '/reports' },
     'reports dashboard': { action: 'navigate', destination: '/reports' },
-  };
+};
 
-  private searchCommands = [
+export const searchCommands = [
     'find report', 'search report', 'look for report', 'show me report',
     'get report', 'display report', 'view report'
-  ];
+];
 
-  private helpCommands = [
+export const helpCommands = [
     'report help', 'help with reports', 'report commands', 'what reports can I generate',
     'how to create report', 'report options', 'available reports'
-  ];
+];
 
-  /**
-   * Get all report commands
-   */
-  getAllCommands() {
-    return {
-      reportCommands: this.reportCommands,
-      searchCommands: this.searchCommands,
-      helpCommands: this.helpCommands
-    };
-  }
+export const allReportCommands = Object.keys(reportCommands);
 
-  /**
-   * Process voice command for reports
-   */
-  async processCommand(command: string): Promise<any> {
+export async function processReportCommand(command: string): Promise<any> {
     try {
       const normalizedCommand = command.toLowerCase().trim();
       
       // Check for exact matches first
-      if (this.reportCommands[normalizedCommand]) {
-        return await this.executeCommand(this.reportCommands[normalizedCommand], command);
+      if (reportCommands[normalizedCommand]) {
+        return await executeReportCommand(reportCommands[normalizedCommand], command);
       }
 
       // Check for partial matches
-      const partialMatch = this.findPartialMatch(normalizedCommand);
+      const partialMatch = findPartialMatch(normalizedCommand);
       if (partialMatch) {
-        return await this.executeCommand(partialMatch, command);
+        return await executeReportCommand(partialMatch, command);
       }
 
       // Check for search commands
-      const searchMatch = this.searchCommands.find(searchCmd => 
+      const searchMatch = searchCommands.find(searchCmd => 
         normalizedCommand.includes(searchCmd)
       );
       if (searchMatch) {
-        return this.handleSearchCommand(normalizedCommand);
+        return handleSearchCommand(normalizedCommand);
       }
 
       // Check for help commands
-      const helpMatch = this.helpCommands.find(helpCmd => 
+      const helpMatch = helpCommands.find(helpCmd => 
         normalizedCommand.includes(helpCmd)
       );
       if (helpMatch) {
-        return this.handleHelpCommand();
+        return handleHelpCommand();
       }
 
       return {
@@ -145,11 +133,8 @@ export class ReportCommandHandler {
     }
   }
 
-  /**
-   * Find partial matches for commands
-   */
-  private findPartialMatch(command: string) {
-    for (const [key, value] of Object.entries(this.reportCommands)) {
+function findPartialMatch(command: string) {
+    for (const [key, value] of Object.entries(reportCommands)) {
       if (command.includes(key) || key.includes(command)) {
         return value;
       }
@@ -157,44 +142,41 @@ export class ReportCommandHandler {
     return null;
   }
 
-  /**
-   * Execute the matched command
-   */
-  private async executeCommand(commandConfig: any, originalCommand: string) {
+export async function executeReportCommand(commandConfig: any, originalCommand: string) {
     try {
       switch (commandConfig.action) {
         case 'generateRevenue':
-          return await this.handleGenerateRevenue(commandConfig, originalCommand);
+          return await handleGenerateRevenue(commandConfig, originalCommand);
         
         case 'generateClient':
-          return await this.handleGenerateClient(commandConfig, originalCommand);
+          return await handleGenerateClient(commandConfig, originalCommand);
         
         case 'generateTax':
-          return await this.handleGenerateTax(commandConfig, originalCommand);
+          return await handleGenerateTax(commandConfig, originalCommand);
         
         case 'generateAging':
-          return await this.handleGenerateAging(commandConfig, originalCommand);
+          return await handleGenerateAging(commandConfig, originalCommand);
         
         case 'getAnalytics':
-          return await this.handleGetAnalytics();
+          return await handleGetAnalytics();
         
         case 'getForecast':
-          return await this.handleGetForecast();
+          return await handleGetForecast();
         
         case 'generateCustom':
-          return await this.handleGenerateCustom(originalCommand);
+          return await handleGenerateCustom(originalCommand);
         
         case 'scheduleReport':
-          return await this.handleScheduleReport(commandConfig, originalCommand);
+          return await handleScheduleReport(commandConfig, originalCommand);
         
         case 'getScheduled':
-          return await this.handleGetScheduled();
+          return await handleGetScheduled();
         
         case 'navigate':
-          return this.handleNavigation(commandConfig.destination);
+          return handleNavigation(commandConfig.destination);
         
         case 'setFormat':
-          return this.handleSetFormat(commandConfig.format);
+          return handleSetFormat(commandConfig.format);
         
         default:
           return {
@@ -214,12 +196,12 @@ export class ReportCommandHandler {
   /**
    * Handle revenue report generation
    */
-  private async handleGenerateRevenue(config: any, command: string) {
+  async function handleGenerateRevenue(config: any, command: string) {
     try {
       // Extract date range from command if present
-      const dateRange = this.extractDateRange(command);
-      const format = this.extractFormat(command) || 'pdf';
-      const groupBy = config.groupBy || this.extractGroupBy(command) || 'monthly';
+      const dateRange = extractDateRange(command);
+      const format = extractFormat(command) || 'pdf';
+      const groupBy = config.groupBy || extractGroupBy(command) || 'monthly';
 
       const result = await reportingService.generateRevenueReport(
         dateRange.startDate,
@@ -254,7 +236,7 @@ export class ReportCommandHandler {
   /**
    * Handle client report generation
    */
-  private async handleGenerateClient(config: any, command: string) {
+  async function handleGenerateClient(config: any, command: string) {
     try {
       const dateRange = this.extractDateRange(command);
       const format = this.extractFormat(command) || 'pdf';
@@ -291,7 +273,7 @@ export class ReportCommandHandler {
   /**
    * Handle tax report generation
    */
-  private async handleGenerateTax(config: any, command: string) {
+  async function handleGenerateTax(config: any, command: string) {
     try {
       const dateRange = this.extractDateRange(command);
       const format = this.extractFormat(command) || 'pdf';
@@ -328,7 +310,7 @@ export class ReportCommandHandler {
   /**
    * Handle aging report generation
    */
-  private async handleGenerateAging(config: any, command: string) {
+  async function handleGenerateAging(config: any, command: string) {
     try {
       const format = this.extractFormat(command) || 'pdf';
 
@@ -360,7 +342,7 @@ export class ReportCommandHandler {
   /**
    * Handle financial analytics request
    */
-  private async handleGetAnalytics() {
+  async function handleGetAnalytics() {
     try {
       const result = await reportingService.getFinancialAnalytics();
 
@@ -389,7 +371,7 @@ export class ReportCommandHandler {
   /**
    * Handle forecast data request
    */
-  private async handleGetForecast() {
+  async function handleGetForecast() {
     try {
       const result = await reportingService.getForecastData();
 
@@ -418,7 +400,7 @@ export class ReportCommandHandler {
   /**
    * Handle custom report generation
    */
-  private async handleGenerateCustom(command: string) {
+  async function handleGenerateCustom(command: string) {
     try {
       // For custom reports, we'll need to guide the user through configuration
       return {
@@ -438,10 +420,10 @@ export class ReportCommandHandler {
   /**
    * Handle report scheduling
    */
-  private async handleScheduleReport(config: any, command: string) {
+  async function handleScheduleReport(config: any, command: string) {
     try {
-      const reportType = config.reportType || this.extractReportType(command);
-      const frequency = this.extractFrequency(command) || 'monthly';
+      const reportType = config.reportType || extractReportType(command);
+      const frequency = extractFrequency(command) || 'monthly';
       const format = this.extractFormat(command) || 'pdf';
 
       if (!reportType) {
@@ -478,7 +460,7 @@ export class ReportCommandHandler {
   /**
    * Handle getting scheduled reports
    */
-  private async handleGetScheduled() {
+  async function handleGetScheduled() {
     try {
       const result = await reportingService.getScheduledReports();
 
@@ -501,7 +483,7 @@ export class ReportCommandHandler {
   /**
    * Handle navigation to reports page
    */
-  private handleNavigation(destination: string) {
+  function handleNavigation(destination: string) {
     return {
       success: true,
       message: `Navigating to ${destination}`,
@@ -513,19 +495,25 @@ export class ReportCommandHandler {
   /**
    * Handle format setting
    */
-  private handleSetFormat(format: string) {
+  async function handleSetFormat(format: string) {
+    if (!format) {
+      return {
+        success: false,
+        message: 'No format specified. Please specify a format like PDF, CSV, or Excel.'
+      };
+    }
     return {
       success: true,
       message: `Export format set to ${format.toUpperCase()}`,
       action: 'formatSet',
-      format
+      format: format
     };
   }
 
   /**
    * Handle search commands
    */
-  private handleSearchCommand(command: string) {
+  function handleSearchCommand(command: string) {
     const searchTerm = command.replace(/find report|search report|look for report|show me report|get report|display report|view report/g, '').trim();
     
     return {
@@ -539,7 +527,7 @@ export class ReportCommandHandler {
   /**
    * Handle help commands
    */
-  private handleHelpCommand() {
+  function handleHelpCommand() {
     const helpMessage = `
 Available report commands:
 • "Generate revenue report" - Create revenue analytics
@@ -567,7 +555,7 @@ You can also specify:
 
   // Utility methods for extracting information from commands
 
-  private extractDateRange(command: string) {
+  function extractDateRange(command: string) {
     const today = new Date();
     const currentYear = today.getFullYear();
     const currentMonth = today.getMonth();
@@ -597,21 +585,21 @@ You can also specify:
     };
   }
 
-  private extractFormat(command: string): string | null {
+  function extractFormat(command: string): string | null {
     if (command.includes('pdf') || command.includes('PDF')) return 'pdf';
     if (command.includes('csv') || command.includes('CSV')) return 'csv';
     if (command.includes('excel') || command.includes('Excel')) return 'excel';
     return null;
   }
 
-  private extractGroupBy(command: string): string | null {
+  function extractGroupBy(command: string): string | null {
     if (command.includes('daily')) return 'daily';
     if (command.includes('weekly')) return 'weekly';
     if (command.includes('monthly')) return 'monthly';
     return null;
   }
 
-  private extractReportType(command: string): string | null {
+  function extractReportType(command: string): string | null {
     if (command.includes('revenue')) return 'revenue';
     if (command.includes('client')) return 'client';
     if (command.includes('tax')) return 'tax';
@@ -619,20 +607,9 @@ You can also specify:
     return null;
   }
 
-  private extractFrequency(command: string): string | null {
+  function extractFrequency(command: string): string | null {
     if (command.includes('daily')) return 'daily';
     if (command.includes('weekly')) return 'weekly';
     if (command.includes('monthly')) return 'monthly';
     return null;
   }
-}
-
-// Export singleton instance
-export const reportCommandHandler = new ReportCommandHandler();
-
-// Export command collections for integration with voice commands
-export const allReportCommands = reportCommandHandler.getAllCommands();
-
-// Export individual command processing functions
-export const processReportCommand = (command: string) => reportCommandHandler.processCommand(command);
-export const executeReportCommand = (command: string) => reportCommandHandler.processCommand(command);

@@ -1,16 +1,17 @@
 import React from 'react';
 import { ErrorBoundary as ReactErrorBoundary } from 'react-error-boundary';
 import { ExclamationTriangleIcon, ArrowPathIcon } from '@heroicons/react/24/outline';
-import Logger from '@utils/Logger';
+import Logger from '@/utils/Logger';
+import { isDev } from '@/utils/env';
 
-import { captureError, addBreadcrumb, Sentry } from '@lib/sentry';
+import { captureError, addBreadcrumb, Sentry } from '@/lib/sentry';
 
 /**
  * Error fallback component for displaying user-friendly error messages
  */
 const ErrorFallback = ({ error, resetErrorBoundary }) => {
   // Log error to console for development
-  if (import.meta.env.DEV) {
+  if (isDev()) {
     const errorMessage = typeof error?.message === 'string' ? error.message : String(error?.message || 'Unknown error');
     const errorStack = typeof error?.stack === 'string' ? error.stack : String(error?.stack || 'No stack trace');
     const errorName = typeof error?.name === 'string' ? error.name : String(error?.name || 'Error');
@@ -63,7 +64,7 @@ const ErrorFallback = ({ error, resetErrorBoundary }) => {
           </h1>
           <p className='mt-2 text-sm text-gray-600 dark:text-gray-400'>{errorInfo.message}</p>
 
-          {import.meta.env.DEV && (
+          {isDev() && (
             <details className='mt-4 text-left'>
               <summary className='cursor-pointer text-sm text-gray-500 hover:text-gray-700'>
                 Show error details (Development)
@@ -146,7 +147,7 @@ const onError = (error, errorInfo) => {
   );
 
   // In development, also log component stack for debugging
-  if (import.meta.env.DEV && errorInfo?.componentStack) {
+  if (isDev() && errorInfo?.componentStack) {
     console.group('Component Stack Trace:');
     console.log(errorInfo.componentStack);
     console.groupEnd();
@@ -181,7 +182,7 @@ const ErrorBoundary = ({
     addBreadcrumb('Error boundary reset', 'user_action', { component }, 'info');
 
     // Clear any error state if needed
-    if (import.meta.env.DEV) {
+    if (isDev()) {
       console.log(`Error boundary reset for component: ${component}`);
     }
   }, [component]);

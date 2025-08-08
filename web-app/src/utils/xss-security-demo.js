@@ -1,7 +1,7 @@
 // For Node.js environment, we need to create a DOM implementation
 import DOMPurify from 'dompurify';
 import { JSDOM } from 'jsdom';
-import Logger from '@utils/Logger';
+import Logger from '@/utils/Logger';
 
 // Create DOMPurify instance for Node.js
 const window = new JSDOM('').window;

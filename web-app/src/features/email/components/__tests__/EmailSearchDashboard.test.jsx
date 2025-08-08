@@ -116,8 +116,8 @@ jest.mock('../../ui/Badge', () => ({
 }));
 
 // Import the mocked hooks
-import { useEmailSearch } from '@/features\hooks\useEmailSearch';
-import { useEmails } from '@/features\hooks\useEmails';
+import { useEmailSearch } from '@/features/hooks/useEmailSearch';
+import { useEmails } from '@/features/hooks/useEmails';
 
 describe('EmailSearchDashboard', () => {
   // Mock hook return values

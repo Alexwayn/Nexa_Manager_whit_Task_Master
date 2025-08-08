@@ -6,7 +6,11 @@
 import { toast } from 'react-hot-toast';
 import { format, addDays, addWeeks, addMonths, parseISO, isValid } from 'date-fns';
 import { getEvents, createEvent, updateEvent, deleteEvent, EVENT_TYPES, EVENT_PRIORITIES } from '@features/calendar/services/eventService';
-import Logger from '@utils/Logger';
+import Logger from '@/utils/Logger';
+
+
+
+
 
 export interface CalendarCommandContext {
   navigate?: (path: string) => void;

@@ -11,7 +11,7 @@ import {
   ExclamationTriangleIcon,
   XMarkIcon,
 } from '@heroicons/react/24/outline';
-import Logger from '@utils/Logger';
+import Logger from '@/utils/Logger';
 
 const QuoteLifecycleManager = ({
   isOpen,

@@ -4,7 +4,7 @@
  * Updated: 2025-01-25 - Simplified version for immediate functionality
  */
 
-import { supabase } from '@lib/supabaseClient';
+import { supabase } from '@/lib/supabaseClient';
 import Logger from '@/utils/Logger';
 
 // Helper function to get current user from Clerk

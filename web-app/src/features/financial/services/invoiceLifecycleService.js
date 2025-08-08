@@ -1,4 +1,4 @@
-import { supabase } from '@lib/supabaseClient';
+import { supabase } from '@/lib/supabaseClient';
 import { InvoiceService, INVOICE_STATUS } from './invoiceService';
 import { emailService } from '@features/email';
 import Logger from '@shared/utils/logger';

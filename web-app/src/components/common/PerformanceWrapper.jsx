@@ -1,5 +1,5 @@
 import React, { memo, useEffect, useRef, Profiler } from 'react';
-import Logger from '@utils/Logger';
+import Logger from '@/utils/Logger';
 
 // Performance monitoring hook
 const usePerformanceMonitor = componentName => {

@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useUser } from '@clerk/clerk-react';
 import { QuoteApprovalService } from '../services/quoteApprovalService';
 import QuoteStatusBadge from './QuoteStatusBadge';
-import Logger from '@utils/Logger';
+import Logger from '@/utils/Logger';
 import { Plus, CheckCircle, XCircle, Clock, Send, Ban, RotateCcw, FileText } from 'lucide-react';
 
 /**

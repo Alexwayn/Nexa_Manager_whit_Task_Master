@@ -16,7 +16,7 @@ import {
   HomeIcon,
   XMarkIcon,
 } from '@heroicons/react/24/outline';
-import { notify } from '@lib/uiUtils';
+import { notify } from '@/lib/uiUtils';
 
 export default function Scan() {
   const { t } = useTranslation('scan');

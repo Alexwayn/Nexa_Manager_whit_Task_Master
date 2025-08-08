@@ -1,4 +1,4 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import EmailAnalyticsDashboard from '@components/EmailAnalyticsDashboard';
 import emailManagementService from '@features/email';
@@ -154,10 +154,11 @@ describe('EmailAnalyticsDashboard', () => {
   it('should handle date range changes', async () => {
     renderWithRouter(<EmailAnalyticsDashboard />);
 
-    const datePicker = screen.getByTestId('date-picker');
     const selectButton = screen.getByText('Select Date Range');
     
-    fireEvent.click(selectButton);
+    await act(async () => {
+      fireEvent.click(selectButton);
+    });
 
     await waitFor(() => {
       expect(emailManagementService.getEmailAnalytics).toHaveBeenCalledWith(

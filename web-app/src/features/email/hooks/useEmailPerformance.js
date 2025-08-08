@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { emailCacheService } from '@features/email';
-import Logger from '@utils/Logger';
+import Logger from '@/utils/Logger';
 
 /**
  * useEmailPerformance - Hook for optimized email loading and caching

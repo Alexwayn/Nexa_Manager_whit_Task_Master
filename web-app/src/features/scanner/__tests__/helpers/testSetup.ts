@@ -37,15 +37,20 @@ export const setupScannerTestEnvironment = () => {
   setupMockCanvas();
   setupMockLocalStorage();
   
-  // Mock timers
-  jest.useFakeTimers();
+  // Mock timers (only if not already mocked)
+  if (!jest.isMockFunction(setTimeout)) {
+    jest.useFakeTimers();
+  }
   
   // Clear all mocks
   jest.clearAllMocks();
 };
 
 export const cleanupScannerTestEnvironment = () => {
-  jest.useRealTimers();
+  // Only restore real timers if fake timers are currently active
+  if (jest.isMockFunction(setTimeout)) {
+    jest.useRealTimers();
+  }
   jest.clearAllMocks();
   jest.restoreAllMocks();
 };

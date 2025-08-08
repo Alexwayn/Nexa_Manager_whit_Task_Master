@@ -1,19 +1,10 @@
-import { createClient } from '@supabase/supabase-js';
 import { useAuth } from '@clerk/clerk-react';
 import { useMemo } from 'react';
-import Logger from '@utils/Logger';
+import Logger from '@/utils/Logger';
+import { supabase } from './supabaseClient.js'; // Reuse the main client
+import { getEnvVar } from '@/utils/env';
 
-// Use environment variables with Jest compatibility
-const getEnvVar = (varName) => {
-  // In Jest environment or Node.js, use process.env
-  if (typeof process !== 'undefined' && process.env) {
-    return process.env[varName];
-  }
-  
-  // This will be handled by the transformer for browser environments
-  return import.meta.env[varName];
-};
-
+// Get environment variables for creating authenticated clients
 const supabaseUrl = getEnvVar('VITE_SUPABASE_URL');
 const supabaseAnonKey = getEnvVar('VITE_SUPABASE_ANON_KEY');
 
@@ -21,12 +12,8 @@ if (!supabaseUrl || !supabaseAnonKey) {
   throw new Error('Missing Supabase environment variables');
 }
 
-// Create the base Supabase client (singleton)
-export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
-  auth: {
-    persistSession: false, // We're using Clerk for auth, not Supabase auth
-  },
-});
+// Re-export the main client for compatibility
+export { supabase };
 
 /**
  * Hook to get a Supabase client with Clerk authentication
@@ -35,51 +22,58 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
 export const useSupabaseWithClerk = () => {
   const { getToken } = useAuth();
 
-  // Create a memoized client to avoid multiple instances
+  // Return a wrapper that adds auth headers to the main client
   const authenticatedClient = useMemo(() => {
-    return createClient(supabaseUrl, supabaseAnonKey, {
-      auth: {
-        persistSession: false,
-      },
-      global: {
-        headers: async () => {
-          try {
-            console.log('🔍 [useSupabaseWithClerk] Attempting to get Clerk token...');
+    // Create a proxy that intercepts requests and adds auth headers
+    return new Proxy(supabase, {
+      get(target, prop) {
+        if (typeof target[prop] === 'function') {
+          return async (...args) => {
+            try {
+              console.log('🔍 [useSupabaseWithClerk] Attempting to get Clerk token...');
 
-            // Try with template name first
-            let token = await getToken({ template: 'supabase' });
-            console.log('🎯 [useSupabaseWithClerk] Token with name:', token ? 'YES' : 'NO');
+              // Try with template name first
+              let token = await getToken({ template: 'supabase' });
+              console.log('🎯 [useSupabaseWithClerk] Token with name:', token ? 'YES' : 'NO');
 
-            // If no token, try with template ID
-            if (!token) {
-              token = await getToken({ template: 'jtmp_2z5wvuHN0RtLnrZCMsUp0l5x0qc' });
-              console.log('🎯 [useSupabaseWithClerk] Token with ID:', token ? 'YES' : 'NO');
-            }
-
-            if (token) {
-              console.log('✅ [useSupabaseWithClerk] Using Clerk token for Supabase auth');
-              console.log(
-                '🔑 [useSupabaseWithClerk] Token preview:',
-                token.substring(0, 50) + '...',
-              );
-
-              // Debug: decode and log JWT payload
-              try {
-                const payload = JSON.parse(atob(token.split('.')[1]));
-                console.log('📋 [useSupabaseWithClerk] JWT payload:', payload);
-              } catch (e) {
-                console.warn('❌ [useSupabaseWithClerk] Could not decode JWT:', e);
+              // If no token, try with template ID
+              if (!token) {
+                token = await getToken({ template: 'jtmp_2z5wvuHN0RtLnrZCMsUp0l5x0qc' });
+                console.log('🎯 [useSupabaseWithClerk] Token with ID:', token ? 'YES' : 'NO');
               }
-              return { Authorization: `Bearer ${token}` };
-            } else {
-              console.warn('⚠️ [useSupabaseWithClerk] No token available with either name or ID');
-              return {};
+
+              if (token) {
+                console.log('✅ [useSupabaseWithClerk] Using Clerk token for Supabase auth');
+                console.log(
+                  '🔑 [useSupabaseWithClerk] Token preview:',
+                  token.substring(0, 50) + '...',
+                );
+
+                // Set the auth header on the main client temporarily
+                const originalHeaders = target.rest.headers;
+                target.rest.headers = {
+                  ...originalHeaders,
+                  Authorization: `Bearer ${token}`,
+                };
+
+                try {
+                  const result = await target[prop](...args);
+                  return result;
+                } finally {
+                  // Restore original headers
+                  target.rest.headers = originalHeaders;
+                }
+              } else {
+                console.warn('⚠️ [useSupabaseWithClerk] No token available with either name or ID');
+                return await target[prop](...args);
+              }
+            } catch (error) {
+              Logger.error('💥 Error getting Clerk token:', error);
+              return await target[prop](...args);
             }
-          } catch (error) {
-            Logger.error('💥 Error getting Clerk token:', error);
-            return {};
-          }
-        },
+          };
+        }
+        return target[prop];
       },
     });
   }, [getToken]);
@@ -117,27 +111,20 @@ export const executeWithClerkAuth = async queryFunction => {
         console.log('✅ [executeWithClerkAuth] Using Clerk token for Supabase auth');
         console.log('🔑 [executeWithClerkAuth] Token preview:', token.substring(0, 50) + '...');
 
-        // Debug: decode and log JWT payload
+        // Set the auth header on the main client temporarily
+        const originalHeaders = supabase.rest.headers;
+        supabase.rest.headers = {
+          ...originalHeaders,
+          Authorization: `Bearer ${token}`,
+        };
+
         try {
-          const payload = JSON.parse(atob(token.split('.')[1]));
-          console.log('📋 [executeWithClerkAuth] JWT payload:', payload);
-        } catch (e) {
-          console.warn('❌ [executeWithClerkAuth] Could not decode JWT:', e);
+          const result = await queryFunction(supabase);
+          return result;
+        } finally {
+          // Restore original headers
+          supabase.rest.headers = originalHeaders;
         }
-
-        // Create a temporary client with the token
-        const authenticatedClient = createClient(supabaseUrl, supabaseAnonKey, {
-          auth: {
-            persistSession: false,
-          },
-          global: {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          },
-        });
-
-        return await queryFunction(authenticatedClient);
       } else {
         console.warn('⚠️ [executeWithClerkAuth] No token received with either name or ID');
       }

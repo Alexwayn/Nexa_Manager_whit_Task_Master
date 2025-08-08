@@ -38,7 +38,7 @@ import InvoiceAnalyticsService from '@features/financial/services/invoiceAnalyti
 import { InvoiceModal, QuoteModal } from '@features/financial';
 import { ViewInvoiceModal } from '@features/financial';
 import { getUserIdForUuidTables } from '@shared/utils';
-import Logger from '@utils/Logger';
+import Logger from '@/utils/Logger';
 import Footer from '@shared/components/Footer';
 
 const InvoicesPage = () => {

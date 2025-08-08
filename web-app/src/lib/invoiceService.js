@@ -4,9 +4,7 @@
  */
 
 import { supabaseClient } from './supabaseClient';
-import { Logger } from './Logger';
-
-const logger = new Logger('InvoiceService');
+import logger from '@/utils/Logger';
 
 export class InvoiceService {
   /**

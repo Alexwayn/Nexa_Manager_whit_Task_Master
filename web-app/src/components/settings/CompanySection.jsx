@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { supabase } from '@lib/supabaseClient';
+import { supabase } from '@/lib/supabaseClient';
 import SettingsFormSection from './SettingsFormSection';
 import FileUploadField from './FileUploadField';
 import { useProfile } from '@shared/hooks/useProfile';

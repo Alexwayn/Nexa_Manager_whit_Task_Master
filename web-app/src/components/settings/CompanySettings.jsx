@@ -10,8 +10,8 @@ import {
   GlobeAltIcon,
   IdentificationIcon,
 } from '@heroicons/react/24/outline';
-import { supabase } from '@lib/supabaseClient';
-import { businessService } from '@lib/businessService';
+import { supabase } from '@/lib/supabaseClient';
+import { businessService } from '@/lib/businessService';
 import FileUploadField from './FileUploadField';
 
 export default function CompanySettings({ showNotification }) {

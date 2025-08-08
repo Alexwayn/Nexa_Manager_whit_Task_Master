@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { supabase } from '@lib/supabaseClient';
+import { supabase } from '@/lib/supabaseClient';
 import { useAuth, useUser } from '@clerk/clerk-react';
-// import Logger from '@utils/Logger';
+// import Logger from '@/utils/Logger';
 
 export const useFileUpload = () => {
   const { isSignedIn, isLoaded } = useAuth();

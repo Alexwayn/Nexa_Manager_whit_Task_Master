@@ -10,7 +10,7 @@ import {
 import { useOrganizationContext } from '@/shared/state/providers';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import Logger from '@utils/Logger';
+import Logger from '@/utils/Logger';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');

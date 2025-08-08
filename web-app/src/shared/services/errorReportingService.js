@@ -4,7 +4,7 @@
  */
 
 import { errorMonitor } from '@utils/ErrorMonitor';
-import Logger from '@utils/Logger';
+import Logger from '@/utils/Logger';
 
 class ErrorReportingService {
   /**

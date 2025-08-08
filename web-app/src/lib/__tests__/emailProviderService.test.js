@@ -2,12 +2,13 @@
  * @jest-environment jsdom
  */
 
-import emailProviderService from '../emailProviderService';
+import { EmailProviderService } from '../emailProviderService';
+const emailProviderService = new EmailProviderService();
 import { supabase } from '../supabaseClient';
-import Logger from '@utils/Logger';
+import Logger from '@/utils/Logger';
 
 // Mock dependencies
-jest.mock('../supabaseClient', () => ({
+jest.mock('@/lib/supabaseClient', () => ({
   supabase: {
     from: jest.fn(() => ({
       select: jest.fn(() => ({
@@ -40,7 +41,7 @@ jest.mock('../supabaseClient', () => ({
   },
 }));
 
-jest.mock('@utils/Logger', () => ({
+jest.mock('@/utils/Logger', () => ({
   error: jest.fn(),
   warn: jest.fn(),
   info: jest.fn(),

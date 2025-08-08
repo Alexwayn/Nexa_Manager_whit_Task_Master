@@ -1,7 +1,7 @@
-import { supabase } from '@lib/supabaseClient';
+import { supabase } from '@/lib/supabaseClient';
 import emailTemplateService from './emailTemplateService';
 import emailService from './emailService';
-import Logger from '@utils/Logger';
+import Logger from '@/utils/Logger';
 import { getEnvVar } from '@/utils/env';
 
 /**
@@ -761,5 +761,8 @@ export const getEmailCampaignService = () => {
   }
   return emailCampaignServiceInstance;
 };
+
+// Export the service instance for direct access
+export const emailCampaignService = getEmailCampaignService();
 
 export default getEmailCampaignService;

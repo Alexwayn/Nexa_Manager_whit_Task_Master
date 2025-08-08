@@ -170,10 +170,10 @@ function voiceAssistantReducer(state, action) {
 const VoiceAssistantContext = createContext(null);
 
 // Provider Component
-export function VoiceAssistantProvider({ children }) {
+export function VoiceAssistantProvider({ children, initialState: testInitialState }) {
   const navigate = useNavigate();
   const location = useLocation();
-  const [state, dispatch] = useReducer(voiceAssistantReducer, initialState);
+  const [state, dispatch] = useReducer(voiceAssistantReducer, testInitialState || initialState);
   const timeoutRef = useRef(null);
   const wakeWordDetectionRef = useRef(null);
   const wakeWordServiceRef = useRef(null);

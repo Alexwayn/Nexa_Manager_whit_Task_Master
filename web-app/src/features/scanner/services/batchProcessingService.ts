@@ -29,6 +29,7 @@ export interface BatchProcessingOptions {
   onProgress?: (progress: BatchProgress) => void;
   onFileComplete?: (result: BatchResult) => void;
   onError?: (error: BatchError) => void;
+  onComplete?: (job: BatchJob) => void;
 }
 
 export interface BatchProgress {
@@ -238,24 +239,23 @@ export class BatchProcessingService {
     if (this.isProcessing || this.jobQueue.length === 0) return;
 
     this.isProcessing = true;
+    const jobId = this.jobQueue.shift()!;
+    const job = this.activeJobs.get(jobId);
 
-    while (this.jobQueue.length > 0) {
-      const jobId = this.jobQueue.shift()!;
-      const job = this.activeJobs.get(jobId);
-
-      if (!job || job.status === BatchJobStatus.CANCELLED) {
-        continue;
-      }
-
-      try {
-        await this.processJob(job);
-      } catch (error) {
-        Logger.error('Batch job processing failed', error);
-        job.status = BatchJobStatus.FAILED;
-      }
+    if (!job || job.status === BatchJobStatus.CANCELLED) {
+      this.isProcessing = false;
+      setTimeout(() => this.processQueue(), 0);
+      return;
     }
 
-    this.isProcessing = false;
+    try {
+      await this.processJob(job);
+    } finally {
+      this.isProcessing = false;
+      if (this.jobQueue.length > 0) {
+        setTimeout(() => this.processQueue(), 0);
+      }
+    }
   }
 
   private async processJob(job: BatchJob): Promise<void> {
@@ -267,149 +267,113 @@ export class BatchProcessingService {
       fileCount: job.files.length
     });
 
-    const concurrency = job.options.maxConcurrency || 3;
-    const processingPromises: Promise<void>[] = [];
-    let fileIndex = 0;
-
-    // Process files with controlled concurrency
-    while (fileIndex < job.files.length && job.status === BatchJobStatus.RUNNING) {
-      // Start up to maxConcurrency files
-      while (processingPromises.length < concurrency && fileIndex < job.files.length) {
-        if (job.status !== BatchJobStatus.RUNNING) break;
-
-        const currentIndex = fileIndex++;
-        const file = job.files[currentIndex];
-        
-        const promise = this.processFile(job, file, currentIndex)
-          .then(() => {
-            // Remove completed promise
-            const index = processingPromises.indexOf(promise);
-            if (index > -1) {
-              processingPromises.splice(index, 1);
-            }
-          });
-
-        processingPromises.push(promise);
+    const processingPromises = job.files.map((file, index) => {
+      if (job.status !== BatchJobStatus.RUNNING) {
+        Logger.info('Job no longer running, skipping file processing.', { jobId: job.id, status: job.status });
+        return Promise.resolve();
       }
+      return this.processFile(job, file, index);
+    });
 
-      // Wait for at least one to complete before starting more
-      if (processingPromises.length > 0) {
-        await Promise.race(processingPromises);
-      }
-    }
-
-    // Wait for all remaining files to complete
     await Promise.all(processingPromises);
 
-    // Update final status
     job.completedAt = Date.now();
     if (job.status === BatchJobStatus.RUNNING) {
-      job.status = job.progress.failed > 0 ? BatchJobStatus.COMPLETED : BatchJobStatus.COMPLETED;
+      if (job.progress.failed > 0) {
+        job.status = BatchJobStatus.FAILED;
+      } else {
+        job.status = BatchJobStatus.COMPLETED;
+      }
     }
 
     Logger.info('Batch job completed', {
       jobId: job.id,
+      status: job.status,
       completed: job.progress.completed,
       failed: job.progress.failed,
       totalTime: job.completedAt - (job.startedAt || job.createdAt)
     });
+
+    if (job.options.onComplete) {
+      job.options.onComplete(job);
+    }
   }
 
   private async processFile(job: BatchJob, file: File, fileIndex: number): Promise<void> {
     const startTime = Date.now();
-    let retryCount = 0;
-    const maxRetries = job.options.maxRetries || 2;
-
-    // Update progress
     job.progress.inProgress++;
     this.updateProgress(job);
 
-    while (retryCount <= maxRetries) {
-      try {
-        // Check if job was cancelled or paused
-        if (job.status !== BatchJobStatus.RUNNING) {
-          job.progress.inProgress--;
-          return;
-        }
-
-        const result = await this.processSingleFile(job, file, fileIndex);
-        
-        // Success
-        job.results.push(result);
-        job.progress.completed++;
-        job.progress.inProgress--;
-        
-        this.updateProgress(job);
-        
-        if (job.options.onFileComplete) {
-          job.options.onFileComplete(result);
-        }
-
-        Logger.debug('File processed successfully', {
-          jobId: job.id,
-          fileName: file.name,
-          processingTime: result.processingTime
-        });
-
-        return;
-
-      } catch (error) {
-        retryCount++;
-        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-        
-        Logger.warn('File processing failed', {
-          jobId: job.id,
-          fileName: file.name,
-          attempt: retryCount,
-          error: errorMessage
-        });
-
-        if (retryCount > maxRetries || !job.options.retryFailures) {
-          // Final failure
-          const batchError: BatchError = {
-            fileIndex,
-            fileName: file.name,
-            error: errorMessage,
-            retryCount: retryCount - 1,
-            timestamp: Date.now()
-          };
-
-          job.errors.push(batchError);
-          job.progress.failed++;
-          job.progress.inProgress--;
-          
-          this.updateProgress(job);
-          
-          if (job.options.onError) {
-            job.options.onError(batchError);
-          }
-
-          // Add failed result
-          job.results.push({
-            fileIndex,
-            fileName: file.name,
-            fileSize: file.size,
-            success: false,
-            processingTime: Date.now() - startTime,
-            error: errorMessage
-          });
-
-          return;
-        }
-
-        // Wait before retry
-        await new Promise(resolve => setTimeout(resolve, 1000 * retryCount));
+    try {
+      if (job.status !== BatchJobStatus.RUNNING) {
+        throw new Error('Job was cancelled or paused');
       }
+
+      const result = await this.processSingleFile(job, file, fileIndex);
+      
+      job.results.push(result);
+      job.progress.completed++;
+      
+      if (job.options.onFileComplete) {
+        job.options.onFileComplete(result);
+      }
+
+      Logger.debug('File processed successfully', {
+        jobId: job.id,
+        fileName: file.name,
+        processingTime: result.processingTime
+      });
+
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      
+      Logger.warn('File processing failed', {
+        jobId: job.id,
+        fileName: file.name,
+        error: errorMessage
+      });
+
+      const batchError: BatchError = {
+        fileIndex,
+        fileName: file.name,
+        error: errorMessage,
+        retryCount: 0, // No retries in this simplified version
+        timestamp: Date.now()
+      };
+
+      job.errors.push(batchError);
+      job.progress.failed++;
+      
+      if (job.options.onError) {
+        job.options.onError(batchError);
+      }
+
+      job.results.push({
+        fileIndex,
+        fileName: file.name,
+        fileSize: file.size,
+        success: false,
+        processingTime: Date.now() - startTime,
+        error: errorMessage
+      });
+
+
+    } finally {
+      job.progress.inProgress--;
+      this.updateProgress(job);
     }
   }
 
   private async processSingleFile(job: BatchJob, file: File, fileIndex: number): Promise<BatchResult> {
+    Logger.info('Processing file', { fileName: file.name, fileIndex });
     const startTime = Date.now();
     let optimizationSavings = 0;
     let cacheHit = false;
 
+    Logger.info('Attempting to create blob from file', { fileName: file.name });
     // Convert file to blob
     const imageBlob = new Blob([file], { type: file.type });
+    Logger.info('Blob created successfully', { fileName: file.name });
 
     // Check cache first
     let processedBlob = imageBlob;
@@ -433,8 +397,11 @@ export class BatchProcessingService {
 
     // Optimize image if enabled
     if (job.options.optimizeImages) {
+      Logger.info('Image optimization is enabled', { fileName: file.name });
       try {
+        Logger.info('Attempting image optimization', { fileName: file.name });
         const optimization = await this.optimizationService.optimizeForOCR(imageBlob);
+        Logger.info('Image optimization successful', { fileName: file.name });
         processedBlob = optimization.optimizedImage;
         optimizationSavings = optimization.originalSize - optimization.optimizedSize;
         
@@ -449,11 +416,17 @@ export class BatchProcessingService {
           fileName: file.name,
           error: error instanceof Error ? error.message : 'Unknown error'
         });
+        // Fallback to OCR on the original image
+        processedBlob = imageBlob;
       }
+    } else {
+      Logger.info('Image optimization is disabled', { fileName: file.name });
     }
 
     // Perform OCR
+    Logger.info('Attempting OCR extraction', { fileName: file.name });
     const ocrResult = await this.ocrService.extractText(processedBlob, job.options.ocrOptions);
+    Logger.info('OCR extraction successful', { fileName: file.name });
 
     // Cache result if enabled
     if (job.options.enableCaching && !cacheHit) {
@@ -462,6 +435,8 @@ export class BatchProcessingService {
     }
 
     const processingTime = Date.now() - startTime;
+
+    Logger.info('File processing completed', { fileName: file.name, processingTime });
 
     return {
       fileIndex,

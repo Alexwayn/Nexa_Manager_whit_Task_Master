@@ -11,8 +11,8 @@
  * - Edge cases and boundary conditions
  */
 
-import { supabase } from '@lib/supabaseClient';
-import Logger from '@utils/Logger';
+import { supabase } from '@/lib/supabaseClient';
+import Logger from '@/utils/Logger';
 
 class RLSSecurityTester {
   constructor() {

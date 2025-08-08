@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import Logger from '@utils/Logger';
+import Logger from '@/utils/Logger';
 
 const useReportData = (fetchFunction, dependencies = [], options = {}) => {
   const {

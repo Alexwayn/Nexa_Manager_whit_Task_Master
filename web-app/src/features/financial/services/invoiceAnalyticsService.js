@@ -1,6 +1,6 @@
-import { supabase } from '@lib/supabaseClient';
+import { supabase } from '@/lib/supabaseClient';
 import { createClient } from '@supabase/supabase-js';
-import Logger from '@utils/Logger';
+import Logger from '@/utils/Logger';
 import { getEnvVar } from '@/utils/env';
 
 // Create a service role client for bypassing RLS

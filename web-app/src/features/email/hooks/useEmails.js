@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useEmailContext } from '@shared/hooks/providers';
 import { emailManagementService } from '@features/email';
 import { useUser } from '@clerk/clerk-react';
-import Logger from '@utils/Logger';
+import Logger from '@/utils/Logger';
 
 /**
  * Enhanced useEmails hook

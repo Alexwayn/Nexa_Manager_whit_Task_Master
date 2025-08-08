@@ -1,598 +1,144 @@
-/**
- * Email Command Handler for Voice Assistant
- * Handles email-related voice commands including composing, sending, searching, and managing emails
- */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { emailService } from '../features/email/services/emailService';
+import { emailSearchService } from '../features/email/services/emailSearchService';
+import { emailTemplateService } from '../features/email/services/emailTemplateService';
+import { emailCampaignService } from '../features/email/services/emailCampaignService';
+import { emailAnalyticsService } from '../features/email/services/emailAnalyticsService';
+import { emailAutomationService } from '../features/email/services/emailAutomationService';
 
-import emailManagementService from '@/features/email/services/emailManagementService';
-// Type assertion to help TypeScript understand this is an instance
-const emailService = emailManagementService as any;
-import emailSearchService from '@/features/email/services/emailSearchService';
-import emailTemplateService from '@/features/email/services/emailTemplateService';
-import emailCampaignService from '@/features/email/services/emailCampaignService';
-import emailAnalyticsService from '@/features/email/services/emailAnalyticsService';
-import emailAutomationService from '@/features/email/services/emailAutomationService';
-
-// Interface for email command parameters
-interface EmailParams {
-  recipient?: string;
-  subject?: string;
-  message?: string;
-  query?: string;
-  folderName?: string;
-  templateName?: string;
-  body?: string;
-  scheduledTime?: string;
-  invoiceId?: string;
-  quoteId?: string;
-  emailId?: string;
-  sender?: string;
-  campaignName?: string;
-  campaignId?: string;
-  templateId?: string;
-  clientId?: string;
-  ruleName?: string;
-  conditions?: string;
-  actions?: string;
-  category?: string;
-  [key: string]: any; // Allow additional properties
+// Define the interface for email parameters
+export interface EmailParams {
+  [key: string]: any;
 }
 
+// Main class for handling email commands
 class EmailCommandHandler {
-  private emailCommands: Record<string, { action: string; params: string[] }>;
-  private searchCommands: Record<string, { action: string; params: string[] }>;
-  private helpCommands: Record<string, { action: string; params: string[] }>;
+  private static instance: EmailCommandHandler;
 
-  constructor() {
-    this.emailCommands = {
-      // Compose and Send Commands
-      'compose email': { action: 'compose', params: [] },
-      'write email': { action: 'compose', params: [] },
-      'new email': { action: 'compose', params: [] },
-      'create email': { action: 'compose', params: [] },
-      'draft email': { action: 'compose', params: [] },
-      'send email': { action: 'send', params: ['recipient', 'subject', 'message'] },
-      'send message': { action: 'send', params: ['recipient', 'subject', 'message'] },
-      'email to': { action: 'send', params: ['recipient', 'subject', 'message'] },
-      'send email to': { action: 'send', params: ['recipient', 'subject', 'message'] },
-      'reply to email': { action: 'reply', params: ['message'] },
-      'reply': { action: 'reply', params: ['message'] },
-      'forward email': { action: 'forward', params: ['recipient'] },
-      'forward': { action: 'forward', params: ['recipient'] },
-      
-      // Email Management Commands
-      'check emails': { action: 'checkEmails', params: [] },
-      'check email': { action: 'checkEmails', params: [] },
-      'show emails': { action: 'showEmails', params: [] },
-      'list emails': { action: 'showEmails', params: [] },
-      'get emails': { action: 'showEmails', params: [] },
-      'view emails': { action: 'showEmails', params: [] },
-      'mark as read': { action: 'markRead', params: ['emailId'] },
-      'mark read': { action: 'markRead', params: ['emailId'] },
-      'mark as unread': { action: 'markUnread', params: ['emailId'] },
-      'mark unread': { action: 'markUnread', params: ['emailId'] },
-      'star email': { action: 'starEmail', params: ['emailId'] },
-      'unstar email': { action: 'unstarEmail', params: ['emailId'] },
-      'delete email': { action: 'deleteEmail', params: ['emailId'] },
-      'remove email': { action: 'deleteEmail', params: ['emailId'] },
-      'archive email': { action: 'archiveEmail', params: ['emailId'] },
-      
-      // Search Commands
-      'search emails': { action: 'searchEmails', params: ['query'] },
-      'find emails': { action: 'searchEmails', params: ['query'] },
-      'search for': { action: 'searchEmails', params: ['query'] },
-      'find email from': { action: 'searchByFrom', params: ['sender'] },
-      'emails from': { action: 'searchByFrom', params: ['sender'] },
-      'search subject': { action: 'searchBySubject', params: ['subject'] },
-      'find subject': { action: 'searchBySubject', params: ['subject'] },
-      'search attachments': { action: 'searchAttachments', params: ['query'] },
-      'find attachments': { action: 'searchAttachments', params: ['query'] },
-      
-      // Folder Management Commands
-      'show folders': { action: 'showFolders', params: [] },
-      'list folders': { action: 'showFolders', params: [] },
-      'create folder': { action: 'createFolder', params: ['folderName'] },
-      'new folder': { action: 'createFolder', params: ['folderName'] },
-      'delete folder': { action: 'deleteFolder', params: ['folderName'] },
-      'remove folder': { action: 'deleteFolder', params: ['folderName'] },
-      'move to folder': { action: 'moveToFolder', params: ['emailId', 'folderName'] },
-      'move email to': { action: 'moveToFolder', params: ['emailId', 'folderName'] },
-      
-      // Template Commands
-      'show templates': { action: 'showTemplates', params: [] },
-      'list templates': { action: 'showTemplates', params: [] },
-      'create template': { action: 'createTemplate', params: ['templateName', 'subject', 'body'] },
-      'new template': { action: 'createTemplate', params: ['templateName', 'subject', 'body'] },
-      'use template': { action: 'useTemplate', params: ['templateName'] },
-      'apply template': { action: 'useTemplate', params: ['templateName'] },
-      'delete template': { action: 'deleteTemplate', params: ['templateName'] },
-      'remove template': { action: 'deleteTemplate', params: ['templateName'] },
-      
-      // Campaign Commands
-      'create campaign': { action: 'createCampaign', params: ['campaignName', 'subject', 'templateId'] },
-      'new campaign': { action: 'createCampaign', params: ['campaignName', 'subject', 'templateId'] },
-      'send campaign': { action: 'sendCampaign', params: ['campaignId'] },
-      'launch campaign': { action: 'sendCampaign', params: ['campaignId'] },
-      'show campaigns': { action: 'showCampaigns', params: [] },
-      'list campaigns': { action: 'showCampaigns', params: [] },
-      'campaign stats': { action: 'campaignStats', params: ['campaignId'] },
-      'campaign analytics': { action: 'campaignStats', params: ['campaignId'] },
-      'pause campaign': { action: 'pauseCampaign', params: ['campaignId'] },
-      'resume campaign': { action: 'resumeCampaign', params: ['campaignId'] },
-      
-      // Analytics Commands
-      'email analytics': { action: 'emailAnalytics', params: [] },
-      'email stats': { action: 'emailStats', params: [] },
-      'email metrics': { action: 'emailMetrics', params: [] },
-      'email performance': { action: 'emailPerformance', params: [] },
-      'email report': { action: 'emailReport', params: [] },
-      'client email history': { action: 'clientEmailHistory', params: ['clientId'] },
-      'email activity': { action: 'emailActivity', params: [] },
-      
-      // Automation Commands
-      'schedule email': { action: 'scheduleEmail', params: ['recipient', 'subject', 'message', 'scheduledTime'] },
-      'schedule message': { action: 'scheduleEmail', params: ['recipient', 'subject', 'message', 'scheduledTime'] },
-      'create automation': { action: 'createAutomation', params: ['ruleName', 'conditions', 'actions'] },
-      'automation rules': { action: 'showAutomationRules', params: [] },
-      'show automations': { action: 'showAutomationRules', params: [] },
-      'follow up reminders': { action: 'showFollowUps', params: [] },
-      'show follow ups': { action: 'showFollowUps', params: [] },
-      
-      // Business Integration Commands
-      'send invoice email': { action: 'sendInvoiceEmail', params: ['invoiceId', 'recipient'] },
-      'email invoice': { action: 'sendInvoiceEmail', params: ['invoiceId', 'recipient'] },
-      'send quote email': { action: 'sendQuoteEmail', params: ['quoteId', 'recipient'] },
-      'email quote': { action: 'sendQuoteEmail', params: ['quoteId', 'recipient'] },
-      'payment reminder': { action: 'sendPaymentReminder', params: ['invoiceId'] },
-      'send reminder': { action: 'sendPaymentReminder', params: ['invoiceId'] },
-      
-      // Settings Commands
-      'email settings': { action: 'showEmailSettings', params: [] },
-      'configure email': { action: 'showEmailSettings', params: [] },
-      'email signature': { action: 'manageSignature', params: [] },
-      'update signature': { action: 'manageSignature', params: [] },
-      'notification settings': { action: 'notificationSettings', params: [] },
-      'email notifications': { action: 'notificationSettings', params: [] }
-    };
+  private readonly commands: any = {
+    'compose': { action: 'handleComposeEmail', aliases: ['new', 'write'] },
+    'send': { action: 'handleSendEmail', aliases: ['send email', 'email'] },
+    'reply': { action: 'handleReplyEmail', aliases: ['reply to'] },
+    'forward': { action: 'handleForwardEmail', aliases: ['forward email'] },
+    'show': { action: 'handleShowEmails', aliases: ['show emails', 'get emails', 'view emails'] },
+    'read': { action: 'handleMarkRead', aliases: ['mark as read'] },
+    'unread': { action: 'handleMarkUnread', aliases: ['mark as unread'] },
+    'star': { action: 'handleStarEmail', aliases: ['star email'] },
+    'unstar': { action: 'handleUnstarEmail', aliases: ['unstar email'] },
+    'delete': { action: 'handleDeleteEmail', aliases: ['delete email', 'remove email'] },
+    'archive': { action: 'handleArchiveEmail', aliases: ['archive email'] },
+    'search': { action: 'handleSearchEmails', aliases: ['search emails', 'find emails'] },
+    'search_from': { action: 'handleSearchByFrom', aliases: ['search from', 'find from'] },
+    'search_subject': { action: 'handleSearchBySubject', aliases: ['search subject', 'find subject'] },
+    'search_attachment': { action: 'handleSearchAttachments', aliases: ['search attachments', 'find attachments'] },
+    'show_folders': { action: 'handleShowFolders', aliases: ['show folders', 'list folders'] },
+    'create_folder': { action: 'handleCreateFolder', aliases: ['create folder', 'new folder'] },
+    'delete_folder': { action: 'handleDeleteFolder', aliases: ['delete folder', 'remove folder'] },
+    'move_to_folder': { action: 'handleMoveToFolder', aliases: ['move to folder'] },
+    'show_templates': { action: 'handleShowTemplates', aliases: ['show templates', 'list templates'] },
+    'create_template': { action: 'handleCreateTemplate', aliases: ['create template', 'new template'] },
+    'use_template': { action: 'handleUseTemplate', aliases: ['use template'] },
+    'delete_template': { action: 'handleDeleteTemplate', aliases: ['delete template', 'remove template'] },
+    'create_campaign': { action: 'handleCreateCampaign', aliases: ['create campaign', 'new campaign'] },
+    'send_campaign': { action: 'handleSendCampaign', aliases: ['send campaign'] },
+    'show_campaigns': { action: 'handleShowCampaigns', aliases: ['show campaigns', 'list campaigns'] },
+    'campaign_stats': { action: 'handleCampaignStats', aliases: ['campaign stats', 'campaign statistics'] },
+    'pause_campaign': { action: 'handlePauseCampaign', aliases: ['pause campaign'] },
+    'resume_campaign': { action: 'handleResumeCampaign', aliases: ['resume campaign'] },
+    'analytics': { action: 'handleEmailAnalytics', aliases: ['email analytics'] },
+    'stats': { action: 'handleEmailStats', aliases: ['email stats', 'email statistics'] },
+    'metrics': { action: 'handleEmailMetrics', aliases: ['email metrics'] },
+    'performance': { action: 'handleEmailPerformance', aliases: ['email performance'] },
+    'report': { action: 'handleEmailReport', aliases: ['email report'] },
+    'client_history': { action: 'handleClientEmailHistory', aliases: ['client email history'] },
+    'activity': { action: 'handleEmailActivity', aliases: ['email activity'] },
+    'schedule': { action: 'handleScheduleEmail', aliases: ['schedule email'] },
+    'create_automation': { action: 'handleCreateAutomation', aliases: ['create automation', 'new automation'] },
+    'show_automation': { action: 'handleShowAutomationRules', aliases: ['show automation', 'list automation'] },
+    'show_follow_ups': { action: 'handleShowFollowUps', aliases: ['show follow ups', 'list follow ups'] },
+    'send_invoice': { action: 'handleSendInvoiceEmail', aliases: ['send invoice', 'invoice email'] },
+    'send_quote': { action: 'handleSendQuoteEmail', aliases: ['send quote', 'quote email'] },
+    'send_reminder': { action: 'handleSendPaymentReminder', aliases: ['send reminder', 'payment reminder'] },
+    'settings': { action: 'handleShowEmailSettings', aliases: ['email settings'] },
+    'signature': { action: 'handleManageSignature', aliases: ['manage signature'] },
+    'notifications': { action: 'handleNotificationSettings', aliases: ['notification settings'] },
+    'help': { action: 'handleEmailHelp', aliases: ['email help'] },
+  };
 
-    this.searchCommands = {
-      'search': { action: 'searchEmails', params: ['query'] },
-      'find': { action: 'searchEmails', params: ['query'] },
-      'look for': { action: 'searchEmails', params: ['query'] },
-      'locate': { action: 'searchEmails', params: ['query'] }
-    };
+  private constructor() {}
 
-    this.helpCommands = {
-      'email help': { action: 'emailHelp', params: [] },
-      'help with email': { action: 'emailHelp', params: [] },
-      'email commands': { action: 'emailHelp', params: [] },
-      'what can I do with email': { action: 'emailHelp', params: [] },
-      'email features': { action: 'emailHelp', params: [] },
-      'how to send email': { action: 'emailHelp', params: ['send'] },
-      'how to compose email': { action: 'emailHelp', params: ['compose'] },
-      'how to search emails': { action: 'emailHelp', params: ['search'] },
-      'template help': { action: 'emailHelp', params: ['templates'] },
-      'campaign help': { action: 'emailHelp', params: ['campaigns'] },
-      'automation help': { action: 'emailHelp', params: ['automation'] }
-    };
+  public static getInstance(): EmailCommandHandler {
+    if (!EmailCommandHandler.instance) {
+      EmailCommandHandler.instance = new EmailCommandHandler();
+    }
+    return EmailCommandHandler.instance;
   }
 
-  /**
-   * Get all email commands
-   */
-  getAllCommands() {
-    return {
-      ...this.emailCommands,
-      ...this.searchCommands,
-      ...this.helpCommands
-    };
+  public getAllCommands() {
+    return this.commands;
   }
 
-  /**
-   * Process email command and extract parameters
-   */
-  processCommand(command: string, context: any = {}) {
-    const normalizedCommand = command.toLowerCase().trim();
-    
-    // Direct command match
-    if (this.emailCommands[normalizedCommand]) {
-      return this.extractParameters(normalizedCommand, command, this.emailCommands[normalizedCommand]);
-    }
-
-    // Search for partial matches
-    const partialMatch = this.findPartialMatch(normalizedCommand);
-    if (partialMatch) {
-      return this.extractParameters(partialMatch.command, command, partialMatch.config);
-    }
-
-    // Check for search commands with query
-    const searchMatch = this.findSearchMatch(normalizedCommand);
-    if (searchMatch) {
-      return searchMatch;
-    }
-
-    // Check for help commands
-    const helpMatch = this.findHelpMatch(normalizedCommand);
-    if (helpMatch) {
-      return helpMatch;
-    }
-
-    return null;
-  }
-
-  /**
-   * Find partial command matches
-   */
-  findPartialMatch(command: string): { command: string; config: { action: string; params: string[] } } | null {
-    const commands = Object.keys(this.emailCommands);
-    
-    for (const cmd of commands) {
-      if (command.includes(cmd) || cmd.includes(command)) {
-        return {
-          command: cmd,
-          config: this.emailCommands[cmd]
-        };
-      }
-    }
-
-    // Check for specific patterns
-    if (command.includes('email') && command.includes('to')) {
-      return {
-        command: 'send email to',
-        config: this.emailCommands['send email to']
-      };
-    }
-
-    if (command.includes('compose') || command.includes('write')) {
-      return {
-        command: 'compose email',
-        config: this.emailCommands['compose email']
-      };
-    }
-
-    if (command.includes('search') || command.includes('find')) {
-      return {
-        command: 'search emails',
-        config: this.emailCommands['search emails']
-      };
-    }
-
-    return null;
-  }
-
-  /**
-   * Find search command matches
-   */
-  findSearchMatch(command: string): { action: string; params: EmailParams; confidence: number } | null {
-    const searchTerms = ['search', 'find', 'look for', 'locate'];
-    
-    for (const term of searchTerms) {
-      if (command.includes(term)) {
-        const query = command.replace(term, '').replace('emails', '').replace('email', '').trim();
-        if (query) {
-          return {
-            action: 'searchEmails',
-            params: { query },
-            confidence: 0.8
-          };
-        }
-      }
-    }
-
-    return null;
-  }
-
-  /**
-   * Find help command matches
-   */
-  findHelpMatch(command: string): { action: string; params: EmailParams; confidence: number } | null {
-    if (command.includes('help') && command.includes('email')) {
-      return {
-        action: 'emailHelp',
-        params: {},
-        confidence: 0.9
-      };
-    }
-
-    return null;
-  }
-
-  /**
-   * Extract parameters from command
-   */
-  extractParameters(matchedCommand: string, originalCommand: string, config: { action: string; params: string[] }) {
-    const params: EmailParams = {};
-    const words = originalCommand.toLowerCase().split(' ');
-    
-    // Extract email addresses
-    const emailRegex = /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b/g;
-    const emails = originalCommand.match(emailRegex) || [];
-    
-    // Extract quoted strings
-    const quotedRegex = /"([^"]*)"/g;
-    const quotedStrings: string[] = [];
-    let match;
-    while ((match = quotedRegex.exec(originalCommand)) !== null) {
-      if (match[1] !== undefined) {
-        quotedStrings.push(match[1]);
-      }
-    }
-
-    // Parameter extraction based on action
-    switch (config.action) {
-      case 'send':
-        if (emails.length > 0) params.recipient = emails[0];
-        if (quotedStrings.length > 0) {
-          params.subject = quotedStrings[0];
-          if (quotedStrings.length > 1) params.message = quotedStrings[1];
-        }
-        break;
-
-      case 'searchEmails':
-      case 'searchByFrom':
-      case 'searchBySubject':
-        const searchQuery = this.extractSearchQuery(originalCommand, matchedCommand);
-        if (searchQuery) params.query = searchQuery;
-        break;
-
-      case 'createFolder':
-      case 'deleteFolder':
-        const folderName = this.extractFolderName(originalCommand, matchedCommand);
-        if (folderName) params.folderName = folderName;
-        break;
-
-      case 'createTemplate':
-        if (quotedStrings.length > 0) {
-          params.templateName = quotedStrings[0];
-          if (quotedStrings.length > 1) params.subject = quotedStrings[1];
-          if (quotedStrings.length > 2) params.body = quotedStrings[2];
-        }
-        break;
-
-      case 'scheduleEmail':
-        if (emails.length > 0) params.recipient = emails[0];
-        if (quotedStrings.length > 0) {
-          params.subject = quotedStrings[0];
-          if (quotedStrings.length > 1) params.message = quotedStrings[1];
-        }
-        params.scheduledTime = this.extractScheduledTime(originalCommand);
-        break;
-
-      case 'sendInvoiceEmail':
-      case 'sendQuoteEmail':
-        if (emails.length > 0) params.recipient = emails[0];
-        const idMatch = originalCommand.match(/\b(invoice|quote)\s+(\w+)/i);
-        if (idMatch) {
-          if (config.action === 'sendInvoiceEmail') {
-            params.invoiceId = idMatch[2];
-          } else {
-            params.quoteId = idMatch[2];
-          }
-        }
-        break;
-    }
-
-    return {
-      action: config.action,
-      params,
-      confidence: 0.9
-    };
-  }
-
-  /**
-   * Extract search query from command
-   */
-  extractSearchQuery(command: string, matchedCommand: string): string | undefined {
-    const cleanCommand = command.toLowerCase()
-      .replace(matchedCommand, '')
-      .replace(/^(for|from|about|with)\s+/, '')
-      .trim();
-    
-    return cleanCommand || undefined;
-  }
-
-  /**
-   * Extract folder name from command
-   */
-  extractFolderName(command: string, matchedCommand: string): string | undefined {
-    const cleanCommand = command.toLowerCase()
-      .replace(matchedCommand, '')
-      .replace(/^(called|named)\s+/, '')
-      .trim();
-    
-    return cleanCommand || undefined;
-  }
-
-  /**
-   * Extract scheduled time from command
-   */
-  extractScheduledTime(command: string): string | undefined {
-    const timePatterns = [
-      /at (\d{1,2}:\d{2})/i,
-      /in (\d+) (minutes?|hours?|days?)/i,
-      /(tomorrow|today|tonight)/i,
-      /(monday|tuesday|wednesday|thursday|friday|saturday|sunday)/i
-    ];
-
-    for (const pattern of timePatterns) {
-      const match = command.match(pattern);
-      if (match) {
-        return match[0];
-      }
-    }
-
-    return undefined;
-  }
-
-  /**
-   * Execute email command
-   */
-  async executeCommand(action: string, params: EmailParams, context: any = {}) {
-    const userId = context.userId || 'default';
-
-    try {
-      switch (action) {
-        case 'compose':
-          return await this.handleComposeEmail(params, context);
-
-        case 'send':
-          return await this.handleSendEmail(params, userId);
-
-        case 'reply':
-          return await this.handleReplyEmail(params, context);
-
-        case 'forward':
-          return await this.handleForwardEmail(params, context);
-
-        case 'checkEmails':
-        case 'showEmails':
-          return await this.handleShowEmails(params, userId);
-
-        case 'markRead':
-          return await this.handleMarkRead(params, userId, context);
-
-        case 'markUnread':
-          return await this.handleMarkUnread(params, userId, context);
-
-        case 'starEmail':
-          return await this.handleStarEmail(params, userId, context);
-
-        case 'unstarEmail':
-          return await this.handleUnstarEmail(params, userId, context);
-
-        case 'deleteEmail':
-          return await this.handleDeleteEmail(params, userId, context);
-
-        case 'archiveEmail':
-          return await this.handleArchiveEmail(params, userId, context);
-
-        case 'searchEmails':
-          return await this.handleSearchEmails(params, userId);
-
-        case 'searchByFrom':
-          return await this.handleSearchByFrom(params, userId);
-
-        case 'searchBySubject':
-          return await this.handleSearchBySubject(params, userId);
-
-        case 'searchAttachments':
-          return await this.handleSearchAttachments(params, userId);
-
-        case 'showFolders':
-          return await this.handleShowFolders(params, userId);
-
-        case 'createFolder':
-          return await this.handleCreateFolder(params, userId);
-
-        case 'deleteFolder':
-          return await this.handleDeleteFolder(params, userId);
-
-        case 'moveToFolder':
-          return await this.handleMoveToFolder(params, userId);
-
-        case 'showTemplates':
-          return await this.handleShowTemplates(params, userId);
-
-        case 'createTemplate':
-          return await this.handleCreateTemplate(params, userId);
-
-        case 'useTemplate':
-          return await this.handleUseTemplate(params, context);
-
-        case 'deleteTemplate':
-          return await this.handleDeleteTemplate(params, userId);
-
-        case 'createCampaign':
-          return await this.handleCreateCampaign(params, userId);
-
-        case 'sendCampaign':
-          return await this.handleSendCampaign(params, userId);
-
-        case 'showCampaigns':
-          return await this.handleShowCampaigns(params, userId);
-
-        case 'campaignStats':
-          return await this.handleCampaignStats(params, userId);
-
-        case 'pauseCampaign':
-          return await this.handlePauseCampaign(params, userId);
-
-        case 'resumeCampaign':
-          return await this.handleResumeCampaign(params, userId);
-
-        case 'emailAnalytics':
-          return await this.handleEmailAnalytics(params, userId);
-
-        case 'emailStats':
-          return await this.handleEmailStats(params, userId);
-
-        case 'emailMetrics':
-          return await this.handleEmailMetrics(params, userId);
-
-        case 'emailPerformance':
-          return await this.handleEmailPerformance(params, userId);
-
-        case 'emailReport':
-          return await this.handleEmailReport(params, userId);
-
-        case 'clientEmailHistory':
-          return await this.handleClientEmailHistory(params, userId);
-
-        case 'emailActivity':
-          return await this.handleEmailActivity(params, userId);
-
-        case 'scheduleEmail':
-          return await this.handleScheduleEmail(params, userId);
-
-        case 'createAutomation':
-          return await this.handleCreateAutomation(params, userId);
-
-        case 'showAutomationRules':
-          return await this.handleShowAutomationRules(params, userId);
-
-        case 'showFollowUps':
-          return await this.handleShowFollowUps(params, userId);
-
-        case 'sendInvoiceEmail':
-          return await this.handleSendInvoiceEmail(params, userId);
-
-        case 'sendQuoteEmail':
-          return await this.handleSendQuoteEmail(params, userId);
-
-        case 'sendPaymentReminder':
-          return await this.handleSendPaymentReminder(params, userId);
-
-        case 'showEmailSettings':
-          return await this.handleShowEmailSettings(params, context);
-
-        case 'manageSignature':
-          return await this.handleManageSignature(params, context);
-
-        case 'notificationSettings':
-          return await this.handleNotificationSettings(params, context);
-
-        case 'emailHelp':
-          return await this.handleEmailHelp(params, context);
-
-        default:
-          return {
-            success: false,
-            message: `Unknown email action: ${action}`,
-            action: 'error'
-          };
-      }
-    } catch (error: unknown) {
-      console.error('Email command execution error:', error);
-      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+  public async processCommand(command: string, context: any) {
+    const { action, params } = this.findCommandAction(command);
+
+    if (action && typeof this[action] === 'function') {
+      return this[action](params, context);
+    } else {
       return {
         success: false,
-        message: `Error executing email command: ${errorMessage}`,
-        action: 'error'
+        message: `Unknown command: ${command}`,
+        action: 'error',
       };
     }
   }
 
-  // Email Action Handlers
+  public async executeCommand(action: string, params: EmailParams, context: any) {
+    if (typeof this[action] === 'function') {
+      return this[action](params, context);
+    } else {
+      return {
+        success: false,
+        message: `Unknown action: ${action}`,
+        action: 'error',
+      };
+    }
+  }
 
+  private findCommandAction(command: string): { action: string | null; params: EmailParams } {
+    for (const key in this.commands) {
+      const commandData = this.commands[key];
+      const allAliases = [key, ...(commandData.aliases || [])];
+
+      for (const alias of allAliases) {
+        if (command.toLowerCase().startsWith(alias)) {
+          const remaining = command.substring(alias.length).trim();
+          const params = this.extractParameters(remaining);
+          return { action: commandData.action, params };
+        }
+      }
+    }
+    return { action: null, params: {} };
+  }
+
+  private extractParameters(paramString: string): EmailParams {
+    const params: EmailParams = {};
+    const parts = paramString.split(/\s+(?:to|from|subject|body|with|for|at|on|about|in|named|called)\s+/i);
+    let currentKey = 'recipient'; // Default key
+
+    if (paramString.includes(' to ')) currentKey = 'recipient';
+    else if (paramString.includes(' from ')) currentKey = 'sender';
+    else if (paramString.includes(' subject ')) currentKey = 'subject';
+    else if (paramString.includes(' body ')) currentKey = 'body';
+
+    params[currentKey] = parts[0] || '';
+
+    // A more robust extraction logic would be needed for complex commands
+    // For now, this is a simplified version
+
+    return params;
+  }
+
+  // Command Handlers
   async handleComposeEmail(params: EmailParams, context: any) {
     return {
       success: true,
@@ -600,8 +146,8 @@ class EmailCommandHandler {
       action: 'navigate',
       data: {
         route: '/email/compose',
-        params: params
-      }
+        params: params,
+      },
     };
   }
 
@@ -609,110 +155,111 @@ class EmailCommandHandler {
     if (!params.recipient) {
       return {
         success: false,
-        message: 'Please specify a recipient email address',
+        message: 'Please specify a recipient',
         action: 'input_required',
-        data: { field: 'recipient' }
+        data: { field: 'recipient' },
       };
     }
 
-    const emailData = {
-      to: [params.recipient],
-      subject: params.subject || 'No Subject',
-      body: params.message || '',
-      priority: 'normal'
-    };
-
     try {
-      const result = await emailService.sendEmail(userId, emailData);
-      return {
-        success: true,
-        message: `Email sent successfully to ${params.recipient}`,
-        action: 'email_sent',
-        data: result
+      const emailData = {
+        to: [params.recipient],
+        subject: params.subject || 'No Subject',
+        body: params.body || '',
+        priority: 'normal',
       };
+      const result = await emailService.sendEmail(userId, emailData);
+
+      if (result.success) {
+        return {
+          success: true,
+          message: 'Email sent successfully',
+          action: 'email_sent',
+          data: result.data,
+        };
+      } else {
+        return {
+          success: false,
+          message: `Failed to send email: ${String(result.error ?? 'Unknown error')}`,
+          action: 'error',
+        };
+      }
     } catch (error: unknown) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
       return {
         success: false,
         message: `Failed to send email: ${errorMessage}`,
-        action: 'error'
+        action: 'error',
       };
     }
   }
 
-  async handleReplyEmail(params: EmailParams, context: any) {
-    if (!context.currentEmail) {
+  async handleReplyEmail(params: EmailParams, userId: string) {
+    if (!params.emailId) {
       return {
         success: false,
-        message: 'No email selected to reply to',
-        action: 'error'
+        message: 'Please specify which email to reply to',
+        action: 'input_required',
+        data: { field: 'emailId' },
       };
     }
 
     return {
       success: true,
-      message: 'Opening reply composer...',
+      message: 'Opening email composer for reply...',
       action: 'navigate',
       data: {
-        route: '/email/compose',
-        params: {
-          type: 'reply',
-          originalEmailId: context.currentEmail.id,
-          message: params.message
-        }
-      }
+        route: `/email/compose`,
+        params: { replyTo: params.emailId, ...params },
+      },
     };
   }
 
-  async handleForwardEmail(params: EmailParams, context: any) {
-    if (!context.currentEmail) {
+  async handleForwardEmail(params: EmailParams, userId: string) {
+    if (!params.emailId) {
       return {
         success: false,
-        message: 'No email selected to forward',
-        action: 'error'
+        message: 'Please specify which email to forward',
+        action: 'input_required',
+        data: { field: 'emailId' },
       };
     }
 
     return {
       success: true,
-      message: 'Opening forward composer...',
+      message: 'Opening email composer to forward...',
       action: 'navigate',
       data: {
-        route: '/email/compose',
-        params: {
-          type: 'forward',
-          originalEmailId: context.currentEmail.id,
-          recipient: params.recipient
-        }
-      }
+        route: `/email/compose`,
+        params: { forward: params.emailId, ...params },
+      },
     };
   }
 
   async handleShowEmails(params: EmailParams, userId: string) {
     try {
-      const result = await emailService.fetchEmails(userId, {
+      const result = await emailService.getEmails(userId, {
+        folder: params.folderName || 'inbox',
         limit: 20,
-        status: 'all'
       });
 
       if (result.success) {
+        const emails = result.data || [];
         return {
           success: true,
-          message: `Found ${result.data.length} emails`,
+          message: `Showing ${emails.length} emails from ${params.folderName || 'inbox'}`,
           action: 'show_data',
           data: {
             type: 'emails',
-            items: result.data,
-            total: result.total,
-            hasMore: result.hasMore,
-            route: '/email'
-          }
+            items: emails,
+            route: '/email',
+          },
         };
       } else {
         return {
           success: false,
           message: `Failed to fetch emails: ${String(result.error ?? 'Unknown error')}`,
-          action: 'error'
+          action: 'error',
         };
       }
     } catch (error: unknown) {
@@ -720,113 +267,104 @@ class EmailCommandHandler {
       return {
         success: false,
         message: `Failed to fetch emails: ${errorMessage}`,
-        action: 'error'
+        action: 'error',
       };
     }
   }
 
-  async handleMarkRead(params: EmailParams, userId: string, context: any = {}) {
-    if (!params.emailId && !context.currentEmail) {
+  async handleMarkRead(params: EmailParams, userId: string) {
+    if (!params.emailId) {
       return {
         success: false,
         message: 'Please specify which email to mark as read',
         action: 'input_required',
-        data: { field: 'emailId' }
+        data: { field: 'emailId' },
       };
     }
 
-    const emailId = params.emailId || context.currentEmail?.id;
-
     try {
-      const result = await emailService.markAsRead(emailId, userId, true);
-      
+      const result = await emailService.updateEmail(params.emailId, userId, { read: true });
       if (result.success) {
         return {
           success: true,
           message: 'Email marked as read',
-          action: 'email_updated'
+          action: 'email_updated',
         };
       } else {
         return {
           success: false,
-          message: `Failed to mark email as read: ${String(result.error ?? 'Unknown error')}`,
-          action: 'error'
+          message: `Failed to mark as read: ${String(result.error ?? 'Unknown error')}`,
+          action: 'error',
         };
       }
     } catch (error: unknown) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
       return {
         success: false,
-        message: `Failed to mark email as read: ${errorMessage}`,
-        action: 'error'
+        message: `Failed to mark as read: ${errorMessage}`,
+        action: 'error',
       };
     }
   }
 
-  async handleMarkUnread(params: EmailParams, userId: string, context: any = {}) {
-    if (!params.emailId && !context.currentEmail) {
+  async handleMarkUnread(params: EmailParams, userId: string) {
+    if (!params.emailId) {
       return {
         success: false,
         message: 'Please specify which email to mark as unread',
         action: 'input_required',
-        data: { field: 'emailId' }
+        data: { field: 'emailId' },
       };
     }
 
-    const emailId = params.emailId || context.currentEmail?.id;
-
     try {
-      const result = await emailService.markAsRead(emailId, userId, false);
-      
+      const result = await emailService.updateEmail(params.emailId, userId, { read: false });
       if (result.success) {
         return {
           success: true,
           message: 'Email marked as unread',
-          action: 'email_updated'
+          action: 'email_updated',
         };
       } else {
         return {
           success: false,
-          message: `Failed to mark email as unread: ${String(result.error ?? 'Unknown error')}`,
-          action: 'error'
+          message: `Failed to mark as unread: ${String(result.error ?? 'Unknown error')}`,
+          action: 'error',
         };
       }
     } catch (error: unknown) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
       return {
         success: false,
-        message: `Failed to mark email as unread: ${errorMessage}`,
-        action: 'error'
+        message: `Failed to mark as unread: ${errorMessage}`,
+        action: 'error',
       };
     }
   }
 
-  async handleStarEmail(params: EmailParams, userId: string, context: any = {}) {
-    if (!params.emailId && !context.currentEmail) {
+  async handleStarEmail(params: EmailParams, userId: string) {
+    if (!params.emailId) {
       return {
         success: false,
         message: 'Please specify which email to star',
         action: 'input_required',
-        data: { field: 'emailId' }
+        data: { field: 'emailId' },
       };
     }
 
-    const emailId = params.emailId || context.currentEmail?.id;
-
     try {
-      const result = await emailService.starEmail(emailId, userId, true);
-      
+      const result = await emailService.updateEmail(params.emailId, userId, { starred: true });
       if (result.success) {
         return {
           success: true,
           message: 'Email starred',
-          action: 'email_updated'
+          action: 'email_updated',
         };
       } else {
         return {
           success: false,
           message: `Failed to star email: ${String(result.error ?? 'Unknown error')}`,
-          action: 'error'
+          action: 'error',
         };
       }
     } catch (error: unknown) {
@@ -834,37 +372,34 @@ class EmailCommandHandler {
       return {
         success: false,
         message: `Failed to star email: ${errorMessage}`,
-        action: 'error'
+        action: 'error',
       };
     }
   }
 
-  async handleUnstarEmail(params: EmailParams, userId: string, context: any = {}) {
-    if (!params.emailId && !context.currentEmail) {
+  async handleUnstarEmail(params: EmailParams, userId: string) {
+    if (!params.emailId) {
       return {
         success: false,
         message: 'Please specify which email to unstar',
         action: 'input_required',
-        data: { field: 'emailId' }
+        data: { field: 'emailId' },
       };
     }
 
-    const emailId = params.emailId || context.currentEmail?.id;
-
     try {
-      const result = await emailService.starEmail(emailId, userId, false);
-      
+      const result = await emailService.updateEmail(params.emailId, userId, { starred: false });
       if (result.success) {
         return {
           success: true,
           message: 'Email unstarred',
-          action: 'email_updated'
+          action: 'email_updated',
         };
       } else {
         return {
           success: false,
           message: `Failed to unstar email: ${String(result.error ?? 'Unknown error')}`,
-          action: 'error'
+          action: 'error',
         };
       }
     } catch (error: unknown) {
@@ -872,37 +407,34 @@ class EmailCommandHandler {
       return {
         success: false,
         message: `Failed to unstar email: ${errorMessage}`,
-        action: 'error'
+        action: 'error',
       };
     }
   }
 
-  async handleDeleteEmail(params: EmailParams, userId: string, context: any = {}) {
-    if (!params.emailId && !context.currentEmail) {
+  async handleDeleteEmail(params: EmailParams, userId: string) {
+    if (!params.emailId) {
       return {
         success: false,
         message: 'Please specify which email to delete',
         action: 'input_required',
-        data: { field: 'emailId' }
+        data: { field: 'emailId' },
       };
     }
 
-    const emailId = params.emailId || context.currentEmail?.id;
-
     try {
-      const result = await emailService.deleteEmail(emailId, userId, false);
-      
+      const result = await emailService.deleteEmail(params.emailId, userId);
       if (result.success) {
         return {
           success: true,
-          message: 'Email deleted',
-          action: 'email_deleted'
+          message: 'Email moved to trash',
+          action: 'email_deleted',
         };
       } else {
         return {
           success: false,
           message: `Failed to delete email: ${String(result.error ?? 'Unknown error')}`,
-          action: 'error'
+          action: 'error',
         };
       }
     } catch (error: unknown) {
@@ -910,37 +442,34 @@ class EmailCommandHandler {
       return {
         success: false,
         message: `Failed to delete email: ${errorMessage}`,
-        action: 'error'
+        action: 'error',
       };
     }
   }
 
-  async handleArchiveEmail(params: EmailParams, userId: string, context: any = {}) {
-    if (!params.emailId && !context.currentEmail) {
+  async handleArchiveEmail(params: EmailParams, userId: string) {
+    if (!params.emailId) {
       return {
         success: false,
         message: 'Please specify which email to archive',
         action: 'input_required',
-        data: { field: 'emailId' }
+        data: { field: 'emailId' },
       };
     }
 
-    const emailId = params.emailId || context.currentEmail?.id;
-
     try {
-      const result = await emailService.moveToFolder(emailId, userId, 'archive');
-      
+      const result = await emailService.updateEmail(params.emailId, userId, { folder: 'archive' });
       if (result.success) {
         return {
           success: true,
           message: 'Email archived',
-          action: 'email_updated'
+          action: 'email_updated',
         };
       } else {
         return {
           success: false,
           message: `Failed to archive email: ${String(result.error ?? 'Unknown error')}`,
-          action: 'error'
+          action: 'error',
         };
       }
     } catch (error: unknown) {
@@ -948,7 +477,7 @@ class EmailCommandHandler {
       return {
         success: false,
         message: `Failed to archive email: ${errorMessage}`,
-        action: 'error'
+        action: 'error',
       };
     }
   }
@@ -959,14 +488,14 @@ class EmailCommandHandler {
         success: false,
         message: 'Please specify what to search for',
         action: 'input_required',
-        data: { field: 'query' }
+        data: { field: 'query' },
       };
     }
 
     try {
       const result = await emailSearchService.searchEmails(userId, {
         query: params.query,
-        limit: 20
+        limit: 20,
       });
 
       if (result.success) {
@@ -979,14 +508,14 @@ class EmailCommandHandler {
             type: 'search_results',
             query: params.query,
             items: emails,
-            route: '/email/search'
-          }
+            route: '/email/search',
+          },
         };
       } else {
         return {
           success: false,
           message: `Search failed: ${String(result.error ?? 'Unknown error')}`,
-          action: 'error'
+          action: 'error',
         };
       }
     } catch (error: unknown) {
@@ -994,7 +523,7 @@ class EmailCommandHandler {
       return {
         success: false,
         message: `Search failed: ${errorMessage}`,
-        action: 'error'
+        action: 'error',
       };
     }
   }
@@ -1005,34 +534,34 @@ class EmailCommandHandler {
         success: false,
         message: 'Please specify the sender to search for',
         action: 'input_required',
-        data: { field: 'sender' }
+        data: { field: 'sender' },
       };
     }
 
     try {
       const result = await emailSearchService.searchEmails(userId, {
         from: params.sender,
-        limit: 20
+        limit: 20,
       });
 
       if (result.success) {
         const emails = result.data || [];
         return {
           success: true,
-          message: `Found ${emails.length} emails from ${params.sender}`,
+          message: `Found ${emails.length} emails from "${params.sender}"`,
           action: 'show_data',
           data: {
             type: 'search_results',
             query: `from:${params.sender}`,
             items: emails,
-            route: '/email/search'
-          }
+            route: '/email/search',
+          },
         };
       } else {
         return {
           success: false,
           message: `Search failed: ${String(result.error ?? 'Unknown error')}`,
-          action: 'error'
+          action: 'error',
         };
       }
     } catch (error: unknown) {
@@ -1040,7 +569,7 @@ class EmailCommandHandler {
       return {
         success: false,
         message: `Search failed: ${errorMessage}`,
-        action: 'error'
+        action: 'error',
       };
     }
   }
@@ -1051,14 +580,14 @@ class EmailCommandHandler {
         success: false,
         message: 'Please specify the subject to search for',
         action: 'input_required',
-        data: { field: 'subject' }
+        data: { field: 'subject' },
       };
     }
 
     try {
       const result = await emailSearchService.searchEmails(userId, {
         subject: params.subject,
-        limit: 20
+        limit: 20,
       });
 
       if (result.success) {
@@ -1071,14 +600,14 @@ class EmailCommandHandler {
             type: 'search_results',
             query: `subject:${params.subject}`,
             items: emails,
-            route: '/email/search'
-          }
+            route: '/email/search',
+          },
         };
       } else {
         return {
           success: false,
           message: `Search failed: ${String(result.error ?? 'Unknown error')}`,
-          action: 'error'
+          action: 'error',
         };
       }
     } catch (error: unknown) {
@@ -1086,7 +615,7 @@ class EmailCommandHandler {
       return {
         success: false,
         message: `Search failed: ${errorMessage}`,
-        action: 'error'
+        action: 'error',
       };
     }
   }
@@ -1097,14 +626,14 @@ class EmailCommandHandler {
         success: false,
         message: 'Please specify what attachment to search for',
         action: 'input_required',
-        data: { field: 'query' }
+        data: { field: 'query' },
       };
     }
 
     try {
       const result = await emailSearchService.searchAttachments(userId, {
         query: params.query,
-        limit: 20
+        limit: 20,
       });
 
       if (result.success) {
@@ -1117,14 +646,14 @@ class EmailCommandHandler {
             type: 'search_results',
             query: `attachment:${params.query}`,
             items: attachments,
-            route: '/email/search'
-          }
+            route: '/email/search',
+          },
         };
       } else {
         return {
           success: false,
           message: `Attachment search failed: ${String(result.error ?? 'Unknown error')}`,
-          action: 'error'
+          action: 'error',
         };
       }
     } catch (error: unknown) {
@@ -1132,7 +661,7 @@ class EmailCommandHandler {
       return {
         success: false,
         message: `Attachment search failed: ${errorMessage}`,
-        action: 'error'
+        action: 'error',
       };
     }
   }
@@ -1140,7 +669,7 @@ class EmailCommandHandler {
   async handleShowFolders(params: EmailParams, userId: string) {
     try {
       const result = await emailService.getFolders(userId);
-      
+
       if (result.success) {
         const folders = result.data || [];
         return {
@@ -1150,14 +679,14 @@ class EmailCommandHandler {
           data: {
             type: 'folders',
             items: folders,
-            route: '/email/folders'
-          }
+            route: '/email/folders',
+          },
         };
       } else {
         return {
           success: false,
           message: `Failed to fetch folders: ${String(result.error ?? 'Unknown error')}`,
-          action: 'error'
+          action: 'error',
         };
       }
     } catch (error: unknown) {
@@ -1165,7 +694,7 @@ class EmailCommandHandler {
       return {
         success: false,
         message: `Failed to fetch folders: ${errorMessage}`,
-        action: 'error'
+        action: 'error',
       };
     }
   }
@@ -1176,14 +705,14 @@ class EmailCommandHandler {
         success: false,
         message: 'Please specify a folder name',
         action: 'input_required',
-        data: { field: 'folderName' }
+        data: { field: 'folderName' },
       };
     }
 
     try {
       const result = await emailService.createFolder(userId, {
         name: params.folderName,
-        type: 'custom'
+        type: 'custom',
       });
 
       if (result.success) {
@@ -1191,13 +720,13 @@ class EmailCommandHandler {
           success: true,
           message: `Folder "${params.folderName}" created successfully`,
           action: 'folder_created',
-          data: result.data
+          data: result.data,
         };
       } else {
         return {
           success: false,
           message: `Failed to create folder: ${String(result.error ?? 'Unknown error')}`,
-          action: 'error'
+          action: 'error',
         };
       }
     } catch (error: unknown) {
@@ -1205,7 +734,7 @@ class EmailCommandHandler {
       return {
         success: false,
         message: `Failed to create folder: ${errorMessage}`,
-        action: 'error'
+        action: 'error',
       };
     }
   }
@@ -1216,19 +745,18 @@ class EmailCommandHandler {
         success: false,
         message: 'Please specify which folder to delete',
         action: 'input_required',
-        data: { field: 'folderName' }
+        data: { field: 'folderName' },
       };
     }
 
     try {
-      // Find folder by name
       const foldersResult = await emailService.getFolders(userId);
-      
+
       if (!foldersResult.success) {
         return {
           success: false,
           message: `Failed to fetch folders: ${String(foldersResult.error ?? 'Unknown error')}`,
-          action: 'error'
+          action: 'error',
         };
       }
 
@@ -1239,23 +767,23 @@ class EmailCommandHandler {
         return {
           success: false,
           message: `Folder "${params.folderName}" not found`,
-          action: 'error'
+          action: 'error',
         };
       }
 
       const deleteResult = await emailService.deleteFolder(folder.id, userId);
-      
+
       if (deleteResult.success) {
         return {
           success: true,
           message: `Folder "${params.folderName}" deleted successfully`,
-          action: 'folder_deleted'
+          action: 'folder_deleted',
         };
       } else {
         return {
           success: false,
           message: `Failed to delete folder: ${String(deleteResult.error ?? 'Unknown error')}`,
-          action: 'error'
+          action: 'error',
         };
       }
     } catch (error: unknown) {
@@ -1263,7 +791,7 @@ class EmailCommandHandler {
       return {
         success: false,
         message: `Failed to delete folder: ${errorMessage}`,
-        action: 'error'
+        action: 'error',
       };
     }
   }
@@ -1274,19 +802,18 @@ class EmailCommandHandler {
         success: false,
         message: 'Please specify both email ID and folder name',
         action: 'input_required',
-        data: { fields: ['emailId', 'folderName'] }
+        data: { fields: ['emailId', 'folderName'] },
       };
     }
 
     try {
-      // Find folder by name
       const foldersResult = await emailService.getFolders(userId);
-      
+
       if (!foldersResult.success) {
         return {
           success: false,
           message: `Failed to fetch folders: ${String(foldersResult.error ?? 'Unknown error')}`,
-          action: 'error'
+          action: 'error',
         };
       }
 
@@ -1297,23 +824,23 @@ class EmailCommandHandler {
         return {
           success: false,
           message: `Folder "${params.folderName}" not found`,
-          action: 'error'
+          action: 'error',
         };
       }
 
       const moveResult = await emailService.moveToFolder(params.emailId, userId, folder.id);
-      
+
       if (moveResult.success) {
         return {
           success: true,
           message: `Email moved to "${params.folderName}" folder`,
-          action: 'email_updated'
+          action: 'email_updated',
         };
       } else {
         return {
           success: false,
           message: `Failed to move email: ${String(moveResult.error ?? 'Unknown error')}`,
-          action: 'error'
+          action: 'error',
         };
       }
     } catch (error: unknown) {
@@ -1321,7 +848,7 @@ class EmailCommandHandler {
       return {
         success: false,
         message: `Failed to move email: ${errorMessage}`,
-        action: 'error'
+        action: 'error',
       };
     }
   }
@@ -1329,7 +856,7 @@ class EmailCommandHandler {
   async handleShowTemplates(params: EmailParams, userId: string) {
     try {
       const result = await emailTemplateService.getTemplates(null);
-      
+
       if (result.success) {
         const templates = result.data || [];
         return {
@@ -1339,14 +866,14 @@ class EmailCommandHandler {
           data: {
             type: 'templates',
             items: templates,
-            route: '/email/templates'
-          }
+            route: '/email/templates',
+          },
         };
       } else {
         return {
           success: false,
           message: `Failed to fetch templates: ${String(result.error ?? 'Unknown error')}`,
-          action: 'error'
+          action: 'error',
         };
       }
     } catch (error: unknown) {
@@ -1354,7 +881,7 @@ class EmailCommandHandler {
       return {
         success: false,
         message: `Failed to fetch templates: ${errorMessage}`,
-        action: 'error'
+        action: 'error',
       };
     }
   }
@@ -1365,7 +892,7 @@ class EmailCommandHandler {
         success: false,
         message: 'Please specify a template name',
         action: 'input_required',
-        data: { field: 'templateName' }
+        data: { field: 'templateName' },
       };
     }
 
@@ -1377,7 +904,7 @@ class EmailCommandHandler {
         category: 'custom',
         variables: [],
         isActive: true,
-        userId: userId
+        userId: userId,
       };
 
       const result = await emailTemplateService.saveTemplate(templateData);
@@ -1387,13 +914,13 @@ class EmailCommandHandler {
           success: true,
           message: `Template "${params.templateName}" created successfully`,
           action: 'template_created',
-          data: result.data
+          data: result.data,
         };
       } else {
         return {
           success: false,
           message: `Failed to create template: ${String(result.error ?? 'Unknown error')}`,
-          action: 'error'
+          action: 'error',
         };
       }
     } catch (error: unknown) {
@@ -1401,7 +928,7 @@ class EmailCommandHandler {
       return {
         success: false,
         message: `Failed to create template: ${errorMessage}`,
-        action: 'error'
+        action: 'error',
       };
     }
   }
@@ -1412,7 +939,7 @@ class EmailCommandHandler {
         success: false,
         message: 'Please specify which template to use',
         action: 'input_required',
-        data: { field: 'templateName' }
+        data: { field: 'templateName' },
       };
     }
 
@@ -1423,9 +950,9 @@ class EmailCommandHandler {
       data: {
         route: '/email/compose',
         params: {
-          templateName: params.templateName
-        }
-      }
+          templateName: params.templateName,
+        },
+      },
     };
   }
 
@@ -1435,19 +962,18 @@ class EmailCommandHandler {
         success: false,
         message: 'Please specify which template to delete',
         action: 'input_required',
-        data: { field: 'templateName' }
+        data: { field: 'templateName' },
       };
     }
 
     try {
-      // Find template by name
       const templatesResult = await emailTemplateService.getTemplates(null);
-      
+
       if (!templatesResult.success) {
         return {
           success: false,
           message: `Failed to fetch templates: ${String(templatesResult.error ?? 'Unknown error')}`,
-          action: 'error'
+          action: 'error',
         };
       }
 
@@ -1458,23 +984,23 @@ class EmailCommandHandler {
         return {
           success: false,
           message: `Template "${params.templateName}" not found`,
-          action: 'error'
+          action: 'error',
         };
       }
 
       const deleteResult = await emailTemplateService.deleteTemplate(template.id);
-      
+
       if (deleteResult.success) {
         return {
           success: true,
           message: `Template "${params.templateName}" deleted successfully`,
-          action: 'template_deleted'
+          action: 'template_deleted',
         };
       } else {
         return {
           success: false,
           message: `Failed to delete template: ${String(deleteResult.error ?? 'Unknown error')}`,
-          action: 'error'
+          action: 'error',
         };
       }
     } catch (error: unknown) {
@@ -1482,7 +1008,7 @@ class EmailCommandHandler {
       return {
         success: false,
         message: `Failed to delete template: ${errorMessage}`,
-        action: 'error'
+        action: 'error',
       };
     }
   }
@@ -1493,7 +1019,7 @@ class EmailCommandHandler {
         success: false,
         message: 'Please specify a campaign name',
         action: 'input_required',
-        data: { field: 'campaignName' }
+        data: { field: 'campaignName' },
       };
     }
 
@@ -1504,7 +1030,7 @@ class EmailCommandHandler {
         templateId: params.templateId || null,
         recipients: [],
         status: 'draft',
-        userId: userId
+        userId: userId,
       };
 
       const result = await emailCampaignService.createCampaign(campaignData);
@@ -1514,13 +1040,13 @@ class EmailCommandHandler {
           success: true,
           message: `Campaign "${params.campaignName}" created successfully`,
           action: 'campaign_created',
-          data: result.data
+          data: result.data,
         };
       } else {
         return {
           success: false,
           message: `Failed to create campaign: ${String(result.error ?? 'Unknown error')}`,
-          action: 'error'
+          action: 'error',
         };
       }
     } catch (error: unknown) {
@@ -1528,7 +1054,7 @@ class EmailCommandHandler {
       return {
         success: false,
         message: `Failed to create campaign: ${errorMessage}`,
-        action: 'error'
+        action: 'error',
       };
     }
   }
@@ -1539,7 +1065,7 @@ class EmailCommandHandler {
         success: false,
         message: 'Please specify which campaign to send',
         action: 'input_required',
-        data: { field: 'campaignId' }
+        data: { field: 'campaignId' },
       };
     }
 
@@ -1551,13 +1077,13 @@ class EmailCommandHandler {
           success: true,
           message: `Campaign sent successfully`,
           action: 'campaign_sent',
-          data: result.data
+          data: result.data,
         };
       } else {
         return {
           success: false,
           message: `Failed to send campaign: ${String(result.error ?? 'Unknown error')}`,
-          action: 'error'
+          action: 'error',
         };
       }
     } catch (error: unknown) {
@@ -1565,7 +1091,7 @@ class EmailCommandHandler {
       return {
         success: false,
         message: `Failed to send campaign: ${errorMessage}`,
-        action: 'error'
+        action: 'error',
       };
     }
   }
@@ -1583,14 +1109,14 @@ class EmailCommandHandler {
           data: {
             type: 'campaigns',
             items: campaigns,
-            route: '/email/campaigns'
-          }
+            route: '/email/campaigns',
+          },
         };
       } else {
         return {
           success: false,
           message: `Failed to fetch campaigns: ${String(result.error ?? 'Unknown error')}`,
-          action: 'error'
+          action: 'error',
         };
       }
     } catch (error: unknown) {
@@ -1598,7 +1124,7 @@ class EmailCommandHandler {
       return {
         success: false,
         message: `Failed to fetch campaigns: ${errorMessage}`,
-        action: 'error'
+        action: 'error',
       };
     }
   }
@@ -1609,7 +1135,7 @@ class EmailCommandHandler {
         success: false,
         message: 'Please specify which campaign to get stats for',
         action: 'input_required',
-        data: { field: 'campaignId' }
+        data: { field: 'campaignId' },
       };
     }
 
@@ -1624,14 +1150,14 @@ class EmailCommandHandler {
           data: {
             type: 'campaign_stats',
             stats: result.data,
-            route: '/email/campaigns'
-          }
+            route: '/email/campaigns',
+          },
         };
       } else {
         return {
           success: false,
           message: `Failed to get campaign stats: ${String(result.error ?? 'Unknown error')}`,
-          action: 'error'
+          action: 'error',
         };
       }
     } catch (error: unknown) {
@@ -1639,7 +1165,7 @@ class EmailCommandHandler {
       return {
         success: false,
         message: `Failed to get campaign stats: ${errorMessage}`,
-        action: 'error'
+        action: 'error',
       };
     }
   }
@@ -1650,7 +1176,7 @@ class EmailCommandHandler {
         success: false,
         message: 'Please specify which campaign to pause',
         action: 'input_required',
-        data: { field: 'campaignId' }
+        data: { field: 'campaignId' },
       };
     }
 
@@ -1661,13 +1187,13 @@ class EmailCommandHandler {
         return {
           success: true,
           message: `Campaign paused successfully`,
-          action: 'campaign_updated'
+          action: 'campaign_updated',
         };
       } else {
         return {
           success: false,
           message: `Failed to pause campaign: ${String(result.error ?? 'Unknown error')}`,
-          action: 'error'
+          action: 'error',
         };
       }
     } catch (error: unknown) {
@@ -1675,7 +1201,7 @@ class EmailCommandHandler {
       return {
         success: false,
         message: `Failed to pause campaign: ${errorMessage}`,
-        action: 'error'
+        action: 'error',
       };
     }
   }
@@ -1686,7 +1212,7 @@ class EmailCommandHandler {
         success: false,
         message: 'Please specify which campaign to resume',
         action: 'input_required',
-        data: { field: 'campaignId' }
+        data: { field: 'campaignId' },
       };
     }
 
@@ -1697,13 +1223,13 @@ class EmailCommandHandler {
         return {
           success: true,
           message: `Campaign resumed successfully`,
-          action: 'campaign_updated'
+          action: 'campaign_updated',
         };
       } else {
         return {
           success: false,
           message: `Failed to resume campaign: ${String(result.error ?? 'Unknown error')}`,
-          action: 'error'
+          action: 'error',
         };
       }
     } catch (error: unknown) {
@@ -1711,7 +1237,7 @@ class EmailCommandHandler {
       return {
         success: false,
         message: `Failed to resume campaign: ${errorMessage}`,
-        action: 'error'
+        action: 'error',
       };
     }
   }
@@ -1728,14 +1254,14 @@ class EmailCommandHandler {
           data: {
             type: 'analytics',
             analytics: result.data,
-            route: '/email/analytics'
-          }
+            route: '/email/analytics',
+          },
         };
       } else {
         return {
           success: false,
           message: `Failed to get email analytics: ${String(result.error ?? 'Unknown error')}`,
-          action: 'error'
+          action: 'error',
         };
       }
     } catch (error: unknown) {
@@ -1743,7 +1269,7 @@ class EmailCommandHandler {
       return {
         success: false,
         message: `Failed to get email analytics: ${errorMessage}`,
-        action: 'error'
+        action: 'error',
       };
     }
   }
@@ -1760,14 +1286,14 @@ class EmailCommandHandler {
           data: {
             type: 'stats',
             stats: result.data,
-            route: '/email/analytics'
-          }
+            route: '/email/analytics',
+          },
         };
       } else {
         return {
           success: false,
           message: `Failed to get email stats: ${String(result.error ?? 'Unknown error')}`,
-          action: 'error'
+          action: 'error',
         };
       }
     } catch (error: unknown) {
@@ -1775,7 +1301,7 @@ class EmailCommandHandler {
       return {
         success: false,
         message: `Failed to get email stats: ${errorMessage}`,
-        action: 'error'
+        action: 'error',
       };
     }
   }
@@ -1792,14 +1318,14 @@ class EmailCommandHandler {
           data: {
             type: 'metrics',
             metrics: result.data,
-            route: '/email/analytics'
-          }
+            route: '/email/analytics',
+          },
         };
       } else {
         return {
           success: false,
           message: `Failed to get email metrics: ${String(result.error ?? 'Unknown error')}`,
-          action: 'error'
+          action: 'error',
         };
       }
     } catch (error: unknown) {
@@ -1807,7 +1333,7 @@ class EmailCommandHandler {
       return {
         success: false,
         message: `Failed to get email metrics: ${errorMessage}`,
-        action: 'error'
+        action: 'error',
       };
     }
   }
@@ -1824,14 +1350,14 @@ class EmailCommandHandler {
           data: {
             type: 'performance',
             performance: result.data,
-            route: '/email/analytics'
-          }
+            route: '/email/analytics',
+          },
         };
       } else {
         return {
           success: false,
           message: `Failed to get email performance: ${String(result.error ?? 'Unknown error')}`,
-          action: 'error'
+          action: 'error',
         };
       }
     } catch (error: unknown) {
@@ -1839,7 +1365,7 @@ class EmailCommandHandler {
       return {
         success: false,
         message: `Failed to get email performance: ${errorMessage}`,
-        action: 'error'
+        action: 'error',
       };
     }
   }
@@ -1856,14 +1382,14 @@ class EmailCommandHandler {
           data: {
             type: 'report',
             report: result.data,
-            route: '/email/reports'
-          }
+            route: '/email/reports',
+          },
         };
       } else {
         return {
           success: false,
           message: `Failed to generate email report: ${String(result.error ?? 'Unknown error')}`,
-          action: 'error'
+          action: 'error',
         };
       }
     } catch (error: unknown) {
@@ -1871,7 +1397,7 @@ class EmailCommandHandler {
       return {
         success: false,
         message: `Failed to generate email report: ${errorMessage}`,
-        action: 'error'
+        action: 'error',
       };
     }
   }
@@ -1882,7 +1408,7 @@ class EmailCommandHandler {
         success: false,
         message: 'Please specify a client ID',
         action: 'input_required',
-        data: { field: 'clientId' }
+        data: { field: 'clientId' },
       };
     }
 
@@ -1898,14 +1424,14 @@ class EmailCommandHandler {
             type: 'client_history',
             history: result.data,
             clientId: params.clientId,
-            route: '/email/clients'
-          }
+            route: '/email/clients',
+          },
         };
       } else {
         return {
           success: false,
           message: `Failed to get client email history: ${String(result.error ?? 'Unknown error')}`,
-          action: 'error'
+          action: 'error',
         };
       }
     } catch (error: unknown) {
@@ -1913,7 +1439,7 @@ class EmailCommandHandler {
       return {
         success: false,
         message: `Failed to get client email history: ${errorMessage}`,
-        action: 'error'
+        action: 'error',
       };
     }
   }
@@ -1930,14 +1456,14 @@ class EmailCommandHandler {
           data: {
             type: 'activity',
             activity: result.data,
-            route: '/email/activity'
-          }
+            route: '/email/activity',
+          },
         };
       } else {
         return {
           success: false,
           message: `Failed to get email activity: ${String(result.error ?? 'Unknown error')}`,
-          action: 'error'
+          action: 'error',
         };
       }
     } catch (error: unknown) {
@@ -1945,7 +1471,7 @@ class EmailCommandHandler {
       return {
         success: false,
         message: `Failed to get email activity: ${errorMessage}`,
-        action: 'error'
+        action: 'error',
       };
     }
   }
@@ -1956,7 +1482,7 @@ class EmailCommandHandler {
         success: false,
         message: 'Please specify recipient and scheduled time',
         action: 'input_required',
-        data: { fields: ['recipient', 'scheduledTime'] }
+        data: { fields: ['recipient', 'scheduledTime'] },
       };
     }
 
@@ -1965,7 +1491,7 @@ class EmailCommandHandler {
         to: [params.recipient],
         subject: params.subject || 'Scheduled Email',
         body: params.message || '',
-        priority: 'normal'
+        priority: 'normal',
       };
 
       const result = await emailAutomationService.scheduleEmail(
@@ -1978,14 +1504,14 @@ class EmailCommandHandler {
         success: true,
         message: `Email scheduled for ${params.scheduledTime}`,
         action: 'email_scheduled',
-        data: result
+        data: result,
       };
     } catch (error: unknown) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
       return {
         success: false,
         message: `Failed to schedule email: ${errorMessage}`,
-        action: 'error'
+        action: 'error',
       };
     }
   }
@@ -1996,7 +1522,7 @@ class EmailCommandHandler {
         success: false,
         message: 'Please specify an automation rule name',
         action: 'input_required',
-        data: { field: 'ruleName' }
+        data: { field: 'ruleName' },
       };
     }
 
@@ -2008,9 +1534,9 @@ class EmailCommandHandler {
         route: '/email/automation',
         params: {
           action: 'create',
-          ruleName: params.ruleName
-        }
-      }
+          ruleName: params.ruleName,
+        },
+      },
     };
   }
 
@@ -2025,15 +1551,15 @@ class EmailCommandHandler {
         data: {
           type: 'automation_rules',
           items: rules,
-          route: '/email/automation'
-        }
+          route: '/email/automation',
+        },
       };
     } catch (error: unknown) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
       return {
         success: false,
         message: `Failed to fetch automation rules: ${errorMessage}`,
-        action: 'error'
+        action: 'error',
       };
     }
   }
@@ -2049,15 +1575,15 @@ class EmailCommandHandler {
         data: {
           type: 'follow_ups',
           items: followUps,
-          route: '/email/follow-ups'
-        }
+          route: '/email/follow-ups',
+        },
       };
     } catch (error: unknown) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
       return {
         success: false,
         message: `Failed to fetch follow-ups: ${errorMessage}`,
-        action: 'error'
+        action: 'error',
       };
     }
   }
@@ -2068,7 +1594,7 @@ class EmailCommandHandler {
         success: false,
         message: 'Please specify invoice ID and recipient',
         action: 'input_required',
-        data: { fields: ['invoiceId', 'recipient'] }
+        data: { fields: ['invoiceId', 'recipient'] },
       };
     }
 
@@ -2083,14 +1609,14 @@ class EmailCommandHandler {
         success: true,
         message: `Invoice email sent to ${params.recipient}`,
         action: 'email_sent',
-        data: result
+        data: result,
       };
     } catch (error: unknown) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
       return {
         success: false,
         message: `Failed to send invoice email: ${errorMessage}`,
-        action: 'error'
+        action: 'error',
       };
     }
   }
@@ -2101,7 +1627,7 @@ class EmailCommandHandler {
         success: false,
         message: 'Please specify quote ID and recipient',
         action: 'input_required',
-        data: { fields: ['quoteId', 'recipient'] }
+        data: { fields: ['quoteId', 'recipient'] },
       };
     }
 
@@ -2116,14 +1642,14 @@ class EmailCommandHandler {
         success: true,
         message: `Quote email sent to ${params.recipient}`,
         action: 'email_sent',
-        data: result
+        data: result,
       };
     } catch (error: unknown) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
       return {
         success: false,
         message: `Failed to send quote email: ${errorMessage}`,
-        action: 'error'
+        action: 'error',
       };
     }
   }
@@ -2134,12 +1660,11 @@ class EmailCommandHandler {
         success: false,
         message: 'Please specify an invoice ID',
         action: 'input_required',
-        data: { field: 'invoiceId' }
+        data: { field: 'invoiceId' },
       };
     }
 
     try {
-      // This would integrate with the invoice service
       const result = await emailService.sendInvoiceEmail(
         userId,
         params.invoiceId,
@@ -2151,14 +1676,14 @@ class EmailCommandHandler {
         success: true,
         message: `Payment reminder sent`,
         action: 'email_sent',
-        data: result
+        data: result,
       };
     } catch (error: unknown) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
       return {
         success: false,
         message: `Failed to send payment reminder: ${errorMessage}`,
-        action: 'error'
+        action: 'error',
       };
     }
   }
@@ -2169,8 +1694,8 @@ class EmailCommandHandler {
       message: 'Opening email settings...',
       action: 'navigate',
       data: {
-        route: '/email/settings'
-      }
+        route: '/email/settings',
+      },
     };
   }
 
@@ -2180,8 +1705,8 @@ class EmailCommandHandler {
       message: 'Opening signature manager...',
       action: 'navigate',
       data: {
-        route: '/email/settings/signature'
-      }
+        route: '/email/settings/signature',
+      },
     };
   }
 
@@ -2191,8 +1716,8 @@ class EmailCommandHandler {
       message: 'Opening notification settings...',
       action: 'navigate',
       data: {
-        route: '/email/settings/notifications'
-      }
+        route: '/email/settings/notifications',
+      },
     };
   }
 
@@ -2203,7 +1728,7 @@ class EmailCommandHandler {
       search: 'To search emails, say "search emails for [query]" or "find emails from [sender]"',
       templates: 'To manage templates, say "show templates", "create template", or "use template [name]"',
       campaigns: 'To manage campaigns, say "show campaigns", "create campaign", or "send campaign [id]"',
-      automation: 'To manage automation, say "show automation rules" or "create automation"'
+      automation: 'To manage automation, say "show automation rules" or "create automation"',
     };
 
     const topic = params[0];
@@ -2233,17 +1758,11 @@ Say "help with [topic]" for specific guidance.`;
       action: 'show_help',
       data: {
         type: 'email_help',
-        topic: topic
-      }
+        topic: topic,
+      },
     };
   }
 }
 
-// Create singleton instance
-const emailCommandHandler = new EmailCommandHandler();
-
-// Export the handler and its methods
-export { emailCommandHandler };
-export const allEmailCommands = emailCommandHandler.getAllCommands();
-export const processEmailCommand = (command: string, context: any) => emailCommandHandler.processCommand(command, context);
-export const executeEmailCommand = (action: string, params: EmailParams, context: any) => emailCommandHandler.executeCommand(action, params, context);
+// Export the singleton instance
+export const emailCommandHandler = EmailCommandHandler.getInstance();

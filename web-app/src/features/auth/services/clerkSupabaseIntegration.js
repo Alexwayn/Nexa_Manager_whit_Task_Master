@@ -1,6 +1,6 @@
-import { supabase } from '@lib/supabaseClient';
+import { supabase } from '@/lib/supabaseClient';
 import { useClerk, useAuth } from '@clerk/clerk-react';
-import Logger from '@utils/Logger';
+import Logger from '@/utils/Logger';
 
 /**
  * Clerk-Supabase Integration Service

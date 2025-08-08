@@ -1,7 +1,7 @@
-import { supabase } from '@lib/supabaseClient';
+import { supabase } from '@/lib/supabaseClient';
 import incomeService from './incomeService';
 import expenseService from './expenseService';
-import Logger from '@utils/Logger';
+import Logger from '@/utils/Logger';
 
 /**
  * Financial Service

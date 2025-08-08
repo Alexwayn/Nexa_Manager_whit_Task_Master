@@ -1,5 +1,5 @@
-import { supabase } from '@lib/supabaseClient';
-import Logger from '@utils/Logger';
+import { supabase } from '@/lib/supabaseClient';
+import Logger from '@/utils/Logger';
 
 // Translation function - to be integrated with i18n system
 const t = (key: string, params?: Record<string, unknown>): string => {

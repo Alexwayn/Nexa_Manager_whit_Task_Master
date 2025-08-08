@@ -1,157 +1,301 @@
-import React, { useState } from 'react';
-import { MessageSquare, ThumbsUp, ThumbsDown } from 'lucide-react';
-import { useVoiceAssistant } from '@/providers/VoiceAssistantProvider';
+import React, { useState, useEffect, useRef } from 'react';
+import { 
+  HandThumbUpIcon, 
+  HandThumbDownIcon, 
+  ChatBubbleLeftRightIcon,
+  MicrophoneIcon 
+} from '@heroicons/react/24/outline';
 import VoiceFeedbackModal from './VoiceFeedbackModal';
+import { useVoiceAssistant } from '@/providers/VoiceAssistantProvider';
 
 /**
- * VoiceFeedbackButton - Quick feedback collection button
- * Provides easy access to feedback collection for voice commands
+ * VoiceFeedbackButton Component
+ * 
+ * Provides feedback functionality for voice commands
  */
-export function VoiceFeedbackButton({ 
-  command, 
-  action, 
-  size = 'sm',
-  variant = 'outline',
+const VoiceFeedbackButton = ({ 
+  disabled = false,
+  iconOnly = false,
+  feedbackCount,
+  showCount = false,
+  isLoading = false,
+  onFeedbackSubmit,
   className = '',
-  showQuickActions = true 
-}) {
-  const [showModal, setShowModal] = useState(false);
-  const { collectFeedback, sessionId } = useVoiceAssistant();
+  style = {},
+  variant = 'default',
+  size = 'default',
+  ...props 
+}) => {
+  const { 
+    lastCommand, 
+    lastConfidence, 
+    isEnabled, 
+    feedbackCount: stateFeedbackCount 
+  } = useVoiceAssistant();
+  
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [successMessage, setSuccessMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+  const [clickCount, setClickCount] = useState(0);
+  const clickTimeoutRef = useRef(null);
 
-  const handleQuickFeedback = async (type, rating) => {
-    try {
-      await collectFeedback({
-        command: command || 'unknown',
-        action: action || 'unknown',
-        type,
-        rating,
-        quickFeedback: true
-      });
-    } catch (error) {
-      console.error('Error submitting quick feedback:', error);
+  // Clear messages after a delay
+  useEffect(() => {
+    if (successMessage || errorMessage) {
+      const timer = setTimeout(() => {
+        setSuccessMessage('');
+        setErrorMessage('');
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [successMessage, errorMessage]);
+
+  // Handle rapid clicks
+  const handleClick = () => {
+    if (disabled || isLoading || !isEnabled || !lastCommand) return;
+    
+    setClickCount(prev => prev + 1);
+    
+    if (clickTimeoutRef.current) {
+      clearTimeout(clickTimeoutRef.current);
+    }
+    
+    clickTimeoutRef.current = setTimeout(() => {
+      if (!isModalOpen) {
+        setIsModalOpen(true);
+      }
+      setClickCount(0);
+    }, 100);
+  };
+
+  // Handle keyboard navigation
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      handleClick();
     }
   };
 
-  const sizeClasses = {
-    xs: 'h-6 w-6 text-xs',
-    sm: 'h-8 w-8 text-sm',
-    md: 'h-10 w-10 text-base',
-    lg: 'h-12 w-12 text-lg'
+  // Handle escape key to close modal
+  useEffect(() => {
+    const handleEscape = (e) => {
+      if (e.key === 'Escape' && isModalOpen) {
+        setIsModalOpen(false);
+      }
+    };
+
+    document.addEventListener('keydown', handleEscape);
+    return () => document.removeEventListener('keydown', handleEscape);
+  }, [isModalOpen]);
+
+  const handleFeedbackSubmit = async (feedbackData) => {
+    setIsSubmitting(true);
+    setErrorMessage('');
+    setSuccessMessage('');
+
+    try {
+      if (onFeedbackSubmit) {
+        await onFeedbackSubmit(feedbackData);
+      }
+      setSuccessMessage('Feedback submitted successfully!');
+      setIsModalOpen(false);
+    } catch (error) {
+      setErrorMessage('Failed to submit feedback. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
-  const variantClasses = {
-    outline: 'border border-gray-300 hover:border-gray-400 bg-white hover:bg-gray-50',
-    ghost: 'hover:bg-gray-100',
-    solid: 'bg-blue-500 hover:bg-blue-600 text-white'
+  const isButtonDisabled = disabled || isLoading || !isEnabled || !lastCommand || isSubmitting;
+
+  // Build CSS classes
+  const getButtonClasses = () => {
+    const baseClasses = [
+      'voice-feedback-button',
+      'inline-flex',
+      'items-center',
+      'justify-center',
+      'rounded-md',
+      'border',
+      'font-medium',
+      'focus:outline-none',
+      'focus:ring-2',
+      'focus:ring-offset-2',
+      'transition-colors',
+      'duration-200'
+    ];
+
+    // Variant classes
+    const variantClasses = {
+      primary: [
+        'border-transparent',
+        'text-white',
+        'bg-blue-600',
+        'hover:bg-blue-700',
+        'focus:ring-blue-500'
+      ],
+      secondary: [
+        'border-gray-300',
+        'text-gray-700',
+        'bg-white',
+        'hover:bg-gray-50',
+        'focus:ring-blue-500'
+      ],
+      default: [
+        'border-gray-300',
+        'text-gray-700',
+        'bg-white',
+        'hover:bg-gray-50',
+        'focus:ring-blue-500'
+      ]
+    };
+
+    // Size classes
+    const sizeClasses = {
+      sm: ['px-2.5', 'py-1.5', 'text-xs'],
+      default: ['px-3', 'py-2', 'text-sm'],
+      lg: ['px-4', 'py-2', 'text-base']
+    };
+
+    // Disabled classes
+    const disabledClasses = isButtonDisabled ? [
+      'opacity-50',
+      'cursor-not-allowed'
+    ] : [];
+
+    const allClasses = [
+      ...baseClasses,
+      ...variantClasses[variant],
+      ...sizeClasses[size],
+      ...disabledClasses,
+      `btn-${variant}`,
+      `btn-${size}`
+    ];
+
+    // Add custom className if provided
+    if (className) {
+      allClasses.push(className);
+    }
+
+    return allClasses.filter(Boolean).join(' ');
   };
 
-  return (
-    <div className={`flex items-center gap-1 ${className}`}>
-      {showQuickActions && (
-        <>
-          <button
-            onClick={() => handleQuickFeedback('success', 5)}
-            className={`
-              ${sizeClasses[size]} 
-              ${variantClasses[variant]}
-              rounded-md flex items-center justify-center
-              transition-colors duration-200
-              text-green-600 hover:text-green-700 hover:bg-green-50
-            `}
-            title="Good command"
-          >
-            <ThumbsUp className="w-4 h-4" />
-          </button>
-          
-          <button
-            onClick={() => handleQuickFeedback('issue', 2)}
-            className={`
-              ${sizeClasses[size]} 
-              ${variantClasses[variant]}
-              rounded-md flex items-center justify-center
-              transition-colors duration-200
-              text-red-600 hover:text-red-700 hover:bg-red-50
-            `}
-            title="Poor command"
-          >
-            <ThumbsDown className="w-4 h-4" />
-          </button>
-        </>
-      )}
-      
-      <button
-        onClick={() => setShowModal(true)}
-        className={`
-          ${sizeClasses[size]} 
-          ${variantClasses[variant]}
-          rounded-md flex items-center justify-center
-          transition-colors duration-200
-          text-blue-600 hover:text-blue-700 hover:bg-blue-50
-        `}
-        title="Detailed feedback"
-      >
-        <MessageSquare className="w-4 h-4" />
-      </button>
+  // Build tooltip text
+  const getTooltipText = () => {
+    if (!isEnabled) {
+      return 'Voice assistant is disabled';
+    }
+    if (!lastCommand) {
+      return 'No voice command to provide feedback for';
+    }
+    const confidencePercent = Math.round((lastConfidence || 0) * 100);
+    return `Give feedback for: \"${lastCommand}\" (Confidence: ${confidencePercent}%`;
+  };
 
-      {showModal && (
-        <VoiceFeedbackModal
-          isOpen={showModal}
-          onClose={() => setShowModal(false)}
-          commandData={{
-            command: command || '',
-            action: action || ''
-          }}
-        />
-      )}
-    </div>
-  );
-}
-
-/**
- * VoiceFeedbackFloatingButton - Floating feedback button for global access
- */
-export function VoiceFeedbackFloatingButton({ 
-  position = 'bottom-right',
-  className = '' 
-}) {
-  const [showModal, setShowModal] = useState(false);
-  const { lastCommand } = useVoiceAssistant();
-
-  const positionClasses = {
-    'bottom-right': 'fixed bottom-4 right-4',
-    'bottom-left': 'fixed bottom-4 left-4',
-    'top-right': 'fixed top-4 right-4',
-    'top-left': 'fixed top-4 left-4'
+  // Build aria-label
+  const getAriaLabel = () => {
+    const currentFeedbackCount = feedbackCount || stateFeedbackCount;
+    if (showCount && currentFeedbackCount) {
+      return `${currentFeedbackCount} feedback items`;
+    }
+    return 'Give feedback';
   };
 
   return (
     <>
       <button
-        onClick={() => setShowModal(true)}
-        className={`
-          ${positionClasses[position]}
-          w-12 h-12 bg-blue-500 hover:bg-blue-600 
-          text-white rounded-full shadow-lg hover:shadow-xl
-          flex items-center justify-center
-          transition-all duration-200 transform hover:scale-105
-          z-50 ${className}
-        `}
-        title="Voice Command Feedback"
+        className={getButtonClasses()}
+        style={style}
+        disabled={isButtonDisabled}
+        onClick={handleClick}
+        onKeyDown={handleKeyDown}
+        title={getTooltipText()}
+        aria-label={getAriaLabel()}
+        aria-describedby="feedback-tooltip"
+        role="button"
+        data-testid="voice-feedback-button"
+        {...props}
       >
-        <MessageSquare className="w-6 h-6" />
+        <ChatBubbleLeftRightIcon className="h-4 w-4" data-testid="feedback-icon" />
+        {!iconOnly && (
+          <span className="ml-2">
+            Give feedback
+            {showCount && (feedbackCount || stateFeedbackCount) && (
+              <span className="ml-1 px-1.5 py-0.5 text-xs bg-blue-100 text-blue-800 rounded-full">
+                {feedbackCount || stateFeedbackCount}
+              </span>
+            )}
+          </span>
+        )}
+        {showCount && (feedbackCount || stateFeedbackCount) && iconOnly && (
+          <span className="absolute -top-1 -right-1 px-1 py-0.5 text-xs bg-red-500 text-white rounded-full min-w-[1rem] text-center">
+            {feedbackCount || stateFeedbackCount}
+          </span>
+        )}
       </button>
 
-      {showModal && (
-        <VoiceFeedbackModal
-          isOpen={showModal}
-          onClose={() => setShowModal(false)}
-          commandData={{
-            command: lastCommand || ''
-          }}
-        />
+      {/* Display feedback count as text when showCount is true */}
+      {showCount && (feedbackCount || stateFeedbackCount) && (
+        <span>{feedbackCount || stateFeedbackCount}</span>
       )}
+
+      {/* Status Messages */}
+      {isSubmitting && (
+        <div className="mt-2 text-sm text-blue-600">
+          Submitting feedback...
+        </div>
+      )}
+      {successMessage && (
+        <div className="mt-2 text-sm text-green-600">
+          {successMessage}
+        </div>
+      )}
+      {errorMessage && (
+        <div className="mt-2 text-sm text-red-600">
+          {errorMessage}
+        </div>
+      )}
+
+      {/* Feedback Modal */}
+      <VoiceFeedbackModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        commandData={{
+          command: lastCommand,
+          confidence: lastConfidence,
+          id: Date.now().toString(),
+          sessionId: 'current-session'
+        }}
+        onFeedbackSubmitted={handleFeedbackSubmit}
+      />
     </>
   );
-}
+};
+
+/**
+ * VoiceFeedbackFloatingButton Component
+ * 
+ * Floating button for global voice feedback access
+ */
+const VoiceFeedbackFloatingButton = ({ disabled = false, ...props }) => {
+  const { isEnabled } = useVoiceAssistant();
+  
+  const isButtonDisabled = disabled || !isEnabled;
+
+  return (
+    <div className="fixed bottom-4 right-4 z-50">
+      <VoiceFeedbackButton
+        iconOnly={true}
+        disabled={isButtonDisabled}
+        className="rounded-full p-3 shadow-lg"
+        title={isButtonDisabled ? 'Voice assistant is disabled' : 'Give feedback on voice commands'}
+        aria-label={isButtonDisabled ? 'Voice assistant is disabled' : 'Give feedback on voice commands'}
+        {...props}
+      />
+    </div>
+  );
+};
 
 export default VoiceFeedbackButton;
+export { VoiceFeedbackFloatingButton };

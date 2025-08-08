@@ -1,5 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
-import Logger from '@utils/Logger';
+import Logger from '@/utils/Logger';
 import { getEnvVar } from '@/utils/env';
 
 // Use environment variables with Jest compatibility

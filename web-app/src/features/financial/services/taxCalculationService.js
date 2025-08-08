@@ -9,7 +9,7 @@
  * - Configurable tax rules by product/service category
  * - Compliance with Italian tax regulations
  */
-import Logger from '@utils/Logger';
+import Logger from '@/utils/Logger';
 
 // Translation function - to be integrated with i18n system
 const t = (key, params) => {

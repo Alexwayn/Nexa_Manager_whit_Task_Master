@@ -1,6 +1,6 @@
 // Script di debug per verificare la connessione e lo schema Supabase
-import { supabase } from '@lib/supabaseClient';
-import Logger from '@utils/Logger';
+import { supabase } from '@/lib/supabaseClient';
+import Logger from '@/utils/Logger';
 
 // Funzione per stampare i risultati in modo più leggibile
 const formatResult = (data, error) => {

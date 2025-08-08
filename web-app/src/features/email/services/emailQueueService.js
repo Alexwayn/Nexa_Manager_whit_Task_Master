@@ -1,4 +1,4 @@
-import Logger from '@utils/Logger';
+import Logger from '@/utils/Logger';
 import emailCampaignService from './emailCampaignService';
 import emailTrackingService from './emailTrackingService';
 import { getEnvVar } from '@/utils/env';

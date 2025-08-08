@@ -3,8 +3,8 @@ import { useAuth, useUser } from '@clerk/clerk-react';
 import { realtimeService } from '@shared/services/realtimeService';
 import { financialService } from '@features/financial';
 import { clientService } from '@features/clients';
-import Logger from '@utils/Logger';
-import { supabase } from '@lib/supabaseClient';
+import Logger from '@/utils/Logger';
+import { supabase } from '@/lib/supabaseClient';
 import { getUserIdForUuidTables } from '@shared/utils';
 
 /**

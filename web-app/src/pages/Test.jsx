@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { supabase } from '@lib/supabaseClient';
-import Logger from '@utils/Logger';
+import { supabase } from '@/lib/supabaseClient';
+import Logger from '@/utils/Logger';
 
 // Simple test function to replace the missing testSupabaseConnection
 const testSupabaseConnection = async () => {

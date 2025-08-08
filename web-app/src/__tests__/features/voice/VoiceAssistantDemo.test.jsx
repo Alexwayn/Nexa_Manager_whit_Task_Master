@@ -7,6 +7,10 @@ import voiceAnalyticsService from '@/services/voiceAnalyticsService';
 
 // Mock services
 jest.mock('@/services/voiceAnalyticsService');
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  BrowserRouter: ({ children }) => <div>{children}</div>,
+}));
 
 const renderWithProviders = (component) => {
   return render(

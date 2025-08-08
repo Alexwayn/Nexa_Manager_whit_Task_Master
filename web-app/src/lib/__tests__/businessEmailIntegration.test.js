@@ -2,14 +2,13 @@
  * @jest-environment jsdom
  */
 
-import businessEmailIntegration from '../businessEmailIntegration.js';
+import businessEmailIntegration from '../../features/email/services/businessEmailIntegration';
 import { InvoiceService } from '../invoiceService.js';
 import { QuoteService } from '../quoteService.js';
-import clientEmailService from '../clientEmailService.js';
-import businessEmailLogger from '../businessEmailLogger.js';
+import businessEmailLogger from '../../features/email/services/businessEmailLogger';
 
 // Mock dependencies
-jest.mock('../supabaseClient', () => ({
+jest.mock('@/lib/supabaseClient', () => ({
   supabase: {
     from: jest.fn(() => ({
       select: jest.fn(() => ({
@@ -60,7 +59,7 @@ jest.mock('../supabaseClient', () => ({
   },
 }));
 
-jest.mock('@utils/Logger', () => ({
+jest.mock('@/utils/Logger', () => ({
   info: jest.fn(),
   error: jest.fn(),
   warn: jest.fn(),

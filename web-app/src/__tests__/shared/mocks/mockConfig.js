@@ -132,7 +132,7 @@ class MockStateManager {
 
     try {
       // Setup global mocks first
-      if (this.config.global.mockTimers) {
+      if (this.config.global.mockTimers && !jest.isMockFunction(setTimeout)) {
         jest.useFakeTimers();
       }
 
@@ -265,7 +265,7 @@ class MockStateManager {
       cleanupMocks();
 
       // Restore timers
-      if (this.config.global.mockTimers) {
+      if (this.config.global.mockTimers && jest.isMockFunction(setTimeout)) {
         jest.useRealTimers();
       }
 

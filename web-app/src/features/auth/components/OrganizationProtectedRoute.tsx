@@ -2,7 +2,8 @@ import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth, useUser } from '@clerk/clerk-react';
 import { ReactNode, ReactElement } from 'react';
 import { useOrganizationContext } from '@/shared/hooks';
-import Logger from '@utils/Logger';
+import { shouldBypassAuth } from '@/utils/env';
+import Logger from '@/utils/Logger';
 
 interface OrganizationProtectedRouteProps {
   children: ReactNode;
@@ -36,6 +37,14 @@ export default function OrganizationProtectedRoute({
   adminOnly = false,
   unauthorizedComponent: _unauthorizedComponent,
 }: OrganizationProtectedRouteProps) {
+  // Check if authentication should be bypassed in development
+  const bypassAuth = shouldBypassAuth();
+  
+  if (bypassAuth) {
+    console.log('🔓 Development Mode: Organization authentication bypassed');
+    return <>{children}</>;
+  }
+
   const { isLoaded, isSignedIn } = useAuth();
   const { user } = useUser();
   const location = useLocation();

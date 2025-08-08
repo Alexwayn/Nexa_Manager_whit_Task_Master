@@ -7,7 +7,7 @@ import QuoteApprovalActions from './QuoteApprovalActions';
 import QuoteStatusHistory from './QuoteStatusHistory';
 import DigitalSignature from './DigitalSignature';
 import { QuoteService } from '../services/quoteService';
-import Logger from '@utils/Logger';
+import Logger from '@/utils/Logger';
 
 /**
  * QuoteDetailModal Component

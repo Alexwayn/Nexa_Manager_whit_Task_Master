@@ -7,6 +7,7 @@ import {
   CogIcon
 } from '@heroicons/react/24/outline';
 import VoiceFeedbackModal from '../components/voice/VoiceFeedbackModal';
+import VoiceFeedbackButton from '../components/voice/VoiceFeedbackButton';
 import { CommandSuggestionModal, CommandSuggestionsList } from '../components/voice/CommandSuggestion';
 import VoiceFeedbackAnalytics from '../components/voice/VoiceFeedbackAnalytics';
 import { FeedbackAnalysisTools } from '../components/voice/FeedbackAnalysisTools';
@@ -203,13 +204,19 @@ const VoiceFeedback = () => {
                 <h2 className="text-xl font-semibold text-gray-900">User Feedback</h2>
                 <p className="text-gray-600">Review feedback from voice command users</p>
               </div>
-              <button
-                onClick={() => setShowFeedbackModal(true)}
-                className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-              >
-                <PlusIcon className="h-4 w-4 mr-2" />
-                Add Feedback
-              </button>
+              <div className="flex space-x-3">
+                <VoiceFeedbackButton
+                  onFeedbackSubmit={handleFeedbackSubmitted}
+                  className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                />
+                <button
+                  onClick={() => setShowFeedbackModal(true)}
+                  className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                >
+                  <PlusIcon className="h-4 w-4 mr-2" />
+                  Add Feedback
+                </button>
+              </div>
             </div>
             {renderFeedbackList()}
           </div>

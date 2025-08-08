@@ -1,6 +1,6 @@
-import { executeWithClerkAuth } from '@lib/supabaseClerkClient';
-import { supabase, supabaseAdmin } from '@lib/supabaseClient';
-import Logger from '@utils/Logger';
+import { executeWithClerkAuth } from '@/lib/supabaseClerkClient';
+import { supabase, supabaseAdmin } from '@/lib/supabaseClient';
+import Logger from '@/utils/Logger';
 import { errorHandler, notify } from '@shared/utils';
 
 /**

@@ -3,11 +3,10 @@
  * Handles sending emails through various email providers
  */
 
-import { Logger } from './Logger';
+import { supabaseClient } from './supabaseClient';
+import logger from '@/utils/Logger';
 
-const logger = new Logger('EmailProviderService');
-
-class EmailProviderService {
+export class EmailProviderService {
   constructor() {
     this.providers = {
       smtp: this.sendViaSMTP.bind(this),

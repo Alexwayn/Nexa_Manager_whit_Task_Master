@@ -5,7 +5,7 @@
 
 import emailStorageService from './emailStorageService';
 import emailProviderService from './emailProviderService';
-import Logger from '@utils/Logger';
+import Logger from '@/utils/Logger';
 
 class EmailManagementService {
   /**

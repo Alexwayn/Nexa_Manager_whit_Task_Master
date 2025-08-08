@@ -1,5 +1,5 @@
 // Mock for emailCampaignService
-export default {
+const mockEmailCampaignService = {
   baseTrackingUrl: 'http://localhost:3000',
   
   createCampaign: jest.fn().mockResolvedValue({
@@ -40,3 +40,10 @@ export default {
     unsubscribes: 0
   })
 };
+
+// Named exports
+export const getEmailCampaignService = () => mockEmailCampaignService;
+export const emailCampaignService = mockEmailCampaignService;
+
+// Default export
+export default getEmailCampaignService;

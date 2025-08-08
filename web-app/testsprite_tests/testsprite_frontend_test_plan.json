@@ -1,0 +1,273 @@
+[
+  {
+    "id": "TC001",
+    "title": "Validate Jest Configuration for Module Resolution",
+    "description": "Ensure Jest config correctly resolves module paths and aliases to eliminate import errors.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Run Jest test suite targeting modules using path aliases."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify no module resolution or import errors occur in test logs."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify that alias mappings correctly load the expected modules."
+      }
+    ]
+  },
+  {
+    "id": "TC002",
+    "title": "Test Global Mock Injection for Authentication Services",
+    "description": "Verify that global authentication mocks simulate Clerk Authentication correctly in tests.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Execute authentication feature tests using global Clerk mocks."
+      },
+      {
+        "type": "assertion",
+        "description": "Confirm authentication flows bypass real Clerk service and use mocks."
+      },
+      {
+        "type": "assertion",
+        "description": "Validate mock interfaces conform to expected Clerk API."
+      }
+    ]
+  },
+  {
+    "id": "TC003",
+    "title": "Verify Environment Variable Mocks for Supabase and WebSocket",
+    "description": "Check that environment variables such as Supabase keys and WebSocket URLs are properly mocked and accessible during tests.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Run tests dependent on environment variables for Supabase and WebSocket."
+      },
+      {
+        "type": "assertion",
+        "description": "Ensure mocked environment variables are correctly injected and accessible without causing runtime errors."
+      }
+    ]
+  },
+  {
+    "id": "TC004",
+    "title": "Confirm ES Module Compatibility in Jest Testing",
+    "description": "Validate that ES module syntax is supported and transformed correctly for testing using Jest configuration.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Run tests using ES module imports and exports syntax."
+      },
+      {
+        "type": "assertion",
+        "description": "Assert no syntax errors related to ES modules occur."
+      }
+    ]
+  },
+  {
+    "id": "TC005",
+    "title": "Check Mocking of Missing Components and Utilities",
+    "description": "Verify that missing or new components/utilities are properly mocked to avoid test failures.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Run tests for features with recently identified missing components or utilities."
+      },
+      {
+        "type": "assertion",
+        "description": "Confirm tests do not fail due to missing module errors."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify mocks align with actual component or utility interfaces."
+      }
+    ]
+  },
+  {
+    "id": "TC006",
+    "title": "Validate Testing Library and Jest-DOM Matcher Stability",
+    "description": "Ensure that Testing Library mocks and jest-dom matchers are updated and stable across UI tests.",
+    "category": "ui",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Execute UI test suites using Testing Library and jest-dom matchers."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify UI tests pass consistently with no intermittent matcher errors."
+      }
+    ]
+  },
+  {
+    "id": "TC007",
+    "title": "Test Performance and Timeout Fixes on Critical Suites",
+    "description": "Verify that optimized test timeout settings and performance improvements allow critical suites to run within acceptable time limits.",
+    "category": "performance",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Run image processing and rate limiting service test suites."
+      },
+      {
+        "type": "assertion",
+        "description": "Ensure test execution time meets benchmarks and no timeout failures occur."
+      }
+    ]
+  },
+  {
+    "id": "TC008",
+    "title": "Ensure Role-based Access Control Tests Use Correct Security Mocks",
+    "description": "Verify security and permissions tests properly utilize mocks for role-based access and environment configurations.",
+    "category": "security",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Run tests for security features related to roles and access control."
+      },
+      {
+        "type": "assertion",
+        "description": "Confirm tests use mocked permissions and environment variables yielding correct authorization logic."
+      }
+    ]
+  },
+  {
+    "id": "TC009",
+    "title": "Validate Real-Time WebSocket Integration Mocks",
+    "description": "Ensure WebSocket real-time service mocks correctly simulate connection, message sending, and event handling.",
+    "category": "functional",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Execute tests for WebSocketProvider, websocketService, and associated hooks."
+      },
+      {
+        "type": "assertion",
+        "description": "Check WebSocket events and states are properly mocked and reflected in tests."
+      }
+    ]
+  },
+  {
+    "id": "TC010",
+    "title": "Check Error Handling Mechanisms in Tests",
+    "description": "Test that comprehensive error handling strategies catch and report module resolution, import syntax, and dependency errors properly.",
+    "category": "error handling",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Run tests purposely designed to trigger module resolution or import errors."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify errors are caught, logged clearly, and tests fail gracefully with descriptive messages."
+      }
+    ]
+  },
+  {
+    "id": "TC011",
+    "title": "Validate Internationalization Support in Tests",
+    "description": "Confirm tests correctly load and use i18next translations without errors, across supported locales.",
+    "category": "functional",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Run UI tests involving LanguageSwitcher and components using translations."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify displayed text matches expected translations for all tested locales."
+      }
+    ]
+  },
+  {
+    "id": "TC012",
+    "title": "Verify Theme Switching Functionality in Test Environment",
+    "description": "Ensure theme related hooks and utilities correctly apply dark and light modes during tests.",
+    "category": "ui",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Run tests that toggle themes using ThemeProvider and theme utilities."
+      },
+      {
+        "type": "assertion",
+        "description": "Confirm UI components reflect correct theme styling in each mode during tests."
+      }
+    ]
+  },
+  {
+    "id": "TC013",
+    "title": "Test Email System Mock Integration",
+    "description": "Verify that emailService and EmailProvider mocks allow testing email composition and sending without real network usage.",
+    "category": "functional",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Execute tests for EmailComposer component and email-related service calls using mocks."
+      },
+      {
+        "type": "assertion",
+        "description": "Confirm emails are 'sent' via mocks and no actual network or side effects occur."
+      }
+    ]
+  },
+  {
+    "id": "TC014",
+    "title": "Verify Voice Assistant Mocks and UI Overlays",
+    "description": "Ensure voice recognition and synthesis features utilize mocks and overlays behave correctly during tests.",
+    "category": "functional",
+    "priority": "Low",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Run tests for VoiceAssistantProvider and related UI components."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify voice interaction mock states and overlays trigger as expected."
+      }
+    ]
+  },
+  {
+    "id": "TC015",
+    "title": "Ensure Test Report Accuracy and Skipped Test Handling",
+    "description": "Validate that test reports reflect accurate pass/fail counts and that any skipped tests are clearly marked with explanations.",
+    "category": "error handling",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Run full test suite including tests intentionally skipped with comments."
+      },
+      {
+        "type": "assertion",
+        "description": "Check test reports mark skipped tests distinctly and provide clear skip reasons."
+      },
+      {
+        "type": "assertion",
+        "description": "Confirm no skipped tests result from configuration or environment issues."
+      }
+    ]
+  }
+]

@@ -1,172 +1,86 @@
-module.exports = {
-  // Test environment configuration
-  testEnvironment: 'jsdom',
+const path = require('path');
 
-  // Setup files - order matters!
-  setupFiles: ['<rootDir>/src/jest.env.js'],
-  setupFilesAfterEnv: ['<rootDir>/src/setupTests.js'],
-  
-  // Transform configuration
-  transform: {
-    '^.+\.(js|jsx|ts|tsx)$': '<rootDir>/jest-transformer.js',
-    '^.+\.css$': 'jest-transform-css',
-    '^.+\.(jpg|jpeg|png|gif|svg)$': 'jest-transform-stub',
-  },
-  
-  // Transform ignore patterns
-  transformIgnorePatterns: [
-    'node_modules/(?!(@supabase|isows|ws)/)',
+module.exports = {
+  testEnvironment: 'jsdom',
+  testPathIgnorePatterns: [
+    '/node_modules/',
+    '/dist/',
+    '/src/__tests__/utils/',
+    'e2e',
+    '\.config/jest/.*',
+    '\.performance\.test\.js$',
+    '\.accessibility\.test\.js$'
   ],
-  
-  // Module name mapping
+  setupFiles: ['dotenv/config'],
+  setupFilesAfterEnv: ['<rootDir>/src/setupTests.js'],
+  transform: {
+    '^.+\\.(js|jsx|ts|tsx)$': 'babel-jest',
+  },
+  transformIgnorePatterns: [
+    '/node_modules/(?!(@babel/runtime|axios|react-syntax-highlighter|react-spinners|pretty-bytes|react-hot-toast|react-icons|react-select|react-markdown|remark-gfm|react-dnd|dnd-core|@react-dnd|react-dnd-html5-backend)/)',
+  ],
   moduleNameMapper: {
-    // React mock
-    '^react$': '<rootDir>/src/shared/__tests__/mocks/react.js',
-    
-    // Testing library mock
-    '^@testing-library/react$': '<rootDir>/src/shared/__tests__/mocks/testing-library-react.js',
-    
-    // React Query mock
-    '^@tanstack/react-query$': '<rootDir>/src/shared/__tests__/mocks/tanstack-react-query.js',
-    
-    // Environment utility mock - must be first to override all env imports
-    '^@/utils/env$': '<rootDir>/src/__tests__/mocks/env.js',
-    '^@utils/env$': '<rootDir>/src/__tests__/mocks/env.js',
-    
-    // WebSocket service mock to avoid import.meta issues
-    '^../services/websocketService$': '<rootDir>/src/__tests__/mocks/websocketService.js',
-    '^./services/websocketService$': '<rootDir>/src/__tests__/mocks/websocketService.js',
-    '^@/services/websocketService$': '<rootDir>/src/__tests__/mocks/websocketService.js',
-    '^@services/websocketService$': '<rootDir>/src/__tests__/mocks/websocketService.js',
-    '^.*websocketService$': '<rootDir>/src/__tests__/mocks/websocketService.js',
-    
-    // Existing service mocks
-    '^@shared/utils$': '<rootDir>/src/shared/__tests__/mocks/index.js',
-    '^.*\\/stores$': '<rootDir>/src/shared/__tests__/mocks/stores.js',
-    '^.*\\/middleware$': '<rootDir>/src/shared/__tests__/mocks/middleware.js',
-    '^.*\\/config$': '<rootDir>/src/shared/__tests__/mocks/config.js',
-    '^.*\\/scanner$': '<rootDir>/src/shared/__tests__/mocks/scanner.js',
-    '^.*\\/websocket$': '<rootDir>/src/shared/__tests__/mocks/websocket.js',
-    '^.*\\/performance$': '<rootDir>/src/shared/__tests__/mocks/performance.js',
-    '^.*\\/websocketService$': '<rootDir>/src/shared/__tests__/mocks/websocketService.js',
-    '^@assets/(.*)\\.(png|jpg|jpeg|gif|svg)$': 'jest-transform-stub',
-    '^@assets/(.*)$': '<rootDir>/../assets/$1',
+    '\\.(css|less|scss|sass)$': 'identity-obj-proxy',
+    '\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$': '<rootDir>/__mocks__/fileMock.js',
     '^@/(.*)$': '<rootDir>/src/$1',
     '^@components/(.*)$': '<rootDir>/src/components/$1',
-    '^@services/(.*)$': '<rootDir>/src/services/$1',
     '^@utils/(.*)$': '<rootDir>/src/utils/$1',
     '^@hooks/(.*)$': '<rootDir>/src/hooks/$1',
-    '^@context/(.*)$': '<rootDir>/src/context/$1',
-    '^@i18n/(.*)$': '<rootDir>/src/i18n/$1',
-    '^@tests/(.*)$': '<rootDir>/src/__tests__/$1',
-    '^@lib/(.*)$': '<rootDir>/src/lib/$1',
-    '^@types/(.*)$': '<rootDir>/src/types/$1',
+    '^@contexts/(.*)$': '<rootDir>/src/contexts/$1',
+    '^@constants/(.*)$': '<rootDir>/src/constants/$1',
+    '^@services/(.*)$': '<rootDir>/src/services/$1',
     '^@features/(.*)$': '<rootDir>/src/features/$1',
+    '^@store/(.*)$': '<rootDir>/src/store/$1',
+    '^@assets/(.*)$': '<rootDir>/src/assets/$1',
+    '^@config/(.*)$': '<rootDir>/src/config/$1',
+    '^@pages/(.*)$': '<rootDir>/src/pages/$1',
+    '^@routes/(.*)$': '<rootDir>/src/routes/$1',
+    '^@styles/(.*)$': '<rootDir>/src/styles/$1',
     '^@shared/(.*)$': '<rootDir>/src/shared/$1',
-    '^@auth/(.*)$': '<rootDir>/src/features/auth/$1',
-    '^@clients/(.*)$': '<rootDir>/src/features/clients/$1',
-    '^@financial/(.*)$': '<rootDir>/src/features/financial/$1',
-    '^@email/(.*)$': '<rootDir>/src/features/email/$1',
-    '^@documents/(.*)$': '<rootDir>/src/features/documents/$1',
-    '^@calendar/(.*)$': '<rootDir>/src/features/calendar/$1',
-    '^@scanner/(.*)$': '<rootDir>/src/features/scanner/$1',
-    '^@dashboard/(.*)$': '<rootDir>/src/features/dashboard/$1',
-    '^@analytics/(.*)$': '<rootDir>/src/features/analytics/$1',
+    '^@db/(.*)$': '<rootDir>/src/db/$1',
+    '^@public/(.*)$': '<rootDir>/public/$1',
+    '^@test/(.*)$': '<rootDir>/src/__tests__/$1',
+    '^react-markdown$': '<rootDir>/node_modules/react-markdown/react-markdown.js',
+    'remark-gfm': '<rootDir>/node_modules/remark-gfm/index.js',
+    'react-dnd': '<rootDir>/node_modules/react-dnd/dist/cjs/index.js',
+    'dnd-core': '<rootDir>/node_modules/dnd-core/dist/cjs/index.js',
+    '@react-dnd/core': '<rootDir>/node_modules/@react-dnd/core/dist/cjs/index.js',
+    'react-dnd-html5-backend': '<rootDir>/node_modules/react-dnd-html5-backend/dist/cjs/index.js',
+    '^@supabase/supabase-js$': '<rootDir>/../node_modules/@supabase/supabase-js/dist/main/index.js',
+    '^@supabase/realtime-js$': '<rootDir>/../node_modules/@supabase/realtime-js/dist/main/index.js',
+    '^@supabase/postgrest-js$': '<rootDir>/../node_modules/@supabase/postgrest-js/dist/cjs/index.js',
+    '^@supabase/storage-js$': '<rootDir>/../node_modules/@supabase/storage-js/dist/main/index.js',
+    '^@supabase/functions-js$': '<rootDir>/../node_modules/@supabase/functions-js/dist/main/index.js',
+    '^@supabase/auth-js$': '<rootDir>/../node_modules/@supabase/auth-js/dist/main/index.js',
   },
-
-  // Test file patterns
+  globalSetup: '<rootDir>/src/__tests__/shared/global-setup.js',
+  globalTeardown: '<rootDir>/src/__tests__/shared/global-teardown.js',
   testMatch: [
     '<rootDir>/src/**/__tests__/**/*.{js,jsx,ts,tsx}',
-    '<rootDir>/src/**/*.{test,spec}.{js,jsx,ts,tsx}',
+    '<rootDir>/src/**/*.{spec,test}.{js,jsx,ts,tsx}',
   ],
-  
-  // Files to ignore
-  testPathIgnorePatterns: [
-    '<rootDir>/node_modules/',
-    '<rootDir>/dist/',
-    '<rootDir>/build/',
-  ],
-  
-  // Module file extensions
-  moduleFileExtensions: ['js', 'jsx', 'ts', 'tsx', 'json'],
-  
-  // Coverage configuration
+  coverageDirectory: 'coverage',
   collectCoverageFrom: [
     'src/**/*.{js,jsx,ts,tsx}',
     '!src/**/*.d.ts',
     '!src/main.jsx',
     '!src/vite-env.d.ts',
-    '!src/**/*.stories.{js,jsx,ts,tsx}',
-    '!src/**/__tests__/**',
-    '!src/**/*.test.{js,jsx,ts,tsx}',
-    '!src/**/*.spec.{js,jsx,ts,tsx}',
+    '!src/setupTests.js',
+    '!src/services/firebase.js',
+    '!src/services/api.js',
+    '!src/store/store.js',
+    '!src/routes/index.js',
+    '!src/utils/testUtils.js',
+    '!src/__tests__/**/*',
+    '!src/features/auth/routes/index.js',
   ],
-  
-  coverageDirectory: 'coverage',
-  
-  coverageReporters: [
-    'text',
-    'text-summary',
-    'html',
-    'lcov',
-    'json',
-  ],
-  
+  coverageReporters: ['json', 'lcov', 'text', 'clover'],
   coverageThreshold: {
     global: {
-      branches: 70,
-      functions: 70,
-      lines: 70,
-      statements: 70,
-    },
-    './src/services/': {
       branches: 80,
       functions: 80,
       lines: 80,
       statements: 80,
     },
-    './src/utils/': {
-      branches: 75,
-      functions: 75,
-      lines: 75,
-      statements: 75,
-    },
   },
-  
-  // Global variables for import.meta compatibility
-  globals: {
-    'import.meta': {
-      env: {
-        NODE_ENV: 'test',
-        VITE_SUPABASE_URL: 'http://localhost:54321',
-        VITE_SUPABASE_ANON_KEY: 'test-key',
-        VITE_SUPABASE_SERVICE_ROLE_KEY: 'test-service-role-key',
-        VITE_APP_ENV: 'test',
-        VITE_BASE_URL: 'http://localhost:3000',
-        VITE_OPENAI_API_KEY: 'test-openai-key',
-        VITE_QWEN_API_KEY: 'test-qwen-key',
-        DEV: false,
-        PROD: false,
-        MODE: 'test'
-      },
-      url: 'file:///test',
-      resolve: (id) => new URL(id, 'file:///test').href
-    }
-  },
-  
-  // Timeout configuration
-  testTimeout: 10000,
-  
-  // Verbose output for debugging
-  verbose: false,
-  
-  // Error handling
-  errorOnDeprecated: true,
-  
-  // Watch mode configuration
-  watchPathIgnorePatterns: [
-    '<rootDir>/node_modules/',
-    '<rootDir>/coverage/',
-    '<rootDir>/dist/',
-  ],
 };

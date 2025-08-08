@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { emailManagementService } from '@features/email';
 import { useAuth } from '@clerk/clerk-react';
-import Logger from '@utils/Logger';
+import Logger from '@/utils/Logger';
 
 /**
  * useEmailList Hook - Manages email list state and operations

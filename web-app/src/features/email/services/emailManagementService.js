@@ -6,14 +6,14 @@ import { emailErrorHandler } from '@features/email';
 import { emailOfflineService } from '@features/email';
 import { emailRecoveryService } from '@features/email';
 import { emailAnalyticsService } from '@features/email';
-import { supabase } from '@lib/supabaseClient';
-import Logger from '@utils/Logger';
+import { supabase } from '@/lib/supabaseClient';
+import Logger from '@/utils/Logger';
 
 /**
  * EmailManagementService - Core email management service integrating storage and provider services
  * Handles email CRUD operations, folder/label management, search, and business integrations
  */
-class EmailManagementService {
+export default class EmailManagementService {
   constructor() {
     this.syncIntervals = new Map();
     this.eventListeners = new Map();
@@ -1821,6 +1821,3 @@ export const getEmailManagementService = () => {
   }
   return emailManagementServiceInstance;
 };
-
-// Export default instance for backward compatibility
-export default getEmailManagementService;

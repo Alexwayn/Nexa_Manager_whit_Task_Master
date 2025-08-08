@@ -1,9 +1,9 @@
-import { AuthService } from '@lib/authService';
-import { supabase } from '@lib/supabaseClient';
-import Logger from '@utils/Logger';
+import { AuthService } from '@/features/auth/services/authService';
+import { supabase } from '@/lib/supabaseClient';
+import Logger from '@/utils/Logger';
 
 // Mock the supabase client
-jest.mock('../supabaseClient', () => ({
+jest.mock('@/lib/supabaseClient', () => ({
   supabase: {
     auth: {
       signUp: jest.fn(),
@@ -182,7 +182,7 @@ describe('AuthService', () => {
       const result = await AuthService.requestPasswordReset('test@example.com');
 
       expect(supabase.auth.resetPasswordForEmail).toHaveBeenCalledWith('test@example.com', {
-        redirectTo: 'http://localhost/reset-password',
+        redirectTo: 'http://localhost:3000/reset-password',
       });
 
       expect(result.success).toBe(true);

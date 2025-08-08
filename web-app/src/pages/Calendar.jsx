@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '@clerk/clerk-react';
-import { useSupabaseWithClerk } from '@lib/supabaseClerkClient';
+import { useSupabaseWithClerk } from '@/lib/supabaseClerkClient';
 import Footer from '@shared/components/Footer';
 import { EVENT_TYPES } from '@features/calendar/services/eventService';
-import Logger from '@utils/Logger';
+import Logger from '@/utils/Logger';
 import {
   ChevronLeft,
   ChevronRight,

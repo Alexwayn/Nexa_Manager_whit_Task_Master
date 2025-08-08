@@ -3,7 +3,7 @@ import { emailManagementService } from '@features/email';
 import { emailAttachmentService } from '@features/email';
 import { useUser } from '@clerk/clerk-react';
 import { useEmailContext } from '@shared/hooks/providers';
-import Logger from '@utils/Logger';
+import Logger from '@/utils/Logger';
 
 /**
  * Enhanced custom hook for email composition functionality

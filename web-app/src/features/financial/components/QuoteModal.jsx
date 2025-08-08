@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { X, AlertCircle, CheckCircle, Loader } from 'lucide-react';
 import QuoteForm from './QuoteForm';
-import Logger from '@utils/Logger';
+import Logger from '@/utils/Logger';
 
 /**
  * QuoteModal Component

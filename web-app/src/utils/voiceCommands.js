@@ -7,23 +7,32 @@ import { toast } from 'react-hot-toast';
 import { 
   processCalendarCommand, 
   executeCalendarCommand, 
-  allCalendarCommands 
+  calendarNavigationCommands, 
+  calendarActionCommands 
 } from '@/services/CalendarCommandHandler';
 import { 
   processTransactionCommand, 
   executeTransactionCommand, 
-  allTransactionCommands 
+  transactionCommands
 } from '@/services/TransactionCommandHandler';
 import { 
   processReportCommand, 
   executeReportCommand, 
-  allReportCommands 
+  reportCommands
 } from '@/services/ReportCommandHandler';
-import { 
-  processEmailCommand, 
-  executeEmailCommand, 
-  allEmailCommands 
-} from '@/services/EmailCommandHandler';
+import { emailCommandHandler } from '@/services/EmailCommandHandler';
+
+// All calendar commands for integration
+export const allCalendarCommands = [...Object.keys(calendarNavigationCommands), ...Object.keys(calendarActionCommands)];
+
+// All transaction commands for integration
+export const allTransactionCommands = Object.keys(transactionCommands);
+
+// All report commands for integration
+export const allReportCommands = Object.keys(reportCommands);
+
+// All email commands for integration
+export const allEmailCommands = emailCommandHandler.getAllCommands();
 
 // Navigation commands
 export const navigationCommands = {
@@ -298,7 +307,7 @@ function processPartialMatches(command, context) {
   }
 
   // Email commands
-  const emailResult = processEmailCommand(command);
+  const emailResult = emailCommandHandler.processCommand(command);
   if (emailResult.action !== 'error') {
     return emailResult;
   }
@@ -513,7 +522,7 @@ export async function executeVoiceCommand(action, context = {}) {
         return await executeReportCommand(action, context);
       
       case 'email':
-        return await executeEmailCommand(action, context);
+        return await emailCommandHandler.executeCommand(action, context);
       
       case 'search':
         return await handleSearch(action, context);

@@ -36,7 +36,7 @@ import {
 import financialService from '../../financial/services/financialService';
 import { AdvancedTimePeriodSelector } from '@features/analytics';
 import { DashboardLayout as DashboardLayoutManager } from '@features/dashboard';
-import Logger from '@utils/Logger';
+import Logger from '@/utils/Logger';
 import { EnhancedKPICard } from '@features/analytics';
 
 // Register Chart.js components

@@ -1,7 +1,7 @@
-import { supabase } from '@lib/supabaseClient';
+import { supabase } from '@/lib/supabaseClient';
 import TaxCalculationService from './taxCalculationService';
 import PDFGenerationService from '../../documents/services/pdfGenerationService';
-import Logger from '@utils/Logger';
+import Logger from '@/utils/Logger';
 
 // Note: Using the standard supabase client with RLS policies
 // Service role keys should never be used in frontend applications for security reasons

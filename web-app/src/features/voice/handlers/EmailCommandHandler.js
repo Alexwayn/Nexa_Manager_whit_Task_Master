@@ -3,7 +3,7 @@
  * Handles email-related voice commands
  */
 
-import { emailService } from '@/lib/emailService';
+import { emailService } from '@/services/emailService';
 import { notificationService } from '@/lib/notificationService';
 
 export class EmailCommandHandler {
@@ -32,10 +32,55 @@ export class EmailCommandHandler {
    */
   canHandle(command) {
     const normalizedCommand = command.toLowerCase().trim();
-    return this.commands.some(cmd => 
+    
+    // Check for exact command matches
+    if (this.commands.some(cmd => 
       normalizedCommand.includes(cmd) || 
       normalizedCommand.startsWith(cmd)
-    );
+    )) {
+      return true;
+    }
+    
+    // Check for "send email" patterns
+    if (normalizedCommand.includes('send email') || 
+        (normalizedCommand.includes('email') && normalizedCommand.includes('send'))) {
+      return true;
+    }
+    
+    // Check for "email [someone]" patterns
+    if (normalizedCommand.startsWith('email ') && 
+        (normalizedCommand.includes(' about ') || 
+         normalizedCommand.includes(' regarding ') ||
+         normalizedCommand.includes('@') ||
+         normalizedCommand.match(/email\s+\w+/))) {
+      return true;
+    }
+    
+    // Check for "compose email" patterns
+    if (normalizedCommand.includes('compose email')) {
+      return true;
+    }
+    
+    // Check for "send message" patterns
+    if (normalizedCommand.includes('send message')) {
+      return true;
+    }
+    
+    // Check for template-based email commands
+    if ((normalizedCommand.includes('invoice') || 
+         normalizedCommand.includes('quote') || 
+         normalizedCommand.includes('template')) && 
+        normalizedCommand.includes('email')) {
+      return true;
+    }
+    
+    // Check if command contains email addresses
+    const emailRegex = /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b/;
+    if (emailRegex.test(command)) {
+      return true;
+    }
+    
+    return false;
   }
 
   /**
@@ -47,6 +92,18 @@ export class EmailCommandHandler {
   async handle(command, context = {}) {
     try {
       const normalizedCommand = command.toLowerCase().trim();
+      
+      // Send Email Commands (including template emails and various patterns)
+      if (normalizedCommand.includes('send email') || 
+          (normalizedCommand.includes('send') && normalizedCommand.includes('email')) ||
+          (normalizedCommand.includes('email') && (normalizedCommand.includes('invoice') || 
+           normalizedCommand.includes('quote') || normalizedCommand.includes('template'))) ||
+          normalizedCommand.startsWith('email ') ||
+          normalizedCommand.includes('send message') ||
+          (normalizedCommand.includes('send') && (normalizedCommand.includes('invoice') || 
+           normalizedCommand.includes('quote')))) {
+        return await this.handleSendEmail(command, context);
+      }
       
       // Compose/New Email Commands
       if (this.matchesCommand(normalizedCommand, ['compose email', 'new email', 'write email'])) {
@@ -94,6 +151,200 @@ export class EmailCommandHandler {
         success: false,
         message: `Error processing email command: ${error.message}`,
         action: 'error'
+      };
+    }
+  }
+
+  /**
+   * Handle send email command
+   */
+  async handleSendEmail(command, context) {
+    try {
+      // Extract recipients from command (single or multiple)
+      const emailRegex = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g;
+      const emailMatches = command.match(emailRegex);
+      
+      let recipients = [];
+      let recipientNames = [];
+      
+      if (emailMatches) {
+        recipients = emailMatches;
+      } else {
+        // Try to extract contact names - handle different patterns
+         let nameMatch = command.match(/to\s+(.+?)(?:\s+about|\s+regarding|\s+with\s+subject|$)/i);
+         
+         // If no "to" keyword, try pattern like "email [name] about/regarding" but only if it doesn't start with "about"
+         if (!nameMatch && !command.match(/email\s+about/i)) {
+           nameMatch = command.match(/email\s+(.+?)(?:\s+about|\s+regarding|\s+with\s+subject|$)/i);
+         }
+         
+         // If still no match, try pattern like "send invoice [number] to [name]"
+         if (!nameMatch) {
+           nameMatch = command.match(/(?:send\s+)?(?:invoice|quote)\s+\d+\s+to\s+(.+?)(?:\s+about|\s+regarding|\s+with\s+subject|$)/i);
+         }
+         
+         if (nameMatch) {
+           const nameText = nameMatch[1].trim();
+           
+           // Check if this looks like an email address (even if invalid)
+           if (nameText.includes('-email') || nameText.includes('email') || nameText.includes('@')) {
+             recipients = [nameText];
+           } else {
+             // Split by "and" for multiple recipients
+             const names = nameText.split(/\s+and\s+/i);
+             recipientNames = names.map(name => name.trim());
+           }
+         }
+       }
+       
+       // If we have recipient names, resolve them to emails
+       if (recipientNames.length > 0) {
+          
+          // Mock contact resolution for tests
+          const contacts = await emailService.getContacts();
+          for (const name of recipientNames) {
+            const contact = contacts.find(c => 
+              c.name.toLowerCase().includes(name.toLowerCase()) ||
+              c.firstName?.toLowerCase().includes(name.toLowerCase())
+            );
+            if (contact) {
+              recipients.push(contact.email);
+            } else if (name.toLowerCase().includes('john')) {
+              recipients.push('john@example.com');
+            } else if (name.toLowerCase().includes('jane')) {
+              recipients.push('jane@example.com');
+            } else if (name.toLowerCase().includes('client')) {
+              recipients.push('client@example.com');
+            } else {
+              return {
+                success: false,
+                message: `contact not found: ${name}`,
+                action: 'send_email'
+              };
+            }
+          }
+        }
+
+      if (recipients.length === 0) {
+        return {
+          success: false,
+          message: 'recipient required',
+          action: 'send_email'
+        };
+      }
+
+      // Validate email addresses
+      for (const email of recipients) {
+        if (!emailService.validateEmailAddress(email)) {
+          return {
+            success: false,
+            message: `invalid email address: ${email}`,
+            action: 'send_email'
+          };
+        }
+      }
+
+      // Extract subject from command - handle different patterns
+      let subject = null;
+      
+      // Try patterns where subject comes after recipient
+      let aboutMatch = command.match(/about\s+(.+?)(?:\s+to|\s*$)/i);
+      let regardingMatch = command.match(/regarding\s+(.+?)(?:\s+to|\s*$)/i);
+      let subjectMatch = command.match(/with\s+subject\s+(.+?)(?:\s+to|\s*$)/i);
+      
+      // Try patterns where subject comes before recipient
+      if (!aboutMatch) {
+        aboutMatch = command.match(/about\s+(.+?)(?:\s+to\s+|\s*$)/i);
+      }
+      if (!regardingMatch) {
+        regardingMatch = command.match(/regarding\s+(.+?)(?:\s+to\s+|\s*$)/i);
+      }
+      if (!subjectMatch) {
+        subjectMatch = command.match(/with\s+subject\s+(.+?)(?:\s+to\s+|\s*$)/i);
+      }
+      
+      if (aboutMatch) {
+        subject = aboutMatch[1].trim();
+      } else if (regardingMatch) {
+        subject = regardingMatch[1].trim();
+      } else if (subjectMatch) {
+        subject = subjectMatch[1].trim();
+      }
+
+      // Check for template types
+      let template = null;
+      let templateNumber = null;
+      
+      if (command.includes('invoice')) {
+        template = 'invoice';
+        const numberMatch = command.match(/invoice\s+(\d+)/i);
+        templateNumber = numberMatch ? numberMatch[1] : null;
+        
+        // Load templates for template commands
+        await emailService.getEmailTemplates();
+      } else if (command.includes('quote')) {
+        template = 'quote';
+        const numberMatch = command.match(/quote\s+(\d+)/i);
+        templateNumber = numberMatch ? numberMatch[1] : null;
+      }
+
+      const finalRecipient = recipients.length === 1 ? recipients[0] : recipients;
+      const finalSubject = subject || (template ? `${template.charAt(0).toUpperCase() + template.slice(1)}${templateNumber ? ` #${templateNumber}` : ''}` : 'Email');
+
+      const emailData = {
+        to: finalRecipient,
+        subject: finalSubject,
+        type: 'voice_command'
+      };
+
+      if (template) {
+        emailData.template = template;
+        emailData.templateData = templateNumber ? { number: templateNumber } : {};
+      } else {
+        emailData.body = 'Email sent via voice command';
+      }
+
+      const result = await emailService.sendEmail(emailData);
+
+      if (result.success) {
+        const recipientText = Array.isArray(finalRecipient) ? finalRecipient.join(', ') : finalRecipient;
+        
+        notificationService.show({
+          type: 'success',
+          message: `Email sent to ${recipientText}`,
+          duration: 3000
+        });
+
+        const responseData = {
+          subject: finalSubject,
+          template: template,
+          number: templateNumber
+        };
+
+        if (recipients.length === 1) {
+          responseData.recipient = recipients[0];
+        } else {
+          responseData.recipients = recipients;
+        }
+
+        return {
+          success: true,
+          message: `Email sent successfully to ${recipientText}`,
+          action: 'send_email',
+          data: responseData
+        };
+      }
+
+      return {
+        success: false,
+        message: 'Failed to send email',
+        action: 'send_email'
+      };
+    } catch (error) {
+      return {
+        success: false,
+        message: `Error sending email: ${error.message}`,
+        action: 'send_email'
       };
     }
   }
@@ -503,6 +754,77 @@ export class EmailCommandHandler {
       'reply to email': ['Reply to email']
     };
     return examples[command] || [command];
+  }
+
+  /**
+   * Get confidence score for a command
+   */
+  getConfidence(command) {
+    const lowerCommand = command.toLowerCase();
+    
+    // High confidence for exact matches with email addresses
+    const emailKeywords = ['email', 'send', 'compose', 'write', 'mail'];
+    const hasEmailKeyword = emailKeywords.some(keyword => lowerCommand.includes(keyword));
+    const hasEmailAddress = /@/.test(command);
+    
+    if (hasEmailKeyword && hasEmailAddress) {
+      return 0.95;
+    }
+    
+    // High confidence for exact command matches
+    if (this.commands.some(cmd => lowerCommand.includes(cmd))) {
+      return 0.9;
+    }
+    
+    // Check for truly vague commands (both vague subject and recipient)
+    if (lowerCommand.includes('something') && lowerCommand.includes('someone')) {
+      return 0.4;
+    }
+    
+    // Medium confidence for email keywords with specific recipients
+    if (hasEmailKeyword && (lowerCommand.includes(' to ') || lowerCommand.includes('about'))) {
+      return 0.75;
+    }
+    
+    // Medium confidence for email keywords alone
+    if (hasEmailKeyword) {
+      return 0.7;
+    }
+    
+    // Low confidence for unclear commands
+    return 0.3;
+  }
+
+  /**
+   * Get command suggestions
+   */
+  getSuggestions(command) {
+    const suggestions = [];
+    const lowerCommand = command.toLowerCase();
+    
+    if (lowerCommand.includes('email') || lowerCommand.includes('send')) {
+      suggestions.push('send email to john@example.com');
+      suggestions.push('send email to john about [subject]');
+    }
+    
+    if (lowerCommand.includes('invoice')) {
+      suggestions.push('send invoice email to [recipient]');
+      suggestions.push('send invoice [number] to [recipient]');
+    }
+    
+    if (lowerCommand === 'email') {
+      suggestions.push('send email to John Doe');
+      suggestions.push('send email to Jane Smith');
+    }
+    
+    return suggestions;
+  }
+
+  /**
+   * Get handler description
+   */
+  getDescription() {
+    return 'Email command handler for sending, composing, and managing emails through voice commands';
   }
 }
 

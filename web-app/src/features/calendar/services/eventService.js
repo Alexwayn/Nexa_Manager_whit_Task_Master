@@ -1,5 +1,5 @@
-import { supabase, executeWithClerkAuth } from '@lib/supabaseClerkClient';
-import Logger from '@utils/Logger';
+import { supabase, executeWithClerkAuth } from '@/lib/supabaseClerkClient';
+import Logger from '@/utils/Logger';
 
 /**
  * Get current user from Clerk context

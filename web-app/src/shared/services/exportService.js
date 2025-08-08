@@ -1,7 +1,7 @@
 // Export Service for managing data exports
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
-import Logger from '@utils/Logger';
+import Logger from '@/utils/Logger';
 
 /**
  * Service for handling various data export operations including CSV and PDF generation

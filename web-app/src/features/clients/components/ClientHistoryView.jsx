@@ -14,8 +14,8 @@ import {
   ExclamationCircleIcon,
   XCircleIcon,
 } from '@heroicons/react/24/outline';
-import clientService from '@lib/clientService';
-import { notify } from '@lib/uiUtils';
+import clientService from '@/lib/clientService';
+import { notify } from '@/lib/uiUtils';
 
 export default function ClientHistoryView() {
   const { clientId } = useParams();

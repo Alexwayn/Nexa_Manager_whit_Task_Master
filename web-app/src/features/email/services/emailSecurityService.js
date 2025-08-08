@@ -1,5 +1,5 @@
-import { supabase } from '@lib/supabaseClient';
-import logger from '@utils/Logger';
+import { supabase } from '@/lib/supabaseClient';
+import logger from '@/utils/Logger';
 import { securityService } from '@features/auth';
 import { getEnvVar } from '@/utils/env';
 

@@ -9,28 +9,51 @@ dotenv.config({
 });
 
 // Mock import.meta globally for Jest
-Object.defineProperty(global, 'import', {
-  value: {
-    meta: {
-      env: {
-        VITE_SUPABASE_URL: 'http://localhost:54321',
-        VITE_SUPABASE_ANON_KEY: 'test-key',
-        VITE_APP_ENV: 'test',
-        VITE_BASE_URL: 'http://localhost:3000',
-        VITE_OPENAI_API_KEY: 'test-openai-key',
-        VITE_QWEN_API_KEY: 'test-qwen-key',
-        VITE_WS_URL: 'ws://localhost:8080',
-        NODE_ENV: 'test',
-        MODE: 'test',
-        DEV: false,
-        PROD: false,
-      },
-      url: 'file:///test-file.js',
+if (typeof global !== 'undefined') {
+  // Create import.meta polyfill
+  global.importMeta = {
+    env: {
+      VITE_SUPABASE_URL: 'http://localhost:54321',
+      VITE_SUPABASE_ANON_KEY: 'test-key',
+      VITE_APP_ENV: 'test',
+      VITE_BASE_URL: 'http://localhost:3000',
+      VITE_OPENAI_API_KEY: 'test-openai-key',
+      VITE_QWEN_API_KEY: 'test-qwen-key',
+      VITE_WS_URL: 'ws://localhost:8080',
+      VITE_CLERK_PUBLISHABLE_KEY: 'test-clerk-key',
+      VITE_ENABLE_DEMO_MODE: 'false',
+      NODE_ENV: 'test',
+      MODE: 'test',
+      DEV: false,
+      PROD: false,
     },
-  },
-  writable: true,
-  configurable: true,
-});
+    url: 'file:///test-file.js',
+  };
+
+  // Also set up the import.meta object for direct access
+  Object.defineProperty(global, 'import', {
+    value: {
+      meta: global.importMeta,
+    },
+    writable: true,
+    configurable: true,
+  });
+
+  // Ensure environment variables are also available in process.env for fallback
+  Object.assign(process.env, {
+    VITE_BASE_URL: 'http://localhost:3000',
+    VITE_SUPABASE_URL: 'http://localhost:54321',
+    VITE_SUPABASE_ANON_KEY: 'test-key',
+    VITE_APP_ENV: 'test',
+    VITE_OPENAI_API_KEY: 'test-openai-key',
+    VITE_QWEN_API_KEY: 'test-qwen-key',
+    VITE_WS_URL: 'ws://localhost:8080',
+    VITE_CLERK_PUBLISHABLE_KEY: 'test-clerk-key',
+    VITE_ENABLE_DEMO_MODE: 'false',
+    NODE_ENV: 'test',
+    MODE: 'test',
+  });
+}
 
 // Mock env utilities
 jest.mock('@/utils/env', () => ({

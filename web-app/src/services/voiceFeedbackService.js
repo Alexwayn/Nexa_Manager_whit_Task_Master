@@ -476,11 +476,367 @@ class VoiceFeedbackService {
   }
 
   /**
+   * Submit feedback (alias for collectFeedback for test compatibility)
+   * @param {Object} feedbackData - Feedback data to submit
+   * @returns {Promise<Object>} Result of submission
+   */
+  async submitFeedback(feedbackData) {
+    // Validate required fields
+    if (!feedbackData.command || !feedbackData.rating || !feedbackData.sessionId) {
+      return {
+        success: false,
+        error: 'Missing required fields: command, rating, sessionId'
+      };
+    }
+
+    // Validate rating range
+    if (feedbackData.rating < 1 || feedbackData.rating > 5) {
+      return {
+        success: false,
+        error: 'Rating must be between 1 and 5'
+      };
+    }
+
+    try {
+      const payload = {
+        ...feedbackData,
+        timestamp: Date.now(),
+        userAgent: navigator.userAgent
+      };
+
+      const response = await fetch('/api/voice/feedback', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        return {
+          success: true,
+          data
+        };
+      } else {
+        const errorData = await response.json();
+        return {
+          success: false,
+          error: errorData.error || 'Submission failed',
+          status: response.status
+        };
+      }
+    } catch (error) {
+      // Store offline for later sync
+      this.queueFeedbackForSync(feedbackData);
+      
+      return {
+        success: false,
+        error: error.message,
+        offline: true
+      };
+    }
+  }
+
+  /**
+   * Queue feedback for offline sync
+   * @param {Object} feedbackData - Feedback to queue
+   */
+  queueFeedbackForSync(feedbackData) {
+    try {
+      const queue = this.getOfflineQueue();
+      queue.push({
+        ...feedbackData,
+        timestamp: Date.now(),
+        queuedAt: Date.now()
+      });
+      localStorage.setItem('voice_feedback_queue', JSON.stringify(queue));
+    } catch (error) {
+      console.error('Error queuing feedback:', error);
+    }
+  }
+
+  /**
+   * Get offline feedback queue
+   * @returns {Array} Queued feedback items
+   */
+  getOfflineQueue() {
+    try {
+      const data = localStorage.getItem('voice_feedback_queue');
+      return data ? JSON.parse(data) : [];
+    } catch (error) {
+      console.error('Error loading offline queue:', error);
+      return [];
+    }
+  }
+
+  /**
+   * Sync queued feedback when back online
+   * @returns {Promise<Object>} Sync result
+   */
+  async syncQueuedFeedback() {
+    const queue = this.getOfflineQueue();
+    if (queue.length === 0) {
+      return { success: true, synced: 0, failed: 0 };
+    }
+
+    let synced = 0;
+    let failed = 0;
+    const failedItems = [];
+
+    for (const item of queue) {
+      try {
+        const response = await fetch('/api/voice/feedback', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(item)
+        });
+
+        if (response.ok) {
+          synced++;
+        } else {
+          failed++;
+          failedItems.push(item);
+        }
+      } catch (error) {
+        failed++;
+        failedItems.push(item);
+      }
+    }
+
+    // Update queue with failed items
+    if (failedItems.length > 0) {
+      localStorage.setItem('voice_feedback_queue', JSON.stringify(failedItems));
+    } else {
+      localStorage.removeItem('voice_feedback_queue');
+    }
+
+    return {
+      success: failed === 0,
+      synced,
+      failed
+    };
+  }
+
+  /**
+   * Get count of queued feedback items
+   * @returns {number} Number of queued items
+   */
+  getQueuedFeedbackCount() {
+    const queue = this.getOfflineQueue();
+    return queue.length;
+  }
+
+  /**
+   * Get feedback by session ID
+   * @param {string} sessionId - Session ID to filter by
+   * @returns {Promise<Object>} Feedback data
+   */
+  async getFeedbackBySession(sessionId) {
+    try {
+      const response = await fetch(`/api/voice/feedback/session/${sessionId}`);
+      
+      if (response.ok) {
+        const data = await response.json();
+        return {
+          success: true,
+          data
+        };
+      } else {
+        return {
+          success: false,
+          error: 'Failed to fetch session feedback'
+        };
+      }
+    } catch (error) {
+      return {
+        success: false,
+        error: error.message
+      };
+    }
+  }
+
+  /**
+   * Get feedback analytics
+   * @returns {Promise<Object>} Analytics data
+   */
+  async getFeedbackAnalytics() {
+    try {
+      const response = await fetch('/api/voice/feedback/analytics');
+      
+      if (response.ok) {
+        const data = await response.json();
+        return {
+          success: true,
+          data
+        };
+      } else {
+        return {
+          success: false,
+          error: 'Failed to fetch analytics'
+        };
+      }
+    } catch (error) {
+      return {
+        success: false,
+        error: error.message
+      };
+    }
+  }
+
+  /**
+   * Get command suggestions based on failed commands
+   * @param {string} command - Command to get suggestions for
+   * @returns {Promise<Object>} Suggestions data
+   */
+  async getCommandSuggestions(command) {
+    try {
+      const response = await fetch(`/api/voice/suggestions?command=${encodeURIComponent(command)}`);
+      
+      if (response.ok) {
+        const data = await response.json();
+        return {
+          success: true,
+          data
+        };
+      } else {
+        return {
+          success: false,
+          error: 'Failed to fetch suggestions'
+        };
+      }
+    } catch (error) {
+      return {
+        success: false,
+        error: error.message
+      };
+    }
+  }
+
+  /**
+   * Categorize feedback by rating
+   * @param {Array} feedbackData - Array of feedback items
+   * @returns {Object} Categorized feedback counts
+   */
+  categorizeFeedback(feedbackData) {
+    const categorized = {
+      positive: 0, // ratings 4-5
+      neutral: 0,  // rating 3
+      negative: 0  // ratings 1-2
+    };
+
+    feedbackData.forEach(feedback => {
+      const rating = feedback.rating;
+      if (rating >= 4) {
+        categorized.positive++;
+      } else if (rating === 3) {
+        categorized.neutral++;
+      } else if (rating <= 2) {
+        categorized.negative++;
+      }
+    });
+
+    return categorized;
+  }
+
+  /**
+   * Extract common issues from feedback comments
+   * @param {Array} feedbackData - Array of feedback items
+   * @returns {Array} Array of common issue keywords
+   */
+  extractCommonIssues(feedbackData) {
+    const issueKeywords = {};
+    const issuePhrases = {};
+    const commonWords = new Set(['the', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for', 'of', 'with', 'by', 'is', 'are', 'was', 'were', 'be', 'been', 'have', 'has', 'had', 'do', 'does', 'did', 'will', 'would', 'could', 'should', 'may', 'might', 'can', 'cannot', 'not', 'no', 'yes', 'this', 'that', 'these', 'those', 'it', 'its', 'they', 'them', 'their', 'there', 'here', 'where', 'when', 'what', 'who', 'why', 'how']);
+
+    feedbackData.forEach(feedback => {
+      if (feedback.comment && feedback.rating <= 3) {
+        const comment = feedback.comment.toLowerCase();
+        
+        // Check for common phrases first
+        const commonPhrases = [
+          'response time', 'recognition accuracy', 'voice recognition', 
+          'command understanding', 'slow response', 'poor recognition'
+        ];
+        
+        commonPhrases.forEach(phrase => {
+          if (comment.includes(phrase)) {
+            issuePhrases[phrase] = (issuePhrases[phrase] || 0) + 1;
+          }
+        });
+
+        // Then extract individual words
+        const words = comment
+          .replace(/[^\w\s]/g, ' ')
+          .split(/\s+/)
+          .filter(word => word.length > 3 && !commonWords.has(word));
+
+        words.forEach(word => {
+          issueKeywords[word] = (issueKeywords[word] || 0) + 1;
+        });
+      }
+    });
+
+    // Combine phrases and words, prioritizing phrases
+    const allIssues = [
+      ...Object.entries(issuePhrases).map(([phrase, count]) => phrase),
+      ...Object.entries(issueKeywords)
+        .sort(([,a], [,b]) => b - a)
+        .slice(0, 10)
+        .map(([word]) => word)
+    ];
+
+    return [...new Set(allIssues)].slice(0, 10);
+  }
+
+  /**
+   * Export feedback data
+   * @param {string} format - Export format (csv, json, etc.)
+   * @param {Object} filters - Export filters
+   * @returns {Promise<Object>} Export result
+   */
+  async exportFeedback(format, filters = {}) {
+    try {
+      const response = await fetch('/api/voice/feedback/export', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          format,
+          filters
+        })
+      });
+
+      if (response.ok) {
+        const blob = await response.blob();
+        return {
+          success: true,
+          data: blob
+        };
+      } else {
+        return {
+          success: false,
+          error: 'Export failed'
+        };
+      }
+    } catch (error) {
+      return {
+        success: false,
+        error: error.message
+      };
+    }
+  }
+
+  /**
    * Clear all feedback data
    */
   clearAllData() {
     localStorage.removeItem(this.storageKey);
     localStorage.removeItem(this.suggestionsKey);
+    localStorage.removeItem('voice_feedback_queue');
     console.log('All voice feedback data cleared');
   }
 
@@ -492,6 +848,7 @@ class VoiceFeedbackService {
     return {
       feedback: this.loadFeedback(),
       suggestions: this.loadSuggestions(),
+      queue: this.getOfflineQueue(),
       exportedAt: Date.now()
     };
   }
@@ -506,6 +863,9 @@ class VoiceFeedbackService {
     }
     if (data.suggestions) {
       this.storeSuggestions(data.suggestions);
+    }
+    if (data.queue) {
+      localStorage.setItem('voice_feedback_queue', JSON.stringify(data.queue));
     }
     console.log('Voice feedback data imported');
   }

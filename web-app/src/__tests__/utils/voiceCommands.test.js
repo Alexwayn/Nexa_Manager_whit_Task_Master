@@ -42,6 +42,12 @@ jest.mock('@/services/ReportCommandHandler', () => ({
   allReportCommands: []
 }));
 
+jest.mock('@/services/helpService', () => ({
+  getHelpContent: jest.fn(),
+  getCommandHelp: jest.fn(),
+  getAvailableCommands: jest.fn(),
+}));
+
 jest.mock('@/services/EmailCommandHandler', () => ({
   handleEmailCommand: jest.fn(),
   allEmailCommands: []
@@ -59,8 +65,7 @@ describe('Voice Commands Utils', () => {
         
         expect(result).toEqual({
           action: 'navigate',
-          target: '/dashboard',
-          confidence: expect.any(Number)
+          path: '/dashboard',
         });
       });
 
@@ -69,8 +74,7 @@ describe('Voice Commands Utils', () => {
         
         expect(result).toEqual({
           action: 'navigate',
-          target: '/clients',
-          confidence: expect.any(Number)
+          path: '/clients',
         });
       });
 
@@ -79,8 +83,7 @@ describe('Voice Commands Utils', () => {
         
         expect(result).toEqual({
           action: 'navigate',
-          target: '/invoices',
-          confidence: expect.any(Number)
+          path: '/invoices',
         });
       });
 
@@ -89,8 +92,7 @@ describe('Voice Commands Utils', () => {
         
         expect(result).toEqual({
           action: 'navigate',
-          target: '/reports',
-          confidence: expect.any(Number)
+          path: '/reports',
         });
       });
 
@@ -99,8 +101,7 @@ describe('Voice Commands Utils', () => {
         
         expect(result).toEqual({
           action: 'navigate',
-          target: '/dashboard',
-          confidence: expect.any(Number)
+          path: '/dashboard',
         });
       });
     });
@@ -112,7 +113,6 @@ describe('Voice Commands Utils', () => {
         expect(result).toEqual({
           action: 'create',
           type: 'invoice',
-          confidence: expect.any(Number)
         });
       });
 
@@ -122,7 +122,6 @@ describe('Voice Commands Utils', () => {
         expect(result).toEqual({
           action: 'create',
           type: 'client',
-          confidence: expect.any(Number)
         });
       });
 
@@ -132,7 +131,6 @@ describe('Voice Commands Utils', () => {
         expect(result).toEqual({
           action: 'search',
           query: 'john doe',
-          confidence: expect.any(Number)
         });
       });
 
@@ -142,7 +140,6 @@ describe('Voice Commands Utils', () => {
         expect(result).toEqual({
           action: 'export',
           type: 'data',
-          confidence: expect.any(Number)
         });
       });
     });
@@ -154,7 +151,6 @@ describe('Voice Commands Utils', () => {
         expect(result).toEqual({
           action: 'help',
           type: 'general',
-          confidence: expect.any(Number)
         });
       });
 
@@ -164,7 +160,6 @@ describe('Voice Commands Utils', () => {
         expect(result).toEqual({
           action: 'help',
           type: 'invoices',
-          confidence: expect.any(Number)
         });
       });
 
@@ -174,7 +169,6 @@ describe('Voice Commands Utils', () => {
         expect(result).toEqual({
           action: 'help',
           type: 'commands',
-          confidence: expect.any(Number)
         });
       });
     });
@@ -185,8 +179,7 @@ describe('Voice Commands Utils', () => {
         
         expect(result).toEqual({
           action: 'navigate',
-          target: '/settings',
-          confidence: expect.any(Number)
+          path: '/settings',
         });
       });
 

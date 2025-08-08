@@ -80,6 +80,7 @@ Object.defineProperty(window, 'localStorage', {
 });
 
 describe('Error Handling and Recovery Integration Tests', () => {
+  jest.useFakeTimers();
   let ocrService: AIOCRService;
   let imageProcessingService: ImageProcessingService;
   let documentStorageService: DocumentStorageService;
@@ -139,7 +140,6 @@ describe('Error Handling and Recovery Integration Tests', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    jest.useFakeTimers();
 
     // Setup DOM mocks
     mockCanvas.getContext.mockReturnValue(mockContext);
@@ -170,7 +170,6 @@ describe('Error Handling and Recovery Integration Tests', () => {
   });
 
   afterEach(() => {
-    jest.useRealTimers();
     batchProcessingService.dispose();
     rateLimitingService.dispose();
     cacheService.dispose();
@@ -409,7 +408,7 @@ describe('Error Handling and Recovery Integration Tests', () => {
 
       // Should trigger cleanup or alert mechanisms
       expect(jest.mocked(console.error)).toHaveBeenCalled();
-    });
+    }, 15000);
 
     it('should handle quota exhaustion with graceful degradation', async () => {
       // Mock quota exhaustion
@@ -488,7 +487,7 @@ describe('Error Handling and Recovery Integration Tests', () => {
 
       expect(validatedResult.confidence).toBe(1);
       expect(validatedResult.processingTime).toBe(0);
-    });
+    }, 15000);
 
     it('should handle malformed document data', async () => {
       // Mock malformed document
@@ -545,7 +544,7 @@ describe('Error Handling and Recovery Integration Tests', () => {
       await Promise.all(promises);
 
       expect(cacheWriteCount).toBe(5);
-    });
+    }, 15000);
 
     it('should handle concurrent batch job creation', () => {
       const files1 = [createMockFile('doc1.jpg')];
@@ -581,7 +580,7 @@ describe('Error Handling and Recovery Integration Tests', () => {
         expect(typeof result.allowed).toBe('boolean');
         expect(typeof result.tokensRemaining).toBe('number');
       });
-    });
+    }, 15000);
   });
 
   describe('Recovery and Resilience Patterns', () => {
@@ -623,7 +622,7 @@ describe('Error Handling and Recovery Integration Tests', () => {
       // Circuit should be open and reject requests
       await expect(ocrService.extractText(imageBlob))
         .rejects.toThrow('Circuit breaker is open');
-    });
+    }, 15000);
 
     it('should implement bulkhead pattern for resource isolation', async () => {
       // Separate resource pools for different operations
@@ -645,7 +644,8 @@ describe('Error Handling and Recovery Integration Tests', () => {
       jest.spyOn(ocrService, 'extractText').mockImplementation(async () => {
         await acquireResource(ocrPool);
         try {
-          await new Promise(resolve => setTimeout(resolve, 100));
+          // Reduced timeout for faster test execution
+          await new Promise(resolve => setTimeout(resolve, 10));
           return mockOCRResult;
         } finally {
           releaseResource(ocrPool);
@@ -656,7 +656,8 @@ describe('Error Handling and Recovery Integration Tests', () => {
       jest.spyOn(imageProcessingService, 'optimizeForOCR').mockImplementation(async (blob) => {
         await acquireResource(imageProcessingPool);
         try {
-          await new Promise(resolve => setTimeout(resolve, 50));
+          // Reduced timeout for faster test execution
+          await new Promise(resolve => setTimeout(resolve, 5));
           return blob;
         } finally {
           releaseResource(imageProcessingPool);
@@ -674,19 +675,24 @@ describe('Error Handling and Recovery Integration Tests', () => {
 
       expect(ocrPool.active).toBe(0);
       expect(imageProcessingPool.active).toBe(0);
-    });
+    }, 15000);
 
     it('should implement graceful shutdown with cleanup', async () => {
       // Start some operations
       const files = [createMockFile('doc1.jpg'), createMockFile('doc2.jpg')];
       const jobId = batchProcessingService.createBatchJob(files);
 
+      // Verify job was created
+      let job = batchProcessingService.getJobStatus(jobId);
+      expect(job).toBeDefined();
+
       // Simulate shutdown signal
       const shutdown = async (): Promise<void> => {
         console.log('Shutdown signal received, cleaning up...');
 
         // Cancel active jobs
-        batchProcessingService.cancelJob(jobId);
+        const cancelled = batchProcessingService.cancelJob(jobId);
+        expect(cancelled).toBe(true);
 
         // Clear queues
         rateLimitingService.clearQueue(OCRProvider.OpenAI);
@@ -694,17 +700,17 @@ describe('Error Handling and Recovery Integration Tests', () => {
         // Save cache state
         cacheService.dispose();
 
-        // Dispose services
-        batchProcessingService.dispose();
-        rateLimitingService.dispose();
-
         console.log('Cleanup completed');
       };
 
       await shutdown();
 
-      const job = batchProcessingService.getJobStatus(jobId);
+      job = batchProcessingService.getJobStatus(jobId);
       expect(job?.status).toBe('cancelled');
+
+      // Dispose services after test
+      batchProcessingService.dispose();
+      rateLimitingService.dispose();
     });
   });
 
@@ -745,7 +751,7 @@ describe('Error Handling and Recovery Integration Tests', () => {
       expect(errorCounts.size).toBeGreaterThan(0);
       const totalErrors = Array.from(errorCounts.values()).reduce((sum, count) => sum + count, 0);
       expect(totalErrors).toBe(10);
-    });
+    }, 15000);
 
     it('should monitor system health metrics', async () => {
       const healthMetrics = {
@@ -809,6 +815,6 @@ describe('Error Handling and Recovery Integration Tests', () => {
       expect(health.storageServiceHealth).toBe(false);
       expect(health.cacheServiceHealth).toBe(true);
       expect(health.lastHealthCheck).toBeGreaterThan(0);
-    });
+    }, 15000);
   });
 });

@@ -3,6 +3,18 @@ import voiceFeedbackService from '@/services/voiceFeedbackService';
 // Mock fetch
 global.fetch = jest.fn();
 
+// Mock Blob
+class MockBlob {
+  constructor(content, options) {
+    this.content = content;
+    this.options = options;
+    this.size = content ? content.join('').length : 0;
+    this.type = options?.type || '';
+  }
+}
+
+global.Blob = MockBlob;
+
 // Mock localStorage
 const mockLocalStorage = {
   getItem: jest.fn(),
@@ -65,12 +77,14 @@ describe('VoiceFeedbackService', () => {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({
-          ...feedbackData,
-          timestamp: expect.any(Number),
-          userAgent: navigator.userAgent
-        })
+        body: expect.stringContaining('"command":"go to dashboard"')
       });
+
+      // Verify the body contains timestamp and userAgent
+      const fetchCall = fetch.mock.calls[0];
+      const bodyData = JSON.parse(fetchCall[1].body);
+      expect(bodyData.timestamp).toEqual(expect.any(Number));
+      expect(bodyData.userAgent).toBe(navigator.userAgent);
 
       expect(result).toEqual({
         success: true,

@@ -1,5 +1,5 @@
-import { supabase } from '@lib/supabaseClient';
-import Logger from '@utils/Logger';
+import { supabase } from '@/lib/supabaseClient';
+import Logger from '@/utils/Logger';
 
 // User roles and permissions management
 export const ROLES = {

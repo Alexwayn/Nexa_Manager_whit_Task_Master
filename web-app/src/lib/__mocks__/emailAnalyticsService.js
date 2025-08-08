@@ -1,5 +1,5 @@
 // Mock for emailAnalyticsService.js
-const emailAnalyticsService = {
+const mockEmailAnalyticsService = {
   trackEmailEvent: jest.fn().mockResolvedValue({ success: true }),
   
   getEmailAnalytics: jest.fn().mockResolvedValue({
@@ -27,4 +27,6 @@ const emailAnalyticsService = {
   }),
 };
 
-export default emailAnalyticsService;
+export const getEmailAnalyticsService = () => mockEmailAnalyticsService;
+export const emailAnalyticsService = mockEmailAnalyticsService;
+export default getEmailAnalyticsService;

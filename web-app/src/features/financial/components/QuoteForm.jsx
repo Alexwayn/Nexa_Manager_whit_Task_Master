@@ -21,7 +21,7 @@ import { QuoteService } from '../services/quoteService';
 import { QuotePdfService } from '../services/quotePdfService';
 import clientService from '../../clients/services/clientService';
 import { useUser } from '@clerk/clerk-react';
-import Logger from '@utils/Logger';
+import Logger from '@/utils/Logger';
 
 /**
  * QuoteForm Component

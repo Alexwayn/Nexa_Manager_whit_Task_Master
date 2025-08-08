@@ -11,7 +11,7 @@ import {
 import { Mail, Clock, CheckCircle } from 'lucide-react';
 import emailService from '../../email/services/emailService';
 import DOMPurify from 'dompurify';
-import Logger from '@utils/Logger';
+import Logger from '@/utils/Logger';
 
 const QuoteEmailSender = ({ isOpen, onClose, quote, onEmailSent }) => {
   const { t } = useTranslation('email');

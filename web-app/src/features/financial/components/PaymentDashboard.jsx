@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { InvoiceService } from '../services/invoiceService';
 import { EnhancedKPICard } from '@features/analytics';
-import Logger from '@utils/Logger';
+import Logger from '@/utils/Logger';
 
 /**
  * PaymentDashboard - Analytics and overview for invoice payments

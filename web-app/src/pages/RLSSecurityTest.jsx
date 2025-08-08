@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { runRLSSecurityTests } from '@utils/rls-security-tests';
 import { useAuth, useUser } from '@clerk/clerk-react';
-import Logger from '@utils/Logger';
+import Logger from '@/utils/Logger';
 
 const RLSSecurityTest = () => {
   const { user } = useAuth();

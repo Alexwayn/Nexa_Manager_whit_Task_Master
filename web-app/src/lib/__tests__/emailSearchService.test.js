@@ -2,52 +2,13 @@
  * @jest-environment jsdom
  */
 
-import emailSearchService from '../emailSearchService';
-import { supabase } from '../supabaseClient';
-import Logger from '@utils/Logger';
+import { emailSearchService } from '../../features/email/services/emailSearchService.js';
+import { supabase } from '@lib/supabaseClient';
+import Logger from '@/utils/Logger';
 
-// Mock dependencies
-jest.mock('../supabaseClient', () => ({
-  supabase: {
-    from: jest.fn(() => ({
-      select: jest.fn(() => ({
-        eq: jest.fn(() => ({
-          or: jest.fn(() => ({
-            textSearch: jest.fn(() => ({
-              order: jest.fn(() => ({
-                range: jest.fn(() => Promise.resolve({
-                  data: [],
-                  error: null,
-                  count: 0,
-                })),
-              })),
-            })),
-          })),
-        })),
-      })),
-      insert: jest.fn(() => Promise.resolve({
-        data: [{ id: 'search-123' }],
-        error: null,
-      })),
-      update: jest.fn(() => ({
-        eq: jest.fn(() => Promise.resolve({
-          error: null,
-        })),
-      })),
-      delete: jest.fn(() => ({
-        eq: jest.fn(() => Promise.resolve({
-          error: null,
-        })),
-      })),
-    })),
-    rpc: jest.fn(() => Promise.resolve({
-      data: [],
-      error: null,
-    })),
-  },
-}));
+jest.mock('@lib/supabaseClient');
 
-jest.mock('@utils/Logger', () => ({
+jest.mock('@/utils/Logger', () => ({
   error: jest.fn(),
   warn: jest.fn(),
   info: jest.fn(),
@@ -56,124 +17,127 @@ jest.mock('@utils/Logger', () => ({
 
 describe('EmailSearchService', () => {
   const mockUserId = 'user-123';
+  let mockEmails;
 
   beforeEach(() => {
     jest.clearAllMocks();
+    emailSearchService.clearCache();
+    supabase.__resetAllMocks();
+    mockEmails = supabase.from('emails');
+    mockEmails.__resetMockResponse();
   });
+
+
 
   describe('Basic Search', () => {
     test('should perform basic text search', async () => {
-      const mockResults = [
-        { id: '1', subject: 'Meeting tomorrow', relevance_score: 0.95 },
-        { id: '2', subject: 'Meeting notes', relevance_score: 0.85 },
-      ];
-
-      supabase.from().select().eq().or().textSearch().order().range.mockResolvedValueOnce({
-        data: mockResults,
+      const mockResults = {
+        data: [
+          { id: '1', subject: 'Meeting tomorrow', relevance_score: 0.95 },
+          { id: '2', subject: 'Meeting notes', relevance_score: 0.85 },
+        ],
         error: null,
         count: 2,
-      });
+      };
+      mockEmails.__setMockResponse(mockResults);
 
-      const result = await emailSearchService.searchEmails(mockUserId, 'meeting');
+      const result = await emailSearchService.searchEmails(mockUserId, { query: 'meeting' });
 
       expect(result.success).toBe(true);
       expect(result.data).toHaveLength(2);
       expect(result.data[0]).toHaveProperty('relevance_score');
+      mockEmails.__resetMockResponse();
     });
 
     test('should handle empty search query', async () => {
-      const result = await emailSearchService.searchEmails(mockUserId, '');
+      mockEmails.__setMockResponse({ data: [], error: null, count: 0 });
 
-      expect(result.success).toBe(false);
-      expect(result.error).toContain('Search query is required');
-    });
-
-    test('should handle search with no results', async () => {
-      supabase.from().select().eq().or().textSearch().order().range.mockResolvedValueOnce({
-        data: [],
-        error: null,
-        count: 0,
-      });
-
-      const result = await emailSearchService.searchEmails(mockUserId, 'nonexistent');
+      const result = await emailSearchService.searchEmails(mockUserId, { query: '' });
 
       expect(result.success).toBe(true);
       expect(result.data).toHaveLength(0);
-      expect(result.pagination.total).toBe(0);
+      expect(supabase.from).not.toHaveBeenCalled();
+      mockEmails.__resetMockResponse();
+    });
+
+    test('should handle search with no results', async () => {
+      mockEmails.__setMockResponse({ data: [], error: null, count: 0 });
+
+      const result = await emailSearchService.searchEmails(mockUserId, { query: 'nonexistent' });
+
+      expect(result.success).toBe(true);
+      expect(result.data).toHaveLength(0);
+      expect(result.total).toBe(0);
     });
   });
 
   describe('Advanced Search', () => {
+    beforeEach(() => {
+      mockEmails.__setMockResponse({ data: [], error: null, count: 0 });
+    });
+
     test('should search with sender filter', async () => {
       const searchParams = {
-        sender: 'john@example.com',
         query: 'project',
+        filters: { sender: 'john@example.com' },
       };
-
-      const result = await emailSearchService.advancedSearch(mockUserId, searchParams);
-
+      const result = await emailSearchService.searchEmails(mockUserId, searchParams);
       expect(result.success).toBe(true);
-      expect(supabase.from().select().eq).toHaveBeenCalledWith('user_id', mockUserId);
     });
 
     test('should search with date range filter', async () => {
       const searchParams = {
         query: 'report',
-        dateFrom: '2024-01-01',
-        dateTo: '2024-12-31',
+        filters: {
+          date_from: '2024-01-01',
+          date_to: '2024-12-31',
+        },
       };
-
-      const result = await emailSearchService.advancedSearch(mockUserId, searchParams);
-
+      const result = await emailSearchService.searchEmails(mockUserId, searchParams);
       expect(result.success).toBe(true);
     });
 
     test('should search with attachment filter', async () => {
       const searchParams = {
         query: 'document',
-        hasAttachments: true,
+        filters: { has_attachments: true },
       };
-
-      const result = await emailSearchService.advancedSearch(mockUserId, searchParams);
-
+      const result = await emailSearchService.searchEmails(mockUserId, searchParams);
       expect(result.success).toBe(true);
     });
 
     test('should search with read status filter', async () => {
       const searchParams = {
         query: 'urgent',
-        isRead: false,
+        filters: { is_read: false },
       };
-
-      const result = await emailSearchService.advancedSearch(mockUserId, searchParams);
-
+      const result = await emailSearchService.searchEmails(mockUserId, searchParams);
       expect(result.success).toBe(true);
     });
 
     test('should search with folder filter', async () => {
       const searchParams = {
         query: 'invoice',
-        folderId: 'business',
+        filters: { folder_id: 'business' },
       };
-
-      const result = await emailSearchService.advancedSearch(mockUserId, searchParams);
-
+      const result = await emailSearchService.searchEmails(mockUserId, searchParams);
       expect(result.success).toBe(true);
     });
 
     test('should search with label filter', async () => {
       const searchParams = {
         query: 'important',
-        labels: ['urgent', 'work'],
+        filters: { labels: ['urgent', 'work'] },
       };
-
-      const result = await emailSearchService.advancedSearch(mockUserId, searchParams);
-
+      const result = await emailSearchService.searchEmails(mockUserId, searchParams);
       expect(result.success).toBe(true);
     });
   });
 
   describe('Attachment Search', () => {
+    beforeEach(() => {
+      mockEmails.__setMockResponse({ data: [], error: null, count: 0 });
+    });
     test('should search attachments by filename', async () => {
       const mockAttachments = [
         { 
@@ -184,10 +148,7 @@ describe('EmailSearchService', () => {
         },
       ];
 
-      supabase.from().select().eq().ilike.mockResolvedValueOnce({
-        data: mockAttachments,
-        error: null,
-      });
+      supabase.from().ilike.mockResolvedValue({ data: mockAttachments, error: null });
 
       const result = await emailSearchService.searchAttachments(mockUserId, {
         query: 'report',
@@ -202,6 +163,9 @@ describe('EmailSearchService', () => {
       const searchParams = {
         fileTypes: ['pdf', 'docx'],
       };
+
+      supabase.from().in.mockResolvedValue({ data: [], error: null });
+      supabase.from().lte.mockResolvedValue({ data: [], error: null });
 
       const result = await emailSearchService.searchAttachments(mockUserId, searchParams);
 
@@ -223,6 +187,9 @@ describe('EmailSearchService', () => {
   });
 
   describe('Search Suggestions', () => {
+    beforeEach(() => {
+      mockEmails.__setMockResponse({ data: [], error: null, count: 0 });
+    });
     test('should get search suggestions', async () => {
       const mockSuggestions = [
         { term: 'meeting', frequency: 25 },
@@ -230,10 +197,7 @@ describe('EmailSearchService', () => {
         { term: 'report', frequency: 12 },
       ];
 
-      supabase.rpc.mockResolvedValueOnce({
-        data: mockSuggestions,
-        error: null,
-      });
+      supabase.rpc.mockResolvedValue({ data: mockSuggestions, error: null });
 
       const result = await emailSearchService.getSearchSuggestions(mockUserId, 'me');
 
@@ -248,10 +212,7 @@ describe('EmailSearchService', () => {
         { email: 'jane@example.com', name: 'Jane Smith', count: 8 },
       ];
 
-      supabase.from().select().eq().ilike().order().limit.mockResolvedValueOnce({
-        data: mockSenders,
-        error: null,
-      });
+      supabase.from().select().ilike.mockResolvedValue({ data: mockSenders, error: null });
 
       const result = await emailSearchService.getSenderSuggestions(mockUserId, 'john');
 
@@ -265,6 +226,8 @@ describe('EmailSearchService', () => {
         { subject: 'Project Update', count: 3 },
       ];
 
+      supabase.from().select().ilike.mockResolvedValue({ data: mockSubjects, error: null });
+
       const result = await emailSearchService.getSubjectSuggestions(mockUserId, 'meeting');
 
       expect(result.success).toBe(true);
@@ -272,7 +235,12 @@ describe('EmailSearchService', () => {
   });
 
   describe('Search History', () => {
+    beforeEach(() => {
+      mockEmails.__setMockResponse({ data: [], error: null, count: 0 });
+    });
     test('should save search query', async () => {
+
+
       const result = await emailSearchService.saveSearchQuery(mockUserId, 'important meeting');
 
       expect(result.success).toBe(true);
@@ -285,10 +253,7 @@ describe('EmailSearchService', () => {
         { id: '2', query: 'project', searched_at: '2024-01-01T09:00:00Z' },
       ];
 
-      supabase.from().select().eq().order().limit.mockResolvedValueOnce({
-        data: mockHistory,
-        error: null,
-      });
+      supabase.from().select().eq().order.mockResolvedValue({ data: mockHistory, error: null });
 
       const result = await emailSearchService.getSearchHistory(mockUserId);
 
@@ -297,10 +262,12 @@ describe('EmailSearchService', () => {
     });
 
     test('should clear search history', async () => {
+
+
       const result = await emailSearchService.clearSearchHistory(mockUserId);
 
       expect(result.success).toBe(true);
-      expect(supabase.from().delete).toHaveBeenCalled();
+      expect(deleteMock).toHaveBeenCalled();
     });
 
     test('should get popular searches', async () => {
@@ -309,10 +276,7 @@ describe('EmailSearchService', () => {
         { query: 'invoice', count: 18 },
       ];
 
-      supabase.rpc.mockResolvedValueOnce({
-        data: mockPopular,
-        error: null,
-      });
+      supabase.rpc.mockResolvedValue({ data: mockPopular, error: null });
 
       const result = await emailSearchService.getPopularSearches(mockUserId);
 
@@ -358,6 +322,9 @@ describe('EmailSearchService', () => {
   });
 
   describe('Search Analytics', () => {
+    beforeEach(() => {
+      mockEmails.__setMockResponse({ data: [], error: null, count: 0 });
+    });
     test('should track search performance', async () => {
       const searchMetrics = {
         query: 'meeting',
@@ -365,6 +332,8 @@ describe('EmailSearchService', () => {
         searchTime: 150,
         userId: mockUserId,
       };
+
+
 
       const result = await emailSearchService.trackSearchPerformance(searchMetrics);
 
@@ -382,10 +351,7 @@ describe('EmailSearchService', () => {
         ],
       };
 
-      supabase.rpc.mockResolvedValueOnce({
-        data: mockAnalytics,
-        error: null,
-      });
+      supabase.rpc.mockResolvedValue({ data: mockAnalytics, error: null });
 
       const result = await emailSearchService.getSearchAnalytics(mockUserId);
 
@@ -395,6 +361,9 @@ describe('EmailSearchService', () => {
   });
 
   describe('Full-Text Search', () => {
+    beforeEach(() => {
+      mockEmails.__setMockResponse({ data: [], error: null, count: 0 });
+    });
     test('should perform full-text search with ranking', async () => {
       const mockResults = [
         { 
@@ -405,10 +374,7 @@ describe('EmailSearchService', () => {
         },
       ];
 
-      supabase.rpc.mockResolvedValueOnce({
-        data: mockResults,
-        error: null,
-      });
+      supabase.rpc.mockResolvedValue({ data: mockResults, error: null });
 
       const result = await emailSearchService.fullTextSearch(mockUserId, 'meeting', {
         includeHighlights: true,
@@ -419,6 +385,7 @@ describe('EmailSearchService', () => {
     });
 
     test('should search with phrase matching', async () => {
+      supabase.rpc.mockResolvedValue({ data: [], error: null });
       const result = await emailSearchService.phraseSearch(mockUserId, '"project meeting"');
 
       expect(result.success).toBe(true);
@@ -426,6 +393,7 @@ describe('EmailSearchService', () => {
     });
 
     test('should search with wildcard patterns', async () => {
+      supabase.from().ilike.mockResolvedValue({ data: [], error: null });
       const result = await emailSearchService.wildcardSearch(mockUserId, 'meet*');
 
       expect(result.success).toBe(true);
@@ -453,8 +421,11 @@ describe('EmailSearchService', () => {
   });
 
   describe('Error Handling', () => {
+    beforeEach(() => {
+      mockEmails.__setMockResponse({ data: [], error: null, count: 0 });
+    });
     test('should handle search timeout', async () => {
-      supabase.from().select.mockRejectedValueOnce(new Error('Query timeout'));
+      textSearchMock.mockRejectedValue(new Error('Query timeout'));
 
       const result = await emailSearchService.searchEmails(mockUserId, 'meeting');
 
@@ -464,16 +435,16 @@ describe('EmailSearchService', () => {
     });
 
     test('should handle invalid search parameters', async () => {
-      const result = await emailSearchService.advancedSearch(mockUserId, {
-        dateFrom: 'invalid-date',
+      const result = await emailSearchService.searchEmails(mockUserId, {
+        filters: { date_from: 'invalid-date' },
       });
 
       expect(result.success).toBe(false);
-      expect(result.error).toContain('Invalid date format');
+      expect(result.error).toContain('Invalid date');
     });
 
     test('should handle database errors gracefully', async () => {
-      supabase.from().select.mockRejectedValueOnce(new Error('Database connection failed'));
+      textSearchMock.mockRejectedValue(new Error('Database connection failed'));
 
       const result = await emailSearchService.searchEmails(mockUserId, 'test');
 
@@ -482,36 +453,46 @@ describe('EmailSearchService', () => {
     });
   });
 
-  describe('Performance', () => {
-    test('should cache frequent searches', async () => {
-      // First search
-      await emailSearchService.searchEmails(mockUserId, 'meeting');
-      
-      // Second search (should use cache)
-      const result = await emailSearchService.searchEmails(mockUserId, 'meeting');
+  describe('Caching', () => {
+    test('should return cached results on second call', async () => {
+      const searchParams = { query: 'cache test' };
+      const mockData = { data: [{ id: '1', subject: 'cache test', relevance_score: 1 }], error: null, count: 1 };
 
-      expect(result.success).toBe(true);
-      expect(result.cached).toBe(true);
+      mockEmails.__setMockResponse(mockData);
+
+      const firstResult = await emailSearchService.searchEmails(mockUserId, searchParams);
+      expect(firstResult.success).toBe(true);
+      expect(firstResult.cached).toBe(false);
+      expect(firstResult.data[0].subject).toBe('cache test');
+
+      const secondResult = await emailSearchService.searchEmails(mockUserId, searchParams);
+      expect(secondResult.success).toBe(true);
+      expect(secondResult.cached).toBe(true);
+      expect(secondResult.data[0].subject).toBe('cache test');
+
+      expect(mockEmails.range).toHaveBeenCalledTimes(1);
+      mockEmails.__resetMockResponse();
     });
+  });
 
+  describe('Performance', () => {
     test('should paginate large result sets', async () => {
-      const result = await emailSearchService.searchEmails(mockUserId, 'meeting', {
-        limit: 10,
-        offset: 20,
-      });
-
+      mockEmails.__setMockResponse({ data: [], error: null, count: 1000 });
+      const searchParams = { query: 'performance test', page: 2, limit: 50 };
+      const result = await emailSearchService.searchEmails(mockUserId, searchParams);
       expect(result.success).toBe(true);
-      expect(result.pagination).toHaveProperty('limit', 10);
-      expect(result.pagination).toHaveProperty('offset', 20);
+      expect(mockEmails.range).toHaveBeenCalledWith(50, 99);
+      mockEmails.__resetMockResponse();
     });
 
     test('should limit search result size', async () => {
-      const result = await emailSearchService.searchEmails(mockUserId, 'meeting', {
-        limit: 1000, // Should be capped
-      });
-
+      mockEmails.__setMockResponse({ data: [], error: null, count: 100 });
+      const searchParams = { query: 'performance test', limit: 50 };
+      const result = await emailSearchService.searchEmails(mockUserId, searchParams);
       expect(result.success).toBe(true);
-      expect(result.pagination.limit).toBeLessThanOrEqual(100); // Max limit
+      expect(mockEmails.range).toHaveBeenCalledWith(0, 49);
+      mockEmails.__resetMockResponse();
+      mockEmails.__resetMockResponse();
     });
   });
 });

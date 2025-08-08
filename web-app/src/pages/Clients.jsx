@@ -34,8 +34,8 @@ import { ErrorBoundary, withErrorBoundary } from '@shared/components';
 
 // Import services for export and reporting
 import { clientService } from '@features/clients';
-import { notify } from '@lib/uiUtils';
-import Logger from '@utils/Logger';
+import { notify } from '@/lib/uiUtils';
+import Logger from '@/utils/Logger';
 
 // Lazy load heavy components for better performance
 const InvoiceModal = lazy(() => import('@features/clients').then(module => ({ default: module.InvoiceModal })));

@@ -1,5 +1,6 @@
-import RateLimitingService from '@scanner/services/rateLimitingService';
+import RateLimitingService from '../../services/rateLimitingService';
 import { OCRProvider, RateLimitConfig } from '@/types/scanner';
+import Logger from '@/utils/Logger';
 
 // Mock the env utility
 jest.mock('@/utils/env', () => ({
@@ -35,11 +36,12 @@ Object.defineProperty(window, 'localStorage', {
 describe('RateLimitingService', () => {
   let service: RateLimitingService;
 
+  jest.useFakeTimers();
+
   beforeEach(() => {
     jest.clearAllMocks();
-    jest.useFakeTimers();
     
-    // Reset singleton instance
+    // Reset singleton instance by accessing private static property
     (RateLimitingService as any).instance = null;
     
     // Clear localStorage mock
@@ -49,8 +51,11 @@ describe('RateLimitingService', () => {
   });
 
   afterEach(() => {
-    jest.useRealTimers();
-    service.dispose();
+    if (service) {
+      service.dispose();
+    }
+    // Reset singleton instance again after disposal
+    (RateLimitingService as any).instance = null;
   });
 
   describe('initialization', () => {
@@ -70,6 +75,10 @@ describe('RateLimitingService', () => {
     });
 
     it('should load quota usage from localStorage', () => {
+      // Dispose current service and reset singleton
+      service.dispose();
+      (RateLimitingService as any).instance = null;
+      
       const savedQuota = {
         [OCRProvider.OpenAI]: {
           provider: OCRProvider.OpenAI,
@@ -86,6 +95,9 @@ describe('RateLimitingService', () => {
 
       expect(usage.daily.used).toBe(50);
       expect(usage.monthly.used).toBe(500);
+      
+      // Update service reference for cleanup
+      service = newService;
     });
   });
 
@@ -197,6 +209,9 @@ describe('RateLimitingService', () => {
     });
 
     it('should prioritize requests correctly', async () => {
+      // Use real timers for this test to avoid timing issues
+      jest.useRealTimers();
+      
       const results: string[] = [];
       const mockHighPriorityFn = jest.fn().mockImplementation(async () => {
         results.push('high');
@@ -216,6 +231,9 @@ describe('RateLimitingService', () => {
       // High priority should be processed first
       expect(results[0]).toBe('high');
       expect(results[1]).toBe('low');
+      
+      // Restore fake timers for other tests
+      jest.useFakeTimers();
     });
 
     it('should handle request errors', async () => {
@@ -303,10 +321,10 @@ describe('RateLimitingService', () => {
       expect(stats.get(OCRProvider.OpenAI)).toHaveProperty('averageWaitTime');
     });
 
-    it('should clear queue for provider', () => {
-      // Add some requests to queue
-      service.queueRequest(OCRProvider.OpenAI, () => Promise.resolve('test1'));
-      service.queueRequest(OCRProvider.OpenAI, () => Promise.resolve('test2'));
+    it('should clear queue for provider', async () => {
+      // Add some requests to queue and capture the promises
+      const promise1 = service.queueRequest(OCRProvider.OpenAI, () => Promise.resolve('test1'));
+      const promise2 = service.queueRequest(OCRProvider.OpenAI, () => Promise.resolve('test2'));
 
       const clearedCount = service.clearQueue(OCRProvider.OpenAI);
 
@@ -314,6 +332,10 @@ describe('RateLimitingService', () => {
       
       const stats = service.getQueueStats();
       expect(stats.get(OCRProvider.OpenAI)?.length).toBe(0);
+
+      // Expect the promises to be rejected with "Queue cleared" error
+      await expect(promise1).rejects.toThrow('Queue cleared');
+      await expect(promise2).rejects.toThrow('Queue cleared');
     });
   });
 
@@ -364,13 +386,16 @@ describe('RateLimitingService', () => {
     });
 
     it('should handle errors in status reporting gracefully', () => {
-      // Mock an error in token bucket access
-      const originalGet = Map.prototype.get;
-      Map.prototype.get = jest.fn().mockImplementation((key) => {
-        if (key === OCRProvider.OpenAI) {
+      // Mock Logger.error to verify error handling
+      const loggerErrorSpy = jest.spyOn(Logger, 'error').mockImplementation(() => {});
+
+      // Mock getQuotaUsage to throw an error for OpenAI provider
+      const originalGetQuotaUsage = service.getQuotaUsage;
+      service.getQuotaUsage = jest.fn().mockImplementation((provider) => {
+        if (provider === OCRProvider.OpenAI) {
           throw new Error('Mock error');
         }
-        return originalGet.call(Map.prototype, key);
+        return originalGetQuotaUsage.call(service, provider);
       });
 
       const statuses = service.getAllRateLimitStatus();
@@ -378,21 +403,38 @@ describe('RateLimitingService', () => {
       // Should still return statuses for other providers
       expect(statuses.has(OCRProvider.Qwen)).toBe(true);
       expect(statuses.has(OCRProvider.Fallback)).toBe(true);
+      
+      // OpenAI should not be in the results due to error
+      expect(statuses.has(OCRProvider.OpenAI)).toBe(false);
 
-      Map.prototype.get = originalGet;
+      // Verify error was logged
+      expect(loggerErrorSpy).toHaveBeenCalledWith(
+        'Failed to get rate limit status',
+        expect.objectContaining({
+          provider: OCRProvider.OpenAI,
+          error: expect.any(Error)
+        })
+      );
+
+      // Restore mocks
+      service.getQuotaUsage = originalGetQuotaUsage;
+      loggerErrorSpy.mockRestore();
     });
   });
 
   describe('cleanup and disposal', () => {
-    it('should dispose resources properly', () => {
-      // Add some requests to queue
-      service.queueRequest(OCRProvider.OpenAI, () => Promise.resolve('test'));
+    it('should dispose resources properly', async () => {
+      // Add some requests to queue and capture the promise
+      const promise = service.queueRequest(OCRProvider.OpenAI, () => Promise.resolve('test'));
       
       service.dispose();
 
       const stats = service.getQueueStats();
       expect(stats.get(OCRProvider.OpenAI)?.length).toBe(0);
       expect(mockLocalStorage.setItem).toHaveBeenCalled();
+
+      // Expect the promise to be rejected with "Queue cleared" error
+      await expect(promise).rejects.toThrow('Queue cleared');
     });
 
     it('should save quota usage on disposal', () => {
@@ -420,7 +462,7 @@ describe('RateLimitingService', () => {
     it('should handle invalid provider gracefully', async () => {
       await expect(
         service.checkRateLimit('invalid' as OCRProvider)
-      ).rejects.toThrow('No rate limit configuration for provider: invalid');
+      ).rejects.toThrow('No quota configuration for provider: invalid');
     });
 
     it('should handle corrupted localStorage data', () => {
@@ -447,9 +489,13 @@ describe('RateLimitingService', () => {
     });
 
     it('should calculate reset time correctly', async () => {
+      // Set a fixed time for consistent testing
+      const fixedTime = 1000000000000; // Fixed timestamp
+      jest.setSystemTime(fixedTime);
+      
       const status = await service.checkRateLimit(OCRProvider.OpenAI);
 
-      expect(status.resetTime).toBeGreaterThan(Date.now());
+      expect(status.resetTime).toBeGreaterThan(fixedTime);
     });
   });
 });

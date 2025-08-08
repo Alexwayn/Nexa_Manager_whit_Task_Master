@@ -15,8 +15,8 @@ import {
 import { useUser } from '@clerk/clerk-react';
 import { useTranslation } from 'react-i18next';
 import { useClerkAuth } from '../../hooks/useClerkAuth';
-import Logger from '@utils/Logger';
-import EmailSettingsService from '@lib/emailSettingsService';
+import Logger from '@/utils/Logger';
+import EmailSettingsService from '@/lib/emailSettingsService';
 
 export default function EmailSettings({ showNotification }) {
   const { t } = useTranslation('settings');

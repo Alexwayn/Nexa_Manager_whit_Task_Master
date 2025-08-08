@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { DocumentArrowDownIcon, TableCellsIcon, ChartBarIcon } from '@heroicons/react/24/outline';
-import ExportService from '@lib/exportService';
+import ExportService from '@/lib/exportService';
 
 const ExportButtons = ({
   data,

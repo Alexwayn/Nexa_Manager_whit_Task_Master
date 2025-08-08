@@ -1,12 +1,12 @@
 import { getEmailAnalyticsService } from '@features/email/services/emailAnalyticsService';
 import { emailErrorHandler } from '@features/email';
-import { supabase } from '@lib/supabaseClient';
+import { supabase } from '@/lib/supabaseClient';
 
 // Get the service instance
 const emailAnalyticsService = getEmailAnalyticsService();
 
 // Mock dependencies
-jest.mock('@lib/supabaseClient', () => {
+jest.mock('@/lib/supabaseClient', () => {
   const createMockQuery = (data = [], error = null) => ({
     select: jest.fn(() => createMockQuery(data, error)),
     eq: jest.fn(() => createMockQuery(data, error)),

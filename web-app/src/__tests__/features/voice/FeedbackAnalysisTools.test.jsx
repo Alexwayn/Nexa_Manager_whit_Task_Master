@@ -1,31 +1,31 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import FeedbackAnalysisTools from '@/features/voice/components/FeedbackAnalysisTools';
-import voiceFeedbackService from '@/services/voiceFeedbackService';
+import { FeedbackAnalysisTools } from '@/components/voice/FeedbackAnalysisTools';
 
-// Mock the service
-jest.mock('@/services/voiceFeedbackService');
+// Mock services
+vi.mock('@/services/voiceFeedbackService', () => ({
+  default: {
+    getFeedback: vi.fn().mockResolvedValue([
+      { id: 1, command: 'test command', type: 'success', rating: 5, comments: 'works well', timestamp: new Date().toISOString(), status: 'open' }
+    ]),
+    getSuggestions: vi.fn().mockResolvedValue([
+        { id: 1, command: 'new feature', priority: 'high', status: 'pending', expectedAction: 'do something', votes: 10, timestamp: new Date().toISOString() }
+    ]),
+    getAnalytics: vi.fn().mockResolvedValue({
+      totalFeedback: 100,
+      averageRating: 4.5,
+      successRate: 95.5,
+      openIssues: 5,
+    }),
+    resolveFeedback: vi.fn().mockResolvedValue({}),
+    updateSuggestionStatus: vi.fn().mockResolvedValue({}),
+  },
+}));
 
-// Mock Chart.js components
-jest.mock('react-chartjs-2', () => ({
-  Bar: ({ data, options }) => (
-    <div data-testid="bar-chart">
-      <div data-testid="chart-data">{JSON.stringify(data)}</div>
-      <div data-testid="chart-options">{JSON.stringify(options)}</div>
-    </div>
-  ),
-  Line: ({ data, options }) => (
-    <div data-testid="line-chart">
-      <div data-testid="chart-data">{JSON.stringify(data)}</div>
-      <div data-testid="chart-options">{JSON.stringify(options)}</div>
-    </div>
-  ),
-  Doughnut: ({ data, options }) => (
-    <div data-testid="doughnut-chart">
-      <div data-testid="chart-data">{JSON.stringify(data)}</div>
-      <div data-testid="chart-options">{JSON.stringify(options)}</div>
-    </div>
-  )
+// Mock chart components
+vi.mock('react-chartjs-2', () => ({
+  Bar: () => <div data-testid="bar-chart"></div>,
+  Pie: () => <div data-testid="pie-chart"></div>,
 }));
 
 describe('FeedbackAnalysisTools', () => {
@@ -286,17 +286,22 @@ describe('FeedbackAnalysisTools', () => {
   });
 
   it('supports keyboard navigation', async () => {
+    const user = userEvent.setup();
     render(<FeedbackAnalysisTools />);
 
+    let firstButton;
     await waitFor(() => {
-      const firstButton = screen.getByText(/apply filter/i);
-      firstButton.focus();
-      expect(firstButton).toHaveFocus();
+      firstButton = screen.getByText(/apply filter/i);
+      expect(firstButton).toBeInTheDocument();
     });
 
-    // Tab navigation should work
-    fireEvent.keyDown(document.activeElement, { key: 'Tab' });
-    expect(screen.getByLabelText(/refresh data/i)).toHaveFocus();
+    firstButton.focus();
+    await waitFor(() => expect(firstButton).toHaveFocus());
+
+    await user.tab();
+
+    const refreshButton = screen.getByLabelText(/refresh data/i);
+    expect(refreshButton).toHaveFocus();
   });
 
   it('has proper ARIA attributes', async () => {
@@ -312,19 +317,39 @@ describe('FeedbackAnalysisTools', () => {
   });
 
   it('handles real-time updates', async () => {
+    jest.useFakeTimers();
     const user = userEvent.setup();
     render(<FeedbackAnalysisTools />);
 
-    // Enable real-time updates
+    // Initial fetch
     await waitFor(() => {
-      const realtimeToggle = screen.getByLabelText(/real-time updates/i);
-      return user.click(realtimeToggle);
+      expect(voiceFeedbackService.getFeedbackAnalytics).toHaveBeenCalledTimes(1);
     });
 
-    // Should start polling for updates
+    // Enable real-time updates
+    const realtimeToggle = screen.getByLabelText(/real-time updates/i);
+    await user.click(realtimeToggle);
+
+    // Advance timers to trigger polling
+    act(() => {
+      jest.advanceTimersByTime(5000);
+    });
+
     await waitFor(() => {
       expect(voiceFeedbackService.getFeedbackAnalytics).toHaveBeenCalledTimes(2);
-    }, { timeout: 6000 }); // Wait for polling interval
+    });
+
+    // Disable real-time updates and check if polling stops
+    await user.click(realtimeToggle);
+
+    act(() => {
+      jest.advanceTimersByTime(5000);
+    });
+
+    // No new calls should be made
+    expect(voiceFeedbackService.getFeedbackAnalytics).toHaveBeenCalledTimes(2);
+
+    jest.useRealTimers();
   });
 
   it('compares data across time periods', async () => {
@@ -341,13 +366,15 @@ describe('FeedbackAnalysisTools', () => {
     expect(screen.getByText(/change/i)).toBeInTheDocument();
   });
 
-  it('generates insights from data', async () => {
+  test('generates insights from data', async () => {
     render(<FeedbackAnalysisTools />);
+    
+    // Check for insights section
+    expect(await screen.findByText('Insights')).toBeInTheDocument();
 
-    await waitFor(() => {
-      expect(screen.getByText(/insights/i)).toBeInTheDocument();
-      expect(screen.getByText(/rating trend is positive/i)).toBeInTheDocument();
-      expect(screen.getByText(/navigation commands perform best/i)).toBeInTheDocument();
-    });
+    // Check for specific insights (based on the component's static content for now)
+    expect(await screen.findByText(/Rating trend is positive/i)).toBeInTheDocument();
+    expect(await screen.findByText(/Navigation commands perform best/i)).toBeInTheDocument();
+    expect(await screen.findByText(/Recognition accuracy needs improvement/i)).toBeInTheDocument();
   });
 });

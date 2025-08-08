@@ -10,7 +10,7 @@ import { QuoteToInvoiceConverter } from '@features/financial';
 import { QuoteService } from '@features/financial/services/quoteService';
 import { QuoteApprovalService } from '@features/financial/services/quoteApprovalService';
 import { useUser } from '@clerk/clerk-react';
-import Logger from '@utils/Logger';
+import Logger from '@/utils/Logger';
 import {
   Plus,
   Download,

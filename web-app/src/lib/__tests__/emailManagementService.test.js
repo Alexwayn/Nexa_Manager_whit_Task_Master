@@ -1,11 +1,12 @@
-import emailManagementService from '../emailManagementService';
-import emailStorageService from '../emailStorageService';
-import emailProviderService from '../emailProviderService';
+import EmailManagementService from '../../features/email/services/emailManagementService';
+const emailManagementService = new EmailManagementService();
+import emailStorageService from '../../features/email/services/emailStorageService';
+import emailProviderService from '../../features/email/services/emailProviderService';
 
 // Mock the dependencies
-jest.mock('../emailStorageService');
-jest.mock('../emailProviderService');
-jest.mock('../supabaseClient');
+jest.mock('../../features/email/services/emailStorageService');
+jest.mock('../../features/email/services/emailProviderService');
+jest.mock('@/lib/supabaseClient');
 
 describe('EmailManagementService', () => {
   const mockUserId = 'test-user-123';

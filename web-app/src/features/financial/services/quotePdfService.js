@@ -16,7 +16,7 @@
 
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
-import Logger from '@utils/Logger';
+import Logger from '@/utils/Logger';
 import { businessService } from '@features/clients';
 
 /**

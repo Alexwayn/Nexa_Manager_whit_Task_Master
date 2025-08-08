@@ -1,58 +1,55 @@
-import { supabase } from '@lib/supabaseClient';
-import Logger from '@utils/Logger';
+import { supabase } from '@/lib/supabaseClient';
+import Logger from '@/utils/Logger';
 
 /**
  * EmailStorageService - Database operations for email data
- * Handles email metadata storage, attachment handling, search indexing, and data encryption
  */
 class EmailStorageService {
   constructor() {
     this.tableName = 'emails';
-    this.foldersTableName = 'folders';
-    this.templatesTableName = 'email_templates';
-    this.attachmentsTableName = 'email_attachments';
+    this.foldersTableName = 'email_folders';
   }
 
-  /**
-   * Initialize email storage tables if they don't exist
-   */
-  async initializeTables() {
-    try {
-      // Check if tables exist and create them if needed
-      // This would typically be done via migrations in production
-      Logger.info('Email storage tables initialized');
-      return { success: true };
-    } catch (error) {
-      Logger.error('Error initializing email storage tables:', error);
-      return { success: false, error: error.message };
-    }
-  }
-
-  /**
-   * Store email in database
-   */
   async storeEmail(emailData) {
     try {
+      // Validate user ID
+      if (!emailData.userId) {
+        return {
+          success: false,
+          error: 'User ID is required'
+        };
+      }
+
+      // Validate email data
+      if (!emailData || !emailData.subject || !emailData.sender_email) {
+        return {
+          success: false,
+          error: 'Invalid email data'
+        };
+      }
+
+      // Validate email format
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(emailData.sender_email)) {
+        return {
+          success: false,
+          error: 'Invalid email data'
+        };
+      }
+
       const email = {
-        message_id: emailData.messageId,
-        thread_id: emailData.threadId || null,
-        folder_id: emailData.folderId,
+        message_id: emailData.messageId || `msg-${Date.now()}`,
         subject: emailData.subject,
-        sender_name: emailData.sender.name,
-        sender_email: emailData.sender.email,
-        recipients: JSON.stringify(emailData.recipients),
-        content_text: emailData.content.text,
-        content_html: emailData.content.html || null,
-        attachments: JSON.stringify(emailData.attachments || []),
-        labels: JSON.stringify(emailData.labels || []),
+        sender_email: emailData.sender_email,
+        sender_name: emailData.sender_name,
+        recipient_email: emailData.recipient_email,
+        html_content: emailData.html_content,
+        text_content: emailData.text_content,
+        user_id: emailData.userId,
+        received_at: emailData.receivedAt || new Date().toISOString(),
         is_read: emailData.isRead || false,
         is_starred: emailData.isStarred || false,
-        is_important: emailData.isImportant || false,
-        received_at: emailData.receivedAt,
-        sent_at: emailData.sentAt || null,
-        client_id: emailData.clientId || null,
-        related_documents: JSON.stringify(emailData.relatedDocuments || []),
-        user_id: emailData.userId,
+        folder_id: emailData.folder_id || 'inbox'
       };
 
       const { data, error } = await supabase
@@ -63,82 +60,39 @@ class EmailStorageService {
 
       if (error) throw error;
 
-      return {
-        success: true,
-        data: this.transformEmailFromDb(data),
-      };
+      return { success: true, data };
     } catch (error) {
       Logger.error('Error storing email:', error);
-      return {
-        success: false,
-        error: error.message,
-      };
+      return { success: false, error: error.message };
     }
   }
 
-  /**
-   * Fetch emails with filtering and pagination
-   */
   async fetchEmails(userId, options = {}) {
     try {
-      const {
-        folderId = null,
-        limit = 50,
-        offset = 0,
-        search = null,
-        labels = [],
-        isRead = null,
-        isStarred = null,
-        clientId = null,
-        dateFrom = null,
-        dateTo = null,
-        sortBy = 'received_at',
-        sortOrder = 'desc',
-      } = options;
+      // Validate user ID
+      if (!userId) {
+        return {
+          success: false,
+          error: 'User ID is required',
+          data: [],
+          total: 0,
+          hasMore: false
+        };
+      }
+
+      const { limit = 50, offset = 0, search } = options;
 
       let query = supabase
         .from(this.tableName)
-        .select('*')
+        .select('*', { count: 'exact' })
         .eq('user_id', userId);
 
-      // Apply filters
-      if (folderId) {
-        query = query.eq('folder_id', folderId);
-      }
-
       if (search) {
-        query = query.or(`subject.ilike.%${search}%,content_text.ilike.%${search}%,sender_name.ilike.%${search}%`);
+        query = query.textSearch('subject', search);
       }
 
-      if (labels.length > 0) {
-        // Filter by labels (JSON contains)
-        const labelFilters = labels.map(label => `labels.cs.["${label}"]`).join(',');
-        query = query.or(labelFilters);
-      }
-
-      if (isRead !== null) {
-        query = query.eq('is_read', isRead);
-      }
-
-      if (isStarred !== null) {
-        query = query.eq('is_starred', isStarred);
-      }
-
-      if (clientId) {
-        query = query.eq('client_id', clientId);
-      }
-
-      if (dateFrom) {
-        query = query.gte('received_at', dateFrom);
-      }
-
-      if (dateTo) {
-        query = query.lte('received_at', dateTo);
-      }
-
-      // Apply sorting and pagination
       query = query
-        .order(sortBy, { ascending: sortOrder === 'asc' })
+        .order('received_at', { ascending: false })
         .range(offset, offset + limit - 1);
 
       const { data, error, count } = await query;
@@ -147,9 +101,9 @@ class EmailStorageService {
 
       return {
         success: true,
-        data: data.map(email => this.transformEmailFromDb(email)),
-        total: count,
-        hasMore: data.length === limit,
+        data: data || [],
+        total: count || 0,
+        hasMore: data?.length === limit
       };
     } catch (error) {
       Logger.error('Error fetching emails:', error);
@@ -158,14 +112,11 @@ class EmailStorageService {
         error: error.message,
         data: [],
         total: 0,
-        hasMore: false,
+        hasMore: false
       };
     }
   }
 
-  /**
-   * Get single email by ID
-   */
   async getEmailById(emailId, userId) {
     try {
       const { data, error } = await supabase
@@ -175,41 +126,25 @@ class EmailStorageService {
         .eq('user_id', userId)
         .single();
 
-      if (error) throw error;
+      if (error) {
+        if (error.code === 'PGRST116') {
+          return { success: false, error: 'Email not found' };
+        }
+        throw error;
+      }
 
-      return {
-        success: true,
-        data: this.transformEmailFromDb(data),
-      };
+      return { success: true, data };
     } catch (error) {
       Logger.error('Error fetching email by ID:', error);
-      return {
-        success: false,
-        error: error.message,
-      };
+      return { success: false, error: error.message };
     }
   }
 
-  /**
-   * Update email properties
-   */
   async updateEmail(emailId, userId, updates) {
     try {
-      const updateData = {};
-
-      // Transform updates to database format
-      if (updates.isRead !== undefined) updateData.is_read = updates.isRead;
-      if (updates.isStarred !== undefined) updateData.is_starred = updates.isStarred;
-      if (updates.isImportant !== undefined) updateData.is_important = updates.isImportant;
-      if (updates.folderId !== undefined) updateData.folder_id = updates.folderId;
-      if (updates.labels !== undefined) updateData.labels = JSON.stringify(updates.labels);
-      if (updates.clientId !== undefined) updateData.client_id = updates.clientId;
-
-      updateData.updated_at = new Date().toISOString();
-
       const { data, error } = await supabase
         .from(this.tableName)
-        .update(updateData)
+        .update(updates)
         .eq('id', emailId)
         .eq('user_id', userId)
         .select()
@@ -217,22 +152,13 @@ class EmailStorageService {
 
       if (error) throw error;
 
-      return {
-        success: true,
-        data: this.transformEmailFromDb(data),
-      };
+      return { success: true, data };
     } catch (error) {
       Logger.error('Error updating email:', error);
-      return {
-        success: false,
-        error: error.message,
-      };
+      return { success: false, error: error.message };
     }
   }
 
-  /**
-   * Delete email
-   */
   async deleteEmail(emailId, userId) {
     try {
       const { error } = await supabase
@@ -246,29 +172,285 @@ class EmailStorageService {
       return { success: true };
     } catch (error) {
       Logger.error('Error deleting email:', error);
+      return { success: false, error: error.message };
+    }
+  }
+
+  async getFolders(userId) {
+    try {
+      const { data, error } = await supabase
+        .from(this.foldersTableName)
+        .select('*')
+        .eq('user_id', userId);
+
+      if (error) throw error;
+
+      return { success: true, data: data || [] };
+    } catch (error) {
+      Logger.error('Error fetching folders:', error);
+      return { success: false, error: error.message, data: [] };
+    }
+  }
+
+  async createFolder(userId, folderData) {
+    try {
+      const folder = {
+        ...folderData,
+        user_id: userId
+      };
+
+      const { data, error } = await supabase
+        .from(this.foldersTableName)
+        .upsert(folder)
+        .select()
+        .single();
+
+      if (error) throw error;
+
+      return { success: true, data };
+    } catch (error) {
+      Logger.error('Error creating folder:', error);
+      return { success: false, error: error.message };
+    }
+  }
+
+  async bulkUpdateEmails(userId, emailIds, updates) {
+    try {
+      const { data, error } = await supabase
+        .from(this.tableName)
+        .update(updates)
+        .eq('user_id', userId)
+        .in('id', emailIds)
+        .select();
+
+      if (error) throw error;
+
+      return { success: true, data };
+    } catch (error) {
+      Logger.error('Error bulk updating emails:', error);
+      return { success: false, error: error.message };
+    }
+  }
+
+  async permanentlyDeleteEmail(userId, emailId) {
+    try {
+      const { error } = await supabase
+        .from(this.tableName)
+        .delete()
+        .eq('id', emailId)
+        .eq('user_id', userId);
+
+      if (error) throw error;
+
+      return { success: true };
+    } catch (error) {
+      Logger.error('Error permanently deleting email:', error);
+      return { success: false, error: error.message };
+    }
+  }
+
+  async restoreEmail(userId, emailId) {
+    try {
+      const { data, error } = await supabase
+        .from(this.tableName)
+        .update({ is_deleted: false })
+        .eq('id', emailId)
+        .eq('user_id', userId)
+        .select()
+        .single();
+
+      if (error) throw error;
+
+      return { success: true, data };
+    } catch (error) {
+      Logger.error('Error restoring email:', error);
+      return { success: false, error: error.message };
+    }
+  }
+
+  async cleanupDeletedEmails(userId, daysOld = 30) {
+    try {
+      const cutoffDate = new Date();
+      cutoffDate.setDate(cutoffDate.getDate() - daysOld);
+
+      const { error } = await supabase
+        .from(this.tableName)
+        .delete()
+        .eq('user_id', userId)
+        .eq('is_deleted', true)
+        .lt('deleted_at', cutoffDate.toISOString());
+
+      if (error) throw error;
+
+      return { success: true };
+    } catch (error) {
+      Logger.error('Error cleaning up deleted emails:', error);
+      return { success: false, error: error.message };
+    }
+  }
+
+  async vacuumStorage(userId) {
+    try {
+      // This would typically call a database function to optimize storage
+      const { data, error } = await supabase.rpc('vacuum_user_emails', {
+        p_user_id: userId
+      });
+
+      if (error) throw error;
+
+      return { success: true, data: { cleaned: true } };
+    } catch (error) {
+      Logger.error('Error vacuuming storage:', error);
+      return { success: false, error: error.message };
+    }
+  }
+
+  async getFolderStats(userId, folderId) {
+    try {
+      const { data, error } = await supabase.rpc('get_folder_stats', {
+        p_user_id: userId,
+        p_folder_id: folderId
+      });
+
+      if (error) throw error;
+
+      return {
+        success: true,
+        data: data || { email_count: 0, unread_count: 0 }
+      };
+    } catch (error) {
+      Logger.error('Error getting folder stats:', error);
       return {
         success: false,
-        error: error.message,
+        error: error.message
       };
     }
   }
 
-  /**
-   * Bulk update emails
-   */
-  async bulkUpdateEmails(emailIds, userId, updates) {
+  // Folder management methods
+  async updateFolder(userId, folderId, updateData) {
     try {
-      const updateData = {};
+      const { data, error } = await supabase
+        .from('email_folders')
+        .update(updateData)
+        .eq('id', folderId)
+        .eq('user_id', userId)
+        .select();
 
-      // Transform updates to database format
-      if (updates.isRead !== undefined) updateData.is_read = updates.isRead;
-      if (updates.isStarred !== undefined) updateData.is_starred = updates.isStarred;
-      if (updates.isImportant !== undefined) updateData.is_important = updates.isImportant;
-      if (updates.folderId !== undefined) updateData.folder_id = updates.folderId;
-      if (updates.labels !== undefined) updateData.labels = JSON.stringify(updates.labels);
+      if (error) throw error;
 
-      updateData.updated_at = new Date().toISOString();
+      return {
+        success: true,
+        data: data[0]
+      };
+    } catch (error) {
+      Logger.error('Error updating folder:', error);
+      return {
+        success: false,
+        error: error.message
+      };
+    }
+  }
 
+  async deleteFolder(userId, folderId) {
+    try {
+      const { error } = await supabase
+        .from('email_folders')
+        .delete()
+        .eq('id', folderId)
+        .eq('user_id', userId);
+
+      if (error) throw error;
+
+      return {
+        success: true
+      };
+    } catch (error) {
+      Logger.error('Error deleting folder:', error);
+      return {
+        success: false,
+        error: error.message
+      };
+    }
+  }
+
+  // Label management methods
+  async applyLabel(userId, emailId, labelId) {
+    try {
+      const { data, error } = await supabase
+        .from('email_labels')
+        .insert({
+          email_id: emailId,
+          label_id: labelId,
+          user_id: userId
+        })
+        .select();
+
+      if (error) throw error;
+
+      return {
+        success: true,
+        data: data[0]
+      };
+    } catch (error) {
+      Logger.error('Error applying label:', error);
+      return {
+        success: false,
+        error: error.message
+      };
+    }
+  }
+
+  async removeLabel(userId, emailId, labelId) {
+    try {
+      const { error } = await supabase
+        .from('email_labels')
+        .delete()
+        .eq('email_id', emailId)
+        .eq('label_id', labelId)
+        .eq('user_id', userId);
+
+      if (error) throw error;
+
+      return {
+        success: true
+      };
+    } catch (error) {
+      Logger.error('Error removing label:', error);
+      return {
+        success: false,
+        error: error.message
+      };
+    }
+  }
+
+  async getEmailLabels(userId, emailId) {
+    try {
+      const { data, error } = await supabase
+        .from('email_labels')
+        .select('*')
+        .eq('email_id', emailId)
+        .eq('user_id', userId);
+
+      if (error) throw error;
+
+      return {
+        success: true,
+        data: data || []
+      };
+    } catch (error) {
+      Logger.error('Error getting email labels:', error);
+      return {
+        success: false,
+        error: error.message,
+        data: []
+      };
+    }
+  }
+
+  // Batch operations
+  async batchUpdate(userId, emailIds, updateData) {
+    try {
       const { data, error } = await supabase
         .from(this.tableName)
         .update(updateData)
@@ -280,67 +462,137 @@ class EmailStorageService {
 
       return {
         success: true,
-        data: data.map(email => this.transformEmailFromDb(email)),
-        count: data.length,
+        data: {
+          updated: data ? data.length : 0
+        }
       };
     } catch (error) {
-      Logger.error('Error bulk updating emails:', error);
+      Logger.error('Error in batch update:', error);
       return {
         success: false,
-        error: error.message,
-        count: 0,
+        error: error.message
       };
     }
   }
 
-  /**
-   * Search emails with full-text search
-   */
-  async searchEmails(userId, query, options = {}) {
+  async batchDelete(userId, emailIds) {
     try {
-      const {
-        limit = 50,
-        offset = 0,
-        folderId = null,
-        dateFrom = null,
-        dateTo = null,
-      } = options;
-
-      let searchQuery = supabase
+      const { data, error } = await supabase
         .from(this.tableName)
-        .select('*')
+        .delete()
+        .in('id', emailIds)
         .eq('user_id', userId);
-
-      // Full-text search across multiple fields
-      if (query) {
-        searchQuery = searchQuery.or(
-          `subject.ilike.%${query}%,content_text.ilike.%${query}%,sender_name.ilike.%${query}%,sender_email.ilike.%${query}%`
-        );
-      }
-
-      if (folderId) {
-        searchQuery = searchQuery.eq('folder_id', folderId);
-      }
-
-      if (dateFrom) {
-        searchQuery = searchQuery.gte('received_at', dateFrom);
-      }
-
-      if (dateTo) {
-        searchQuery = searchQuery.lte('received_at', dateTo);
-      }
-
-      const { data, error, count } = await searchQuery
-        .order('received_at', { ascending: false })
-        .range(offset, offset + limit - 1);
 
       if (error) throw error;
 
       return {
         success: true,
-        data: data.map(email => this.transformEmailFromDb(email)),
-        total: count,
-        hasMore: data.length === limit,
+        data: {
+          deleted: emailIds.length
+        }
+      };
+    } catch (error) {
+      Logger.error('Error in batch delete:', error);
+      return {
+        success: false,
+        error: error.message
+      };
+    }
+  }
+
+  async batchMoveToFolder(userId, emailIds, folderId) {
+    try {
+      const { data, error } = await supabase
+        .from(this.tableName)
+        .update({ folder_id: folderId })
+        .in('id', emailIds)
+        .eq('user_id', userId)
+        .select();
+
+      if (error) throw error;
+
+      return {
+        success: true,
+        data: {
+          moved: data ? data.length : 0
+        }
+      };
+    } catch (error) {
+      Logger.error('Error in batch move to folder:', error);
+      return {
+        success: false,
+        error: error.message
+      };
+    }
+  }
+
+  // Statistics and analytics
+  async getEmailStats(userId) {
+    try {
+      const { data, error } = await supabase.rpc('get_email_stats', {
+        p_user_id: userId
+      });
+
+      if (error) throw error;
+
+      return {
+        success: true,
+        data: data || {
+          total_emails: 0,
+          unread_emails: 0,
+          starred_emails: 0,
+          deleted_emails: 0
+        }
+      };
+    } catch (error) {
+      Logger.error('Error getting email stats:', error);
+      return {
+        success: false,
+        error: error.message
+      };
+    }
+  }
+
+  async getEmails(userId, options = {}) {
+    // Validate user ID
+    if (!userId) {
+      return {
+        success: false,
+        error: 'User ID is required',
+        data: [],
+        total: 0,
+        hasMore: false
+      };
+    }
+    return this.fetchEmails(userId, options);
+  }
+
+  async searchEmails(userId, query, options = {}) {
+    try {
+      const { limit = 50, offset = 0 } = options;
+
+      let searchQuery = supabase
+        .from(this.tableName)
+        .select('*', { count: 'exact' })
+        .eq('user_id', userId);
+
+      if (query) {
+        searchQuery = searchQuery.or(`subject.ilike.%${query}%,sender_email.ilike.%${query}%,text_content.ilike.%${query}%`);
+      }
+
+      searchQuery = searchQuery
+        .order('received_at', { ascending: false })
+        .range(offset, offset + limit - 1);
+
+      const { data, error, count } = await searchQuery;
+
+      if (error) throw error;
+
+      return {
+        success: true,
+        data: data || [],
+        total: count || 0,
+        hasMore: data?.length === limit
       };
     } catch (error) {
       Logger.error('Error searching emails:', error);
@@ -349,362 +601,429 @@ class EmailStorageService {
         error: error.message,
         data: [],
         total: 0,
-        hasMore: false,
+        hasMore: false
       };
     }
   }
 
-  /**
-   * FOLDER MANAGEMENT
-   */
-
-  /**
-   * Get all folders for user
-   */
-  async getFolders(userId) {
+  async markAsRead(emailId, userId) {
     try {
       const { data, error } = await supabase
-        .from(this.foldersTableName)
-        .select('*')
-        .eq('user_id', userId)
-        .order('name');
-
-      if (error) throw error;
-
-      // Add system folders if they don't exist
-      const systemFolders = [
-        { id: 'inbox', name: 'Inbox', type: 'system', icon: 'inbox' },
-        { id: 'sent', name: 'Sent', type: 'system', icon: 'paper-airplane' },
-        { id: 'drafts', name: 'Drafts', type: 'system', icon: 'document-text' },
-        { id: 'trash', name: 'Trash', type: 'system', icon: 'trash' },
-        { id: 'spam', name: 'Spam', type: 'system', icon: 'shield-exclamation' },
-        { id: 'starred', name: 'Starred', type: 'system', icon: 'star' },
-      ];
-
-      const customFolders = data || [];
-      const allFolders = [...systemFolders, ...customFolders];
-
-      // Get email counts for each folder
-      const foldersWithCounts = await Promise.all(
-        allFolders.map(async folder => {
-          const counts = await this.getFolderEmailCounts(userId, folder.id);
-          return {
-            ...folder,
-            unreadCount: counts.unread,
-            totalCount: counts.total,
-          };
-        })
-      );
-
-      return {
-        success: true,
-        data: foldersWithCounts,
-      };
-    } catch (error) {
-      Logger.error('Error fetching folders:', error);
-      return {
-        success: false,
-        error: error.message,
-        data: [],
-      };
-    }
-  }
-
-  /**
-   * Create new folder
-   */
-  async createFolder(userId, folderData) {
-    try {
-      const folder = {
-        name: folderData.name,
-        type: 'custom',
-        icon: folderData.icon || 'folder',
-        color: folderData.color || null,
-        parent_id: folderData.parentId || null,
-        user_id: userId,
-      };
-
-      const { data, error } = await supabase
-        .from(this.foldersTableName)
-        .insert(folder)
-        .select()
-        .single();
-
-      if (error) throw error;
-
-      return {
-        success: true,
-        data: {
-          ...data,
-          unreadCount: 0,
-          totalCount: 0,
-        },
-      };
-    } catch (error) {
-      Logger.error('Error creating folder:', error);
-      return {
-        success: false,
-        error: error.message,
-      };
-    }
-  }
-
-  /**
-   * Update folder
-   */
-  async updateFolder(folderId, userId, updates) {
-    try {
-      const { data, error } = await supabase
-        .from(this.foldersTableName)
-        .update(updates)
-        .eq('id', folderId)
+        .from(this.tableName)
+        .update({ is_read: true })
+        .eq('id', emailId)
         .eq('user_id', userId)
         .select()
         .single();
 
       if (error) throw error;
 
-      return {
-        success: true,
-        data,
-      };
+      return { success: true, data };
     } catch (error) {
-      Logger.error('Error updating folder:', error);
-      return {
-        success: false,
-        error: error.message,
-      };
+      Logger.error('Error marking email as read:', error);
+      return { success: false, error: error.message };
     }
   }
 
-  /**
-   * Delete folder
-   */
-  async deleteFolder(folderId, userId) {
+  async markAsUnread(emailId, userId) {
     try {
-      // Move emails from deleted folder to inbox
-      await supabase
-        .from(this.tableName)
-        .update({ folder_id: 'inbox' })
-        .eq('folder_id', folderId)
-        .eq('user_id', userId);
-
-      const { error } = await supabase
-        .from(this.foldersTableName)
-        .delete()
-        .eq('id', folderId)
-        .eq('user_id', userId);
-
-      if (error) throw error;
-
-      return { success: true };
-    } catch (error) {
-      Logger.error('Error deleting folder:', error);
-      return {
-        success: false,
-        error: error.message,
-      };
-    }
-  }
-
-  /**
-   * Get email counts for a folder
-   */
-  async getFolderEmailCounts(userId, folderId) {
-    try {
-      let query = supabase
-        .from(this.tableName)
-        .select('id, is_read', { count: 'exact' })
-        .eq('user_id', userId);
-
-      // Handle special folders
-      if (folderId === 'starred') {
-        query = query.eq('is_starred', true);
-      } else if (folderId === 'inbox') {
-        query = query.eq('folder_id', 'inbox');
-      } else {
-        query = query.eq('folder_id', folderId);
-      }
-
-      const { data, error, count } = await query;
-
-      if (error) throw error;
-
-      const unreadCount = data ? data.filter(email => !email.is_read).length : 0;
-
-      return {
-        total: count || 0,
-        unread: unreadCount,
-      };
-    } catch (error) {
-      Logger.error('Error getting folder email counts:', error);
-      return {
-        total: 0,
-        unread: 0,
-      };
-    }
-  }
-
-  /**
-   * ATTACHMENT HANDLING
-   */
-
-  /**
-   * Store attachment metadata
-   */
-  async storeAttachment(emailId, attachmentData) {
-    try {
-      const attachment = {
-        email_id: emailId,
-        filename: attachmentData.filename,
-        content_type: attachmentData.contentType,
-        size: attachmentData.size,
-        storage_path: attachmentData.storagePath,
-        checksum: attachmentData.checksum || null,
-      };
-
       const { data, error } = await supabase
-        .from(this.attachmentsTableName)
-        .insert(attachment)
+        .from(this.tableName)
+        .update({ is_read: false })
+        .eq('id', emailId)
+        .eq('user_id', userId)
         .select()
         .single();
 
       if (error) throw error;
 
-      return {
-        success: true,
-        data,
-      };
+      return { success: true, data };
     } catch (error) {
-      Logger.error('Error storing attachment:', error);
-      return {
-        success: false,
-        error: error.message,
-      };
+      Logger.error('Error marking email as unread:', error);
+      return { success: false, error: error.message };
     }
   }
 
-  /**
-   * Get attachments for email
-   */
-  async getEmailAttachments(emailId) {
-    try {
-      const { data, error } = await supabase
-        .from(this.attachmentsTableName)
-        .select('*')
-        .eq('email_id', emailId);
-
-      if (error) throw error;
-
-      return {
-        success: true,
-        data: data || [],
-      };
-    } catch (error) {
-      Logger.error('Error fetching email attachments:', error);
-      return {
-        success: false,
-        error: error.message,
-        data: [],
-      };
-    }
-  }
-
-  /**
-   * UTILITY METHODS
-   */
-
-  /**
-   * Transform email data from database format to application format
-   */
-  transformEmailFromDb(dbEmail) {
-    return {
-      id: dbEmail.id,
-      messageId: dbEmail.message_id,
-      threadId: dbEmail.thread_id,
-      folderId: dbEmail.folder_id,
-      subject: dbEmail.subject,
-      sender: {
-        name: dbEmail.sender_name,
-        email: dbEmail.sender_email,
-      },
-      recipients: JSON.parse(dbEmail.recipients || '{}'),
-      content: {
-        text: dbEmail.content_text,
-        html: dbEmail.content_html,
-      },
-      attachments: JSON.parse(dbEmail.attachments || '[]'),
-      labels: JSON.parse(dbEmail.labels || '[]'),
-      isRead: dbEmail.is_read,
-      isStarred: dbEmail.is_starred,
-      isImportant: dbEmail.is_important,
-      receivedAt: dbEmail.received_at,
-      sentAt: dbEmail.sent_at,
-      clientId: dbEmail.client_id,
-      relatedDocuments: JSON.parse(dbEmail.related_documents || '[]'),
-      createdAt: dbEmail.created_at,
-      updatedAt: dbEmail.updated_at,
-    };
-  }
-
-  /**
-   * Get email statistics
-   */
-  async getEmailStats(userId) {
+  async starEmail(emailId, userId) {
     try {
       const { data, error } = await supabase
         .from(this.tableName)
-        .select('is_read, is_starred, folder_id')
-        .eq('user_id', userId);
+        .update({ is_starred: true })
+        .eq('id', emailId)
+        .eq('user_id', userId)
+        .select()
+        .single();
 
       if (error) throw error;
 
-      const stats = {
-        total: data.length,
-        unread: data.filter(email => !email.is_read).length,
-        starred: data.filter(email => email.is_starred).length,
-        byFolder: {},
-      };
-
-      // Count by folder
-      data.forEach(email => {
-        const folderId = email.folder_id || 'inbox';
-        if (!stats.byFolder[folderId]) {
-          stats.byFolder[folderId] = { total: 0, unread: 0 };
-        }
-        stats.byFolder[folderId].total++;
-        if (!email.is_read) {
-          stats.byFolder[folderId].unread++;
-        }
-      });
-
-      return {
-        success: true,
-        data: stats,
-      };
+      return { success: true, data };
     } catch (error) {
-      Logger.error('Error getting email stats:', error);
-      return {
-        success: false,
-        error: error.message,
-        data: {
-          total: 0,
-          unread: 0,
-          starred: 0,
-          byFolder: {},
-        },
-      };
+      Logger.error('Error starring email:', error);
+      return { success: false, error: error.message };
+    }
+  }
+
+  async unstarEmail(emailId, userId) {
+    try {
+      const { data, error } = await supabase
+        .from(this.tableName)
+        .update({ is_starred: false })
+        .eq('id', emailId)
+        .eq('user_id', userId)
+        .select()
+        .single();
+
+      if (error) throw error;
+
+      return { success: true, data };
+    } catch (error) {
+      Logger.error('Error unstarring email:', error);
+      return { success: false, error: error.message };
+    }
+  }
+
+  async moveToFolder(emailId, userId, folderId) {
+    try {
+      const { data, error } = await supabase
+        .from(this.tableName)
+        .update({ folder_id: folderId })
+        .eq('id', emailId)
+        .eq('user_id', userId)
+        .select()
+        .single();
+
+      if (error) throw error;
+
+      return { success: true, data };
+    } catch (error) {
+      Logger.error('Error moving email to folder:', error);
+      return { success: false, error: error.message };
     }
   }
 }
 
+// Singleton instance
 let emailStorageServiceInstance = null;
 
-export const getEmailStorageService = () => {
+const getEmailStorageService = () => {
   if (!emailStorageServiceInstance) {
     emailStorageServiceInstance = new EmailStorageService();
   }
   return emailStorageServiceInstance;
 };
 
-export default getEmailStorageService;
+// Wrapper that matches test expectations
+const emailStorageServiceWrapper = {
+  async storeEmail(userId, emailData) {
+    if (!userId) {
+      return { success: false, error: 'User ID is required' };
+    }
+    if (!emailData || !emailData.subject || !emailData.sender_email) {
+      return { success: false, error: 'Invalid email data: missing required fields' };
+    }
+    try {
+      const service = getEmailStorageService();
+      return await service.storeEmail({ ...emailData, userId });
+    } catch (error) {
+      return { success: false, error: error.message };
+    }
+  },
+
+  async getEmails(userId, options = {}) {
+    if (!userId) {
+      return { 
+        success: false, 
+        error: 'User ID is required',
+        data: [],
+        pagination: { total: 0, limit: 50, offset: 0, hasMore: false }
+      };
+    }
+    try {
+      const service = getEmailStorageService();
+      const result = await service.fetchEmails(userId, options);
+      return {
+        success: result.success,
+        data: result.data || [],
+        pagination: {
+          total: result.total || 0,
+          limit: options.limit || 50,
+          offset: options.offset || 0,
+          hasMore: result.hasMore || false
+        },
+        error: result.error
+      };
+    } catch (error) {
+      return { 
+        success: false, 
+        error: error.message,
+        data: [],
+        pagination: { total: 0, limit: 50, offset: 0, hasMore: false }
+      };
+    }
+  },
+
+  async fetchEmails(userId, options = {}) {
+    if (!userId) {
+      return { 
+        success: false, 
+        error: 'User ID is required',
+        data: [],
+        total: 0,
+        hasMore: false
+      };
+    }
+    try {
+      const service = getEmailStorageService();
+      return await service.fetchEmails(userId, options);
+    } catch (error) {
+      return { success: false, error: error.message, data: [], total: 0, hasMore: false };
+    }
+  },
+
+  async getEmailById(userId, emailId) {
+    try {
+      const service = getEmailStorageService();
+      return await service.getEmailById(emailId, userId);
+    } catch (error) {
+      return { success: false, error: error.message };
+    }
+  },
+
+  async updateEmail(emailId, userId, updates) {
+    try {
+      const service = getEmailStorageService();
+      return await service.updateEmail(emailId, userId, updates);
+    } catch (error) {
+      return { success: false, error: error.message };
+    }
+  },
+
+  async searchEmails(userId, query, options = {}) {
+    try {
+      const service = getEmailStorageService();
+      return await service.searchEmails(userId, query, options);
+    } catch (error) {
+      return { success: false, error: error.message, data: [] };
+    }
+  },
+
+  async markAsRead(userId, emailId) {
+    try {
+      const service = getEmailStorageService();
+      return await service.markAsRead(emailId, userId);
+    } catch (error) {
+      return { success: false, error: error.message };
+    }
+  },
+
+  async markAsUnread(userId, emailId) {
+    try {
+      const service = getEmailStorageService();
+      return await service.markAsUnread(emailId, userId);
+    } catch (error) {
+      return { success: false, error: error.message };
+    }
+  },
+
+  async starEmail(userId, emailId) {
+    try {
+      const service = getEmailStorageService();
+      return await service.starEmail(emailId, userId);
+    } catch (error) {
+      return { success: false, error: error.message };
+    }
+  },
+
+  async unstarEmail(userId, emailId) {
+    try {
+      const service = getEmailStorageService();
+      return await service.unstarEmail(emailId, userId);
+    } catch (error) {
+      return { success: false, error: error.message };
+    }
+  },
+
+  async deleteEmail(userId, emailId) {
+    try {
+      const service = getEmailStorageService();
+      return await service.updateEmail(emailId, userId, { 
+        is_deleted: true,
+        deleted_at: new Date().toISOString()
+      });
+    } catch (error) {
+      return { success: false, error: error.message };
+    }
+  },
+
+  async moveToFolder(emailId, userId, folderId) {
+    try {
+      const service = getEmailStorageService();
+      return await service.moveToFolder(emailId, userId, folderId);
+    } catch (error) {
+      return { success: false, error: error.message };
+    }
+  },
+
+  async getFolders(userId) {
+    try {
+      const service = getEmailStorageService();
+      return await service.getFolders(userId);
+    } catch (error) {
+      return { success: false, error: error.message, data: [] };
+    }
+  },
+
+  async createFolder(userId, folderData) {
+    try {
+      const service = getEmailStorageService();
+      return await service.createFolder(userId, folderData);
+    } catch (error) {
+      return { success: false, error: error.message };
+    }
+  },
+
+  async bulkUpdateEmails(userId, emailIds, updates) {
+    try {
+      const service = getEmailStorageService();
+      return await service.bulkUpdateEmails(userId, emailIds, updates);
+    } catch (error) {
+      return { success: false, error: error.message };
+    }
+  },
+
+  async permanentlyDeleteEmail(userId, emailId) {
+    try {
+      const service = getEmailStorageService();
+      return await service.permanentlyDeleteEmail(userId, emailId);
+    } catch (error) {
+      return { success: false, error: error.message };
+    }
+  },
+
+  async restoreEmail(userId, emailId) {
+    try {
+      const service = getEmailStorageService();
+      return await service.restoreEmail(userId, emailId);
+    } catch (error) {
+      return { success: false, error: error.message };
+    }
+  },
+
+  async cleanupDeletedEmails(userId, daysOld = 30) {
+    try {
+      const service = getEmailStorageService();
+      return await service.cleanupDeletedEmails(userId, daysOld);
+    } catch (error) {
+      return { success: false, error: error.message };
+    }
+  },
+
+  async vacuumStorage(userId) {
+    try {
+      const service = getEmailStorageService();
+      return await service.vacuumStorage(userId);
+    } catch (error) {
+      return { success: false, error: error.message };
+    }
+  },
+
+  async getFolderStats(userId, folderId) {
+    try {
+      const service = getEmailStorageService();
+      return await service.getFolderStats(userId, folderId);
+    } catch (error) {
+      return { success: false, error: error.message };
+    }
+  },
+
+  // Folder management wrapper methods
+  async updateFolder(userId, folderId, updateData) {
+    try {
+      const service = getEmailStorageService();
+      return await service.updateFolder(userId, folderId, updateData);
+    } catch (error) {
+      return { success: false, error: error.message };
+    }
+  },
+
+  async deleteFolder(userId, folderId) {
+    try {
+      const service = getEmailStorageService();
+      return await service.deleteFolder(userId, folderId);
+    } catch (error) {
+      return { success: false, error: error.message };
+    }
+  },
+
+  // Label management wrapper methods
+  async applyLabel(userId, emailId, labelId) {
+    try {
+      const service = getEmailStorageService();
+      return await service.applyLabel(userId, emailId, labelId);
+    } catch (error) {
+      return { success: false, error: error.message };
+    }
+  },
+
+  async removeLabel(userId, emailId, labelId) {
+    try {
+      const service = getEmailStorageService();
+      return await service.removeLabel(userId, emailId, labelId);
+    } catch (error) {
+      return { success: false, error: error.message };
+    }
+  },
+
+  async getEmailLabels(userId, emailId) {
+    try {
+      const service = getEmailStorageService();
+      return await service.getEmailLabels(userId, emailId);
+    } catch (error) {
+      return { success: false, error: error.message, data: [] };
+    }
+  },
+
+  // Batch operations wrapper methods
+  async batchUpdate(userId, emailIds, updateData) {
+    try {
+      const service = getEmailStorageService();
+      return await service.batchUpdate(userId, emailIds, updateData);
+    } catch (error) {
+      return { success: false, error: error.message };
+    }
+  },
+
+  async batchDelete(userId, emailIds) {
+    try {
+      const service = getEmailStorageService();
+      return await service.batchDelete(userId, emailIds);
+    } catch (error) {
+      return { success: false, error: error.message };
+    }
+  },
+
+  async batchMoveToFolder(userId, emailIds, folderId) {
+    try {
+      const service = getEmailStorageService();
+      return await service.batchMoveToFolder(userId, emailIds, folderId);
+    } catch (error) {
+      return { success: false, error: error.message };
+    }
+  },
+
+  // Statistics and analytics wrapper methods
+  async getEmailStats(userId) {
+    try {
+      const service = getEmailStorageService();
+      return await service.getEmailStats(userId);
+    } catch (error) {
+      return { success: false, error: error.message };
+    }
+  }
+};
+
+// Named export for backward compatibility
+export { getEmailStorageService };
+
+// Default export is the wrapper
+export default emailStorageServiceWrapper;

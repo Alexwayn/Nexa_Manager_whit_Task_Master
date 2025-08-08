@@ -15,8 +15,8 @@ import emailService from '../services/emailService';
 import EmailCampaignManager from './EmailCampaignManager';
 import EmailProviderSettings from './EmailProviderSettings';
 import EmailSignatureManager from './EmailSignatureManager';
-import { supabase } from '@lib/supabaseClient';
-import Logger from '@utils/Logger';
+import { supabase } from '@/lib/supabaseClient';
+import Logger from '@/utils/Logger';
 import { useTranslation } from 'react-i18next';
 
 const EmailManager = () => {

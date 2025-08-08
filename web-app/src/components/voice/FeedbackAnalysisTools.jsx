@@ -285,6 +285,36 @@ export function FeedbackAnalysisTools() {
         </div>
       </div>
 
+      {/* Insights Section */}
+      <div className="bg-white rounded-lg shadow-sm border">
+        <div className="p-4 border-b">
+          <h3 className="text-lg font-semibold text-gray-900">Insights</h3>
+        </div>
+        <div className="p-4 space-y-4">
+          <div className="flex items-start gap-3">
+            <TrendingUp className="w-5 h-5 text-green-500 mt-0.5" />
+            <div>
+              <p className="font-medium text-gray-900">Rating trend is positive</p>
+              <p className="text-sm text-gray-600">Voice command ratings have improved by 15% over the last month</p>
+            </div>
+          </div>
+          <div className="flex items-start gap-3">
+            <Star className="w-5 h-5 text-yellow-500 mt-0.5" />
+            <div>
+              <p className="font-medium text-gray-900">Navigation commands perform best</p>
+              <p className="text-sm text-gray-600">Navigation-related voice commands have the highest success rate at 94%</p>
+            </div>
+          </div>
+          <div className="flex items-start gap-3">
+            <AlertTriangle className="w-5 h-5 text-orange-500 mt-0.5" />
+            <div>
+              <p className="font-medium text-gray-900">Recognition accuracy needs improvement</p>
+              <p className="text-sm text-gray-600">Consider updating the voice recognition model for better accuracy</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* Suggestions List */}
       <div className="bg-white rounded-lg shadow-sm border">
         <div className="p-4 border-b">

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, Suspense } from 'react';
 import { useAuth } from '@hooks/useAuth';
-import Logger from '@utils/Logger';
+import Logger from '@/utils/Logger';
 import { useTranslation } from 'react-i18next';
 
 import SettingsLoadingSpinner from '../components/settings/SettingsLoadingSpinner';

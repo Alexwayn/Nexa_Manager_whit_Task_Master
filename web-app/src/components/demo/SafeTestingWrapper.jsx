@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { useClerkSupabase, useDemoData } from '@lib/clerkSupabaseIntegration';
+import { useClerkSupabase, useDemoData } from '@/lib/clerkSupabaseIntegration';
 import { useAuth } from '@clerk/clerk-react';
-import Logger from '@utils/Logger';
+import Logger from '@/utils/Logger';
 
 const TestingContext = createContext();
 

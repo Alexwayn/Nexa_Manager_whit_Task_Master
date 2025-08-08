@@ -10,7 +10,7 @@ import './index.css';
 import './i18n'; // Initialize i18n
 
 // Initialize Sentry as early as possible
-import { initSentry } from '@lib/sentry';
+import { initSentry } from '@/lib/sentry';
 initSentry();
 
 // Font loading optimization

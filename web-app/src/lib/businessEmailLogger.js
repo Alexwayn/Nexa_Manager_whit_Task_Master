@@ -4,11 +4,9 @@
  */
 
 import { supabaseClient } from './supabaseClient';
-import { Logger } from './Logger';
+import logger from '@/utils/Logger';
 
-const logger = new Logger('BusinessEmailLogger');
-
-class BusinessEmailLogger {
+export class BusinessEmailLogger {
   /**
    * Log business email activity
    * @param {string} userId - User ID

@@ -1,6 +1,6 @@
 import { quotePdfService } from '@features/financial';
-import { supabase } from '@lib/supabaseClient';
-import Logger from '@utils/Logger';
+import { supabase } from '@/lib/supabaseClient';
+import Logger from '@/utils/Logger';
 import { getEmailProviderService } from '@features/email';
 
 /**
@@ -1089,5 +1089,8 @@ export const getEmailService = () => {
   }
   return emailServiceInstance;
 };
+
+// Export the service instance for direct access
+export const emailService = getEmailService();
 
 export default getEmailService;

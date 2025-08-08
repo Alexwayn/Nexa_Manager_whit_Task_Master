@@ -1,5 +1,40 @@
 // Core Scanner types and interfaces
 
+// Enums must be defined before interfaces that use them
+export enum DocumentStatus {
+  Processing = 'processing',
+  Complete = 'complete',
+  Error = 'error'
+}
+
+export enum AccessLevel {
+  View = 'view',
+  Edit = 'edit',
+  Download = 'download'
+}
+
+export interface SharedUser {
+  userId: string;
+  email: string;
+  accessLevel: AccessLevel;
+  sharedAt: Date;
+}
+
+export interface AccessLogEntry {
+  userId: string;
+  action: string;
+  timestamp: Date;
+  ipAddress?: string;
+}
+
+export interface SharingSettings {
+  isShared: boolean;
+  accessLevel: AccessLevel;
+  sharedWith: SharedUser[];
+  publicLink?: string;
+  expiresAt?: Date;
+}
+
 export interface ProcessedDocument {
   id: string;
   title: string;
@@ -32,40 +67,6 @@ export interface ProcessedDocument {
   processingErrors?: string[];
   sharingSettings: SharingSettings;
   accessLog: AccessLogEntry[];
-}
-
-export enum DocumentStatus {
-  Processing = 'processing',
-  Complete = 'complete',
-  Error = 'error'
-}
-
-export interface SharingSettings {
-  isShared: boolean;
-  accessLevel: AccessLevel;
-  sharedWith: SharedUser[];
-  publicLink?: string;
-  expiresAt?: Date;
-}
-
-export enum AccessLevel {
-  View = 'view',
-  Edit = 'edit',
-  Download = 'download'
-}
-
-export interface SharedUser {
-  userId: string;
-  email: string;
-  accessLevel: AccessLevel;
-  sharedAt: Date;
-}
-
-export interface AccessLogEntry {
-  userId: string;
-  action: string;
-  timestamp: Date;
-  ipAddress?: string;
 }
 
 // OCR Service Types

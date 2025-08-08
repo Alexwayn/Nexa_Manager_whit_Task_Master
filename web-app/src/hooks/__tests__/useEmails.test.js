@@ -66,7 +66,7 @@ jest.mock('@clerk/clerk-react', () => ({
 }));
 
 // Mock Logger
-jest.mock('@utils/Logger', () => ({
+jest.mock('@/utils/Logger', () => ({
   default: {
     error: jest.fn(),
     info: jest.fn(),

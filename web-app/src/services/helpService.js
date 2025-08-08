@@ -12,7 +12,7 @@ import {
 import { allCalendarCommands } from '@/services/CalendarCommandHandler';
 import { allTransactionCommands } from '@/services/TransactionCommandHandler';
 import { allReportCommands } from '@/services/ReportCommandHandler';
-import { allEmailCommands } from '@/services/EmailCommandHandler';
+
 
 /**
  * Command categories for organization

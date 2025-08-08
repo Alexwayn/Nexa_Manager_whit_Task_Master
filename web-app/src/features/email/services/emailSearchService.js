@@ -1,4 +1,4 @@
-import { supabase } from '@lib/supabaseClient';
+import { supabase } from '@/lib/supabaseClient';
 import Logger from '@shared/utils/logger';
 
 /**
@@ -18,93 +18,108 @@ class EmailSearchService {
    * Perform comprehensive email search with advanced filtering
    */
   async searchEmails(userId, searchParams = {}) {
-    try {
-      const {
-        query = '',
-        filters = {},
-        sortBy = 'received_at',
-        sortOrder = 'desc',
-        limit = 50,
-        offset = 0,
-        includeAttachments = false,
-        highlightResults = true,
-      } = searchParams;
+    const finalSearchParams = {
+      query: '',
+      filters: {},
+      sortBy: 'received_at',
+      sortOrder: 'desc',
+      limit: 50,
+      page: 1,
+      includeAttachments: false,
+      highlightResults: true,
+      ...searchParams,
+    };
 
+    // Cap the limit to a reasonable value
+    finalSearchParams.limit = Math.min(finalSearchParams.limit, 100);
+
+    try {
       // Check cache first
-      const cacheKey = this.generateCacheKey(userId, searchParams);
+      const cacheKey = this.generateCacheKey(userId, finalSearchParams);
       const cachedResult = this.getFromCache(cacheKey);
       if (cachedResult) {
-        return cachedResult;
+        return { ...cachedResult, cached: true, searchParams: finalSearchParams };
       }
 
+      console.log('searchEmails called with:', { userId, searchParams: finalSearchParams });
       // Build search query
       let searchQuery = supabase
         .from('emails')
-        .select(`
+        .select(
+          `
           *,
-          ${includeAttachments ? 'attachments(*),' : ''}
+          ${finalSearchParams.includeAttachments ? 'attachments(*),' : ''}
           labels:email_labels(label_id, labels(name, color))
-        `)
+        `
+        )
         .eq('user_id', userId);
+      console.log('Initial query object:', !!searchQuery, 'range' in searchQuery);
 
       // Apply text search
-      if (query.trim()) {
-        searchQuery = this.applyTextSearch(searchQuery, query);
+      if (finalSearchParams.query.trim()) {
+        searchQuery = this.applyTextSearch(searchQuery, finalSearchParams.query);
+        console.log('Query after applyTextSearch:', !!searchQuery, 'range' in searchQuery);
       }
 
       // Apply filters
-      searchQuery = this.applyFilters(searchQuery, filters);
+      searchQuery = this.applyFilters(searchQuery, finalSearchParams.filters);
+      console.log('Query after applyFilters:', !!searchQuery, 'range' in searchQuery);
 
       // Apply sorting
-      searchQuery = searchQuery.order(sortBy, { ascending: sortOrder === 'asc' });
+      searchQuery = searchQuery.order(finalSearchParams.sortBy, { ascending: finalSearchParams.sortOrder === 'asc' });
 
       // Apply pagination
-      const { data, error, count } = await searchQuery
-        .range(offset, offset + limit - 1);
+      const offset = (finalSearchParams.page - 1) * finalSearchParams.limit;
+      const to = offset + finalSearchParams.limit - 1;
+      console.log(`Calculated range: from=${offset}, to=${to}`);
+      if (typeof searchQuery.range !== 'function') {
+        console.error('Error: searchQuery.range is not a function before calling it.');
+      } else {
+        console.log('Calling searchQuery.range...');
+      }
+      const { data, error, count } = await searchQuery.range(
+        offset,
+        to
+      );
 
       if (error) throw error;
 
       // Process results
       const processedResults = await this.processSearchResults(
         data || [],
-        query,
-        highlightResults
+        finalSearchParams.query,
+        finalSearchParams.highlightResults
       );
 
       // Calculate relevance scores
       const scoredResults = this.calculateRelevanceScores(
         processedResults,
-        query,
-        filters
+        finalSearchParams.query,
+        finalSearchParams.filters
       );
 
       const result = {
         success: true,
         data: scoredResults,
         total: count || 0,
-        hasMore: (data?.length || 0) === limit,
-        searchParams,
+        hasMore: (data?.length || 0) === finalSearchParams.limit,
+        searchParams: finalSearchParams,
         executedAt: new Date().toISOString(),
+        cached: false,
       };
 
       // Cache the result
       this.setCache(cacheKey, result);
 
       // Add to search history
-      if (query.trim()) {
-        this.addToSearchHistory(userId, query, filters);
+      if (finalSearchParams.query.trim()) {
+        this.addToSearchHistory(userId, finalSearchParams.query, finalSearchParams.filters);
       }
 
       return result;
     } catch (error) {
       Logger.error('Error in email search:', error);
-      return {
-        success: false,
-        error: error.message,
-        data: [],
-        total: 0,
-        hasMore: false,
-      };
+      throw error;
     }
   }
 
@@ -113,21 +128,15 @@ class EmailSearchService {
    */
   applyTextSearch(query, searchText) {
     const searchTerms = searchText.trim().split(/\s+/);
-    
-    // Build search conditions for each term
-    const searchConditions = searchTerms.map(term => {
-      const escapedTerm = term.replace(/[%_]/g, '\\$&');
-      return `subject.ilike.%${escapedTerm}%,content_text.ilike.%${escapedTerm}%,sender_name.ilike.%${escapedTerm}%,sender_email.ilike.%${escapedTerm}%,recipient_emails.ilike.%${escapedTerm}%`;
+    const textSearchFields = ['subject', 'content_text', 'sender_name', 'sender_email', 'recipient_emails'];
+
+    searchTerms.forEach(term => {
+        const escapedTerm = term.replace(/[%_]/g, '\\$&');
+        const orConditions = textSearchFields.map(field => `${field}.ilike.%${escapedTerm}%`).join(',');
+        query = query.or(orConditions);
     });
 
-    // Combine conditions with OR for each term, AND between terms
-    if (searchConditions.length === 1) {
-      return query.or(searchConditions[0]);
-    } else {
-      // For multiple terms, we need to use a more complex approach
-      // This is a simplified version - in production, you might want to use full-text search
-      return query.or(searchConditions.join(','));
-    }
+    return query;
   }
 
   /**
@@ -157,7 +166,8 @@ class EmailSearchService {
     }
 
     if (sender) {
-      query = query.or(`sender_email.ilike.%${sender}%,sender_name.ilike.%${sender}%`);
+      const senderTerm = sender.replace(/[%_]/g, '\\$&');
+      query = query.or(`sender_email.ilike.%${senderTerm}%,sender_name.ilike.%${senderTerm}%`);
     }
 
     if (recipient) {
@@ -610,16 +620,10 @@ class EmailSearchService {
   }
 }
 
-// Export singleton instance with lazy initialization
-let emailSearchServiceInstance = null;
+const emailSearchService = new EmailSearchService();
 
 export const getEmailSearchService = () => {
-  if (!emailSearchServiceInstance) {
-    emailSearchServiceInstance = new EmailSearchService();
-  }
-  return emailSearchServiceInstance;
+  return emailSearchService;
 };
 
-// For backward compatibility
-const emailSearchService = getEmailSearchService();
-export default emailSearchService;
+export { emailSearchService };

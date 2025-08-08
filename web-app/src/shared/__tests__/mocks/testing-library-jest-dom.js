@@ -30,7 +30,22 @@ const customMatchers = {
   },
 
   toHaveTextContent(received, expected) {
-    const pass = received && received.textContent && received.textContent.includes(expected);
+    if (!received || received.textContent === undefined) {
+      return {
+        message: () => `expected element to have text content "${expected}"`,
+        pass: false,
+      };
+    }
+
+    let pass;
+    if (expected instanceof RegExp) {
+      pass = expected.test(received.textContent);
+    } else if (typeof expected === 'string') {
+      pass = received.textContent.includes(expected);
+    } else {
+      pass = received.textContent === String(expected);
+    }
+
     return {
       message: () => pass ? 
         `expected element not to have text content "${expected}"` : 
@@ -40,27 +55,49 @@ const customMatchers = {
   },
 
   toHaveAttribute(received, attribute, value) {
-    const hasAttribute = received && received.getAttribute && received.getAttribute(attribute) !== null;
-    const hasCorrectValue = value === undefined || (hasAttribute && received.getAttribute(attribute) === value);
-    const pass = hasAttribute && hasCorrectValue;
+    if (!received || !received.getAttribute) {
+      return {
+        message: () => `expected element to have attribute "${attribute}"${value !== undefined ? ` with value "${value}"` : ''}`,
+        pass: false,
+      };
+    }
+
+    const actualValue = received.getAttribute(attribute);
+    const hasAttribute = actualValue !== null;
+    
+    let pass;
+    if (value === undefined) {
+      pass = hasAttribute;
+    } else {
+      pass = hasAttribute && actualValue === String(value);
+    }
     
     return {
       message: () => pass ? 
-        `expected element not to have attribute "${attribute}"${value ? ` with value "${value}"` : ''}` : 
-        `expected element to have attribute "${attribute}"${value ? ` with value "${value}"` : ''}`,
+        `expected element not to have attribute "${attribute}"${value !== undefined ? ` with value "${value}"` : ''}` : 
+        `expected element to have attribute "${attribute}"${value !== undefined ? ` with value "${value}"` : ''}`,
       pass,
     };
   },
 
   toHaveClass(received, ...classNames) {
-    if (!received || !received.classList || !received.classList.contains) {
+    if (!received) {
       return {
         message: () => `expected element to have class "${classNames.join(' ')}"`,
         pass: false,
       };
     }
 
-    const pass = classNames.every(className => received.classList.contains(className));
+    // Handle both classList.contains and className string checking
+    let pass = false;
+    
+    if (received.classList && received.classList.contains) {
+      pass = classNames.every(className => received.classList.contains(className));
+    } else if (received.className) {
+      const elementClasses = received.className.split(' ').filter(Boolean);
+      pass = classNames.every(className => elementClasses.includes(className));
+    }
+
     return {
       message: () => pass ? 
         `expected element not to have class "${classNames.join(' ')}"` : 
@@ -70,7 +107,14 @@ const customMatchers = {
   },
 
   toHaveStyle(received, style) {
-    const pass = received && received.style && Object.keys(style).every(key => received.style[key] === style[key]);
+    if (!received || !received.style) {
+      return {
+        message: () => `expected element to have style`,
+        pass: false,
+      };
+    }
+
+    const pass = Object.keys(style).every(key => received.style[key] === style[key]);
     return {
       message: () => pass ? 
         `expected element not to have style` : 
@@ -80,7 +124,14 @@ const customMatchers = {
   },
 
   toHaveValue(received, value) {
-    const pass = received && received.value === value;
+    if (!received) {
+      return {
+        message: () => `expected element to have value "${value}"`,
+        pass: false,
+      };
+    }
+
+    const pass = received.value === String(value);
     return {
       message: () => pass ? 
         `expected element not to have value "${value}"` : 
@@ -90,7 +141,14 @@ const customMatchers = {
   },
 
   toBeChecked(received) {
-    const pass = received && received.checked === true;
+    if (!received) {
+      return {
+        message: () => `expected element to be checked`,
+        pass: false,
+      };
+    }
+
+    const pass = received.checked === true;
     return {
       message: () => pass ? 
         `expected element not to be checked` : 
@@ -100,7 +158,15 @@ const customMatchers = {
   },
 
   toBeDisabled(received) {
-    const pass = received && received.disabled === true;
+    if (!received) {
+      return {
+        message: () => `expected element to be disabled`,
+        pass: false,
+      };
+    }
+
+    // Check both disabled property and disabled attribute
+    const pass = received.disabled === true || received.getAttribute('disabled') !== null;
     return {
       message: () => pass ? 
         `expected element not to be disabled` : 
@@ -110,7 +176,15 @@ const customMatchers = {
   },
 
   toBeEnabled(received) {
-    const pass = received && received.disabled !== true;
+    if (!received) {
+      return {
+        message: () => `expected element to be enabled`,
+        pass: false,
+      };
+    }
+
+    // Element is enabled if it's not disabled
+    const pass = received.disabled !== true && received.getAttribute('disabled') === null;
     return {
       message: () => pass ? 
         `expected element not to be enabled` : 
@@ -120,11 +194,74 @@ const customMatchers = {
   },
 
   toHaveFocus(received) {
-    const pass = received && received === document.activeElement;
+    if (!received) {
+      return {
+        message: () => `expected element to have focus`,
+        pass: false,
+      };
+    }
+
+    const pass = received === document.activeElement;
     return {
       message: () => pass ? 
         `expected element not to have focus` : 
         `expected element to have focus`,
+      pass,
+    };
+  },
+
+  // Additional matchers for better test support
+  toBeEmpty(received) {
+    if (!received) {
+      return {
+        message: () => `expected element to be empty`,
+        pass: false,
+      };
+    }
+
+    const pass = !received.textContent || received.textContent.trim() === '';
+    return {
+      message: () => pass ? 
+        `expected element not to be empty` : 
+        `expected element to be empty`,
+      pass,
+    };
+  },
+
+  toContainElement(received, element) {
+    if (!received || !element) {
+      return {
+        message: () => `expected element to contain element`,
+        pass: false,
+      };
+    }
+
+    // Simple containment check
+    const pass = received.contains ? received.contains(element) : false;
+    return {
+      message: () => pass ? 
+        `expected element not to contain element` : 
+        `expected element to contain element`,
+      pass,
+    };
+  },
+
+  toHaveDisplayValue(received, value) {
+    if (!received) {
+      return {
+        message: () => `expected element to have display value "${value}"`,
+        pass: false,
+      };
+    }
+
+    // For form elements, check value; for others, check textContent
+    const displayValue = received.value !== undefined ? received.value : received.textContent;
+    const pass = displayValue === String(value);
+    
+    return {
+      message: () => pass ? 
+        `expected element not to have display value "${value}"` : 
+        `expected element to have display value "${value}"`,
       pass,
     };
   },

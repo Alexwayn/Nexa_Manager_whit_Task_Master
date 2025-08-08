@@ -1,5 +1,5 @@
-import { supabase, setCurrentUserId } from '@lib/supabaseClient';
-import Logger from '@utils/Logger';
+import { supabase, setCurrentUserId } from '@/lib/supabaseClient';
+import Logger from '@/utils/Logger';
 import { errorHandler, notify } from '@shared/utils';
 
 /**

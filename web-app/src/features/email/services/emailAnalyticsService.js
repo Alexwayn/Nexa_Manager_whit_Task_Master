@@ -1,7 +1,7 @@
-import { supabase } from '@lib/supabaseClient';
+import { supabase } from '@/lib/supabaseClient';
 import { getEmailErrorHandler } from './emailErrorHandler';
 import { getEmailTrackingService } from './emailTrackingService';
-import Logger from '@utils/Logger';
+import Logger from '@/utils/Logger';
 
 // Get the error handler instance
 const emailErrorHandler = getEmailErrorHandler();
@@ -1065,5 +1065,8 @@ export const getEmailAnalyticsService = () => {
   }
   return emailAnalyticsServiceInstance;
 };
+
+// Export the service instance for direct access
+export const emailAnalyticsService = getEmailAnalyticsService();
 
 export default getEmailAnalyticsService;

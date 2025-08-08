@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useUser } from '@clerk/clerk-react';
 import { QuoteApprovalService } from '../services/quoteApprovalService';
-import Logger from '@utils/Logger';
+import Logger from '@/utils/Logger';
 import {
   Send,
   CheckCircle,

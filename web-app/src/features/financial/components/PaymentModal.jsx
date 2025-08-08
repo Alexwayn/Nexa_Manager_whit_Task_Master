@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { InvoiceService } from '../services/invoiceService';
-import Logger from '@utils/Logger';
+import Logger from '@/utils/Logger';
 
 /**
  * PaymentModal - Component for recording invoice payments

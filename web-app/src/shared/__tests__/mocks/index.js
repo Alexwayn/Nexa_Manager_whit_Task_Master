@@ -7,6 +7,12 @@ export * from './scanner.js';
 export * from './middleware.js';
 export * from './stores.js';
 
+// Re-export provider mocks
+export * from './providers/index.js';
+
+// Re-export UI-related mocks
+export * from './react-hot-toast.js';
+
 // Mock slices (no import.meta usage but included for completeness)
 export const sliceConfig = {
   domains: {

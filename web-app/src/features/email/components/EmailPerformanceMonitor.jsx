@@ -101,11 +101,11 @@ const EmailPerformanceMonitor = ({ className = '' }) => {
           <div className="grid grid-cols-2 gap-2 text-xs">
             <div>
               <span className="text-gray-500">Hit Rate</span>
-              <div className="font-medium">{stats.cache.hitRate.toFixed(1)}%</div>
+              <div className="font-medium">{(stats.cache.hitRate * 100).toFixed(1)}%</div>
             </div>
             <div>
               <span className="text-gray-500">Items</span>
-              <div className="font-medium">{stats.cache.totalItems}</div>
+              <div className="font-medium" data-testid="cache-items">{stats.cache.totalItems}</div>
             </div>
             <div className="col-span-2">
               <span className="text-gray-500">Memory Usage</span>
@@ -147,7 +147,7 @@ const EmailPerformanceMonitor = ({ className = '' }) => {
             </div>
             <div>
               <span className="text-gray-500">Requests</span>
-              <div className="font-medium">{stats.performance.totalRequests}</div>
+              <div className="font-medium" data-testid="performance-requests">{stats.performance.totalRequests}</div>
             </div>
             <div className="col-span-2">
               <span className="text-gray-500">Error Rate</span>

@@ -13,9 +13,9 @@ import {
   PlusIcon,
 } from '@heroicons/react/24/outline';
 import { useAuth, useUser } from '@clerk/clerk-react';
-import { uploadReceipt, validateFile } from '@lib/storageService';
-import { notify } from '@lib/uiUtils';
-import Logger from '@utils/Logger';
+import { uploadReceipt, validateFile } from '@/lib/storageService';
+import { notify } from '@/lib/uiUtils';
+import Logger from '@/utils/Logger';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');

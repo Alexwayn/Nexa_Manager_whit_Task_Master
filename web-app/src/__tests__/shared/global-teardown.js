@@ -1,4 +1,3 @@
-import { chromium } from '@playwright/test';
 import fs from 'fs';
 import path from 'path';
 
@@ -30,43 +29,27 @@ async function globalTeardown() {
 }
 
 /**
- * Clean up test data from browser storage
+ * Clean up test data without browser dependency
  */
 async function cleanupTestData() {
   console.log('🗑️ Cleaning up test data...');
 
-  const browser = await chromium.launch();
-  const context = await browser.newContext();
-  const page = await context.newPage();
-
   try {
-    await page.goto('http://localhost:3001');
+    // Clear global test data
+    if (global.__TEST_DATA__) {
+      delete global.__TEST_DATA__;
+    }
     
-    // Clear test data from localStorage
-    await page.evaluate(() => {
-      const keysToRemove = [
-        'test-reports',
-        'test-schedules', 
-        'test-metrics',
-        'e2e-test-mode',
-        'auth-token',
-        'user-data',
-        'auth-expires'
-      ];
-      
-      keysToRemove.forEach(key => {
-        localStorage.removeItem(key);
-      });
-      
-      // Clear sessionStorage as well
-      sessionStorage.clear();
-    });
+    if (global.__TEST_AUTH__) {
+      delete global.__TEST_AUTH__;
+    }
+
+    // Clear environment variables
+    delete process.env.E2E_TEST_MODE;
 
     console.log('✅ Test data cleanup completed');
   } catch (error) {
     console.error('❌ Failed to cleanup test data:', error);
-  } finally {
-    await browser.close();
   }
 }
 

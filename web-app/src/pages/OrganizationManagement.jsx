@@ -15,7 +15,7 @@ import { OrganizationProfile, CreateOrganization } from '@clerk/clerk-react';
 import { useTranslation } from 'react-i18next';
 import { useOrganizationContext } from '@/shared/hooks/providers';
 import { DashboardFilters as Layout } from '@features/dashboard';
-import Logger from '@utils/Logger';
+import Logger from '@/utils/Logger';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');

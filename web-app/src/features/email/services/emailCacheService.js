@@ -1,4 +1,4 @@
-import Logger from '@utils/Logger';
+import Logger from '@/utils/Logger';
 
 /**
  * EmailCacheService - Manages email content caching for performance optimization

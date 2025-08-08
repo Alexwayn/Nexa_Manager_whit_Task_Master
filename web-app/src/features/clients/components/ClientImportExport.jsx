@@ -10,9 +10,9 @@ import {
   InformationCircleIcon,
   CloudArrowUpIcon,
 } from '@heroicons/react/24/outline';
-import clientService from '@lib/clientService';
-import { notify } from '@lib/uiUtils';
-import Logger from '@utils/Logger';
+import clientService from '@/lib/clientService';
+import { notify } from '@/lib/uiUtils';
+import Logger from '@/utils/Logger';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');

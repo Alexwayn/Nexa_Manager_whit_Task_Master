@@ -9,7 +9,7 @@ import {
   CheckCircleIcon,
   ClipboardDocumentIcon,
 } from '@heroicons/react/24/outline';
-import Logger from '@utils/Logger';
+import Logger from '@/utils/Logger';
 
 // Import qrcode library
 import QRCode from 'qrcode';

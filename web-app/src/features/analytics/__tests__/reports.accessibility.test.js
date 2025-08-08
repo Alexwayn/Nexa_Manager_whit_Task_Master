@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
-import { ACCESSIBILITY_CONFIG } from '@shared/__tests__/performance.config.js';
+import { ACCESSIBILITY_CONFIG } from '@shared/__tests__/mocks/performance.js';
 
 /**
  * Accessibility Tests for Reports System

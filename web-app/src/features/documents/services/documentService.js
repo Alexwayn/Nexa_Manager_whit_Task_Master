@@ -1,6 +1,6 @@
-import { supabase } from '@lib/supabaseClient';
-import Logger from '@utils/Logger';
-import { storageService } from '@lib/storageService';
+import { supabase } from '@/lib/supabaseClient';
+import Logger from '@/utils/Logger';
+import { storageService } from '@/lib/storageService';
 import { v4 as uuidv4 } from 'uuid';
 
 /**

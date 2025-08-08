@@ -18,8 +18,8 @@ import {
   XMarkIcon,
 } from '@heroicons/react/24/outline';
 // import { UserProfile } from '@clerk/clerk-react'; // Disabled for development mode
-import { supabase } from '@lib/supabaseClient';
-import Logger from '@utils/Logger';
+import { supabase } from '@/lib/supabaseClient';
+import Logger from '@/utils/Logger';
 import { useTranslation } from '@shared/hooks';
 import { useAuth, useUser } from '@clerk/clerk-react';
 import Footer from '@shared/components/Footer';

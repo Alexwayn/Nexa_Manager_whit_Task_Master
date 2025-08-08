@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useUser } from '@clerk/clerk-react';
 import { businessService } from '@features/clients';
-import Logger from '@utils/Logger';
+import Logger from '@/utils/Logger';
 
 const TaxSettings = ({ showNotification }) => {
   const { user } = useUser();

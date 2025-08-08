@@ -1,5 +1,5 @@
 import React from 'react';
-import Logger from '@utils/Logger';
+import Logger from '@/utils/Logger';
 
 // Performance testing and validation utilities
 // Use these functions to verify that performance optimizations are working correctly

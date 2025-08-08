@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useReducer, useEffect, useCallback, useRef } from 'react';
-import emailManagementService from '@/features/email/services/emailManagementService';
+// import emailManagementService from '../../features/email/services/emailManagementService';
 import { useUser } from '@clerk/clerk-react';
 import { useWebSocketContext } from '@/providers/WebSocketProvider';
 import Logger from '@/utils/Logger';
@@ -344,7 +344,7 @@ export const EmailProvider = ({ children }) => {
    */
   const initializeEmailService = async () => {
     try {
-      await emailManagementService.initialize(user.id);
+      // await emailManagementService.initialize(user.id);
       Logger.info('Email service initialized for user:', user.id);
     } catch (error) {
       Logger.error('Failed to initialize email service:', error);

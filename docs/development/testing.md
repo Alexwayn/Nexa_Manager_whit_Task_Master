@@ -255,6 +255,51 @@ describe('OCRService', () => {
 });
 ```
 
+### Services with Timer Management
+
+For services that use timers or cleanup intervals:
+
+```typescript
+import ResultCacheService from '@scanner/services/resultCacheService';
+
+describe('ResultCacheService', () => {
+  let service: ResultCacheService;
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+    
+    // Only use fake timers if not already installed
+    if (!jest.isMockFunction(setTimeout)) {
+      jest.useFakeTimers();
+    }
+    
+    // Reset singleton instance
+    (ResultCacheService as any).instance = null;
+    service = ResultCacheService.getInstance();
+  });
+
+  afterEach(() => {
+    // Clean up service resources before restoring timers
+    if (service && typeof service.dispose === 'function') {
+      service.dispose();
+    }
+    jest.useRealTimers();
+  });
+
+  it('should handle cache cleanup intervals', () => {
+    // Service starts cleanup interval automatically
+    expect(service).toBeDefined();
+    
+    // Fast-forward time to trigger cleanup
+    jest.advanceTimersByTime(60000); // 1 minute
+    
+    // Verify cleanup was called
+    const stats = service.getStats();
+    expect(stats).toBeDefined();
+  });
+});
+```
+
 ## Error Handling Testing
 
 ### Error Boundary Testing
@@ -420,6 +465,88 @@ export const createMockOCRResult = (overrides?: Partial<OCRResult>): OCRResult =
 });
 ```
 
+## Timer Management in Tests
+
+### Fake Timer Best Practices
+
+When testing services that use timers (setTimeout, setInterval), proper timer management is crucial for test reliability:
+
+```typescript
+describe('ServiceWithTimers', () => {
+  let service: ServiceWithTimers;
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+    
+    // Only use fake timers if not already installed
+    if (!jest.isMockFunction(setTimeout)) {
+      jest.useFakeTimers();
+    }
+    
+    // Initialize service after timer setup
+    service = new ServiceWithTimers();
+  });
+
+  afterEach(() => {
+    // Clean up service resources before restoring timers
+    if (service && typeof service.dispose === 'function') {
+      service.dispose();
+    }
+    jest.useRealTimers();
+  });
+
+  it('should handle timer-based operations', () => {
+    service.startPeriodicTask();
+    
+    // Fast-forward time
+    jest.advanceTimersByTime(5000);
+    
+    expect(service.taskExecutionCount).toBe(1);
+  });
+});
+```
+
+### Why This Pattern?
+
+1. **Prevents Timer Conflicts**: Checks if fake timers are already installed before setting them up
+2. **Proper Cleanup Order**: Disposes of service resources before restoring real timers
+3. **Test Isolation**: Ensures each test starts with a clean timer state
+4. **Reliability**: Prevents hanging tests due to unresolved timers
+
+### Common Timer Issues and Solutions
+
+#### Issue: Tests hanging due to unresolved timers
+```typescript
+// ❌ Problematic - may cause hanging tests
+afterEach(() => {
+  jest.useRealTimers();
+  service.dispose(); // May have pending timers
+});
+
+// ✅ Correct - dispose first, then restore timers
+afterEach(() => {
+  if (service && typeof service.dispose === 'function') {
+    service.dispose();
+  }
+  jest.useRealTimers();
+});
+```
+
+#### Issue: Timer conflicts between tests
+```typescript
+// ❌ Problematic - may conflict with existing fake timers
+beforeEach(() => {
+  jest.useFakeTimers(); // May throw if already installed
+});
+
+// ✅ Correct - check before installing
+beforeEach(() => {
+  if (!jest.isMockFunction(setTimeout)) {
+    jest.useFakeTimers();
+  }
+});
+```
+
 ## Best Practices
 
 ### 1. Test Organization
@@ -437,12 +564,18 @@ export const createMockOCRResult = (overrides?: Partial<OCRResult>): OCRResult =
 - Use `waitFor` for elements that appear asynchronously
 - Handle loading states in component tests
 
-### 4. Error Testing
+### 4. Timer Management
+- Use fake timers judiciously and clean up properly
+- Check for existing fake timers before installation
+- Dispose of service resources before restoring real timers
+- Use `jest.advanceTimersByTime()` for predictable timer testing
+
+### 5. Error Testing
 - Test both success and failure scenarios
 - Verify error messages and error handling
 - Test edge cases and boundary conditions
 
-### 5. Performance Considerations
+### 6. Performance Considerations
 - Keep tests fast and focused
 - Use shallow rendering when deep rendering isn't necessary
 - Mock heavy operations and external services

@@ -8,8 +8,9 @@ import userEvent from '@testing-library/user-event';
 import { jest } from '@jest/globals';
 
 // Mock the logger
-jest.mock('@utils/Logger', () => ({
-  Logger: {
+jest.mock('@/utils/Logger', () => ({
+  __esModule: true,
+  default: {
     info: jest.fn(),
     error: jest.fn(),
     warn: jest.fn(),
@@ -18,8 +19,8 @@ jest.mock('@utils/Logger', () => ({
 }));
 
 import EmailAttachmentManager from '../EmailAttachmentManager';
-import emailAttachmentService from '@lib/emailAttachmentService';
-import { Logger } from '@utils/Logger';
+import emailAttachmentService from '@/lib/emailAttachmentService';
+import { Logger } from '@/utils/Logger';
 
 // Setup user-event with clipboard disabled to avoid conflicts
 const setupUserEvent = () => {

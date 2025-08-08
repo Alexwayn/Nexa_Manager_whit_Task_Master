@@ -1,2 +1,4 @@
 // Re-export the VoiceFeedbackButton component from the components directory
-export { default } from '@/components/voice/VoiceFeedbackButton';
+import VoiceFeedbackButton from '@/components/voice/VoiceFeedbackButton';
+console.log('Exporting VoiceFeedbackButton from features:', VoiceFeedbackButton);
+export default VoiceFeedbackButton;

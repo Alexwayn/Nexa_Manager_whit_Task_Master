@@ -4,7 +4,7 @@
  */
 
 import { supabase } from './supabaseClient';
-import Logger from '@utils/Logger';
+import Logger from '@/utils/Logger';
 
 class EmailAttachmentService {
   constructor() {

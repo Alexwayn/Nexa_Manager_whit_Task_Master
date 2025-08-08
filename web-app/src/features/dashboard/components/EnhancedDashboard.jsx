@@ -62,7 +62,7 @@ import { financialService } from '@features/financial';
 import { clientService } from '@features/clients';
 import { exportService } from '@shared/services';
 import { useRealtimeDashboard } from '@features/dashboard';
-import Logger from '@utils/Logger';
+import Logger from '@/utils/Logger';
 
 // Register Chart.js components
 ChartJS.register(

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useAuth, useUser } from '@clerk/clerk-react';
-import { supabase, withUserContext } from '@lib/supabaseClient';
-// import Logger from '@utils/Logger';
+import { supabase, withUserContext } from '@/lib/supabaseClient';
+// import Logger from '@/utils/Logger';
 
 // Environment variable access that works in both Vite and Jest
 const getEnvVar = (key, defaultValue = '') => {

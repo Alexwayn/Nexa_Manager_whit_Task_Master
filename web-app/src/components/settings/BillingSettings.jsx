@@ -29,7 +29,7 @@ import {
   CURRENCIES,
   DATE_FORMATS,
   NUMBER_FORMATS,
-} from '@lib/invoiceSettingsService';
+} from '@/lib/invoiceSettingsService';
 
 export default function BillingSettings({ showNotification }) {
   const { t } = useTranslation('settings');

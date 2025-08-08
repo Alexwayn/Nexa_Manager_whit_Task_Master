@@ -1,0 +1,18 @@
+{
+  "status": "commited",
+  "type": "frontend",
+  "scope": "codebase",
+  "localEndpoint": "http://localhost:3001",
+  "loginUser": "stepanenco.alex@gmail.com",
+  "loginPassword": "amz-3-dealse",
+  "executionArgs": {
+    "projectName": "web-app",
+    "projectPath": "E:\\AlexVenturesStudio\\Nexa_Manager_whit_Task_Master\\web-app",
+    "testIds": [],
+    "additionalInstruction": "Focus on fixing the failing FloatingMicrophone tests and other critical test failures. Prioritize voice assistant functionality tests.",
+    "envs": {
+      "API_KEY": "sk-user-WH99gPGJ3mWPX7rliE6su_VFBx5AKOHw_37pjtji-7w-Tp8xwZraQz0kXJpgD24ZxvZf5Td7tpXTJqelUmWhdfzxAai793tWkhyaJSsaf__U2excNwh5TfmTzd292GiF4pI"
+    }
+  },
+  "proxy": "http://818211cb-4744-4970-a27f-074153fe479b:mtkgkWS8WTti3ilOErq7yQ7axl2KATpM@tun.testsprite.com:8080"
+}

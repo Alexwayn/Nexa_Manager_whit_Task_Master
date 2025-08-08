@@ -32,24 +32,9 @@ import {
   Squares2X2Icon,
 } from '@heroicons/react/24/outline';
 import financialService from '../../financial/services/financialService';
-import Logger from '@utils/Logger';
+import Logger from '@/utils/Logger';
 
-// Register Chart.js components
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  BarElement,
-  ArcElement,
-  Title,
-  Tooltip,
-  Legend,
-  Filler,
-  TimeScale,
-  zoomPlugin,
-  annotationPlugin,
-);
+
 
 const InteractiveFinancialCharts = ({ data, period = 'month', onPeriodChange, className = '' }) => {
   const { t, i18n } = useTranslation(['analytics', 'dashboard']);

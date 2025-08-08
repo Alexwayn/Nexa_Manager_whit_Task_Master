@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useAuth } from '@clerk/clerk-react';
-import emailSearchService from '../services/emailSearchService';
+import { emailSearchService } from '../services/emailSearchService';
 import { useEmailContext } from '@shared/hooks/providers';
 
 /**

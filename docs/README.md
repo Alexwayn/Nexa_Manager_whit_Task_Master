@@ -23,6 +23,7 @@ docs/
 
 ### 🛠️ Setup & Development
 - [Development Setup](development/README.md) - Complete development environment setup
+- [Documentation Update Summary](development/DOCUMENTATION_UPDATE_SUMMARY.md) - Recent documentation improvements and changes
 - [AWS Setup Guide](development/setup/AWS_SETUP_GUIDE.md)
 - [OAuth Setup Guide](development/setup/OAUTH_SETUP_GUIDE.md)
 - [MFA Implementation Guide](development/setup/MFA_IMPLEMENTATION_GUIDE.md)
@@ -49,6 +50,8 @@ docs/
 
 ### 🧪 Testing & Quality
 - [Testing Guide](development/testing/TESTING.md) - Testing strategies and setup
+- [Async Testing Patterns](development/testing/ASYNC_TESTING_PATTERNS.md) - Advanced async/await testing patterns and best practices
+- [Testing Status Update](development/testing/TESTING_STATUS_UPDATE.md) - Recent testing infrastructure improvements and achievements
 - [Code Review Process](development/workflows/code-review-process.md)
 
 ## 🔧 Project Status

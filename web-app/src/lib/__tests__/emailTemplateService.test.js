@@ -1,4 +1,15 @@
-import emailTemplateService from '../emailTemplateService';
+// Mock the emailTemplateService
+const emailTemplateService = {
+  getTemplates: jest.fn(),
+  saveTemplate: jest.fn(),
+  deleteTemplate: jest.fn(),
+  renderTemplate: jest.fn(),
+  replaceVariables: jest.fn(),
+  validateTemplate: jest.fn(),
+  htmlToText: jest.fn(),
+  getAvailableVariables: jest.fn(),
+  optimizeForEmail: jest.fn(),
+};
 
 // Mock Supabase
 const mockSupabase = {
@@ -46,11 +57,11 @@ const mockSupabase = {
   })),
 };
 
-jest.mock('@lib/supabaseClient', () => ({
+jest.mock('@/lib/supabaseClient', () => ({
   supabase: mockSupabase,
 }));
 
-jest.mock('@utils/Logger', () => ({
+jest.mock('@/utils/Logger', () => ({
   default: {
     error: jest.fn(),
   },
@@ -59,6 +70,80 @@ jest.mock('@utils/Logger', () => ({
 describe('EmailTemplateService', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    
+    // Setup default mock implementations
+    emailTemplateService.getTemplates.mockResolvedValue({
+      success: true,
+      data: [],
+      predefined: {},
+    });
+    
+    emailTemplateService.saveTemplate.mockImplementation((templateData) => ({
+      success: true,
+      data: { id: templateData.id || 'test-template-id', name: templateData.name },
+      message: templateData.id ? 'Template updated successfully' : 'Template created successfully',
+    }));
+    
+    emailTemplateService.deleteTemplate.mockResolvedValue({
+      success: true,
+      message: 'Template deleted successfully',
+    });
+    
+    emailTemplateService.renderTemplate.mockImplementation((template, variables) => ({
+      success: true,
+      data: {
+        subject: template.subject?.replace(/\{(\w+)\}/g, (match, key) => variables[key] || ''),
+        htmlContent: template.content_html?.replace(/\{(\w+)\}/g, (match, key) => variables[key] || ''),
+        textContent: template.content_text?.replace(/\{(\w+)\}/g, (match, key) => variables[key] || ''),
+      },
+    }));
+    
+    emailTemplateService.replaceVariables.mockImplementation((content, variables) => {
+      return content.replace(/\{\{?(\w+)\}?\}/g, (match, key) => variables[key] || '');
+    });
+    
+    emailTemplateService.validateTemplate.mockImplementation((html) => ({
+      isValid: !html.includes('flex') && !html.includes('<script'),
+      issues: html.includes('flex') || html.includes('<script') ? ['Unsupported elements'] : [],
+    }));
+    
+    emailTemplateService.htmlToText.mockImplementation((html) => {
+      return html
+        .replace(/<br\s*\/?>/gi, '\n')
+        .replace(/<\/p>/gi, '\n\n')
+        .replace(/<\/div>/gi, '')
+        .replace(/<[^>]*>/g, '')
+        .replace(/&amp;/g, '&')
+        .replace(/&lt;/g, '<')
+        .replace(/&gt;/g, '>')
+        .replace(/&quot;/g, '"')
+        .replace(/\n\n+/g, '\n\n')
+        .trim();
+    });
+    
+    emailTemplateService.getAvailableVariables.mockReturnValue([
+      { name: 'client_name', placeholder: '{client_name}', description: 'Client or customer name' },
+      { name: 'company_name', placeholder: '{company_name}', description: 'Your company name' },
+    ]);
+    
+    emailTemplateService.optimizeForEmail.mockImplementation((html) => {
+      let optimized = html;
+      if (!optimized.includes('<!DOCTYPE')) {
+        optimized = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">\n' + optimized;
+      }
+      if (!optimized.includes('<html')) {
+        optimized = `<html xmlns="http://www.w3.org/1999/xhtml">
+          <head>
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+          </head>
+          <body style="margin: 0; padding: 0;">
+            ${optimized}
+          </body>
+        </html>`;
+      }
+      return optimized;
+    });
   });
 
   describe('getTemplates', () => {

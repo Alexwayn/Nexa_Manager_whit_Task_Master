@@ -1,5 +1,5 @@
 import { emailErrorHandler, emailProviderService } from '@features/email';
-import { supabase } from '@lib/supabaseClient';
+import { supabase } from '@/lib/supabaseClient';
 import Logger from '@shared/utils/logger';
 import { notify } from '@shared/utils';
 

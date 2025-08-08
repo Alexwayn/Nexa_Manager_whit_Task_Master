@@ -1,5 +1,5 @@
-import { supabase } from '@lib/supabaseClient';
-import Logger from '@utils/Logger';
+import { supabase } from '@/lib/supabaseClient';
+import Logger from '@/utils/Logger';
 import { getEnvVar } from '@/utils/env';
 
 /**
@@ -558,5 +558,8 @@ export const getEmailTemplateService = () => {
   }
   return emailTemplateServiceInstance;
 };
+
+// Export the service instance for direct access
+export const emailTemplateService = getEmailTemplateService();
 
 export default getEmailTemplateService;

@@ -20,8 +20,8 @@ const Voice = ({
     transcript,
     confidence,
     error,
-    startListening,
-    stopListening,
+    activateVoice,
+    deactivateVoice,
     processCommand
   } = useVoiceAssistant();
 
@@ -44,9 +44,9 @@ const Voice = ({
 
   const handleToggleListening = () => {
     if (isListening) {
-      stopListening();
+      deactivateVoice();
     } else {
-      startListening();
+      activateVoice();
     }
   };
 
@@ -81,7 +81,7 @@ const Voice = ({
           <VoiceActivationButton
             isListening={isListening}
             isProcessing={isProcessing}
-            onToggle={handleToggleListening}
+            onClick={handleToggleListening}
             className={className}
             {...props}
           />

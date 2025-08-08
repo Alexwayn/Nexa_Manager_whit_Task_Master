@@ -200,6 +200,7 @@ web-app/src/
 - **Coverage**: Jest coverage reports
 - **Accessibility**: @testing-library/jest-dom
 - **Mocking**: Jest mocks with custom utilities
+- **Timer Management**: Proper fake timer setup and cleanup for reliable testing
 
 ### Environment Variable Testing
 
@@ -229,6 +230,101 @@ This pattern ensures:
 - **Isolation**: Tests don't depend on actual environment configuration
 - **Reliability**: Tests work in any environment (CI/CD, local, etc.)
 - **Flexibility**: Easy to override specific values for individual tests
+
+### Canvas API Mocking
+
+For tests involving image processing or Canvas operations, comprehensive Canvas API mocking is implemented:
+
+```typescript
+// Mock Canvas API for JSDOM environment
+Object.defineProperty(window.HTMLCanvasElement.prototype, 'getContext', {
+  writable: true,
+  value: jest.fn().mockImplementation(() => ({
+    fillRect: jest.fn(),
+    clearRect: jest.fn(),
+    getImageData: jest.fn((x, y, w, h) => ({
+      data: new Uint8ClampedArray(w * h * 4),
+    })),
+    putImageData: jest.fn(),
+    drawImage: jest.fn(),
+    toDataURL: jest.fn(() => 'data:image/png;base64,')
+    // ... additional Canvas 2D context methods
+  })),
+});
+
+Object.defineProperty(window.HTMLCanvasElement.prototype, 'toBlob', {
+  writable: true,
+  value: jest.fn().mockImplementation((callback) => {
+    callback(new Blob(['processed'], { type: 'image/jpeg' }));
+  }),
+});
+```
+
+This enables:
+- **JSDOM Compatibility**: Canvas operations work in Node.js test environment
+- **Image Processing Testing**: Full testing of image manipulation services
+- **Document Scanner Testing**: Complete coverage of scanner system functionality
+
+### Async/Await Testing Patterns
+
+All test functions that interact with asynchronous operations use proper async/await patterns:
+
+```typescript
+// Correct async test pattern
+it('should handle async operations', async () => {
+  const result = await service.processAsync();
+  expect(result).toBeDefined();
+});
+
+// Promise-based testing with proper resolution
+it('should complete batch processing', async () => {
+  const job = await new Promise<BatchJob>(resolve => {
+    service.createBatchJob(files, { onComplete: resolve });
+  });
+  expect(job.status).toBe(BatchJobStatus.COMPLETED);
+});
+```
+
+This ensures:
+- **Proper Promise Handling**: All async operations are properly awaited
+- **Timeout Prevention**: Tests don't hang on unresolved promises
+- **Consistent Execution**: Reliable test execution across different environments
+- **Error Propagation**: Async errors are properly caught and reported
+
+### Timer Management in Tests
+
+For services using timers (setTimeout, setInterval), proper timer management ensures test reliability:
+
+```typescript
+describe('ServiceWithTimers', () => {
+  let service: ServiceWithTimers;
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+    
+    // Only use fake timers if not already installed
+    if (!jest.isMockFunction(setTimeout)) {
+      jest.useFakeTimers();
+    }
+    
+    service = new ServiceWithTimers();
+  });
+
+  afterEach(() => {
+    // Clean up service resources before restoring timers
+    if (service && typeof service.dispose === 'function') {
+      service.dispose();
+    }
+    jest.useRealTimers();
+  });
+});
+```
+
+This pattern:
+- **Prevents Timer Conflicts**: Checks for existing fake timers before installation
+- **Ensures Proper Cleanup**: Disposes of service resources before restoring real timers
+- **Maintains Test Isolation**: Each test starts with a clean timer state
+- **Prevents Hanging Tests**: Proper cleanup prevents unresolved timer issues
 
 ## 🔒 Security
 

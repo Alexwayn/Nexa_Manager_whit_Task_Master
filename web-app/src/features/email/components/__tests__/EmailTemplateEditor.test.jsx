@@ -85,7 +85,7 @@ jest.mock('react-i18next', () => ({
 
 // Import the component and service
 import EmailTemplateEditor from '../EmailTemplateEditor';
-import emailTemplateService from '@lib/emailTemplateService';
+import emailTemplateService from '@/lib/emailTemplateService';
 
 describe('EmailTemplateEditor', () => {
   const defaultProps = {

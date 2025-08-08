@@ -9,7 +9,7 @@ import {
   ArrowUpIcon,
   ArrowDownIcon,
 } from '@heroicons/react/24/outline';
-import { debounce } from '@lib/uiUtils';
+import { debounce } from '@/lib/uiUtils';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');

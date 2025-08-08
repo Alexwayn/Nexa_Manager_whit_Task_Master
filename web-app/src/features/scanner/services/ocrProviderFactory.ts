@@ -1087,9 +1087,16 @@ class FallbackOCRProvider extends BaseOCRProvider {
     ];
   }
 
+  private getAvailableProvidersInternal(): OCRProvider[] {
+    // Return the predefined fallback providers without calling the factory
+    // This avoids circular dependency during initialization
+    return this.fallbackProviders.slice(); // Return a copy
+  }
+
   async extractText(image: Blob, options?: OCROptions): Promise<Partial<OCRResult>> {
     // First, try to use any available primary providers as fallback
-    const availableProviders = OCRProviderFactory.getAvailableProviders()
+    // Avoid calling getAvailableProviders during initialization to prevent circular dependency
+    const availableProviders = this.getAvailableProvidersInternal()
       .filter(provider => provider !== OCRProvider.Fallback);
 
     for (const providerType of this.fallbackProviders) {
@@ -1255,7 +1262,7 @@ class FallbackOCRProvider extends BaseOCRProvider {
         fallback: true,
         method: 'manual_input_required',
         allProvidersExhausted: true,
-        availableProviders: OCRProviderFactory.getAvailableProviders()
+        availableProviders: this.getAvailableProvidersInternal()
       }
     };
   }
@@ -1265,7 +1272,7 @@ class FallbackOCRProvider extends BaseOCRProvider {
   }
 
   getStatus(): ProviderStatus {
-    const availableProviders = OCRProviderFactory.getAvailableProviders()
+    const availableProviders = this.getAvailableProvidersInternal()
       .filter(provider => provider !== OCRProvider.Fallback);
 
     return {

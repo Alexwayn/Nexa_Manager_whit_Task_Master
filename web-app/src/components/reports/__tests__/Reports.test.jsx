@@ -8,7 +8,7 @@ jest.mock('react-router-dom', () => ({
 }));
 
 // Mock supabase with alias
-jest.mock('@lib/supabaseClient', () => ({
+jest.mock('@/lib/supabaseClient', () => ({
   supabase: {
     from: jest.fn(() => ({
       select: jest.fn().mockReturnThis(),
@@ -32,7 +32,7 @@ jest.mock('@lib/invoiceAnalyticsService', () => ({
   },
 }));
 
-jest.mock('@utils/Logger', () => ({
+jest.mock('@/utils/Logger', () => ({
   default: {
     info: jest.fn(),
     error: jest.fn(),
@@ -53,7 +53,7 @@ jest.mock('@utils/performance', () => ({
   },
 }));
 
-jest.mock('@shared/components/feedback/ErrorBoundary', () => ({
+jest.mock('@shared/components/ErrorBoundary', () => ({
   ChartErrorFallback: ({ children }) => children || <div>Chart Error</div>,
   default: ({ children }) => children,
 }));

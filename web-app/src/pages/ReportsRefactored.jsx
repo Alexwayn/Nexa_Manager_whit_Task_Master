@@ -29,12 +29,12 @@ import useReportData from '@hooks/useReportData';
 import useChartData from '@hooks/useChartData';
 
 // Services
-import invoiceAnalyticsService from '@lib/invoiceAnalyticsService';
-import reportingService from '@lib/reportingService';
-import incomeService from '@lib/incomeService';
-import expenseService from '@lib/expenseService';
-import financialService from '@lib/financialService';
-import Logger from '@utils/Logger';
+import invoiceAnalyticsService from '@/lib/invoiceAnalyticsService';
+import reportingService from '@/lib/reportingService';
+import incomeService from '@/lib/incomeService';
+import expenseService from '@/lib/expenseService';
+import financialService from '@/lib/financialService';
+import Logger from '@/utils/Logger';
 
 // Chart.js registration (same as original)
 import {

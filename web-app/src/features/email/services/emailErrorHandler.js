@@ -1,4 +1,4 @@
-import Logger from '@utils/Logger';
+import Logger from '@/utils/Logger';
 import { errorMonitor, ErrorType, ErrorSeverity } from '@utils/ErrorMonitor';
 import { notify } from '@shared/utils'; // Fixed import path
 

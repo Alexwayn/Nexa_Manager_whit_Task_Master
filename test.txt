@@ -1,0 +1,455 @@
+You're facing a large number of failing Jest tests, and the error log shows several recurring root causes. Instead of trying to fix all at once, we can systematically address them one by one, starting with the most critical and widespread issues.
+
+Here’s a step-by-step guide to triage and fix your test failures in order of priority:
+
+🔴 Step 1: Fix import.meta Syntax Errors (High Priority)
+❌ Error:
+
+
+1
+SyntaxError: Cannot use 'import.meta' outside a module
+Found in:
+
+src/utils/env.js
+src/__tests__/config/testResultsProcessor.js
+src/shared/components/ErrorBoundary.jsx
+📌 Cause:
+Jest doesn't natively support ES Modules (import.meta) by default. Your code uses import.meta.env, which is common in Vite or modern JS setups, but Jest runs in a CommonJS context unless configured otherwise.
+
+✅ Solution: Enable ESM Support in Jest
+Update jest.config.cjs to support ESM:
+js
+
+
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+⌄
+⌄
+⌄
+// jest.config.cjs
+module.exports = {
+  transform: {},
+  extensionsToTreatAsEsm: ['.ts', '.tsx', '.js', '.jsx'],
+  moduleNameMapper: {
+    '^(\\.{1,2}/.*)\\.js$': '$1', // Handle .js imports as ESM
+  },
+  transformIgnorePatterns: [
+    'node_modules/(?!.*\\.mjs$)',
+  ],
+  testEnvironment: 'node',
+};
+Use babel-jest with ESM support (recommended):
+Install Babel if not already:
+bash
+
+
+1
+npm install --save-dev babel-jest @babel/core @babel/preset-env
+Create .babelrc:
+json
+
+
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+⌄
+⌄
+⌄
+⌄
+{
+  "presets": [
+    ["@babel/preset-env", {
+      "targets": {
+        "node": "current"
+      },
+      "modules": false
+    }]
+  ]
+}
+Update jest.config.cjs:
+js
+
+
+1
+2
+3
+⌄
+transform: {
+  '^.+\\.[tj]sx?$': 'babel-jest',
+},
+Mock import.meta in tests (temporary workaround):
+Add to your test setup file (setupTests.js or similar):
+js
+
+
+1
+2
+3
+4
+5
+6
+7
+8
+⌄
+⌄
+Object.defineProperty(global, 'importMeta', {
+  value: { env: process.env },
+});
+
+// Or mock directly in failing test files
+jest.spyOn(global, 'import').mockImplementation(() => ({
+  meta: { env: process.env },
+}));
+But better: use jest.mock() for modules using import.meta.
+Alternative: Replace import.meta.env with process.env in test environment
+In src/utils/env.js, wrap usage:
+js
+
+
+1
+2
+3
+const isDev = typeof import.meta !== 'undefined' && import.meta.env?.DEV
+  ? import.meta.env.DEV
+  : process.env.NODE_ENV === 'development';
+🔴 Step 2: Fix "Only one default export allowed" (Critical)
+❌ Error:
+
+
+1
+SyntaxError: Only one default export allowed per module
+In:
+
+src/features/email/services/emailManagementService.js
+📌 Cause:
+You likely have multiple export default statements in the same file.
+
+Look at this line:
+
+js
+
+
+1
+export default getEmailManagementService;
+Check if there's another export default class/function earlier in the file.
+
+✅ Fix:
+Open emailManagementService.js
+Search for export default
+Ensure only one exists.
+If you have both:
+js
+
+
+1
+2
+export default class EmailManagementService { ... }
+export default getEmailManagementService;
+→ This is invalid.
+✅ Fix: Remove one. Probably keep the class, and export the instance like:
+js
+
+
+1
+2
+const emailService = new EmailManagementService();
+export default emailService;
+Or rename the function export:
+js
+
+
+1
+2
+export { getEmailManagementService };
+export default EmailManagementService;
+Update imports accordingly:
+js
+
+
+1
+2
+3
+import EmailManagementService from '...'; // default
+// or
+import { getEmailManagementService } from '...';
+🔴 Step 3: Fix jest.mock() referencing React (Common in JSX tests)
+❌ Error:
+
+
+1
+The module factory of `jest.mock()` is not allowed to reference any out-of-scope variables. Invalid variable access: React
+In:
+
+VoiceFeedbackButton.final-test.jsx
+FloatingMicrophone.real-libs-fixed.test.jsx
+📌 Cause:
+You're using React.createElement inside jest.mock() factory, but React is not available in the mock scope.
+
+✅ Fix: Use jest.requireActual() or avoid referencing React
+Replace:
+
+js
+
+
+1
+2
+3
+⌄
+jest.mock('@heroicons/react/24/outline', () => ({
+  HandThumbUpIcon: () => React.createElement('svg', ...),
+}));
+With:
+
+js
+
+
+1
+2
+3
+4
+5
+6
+7
+⌄
+⌄
+jest.mock('@heroicons/react/24/outline', () => {
+  const React = jest.requireActual('react');
+  return {
+    HandThumbUpIcon: (props) => React.createElement('svg', { 'data-testid': 'feedback-icon' }, 'thumbs-up'),
+    // ... others
+  };
+});
+✅ This safely imports React inside the mock.
+
+Alternatively, use simple strings or DOM elements:
+
+js
+
+
+1
+HandThumbUpIcon: () => '.HandThumbUpIcon.',
+🔴 Step 4: Fix Module Mapping Issues
+❌ Error:
+
+
+1
+Could not locate module @shared/__tests__/performance.config.js
+📌 Cause:
+moduleNameMapper in jest.config.cjs has incorrect path syntax (Windows backslashes).
+
+You likely have:
+
+js
+
+
+1
+"/^@shared\/(.*)$/": "E:\...\src\shared\$1"
+But backslashes break the regex/string.
+
+✅ Fix:
+Use forward slashes or path:
+
+js
+
+
+1
+2
+3
+4
+5
+6
+7
+⌄
+⌄
+const path = require('path');
+
+module.exports = {
+  moduleNameMapper: {
+    '^@shared/(.*)$': path.resolve(__dirname, 'src/shared/$1'),
+  },
+};
+Also ensure the file performance.config.js actually exists.
+
+🔴 Step 5: Fix "No tests found" in empty test files
+❌ Error:
+
+
+1
+Your test suite must contain at least one test.
+In:
+
+globalMocks.js
+testConfig.js
+global-setup.js
+voiceTestRunner.js
+✅ Fix:
+Either:
+
+Add a test:
+js
+
+
+1
+2
+3
+⌄
+test('should pass', () => {
+  expect(true).toBe(true);
+});
+Or rename or exclude these files from test runs if they are setup files.
+Better: Move setup/teardown logic to setupTests.js and globalSetup.js (Jest special files), and exclude them from test discovery via:
+
+js
+
+
+1
+2
+3
+4
+5
+⌄
+// jest.config.cjs
+testMatch: [
+  '**/__tests__/**/*.[jt]s?(x)',
+  '**/?(*.)+(spec|test).[jt]s?(x)',
+],
+And name setup files like setupTests.js, not *.test.js.
+
+🔴 Step 6: Fix "Cannot access 'mockIncomeService' before initialization"
+❌ Error:
+js
+
+
+1
+2
+3
+4
+⌄
+jest.mock('../../features/financial/services/incomeService', () => ({
+  default: mockIncomeService,
+}));
+const mockIncomeService = jest.fn();
+📌 Cause:
+You're using mockIncomeService before it's declared.
+
+✅ Fix:
+Move the const mockIncomeService above the jest.mock.
+
+But: jest.mock() is hoisted. So you must declare the mock first.
+
+js
+
+
+1
+2
+3
+4
+5
+6
+⌄
+const mockIncomeService = jest.fn();
+
+jest.mock('../../features/financial/services/incomeService', () => ({
+  __esModule: true,
+  default: mockIncomeService,
+}));
+✅ This ensures the variable is initialized before the mock uses it.
+
+✅ Recommended Workflow: Fix One by One
+1️⃣
+Fix
+import.meta
+issue globally
+env.js
+,
+ErrorBoundary.jsx
+, test files
+2️⃣
+Fix duplicate
+export default
+emailManagementService.js
+3️⃣
+Fix
+jest.mock()
+using
+React
+VoiceFeedbackButton.*
+,
+FloatingMicrophone.*
+4️⃣
+Fix module path mapping
+reports.accessibility.test.js
+5️⃣
+Add
+test()
+or rename empty test files
+globalMocks.js
+,
+testConfig.js
+, etc.
+6️⃣
+Fix mock variable order
+debug-financial.test.js
+
+✅ Pro Tips
+Run tests in watch mode:
+bash
+
+
+1
+npx jest --watch
+Fix one file at a time.
+Isolate a single failing test:
+bash
+
+
+1
+npx jest env.test.js
+Use --detectOpenHandles to debug hanging tests:
+bash
+
+
+1
+npx jest --detectOpenHandles
+Update package.json scripts:
+json
+
+
+1
+2
+3
+4
+5
+⌄
+"scripts": {
+  "test": "jest",
+  "test:watch": "jest --watch",
+  "test:debug": "jest --verbose --detectOpenHandles"
+}
+✅ Summary: Immediate Actions
+✅ Update jest.config.cjs for ESM / import.meta
+✅ Fix emailManagementService.js — only one export default
+✅ Move mockIncomeService declaration above jest.mock
+✅ Fix jest.mock() by using jest.requireActual('react')
+✅ Fix moduleNameMapper paths with path.resolve
+✅ Add dummy tests or rename empty test files
+Once these are fixed, many failures will disappear at once.
+
+Let me know if you want help editing a specific file (e.g., jest.config.cjs or emailManagementService.js).

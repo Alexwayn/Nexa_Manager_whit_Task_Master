@@ -22,7 +22,7 @@ import ReceiptUpload from './ReceiptUpload';
 import DocumentSharing from './DocumentSharing';
 import EmailManager from '../../email/components/EmailManager';
 import nexaLogo from '@assets/logos/logo_nexa.png';
-import Logger from '@utils/Logger';
+import Logger from '@/utils/Logger';
 
 import { useTranslation } from 'react-i18next';
 

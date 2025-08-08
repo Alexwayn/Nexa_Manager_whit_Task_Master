@@ -18,6 +18,7 @@ import helpService from '@/services/helpService';
 jest.mock('@/services/voiceAnalyticsService');
 jest.mock('@/services/voiceFeedbackService');
 jest.mock('@/services/helpService');
+jest.mock('@/features/email/services/emailAttachmentService');
 jest.mock('@/utils/logger');
 
 // Mock Web Speech API
@@ -33,17 +34,17 @@ const mockSpeechRecognition = {
   maxAlternatives: 1,
   serviceURI: '',
   grammars: null,
-  onstart: null,
-  onend: null,
-  onerror: null,
-  onresult: null,
-  onnomatch: null,
-  onsoundstart: null,
-  onsoundend: null,
-  onspeechstart: null,
-  onspeechend: null,
-  onaudiostart: null,
-  onaudioend: null
+  onstart: jest.fn(),
+  onend: jest.fn(),
+  onerror: jest.fn(),
+  onresult: jest.fn(),
+  onnomatch: jest.fn(),
+  onsoundstart: jest.fn(),
+  onsoundend: jest.fn(),
+  onspeechstart: jest.fn(),
+  onspeechend: jest.fn(),
+  onaudiostart: jest.fn(),
+  onaudioend: jest.fn()
 };
 
 global.SpeechRecognition = jest.fn(() => mockSpeechRecognition);
@@ -109,9 +110,6 @@ describe('Voice Assistant Integration Tests', () => {
     });
 
     // Setup service mocks
-    voiceAnalyticsService.trackCommand.mockResolvedValue();
-    voiceAnalyticsService.trackError.mockResolvedValue();
-    voiceAnalyticsService.trackSession.mockResolvedValue();
     voiceAnalyticsService.getAnalytics.mockResolvedValue({
       totalCommands: 0,
       successfulCommands: 0,

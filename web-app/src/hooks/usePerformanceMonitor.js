@@ -1,5 +1,5 @@
 import { useEffect, useRef, useCallback } from 'react';
-import Logger from '@utils/Logger';
+import Logger from '@/utils/Logger';
 
 /**
  * Custom hook for monitoring performance metrics

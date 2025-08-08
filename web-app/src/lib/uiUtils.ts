@@ -1,5 +1,5 @@
 import toast, { ToastOptions } from 'react-hot-toast';
-import Logger from '@utils/Logger';
+import Logger from '@/utils/Logger';
 
 /**
  * UI Utilities

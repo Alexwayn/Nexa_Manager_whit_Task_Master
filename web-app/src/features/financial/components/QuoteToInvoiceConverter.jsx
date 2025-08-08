@@ -11,7 +11,7 @@ import {
   XMarkIcon,
 } from '@heroicons/react/24/outline';
 import { QuoteService } from '../services/quoteService';
-import Logger from '@utils/Logger';
+import Logger from '@/utils/Logger';
 
 const QuoteToInvoiceConverter = ({ isOpen, onClose, quote, onConversionSuccess }) => {
   const { t } = useTranslation('invoices');

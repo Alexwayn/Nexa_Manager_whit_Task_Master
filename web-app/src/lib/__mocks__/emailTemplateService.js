@@ -1,5 +1,5 @@
 // Mock for emailTemplateService.js
-const emailTemplateService = {
+const mockEmailTemplateService = {
   getAvailableVariables: () => [
     { name: 'firstName', description: 'First name', placeholder: '{firstName}' },
     { name: 'lastName', description: 'Last name', placeholder: '{lastName}' },
@@ -119,4 +119,12 @@ const emailTemplateService = {
   deleteTemplateSnapshot: jest.fn().mockResolvedValue({ success: true }),
 };
 
-export default emailTemplateService;
+// Function to get the service instance (mimicking the actual service)
+const getEmailTemplateService = () => mockEmailTemplateService;
+
+// Named exports
+export const emailTemplateService = mockEmailTemplateService;
+export { getEmailTemplateService };
+
+// Default export
+export default getEmailTemplateService;

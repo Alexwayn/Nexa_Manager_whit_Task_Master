@@ -1,7 +1,7 @@
 // Mock scanner configuration for tests
 
-// Mock OCRProvider enum
-const OCRProvider = {
+// Define OCRProvider values directly to avoid import issues
+export const OCRProvider = {
   OpenAI: 'openai',
   Qwen: 'qwen',
   Azure: 'azure',

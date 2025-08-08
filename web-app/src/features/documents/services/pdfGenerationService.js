@@ -13,7 +13,7 @@
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import QRCode from 'qrcode';
-import Logger from '@utils/Logger';
+import Logger from '@/utils/Logger';
 
 export class PDFGenerationService {
   // ==================== PDF CONFIGURATION ====================

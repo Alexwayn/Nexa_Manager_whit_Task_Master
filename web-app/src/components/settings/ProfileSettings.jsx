@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { PhotoIcon, ArrowUpTrayIcon } from '@heroicons/react/24/outline';
 import { useAuth, useUser } from '@clerk/clerk-react';
-import { supabase } from '@lib/supabaseClient';
-import Logger from '@utils/Logger';
+import { supabase } from '@/lib/supabaseClient';
+import Logger from '@/utils/Logger';
 import { useTranslation } from 'react-i18next';
 
 export default function ProfileSettings({ showNotification }) {

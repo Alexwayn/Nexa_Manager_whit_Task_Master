@@ -72,8 +72,7 @@ export const transactionCommands = {
   'money dashboard': { type: 'navigation', action: 'navigate', target: '/financial' },
 };
 
-// All transaction commands for integration
-export const allTransactionCommands = Object.keys(transactionCommands);
+
 
 /**
  * Process transaction-related voice commands
@@ -458,6 +457,5 @@ function processFuzzyTransactionMatches(command: string): TransactionCommandResu
 export default {
   processTransactionCommand,
   executeTransactionCommand,
-  allTransactionCommands,
   transactionCommands
 };

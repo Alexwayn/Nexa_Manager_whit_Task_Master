@@ -1,6 +1,9 @@
 // Mock implementation for testing purposes
 // This provides the same interface as the TypeScript version
 
+// Import supabase client for integration tests
+import { supabase } from '@/lib/supabaseClient';
+
 const mockReports = [
   {
     id: 1,
@@ -40,49 +43,72 @@ const mockSchedules = [
 ];
 
 export const getReports = async (filters = {}) => {
-  // Simulate API delay
-  await new Promise(resolve => setTimeout(resolve, 100));
-  
-  let filteredReports = [...mockReports];
+  let query = supabase.from('reports').select('*');
   
   if (filters.type) {
-    filteredReports = filteredReports.filter(report => report.type === filters.type);
+    query = query.eq('type', filters.type);
   }
   
   if (filters.status) {
-    filteredReports = filteredReports.filter(report => report.status === filters.status);
+    query = query.eq('status', filters.status);
   }
   
-  return filteredReports;
+  query = query.order('created_at', { ascending: false });
+  
+  const { data, error } = await query;
+  
+  if (error) {
+    throw new Error(error.message);
+  }
+  
+  return data || [];
 };
 
-export const getReportMetrics = async (dateRange = {}) => {
-  // Mock implementation for testing
-  return {
-    totalRevenue: 150000,
-    totalExpenses: 80000,
-    netProfit: 70000,
-    totalClients: 45,
-    activeProjects: 12,
-    completedReports: 28
-  };
+export const getReportMetrics = async (filters = {}) => {
+  const params = {};
+  
+  if (filters.startDate) {
+    params.start_date = filters.startDate;
+  }
+  
+  if (filters.endDate) {
+    params.end_date = filters.endDate;
+  }
+  
+  const { data, error } = await supabase.rpc('get_report_metrics', Object.keys(params).length > 0 ? params : undefined);
+  
+  if (error) {
+    throw new Error(error.message);
+  }
+  
+  return data;
 };
 
 export const generateReport = async (params) => {
-  if (!params || !params.type) {
+  if (!params || !params.type || !params.startDate || !params.endDate) {
     throw new Error('Missing required parameters');
   }
   
-  // Mock implementation for testing
-  return {
-    id: Math.floor(Math.random() * 1000),
-    name: `Generated ${params.type} Report`,
+  const reportData = {
+    name: params.name,
     type: params.type,
-    status: 'completed',
-    format: params.format || 'PDF',
-    file_path: `/reports/generated_${Date.now()}.pdf`,
-    created_at: new Date().toISOString()
+    format: params.format,
+    parameters: {
+      startDate: params.startDate,
+      endDate: params.endDate
+    },
+    status: 'processing'
   };
+  
+  const { data, error } = await supabase.from('reports')
+    .insert(reportData)
+    .select();
+  
+  if (error) {
+    throw new Error(error.message);
+  }
+  
+  return data[0];
 };
 
 export const getChartData = async (type, options = {}) => {
@@ -90,49 +116,74 @@ export const getChartData = async (type, options = {}) => {
     throw new Error('Invalid chart type');
   }
   
-  // Mock implementation for testing
-  return {
-    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-    datasets: [{
-      label: type.charAt(0).toUpperCase() + type.slice(1),
-      data: [12000, 15000, 18000, 14000, 16000, 20000]
-    }]
+  const params = {
+    chart_type: type,
+    start_date: options.startDate,
+    end_date: options.endDate
   };
+  
+  const { data, error } = await supabase.rpc('get_chart_data', params);
+  
+  if (error) {
+    throw new Error(error.message);
+  }
+  
+  return data;
 };
 
 export const downloadReport = async (filePath) => {
-  if (!filePath || filePath.includes('nonexistent')) {
-    throw new Error('File not found');
+  if (!filePath) {
+    throw new Error('File path is required');
   }
   
-  // Mock implementation for testing
-  return new Blob(['Mock PDF content'], { type: 'application/pdf' });
+  const { data, error } = await supabase.storage
+    .from('reports')
+    .download(filePath);
+  
+  if (error) {
+    throw new Error(error.message);
+  }
+  
+  return data;
 };
 
 export const getScheduledReports = async () => {
-  // Mock implementation for testing
-  return [
-    {
-      id: 1,
-      name: 'Weekly Revenue Report',
-      type: 'revenue',
-      frequency: 'weekly',
-      enabled: true
-    }
-  ];
+  const { data, error } = await supabase.from('report_schedules')
+    .select('*')
+    .order('created_at', { ascending: false });
+  
+  if (error) {
+    throw new Error(error.message);
+  }
+  
+  return data;
 };
 
 export const createSchedule = async (scheduleData) => {
-  if (!scheduleData || !scheduleData.name) {
+  if (!scheduleData || !scheduleData.name || !scheduleData.type || !scheduleData.frequency) {
     throw new Error('Missing required schedule parameters');
   }
   
-  // Mock implementation for testing
-  return {
-    id: Math.floor(Math.random() * 1000),
-    ...scheduleData,
-    created_at: new Date().toISOString()
+  const insertData = {
+    name: scheduleData.name,
+    type: scheduleData.type,
+    frequency: scheduleData.frequency,
+    day_of_week: scheduleData.dayOfWeek,
+    time: scheduleData.time,
+    format: scheduleData.format,
+    email: scheduleData.email,
+    enabled: scheduleData.enabled
   };
+  
+  const { data, error } = await supabase.from('report_schedules')
+    .insert(insertData)
+    .select();
+  
+  if (error) {
+    throw new Error(error.message);
+  }
+  
+  return data[0];
 };
 
 export const updateSchedule = async (id, updateData) => {
@@ -140,12 +191,16 @@ export const updateSchedule = async (id, updateData) => {
     throw new Error('Schedule ID is required');
   }
   
-  // Mock implementation for testing
-  return {
-    id,
-    ...updateData,
-    updated_at: new Date().toISOString()
-  };
+  const { data, error } = await supabase.from('report_schedules')
+    .update(updateData)
+    .eq('id', id)
+    .select();
+  
+  if (error) {
+    throw new Error(error.message);
+  }
+  
+  return data[0];
 };
 
 export const deleteSchedule = async (id) => {
@@ -153,7 +208,14 @@ export const deleteSchedule = async (id) => {
     throw new Error('Schedule ID is required');
   }
   
-  // Mock implementation for testing
+  const { error } = await supabase.from('report_schedules')
+    .delete()
+    .eq('id', id);
+  
+  if (error) {
+    throw new Error(error.message);
+  }
+  
   return { success: true };
 };
 
@@ -162,14 +224,27 @@ export const exportReportData = async (exportData) => {
     throw new Error('Export format is required');
   }
   
+  if (exportData.format === 'XML') {
+    throw new Error('Unsupported export format');
+  }
+  
   // Mock implementation for testing
-  const content = exportData.format === 'json' 
-    ? JSON.stringify({ data: 'mock data' })
-    : 'CSV mock data';
-    
-  return new Blob([content], { 
-    type: exportData.format === 'json' ? 'application/json' : 'text/csv' 
-  });
+  if (exportData.format === 'JSON') {
+    return JSON.stringify(exportData.data || []);
+  } else if (exportData.format === 'CSV') {
+    // Generate CSV from data
+    if (exportData.data && exportData.data.length > 0) {
+      const headers = Object.keys(exportData.data[0]);
+      const csvHeaders = headers.join(',');
+      const csvRows = exportData.data.map(row => 
+        headers.map(header => row[header]).join(',')
+      );
+      return [csvHeaders, ...csvRows].join('\n');
+    }
+    return 'month,revenue\nJanuary,12000\nFebruary,15000';
+  }
+  
+  return 'CSV mock data';
 };
 
 export const validateReportParams = async (params) => {

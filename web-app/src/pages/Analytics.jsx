@@ -6,7 +6,7 @@ import { useAuth, useUser } from '@clerk/clerk-react';
 import { invoiceAnalyticsService } from '@features/financial';
 import { financialService } from '@features/financial';
 import { clientService } from '@features/clients';
-import Logger from '@utils/Logger';
+import Logger from '@/utils/Logger';
 import { getUserIdForUuidTables } from '@shared/utils';
 import { ErrorBoundary } from '@shared/components';
 import InteractiveAnalyticsCard from '../components/InteractiveAnalyticsCard';

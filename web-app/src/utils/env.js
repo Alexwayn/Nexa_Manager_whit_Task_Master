@@ -20,7 +20,8 @@ export function getEnvVar(key, defaultValue = undefined) {
   }
   
   // In Vite environment, use import.meta.env
-  if (typeof import.meta !== 'undefined' && import.meta && import.meta.env) {
+  // In Vite environment, use import.meta.env
+  if (typeof import.meta !== 'undefined' && import.meta.env) {
     return import.meta.env[key] || defaultValue;
   }
   
@@ -173,12 +174,21 @@ export function getAWSConfig() {
 }
 
 /**
+ * Check if authentication should be bypassed (development only)
+ * @returns {boolean} True if auth should be bypassed
+ */
+export function shouldBypassAuth() {
+  return isDev() && getEnvVar('VITE_BYPASS_AUTH') === 'true';
+}
+
+/**
  * Get security configuration
  * @returns {Object} Security config
  */
 export function getSecurityConfig() {
   return {
     encryptionSalt: getEnvVar('VITE_ENCRYPTION_SALT'),
-    enableDemoMode: getEnvVar('VITE_ENABLE_DEMO_MODE') === 'true'
+    enableDemoMode: getEnvVar('VITE_ENABLE_DEMO_MODE') === 'true',
+    bypassAuth: shouldBypassAuth()
   };
 }

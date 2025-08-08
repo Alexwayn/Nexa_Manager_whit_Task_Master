@@ -46,7 +46,7 @@ import useDateRange from '@hooks/useDateRange';
 
 // Import services
 import { clientService } from '@features/clients';
-import { supabase } from '@lib/supabaseClient';
+import { supabase } from '@/lib/supabaseClient';
 
 const Dashboard = () => {
   const { isSignedIn } = useAuth();

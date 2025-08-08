@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '@clerk/clerk-react';
-import { businessService } from '@lib/businessService';
+import { businessService } from '@/lib/businessService';
 import FileUploadField from './FileUploadField';
 import {
   BuildingOfficeIcon,

@@ -26,12 +26,14 @@ import {
   ArrowUp,
   ArrowDown,
   Minus,
+  RefreshCw,
+  Smile,
 } from 'lucide-react';
 import { Chart as ChartJS, ArcElement, CategoryScale, LinearScale, BarElement, LineElement, PointElement, Title, Tooltip, Legend } from 'chart.js';
 import { Doughnut, Bar, Line } from 'react-chartjs-2';
 import clientService from '../../clients/services/clientService';
 import invoiceAnalyticsService from '../../financial/services/invoiceAnalyticsService';
-import Logger from '@utils/Logger';
+import Logger from '@/utils/Logger';
 
 // Register Chart.js components
 ChartJS.register(ArcElement, CategoryScale, LinearScale, BarElement, LineElement, PointElement, Title, Tooltip, Legend);

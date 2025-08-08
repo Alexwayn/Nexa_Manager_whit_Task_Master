@@ -1,6 +1,7 @@
 import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@clerk/clerk-react';
 import { ReactNode } from 'react';
+import { shouldBypassAuth } from '@/utils/env';
 
 interface ProtectedRouteProps {
   children: ReactNode;
@@ -8,6 +9,14 @@ interface ProtectedRouteProps {
 
 export default function ProtectedRoute({ children }: ProtectedRouteProps) {
   const location = useLocation();
+
+  // Check if authentication should be bypassed in development
+  const bypassAuth = shouldBypassAuth();
+  
+  if (bypassAuth) {
+    console.log('🔓 Development Mode: Authentication bypassed');
+    return <>{children}</>;
+  }
 
   // Use Clerk for authentication
   const { isSignedIn, isLoaded } = useAuth();

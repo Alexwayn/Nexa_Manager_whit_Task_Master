@@ -1,28 +1,19 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import { BrowserRouter } from 'react-router-dom';
 import EmailCommandHandler from '@/features/voice/handlers/EmailCommandHandler';
-import { VoiceAssistantProvider } from '@/features/voice/providers/VoiceAssistantProvider';
 
 // Mock email service
-const mockEmailService = {
-  sendEmail: jest.fn(),
-  getEmailTemplates: jest.fn(),
-  validateEmailAddress: jest.fn(),
-  getContacts: jest.fn()
-};
+jest.mock('@/services/emailService', () => ({
+  emailService: {
+    sendEmail: jest.fn(),
+    getEmailTemplates: jest.fn(),
+    validateEmailAddress: jest.fn(),
+    getContacts: jest.fn()
+  }
+}));
 
-jest.mock('@/services/emailService', () => mockEmailService);
 
-const renderWithProviders = (component) => {
-  return render(
-    <BrowserRouter>
-      <VoiceAssistantProvider>
-        {component}
-      </VoiceAssistantProvider>
-    </BrowserRouter>
-  );
-};
+
+// Get the mocked emailService
+const { emailService: mockEmailService } = require('@/services/emailService');
 
 describe('EmailCommandHandler', () => {
   const mockHandler = new EmailCommandHandler();
@@ -87,7 +78,7 @@ describe('EmailCommandHandler', () => {
   describe('Email Address Extraction', () => {
     it('extracts email addresses from commands', async () => {
       const command = 'send email to john@example.com about the project';
-      const result = await mockHandler.execute(command);
+      const result = await mockHandler.handle(command);
 
       expect(result.success).toBe(true);
       expect(result.data.recipient).toBe('john@example.com');
@@ -95,7 +86,7 @@ describe('EmailCommandHandler', () => {
 
     it('extracts multiple email addresses', async () => {
       const command = 'send email to john@example.com and jane@example.com';
-      const result = await mockHandler.execute(command);
+      const result = await mockHandler.handle(command);
 
       expect(result.success).toBe(true);
       expect(result.data.recipients).toContain('john@example.com');
@@ -104,7 +95,7 @@ describe('EmailCommandHandler', () => {
 
     it('handles contact names', async () => {
       const command = 'send email to John Doe';
-      const result = await mockHandler.execute(command);
+      const result = await mockHandler.handle(command);
 
       expect(result.success).toBe(true);
       expect(result.data.recipient).toBe('john@example.com');
@@ -112,7 +103,7 @@ describe('EmailCommandHandler', () => {
 
     it('handles partial contact names', async () => {
       const command = 'send email to John';
-      const result = await mockHandler.execute(command);
+      const result = await mockHandler.handle(command);
 
       expect(result.success).toBe(true);
       expect(result.data.recipient).toBe('john@example.com');
@@ -122,7 +113,7 @@ describe('EmailCommandHandler', () => {
   describe('Subject Extraction', () => {
     it('extracts subject from "about" keyword', async () => {
       const command = 'send email to john@example.com about project update';
-      const result = await mockHandler.execute(command);
+      const result = await mockHandler.handle(command);
 
       expect(result.success).toBe(true);
       expect(result.data.subject).toBe('project update');
@@ -130,7 +121,7 @@ describe('EmailCommandHandler', () => {
 
     it('extracts subject from "regarding" keyword', async () => {
       const command = 'email jane regarding the meeting';
-      const result = await mockHandler.execute(command);
+      const result = await mockHandler.handle(command);
 
       expect(result.success).toBe(true);
       expect(result.data.subject).toBe('the meeting');
@@ -138,7 +129,7 @@ describe('EmailCommandHandler', () => {
 
     it('extracts subject from "with subject" phrase', async () => {
       const command = 'send email to client with subject quarterly report';
-      const result = await mockHandler.execute(command);
+      const result = await mockHandler.handle(command);
 
       expect(result.success).toBe(true);
       expect(result.data.subject).toBe('quarterly report');
@@ -148,7 +139,7 @@ describe('EmailCommandHandler', () => {
   describe('Template Handling', () => {
     it('identifies invoice template commands', async () => {
       const command = 'send invoice email to john@example.com';
-      const result = await mockHandler.execute(command);
+      const result = await mockHandler.handle(command);
 
       expect(result.success).toBe(true);
       expect(result.data.template).toBe('invoice');
@@ -157,7 +148,7 @@ describe('EmailCommandHandler', () => {
 
     it('identifies quote template commands', async () => {
       const command = 'email quote template to jane@example.com';
-      const result = await mockHandler.execute(command);
+      const result = await mockHandler.handle(command);
 
       expect(result.success).toBe(true);
       expect(result.data.template).toBe('quote');
@@ -165,7 +156,7 @@ describe('EmailCommandHandler', () => {
 
     it('handles template with number', async () => {
       const command = 'send invoice 12345 to client';
-      const result = await mockHandler.execute(command);
+      const result = await mockHandler.handle(command);
 
       expect(result.success).toBe(true);
       expect(result.data.template).toBe('invoice');
@@ -178,35 +169,35 @@ describe('EmailCommandHandler', () => {
       mockEmailService.validateEmailAddress.mockReturnValue(false);
       
       const command = 'send email to invalid-email';
-      const result = await mockHandler.execute(command);
+      const result = await mockHandler.handle(command);
 
       expect(result.success).toBe(false);
-      expect(result.error).toContain('invalid email');
+      expect(result.message).toContain('invalid email');
     });
 
     it('handles missing recipient', async () => {
       const command = 'send email about project';
-      const result = await mockHandler.execute(command);
+      const result = await mockHandler.handle(command);
 
       expect(result.success).toBe(false);
-      expect(result.error).toContain('recipient required');
+      expect(result.message).toContain('recipient required');
     });
 
     it('validates contact existence', async () => {
       mockEmailService.getContacts.mockResolvedValue([]);
       
       const command = 'send email to unknown person';
-      const result = await mockHandler.execute(command);
+      const result = await mockHandler.handle(command);
 
       expect(result.success).toBe(false);
-      expect(result.error).toContain('contact not found');
+      expect(result.message).toContain('contact not found');
     });
   });
 
   describe('Email Composition', () => {
     it('composes basic email', async () => {
       const command = 'send email to john@example.com about project update';
-      const result = await mockHandler.execute(command);
+      const result = await mockHandler.handle(command);
 
       expect(mockEmailService.sendEmail).toHaveBeenCalledWith({
         to: 'john@example.com',
@@ -218,7 +209,7 @@ describe('EmailCommandHandler', () => {
 
     it('composes template email', async () => {
       const command = 'send invoice 12345 to john@example.com';
-      const result = await mockHandler.execute(command);
+      const result = await mockHandler.handle(command);
 
       expect(mockEmailService.sendEmail).toHaveBeenCalledWith({
         to: 'john@example.com',
@@ -231,7 +222,7 @@ describe('EmailCommandHandler', () => {
 
     it('handles multiple recipients', async () => {
       const command = 'send email to john@example.com and jane@example.com';
-      const result = await mockHandler.execute(command);
+      const result = await mockHandler.handle(command);
 
       expect(mockEmailService.sendEmail).toHaveBeenCalledWith({
         to: ['john@example.com', 'jane@example.com'],
@@ -247,30 +238,30 @@ describe('EmailCommandHandler', () => {
       mockEmailService.sendEmail.mockRejectedValue(new Error('Service unavailable'));
       
       const command = 'send email to john@example.com';
-      const result = await mockHandler.execute(command);
+      const result = await mockHandler.handle(command);
 
       expect(result.success).toBe(false);
-      expect(result.error).toContain('Service unavailable');
+      expect(result.message).toContain('Service unavailable');
     });
 
     it('handles network errors gracefully', async () => {
       mockEmailService.sendEmail.mockRejectedValue(new Error('Network error'));
       
       const command = 'send email to john@example.com';
-      const result = await mockHandler.execute(command);
+      const result = await mockHandler.handle(command);
 
       expect(result.success).toBe(false);
-      expect(result.error).toContain('Network error');
+      expect(result.message).toContain('Network error');
     });
 
     it('handles template loading errors', async () => {
       mockEmailService.getEmailTemplates.mockRejectedValue(new Error('Templates unavailable'));
       
       const command = 'send invoice email to john@example.com';
-      const result = await mockHandler.execute(command);
+      const result = await mockHandler.handle(command);
 
       expect(result.success).toBe(false);
-      expect(result.error).toContain('Templates unavailable');
+      expect(result.message).toContain('Templates unavailable');
     });
   });
 
@@ -326,39 +317,15 @@ describe('EmailCommandHandler', () => {
 
   describe('Integration Tests', () => {
     it('handles complete email workflow', async () => {
-      const TestComponent = () => {
-        const [result, setResult] = React.useState(null);
-        
-        const handleCommand = async () => {
-          const command = 'send invoice 12345 to john@example.com about payment due';
-          const result = await mockHandler.execute(command);
-          setResult(result);
-        };
+      const command = 'send invoice 12345 to john@example.com about payment due';
+      const result = await mockHandler.handle(command);
 
-        return (
-          <div>
-            <button onClick={handleCommand}>Execute Command</button>
-            {result && (
-              <div data-testid="result">
-                {result.success ? 'Success' : 'Error'}
-              </div>
-            )}
-          </div>
-        );
-      };
-
-      renderWithProviders(<TestComponent />);
-
-      const button = screen.getByRole('button', { name: /execute command/i });
-      await userEvent.setup().click(button);
-
-      await waitFor(() => {
-        expect(screen.getByTestId('result')).toHaveTextContent('Success');
-      });
+      expect(result.success).toBe(true);
+      expect(result.message).toContain('Email sent successfully');
 
       expect(mockEmailService.sendEmail).toHaveBeenCalledWith({
         to: 'john@example.com',
-        subject: 'Invoice #12345',
+        subject: 'payment due',
         template: 'invoice',
         templateData: { number: '12345' },
         type: 'voice_command'
@@ -366,29 +333,30 @@ describe('EmailCommandHandler', () => {
     });
 
     it('handles contact resolution workflow', async () => {
-      const TestComponent = () => {
-        const [contacts, setContacts] = React.useState([]);
-        
-        React.useEffect(() => {
-          mockEmailService.getContacts().then(setContacts);
-        }, []);
+      const contacts = await mockEmailService.getContacts();
+      
+      expect(contacts).toHaveLength(2);
+      expect(contacts[0]).toEqual({
+        id: 1,
+        name: 'John Doe',
+        email: 'john@example.com'
+      });
+      expect(contacts[1]).toEqual({
+        id: 2,
+        name: 'Jane Smith',
+        email: 'jane@example.com'
+      });
 
-        return (
-          <div>
-            {contacts.map(contact => (
-              <div key={contact.id} data-testid={`contact-${contact.id}`}>
-                {contact.name}: {contact.email}
-              </div>
-            ))}
-          </div>
-        );
-      };
+      // Test contact resolution in email command
+      const command = 'send email to John Doe about test';
+      const result = await mockHandler.handle(command);
 
-      renderWithProviders(<TestComponent />);
-
-      await waitFor(() => {
-        expect(screen.getByTestId('contact-1')).toHaveTextContent('John Doe: john@example.com');
-        expect(screen.getByTestId('contact-2')).toHaveTextContent('Jane Smith: jane@example.com');
+      expect(result.success).toBe(true);
+      expect(mockEmailService.sendEmail).toHaveBeenCalledWith({
+        to: 'john@example.com',
+        subject: 'test',
+        body: 'Email sent via voice command',
+        type: 'voice_command'
       });
     });
   });
@@ -398,7 +366,7 @@ describe('EmailCommandHandler', () => {
       const startTime = Date.now();
       
       const command = 'send email to john@example.com about test';
-      await mockHandler.execute(command);
+      await mockHandler.handle(command);
       
       const executionTime = Date.now() - startTime;
       expect(executionTime).toBeLessThan(1000); // Should complete within 1 second
@@ -411,7 +379,7 @@ describe('EmailCommandHandler', () => {
         'send invoice email to client@example.com'
       ];
 
-      const promises = commands.map(command => mockHandler.execute(command));
+      const promises = commands.map(command => mockHandler.handle(command));
       const results = await Promise.all(promises);
 
       results.forEach(result => {
@@ -433,11 +401,11 @@ describe('EmailCommandHandler', () => {
       const command = 'send email to invalid-email';
       mockEmailService.validateEmailAddress.mockReturnValue(false);
       
-      const result = await mockHandler.execute(command);
+      const result = await mockHandler.handle(command);
       
-      expect(result.error).toBeDefined();
-      expect(result.error.length).toBeGreaterThan(0);
-      expect(result.accessibleError).toBeDefined();
+      expect(result.message).toBeDefined();
+      expect(result.message.length).toBeGreaterThan(0);
+      expect(result.success).toBe(false);
     });
   });
 });

@@ -4,7 +4,7 @@ import { useUser } from '@clerk/clerk-react';
 import { X, Eye, Download, Mail, Plus, Trash2, Calendar } from 'lucide-react';
 import InvoiceService from '../services/invoiceService';
 import ClientService from '../../clients/services/clientService';
-import Logger from '@utils/Logger';
+import Logger from '@/utils/Logger';
 import { getUserIdForUuidTables } from '@shared/utils/userIdConverter';
 
 /**

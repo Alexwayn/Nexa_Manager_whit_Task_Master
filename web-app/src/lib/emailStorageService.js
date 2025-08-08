@@ -3,12 +3,10 @@
  * Handles email data persistence and retrieval from the database
  */
 
-import { supabaseClient } from './supabaseClient';
-import { Logger } from './Logger';
+import { supabase as supabaseClient } from './supabaseClient';
+import logger from '@/utils/Logger';
 
-const logger = new Logger('EmailStorageService');
-
-class EmailStorageService {
+export class EmailStorageService {
   /**
    * Fetch emails for a user
    * @param {string} userId - User ID
@@ -17,6 +15,17 @@ class EmailStorageService {
    */
   async fetchEmails(userId, options = {}) {
     try {
+      // Validate user ID
+      if (!userId) {
+        return {
+          success: false,
+          error: 'User ID is required',
+          data: [],
+          total: 0,
+          hasMore: false
+        };
+      }
+
       const {
         folderId = 'inbox',
         limit = 50,
@@ -84,6 +93,22 @@ class EmailStorageService {
    */
   async storeEmail(userId, emailData) {
     try {
+      // Validate user ID
+      if (!userId) {
+        return {
+          success: false,
+          error: 'User ID is required'
+        };
+      }
+
+      // Validate email data
+      if (!emailData || !emailData.subject || !emailData.sender_email) {
+        return {
+          success: false,
+          error: 'Invalid email data: missing required fields'
+        };
+      }
+
       const emailRecord = {
         user_id: userId,
         message_id: emailData.messageId,
