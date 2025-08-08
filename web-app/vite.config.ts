@@ -1,7 +1,6 @@
 import { defineConfig, loadEnv } from 'vite'
-import react from '@vitejs/plugin-react';
-import EnvironmentPlugin from 'vite-plugin-environment';
-import { sentryVitePlugin } from '@sentry/vite-plugin'
+import react from '@vitejs/plugin-react'
+import { sentryVitePlugin } from '@sentry/vite-plugin';
 import path from 'path'
 
 // https://vite.dev/config/
@@ -15,9 +14,8 @@ export default defineConfig(({ mode }) => {
   return {
     plugins: [
       react(),
-      EnvironmentPlugin('all'),
       // Sentry plugin for source maps and release tracking
-      ...(isProduction && env.VITE_SENTRY_DSN ? [
+      ...(isProduction && env.VITE_SENTRY_DSN && env.SENTRY_ORG && env.SENTRY_PROJECT && env.SENTRY_AUTH_TOKEN ? [
         sentryVitePlugin({
           org: env.SENTRY_ORG,
           project: env.SENTRY_PROJECT,
@@ -28,10 +26,10 @@ export default defineConfig(({ mode }) => {
             deleteAfterUpload: true,
           },
           release: {
-            name: env.VITE_APP_VERSION || '1.0.0',
+            name: `${env.VITE_APP_VERSION || '1.0.0'}-${Date.now()}`,
             finalize: true,
             setCommits: {
-              auto: true,
+              auto: false, // Disable auto commits to avoid issues
             },
           },
         })
@@ -90,12 +88,7 @@ export default defineConfig(({ mode }) => {
       ],
       exclude: ['@stagewise/toolbar']
     },
-    define: {
-      global: 'globalThis',
-      __DEV__: JSON.stringify(isDevelopment),
-      __SENTRY_DEBUG__: JSON.stringify(isDevelopment),
-      __SENTRY_TRACING__: JSON.stringify(true),
-    },
+
     build: {
       target: 'esnext',
       minify: 'terser',
