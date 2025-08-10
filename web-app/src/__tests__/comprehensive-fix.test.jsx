@@ -1,5 +1,6 @@
 import React from 'react';
-import { render, screen, fireEvent, waitFor, userEvent, act, cleanup } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor, act, cleanup } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
 // Test component to verify all functionality
 const TestComponent = ({ title = "Test Component", disabled = false }) => {

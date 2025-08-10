@@ -8,7 +8,15 @@ import userEvent from '@testing-library/user-event';
 import EmailErrorBoundary from '../EmailErrorBoundary';
 
 // Mock dependencies
-jest.mock('@lib/logger');
+jest.mock('@lib/logger', () => ({
+  __esModule: true,
+  default: {
+    info: jest.fn(),
+    error: jest.fn(),
+    warn: jest.fn(),
+    debug: jest.fn(),
+  },
+}));
 jest.mock('@lib/errorReportingService');
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({

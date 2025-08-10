@@ -75,7 +75,10 @@ export const getReportMetrics = async (filters = {}) => {
     params.end_date = filters.endDate;
   }
   
-  const { data, error } = await supabase.rpc('get_report_metrics', Object.keys(params).length > 0 ? params : undefined);
+  const hasParams = Object.keys(params).length > 0;
+  const { data, error } = hasParams
+    ? await supabase.rpc('get_report_metrics', params)
+    : await supabase.rpc('get_report_metrics');
   
   if (error) {
     throw new Error(error.message);

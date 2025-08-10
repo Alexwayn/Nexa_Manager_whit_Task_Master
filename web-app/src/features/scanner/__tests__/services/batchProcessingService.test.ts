@@ -462,11 +462,26 @@ describe('BatchProcessingService', () => {
     });
 
     it('should cancel running job', async () => {
+      // Slow down internal processing to ensure the job reaches RUNNING state and stays there briefly
+      processJobSpy.mockImplementationOnce(async (job: any) => {
+        job.status = BatchJobStatus.RUNNING;
+        // Hold the job in RUNNING state to allow cancellation
+        await new Promise(resolve => setTimeout(resolve, 400));
+      });
       const files = [createMockFile('test.jpg')];
       const jobId = service.createBatchJob(files);
 
-      // Let job start running
-      jest.advanceTimersByTime(100);
+      // Poll until the job status is RUNNING
+      await new Promise<void>((resolve) => {
+        const start = Date.now();
+        const check = () => {
+          const job = service.getJobStatus(jobId);
+          if (job && job.status === BatchJobStatus.RUNNING) return resolve();
+          if (Date.now() - start > 2000) return resolve();
+          setTimeout(check, 20);
+        };
+        check();
+      });
       
       const cancelled = service.cancelJob(jobId);
 

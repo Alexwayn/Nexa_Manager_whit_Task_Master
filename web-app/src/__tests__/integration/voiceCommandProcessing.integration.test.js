@@ -510,10 +510,11 @@ describe('Voice Command Processing Integration Tests', () => {
       await executeVoiceCommand(command);
       
       expect(voiceAnalyticsService.trackCommand).toHaveBeenCalledWith(
-        'navigate to /dashboard',
-        true,
-        expect.any(Number),
-        0.9
+        expect.objectContaining({
+          command: 'navigate to /dashboard',
+          success: true,
+          confidence: 0.9
+        })
       );
     });
 
@@ -527,10 +528,11 @@ describe('Voice Command Processing Integration Tests', () => {
       await executeVoiceCommand(command);
       
       expect(voiceAnalyticsService.trackCommand).toHaveBeenCalledWith(
-        'unknown command',
-        false,
-        expect.any(Number),
-        0.3
+        expect.objectContaining({
+          command: 'unknown command',
+          success: false,
+          confidence: 0.3
+        })
       );
     });
 

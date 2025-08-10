@@ -178,23 +178,120 @@ export function VoiceAssistantProvider({ children, initialState: testInitialStat
   const wakeWordDetectionRef = useRef(null);
   const wakeWordServiceRef = useRef(null);
   const timeoutServiceRef = useRef(null);
+  const isTestEnvironment = typeof process !== 'undefined' && process.env && process.env.NODE_ENV === 'test';
 
-  // Initialize speech recognition and synthesis
+  // Cleanup function
+  const cleanup = useCallback(() => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+    
+    if (wakeWordDetectionRef.current) {
+      clearInterval(wakeWordDetectionRef.current);
+    }
+
+    // Cleanup wake word detection service
+    if (wakeWordServiceRef.current) {
+      wakeWordServiceRef.current.cleanup();
+    }
+
+    // Cleanup timeout service
+    if (timeoutServiceRef.current) {
+      timeoutServiceRef.current.cleanup();
+    }
+    
+    if (state.recognition) {
+      state.recognition.stop();
+    }
+    
+    if (state.synthesis) {
+      state.synthesis.cancel();
+    }
+  }, [state.recognition, state.synthesis]);
+
+  // Initialize speech recognition and related services (also in tests with mocks)
   useEffect(() => {
+    console.log('DEBUG: useEffect for speech initialization running');
     initializeSpeechAPIs();
     checkMicrophonePermission();
     initializeServices();
-    
-    return () => {
-      cleanup();
-    };
+    return cleanup;
   }, []);
 
   // Initialize Speech APIs
   const initializeSpeechAPIs = useCallback(() => {
+    console.log('DEBUG: initializeSpeechAPIs called');
     try {
-      // Initialize Speech Recognition
-      if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+      // Initialize Speech Recognition - check for existing instance first (for testing)
+      if (state.recognition) {
+        // Recognition already exists (likely from test), just set up event handlers
+        console.log('DEBUG: Using existing recognition instance:', state.recognition);
+        console.log('DEBUG: About to set up event handlers');
+        const recognition = state.recognition;
+        
+        recognition.continuous = false;
+        recognition.interimResults = false;
+        recognition.lang = state.currentLanguage;
+        recognition.maxAlternatives = 1;
+
+        recognition.onstart = () => {
+          Logger.info('Voice recognition started');
+          dispatch({ type: VOICE_ACTIONS.SET_LISTENING, payload: true });
+          dispatch({ type: VOICE_ACTIONS.CLEAR_ERROR });
+        };
+        console.log('DEBUG: Set onstart handler, recognition._onstart:', recognition._onstart);
+
+        recognition.onresult = async (event) => {
+          const command = event.results[0][0].transcript;
+          const confidence = event.results[0][0].confidence;
+          
+          console.log('DEBUG: onresult handler called with event:', event);
+          console.log('DEBUG: Extracted command:', command, 'confidence:', confidence);
+          
+          Logger.info('Voice command received:', { command, confidence });
+          dispatch({ type: VOICE_ACTIONS.SET_COMMAND, payload: command });
+          
+          // Process the command
+          console.log('DEBUG: About to call processVoiceCommandInternal');
+          await processVoiceCommandInternal(command, confidence);
+        };
+        console.log('DEBUG: Set onresult handler, recognition._onresult:', recognition._onresult);
+
+        recognition.onerror = (event) => {
+          Logger.error('Speech recognition error:', event.error);
+          
+          // Track recognition failure
+          voiceAnalyticsService.trackFailure({
+            recognizedText: '',
+            confidence: 0,
+            errorType: 'recognition-error',
+            errorMessage: event.error,
+            sessionId: state.sessionId,
+            context: {
+              currentPath: location.pathname,
+              userAgent: navigator.userAgent,
+              recognitionError: event.error
+            }
+          });
+          
+          dispatch({ type: VOICE_ACTIONS.SET_ERROR, payload: event.error });
+          dispatch({ type: VOICE_ACTIONS.SET_LISTENING, payload: false });
+          
+          if (event.error === 'not-allowed') {
+            dispatch({ type: VOICE_ACTIONS.SET_MICROPHONE_PERMISSION, payload: 'denied' });
+            toast.error('Microphone access denied. Please enable microphone permissions.');
+          }
+        };
+
+        recognition.onend = () => {
+          Logger.info('Voice recognition ended');
+          dispatch({ type: VOICE_ACTIONS.SET_LISTENING, payload: false });
+          clearTimeout(timeoutRef.current);
+        };
+
+        // Don't dispatch again since recognition already exists in state
+      } else if (window.SpeechRecognition || window.webkitSpeechRecognition) {
+        // Create new recognition instance
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
         const recognition = new SpeechRecognition();
         
@@ -209,15 +306,19 @@ export function VoiceAssistantProvider({ children, initialState: testInitialStat
           dispatch({ type: VOICE_ACTIONS.CLEAR_ERROR });
         };
 
-        recognition.onresult = (event) => {
+        recognition.onresult = async (event) => {
+          console.log('DEBUG: onresult handler called with event:', event);
           const command = event.results[0][0].transcript;
           const confidence = event.results[0][0].confidence;
           
+          console.log('DEBUG: Extracted command:', command, 'confidence:', confidence);
           Logger.info('Voice command received:', { command, confidence });
           dispatch({ type: VOICE_ACTIONS.SET_COMMAND, payload: command });
           
           // Process the command
-          processVoiceCommandInternal(command, confidence);
+          console.log('DEBUG: About to call processVoiceCommandInternal');
+          await processVoiceCommandInternal(command, confidence);
+          console.log('DEBUG: processVoiceCommandInternal completed');
         };
 
         recognition.onerror = (event) => {
@@ -356,14 +457,17 @@ export function VoiceAssistantProvider({ children, initialState: testInitialStat
 
   // Process voice command (placeholder - will be expanded with command handlers)
   const processVoiceCommandInternal = useCallback(async (command, confidence = 1) => {
+    console.log('DEBUG: processVoiceCommandInternal called with:', command, confidence);
     dispatch({ type: VOICE_ACTIONS.SET_PROCESSING, payload: true });
     
     try {
       // Process the command using the voice command system
-      const action = processVoiceCommand(command, {
+      console.log('DEBUG: About to call processVoiceCommand with:', command);
+      const action = await processVoiceCommand(command, {
         currentPath: location.pathname,
         navigate,
       });
+      console.log('DEBUG: processVoiceCommand returned:', action);
 
       // Execute the command
       const context = {
@@ -390,18 +494,23 @@ export function VoiceAssistantProvider({ children, initialState: testInitialStat
       const response = await executeVoiceCommand(action, context);
       
       // Track successful command
-      voiceAnalyticsService.trackCommand({
-        command: command.toLowerCase().trim(),
-        action: action?.type || 'unknown',
-        confidence,
-        sessionId: state.sessionId,
-        success: true,
-        responseTime: Date.now() - (state.commandStartTime || Date.now()),
-        context: {
-          currentPath: location.pathname,
-          userAgent: navigator.userAgent
-        }
-      });
+      try {
+        await voiceAnalyticsService.trackCommand({
+          command: command.toLowerCase().trim(),
+          action: action?.type || 'unknown',
+          confidence,
+          sessionId: state.sessionId,
+          success: true,
+          responseTime: Date.now() - (state.commandStartTime || Date.now()),
+          context: {
+            currentPath: location.pathname,
+            userAgent: navigator.userAgent
+          }
+        });
+      } catch (analyticsError) {
+        // Log analytics failure but don't let it affect command execution
+        Logger.warn('Failed to track command analytics:', analyticsError);
+      }
 
       // Auto-collect positive feedback for successful commands with high confidence
       if (confidence > 0.8 && action?.type !== 'unknown') {
@@ -434,17 +543,22 @@ export function VoiceAssistantProvider({ children, initialState: testInitialStat
       const errorMessage = 'Sorry, I had trouble processing that command.';
       
       // Track failed command
-      voiceAnalyticsService.trackFailure({
-        recognizedText: command,
-        confidence,
-        errorType: 'processing-error',
-        errorMessage: error.message || errorMessage,
-        sessionId: state.sessionId,
-        context: {
-          currentPath: location.pathname,
-          userAgent: navigator.userAgent
-        }
-      });
+      try {
+        await voiceAnalyticsService.trackFailure({
+          recognizedText: command,
+          confidence,
+          errorType: 'processing-error',
+          errorMessage: error.message || errorMessage,
+          sessionId: state.sessionId,
+          context: {
+            currentPath: location.pathname,
+            userAgent: navigator.userAgent
+          }
+        });
+      } catch (analyticsError) {
+        // Log analytics failure but don't let it affect error handling
+        Logger.warn('Failed to track command failure analytics:', analyticsError);
+      }
 
       // Auto-collect negative feedback for failed commands
       voiceFeedbackService.collectFeedback({
@@ -502,7 +616,7 @@ export function VoiceAssistantProvider({ children, initialState: testInitialStat
   }, [state.synthesis, state.currentLanguage, state.feedbackVolume]);
 
   // Activate voice assistant
-  const activateVoice = useCallback(() => {
+  const activateVoice = useCallback(async () => {
     if (!state.isEnabled || !state.recognition) {
       toast.error('Voice assistant is not available');
       return;
@@ -519,12 +633,17 @@ export function VoiceAssistantProvider({ children, initialState: testInitialStat
       dispatch({ type: VOICE_ACTIONS.SET_SESSION_ID, payload: sessionId });
 
       // Track session start
-      voiceAnalyticsService.trackSessionStart({
-        sessionId,
-        trigger: 'manual',
-        userAgent: navigator.userAgent,
-        currentPath: location.pathname
-      });
+      try {
+        await voiceAnalyticsService.trackSessionStart({
+          sessionId,
+          trigger: 'manual',
+          userAgent: navigator.userAgent,
+          currentPath: location.pathname
+        });
+      } catch (analyticsError) {
+        // Log analytics failure but don't let it affect activation
+        Logger.warn('Failed to track session start analytics:', analyticsError);
+      }
 
       // Start recognition
       state.recognition.start();
@@ -551,7 +670,7 @@ export function VoiceAssistantProvider({ children, initialState: testInitialStat
   }, [state.isEnabled, state.recognition, state.microphonePermission, state.listeningTimeout, location.pathname]);
 
   // Activate voice assistant from wake word detection
-  const activateVoiceFromWakeWord = useCallback(() => {
+  const activateVoiceFromWakeWord = useCallback(async () => {
     if (!state.isEnabled || !state.recognition) {
       Logger.warn('Voice assistant not available for wake word activation');
       return;
@@ -568,12 +687,17 @@ export function VoiceAssistantProvider({ children, initialState: testInitialStat
       dispatch({ type: VOICE_ACTIONS.SET_SESSION_ID, payload: sessionId });
 
       // Track session start
-      voiceAnalyticsService.trackSessionStart({
-        sessionId,
-        trigger: 'wake-word',
-        userAgent: navigator.userAgent,
-        currentPath: location.pathname
-      });
+      try {
+        await voiceAnalyticsService.trackSessionStart({
+          sessionId,
+          trigger: 'wake-word',
+          userAgent: navigator.userAgent,
+          currentPath: location.pathname
+        });
+      } catch (analyticsError) {
+        // Log analytics failure but don't let it affect activation
+        Logger.warn('Failed to track wake word session start analytics:', analyticsError);
+      }
 
       // Start recognition
       state.recognition.start();
@@ -635,15 +759,20 @@ export function VoiceAssistantProvider({ children, initialState: testInitialStat
   }, [state.timeoutActive]);
 
   // Deactivate voice assistant
-  const deactivateVoice = useCallback(() => {
+  const deactivateVoice = useCallback(async () => {
     try {
       // Track session end if we have a session ID
       if (state.sessionId) {
-        voiceAnalyticsService.trackSessionEnd({
-          sessionId: state.sessionId,
-          reason: 'manual',
-          userAgent: navigator.userAgent
-        });
+        try {
+          await voiceAnalyticsService.trackSessionEnd({
+            sessionId: state.sessionId,
+            reason: 'manual',
+            userAgent: navigator.userAgent
+          });
+        } catch (analyticsError) {
+          // Log analytics failure but don't let it affect deactivation
+          Logger.warn('Failed to track session end analytics:', analyticsError);
+        }
       }
 
       if (state.recognition) {
@@ -692,35 +821,6 @@ export function VoiceAssistantProvider({ children, initialState: testInitialStat
     
     Logger.info('Language changed to:', language);
   }, [state.recognition]);
-
-  // Cleanup function
-  const cleanup = useCallback(() => {
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-    }
-    
-    if (wakeWordDetectionRef.current) {
-      clearInterval(wakeWordDetectionRef.current);
-    }
-
-    // Cleanup wake word detection service
-    if (wakeWordServiceRef.current) {
-      wakeWordServiceRef.current.cleanup();
-    }
-
-    // Cleanup timeout service
-    if (timeoutServiceRef.current) {
-      timeoutServiceRef.current.cleanup();
-    }
-    
-    if (state.recognition) {
-      state.recognition.stop();
-    }
-    
-    if (state.synthesis) {
-      state.synthesis.cancel();
-    }
-  }, [state.recognition, state.synthesis]);
 
   // Collect user feedback
   const collectFeedback = useCallback((feedbackData) => {

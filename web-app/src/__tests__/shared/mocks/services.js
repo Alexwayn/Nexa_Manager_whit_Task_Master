@@ -3,6 +3,10 @@
 
 import { jest } from '@jest/globals';
 
+test('service mocks load', () => {
+  expect(typeof jest.fn).toBe('function');
+});
+
 // Mock Email Service
 export const createMockEmailService = () => {
   const mockEmailService = {

@@ -1,4 +1,5 @@
 import { renderHook, act, waitFor } from '@testing-library/react';
+import { QueryTestProvider } from '@/__tests__/utils/QueryTestProvider.jsx';
 import { useScheduledReports } from '../../hooks/useReports';
 
 // Mock the reporting service
@@ -27,7 +28,7 @@ describe('Debug Mutation State', () => {
       new Promise(resolve => setTimeout(() => resolve({ id: 1 }), 100))
     );
 
-    const { result } = renderHook(() => useScheduledReports());
+    const { result } = renderHook(() => useScheduledReports(), { wrapper: QueryTestProvider });
 
     console.log('Initial state:', {
       isCreating: result.current.isCreating,

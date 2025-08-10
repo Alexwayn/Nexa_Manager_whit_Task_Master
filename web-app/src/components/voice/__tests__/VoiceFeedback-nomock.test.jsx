@@ -1,9 +1,15 @@
 // Test without any mocks to see the actual component behavior
 // This test bypasses all Jest mocks to test the real component
 
-// Temporarily disable all mocks for this test
-const jestConfig = require('../../../../../.config/jest/jest.config.cjs');
+// Skip if external config is not present in this environment
 let originalModuleNameMapper;
+let jestConfig;
+try {
+  // eslint-disable-next-line import/no-unresolved, global-require
+  jestConfig = require('../../../../../.config/jest/jest.config.cjs');
+} catch (e) {
+  jestConfig = { moduleNameMapper: {} };
+}
 
 // Import the actual modules
 const actualReact = require('react');

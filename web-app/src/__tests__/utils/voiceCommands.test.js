@@ -28,18 +28,35 @@ jest.mock('@/shared/utils/logger', () => ({
 
 // Mock command handlers
 jest.mock('@/services/CalendarCommandHandler', () => ({
-  handleCalendarCommand: jest.fn(),
+  __esModule: true,
+  processCalendarCommand: jest.fn(),
+  executeCalendarCommand: jest.fn(),
+  calendarNavigationCommands: {},
+  calendarActionCommands: {},
   allCalendarCommands: []
 }));
 
 jest.mock('@/services/TransactionCommandHandler', () => ({
-  handleTransactionCommand: jest.fn(),
+  __esModule: true,
+  processTransactionCommand: jest.fn(),
+  executeTransactionCommand: jest.fn(),
+  transactionCommands: {},
   allTransactionCommands: []
 }));
 
 jest.mock('@/services/ReportCommandHandler', () => ({
-  handleReportCommand: jest.fn(),
+  __esModule: true,
+  processReportCommand: jest.fn(),
+  executeReportCommand: jest.fn(),
+  reportCommands: {},
   allReportCommands: []
+}));
+
+jest.mock('@/services/EmailCommandHandler', () => ({
+  __esModule: true,
+  emailCommandHandler: {
+    getAllCommands: jest.fn(() => []),
+  },
 }));
 
 jest.mock('@/services/helpService', () => ({

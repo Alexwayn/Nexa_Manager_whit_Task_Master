@@ -15,11 +15,11 @@ jest.mock('react-i18next', () => ({
   }),
 }));
 
-jest.mock('../../../hooks/useEmailSearch', () => ({
+jest.mock('@/features/email/hooks/useEmailSearch', () => ({
   useEmailSearch: jest.fn(),
 }));
 
-jest.mock('../../../hooks/useEmails', () => ({
+jest.mock('@/features/email/hooks/useEmails', () => ({
   useEmails: jest.fn(),
 }));
 
@@ -116,8 +116,8 @@ jest.mock('../../ui/Badge', () => ({
 }));
 
 // Import the mocked hooks
-import { useEmailSearch } from '@/features/hooks/useEmailSearch';
-import { useEmails } from '@/features/hooks/useEmails';
+import { useEmailSearch } from '@/features/email/hooks/useEmailSearch';
+import { useEmails } from '@/features/email/hooks/useEmails';
 
 describe('EmailSearchDashboard', () => {
   // Mock hook return values

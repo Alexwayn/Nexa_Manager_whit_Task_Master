@@ -23,26 +23,12 @@
     "^@/types/(.*)$": "<rootDir>/src/types/$1",
     "^@i18n/(.*)$": "<rootDir>/src/i18n/$1",
     "\\.(css|less|scss|sass)$": "identity-obj-proxy",
-    "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/src/__tests__/__mocks__/fileMock.js"
+    "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/__mocks__/fileMock.js"
   },
   "transform": {
-    "^.+\\.(js|jsx)$": ["babel-jest", {
-      "presets": [
-        ["@babel/preset-env", {
-          "targets": {
-            "node": "current"
-          }
-        }],
-        ["@babel/preset-react", {
-          "runtime": "automatic"
-        }]
-      ],
-      "plugins": [
-        "@babel/plugin-proposal-class-properties",
-        "@babel/plugin-transform-runtime"
-      ]
-    }]
+    "^.+\\.(js|jsx|ts|tsx|mjs)$": "<rootDir>/jest-transformer.cjs"
   },
+  "extensionsToTreatAsEsm": [".jsx", ".js", ".ts", ".tsx"],
   "collectCoverageFrom": [
     "src/components/voice/**/*.{js,jsx}",
     "src/services/voice*.{js,jsx}",
@@ -160,9 +146,6 @@
   "slowTestThreshold": 5,
   "snapshotSerializers": [
     "enzyme-to-json/serializer"
-  ],
-  "setupFiles": [
-    "<rootDir>/src/__tests__/setup/globalMocks.js"
   ],
   "testResultsProcessor": "<rootDir>/src/__tests__/utils/testResultsProcessor.js"
 }

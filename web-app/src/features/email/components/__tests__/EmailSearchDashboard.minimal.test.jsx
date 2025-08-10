@@ -3,7 +3,7 @@ import { render } from '@testing-library/react';
 import '@testing-library/jest-dom';
 
 // Mock all dependencies first
-jest.mock('../../../hooks/useEmailSearch', () => ({
+jest.mock('@/features/email/hooks/useEmailSearch', () => ({
   useEmailSearch: jest.fn(() => ({
     searchResults: [],
     totalResults: 0,

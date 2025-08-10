@@ -95,7 +95,7 @@ jest.mock('../../../services/ReportingService', () => ({
   },
 }));
 
-jest.mock('../../../hooks/useReportsQuery', () => ({
+jest.mock('@/features/financial/hooks/useReportsQuery', () => ({
   useReportMetrics: jest.fn(() => ({
     data: { revenue: {}, clients: {}, performance: {} },
     isLoading: false,

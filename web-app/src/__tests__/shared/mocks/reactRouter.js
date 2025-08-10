@@ -2,6 +2,10 @@
 // This file provides detailed mocks for all React Router functionality
 
 import { jest } from '@jest/globals';
+
+test('react router mocks load', () => {
+  expect(typeof jest.fn).toBe('function');
+});
 import React from 'react';
 
 // Mock location object

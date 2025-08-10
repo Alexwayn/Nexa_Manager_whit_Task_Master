@@ -4,7 +4,7 @@ import '@testing-library/jest-dom';
 import EmailListContainer from '../EmailListContainer';
 
 // Mock hooks
-jest.mock('@hooks/useEmailList', () => jest.fn());
+jest.mock('@/features/email/hooks/useEmailList', () => jest.fn());
 
 // Mock EmailList component
 jest.mock('@components/email/EmailList', () => {

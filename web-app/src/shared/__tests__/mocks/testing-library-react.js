@@ -355,7 +355,7 @@ const render = jest.fn((component, options = {}) => {
     findAllByTitle: jest.fn((title) => Promise.resolve([createMockElement('', 'div', { title })])),
   };
 
-  return {
+  const api = {
     container,
     baseElement: document.body,
     debug: jest.fn(),
@@ -364,6 +364,10 @@ const render = jest.fn((component, options = {}) => {
     asFragment: jest.fn(),
     ...queryMethods,
   };
+
+  // Tag for tests that assert our mock presence
+  api.isMocked = true;
+  return api;
 });
 
 const screen = {
@@ -441,6 +445,9 @@ const screen = {
   findAllByTitle: jest.fn((title) => Promise.resolve([createMockElement('', 'div', { title })])),
   debug: jest.fn(),
 };
+
+// Tag for tests that assert our mock presence
+screen.isMocked = true;
 
 const fireEvent = {
   click: jest.fn((element) => {

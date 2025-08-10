@@ -175,7 +175,13 @@ describe('VoiceAssistantProvider', () => {
       });
       
       await waitFor(() => {
-        expect(navigator.mediaDevices.getUserMedia).toHaveBeenCalledWith({ audio: true });
+        expect(navigator.mediaDevices.getUserMedia).toHaveBeenCalledWith({ 
+      audio: {
+        echoCancellation: true,
+        noiseSuppression: true,
+        autoGainControl: true
+      } 
+    });
       });
     });
 

@@ -8,8 +8,8 @@ import userEvent from '@testing-library/user-event';
 import { jest } from '@jest/globals';
 import EmailErrorBoundary from '../EmailErrorBoundary';
 
-// Mock dependencies
-jest.mock('@lib/logger', () => ({
+// Mock dependencies (match the component's actual imports)
+jest.mock('../../../../utils/Logger', () => ({
   __esModule: true,
   default: {
     error: jest.fn(),
@@ -19,7 +19,7 @@ jest.mock('@lib/logger', () => ({
   },
 }));
 
-jest.mock('@lib/errorReportingService', () => ({
+jest.mock('../../../../shared/services/errorReportingService', () => ({
   __esModule: true,
   default: {
     reportError: jest.fn(),
@@ -33,8 +33,8 @@ jest.mock('react-i18next', () => ({
   }),
 }));
 
-const mockLogger = require('@lib/logger').default;
-const mockErrorReporting = require('@lib/errorReportingService').default;
+const mockLogger = require('../../../../utils/Logger').default;
+const mockErrorReporting = require('../../../../shared/services/errorReportingService').default;
 
 // Test component that throws errors
 const ThrowError = ({ shouldThrow, errorType = 'generic' }) => {

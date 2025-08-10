@@ -2,7 +2,7 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { BrowserRouter } from 'react-router-dom';
 import VoiceOnboarding from '@/features/voice/components/VoiceOnboarding';
-import { VoiceAssistantProvider } from '@/features/voice/providers/VoiceAssistantProvider';
+import { VoiceAssistantProvider } from '@/providers/VoiceAssistantProvider';
 
 const renderWithProviders = (component, props = {}) => {
   return render(

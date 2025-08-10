@@ -13,8 +13,13 @@ export function getEnvVar(key, defaultValue = undefined) {
   // In test environment, use process.env or global.importMeta.env
   if (typeof process !== 'undefined' && process.env && process.env.NODE_ENV === 'test') {
     // Check global.importMeta.env first (Jest mock)
-    if (typeof global !== 'undefined' && global.importMeta && global.importMeta.env) {
-      return global.importMeta.env[key] || process.env[key] || defaultValue;
+    if (typeof global !== 'undefined') {
+      if (global.importMeta && global.importMeta.env) {
+        return global.importMeta.env[key] || process.env[key] || defaultValue;
+      }
+      if (global.importMetaEnv) {
+        return global.importMetaEnv[key] || process.env[key] || defaultValue;
+      }
     }
     return process.env[key] || defaultValue;
   }
@@ -38,7 +43,10 @@ export function getEnvVar(key, defaultValue = undefined) {
  * @returns {boolean} True if in development mode
  */
 export function isDev() {
-  return getEnvVar('DEV', false) || getEnvVar('NODE_ENV') === 'development';
+  const nodeEnv = getEnvVar('NODE_ENV');
+  const mode = getEnvVar('MODE');
+  if (nodeEnv === 'test' || mode === 'test') return true;
+  return getEnvVar('DEV', false) || nodeEnv === 'development' || mode === 'development';
 }
 
 /**

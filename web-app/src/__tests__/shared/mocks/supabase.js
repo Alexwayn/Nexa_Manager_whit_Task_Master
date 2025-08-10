@@ -3,6 +3,10 @@
 
 import { jest } from '@jest/globals';
 
+test('supabase mocks load', () => {
+  expect(typeof jest.fn).toBe('function');
+});
+
 // Mock data generators for Supabase responses
 export const createSupabaseResponse = (data = null, error = null, count = null) => ({
   data,

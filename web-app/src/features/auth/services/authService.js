@@ -132,8 +132,11 @@ export class AuthService {
         throw new Error('Email is required.');
       }
 
+      const origin = typeof window !== 'undefined' && window.location && window.location.origin
+        ? window.location.origin
+        : (process?.env?.VITE_BASE_URL || 'http://localhost:3000');
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: `${window.location.origin}/reset-password`,
+        redirectTo: `${origin}/reset-password`,
       });
 
       if (error) throw error;

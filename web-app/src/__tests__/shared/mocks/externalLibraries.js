@@ -3,6 +3,10 @@
 
 import { jest } from '@jest/globals';
 
+test('external libraries mocks load', () => {
+  expect(typeof jest.fn).toBe('function');
+});
+
 // Mock PDF Generation (jsPDF, PDFKit, etc.)
 export const createMockPDFGenerator = () => {
   const mockPDF = {

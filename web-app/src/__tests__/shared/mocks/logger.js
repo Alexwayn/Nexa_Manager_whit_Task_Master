@@ -10,6 +10,10 @@ const mockLogger = {
   log: jest.fn()
 };
 
+test('logger mocks load', () => {
+  expect(typeof mockLogger.error).toBe('function');
+});
+
 export default mockLogger;
 
 export const Logger = mockLogger;

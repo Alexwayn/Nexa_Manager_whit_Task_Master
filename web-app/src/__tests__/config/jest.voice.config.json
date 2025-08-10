@@ -8,12 +8,14 @@
     "@testing-library/jest-dom"
   ],
   "testMatch": [
-    "<rootDir>/src/__tests__/**/*.test.{js,jsx,ts,tsx}",
+    "<rootDir>/src/__tests__/features/voice/**/*.test.{js,jsx,ts,tsx}",
     "<rootDir>/src/features/voice/**/*.test.{js,jsx,ts,tsx}",
     "<rootDir>/src/shared/services/voice/**/*.test.{js,jsx,ts,tsx}",
     "<rootDir>/src/shared/hooks/voice/**/*.test.{js,jsx,ts,tsx}"
   ],
   "moduleNameMapper": {
+    "^@/lib/supabaseClerkClient$": "<rootDir>/src/shared/__tests__/mocks/supabaseClerkClient.js",
+    "^@/lib/supabaseClient$": "<rootDir>/src/lib/__mocks__/supabaseClient.js",
     "^@/(.*)$": "<rootDir>/src/$1",
     "^@shared/(.*)$": "<rootDir>/src/shared/$1",
     "^@features/(.*)$": "<rootDir>/src/features/$1",
@@ -23,21 +25,13 @@
     "^@hooks/(.*)$": "<rootDir>/src/hooks/$1",
     "^@providers/(.*)$": "<rootDir>/src/providers/$1",
     "^@types/(.*)$": "<rootDir>/src/types/$1",
+    "^@heroicons/react/24/outline$": "<rootDir>/src/__tests__/__mocks__/@heroicons/react/24/outline.js",
+    "^@heroicons/react/24/solid$": "<rootDir>/src/__tests__/__mocks__/@heroicons/react/24/solid.js",
     "\\.(css|less|scss|sass)$": "identity-obj-proxy",
-    "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/src/__tests__/__mocks__/fileMock.js"
+    "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/__mocks__/fileMock.js"
   },
   "transform": {
-    "^.+\\.(js|jsx|ts|tsx|mjs)$": ["babel-jest", {
-      "presets": [
-        ["@babel/preset-env", { "targets": { "node": "current" } }],
-        ["@babel/preset-react", { "runtime": "automatic" }],
-        "@babel/preset-typescript"
-      ],
-      "plugins": [
-        "@babel/plugin-transform-class-properties",
-        "@babel/plugin-transform-runtime"
-      ]
-    }]
+    "^.+\\.(js|jsx|ts|tsx|mjs)$": "<rootDir>/jest-transformer.cjs"
   },
   "collectCoverageFrom": [
     "src/features/voice/**/*.{js,jsx,ts,tsx}",
@@ -59,12 +53,7 @@
       "lines": 90
     }
   },
-  "coverageReporters": [
-    "text",
-    "lcov",
-    "html",
-    "json-summary"
-  ],
+  "coverageReporters": ["text", "lcov", "html", "json-summary"],
   "testTimeout": 10000,
   "verbose": true,
   "collectCoverage": false,
@@ -77,14 +66,6 @@
   "restoreMocks": true,
   "resetMocks": false,
   "errorOnDeprecated": true,
-  "testPathIgnorePatterns": [
-    "/node_modules/",
-    "/build/",
-    "/dist/",
-    "/coverage/"
-  ],
-  "modulePathIgnorePatterns": [
-    "/build/",
-    "/dist/"
-  ]
+  "testPathIgnorePatterns": ["/node_modules/", "/build/", "/dist/", "/coverage/"],
+  "modulePathIgnorePatterns": ["/build/", "/dist/"]
 }

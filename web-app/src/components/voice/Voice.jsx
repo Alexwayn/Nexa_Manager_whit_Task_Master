@@ -17,24 +17,18 @@ const Voice = ({
   const {
     isListening,
     isProcessing,
-    transcript,
-    confidence,
+    lastCommand,
     error,
     activateVoice,
     deactivateVoice,
     processCommand
   } = useVoiceAssistant();
 
-  const [lastCommand, setLastCommand] = useState('');
-
   useEffect(() => {
-    if (transcript && confidence > 0.7) {
-      setLastCommand(transcript);
-      if (onCommand) {
-        onCommand(transcript, confidence);
-      }
+    if (lastCommand && onCommand) {
+      onCommand(lastCommand, 1.0); // Use a default confidence since it's not exposed
     }
-  }, [transcript, confidence, onCommand]);
+  }, [lastCommand, onCommand]);
 
   useEffect(() => {
     if (error && onError) {

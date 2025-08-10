@@ -97,3 +97,6 @@ export const TestRouterWithRoutes = ({
 
 // Export default provider
 export default TestRouterProvider;
+
+// Re-export combined wrapper for tests expecting it from this module
+export { AllProvidersWrapper } from './index';

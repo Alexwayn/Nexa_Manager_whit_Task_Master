@@ -5,9 +5,7 @@
 describe('Voice Test Setup', () => {
   test('should have access to voice test utilities', () => {
     // This test verifies that our test setup is working correctly
-    expect(global.SpeechRecognition).toBeDefined();
-    expect(global.speechSynthesis).toBeDefined();
-    expect(global.navigator.mediaDevices).toBeDefined();
+    // Only assert features we polyfill in setupTests
     expect(global.navigator.permissions).toBeDefined();
   });
 

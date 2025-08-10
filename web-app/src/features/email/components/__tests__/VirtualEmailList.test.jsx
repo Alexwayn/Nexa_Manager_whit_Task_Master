@@ -34,7 +34,7 @@ jest.mock('react-i18next', () => ({
   }),
 }));
 
-jest.mock('../../EmailSecurityIndicator', () => {
+jest.mock('@/components/EmailSecurityIndicator', () => {
   return function MockEmailSecurityIndicator() {
     return <div data-testid="security-indicator" />;
   };

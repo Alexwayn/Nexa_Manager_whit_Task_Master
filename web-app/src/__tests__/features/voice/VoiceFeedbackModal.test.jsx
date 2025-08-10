@@ -1,13 +1,16 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import VoiceFeedbackModal from '@/features/voice/components/VoiceFeedbackModal';
-import { VoiceAssistantProvider } from '@/features/voice/providers/VoiceAssistantProvider';
+import { BrowserRouter } from 'react-router-dom';
+import VoiceFeedbackModal from '@/components/voice/VoiceFeedbackModal';
+import { VoiceAssistantProvider } from '@/providers/VoiceAssistantProvider';
 
 const renderWithProviders = (component) => {
   return render(
-    <VoiceAssistantProvider>
-      {component}
-    </VoiceAssistantProvider>
+    <BrowserRouter>
+      <VoiceAssistantProvider>
+        {component}
+      </VoiceAssistantProvider>
+    </BrowserRouter>
   );
 };
 

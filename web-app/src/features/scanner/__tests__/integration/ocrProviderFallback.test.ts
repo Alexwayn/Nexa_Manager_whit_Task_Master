@@ -36,20 +36,28 @@ const mockFallbackResult: OCRResult = {
 };
 
 // Mock the OCRProviderFactory completely to prevent any real initialization
-jest.mock('../../services/ocrProviderFactory', () => ({
-  OCRProviderFactory: {
-    initialize: jest.fn().mockResolvedValue(undefined),
-    getProvider: jest.fn().mockReturnValue({
-      extractText: jest.fn().mockResolvedValue(mockSuccessResult),
-      isAvailable: jest.fn().mockReturnValue(true),
-      getStatus: jest.fn().mockReturnValue({ available: true, rateLimited: false })
-    }),
-    getAvailableProviders: jest.fn().mockReturnValue([OCRProvider.OpenAI, OCRProvider.Qwen, OCRProvider.Fallback]),
-    getProviderStatus: jest.fn().mockReturnValue({ available: true, rateLimited: false }),
-    getAllProviderStatuses: jest.fn().mockReturnValue(new Map()),
-    destroy: jest.fn().mockResolvedValue(undefined)
-  }
-}));
+jest.mock('../../services/ocrProviderFactory', () => {
+  const { OCRProvider } = require('@/types/scanner');
+  return {
+    OCRProviderFactory: {
+      initialize: jest.fn().mockResolvedValue(undefined),
+      getProvider: jest.fn().mockReturnValue({
+        extractText: jest.fn().mockResolvedValue({
+          text: 'Test extracted text',
+          confidence: 0.95,
+          provider: OCRProvider.OpenAI,
+          processingTime: 1000,
+        }),
+        isAvailable: jest.fn().mockReturnValue(true),
+        getStatus: jest.fn().mockReturnValue({ available: true, rateLimited: false })
+      }),
+      getAvailableProviders: jest.fn().mockReturnValue([OCRProvider.OpenAI, OCRProvider.Qwen, OCRProvider.Fallback]),
+      getProviderStatus: jest.fn().mockReturnValue({ available: true, rateLimited: false }),
+      getAllProviderStatuses: jest.fn().mockReturnValue(new Map()),
+      destroy: jest.fn().mockResolvedValue(undefined)
+    }
+  };
+});
 
 // Mock RateLimitingService
 jest.mock('../../services/rateLimitingService', () => {
@@ -72,17 +80,20 @@ jest.mock('../../services/resultCacheService', () => {
 });
 
 // Mock FallbackOCRService completely
-jest.mock('../../services/fallbackOCRService', () => ({
-  FallbackOCRService: jest.fn().mockImplementation(() => ({
-    extractTextWithFallback: jest.fn().mockResolvedValue(mockSuccessResult),
-    healthCheck: jest.fn().mockResolvedValue({
-      healthy: true,
-      availableProviders: [OCRProvider.OpenAI, OCRProvider.Qwen],
-      issues: []
-    }),
-    getRecommendedProvider: jest.fn().mockReturnValue(OCRProvider.OpenAI)
-  }))
-}));
+jest.mock('../../services/fallbackOCRService', () => {
+  const { OCRProvider } = require('@/types/scanner');
+  return {
+    FallbackOCRService: jest.fn().mockImplementation(() => ({
+      extractTextWithFallback: jest.fn().mockResolvedValue(mockSuccessResult),
+      healthCheck: jest.fn().mockResolvedValue({
+        healthy: true,
+        availableProviders: [OCRProvider.OpenAI, OCRProvider.Qwen],
+        issues: []
+      }),
+      getRecommendedProvider: jest.fn().mockReturnValue(OCRProvider.OpenAI)
+    }))
+  };
+});
 
 // Mock localStorage
 const mockLocalStorage = {

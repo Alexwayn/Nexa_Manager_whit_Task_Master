@@ -1,51 +1,6 @@
 /**
- * Simple Test Data Factories Validation
- * A standalone test that can be run without complex Jest configuration
+ * Test Data Factories Validation
  */
-
-// Simple test runner
-const tests = [];
-const test = (name, fn) => tests.push({ name, fn });
-const expect = (actual) => ({
-  toBe: (expected) => {
-    if (actual !== expected) {
-      throw new Error(`Expected ${actual} to be ${expected}`);
-    }
-  },
-  toMatch: (regex) => {
-    if (!regex.test(actual)) {
-      throw new Error(`Expected ${actual} to match ${regex}`);
-    }
-  },
-  toHaveProperty: (prop, value) => {
-    if (!(prop in actual)) {
-      throw new Error(`Expected object to have property ${prop}`);
-    }
-    if (value !== undefined && actual[prop] !== value) {
-      throw new Error(`Expected ${prop} to be ${value}, got ${actual[prop]}`);
-    }
-  },
-  toHaveLength: (length) => {
-    if (actual.length !== length) {
-      throw new Error(`Expected length ${length}, got ${actual.length}`);
-    }
-  },
-  toBeGreaterThan: (value) => {
-    if (actual <= value) {
-      throw new Error(`Expected ${actual} to be greater than ${value}`);
-    }
-  },
-  toBeTruthy: () => {
-    if (!actual) {
-      throw new Error(`Expected ${actual} to be truthy`);
-    }
-  },
-  toBeNull: () => {
-    if (actual !== null) {
-      throw new Error(`Expected ${actual} to be null`);
-    }
-  }
-});
 
 // Import the factories
 import {
@@ -61,8 +16,8 @@ import {
   generateTimestamp,
 } from './testDataFactories.js';
 
-// Test cases
-test('generateTestId should create valid IDs', () => {
+describe('Test Data Factories', () => {
+  test('generateTestId should create valid IDs', () => {
   const id1 = generateTestId('test');
   const id2 = generateTestId('test');
   
@@ -224,39 +179,4 @@ test('resetTestDataSeed should make data reproducible', () => {
   expect(user1).toHaveProperty('email', user2.email);
 });
 
-// Run tests
-async function runTests() {
-  console.log('🧪 Running Test Data Factories validation...\n');
-  
-  let passed = 0;
-  let failed = 0;
-  
-  for (const { name, fn } of tests) {
-    try {
-      await fn();
-      console.log(`✅ ${name}`);
-      passed++;
-    } catch (error) {
-      console.log(`❌ ${name}`);
-      console.log(`   Error: ${error.message}\n`);
-      failed++;
-    }
-  }
-  
-  console.log(`\n📊 Results: ${passed} passed, ${failed} failed`);
-  
-  if (failed === 0) {
-    console.log('🎉 All tests passed! Test data factories are working correctly.');
-  } else {
-    console.log('⚠️  Some tests failed. Please check the implementation.');
-    process.exit(1);
-  }
-}
-
-// Export for potential use in other contexts
-export { runTests };
-
-// Run if this file is executed directly
-if (typeof require !== 'undefined' && require.main === module) {
-  runTests().catch(console.error);
-}
+});

@@ -117,11 +117,16 @@ export function VoiceIndicator({
   }
 
   return (
-    <div className={cn(
-      'z-50 flex items-center gap-3',
-      positionClasses[position],
-      className
-    )}>
+    <div 
+      className={cn(
+        'z-50 flex items-center gap-3',
+        positionClasses[position],
+        className
+      )}
+      role="status"
+      aria-live="polite"
+      aria-label={config.label}
+    >
       {/* Main Indicator */}
       <div className={cn(
         'flex items-center justify-center rounded-full shadow-lg transition-all duration-300',

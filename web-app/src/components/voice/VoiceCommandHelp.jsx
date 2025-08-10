@@ -117,9 +117,14 @@ const VoiceCommandHelp = ({ currentPath = '/' }) => {
     );
   };
 
-  const renderCommandCategories = () => (
-    <div className="space-y-4">
-      {allCategories.map((category) => {
+  const renderCommandCategories = () => {
+    if (!allCategories || !Array.isArray(allCategories)) {
+      return null;
+    }
+    
+    return (
+      <div className="space-y-4">
+        {allCategories.map((category) => {
         const isExpanded = expandedCategories.has(category.id);
         return (
           <div key={category.id} className="bg-white border border-gray-200 rounded-lg overflow-hidden">
@@ -172,93 +177,112 @@ const VoiceCommandHelp = ({ currentPath = '/' }) => {
         );
       })}
     </div>
-  );
+    );
+  };
 
-  const renderQuickStart = () => (
-    <div className="space-y-6">
-      <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
+  const renderQuickStart = () => {
+    if (!quickStartGuide) {
+      return null;
+    }
+    
+    return (
+      <div className="space-y-6">
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
+          <div className="flex items-center gap-3 mb-4">
+            <BookOpenIcon className="w-6 h-6 text-blue-600" />
+            <h3 className="text-lg font-semibold text-blue-900">{quickStartGuide.title}</h3>
+          </div>
+          
+          <div className="space-y-4">
+            {quickStartGuide.steps?.map((step) => (
+              <div key={step.step} className="flex gap-4">
+                <div className="flex-shrink-0 w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-semibold">
+                  {step.step}
+                </div>
+                <div className="flex-1">
+                  <h4 className="font-medium text-blue-900 mb-1">{step.title}</h4>
+                  <p className="text-blue-800 text-sm mb-2">{step.description}</p>
+                  <p className="text-blue-600 text-xs italic">💡 {step.tip}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="bg-white border border-gray-200 rounded-lg p-6">
+          <h4 className="font-semibold text-gray-900 mb-3">Try These Common Commands</h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+            {quickStartGuide.commonCommands?.map((command, index) => (
+              <code key={index} className="bg-gray-50 text-gray-700 px-3 py-2 rounded text-sm">
+                "{command}"
+              </code>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  const renderTroubleshooting = () => {
+    if (!troubleshootingGuide) {
+      return null;
+    }
+    
+    return (
+      <div className="space-y-6">
+        <div className="bg-amber-50 border border-amber-200 rounded-lg p-6">
+          <div className="flex items-center gap-3 mb-4">
+            <ExclamationTriangleIcon className="w-6 h-6 text-amber-600" />
+            <h3 className="text-lg font-semibold text-amber-900">{troubleshootingGuide.title}</h3>
+          </div>
+          
+          <div className="space-y-6">
+            {troubleshootingGuide.issues?.map((issue, index) => (
+              <div key={index} className="bg-white rounded-lg p-4 border border-amber-200">
+                <h4 className="font-medium text-amber-900 mb-3">❌ {issue.problem}</h4>
+                <div className="space-y-2">
+                  {issue.solutions?.map((solution, sIndex) => (
+                    <div key={sIndex} className="flex items-start gap-2">
+                      <span className="text-green-600 font-bold text-sm mt-0.5">✓</span>
+                      <p className="text-amber-800 text-sm">{solution}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  const renderContextualHelp = () => {
+    if (!contextualHelp) {
+      return null;
+    }
+    
+    return (
+      <div className="bg-green-50 border border-green-200 rounded-lg p-6">
         <div className="flex items-center gap-3 mb-4">
-          <BookOpenIcon className="w-6 h-6 text-blue-600" />
-          <h3 className="text-lg font-semibold text-blue-900">{quickStartGuide.title}</h3>
+          <QuestionMarkCircleIcon className="w-6 h-6 text-green-600" />
+          <h3 className="text-lg font-semibold text-green-900">{contextualHelp.title}</h3>
         </div>
         
-        <div className="space-y-4">
-          {quickStartGuide.steps.map((step) => (
-            <div key={step.step} className="flex gap-4">
-              <div className="flex-shrink-0 w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-semibold">
-                {step.step}
-              </div>
-              <div className="flex-1">
-                <h4 className="font-medium text-blue-900 mb-1">{step.title}</h4>
-                <p className="text-blue-800 text-sm mb-2">{step.description}</p>
-                <p className="text-blue-600 text-xs italic">💡 {step.tip}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div className="bg-white border border-gray-200 rounded-lg p-6">
-        <h4 className="font-semibold text-gray-900 mb-3">Try These Common Commands</h4>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-          {quickStartGuide.commonCommands.map((command, index) => (
-            <code key={index} className="bg-gray-50 text-gray-700 px-3 py-2 rounded text-sm">
-              "{command}"
-            </code>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-
-  const renderTroubleshooting = () => (
-    <div className="space-y-6">
-      <div className="bg-amber-50 border border-amber-200 rounded-lg p-6">
-        <div className="flex items-center gap-3 mb-4">
-          <ExclamationTriangleIcon className="w-6 h-6 text-amber-600" />
-          <h3 className="text-lg font-semibold text-amber-900">{troubleshootingGuide.title}</h3>
-        </div>
+        <p className="text-green-800 mb-4">{contextualHelp.description}</p>
         
-        <div className="space-y-6">
-          {troubleshootingGuide.issues.map((issue, index) => (
-            <div key={index} className="bg-white rounded-lg p-4 border border-amber-200">
-              <h4 className="font-medium text-amber-900 mb-3">❌ {issue.problem}</h4>
-              <div className="space-y-2">
-                {issue.solutions.map((solution, sIndex) => (
-                  <div key={sIndex} className="flex items-start gap-2">
-                    <span className="text-green-600 font-bold text-sm mt-0.5">✓</span>
-                    <p className="text-amber-800 text-sm">{solution}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          ))}
+        <div>
+          <h4 className="font-medium text-green-900 mb-2">Suggested Commands for This Page:</h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+            {contextualHelp.suggestedCommands?.map((command, index) => (
+              <code key={index} className="bg-white text-green-700 px-3 py-2 rounded text-sm border border-green-200">
+                "{command}"
+              </code>
+            ))}
+          </div>
         </div>
       </div>
-    </div>
-  );
-
-  const renderContextualHelp = () => (
-    <div className="bg-green-50 border border-green-200 rounded-lg p-6">
-      <div className="flex items-center gap-3 mb-4">
-        <QuestionMarkCircleIcon className="w-6 h-6 text-green-600" />
-        <h3 className="text-lg font-semibold text-green-900">{contextualHelp.title}</h3>
-      </div>
-      
-      <p className="text-green-800 mb-4">{contextualHelp.description}</p>
-      
-      <div>
-        <h4 className="font-medium text-green-900 mb-2">Suggested Commands for This Page:</h4>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-          {contextualHelp.suggestedCommands.map((command, index) => (
-            <code key={index} className="bg-white text-green-700 px-3 py-2 rounded text-sm border border-green-200">
-              "{command}"
-            </code>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
+    );
+  };
 
   return (
     <div className="max-w-4xl mx-auto p-6">

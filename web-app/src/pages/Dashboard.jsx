@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { ErrorBoundary } from '@shared/components';
 import { Footer } from '@shared/components';
 
+
 import {
   Search,
   Bell,

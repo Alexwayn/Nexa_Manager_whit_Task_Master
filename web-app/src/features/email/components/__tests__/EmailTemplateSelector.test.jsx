@@ -84,7 +84,7 @@ let mockUseEmailTemplates = {
   renderTemplate: jest.fn(),
 };
 
-jest.mock('@hooks/useEmailTemplates', () => ({
+jest.mock('@/features/email/hooks/useEmailTemplates', () => ({
   useEmailTemplates: () => mockUseEmailTemplates,
 }));
 
@@ -333,7 +333,9 @@ describe('EmailTemplateSelector', () => {
 
       // Trigger search
       const searchInput = screen.getByPlaceholderText('Search templates...');
-      fireEvent.change(searchInput, { target: { value: 'nonexistent' } });
+      const user = userEvent.setup();
+      await user.clear(searchInput);
+      await user.type(searchInput, 'nonexistent');
 
       // Wait for the component to update and check for no results message
       await waitFor(() => {
@@ -381,11 +383,15 @@ describe('EmailTemplateSelector', () => {
         expect(screen.getByText('Rendered Subject') || screen.getByText('Subject:')).toBeInTheDocument();
       });
 
-      // Close preview - just click escape or find any close mechanism
-      await user.keyboard('{Escape}');
-
-      // Give it a moment to close
-      await new Promise(resolve => setTimeout(resolve, 100));
+      // Close preview by clicking the modal header close button
+      const header = screen.getByText(/Template Preview:/).closest('div');
+      const closeBtn = header?.querySelector('button');
+      if (closeBtn) {
+        await user.click(closeBtn);
+      }
+      await waitFor(() => {
+        expect(screen.queryByText('Rendered Subject')).not.toBeInTheDocument();
+      });
     });
 
     test('should select template from preview modal', async () => {
@@ -403,8 +409,9 @@ describe('EmailTemplateSelector', () => {
       // Click use template
       const useTemplateButton = screen.getByText('Use This Template');
       await user.click(useTemplateButton);
-
-      expect(defaultProps.onSelectTemplate).toHaveBeenCalled();
+      await waitFor(() => {
+        expect(defaultProps.onSelectTemplate).toHaveBeenCalled();
+      });
     });
   });
 
@@ -416,10 +423,10 @@ describe('EmailTemplateSelector', () => {
       // Look for the close button - it should be the first button in the modal
       const buttons = screen.getAllByRole('button');
       const closeButton = buttons[0]; // The close button should be the first button
-      
       await user.click(closeButton);
-
-      expect(defaultProps.onClose).toHaveBeenCalled();
+      await waitFor(() => {
+        expect(defaultProps.onClose).toHaveBeenCalled();
+      });
     });
   });
 

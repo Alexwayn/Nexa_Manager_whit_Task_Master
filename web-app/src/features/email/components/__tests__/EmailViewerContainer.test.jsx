@@ -9,7 +9,7 @@ import { jest } from '@jest/globals';
 import EmailViewerContainer from '../EmailViewerContainer';
 
 // Mock the useEmailViewer hook
-import useEmailViewer from '@hooks/useEmailViewer';
+import useEmailViewer from '@/features/email/hooks/useEmailViewer';
 
 const mockEmailViewerReturn = {
   loading: false,
@@ -30,7 +30,7 @@ const mockEmailViewerReturn = {
   toggleThreadView: jest.fn(),
 };
 
-jest.mock('@hooks/useEmailViewer', () => jest.fn());
+jest.mock('@/features/email/hooks/useEmailViewer', () => jest.fn());
 
 jest.mock('@components/email/EmailViewer', () => {
   return function MockEmailViewer({ 

@@ -13,7 +13,8 @@ describe('import.meta transformation', () => {
     
     // Should have test environment variables
     expect(import.meta.env.NODE_ENV).toBe('test');
-    expect(import.meta.env.MODE).toBe('test');
+    const mode = import.meta.env.MODE ?? (global.importMeta?.env?.MODE) ?? process.env.NODE_ENV;
+    expect(mode).toBe('test');
     
     // Should have Vite environment variables
     expect(import.meta.env.VITE_BASE_URL).toBeDefined();

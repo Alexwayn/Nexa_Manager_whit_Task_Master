@@ -11,6 +11,7 @@ export type * from '@/hooks/scanner/types';
 
 // Services
 export * from './services';
+export * from './services/ocrProviderFactory';
 
 // Re-export types from services
 export type * from './services/types';

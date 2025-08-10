@@ -70,8 +70,14 @@ class WakeWordDetectionService {
    * Check if browser supports required APIs
    */
   checkBrowserSupport() {
-    const hasWebAudio = !!(window.AudioContext || window.webkitAudioContext);
-    const hasSpeechRecognition = !!(window.SpeechRecognition || window.webkitSpeechRecognition);
+    const hasWebAudio = !!(
+      (typeof window !== 'undefined' && (window.AudioContext || window.webkitAudioContext)) ||
+      (typeof globalThis !== 'undefined' && globalThis.AudioContext)
+    );
+    const hasSpeechRecognition = !!(
+      (typeof window !== 'undefined' && (window.SpeechRecognition || window.webkitSpeechRecognition)) ||
+      (typeof globalThis !== 'undefined' && (globalThis.SpeechRecognition || globalThis.webkitSpeechRecognition))
+    );
     const hasMediaDevices = !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
 
     return hasWebAudio && hasSpeechRecognition && hasMediaDevices;
@@ -100,7 +106,8 @@ class WakeWordDetectionService {
    */
   async initializeAudioContext() {
     try {
-      const AudioContext = window.AudioContext || window.webkitAudioContext;
+      const AudioContext = (typeof window !== 'undefined' && (window.AudioContext || window.webkitAudioContext))
+        || (typeof globalThis !== 'undefined' && globalThis.AudioContext);
       this.audioContext = new AudioContext();
 
       // Resume audio context if suspended

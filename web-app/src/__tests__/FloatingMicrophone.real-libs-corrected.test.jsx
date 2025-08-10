@@ -1,5 +1,5 @@
 // Test with real React and React Testing Library
-import React from '../../../node_modules/react/index.js';
+const React = require('react');
 import { render, screen } from '../../../node_modules/@testing-library/react/dist/index.js';
 import FloatingMicrophone from '../components/FloatingMicrophone';
 
@@ -19,21 +19,27 @@ jest.mock('../providers/VoiceAssistantProvider', () => ({
 }));
 
 // Mock the voice components
-jest.mock('../components/voice', () => ({
-  VoiceActivationButton: (props) => React.createElement('button', { 
-    'data-testid': 'floating-microphone',
-    className: props.className,
-    onClick: props.onClick
-  }, 'Voice Button'),
-}));
+jest.mock('../components/voice', () => {
+  const ReactLocal = require('react');
+  return {
+    VoiceActivationButton: (props) => ReactLocal.createElement('button', {
+      'data-testid': 'floating-microphone',
+      className: props.className,
+      onClick: props.onClick,
+    }, 'Voice Button'),
+  };
+});
 
 // Removed global mock for VoiceFeedbackButton to avoid interference with other tests
 
 // Mock Heroicons
-jest.mock('@heroicons/react/24/solid', () => ({
-  MicrophoneIcon: () => React.createElement('svg', { 'data-testid': 'microphone-icon' }, 'Mic'),
-  StopIcon: () => React.createElement('svg', { 'data-testid': 'stop-icon' }, 'Stop'),
-}));
+jest.mock('@heroicons/react/24/solid', () => {
+  const ReactLocal = require('react');
+  return {
+    MicrophoneIcon: () => ReactLocal.createElement('svg', { 'data-testid': 'microphone-icon' }, 'Mic'),
+    StopIcon: () => ReactLocal.createElement('svg', { 'data-testid': 'stop-icon' }, 'Stop'),
+  };
+});
 
 describe('FloatingMicrophone with Real Libraries', () => {
   test('renders microphone button when enabled', () => {

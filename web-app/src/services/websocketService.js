@@ -1,44 +1,14 @@
+import { getEnvVar, isDev, getWebSocketUrl as getWSUrl } from '../utils/env';
+
 /**
  * WebSocket Service for Real-time Communication
  * Handles WebSocket connections, reconnection logic, and message handling
  */
 
-// Environment variable access that works in both Vite and Jest
-const getEnvVar = (key, defaultValue = '') => {
-  // In test environment, use process.env
-  if (typeof process !== 'undefined' && process.env && process.env.NODE_ENV === 'test') {
-    return process.env[key] || defaultValue;
-  }
-  
-  // Try to access import.meta.env safely
-  try {
-    if (typeof window !== 'undefined' && window.importMeta && window.importMeta.env) {
-      return window.importMeta.env[key] || defaultValue;
-    }
-  } catch (e) {
-    // Ignore errors accessing import.meta
-  }
-  
-  // Fallback to process.env if available
-  if (typeof process !== 'undefined' && process.env) {
-    return process.env[key] || defaultValue;
-  }
-  
-  return defaultValue;
-};
-
-const isDev = () => {
-  return getEnvVar('DEV', false) || getEnvVar('NODE_ENV') === 'development';
-};
-
-const getWebSocketUrl = () => {
-  return getEnvVar('VITE_WS_URL', 'ws://localhost:8080');
-};
-
 class WebSocketService {
   constructor() {
     this.ws = null;
-    this.url = getWebSocketUrl();
+    this.url = getWSUrl();
     this.isConnected = false;
     this.reconnectAttempts = 0;
     this.maxReconnectAttempts = 5;
@@ -66,7 +36,7 @@ class WebSocketService {
   connect(url, options = {}) {
     // Use default URL if not provided
     if (!url) {
-      url = getEnvVar('VITE_WS_URL') || 'ws://localhost:8080';
+      url = getWSUrl();
     }
     
     // Skip WebSocket connection in development if no server is available
@@ -249,10 +219,6 @@ class WebSocketService {
     });
   }
 
-  /**
-   * Unsubscribe from report updates
-   * @param {string} reportId - Report ID to unsubscribe from
-   */
   unsubscribeFromReport(reportId) {
     this.send({
       type: 'UNSUBSCRIBE_REPORT',
@@ -260,53 +226,33 @@ class WebSocketService {
     });
   }
 
-  /**
-   * Subscribe to specific channel
-   * @param {string} channel - Channel name
-   */
   subscribe(channel) {
-    this.send({
-      type: 'SUBSCRIBE',
-      payload: { channel }
-    });
+    this.subscriptions.add(channel);
+    this.send({ type: 'SUBSCRIBE', payload: { channel } });
   }
 
-  /**
-   * Unsubscribe from channel
-   * @param {string} channel - Channel name
-   */
   unsubscribe(channel) {
-    this.send({
-      type: 'UNSUBSCRIBE',
-      payload: { channel }
-    });
+    this.subscriptions.delete(channel);
+    this.send({ type: 'UNSUBSCRIBE', payload: { channel } });
   }
 
-  /**
-   * Disconnect from WebSocket
-   */
   disconnect() {
     if (this.ws) {
-      this.clearHeartbeat();
       this.ws.close();
       this.ws = null;
       this.isConnected = false;
+      this.clearHeartbeat();
     }
   }
 
-  /**
-   * Get connection status
-   * @returns {boolean} Connection status
-   */
   getConnectionStatus() {
-    return this.isConnected;
+    return {
+      isConnected: this.isConnected,
+      reconnectAttempts: this.reconnectAttempts,
+      url: this.url
+    };
   }
 
-  /**
-   * Add event listener
-   * @param {string} event - Event name
-   * @param {Function} callback - Event callback
-   */
   on(event, callback) {
     if (!this.eventListeners.has(event)) {
       this.eventListeners.set(event, new Set());
@@ -314,36 +260,25 @@ class WebSocketService {
     this.eventListeners.get(event).add(callback);
   }
 
-  /**
-   * Remove event listener
-   * @param {string} event - Event name
-   * @param {Function} callback - Event callback
-   */
   off(event, callback) {
     if (this.eventListeners.has(event)) {
       this.eventListeners.get(event).delete(callback);
     }
   }
 
-  /**
-   * Emit event to listeners
-   * @param {string} event - Event name
-   * @param {*} data - Event data
-   */
   emit(event, data) {
     if (this.eventListeners.has(event)) {
       this.eventListeners.get(event).forEach(callback => {
         try {
           callback(data);
         } catch (error) {
-          console.error('Error in WebSocket event callback:', error);
+          console.error('Error in event listener:', error);
         }
       });
     }
   }
 }
 
-// Create and export singleton instance
 const websocketService = new WebSocketService();
 
 export default websocketService;

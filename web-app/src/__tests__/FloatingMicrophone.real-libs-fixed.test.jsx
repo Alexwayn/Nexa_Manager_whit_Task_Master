@@ -1,7 +1,7 @@
 // Test with real React and React Testing Library
-import React from '../../../node_modules/react/index.js';
+const React = require('react');
 import { render, screen } from '../../../node_modules/@testing-library/react/dist/index.js';
-import { FloatingMicrophone } from '../components/FloatingMicrophone';
+import FloatingMicrophone from '../components/FloatingMicrophone';
 
 // Mock the useVoiceAssistant hook from the correct path
 jest.mock('@/providers/VoiceAssistantProvider', () => ({
@@ -18,10 +18,13 @@ jest.mock('@/providers/VoiceAssistantProvider', () => ({
 }));
 
 // Mock Heroicons
-jest.mock('@heroicons/react/24/solid', () => ({
-  MicrophoneIcon: () => React.createElement('svg', { 'data-testid': 'microphone-icon' }, 'Mic'),
-  StopIcon: () => React.createElement('svg', { 'data-testid': 'stop-icon' }, 'Stop'),
-}));
+jest.mock('@heroicons/react/24/solid', () => {
+  const ReactLocal = require('react');
+  return {
+    MicrophoneIcon: () => ReactLocal.createElement('svg', { 'data-testid': 'microphone-icon' }, 'Mic'),
+    StopIcon: () => ReactLocal.createElement('svg', { 'data-testid': 'stop-icon' }, 'Stop'),
+  };
+});
 
 describe('FloatingMicrophone with Real Libraries', () => {
   test('renders microphone button when enabled', () => {

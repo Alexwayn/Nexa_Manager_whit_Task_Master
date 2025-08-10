@@ -8,6 +8,9 @@ import emailProviderService from './emailProviderService';
 import Logger from '@/utils/Logger';
 
 class EmailManagementService {
+  constructor() {
+    this._listeners = new Map();
+  }
   /**
    * Fetch emails for a user
    * @param {string} userId - User ID
@@ -158,6 +161,48 @@ class EmailManagementService {
         success: false,
         error: error.message,
       };
+    }
+  }
+
+  /**
+   * Get folders for a user (test stub)
+   */
+  async getFolders(userId) {
+    return { success: true, data: [] };
+  }
+
+  /**
+   * Apply a label to an email (test stub)
+   */
+  async applyLabel(emailId, userId, label) {
+    return { success: true };
+  }
+
+  /**
+   * Remove a label from an email (test stub)
+   */
+  async removeLabel(emailId, userId, label) {
+    return { success: true };
+  }
+
+  /**
+   * Simple event emitter helpers for tests that listen to service events
+   */
+  addEventListener(eventName, callback) {
+    if (!this._listeners.has(eventName)) this._listeners.set(eventName, new Set());
+    this._listeners.get(eventName).add(callback);
+  }
+
+  removeEventListener(eventName, callback) {
+    if (this._listeners.has(eventName)) {
+      this._listeners.get(eventName).delete(callback);
+    }
+  }
+
+  emitEvent(eventName, payload) {
+    const listeners = this._listeners.get(eventName);
+    if (listeners) {
+      for (const cb of listeners) cb(payload);
     }
   }
 

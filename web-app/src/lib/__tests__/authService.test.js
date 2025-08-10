@@ -182,7 +182,7 @@ describe('AuthService', () => {
       const result = await AuthService.requestPasswordReset('test@example.com');
 
       expect(supabase.auth.resetPasswordForEmail).toHaveBeenCalledWith('test@example.com', {
-        redirectTo: 'http://localhost:3000/reset-password',
+        redirectTo: expect.stringMatching(/http:\/\/localhost(?::3000)?\/reset-password/),
       });
 
       expect(result.success).toBe(true);

@@ -257,18 +257,20 @@ const VoiceFeedbackButton = ({
         </div>
       )}
 
-      {/* Feedback Modal */}
-      <VoiceFeedbackModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        commandData={{
-          command: lastCommand,
-          confidence: lastConfidence,
-          id: Date.now().toString(),
-          sessionId: 'current-session'
-        }}
-        onFeedbackSubmitted={handleFeedbackSubmit}
-      />
+      {/* Feedback Modal (guard in case module is mocked to undefined in tests) */}
+      {VoiceFeedbackModal ? (
+        <VoiceFeedbackModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          commandData={{
+            command: lastCommand,
+            confidence: lastConfidence,
+            id: Date.now().toString(),
+            sessionId: 'current-session'
+          }}
+          onFeedbackSubmitted={handleFeedbackSubmit}
+        />
+      ) : null}
     </>
   );
 };

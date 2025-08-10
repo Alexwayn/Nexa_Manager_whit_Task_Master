@@ -387,10 +387,12 @@ Element.prototype.scrollIntoView = jest.fn();
 Element.prototype.scrollTo = jest.fn();
 Element.prototype.scroll = jest.fn();
 
-// Mock HTMLElement methods
-HTMLElement.prototype.focus = jest.fn();
-HTMLElement.prototype.blur = jest.fn();
-HTMLElement.prototype.click = jest.fn();
+// Preserve native HTMLElement methods to support focus-related assertions
+const originalFocus = HTMLElement.prototype.focus;
+const originalBlur = HTMLElement.prototype.blur;
+const originalClick = HTMLElement.prototype.click;
+// Note: If needed, tests can spy on these methods individually using jest.spyOn
+
 
 // Mock HTMLMediaElement
 Object.defineProperty(HTMLMediaElement.prototype, 'muted', {
@@ -453,13 +455,15 @@ Object.defineProperty(navigator, 'clipboard', {
     write: jest.fn(() => Promise.resolve()),
     read: jest.fn(() => Promise.resolve([]))
   },
-  writable: true
+  writable: true,
+  configurable: true
 });
 
 // Mock online/offline status
 Object.defineProperty(navigator, 'onLine', {
   value: true,
-  writable: true
+  writable: true,
+  configurable: true
 });
 
 // Mock user agent
@@ -580,7 +584,59 @@ Object.defineProperty(navigator, 'connection', {
   writable: true
 });
 
-// Export mock objects for use in tests
+// Provide import.meta.env shim for tests that reference Vite env
+if (typeof global !== 'undefined') {
+  if (!global.importMeta) {
+    global.importMeta = { env: {} };
+  } else if (!global.importMeta.env) {
+    global.importMeta.env = {};
+  }
+  if (!global.importMetaEnv) {
+    global.importMetaEnv = global.importMeta.env;
+  }
+}
+
+// Ensure NODE_ENV is test in case tests rely on it
+if (typeof process !== 'undefined' && process.env) {
+  process.env.NODE_ENV = process.env.NODE_ENV || 'test';
+}
+
+// Jest mocks for heavy voice services to avoid initializing Web APIs
+jest.mock('@/services/wakeWordDetection', () => {
+  return jest.fn().mockImplementation(() => ({
+    initialize: jest.fn(() => Promise.resolve(true)),
+    start: jest.fn(() => Promise.resolve(true)),
+    startContinuousListening: jest.fn(() => Promise.resolve(true)),
+    stop: jest.fn(() => true),
+    cleanup: jest.fn(),
+    setWakeWord: jest.fn(),
+    setSensitivity: jest.fn(),
+    getStatus: jest.fn(() => ({ isActive: false })),
+    checkBrowserSupport: jest.fn(() => true),
+    requestMicrophonePermission: jest.fn(() => Promise.resolve(true)),
+    initializeAudioContext: jest.fn(() => Promise.resolve(true)),
+    initializeSpeechRecognition: jest.fn(() => true)
+  }));
+});
+
+jest.mock('@/services/voiceActivationTimeout', () => {
+  return jest.fn().mockImplementation(() => ({
+    initialize: jest.fn(),
+    start: jest.fn(() => true),
+    startCountdown: jest.fn(),
+    handleTimeout: jest.fn(),
+    cancel: jest.fn(() => true),
+    extend: jest.fn(() => true),
+    reset: jest.fn(() => true),
+    clear: jest.fn(),
+    setTimeoutDuration: jest.fn(),
+    getStatus: jest.fn(() => ({ isActive: false, remainingTime: 0 })),
+    getRemainingSeconds: jest.fn(() => 0),
+    isTimeoutActive: jest.fn(() => false),
+    cleanup: jest.fn()
+  }));
+});
+
 export {
   mockSpeechRecognition,
   mockSpeechSynthesis,

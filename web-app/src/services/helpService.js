@@ -3,15 +3,10 @@
  * Provides comprehensive help, documentation, and command reference for the voice assistant
  */
 
-import { 
-  navigationCommands, 
-  actionCommands, 
-  helpCommands, 
-  systemCommands 
-} from '@/utils/voiceCommands';
-import { allCalendarCommands } from '@/services/CalendarCommandHandler';
-import { allTransactionCommands } from '@/services/TransactionCommandHandler';
-import { allReportCommands } from '@/services/ReportCommandHandler';
+// Note: Avoid importing command data from other modules here because
+// tests commonly mock '@/utils/voiceCommands', which can interfere with
+// this module's initialization. All command data needed by helpService
+// is defined inline in COMMAND_REFERENCE below.
 
 
 /**
