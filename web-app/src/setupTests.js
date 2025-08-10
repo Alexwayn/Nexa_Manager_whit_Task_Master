@@ -78,13 +78,63 @@ jest.mock('i18next-http-backend', () => ({
   },
 }));
 
+// Mock HTML Canvas API for Chart.js
+global.HTMLCanvasElement.prototype.getContext = jest.fn(() => ({
+  fillRect: jest.fn(),
+  clearRect: jest.fn(),
+  getImageData: jest.fn(() => ({ data: new Array(4) })),
+  putImageData: jest.fn(),
+  createImageData: jest.fn(() => ({ data: new Array(4) })),
+  setTransform: jest.fn(),
+  drawImage: jest.fn(),
+  save: jest.fn(),
+  fillText: jest.fn(),
+  restore: jest.fn(),
+  beginPath: jest.fn(),
+  moveTo: jest.fn(),
+  lineTo: jest.fn(),
+  closePath: jest.fn(),
+  stroke: jest.fn(),
+  translate: jest.fn(),
+  scale: jest.fn(),
+  rotate: jest.fn(),
+  arc: jest.fn(),
+  fill: jest.fn(),
+  measureText: jest.fn(() => ({ width: 0 })),
+  transform: jest.fn(),
+  rect: jest.fn(),
+  clip: jest.fn(),
+}));
+
+global.HTMLCanvasElement.prototype.toDataURL = jest.fn(() => '');
+
+// Mock ResizeObserver for Chart.js responsiveness
+global.ResizeObserver = jest.fn().mockImplementation(() => ({
+  observe: jest.fn(),
+  unobserve: jest.fn(),
+  disconnect: jest.fn(),
+}));
+
 // Mock chart.js and react-chartjs-2
 jest.mock('chart.js', () => ({
-  Chart: class {
+  Chart: class MockChart {
     static register() {}
-    constructor() {}
+    static defaults = {
+      responsive: true,
+      maintainAspectRatio: false,
+    };
+    constructor(canvas, config) {
+      this.canvas = canvas;
+      this.config = config;
+      this.data = config.data || {};
+      this.options = config.options || {};
+    }
     destroy() {}
     update() {}
+    resize() {}
+    render() {}
+    getElementsAtEventForMode() { return []; }
+    getDatasetMeta() { return { data: [] }; }
   },
   ArcElement: class {},
   LineElement: class {},
@@ -95,6 +145,7 @@ jest.mock('chart.js', () => ({
   Title: class {},
   Tooltip: class {},
   Legend: class {},
+  Filler: class {},
 }));
 
 jest.mock('websocket', () => ({
@@ -133,10 +184,28 @@ jest.mock('isows', () => ({
   getNativeWebSocket: jest.fn(() => class MockWebSocket {}),
 }));
 
+// Mock react-chartjs-2 with proper component mocks
 jest.mock('react-chartjs-2', () => ({
-  Doughnut: () => null, 
-  Line: () => null, 
-  Bar: () => null, 
+  Doughnut: ({ data, options, ...props }) => (
+    <div data-testid="doughnut-chart" data-chart-type="doughnut" {...props}>
+      Doughnut Chart
+    </div>
+  ),
+  Line: ({ data, options, ...props }) => (
+    <div data-testid="line-chart" data-chart-type="line" {...props}>
+      Line Chart
+    </div>
+  ),
+  Bar: ({ data, options, ...props }) => (
+    <div data-testid="bar-chart" data-chart-type="bar" {...props}>
+      Bar Chart
+    </div>
+  ),
+  Pie: ({ data, options, ...props }) => (
+    <div data-testid="pie-chart" data-chart-type="pie" {...props}>
+      Pie Chart
+    </div>
+  ),
 }));
 
 // Polyfill SpeechRecognition for voice tests

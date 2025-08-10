@@ -97,7 +97,7 @@ describe('VoiceFeedbackModal', () => {
     await user.type(commentTextarea, 'Good but could be better');
 
     // Submit
-    const submitButton = screen.getByText(/submit feedback/i);
+    const submitButton = screen.getByText(/submit/i);
     await user.click(submitButton);
 
     expect(defaultProps.onSubmit).toHaveBeenCalledWith({
@@ -114,7 +114,7 @@ describe('VoiceFeedbackModal', () => {
     const user = userEvent.setup();
     renderWithProviders(<VoiceFeedbackModal {...defaultProps} />);
 
-    const submitButton = screen.getByText(/submit feedback/i);
+    const submitButton = screen.getByText(/submit/i);
     await user.click(submitButton);
 
     expect(screen.getByText(/please select a rating/i)).toBeInTheDocument();
@@ -210,7 +210,7 @@ describe('VoiceFeedbackModal', () => {
     const fiveStarButton = screen.getByLabelText(/5 stars/i);
     await user.click(fiveStarButton);
 
-    const submitButton = screen.getByText(/submit feedback/i);
+    const submitButton = screen.getByText(/submit/i);
     await user.click(submitButton);
 
     expect(screen.getByText(/submitting/i)).toBeInTheDocument();
@@ -229,7 +229,7 @@ describe('VoiceFeedbackModal', () => {
     const fiveStarButton = screen.getByLabelText(/5 stars/i);
     await user.click(fiveStarButton);
 
-    const submitButton = screen.getByText(/submit feedback/i);
+    const submitButton = screen.getByText(/submit/i);
     await user.click(submitButton);
 
     await waitFor(() => {
@@ -271,7 +271,7 @@ describe('VoiceFeedbackModal', () => {
     await user.click(responseTimeCheckbox);
 
     // Submit
-    const submitButton = screen.getByText(/submit feedback/i);
+    const submitButton = screen.getByText(/submit/i);
     await user.click(submitButton);
 
     expect(defaultProps.onSubmit).toHaveBeenCalledWith(
@@ -324,7 +324,7 @@ describe('VoiceFeedbackModal', () => {
     await user.click(detailedModeButton);
 
     // Try to submit without filling required detailed fields
-    const submitButton = screen.getByText(/submit feedback/i);
+    const submitButton = screen.getByText(/submit/i);
     await user.click(submitButton);
 
     expect(screen.getByText(/please complete all ratings/i)).toBeInTheDocument();

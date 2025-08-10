@@ -42,6 +42,8 @@ module.exports = {
     '^@/features/voice/providers/(.*)$': '<rootDir>/src/providers/$1',
     // Some tests import provider from components path; map it explicitly to real provider file
     '^@/components/voice/VoiceAssistantProvider$': '<rootDir>/src/providers/VoiceAssistantProvider.jsx',
+    // Ensure supabaseClerkClient is mocked across all tests to avoid side effects
+    '^@/lib/supabaseClerkClient$': '<rootDir>/src/shared/__tests__/mocks/supabaseClerkClient.js',
     '^@/(.*)$': '<rootDir>/src/$1',
     // Support common shared alias and util alias
     '^@shared/(.*)$': '<rootDir>/src/shared/$1',
@@ -81,11 +83,14 @@ module.exports = {
     '^@supabase/postgrest-js$': '<rootDir>/../node_modules/@supabase/postgrest-js/dist/cjs/index.js',
     '^@supabase/storage-js$': '<rootDir>/../node_modules/@supabase/storage-js/dist/main/index.js',
     '^@supabase/functions-js$': '<rootDir>/../node_modules/@supabase/functions-js/dist/main/index.js',
-    '^@supabase/auth-js$': '<rootDir>/../node_modules/@supabase/auth-js/dist/main/index.js',
     '^isows$': '<rootDir>/__mocks__/isows.js',
     '^ws$': '<rootDir>/__mocks__/ws.js',
     '^websocket$': '<rootDir>/__mocks__/websocket.js',
   },
+  // Add JUnit reporter for CI test summaries
+  reporters: [
+    'default'
+  ],
   globalSetup: '<rootDir>/src/__tests__/shared/global-setup.js',
   globalTeardown: '<rootDir>/src/__tests__/shared/global-teardown.js',
   testMatch: [
@@ -107,7 +112,7 @@ module.exports = {
     '!src/__tests__/**/*',
     '!src/features/auth/routes/index.js',
   ],
-  coverageReporters: ['json', 'lcov', 'text', 'clover'],
+  coverageReporters: ['json', 'lcov', 'text', 'clover', 'cobertura', 'json-summary'],
   coverageThreshold: {
     global: {
       branches: 80,

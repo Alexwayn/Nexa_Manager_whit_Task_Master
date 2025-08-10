@@ -230,7 +230,8 @@ export const __resetMocks = () => {
     key: 'default'
   });
   Object.keys(mockParams).forEach(key => delete mockParams[key]);
-  mockSearchParams.clear();
+  // Clear search params safely (URLSearchParams has no clear() in JSDOM)
+  Array.from(mockSearchParams.keys()).forEach((key) => mockSearchParams.delete(key));
 };
 
 // Default export for compatibility

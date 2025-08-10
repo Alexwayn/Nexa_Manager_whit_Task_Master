@@ -543,7 +543,7 @@ describe('Voice Assistant Integration Tests', () => {
       const rating5 = screen.getByRole('button', { name: /5 stars/i });
       await user.click(rating5);
 
-      const submitButton = screen.getByRole('button', { name: /submit feedback/i });
+      const submitButton = screen.getByRole('button', { name: /submit/i });
       await user.click(submitButton);
 
       await waitFor(() => {

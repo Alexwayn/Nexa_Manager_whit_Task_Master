@@ -75,12 +75,17 @@ jest.mock('@/utils/Logger', () => ({
 }));
 
 // Mock React hooks
-jest.mock('react', () => ({
-  ...jest.requireActual('react'),
-  useCallback: (fn) => fn,
-  useEffect: jest.fn(),
-  useState: jest.fn(() => [false, jest.fn()]),
-}));
+jest.mock('react', () => {
+  const actualReact = jest.requireActual('react');
+  return {
+    ...actualReact,
+    // keep real useRef, but ensure it's defined in case of environment issues
+    useRef: actualReact.useRef || ((initial) => ({ current: initial })),
+    useCallback: (fn) => fn,
+    useEffect: jest.fn(),
+    useState: jest.fn(() => [false, jest.fn()]),
+  };
+});
 
 describe('useEmails Hook', () => {
   beforeEach(() => {

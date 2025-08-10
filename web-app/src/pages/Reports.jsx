@@ -54,8 +54,8 @@ import {
   usePrefetchReports,
   useReportCache,
 } from '../features/financial/hooks/useReportsQuery';
-import { usePerformanceMonitor } from '../utils/performance.js';
-import Logger from '../utils/Logger.ts';
+import { usePerformanceMonitor } from '@utils/performance';
+import Logger from '@/utils/Logger';
 import reportingService from '@shared/services/reportingService';
 
 // Define data structures using JSDoc comments

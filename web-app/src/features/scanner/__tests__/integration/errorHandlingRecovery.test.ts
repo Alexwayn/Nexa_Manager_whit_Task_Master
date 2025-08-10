@@ -81,12 +81,17 @@ Object.defineProperty(window, 'localStorage', {
 
 describe('Error Handling and Recovery Integration Tests', () => {
   jest.useFakeTimers();
+  
   let ocrService: AIOCRService;
   let imageProcessingService: ImageProcessingService;
   let documentStorageService: DocumentStorageService;
   let batchProcessingService: BatchProcessingService;
   let rateLimitingService: RateLimitingService;
   let cacheService: ResultCacheService;
+  
+  // Add spy variables for console methods
+  let consoleErrorSpy: jest.SpyInstance;
+  let consoleWarnSpy: jest.SpyInstance;
 
   const mockOCRResult: OCRResult = {
     text: 'Sample document text',
@@ -140,6 +145,10 @@ describe('Error Handling and Recovery Integration Tests', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
+    
+    // Setup console spies
+    consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+    consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
 
     // Setup DOM mocks
     mockCanvas.getContext.mockReturnValue(mockContext);
@@ -252,7 +261,7 @@ describe('Error Handling and Recovery Integration Tests', () => {
         .rejects.toThrow('ENOTFOUND: DNS lookup failed');
 
       // Should log error and potentially trigger offline mode
-      expect(jest.mocked(console.error)).toHaveBeenCalled();
+      expect(consoleErrorSpy).toHaveBeenCalled();
     });
   });
 
@@ -407,7 +416,7 @@ describe('Error Handling and Recovery Integration Tests', () => {
         .rejects.toThrow('ENOSPC: No space left on device');
 
       // Should trigger cleanup or alert mechanisms
-      expect(jest.mocked(console.error)).toHaveBeenCalled();
+      expect(consoleErrorSpy).toHaveBeenCalled();
     }, 15000);
 
     it('should handle quota exhaustion with graceful degradation', async () => {

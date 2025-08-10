@@ -1,33 +1,79 @@
 import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import { I18nextProvider } from 'react-i18next';
-import i18n from '../../i18n/i18n';
 import ComparativeAnalytics from './ComparativeAnalytics';
 
-// Mock the services
-jest.mock('@lib/financialService', () => ({
-  getFinancialOverview: jest.fn(() =>
-    Promise.resolve({
-      success: true,
-      data: {
-        totalRevenue: 50000,
-        totalExpenses: 30000,
-        profitMargin: 40,
+// Mock react-i18next to avoid relying on real i18n instance and options
+jest.mock('react-i18next', () => {
+  const React = require('react');
+  const actual = jest.requireActual('react-i18next');
+
+  const translations = {
+    'analytics:charts.comparison': 'Comparison',
+    'analytics:charts.comparisonDesc': 'Compare income and expenses across different categories.',
+    'analytics:comparison': 'Comparison',
+    'analytics:totalRevenue': 'Total Revenue',
+    'analytics:totalExpenses': 'Total Expenses',
+    'analytics:activeClients': 'Active Clients',
+    'analytics:profitMargin': 'Profit Margin',
+    'analytics:common.loading': 'Loading...',
+    'analytics:common.error': 'Error',
+    'analytics:common.noData': 'No data available',
+    'analytics:dashboard.currentPeriod': 'Current',
+    'analytics:dashboard.previousPeriod': 'Previous Period',
+    'analytics:dashboard.compare.previousYear': 'Previous Year',
+    'analytics:dashboard.lastMonth': 'Last Month',
+    'analytics:dashboard.lastQuarter': 'Last Quarter',
+  };
+
+  const t = key => translations[key] || key;
+
+  return {
+    ...actual,
+    useTranslation: () => ({
+      t,
+      i18n: {
+        changeLanguage: () => Promise.resolve(),
+        language: 'en',
+        options: { react: { useSuspense: false } },
       },
     }),
-  ),
+    I18nextProvider: ({ children }) => React.createElement(React.Fragment, null, children),
+    Trans: ({ children }) => children,
+    initReactI18next: { type: '3rdParty', init: () => {} },
+  };
+});
+
+// Mock the services
+jest.mock('../../financial/services/financialService', () => ({
+  __esModule: true,
+  default: {
+    getFinancialOverview: jest.fn(() =>
+      Promise.resolve({
+        success: true,
+        data: {
+          totalRevenue: 50000,
+          totalExpenses: 30000,
+          profitMargin: 40,
+        },
+      }),
+    ),
+  },
 }));
 
-jest.mock('@lib/clientService', () => ({
-  getClientMetrics: jest.fn(() =>
-    Promise.resolve({
-      success: true,
-      data: {
-        total: 40,
-        active: 35,
-      },
-    }),
-  ),
+jest.mock('../../clients/services/clientService', () => ({
+  __esModule: true,
+  default: {
+    getClientMetrics: jest.fn(() =>
+      Promise.resolve({
+        success: true,
+        data: {
+          total: 40,
+          active: 35,
+        },
+      }),
+    ),
+  },
 }));
 
 // Mock Chart.js
@@ -36,7 +82,10 @@ jest.mock('react-chartjs-2', () => ({
   Bar: () => <div data-testid='bar-chart'>Bar Chart</div>,
 }));
 
-const TestWrapper = ({ children }) => <I18nextProvider i18n={i18n}>{children}</I18nextProvider>;
+const TestWrapper = ({ children }) => {
+  // Our mocked I18nextProvider ignores props and just returns children
+  return <I18nextProvider>{children}</I18nextProvider>;
+};
 
 describe('ComparativeAnalytics', () => {
   const defaultProps = {
@@ -59,7 +108,7 @@ describe('ComparativeAnalytics', () => {
       </TestWrapper>,
     );
 
-    expect(screen.getByText(/loading/i)).toBeInTheDocument();
+    expect(screen.getByText(/Loading.../i)).toBeInTheDocument();
   });
 
   it('renders comparative analytics after loading', async () => {
@@ -70,14 +119,14 @@ describe('ComparativeAnalytics', () => {
     );
 
     await waitFor(() => {
-      expect(screen.getByText(/comparison/i)).toBeInTheDocument();
+      expect(screen.getByText(/Comparison/i)).toBeInTheDocument();
     });
 
     // Check that comparative metrics are displayed
-    expect(screen.getByText(/total revenue/i)).toBeInTheDocument();
-    expect(screen.getByText(/total expenses/i)).toBeInTheDocument();
-    expect(screen.getByText(/active clients/i)).toBeInTheDocument();
-    expect(screen.getByText(/profit margin/i)).toBeInTheDocument();
+    expect(screen.getByText(/Total Revenue/i)).toBeInTheDocument();
+    expect(screen.getByText(/Total Expenses/i)).toBeInTheDocument();
+    expect(screen.getByText(/Active Clients/i)).toBeInTheDocument();
+    expect(screen.getByText(/Profit Margin/i)).toBeInTheDocument();
   });
 
   it('applies custom className', async () => {
@@ -121,9 +170,12 @@ describe('ComparativeAnalytics', () => {
       </TestWrapper>,
     );
 
-    await waitFor(() => {
-      expect(screen.getByText(/current/i)).toBeInTheDocument();
-      expect(screen.getByText(/vs/i)).toBeInTheDocument();
-    });
+    // Ensure main content rendered first
+    await screen.findByText(/Comparison/i);
+
+    // Then check for period labels
+    const currentLabels = screen.getAllByText(/Current/i);
+    expect(currentLabels.length).toBeGreaterThan(0);
+    expect(screen.getByText(/^vs$/i)).toBeInTheDocument();
   });
 });
