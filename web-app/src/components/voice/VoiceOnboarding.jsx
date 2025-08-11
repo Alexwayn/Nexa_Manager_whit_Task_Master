@@ -535,7 +535,7 @@ export function VoiceOnboarding({ onComplete, onSkip, className = '' }) {
 
           {/* Video tutorial placeholder */}
           <div data-testid="tutorial-video" className="sr-only" />
-        </div
+        </div>
 
         {/* Footer */}
         <div className="flex items-center justify-between p-6 border-t border-gray-200">
