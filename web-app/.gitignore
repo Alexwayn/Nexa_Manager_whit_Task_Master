@@ -19,6 +19,9 @@ clear-*.html
 test-*.html
 *-test.html
 
+# Test coverage
+coverage/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
