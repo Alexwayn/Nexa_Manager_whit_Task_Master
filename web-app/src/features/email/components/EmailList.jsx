@@ -233,7 +233,10 @@ const EmailList = ({
               )}
             </div>
             <div className="flex items-center space-x-1">
-              {email.labels?.map(labelId => getLabelBadge(labelId))}
+              {email.labels?.map(labelId => {
+                const badge = getLabelBadge(labelId);
+                return badge;
+              })}
             </div>
           </div>
 
