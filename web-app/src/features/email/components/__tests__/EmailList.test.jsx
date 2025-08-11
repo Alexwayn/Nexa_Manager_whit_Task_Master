@@ -15,6 +15,20 @@ jest.mock('react-window', () => ({
   ),
 }));
 
+// Mock heroicons
+jest.mock('@heroicons/react/24/outline', () => ({
+  StarIcon: (props) => <svg data-testid="star-outline" {...props} />,
+  PaperClipIcon: (props) => <svg data-testid="paperclip" {...props} />,
+  CheckIcon: (props) => <svg data-testid="check" {...props} />,
+  ArchiveBoxIcon: (props) => <svg data-testid="archive" {...props} />,
+  TrashIcon: (props) => <svg data-testid="trash" {...props} />,
+  EllipsisHorizontalIcon: (props) => <svg data-testid="ellipsis" {...props} />,
+}));
+
+jest.mock('@heroicons/react/24/solid', () => ({
+  StarIcon: (props) => <svg data-testid="star-solid" {...props} />,
+}));
+
 const mockEmails = [
   {
     id: '1',
