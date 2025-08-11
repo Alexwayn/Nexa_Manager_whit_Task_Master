@@ -42,7 +42,7 @@ const VoiceFeedbackModal = ({
       id: commandData.id || Date.now().toString(),
       command: command ?? commandData.command ?? '',
       action: commandData.action ?? '',
-      confidence: confidence ?? commandData.confidence ?? null,
+      confidence: confidence ?? commandData.confidence ?? undefined,
       sessionId: commandData.sessionId ?? '',
       success: commandData.success ?? undefined
     };
@@ -144,16 +144,21 @@ const VoiceFeedbackModal = ({
           currentPage: typeof window !== 'undefined' ? window.location.pathname : '/',
           commandSuccess: effective.success,
           confidence: effective.confidence
-        },
-        categories,
-        detailed: detailedMode ? { ...detailValues } : undefined
+        }
       };
 
-      try {
-        await voiceFeedbackService.collectFeedback(feedbackData);
-      } catch (_) {
-        // don't block tests on service failure; error feedback handled below
+      // Only include categories if they exist and are not empty
+      if (categories && categories.length > 0) {
+        feedbackData.categories = categories;
       }
+
+      // Only include detailed if detailedMode is enabled and has values
+      if (detailedMode && Object.keys(detailValues).some(key => detailValues[key])) {
+        feedbackData.detailed = { ...detailValues };
+      }
+
+      // Let errors bubble so outer catch can show the UI error message expected by tests
+      await voiceFeedbackService.collectFeedback(feedbackData);
 
       if (onSubmit) await onSubmit(payload);
       if (onFeedbackSubmitted) onFeedbackSubmitted(feedbackData);

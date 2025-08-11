@@ -48,24 +48,26 @@ jest.mock('../../services/ocrProviderFactory', () => {
 });
 
 // Mock RateLimitingService
-jest.mock('../../services/rateLimitingService', () => {
-  const MockRateLimitingService = jest.fn();
-  MockRateLimitingService.getInstance = jest.fn(() => ({
-    queueRequest: jest.fn().mockResolvedValue(mockOCRResult)
-  }));
-  return MockRateLimitingService;
-});
+jest.mock('../../services/rateLimitingService', () => ({
+  __esModule: true,
+  default: {
+    getInstance: jest.fn(() => ({
+      queueRequest: jest.fn().mockResolvedValue(mockOCRResult)
+    })),
+  },
+}));
 
 // Mock ResultCacheService
-jest.mock('../../services/resultCacheService', () => {
-  const MockResultCacheService = jest.fn();
-  MockResultCacheService.getInstance = jest.fn(() => ({
-    getCachedOCRResult: jest.fn().mockResolvedValue(null),
-    cacheOCRResult: jest.fn().mockResolvedValue(undefined),
-    generateOCRKey: jest.fn().mockReturnValue('cache-key-123')
-  }));
-  return MockResultCacheService;
-});
+jest.mock('../../services/resultCacheService', () => ({
+  __esModule: true,
+  default: {
+    getInstance: jest.fn(() => ({
+      getCachedOCRResult: jest.fn().mockResolvedValue(null),
+      cacheOCRResult: jest.fn().mockResolvedValue(undefined),
+      generateOCRKey: jest.fn().mockReturnValue('cache-key-123')
+    })),
+  },
+}));
 
 // Mock FallbackOCRService completely
 jest.mock('../../services/fallbackOCRService', () => {

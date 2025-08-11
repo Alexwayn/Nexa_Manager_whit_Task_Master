@@ -244,6 +244,7 @@ export class BatchProcessingService {
 
     if (!job || job.status === BatchJobStatus.CANCELLED) {
       this.isProcessing = false;
+      // Schedule next queue processing using setTimeout so Jest fake timers can advance it
       setTimeout(() => this.processQueue(), 0);
       return;
     }
@@ -253,6 +254,7 @@ export class BatchProcessingService {
     } finally {
       this.isProcessing = false;
       if (this.jobQueue.length > 0) {
+        // Schedule next queue processing using setTimeout so Jest fake timers can advance it
         setTimeout(() => this.processQueue(), 0);
       }
     }
@@ -538,6 +540,14 @@ export class BatchProcessingService {
     this.activeJobs.clear();
     this.jobQueue = [];
     this.isProcessing = false;
+
+    // Ensure OCR resources are cleaned up
+    try {
+      // destroy may be async; we intentionally do not await in dispose signature
+      void this.ocrService.destroy();
+    } catch (e) {
+      // ignore
+    }
   }
 }
 

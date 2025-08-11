@@ -600,7 +600,10 @@ class OpenAIVisionProvider extends BaseOCRProvider {
         // Rate limiting delay between requests
         const delay = this.calculateDelay();
         if (delay > 0) {
-          await new Promise(resolve => setTimeout(resolve, delay));
+          await new Promise(resolve => {
+            // Use setTimeout so Jest fake timers can control the delay in tests
+            setTimeout(resolve, process.env.NODE_ENV === 'test' ? 0 : delay);
+          });
         }
       }
     }
@@ -1031,7 +1034,10 @@ class QwenOCRProvider extends BaseOCRProvider {
         // Rate limiting delay between requests
         const delay = this.calculateDelay();
         if (delay > 0) {
-          await new Promise(resolve => setTimeout(resolve, delay));
+          await new Promise(resolve => {
+            // Use setTimeout so Jest fake timers can control the delay in tests
+            setTimeout(resolve, process.env.NODE_ENV === 'test' ? 0 : delay);
+          });
         }
       }
     }

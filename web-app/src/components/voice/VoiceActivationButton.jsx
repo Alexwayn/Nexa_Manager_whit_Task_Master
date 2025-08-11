@@ -120,6 +120,7 @@ export function VoiceActivationButton({
       title={getTooltipText()}
       aria-label={getTooltipText()}
       role="button"
+      data-testid="voice-activation-button"
       {...props}
     >
       {getIcon()}

@@ -10,4 +10,4 @@ export * from './realtime.js';
 export * from './websocket.js';
 
 // Scanner configuration
-export * from './scanner';
+// Removed re-export of './scanner' to prevent importing Vite-specific config in Jest environment

@@ -1,12 +1,12 @@
 {
-  "timestamp": "2025-08-10T00:20:00.291Z",
+  "timestamp": "2025-08-11T16:10:06.986Z",
   "summary": {
-    "totalTests": 23,
-    "passedTests": 23,
+    "totalTests": 17,
+    "passedTests": 2,
     "failedTests": 0,
-    "pendingTests": 0,
+    "pendingTests": 15,
     "todoTests": 0,
-    "successRate": "100.00",
+    "successRate": "11.76",
     "failureRate": "0.00",
     "totalTime": 0,
     "averageTestTime": "0.00",
@@ -14,244 +14,184 @@
   },
   "testSuites": [
     {
-      "name": "VoiceFeedbackModal.test.jsx",
-      "fullPath": "E:\\AlexVenturesStudio\\Nexa_Manager_whit_Task_Master\\web-app\\src\\__tests__\\features\\voice\\VoiceFeedbackModal.test.jsx",
+      "name": "VoiceFeedback.test.jsx",
+      "fullPath": "E:\\AlexVenturesStudio\\Nexa_Manager_whit_Task_Master\\web-app\\src\\__tests__\\features\\voice\\VoiceFeedback.test.jsx",
       "status": "unknown",
-      "duration": 3819,
-      "numTests": 23,
-      "numPassing": 23,
+      "duration": 23482,
+      "numTests": 17,
+      "numPassing": 2,
       "numFailing": 0,
-      "numPending": 0,
+      "numPending": 15,
       "numTodo": 0,
       "tests": [
         {
-          "title": "renders modal when open",
-          "fullName": "VoiceFeedbackModal renders modal when open",
-          "status": "passed",
-          "duration": 59,
+          "title": "renders voice feedback page correctly",
+          "fullName": "VoiceFeedback Page renders voice feedback page correctly",
+          "status": "pending",
+          "duration": 0,
           "failureMessages": [],
           "ancestorTitles": [
-            "VoiceFeedbackModal"
+            "VoiceFeedback Page"
           ]
         },
         {
-          "title": "does not render when closed",
-          "fullName": "VoiceFeedbackModal does not render when closed",
-          "status": "passed",
-          "duration": 4,
+          "title": "displays feedback analytics",
+          "fullName": "VoiceFeedback Page displays feedback analytics",
+          "status": "pending",
+          "duration": 0,
           "failureMessages": [],
           "ancestorTitles": [
-            "VoiceFeedbackModal"
+            "VoiceFeedback Page"
           ]
         },
         {
-          "title": "displays quick feedback options",
-          "fullName": "VoiceFeedbackModal displays quick feedback options",
-          "status": "passed",
-          "duration": 11,
+          "title": "shows feedback modal when add feedback button is clicked",
+          "fullName": "VoiceFeedback Page shows feedback modal when add feedback button is clicked",
+          "status": "pending",
+          "duration": 0,
           "failureMessages": [],
           "ancestorTitles": [
-            "VoiceFeedbackModal"
+            "VoiceFeedback Page"
           ]
         },
         {
-          "title": "handles quick feedback selection",
-          "fullName": "VoiceFeedbackModal handles quick feedback selection",
+          "title": "verifies spy works",
+          "fullName": "VoiceFeedback Page verifies spy works",
+          "status": "pending",
+          "duration": 0,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceFeedback Page"
+          ]
+        },
+        {
+          "title": "handles feedback submission",
+          "fullName": "VoiceFeedback Page handles feedback submission",
           "status": "passed",
           "duration": 69,
           "failureMessages": [],
           "ancestorTitles": [
-            "VoiceFeedbackModal"
+            "VoiceFeedback Page"
           ]
         },
         {
-          "title": "allows custom rating selection",
-          "fullName": "VoiceFeedbackModal allows custom rating selection",
-          "status": "passed",
-          "duration": 45,
+          "title": "displays error message when analytics loading fails",
+          "fullName": "VoiceFeedback Page displays error message when analytics loading fails",
+          "status": "pending",
+          "duration": 0,
           "failureMessages": [],
           "ancestorTitles": [
-            "VoiceFeedbackModal"
+            "VoiceFeedback Page"
           ]
         },
         {
-          "title": "handles comment input",
-          "fullName": "VoiceFeedbackModal handles comment input",
-          "status": "passed",
-          "duration": 449,
+          "title": "shows queued feedback count when offline",
+          "fullName": "VoiceFeedback Page shows queued feedback count when offline",
+          "status": "pending",
+          "duration": 0,
           "failureMessages": [],
           "ancestorTitles": [
-            "VoiceFeedbackModal"
+            "VoiceFeedback Page"
           ]
         },
         {
-          "title": "submits feedback with all data",
-          "fullName": "VoiceFeedbackModal submits feedback with all data",
-          "status": "passed",
-          "duration": 493,
+          "title": "handles sync queued feedback",
+          "fullName": "VoiceFeedback Page handles sync queued feedback",
+          "status": "pending",
+          "duration": 0,
           "failureMessages": [],
           "ancestorTitles": [
-            "VoiceFeedbackModal"
+            "VoiceFeedback Page"
           ]
         },
         {
-          "title": "requires rating before submission",
-          "fullName": "VoiceFeedbackModal requires rating before submission",
-          "status": "passed",
-          "duration": 47,
+          "title": "displays feedback analysis tools",
+          "fullName": "VoiceFeedback Page displays feedback analysis tools",
+          "status": "pending",
+          "duration": 0,
           "failureMessages": [],
           "ancestorTitles": [
-            "VoiceFeedbackModal"
+            "VoiceFeedback Page"
           ]
         },
         {
-          "title": "closes modal when close button is clicked",
-          "fullName": "VoiceFeedbackModal closes modal when close button is clicked",
-          "status": "passed",
-          "duration": 44,
+          "title": "displays rating distribution chart",
+          "fullName": "VoiceFeedback Page displays rating distribution chart",
+          "status": "pending",
+          "duration": 0,
           "failureMessages": [],
           "ancestorTitles": [
-            "VoiceFeedbackModal"
+            "VoiceFeedback Page"
           ]
         },
         {
-          "title": "closes modal when clicking outside",
-          "fullName": "VoiceFeedbackModal closes modal when clicking outside",
-          "status": "passed",
-          "duration": 45,
+          "title": "shows common issues section",
+          "fullName": "VoiceFeedback Page shows common issues section",
+          "status": "pending",
+          "duration": 0,
           "failureMessages": [],
           "ancestorTitles": [
-            "VoiceFeedbackModal"
+            "VoiceFeedback Page"
           ]
         },
         {
-          "title": "closes modal with Escape key",
-          "fullName": "VoiceFeedbackModal closes modal with Escape key",
-          "status": "passed",
-          "duration": 10,
+          "title": "handles empty analytics data gracefully",
+          "fullName": "VoiceFeedback Page handles empty analytics data gracefully",
+          "status": "pending",
+          "duration": 0,
           "failureMessages": [],
           "ancestorTitles": [
-            "VoiceFeedbackModal"
+            "VoiceFeedback Page"
           ]
         },
         {
-          "title": "prevents closing when clicking inside modal content",
-          "fullName": "VoiceFeedbackModal prevents closing when clicking inside modal content",
-          "status": "passed",
-          "duration": 66,
+          "title": "refreshes analytics data",
+          "fullName": "VoiceFeedback Page refreshes analytics data",
+          "status": "pending",
+          "duration": 0,
           "failureMessages": [],
           "ancestorTitles": [
-            "VoiceFeedbackModal"
+            "VoiceFeedback Page"
           ]
         },
         {
-          "title": "displays command suggestions for low confidence",
-          "fullName": "VoiceFeedbackModal displays command suggestions for low confidence",
-          "status": "passed",
-          "duration": 7,
+          "title": "exports feedback data",
+          "fullName": "VoiceFeedback Page exports feedback data",
+          "status": "pending",
+          "duration": 0,
           "failureMessages": [],
           "ancestorTitles": [
-            "VoiceFeedbackModal"
+            "VoiceFeedback Page"
           ]
         },
         {
-          "title": "handles suggestion selection",
-          "fullName": "VoiceFeedbackModal handles suggestion selection",
-          "status": "passed",
-          "duration": 55,
+          "title": "handles keyboard navigation",
+          "fullName": "VoiceFeedback Page handles keyboard navigation",
+          "status": "pending",
+          "duration": 0,
           "failureMessages": [],
           "ancestorTitles": [
-            "VoiceFeedbackModal"
+            "VoiceFeedback Page"
           ]
         },
         {
-          "title": "shows loading state during submission",
-          "fullName": "VoiceFeedbackModal shows loading state during submission",
-          "status": "passed",
-          "duration": 95,
+          "title": "displays loading state while fetching analytics",
+          "fullName": "VoiceFeedback Page displays loading state while fetching analytics",
+          "status": "pending",
+          "duration": 0,
           "failureMessages": [],
           "ancestorTitles": [
-            "VoiceFeedbackModal"
+            "VoiceFeedback Page"
           ]
         },
         {
-          "title": "handles submission errors",
-          "fullName": "VoiceFeedbackModal handles submission errors",
+          "title": "handles feedback submission errors",
+          "fullName": "VoiceFeedback Page handles feedback submission errors",
           "status": "passed",
-          "duration": 121,
+          "duration": 194,
           "failureMessages": [],
           "ancestorTitles": [
-            "VoiceFeedbackModal"
-          ]
-        },
-        {
-          "title": "displays feedback categories",
-          "fullName": "VoiceFeedbackModal displays feedback categories",
-          "status": "passed",
-          "duration": 6,
-          "failureMessages": [],
-          "ancestorTitles": [
-            "VoiceFeedbackModal"
-          ]
-        },
-        {
-          "title": "handles category selection",
-          "fullName": "VoiceFeedbackModal handles category selection",
-          "status": "passed",
-          "duration": 57,
-          "failureMessages": [],
-          "ancestorTitles": [
-            "VoiceFeedbackModal"
-          ]
-        },
-        {
-          "title": "includes selected categories in submission",
-          "fullName": "VoiceFeedbackModal includes selected categories in submission",
-          "status": "passed",
-          "duration": 246,
-          "failureMessages": [],
-          "ancestorTitles": [
-            "VoiceFeedbackModal"
-          ]
-        },
-        {
-          "title": "maintains focus management for accessibility",
-          "fullName": "VoiceFeedbackModal maintains focus management for accessibility",
-          "status": "passed",
-          "duration": 31,
-          "failureMessages": [],
-          "ancestorTitles": [
-            "VoiceFeedbackModal"
-          ]
-        },
-        {
-          "title": "has proper ARIA attributes",
-          "fullName": "VoiceFeedbackModal has proper ARIA attributes",
-          "status": "passed",
-          "duration": 8,
-          "failureMessages": [],
-          "ancestorTitles": [
-            "VoiceFeedbackModal"
-          ]
-        },
-        {
-          "title": "handles detailed feedback mode",
-          "fullName": "VoiceFeedbackModal handles detailed feedback mode",
-          "status": "passed",
-          "duration": 39,
-          "failureMessages": [],
-          "ancestorTitles": [
-            "VoiceFeedbackModal"
-          ]
-        },
-        {
-          "title": "validates detailed feedback inputs",
-          "fullName": "VoiceFeedbackModal validates detailed feedback inputs",
-          "status": "passed",
-          "duration": 107,
-          "failureMessages": [],
-          "ancestorTitles": [
-            "VoiceFeedbackModal"
+            "VoiceFeedback Page"
           ]
         }
       ],
@@ -261,18 +201,18 @@
   ],
   "coverage": null,
   "performance": {
-    "totalDuration": 3819,
-    "averageDuration": 3819,
+    "totalDuration": 23482,
+    "averageDuration": 23482,
     "slowestSuite": {
-      "name": "VoiceFeedbackModal.test.jsx",
-      "duration": 3819,
-      "slow": false
+      "name": "VoiceFeedback.test.jsx",
+      "duration": 23482,
+      "slow": true
     },
     "suitePerformance": [
       {
-        "name": "VoiceFeedbackModal.test.jsx",
-        "duration": 3819,
-        "slow": false
+        "name": "VoiceFeedback.test.jsx",
+        "duration": 23482,
+        "slow": true
       }
     ]
   },
@@ -290,15 +230,15 @@
   "metadata": {
     "jestVersion": "unknown",
     "totalTime": 0,
-    "startTime": 1754785196037,
+    "startTime": 1754928583201,
     "success": true,
     "numTotalTestSuites": 1,
     "numPassedTestSuites": 1,
     "numFailedTestSuites": 0,
-    "numTotalTests": 23,
-    "numPassedTests": 23,
+    "numTotalTests": 17,
+    "numPassedTests": 2,
     "numFailedTests": 0,
-    "numPendingTests": 0,
+    "numPendingTests": 15,
     "numTodoTests": 0
   }
 }

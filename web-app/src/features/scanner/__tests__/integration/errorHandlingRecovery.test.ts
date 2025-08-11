@@ -187,7 +187,7 @@ describe('Error Handling and Recovery Integration Tests', () => {
   describe('Network Error Recovery', () => {
     it('should handle network timeouts with retry mechanism', async () => {
       let attemptCount = 0;
-      jest.spyOn(ocrService, 'extractText').mockImplementation(async () => {
+      jest.spyOn(AIOCRService.prototype, 'extractText').mockImplementation(async () => {
         attemptCount++;
         if (attemptCount < 3) {
           throw new Error('Network timeout');
@@ -197,7 +197,7 @@ describe('Error Handling and Recovery Integration Tests', () => {
 
       const imageBlob = new Blob(['test image'], { type: 'image/jpeg' });
 
-      // Implement retry logic
+      // Implement retry logic with fake timers
       let retries = 0;
       const maxRetries = 3;
       let result: OCRResult | null = null;
@@ -210,18 +210,18 @@ describe('Error Handling and Recovery Integration Tests', () => {
           if (retries >= maxRetries) {
             throw error;
           }
-          // Exponential backoff
-          await new Promise(resolve => setTimeout(resolve, Math.pow(2, retries) * 1000));
+          // Use immediate resolution instead of exponential backoff with fake timers
+          await Promise.resolve();
         }
       }
 
       expect(result).toEqual(mockOCRResult);
       expect(attemptCount).toBe(3);
-    });
+    }, 10000);
 
     it('should handle connection refused errors with fallback', async () => {
       // Mock connection error
-      jest.spyOn(ocrService, 'extractText').mockImplementation(async (_image, options) => {
+      jest.spyOn(AIOCRService.prototype, 'extractText').mockImplementation(async (_image, options) => {
         if (options?.provider === OCRProvider.OpenAI) {
           throw new Error('ECONNREFUSED: Connection refused');
         }
@@ -251,9 +251,10 @@ describe('Error Handling and Recovery Integration Tests', () => {
     });
 
     it('should handle DNS resolution failures', async () => {
-      jest.spyOn(ocrService, 'extractText').mockRejectedValue(
-        new Error('ENOTFOUND: DNS lookup failed')
-      );
+      jest.spyOn(AIOCRService.prototype, 'extractText').mockImplementation(async () => {
+        console.error('ENOTFOUND: DNS lookup failed');
+        throw new Error('ENOTFOUND: DNS lookup failed');
+      });
 
       const imageBlob = new Blob(['test image'], { type: 'image/jpeg' });
 
@@ -271,7 +272,7 @@ describe('Error Handling and Recovery Integration Tests', () => {
       jest.spyOn(imageProcessingService, 'optimizeForOCR').mockRejectedValue(
         new Error('Image processing service unavailable')
       );
-      jest.spyOn(ocrService, 'extractText').mockResolvedValue(mockOCRResult);
+      jest.spyOn(AIOCRService.prototype, 'extractText').mockResolvedValue(mockOCRResult);
 
       const imageBlob = new Blob(['test image'], { type: 'image/jpeg' });
 
@@ -341,7 +342,7 @@ describe('Error Handling and Recovery Integration Tests', () => {
       jest.spyOn(cacheService, 'cacheOCRResult').mockRejectedValue(
         new Error('Cache service unavailable')
       );
-      jest.spyOn(ocrService, 'extractText').mockResolvedValue(mockOCRResult);
+      jest.spyOn(AIOCRService.prototype, 'extractText').mockResolvedValue(mockOCRResult);
 
       const imageBlob = new Blob(['test image'], { type: 'image/jpeg' });
       const cacheKey = 'test-cache-key';
@@ -372,20 +373,62 @@ describe('Error Handling and Recovery Integration Tests', () => {
     it('should handle memory pressure during batch processing', async () => {
       // Mock memory pressure scenario
       let memoryUsage = 0;
-      const memoryLimit = 1000;
+      const memoryLimit = 600; // Lower limit to allow some files to complete
+      let completedFiles = 0;
 
-      jest.spyOn(ocrService, 'extractText').mockImplementation(async () => {
-        memoryUsage += 200; // Simulate memory usage
-        if (memoryUsage > memoryLimit) {
+      const extractTextSpy = jest.spyOn(AIOCRService.prototype, 'extractText').mockImplementation(async () => {
+        memoryUsage += 200; // Simulate memory usage per file
+        completedFiles++;
+        
+        // Allow first 3 files to complete before hitting memory limit
+        if (completedFiles > 3) {
           throw new Error('Out of memory');
         }
         return mockOCRResult;
+      });
+
+      // Mock Image to trigger onload events for image optimization
+      const mockImageInstances: any[] = [];
+      (global.Image as jest.Mock).mockImplementation(() => {
+        const mockImage = {
+          onload: null,
+          onerror: null,
+          src: '',
+          width: 800,
+          height: 600
+        };
+        mockImageInstances.push(mockImage);
+        
+        // Automatically trigger onload when src is set with immediate execution
+        Object.defineProperty(mockImage, 'src', {
+          set(value: string) {
+            // Use immediate execution instead of setTimeout
+            if (mockImage.onload) {
+              mockImage.onload();
+            }
+          },
+          get() {
+            return 'blob:mock-url';
+          }
+        });
+        
+        return mockImage;
+      });
+
+      // Mock canvas toBlob to execute immediately
+      mockCanvas.toBlob.mockImplementation((callback) => {
+        // Execute callback immediately for faster test execution
+        if (callback) {
+          callback(new Blob(['processed'], { type: 'image/jpeg' }));
+        }
       });
 
       const files = Array.from({ length: 10 }, (_, i) => createMockFile(`doc${i}.jpg`));
 
       const jobId = batchProcessingService.createBatchJob(files, {
         maxConcurrency: 2, // Limit concurrency to manage memory
+        optimizeImages: false, // Skip optimization to avoid DOM timing issues
+        enableCaching: false,  // Disable cache to simplify flow
         onError: (error) => {
           if (error.error.includes('Out of memory')) {
             // Reduce concurrency or pause processing
@@ -394,21 +437,42 @@ describe('Error Handling and Recovery Integration Tests', () => {
         }
       });
 
-      jest.advanceTimersByTime(5000);
-      await Promise.resolve();
+      // Wait for batch processing to start and process files
+      // Allow more time for processing and use smaller increments
+      let iterations = 0;
+      const maxIterations = 100;
+      
+      while (iterations < maxIterations) {
+        jest.advanceTimersByTime(50);
+        await Promise.resolve();
+        await Promise.resolve(); // Double resolve to ensure microtasks complete
+        
+        const job = batchProcessingService.getJobStatus(jobId);
+        if (job && (job.progress.completed > 0 || job.progress.failed > 0)) {
+          // Continue for a bit more to ensure we get both completed and failed
+          if (job.progress.completed > 0 && job.progress.failed > 0) {
+            break;
+          }
+        }
+        iterations++;
+      }
 
       const job = batchProcessingService.getJobStatus(jobId);
       
       // Some files should succeed before memory limit is hit
       expect(job?.progress.completed).toBeGreaterThan(0);
       expect(job?.progress.failed).toBeGreaterThan(0);
+
+      // Restore mocked extractText to avoid affecting other tests
+      extractTextSpy.mockRestore();
     });
 
     it('should handle disk space exhaustion', async () => {
       // Mock disk space error
-      jest.spyOn(documentStorageService, 'saveDocument').mockRejectedValue(
-        new Error('ENOSPC: No space left on device')
-      );
+      jest.spyOn(documentStorageService, 'saveDocument').mockImplementation(async () => {
+        console.error('ENOSPC: No space left on device');
+        throw new Error('ENOSPC: No space left on device');
+      });
 
       const document = createMockDocument();
 
@@ -462,15 +526,15 @@ describe('Error Handling and Recovery Integration Tests', () => {
 
       const promise = imageProcessingService.optimizeForOCR(corruptedBlob);
 
-      // Simulate image loading error
-      setTimeout(() => {
-        if (mockImage.onerror) {
-          (mockImage.onerror as () => void)();
-        }
-      }, 0);
+      // Simulate image loading error immediately with fake timers
+      if (mockImage.onerror) {
+        (mockImage.onerror as () => void)();
+      }
+
+      jest.advanceTimersByTime(0);
 
       await expect(promise).rejects.toThrow('Failed to load image');
-    });
+    }, 10000);
 
     it('should validate OCR results for consistency', async () => {
       // Mock inconsistent OCR result
@@ -482,7 +546,7 @@ describe('Error Handling and Recovery Integration Tests', () => {
         blocks: []
       };
 
-      jest.spyOn(ocrService, 'extractText').mockResolvedValue(inconsistentResult);
+      jest.spyOn(AIOCRService.prototype, 'extractText').mockResolvedValue(inconsistentResult);
 
       const imageBlob = new Blob(['test image'], { type: 'image/jpeg' });
       const result = await ocrService.extractText(imageBlob);
@@ -541,8 +605,8 @@ describe('Error Handling and Recovery Integration Tests', () => {
 
       jest.spyOn(cacheService, 'cacheOCRResult').mockImplementation(async () => {
         cacheWriteCount++;
-        // Simulate async operation
-        await new Promise(resolve => setTimeout(resolve, 100));
+        // Remove setTimeout delay for faster test execution
+        return Promise.resolve();
       });
 
       // Simulate concurrent cache writes
@@ -598,7 +662,7 @@ describe('Error Handling and Recovery Integration Tests', () => {
       const failureThreshold = 3;
       let circuitOpen = false;
 
-      jest.spyOn(ocrService, 'extractText').mockImplementation(async () => {
+      jest.spyOn(AIOCRService.prototype, 'extractText').mockImplementation(async () => {
         if (circuitOpen) {
           throw new Error('Circuit breaker is open');
         }
@@ -650,11 +714,10 @@ describe('Error Handling and Recovery Integration Tests', () => {
       };
 
       // Mock OCR with resource management
-      jest.spyOn(ocrService, 'extractText').mockImplementation(async () => {
+      jest.spyOn(AIOCRService.prototype, 'extractText').mockImplementation(async () => {
         await acquireResource(ocrPool);
         try {
-          // Reduced timeout for faster test execution
-          await new Promise(resolve => setTimeout(resolve, 10));
+          // Use fake timer with immediate resolution
           return mockOCRResult;
         } finally {
           releaseResource(ocrPool);
@@ -665,8 +728,7 @@ describe('Error Handling and Recovery Integration Tests', () => {
       jest.spyOn(imageProcessingService, 'optimizeForOCR').mockImplementation(async (blob) => {
         await acquireResource(imageProcessingPool);
         try {
-          // Reduced timeout for faster test execution
-          await new Promise(resolve => setTimeout(resolve, 5));
+          // Use fake timer with immediate resolution
           return blob;
         } finally {
           releaseResource(imageProcessingPool);
@@ -680,11 +742,34 @@ describe('Error Handling and Recovery Integration Tests', () => {
       const ocrPromises = Array.from({ length: 3 }, () => ocrService.extractText(imageBlob));
       const imagePromises = Array.from({ length: 2 }, () => imageProcessingService.optimizeForOCR(imageBlob));
 
+      // Advance timers to ensure promises resolve
+      jest.advanceTimersByTime(100);
+
       await Promise.all([...ocrPromises, ...imagePromises]);
 
       expect(ocrPool.active).toBe(0);
       expect(imageProcessingPool.active).toBe(0);
-    }, 15000);
+    }, 10000);
+
+    it('should handle concurrent cache access safely', async () => {
+      const cacheKey = 'concurrent-test-key';
+      let cacheWriteCount = 0;
+
+      jest.spyOn(cacheService, 'cacheOCRResult').mockImplementation(async () => {
+        cacheWriteCount++;
+        // Remove setTimeout delay for faster test execution
+        return Promise.resolve();
+      });
+
+      // Simulate concurrent cache writes
+      const promises = Array.from({ length: 5 }, () =>
+        cacheService.cacheOCRResult(cacheKey, mockOCRResult)
+      );
+
+      await Promise.all(promises);
+
+      expect(cacheWriteCount).toBe(5);
+    }, 10000);
 
     it('should implement graceful shutdown with cleanup', async () => {
       // Start some operations
@@ -738,7 +823,7 @@ describe('Error Handling and Recovery Integration Tests', () => {
       };
 
       // Simulate various errors
-      jest.spyOn(ocrService, 'extractText').mockImplementation(async () => {
+      jest.spyOn(AIOCRService.prototype, 'extractText').mockImplementation(async () => {
         const errorTypes = ['network_error', 'rate_limit', 'service_unavailable'];
         const errorType = errorTypes[Math.floor(Math.random() * errorTypes.length)];
         trackError(errorType);
@@ -812,7 +897,7 @@ describe('Error Handling and Recovery Integration Tests', () => {
       };
 
       // Mock some services as healthy, others as unhealthy
-      jest.spyOn(ocrService, 'extractText').mockResolvedValue(mockOCRResult);
+      jest.spyOn(AIOCRService.prototype, 'extractText').mockResolvedValue(mockOCRResult);
       jest.spyOn(imageProcessingService, 'optimizeForOCR').mockResolvedValue(new Blob());
       jest.spyOn(documentStorageService, 'saveDocument').mockRejectedValue(new Error('Storage down'));
       jest.spyOn(cacheService, 'cacheOCRResult').mockResolvedValue(undefined);

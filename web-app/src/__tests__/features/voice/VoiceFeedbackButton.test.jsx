@@ -2,6 +2,7 @@ import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import VoiceFeedbackButton from '../../../components/voice/VoiceFeedbackButton';
+import { injectTestStyles, removeTestStyles } from '../../utils/testStyleUtils';
 
 // Mock the VoiceFeedbackModal component
 jest.mock('../../../components/voice/VoiceFeedbackModal', () => {
@@ -60,6 +61,13 @@ const renderWithProviders = (ui, options = {}) => {
 };
 
 describe('VoiceFeedbackButton', () => {
+  beforeAll(() => {
+    injectTestStyles();
+  });
+
+  afterAll(() => {
+    removeTestStyles();
+  });
   beforeEach(() => {
     jest.clearAllMocks();
   });
@@ -237,7 +245,8 @@ describe('VoiceFeedbackButton', () => {
 
     const feedbackButton = screen.getByTestId('voice-feedback-button');
     expect(feedbackButton).toHaveClass('custom-feedback-btn');
-    expect(feedbackButton).toHaveStyle('background-color: red');
+    // Check that the style attribute is set correctly (style prop is applied)
+    expect(feedbackButton.style.backgroundColor).toBe('red');
   });
 
   it('shows feedback count when available', () => {
@@ -281,7 +290,7 @@ describe('VoiceFeedbackButton', () => {
   });
 
   it('updates when voice state changes', () => {
-    renderWithProviders(
+    const { rerender } = renderWithProviders(
       <VoiceFeedbackButton />,
       { mockState: { lastCommand: null } }
     );
@@ -289,11 +298,13 @@ describe('VoiceFeedbackButton', () => {
     let feedbackButton = screen.getByTestId('voice-feedback-button');
     expect(feedbackButton).toBeDisabled();
 
-    // Re-render with new state
-    renderWithProviders(
-      <VoiceFeedbackButton />,
-      { mockState: { lastCommand: 'new command' } }
-    );
+    // Update mock state and re-render
+    mockUseVoiceAssistant.mockReturnValue({
+      ...defaultState,
+      lastCommand: 'new command'
+    });
+    
+    rerender(<VoiceFeedbackButton />);
 
     feedbackButton = screen.getByTestId('voice-feedback-button');
     expect(feedbackButton).not.toBeDisabled();

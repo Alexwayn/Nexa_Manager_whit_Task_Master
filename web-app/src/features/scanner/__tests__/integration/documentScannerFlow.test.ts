@@ -48,13 +48,27 @@ Object.defineProperty(global, 'HTMLCanvasElement', {
 });
 
 Object.defineProperty(global, 'Image', {
-  value: jest.fn(() => ({
-    onload: null,
-    onerror: null,
-    src: '',
-    width: 800,
-    height: 600
-  })),
+  value: jest.fn(() => {
+    const mockImage: any = {
+      onload: null,
+      onerror: null,
+      width: 800,
+      height: 600
+    };
+
+    Object.defineProperty(mockImage, 'src', {
+      set(_: string) {
+        if (typeof mockImage.onload === 'function') {
+          mockImage.onload();
+        }
+      },
+      get() {
+        return 'blob:mock-url';
+      }
+    });
+
+    return mockImage;
+  }),
   writable: true
 });
 
@@ -159,7 +173,7 @@ describe('Document Scanner Integration Tests', () => {
   describe('End-to-End Document Scanning Flow', () => {
     it('should process a single document from image to storage', async () => {
       // Mock successful OCR extraction
-      jest.spyOn(ocrService, 'extractText').mockResolvedValue(mockOCRResult);
+      jest.spyOn(AIOCRService.prototype, 'extractText').mockResolvedValue(mockOCRResult);
       
       // Mock successful document storage
       jest.spyOn(documentStorageService, 'saveDocument').mockResolvedValue('doc-123');
@@ -236,7 +250,7 @@ describe('Document Scanner Integration Tests', () => {
       ];
 
       jest.spyOn(imageProcessingService, 'parsePDF').mockResolvedValue(mockPages);
-      jest.spyOn(ocrService, 'extractText').mockImplementation(async (image, _options) => ({
+      jest.spyOn(AIOCRService.prototype, 'extractText').mockImplementation(async (image, _options) => ({
         ...mockOCRResult,
         text: `Page content for ${mockPages.indexOf(image as Blob) + 1}`,
         processingTime: 1000
@@ -268,7 +282,7 @@ describe('Document Scanner Integration Tests', () => {
 
     it('should process batch of documents with progress tracking', async () => {
       // Mock OCR for batch processing
-      jest.spyOn(ocrService, 'extractText').mockImplementation(async () => {
+      jest.spyOn(AIOCRService.prototype, 'extractText').mockImplementation(async () => {
         // Simulate processing time
         await new Promise(resolve => setTimeout(resolve, 100));
         return mockOCRResult;
@@ -316,7 +330,7 @@ describe('Document Scanner Integration Tests', () => {
   describe('OCR Provider Fallback Mechanism', () => {
     it('should fallback to secondary provider when primary fails', async () => {
       // Mock primary provider failure
-      const mockExtractText = jest.spyOn(ocrService, 'extractText');
+      const mockExtractText = jest.spyOn(AIOCRService.prototype, 'extractText');
       
       mockExtractText
         .mockRejectedValueOnce(new Error('OpenAI API error'))
@@ -341,7 +355,7 @@ describe('Document Scanner Integration Tests', () => {
       const providerCalls: OCRProvider[] = [];
       
       // Mock all AI providers failing
-      jest.spyOn(ocrService, 'extractText').mockImplementation(async (_image, options) => {
+      jest.spyOn(AIOCRService.prototype, 'extractText').mockImplementation(async (_image, options) => {
         const provider = options?.provider || OCRProvider.OpenAI;
         providerCalls.push(provider);
         
@@ -375,7 +389,7 @@ describe('Document Scanner Integration Tests', () => {
     it('should respect provider priority in fallback chain', async () => {
       const providerCalls: OCRProvider[] = [];
       
-      jest.spyOn(ocrService, 'extractText').mockImplementation(async (_image, options) => {
+      jest.spyOn(AIOCRService.prototype, 'extractText').mockImplementation(async (_image, options) => {
         const provider = options?.provider || OCRProvider.OpenAI;
         providerCalls.push(provider);
         
@@ -445,7 +459,7 @@ describe('Document Scanner Integration Tests', () => {
       );
 
       // Mock OCR still working with original image
-      jest.spyOn(ocrService, 'extractText').mockResolvedValue(mockOCRResult);
+      jest.spyOn(AIOCRService.prototype, 'extractText').mockResolvedValue(mockOCRResult);
 
       const imageBlob = new Blob(['test image'], { type: 'image/jpeg' });
 
@@ -520,7 +534,7 @@ describe('Document Scanner Integration Tests', () => {
 
     it('should handle network timeouts with appropriate error messages', async () => {
       // Mock network timeout
-      jest.spyOn(ocrService, 'extractText').mockImplementation(async () => {
+      jest.spyOn(AIOCRService.prototype, 'extractText').mockImplementation(async () => {
         await new Promise((_, reject) => {
           setTimeout(() => reject(new Error('Network timeout')), 100);
         });
@@ -529,8 +543,12 @@ describe('Document Scanner Integration Tests', () => {
 
       const imageBlob = new Blob(['test image'], { type: 'image/jpeg' });
 
-      await expect(ocrService.extractText(imageBlob, { timeout: 50 }))
-        .rejects.toThrow('Network timeout');
+      const promise = ocrService.extractText(imageBlob, { timeout: 50 });
+      // Advance timers to trigger the rejection and flush microtasks
+      jest.advanceTimersByTime(200);
+      await Promise.resolve();
+      await Promise.resolve();
+      await expect(promise).rejects.toThrow('Network timeout');
     });
 
     it('should handle corrupted image files gracefully', async () => {
@@ -554,7 +572,7 @@ describe('Document Scanner Integration Tests', () => {
       const cacheKey = cacheService.generateOCRKey(imageBlob);
 
       // First call should miss cache and perform OCR
-      jest.spyOn(ocrService, 'extractText').mockResolvedValue(mockOCRResult);
+      jest.spyOn(AIOCRService.prototype, 'extractText').mockResolvedValue(mockOCRResult);
       
       const result1 = await ocrService.extractText(imageBlob);
       
@@ -597,7 +615,7 @@ describe('Document Scanner Integration Tests', () => {
         .mockResolvedValueOnce(null) // Cache miss for second file
         .mockResolvedValueOnce(mockOCRResult); // Cache hit for third file
 
-      jest.spyOn(ocrService, 'extractText').mockResolvedValue(mockOCRResult);
+      jest.spyOn(AIOCRService.prototype, 'extractText').mockResolvedValue(mockOCRResult);
 
       const files = [
         createMockFile('doc1.jpg'),
@@ -609,8 +627,12 @@ describe('Document Scanner Integration Tests', () => {
         enableCaching: true
       });
 
-      jest.advanceTimersByTime(2000);
-      await Promise.resolve();
+      // Advance timers multiple times and resolve promises to allow batch processing to complete
+      for (let i = 0; i < 10; i++) {
+        jest.advanceTimersByTime(200);
+        await Promise.resolve();
+        await Promise.resolve();
+      }
 
       const job = batchProcessingService.getJobStatus(jobId);
       const stats = batchProcessingService.getBatchStats();
@@ -622,14 +644,14 @@ describe('Document Scanner Integration Tests', () => {
 
   describe('Performance and Scalability', () => {
     it('should handle large batch processing efficiently', async () => {
-      const startTime = Date.now();
+      const startTime = jest.getRealSystemTime();
       
       // Create large batch
       const files = Array.from({ length: 20 }, (_, i) => 
         createMockFile(`doc${i + 1}.jpg`)
       );
 
-      jest.spyOn(ocrService, 'extractText').mockImplementation(async () => {
+      jest.spyOn(AIOCRService.prototype, 'extractText').mockImplementation(async () => {
         // Simulate realistic processing time
         await new Promise(resolve => setTimeout(resolve, 50));
         return mockOCRResult;
@@ -641,12 +663,15 @@ describe('Document Scanner Integration Tests', () => {
         enableCaching: true
       });
 
-      // Process batch
-      jest.advanceTimersByTime(10000);
-      await Promise.resolve();
+      // Process batch with proper timer handling for setInterval calls
+      for (let i = 0; i < 100; i++) {
+        jest.advanceTimersByTime(100);
+        await Promise.resolve();
+        await Promise.resolve();
+      }
 
       const job = batchProcessingService.getJobStatus(jobId);
-      const processingTime = Date.now() - startTime;
+      const processingTime = jest.getRealSystemTime() - startTime;
 
       expect(job?.progress.completed).toBe(20);
       expect(job?.progress.failed).toBe(0);
@@ -669,11 +694,14 @@ describe('Document Scanner Integration Tests', () => {
         jobs.push(jobId);
       }
 
-      jest.spyOn(ocrService, 'extractText').mockResolvedValue(mockOCRResult);
+      jest.spyOn(AIOCRService.prototype, 'extractText').mockResolvedValue(mockOCRResult);
 
-      // Process all jobs concurrently
-      jest.advanceTimersByTime(5000);
-      await Promise.resolve();
+      // Process all jobs concurrently with proper timer handling
+      for (let i = 0; i < 50; i++) {
+        jest.advanceTimersByTime(100);
+        await Promise.resolve();
+        await Promise.resolve();
+      }
 
       // All jobs should complete successfully
       jobs.forEach(jobId => {
@@ -690,7 +718,7 @@ describe('Document Scanner Integration Tests', () => {
       
       // Mock services to track data flow
       const ocrResult = { ...mockOCRResult, processingTime: 1500 };
-      jest.spyOn(ocrService, 'extractText').mockResolvedValue(ocrResult);
+      jest.spyOn(AIOCRService.prototype, 'extractText').mockResolvedValue(ocrResult);
       jest.spyOn(documentStorageService, 'saveDocument').mockResolvedValue('doc-123');
 
       // Process document
@@ -736,7 +764,7 @@ describe('Document Scanner Integration Tests', () => {
 
     it('should handle partial failures without data corruption', async () => {
       // Mock partial failure scenario
-      jest.spyOn(ocrService, 'extractText').mockResolvedValue(mockOCRResult);
+      jest.spyOn(AIOCRService.prototype, 'extractText').mockResolvedValue(mockOCRResult);
       jest.spyOn(documentStorageService, 'saveDocument').mockRejectedValue(
         new Error('Storage service unavailable')
       );

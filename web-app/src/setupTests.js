@@ -108,6 +108,51 @@ global.HTMLCanvasElement.prototype.getContext = jest.fn(() => ({
 
 global.HTMLCanvasElement.prototype.toDataURL = jest.fn(() => '');
 
+// Ensure canvas.toBlob exists and is synchronous for tests
+if (!global.HTMLCanvasElement.prototype.toBlob) {
+  global.HTMLCanvasElement.prototype.toBlob = jest.fn((callback, type = 'image/jpeg') => {
+    const blob = new Blob(['mock'], { type });
+    callback(blob);
+  });
+} else {
+  // Override with a deterministic mock
+  global.HTMLCanvasElement.prototype.toBlob = jest.fn((callback, type = 'image/jpeg') => {
+    const blob = new Blob(['mock'], { type });
+    callback(blob);
+  });
+}
+
+// Provide URL.createObjectURL / revokeObjectURL for image loading
+if (!window.URL.createObjectURL) {
+  window.URL.createObjectURL = jest.fn(() => 'blob:mock-url');
+}
+if (!window.URL.revokeObjectURL) {
+  window.URL.revokeObjectURL = jest.fn();
+}
+
+// Mock Image to immediately fire onload with default dimensions
+// This avoids reliance on timers and network in tests
+// eslint-disable-next-line no-undef
+global.Image = class MockImage {
+  constructor() {
+    this.onload = null;
+    this.onerror = null;
+    this.width = 1024;
+    this.height = 768;
+    this._src = '';
+  }
+  set src(val) {
+    this._src = val;
+    // Trigger load synchronously to avoid timer flakiness
+    if (typeof this.onload === 'function') {
+      this.onload();
+    }
+  }
+  get src() {
+    return this._src;
+  }
+};
+
 // Mock ResizeObserver for Chart.js responsiveness
 global.ResizeObserver = jest.fn().mockImplementation(() => ({
   observe: jest.fn(),

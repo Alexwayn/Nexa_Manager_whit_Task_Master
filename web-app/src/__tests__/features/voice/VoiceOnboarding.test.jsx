@@ -3,6 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { BrowserRouter } from 'react-router-dom';
 import VoiceOnboarding from '@/features/voice/components/VoiceOnboarding';
 import { VoiceAssistantProvider } from '@/providers/VoiceAssistantProvider';
+import React from 'react';
 
 const renderWithProviders = (component, props = {}) => {
   return render(

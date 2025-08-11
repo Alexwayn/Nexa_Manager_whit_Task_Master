@@ -60,24 +60,26 @@ jest.mock('../../services/ocrProviderFactory', () => {
 });
 
 // Mock RateLimitingService
-jest.mock('../../services/rateLimitingService', () => {
-  const MockRateLimitingService = jest.fn();
-  MockRateLimitingService.getInstance = jest.fn(() => ({
-    queueRequest: jest.fn().mockResolvedValue(mockSuccessResult)
-  }));
-  return MockRateLimitingService;
-});
+jest.mock('../../services/rateLimitingService', () => ({
+  __esModule: true,
+  default: {
+    getInstance: jest.fn(() => ({
+      queueRequest: jest.fn().mockResolvedValue(mockSuccessResult)
+    })),
+  },
+}));
 
 // Mock ResultCacheService
-jest.mock('../../services/resultCacheService', () => {
-  const MockResultCacheService = jest.fn();
-  MockResultCacheService.getInstance = jest.fn(() => ({
-    getCachedOCRResult: jest.fn().mockResolvedValue(null),
-    cacheOCRResult: jest.fn().mockResolvedValue(undefined),
-    generateOCRKey: jest.fn().mockReturnValue('cache-key-123')
-  }));
-  return MockResultCacheService;
-});
+jest.mock('../../services/resultCacheService', () => ({
+  __esModule: true,
+  default: {
+    getInstance: jest.fn(() => ({
+      getCachedOCRResult: jest.fn().mockResolvedValue(null),
+      cacheOCRResult: jest.fn().mockResolvedValue(undefined),
+      generateOCRKey: jest.fn().mockReturnValue('cache-key-123')
+    })),
+  },
+}));
 
 // Mock FallbackOCRService completely
 jest.mock('../../services/fallbackOCRService', () => {
@@ -129,7 +131,7 @@ describe('OCR Provider Fallback Integration Tests', () => {
   describe('Provider Availability and Fallback Chain', () => {
     test('should use primary provider when available', async () => {
       // Mock the extractText method directly to avoid complex async chains
-      jest.spyOn(ocrService, 'extractText').mockResolvedValue(mockSuccessResult);
+      jest.spyOn(AIOCRService.prototype, 'extractText').mockResolvedValue(mockSuccessResult);
 
       const result = await ocrService.extractText(imageBlob);
 
@@ -139,7 +141,7 @@ describe('OCR Provider Fallback Integration Tests', () => {
 
     test('should fallback to secondary provider when primary fails', async () => {
       // Mock fallback behavior
-      jest.spyOn(ocrService, 'extractText').mockResolvedValue(mockFallbackResult);
+      jest.spyOn(AIOCRService.prototype, 'extractText').mockResolvedValue(mockFallbackResult);
 
       const result = await ocrService.extractText(imageBlob);
 
@@ -161,7 +163,7 @@ describe('OCR Provider Fallback Integration Tests', () => {
         }
       };
 
-      jest.spyOn(ocrService, 'extractText').mockResolvedValue(errorResult);
+      jest.spyOn(AIOCRService.prototype, 'extractText').mockResolvedValue(errorResult);
 
       const result = await ocrService.extractText(imageBlob);
 
@@ -185,7 +187,7 @@ describe('OCR Provider Fallback Integration Tests', () => {
         }
       };
 
-      jest.spyOn(ocrService, 'extractText').mockResolvedValue(rateLimitedResult);
+      jest.spyOn(AIOCRService.prototype, 'extractText').mockResolvedValue(rateLimitedResult);
 
       const result = await ocrService.extractText(imageBlob);
 
@@ -208,7 +210,7 @@ describe('OCR Provider Fallback Integration Tests', () => {
         }
       };
 
-      jest.spyOn(ocrService, 'extractText').mockResolvedValue(timeoutResult);
+      jest.spyOn(AIOCRService.prototype, 'extractText').mockResolvedValue(timeoutResult);
 
       const result = await ocrService.extractText(imageBlob);
 
@@ -219,7 +221,7 @@ describe('OCR Provider Fallback Integration Tests', () => {
 
   describe('Performance Under Load', () => {
     test('should handle concurrent requests with proper fallback', async () => {
-      jest.spyOn(ocrService, 'extractText').mockResolvedValue(mockSuccessResult);
+      jest.spyOn(AIOCRService.prototype, 'extractText').mockResolvedValue(mockSuccessResult);
 
       const promises = Array(5).fill(null).map(() => 
         ocrService.extractText(imageBlob)
@@ -233,7 +235,7 @@ describe('OCR Provider Fallback Integration Tests', () => {
     }, 15000); // Increased timeout for concurrent operations
 
     test('should maintain performance with multiple fallback attempts', async () => {
-      jest.spyOn(ocrService, 'extractText').mockResolvedValue(mockFallbackResult);
+      jest.spyOn(AIOCRService.prototype, 'extractText').mockResolvedValue(mockFallbackResult);
 
       const startTime = Date.now();
       const result = await ocrService.extractText(imageBlob);

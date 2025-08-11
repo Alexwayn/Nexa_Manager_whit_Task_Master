@@ -126,26 +126,29 @@ const VoiceFeedbackButton = ({
       'duration-200'
     ];
 
+    // Check if custom style has background properties that should override defaults
+    const hasCustomBackground = style && (style.backgroundColor || style.background);
+
     // Variant classes
     const variantClasses = {
       primary: [
         'border-transparent',
         'text-white',
-        'bg-blue-600',
+        ...(hasCustomBackground ? [] : ['bg-blue-600']),
         'hover:bg-blue-700',
         'focus:ring-blue-500'
       ],
       secondary: [
         'border-gray-300',
         'text-gray-700',
-        'bg-white',
+        ...(hasCustomBackground ? [] : ['bg-white']),
         'hover:bg-gray-50',
         'focus:ring-blue-500'
       ],
       default: [
         'border-gray-300',
         'text-gray-700',
-        'bg-white',
+        ...(hasCustomBackground ? [] : ['bg-white']),
         'hover:bg-gray-50',
         'focus:ring-blue-500'
       ]
@@ -202,21 +205,27 @@ const VoiceFeedbackButton = ({
     return 'Give feedback';
   };
 
+  // Build style - return the style object as-is for inline styles
+  const getButtonStyle = () => {
+    return style || {};
+  };
+
   return (
     <>
-      <button
-        className={getButtonClasses()}
-        style={style}
-        disabled={isButtonDisabled}
-        onClick={handleClick}
-        onKeyDown={handleKeyDown}
-        title={getTooltipText()}
-        aria-label={getAriaLabel()}
-        aria-describedby="feedback-tooltip"
-        role="button"
-        data-testid="voice-feedback-button"
-        {...props}
-      >
+      <div className="relative inline-flex">
+        <button
+          className={getButtonClasses()}
+          style={getButtonStyle()}
+          disabled={isButtonDisabled}
+          onClick={handleClick}
+          onKeyDown={handleKeyDown}
+          title={getTooltipText()}
+          aria-label={getAriaLabel()}
+          aria-describedby="feedback-tooltip"
+          role="button"
+          data-testid="voice-feedback-button"
+          {...props}
+        >
         <ChatBubbleLeftRightIcon className="h-4 w-4" data-testid="feedback-icon" />
         {!iconOnly && (
           <span className="ml-2">
@@ -229,16 +238,16 @@ const VoiceFeedbackButton = ({
           </span>
         )}
         {showCount && (feedbackCount || stateFeedbackCount) && iconOnly && (
-          <span className="absolute -top-1 -right-1 px-1 py-0.5 text-xs bg-red-500 text-white rounded-full min-w-[1rem] text-center">
+          <span 
+            className="absolute -top-1 -right-1 px-1 py-0.5 text-xs bg-red-500 text-white rounded-full min-w-[1rem] text-center"
+            data-testid="feedback-count-badge"
+          >
             {feedbackCount || stateFeedbackCount}
           </span>
         )}
       </button>
+      </div>
 
-      {/* Display feedback count as text when showCount is true */}
-      {showCount && (feedbackCount || stateFeedbackCount) && (
-        <span>{feedbackCount || stateFeedbackCount}</span>
-      )}
 
       {/* Status Messages */}
       {isSubmitting && (
@@ -256,6 +265,7 @@ const VoiceFeedbackButton = ({
           {errorMessage}
         </div>
       )}
+
 
       {/* Feedback Modal (guard in case module is mocked to undefined in tests) */}
       {VoiceFeedbackModal ? (

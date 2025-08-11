@@ -289,7 +289,7 @@ describe('VoiceFeedback Page', () => {
     fireEvent.click(ratingButtons[4]);
 
     // Add a comment
-    const commentInput = screen.getByPlaceholderText(/share your thoughts/i);
+    const commentInput = screen.getByPlaceholderText(/tell us more/i);
     fireEvent.change(commentInput, { target: { value: 'Test feedback' } });
 
     // Submit the form

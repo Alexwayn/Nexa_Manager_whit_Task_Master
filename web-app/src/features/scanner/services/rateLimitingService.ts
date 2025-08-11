@@ -70,6 +70,9 @@ export class RateLimitingService {
   private rateLimitConfigs: Map<OCRProvider, RateLimitConfig> = new Map();
   private quotaConfigs: Map<OCRProvider, QuotaConfig> = new Map();
   private processingQueues = false;
+  // Track interval IDs so we can clear them during tests/dispose
+  private refillIntervalId: ReturnType<typeof setInterval> | null = null;
+  private queueProcessorIntervalId: ReturnType<typeof setInterval> | null = null;
 
   private constructor() {
     this.initializeConfigs();
@@ -612,7 +615,10 @@ export class RateLimitingService {
       }
 
       // Small delay to prevent tight loop
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise(resolve => {
+        // Use setTimeout so Jest fake timers can control progress in tests
+        setTimeout(resolve, process.env.NODE_ENV === 'test' ? 0 : 100);
+      });
     }
 
     this.processingQueues = false;
@@ -639,7 +645,11 @@ export class RateLimitingService {
 
   private startRefillInterval(): void {
     // Refill tokens every second
-    setInterval(() => {
+    if (this.refillIntervalId) {
+      clearInterval(this.refillIntervalId);
+      this.refillIntervalId = null;
+    }
+    this.refillIntervalId = setInterval(() => {
       for (const provider of this.tokenBuckets.keys()) {
         this.refillTokens(provider);
       }
@@ -648,13 +658,16 @@ export class RateLimitingService {
 
   private startQueueProcessor(): void {
     // Process queues every 500ms
-    setInterval(() => {
+    if (this.queueProcessorIntervalId) {
+      clearInterval(this.queueProcessorIntervalId);
+      this.queueProcessorIntervalId = null;
+    }
+    this.queueProcessorIntervalId = setInterval(() => {
       if (!this.processingQueues && this.hasQueuedRequests()) {
         this.processRequestQueues();
       }
     }, 500);
   }
-
   private loadQuotaUsage(): void {
     try {
       const saved = localStorage.getItem('scanner_quota_usage');
@@ -724,6 +737,16 @@ export class RateLimitingService {
     // Clear all queues
     for (const provider of this.requestQueues.keys()) {
       this.clearQueue(provider);
+    }
+
+    // Clear internal intervals to avoid leaking timers between tests
+    if (this.refillIntervalId) {
+      clearInterval(this.refillIntervalId);
+      this.refillIntervalId = null;
+    }
+    if (this.queueProcessorIntervalId) {
+      clearInterval(this.queueProcessorIntervalId);
+      this.queueProcessorIntervalId = null;
     }
     
     this.saveQuotaUsage();

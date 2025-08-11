@@ -17,7 +17,18 @@ module.exports = {
   setupFiles: ['dotenv/config', '<rootDir>/src/jest.env.js'],
   setupFilesAfterEnv: ['<rootDir>/src/setupTests.js'],
   transform: {
-    '^.+\\.(js|jsx|ts|tsx)$': 'babel-jest',
+    '^.+\\.(ts|tsx)$': [
+      'ts-jest',
+      {
+        tsconfig: '<rootDir>/tsconfig.json',
+        useESM: false,
+        diagnostics: false,
+        isolatedModules: true,
+        // Ensure Babel plugins (including import.meta handling) run for TS files
+        babelConfig: true,
+      }
+    ],
+    '^.+\\.(js|jsx)$': '<rootDir>/jest-transformer.cjs',
   },
   transformIgnorePatterns: [
     '/node_modules/(?!(@babel/runtime|axios|react-syntax-highlighter|react-spinners|pretty-bytes|react-hot-toast|react-icons|react-select|react-markdown|remark-gfm|react-dnd|dnd-core|@react-dnd|react-dnd-html5-backend|@supabase|isows|ws|websocket)/)',
@@ -65,13 +76,13 @@ module.exports = {
     '^@config/(.*)$': '<rootDir>/src/config/$1',
     '^@pages/(.*)$': '<rootDir>/src/pages/$1',
     '^@routes/(.*)$': '<rootDir>/src/routes/$1',
-    '^@styles/(.*)$': '<rootDir>/src/styles/$1',
+    '^@styles/(.*)$': '<rootDir>/src/shared/styles/$1',
     '^@shared/(.*)$': '<rootDir>/src/shared/$1',
     '^@db/(.*)$': '<rootDir>/src/db/$1',
     '^@public/(.*)$': '<rootDir>/public/$1',
     '^@test/(.*)$': '<rootDir>/src/__tests__/$1',
     // Map relative UI imports used in some tests to a real file
-    '^\.\./\.\./ui/.*$': '<rootDir>/src/components/ui/index.js',
+    '^\./\./ui/.*$': '<rootDir>/src/components/ui/index.js',
     '^react-markdown$': '<rootDir>/node_modules/react-markdown/react-markdown.js',
     'remark-gfm': '<rootDir>/node_modules/remark-gfm/index.js',
     'react-dnd': '<rootDir>/node_modules/react-dnd/dist/cjs/index.js',
@@ -97,6 +108,8 @@ module.exports = {
     '<rootDir>/src/**/__tests__/**/*.{spec,test}.{js,jsx,ts,tsx}',
     '<rootDir>/src/**/*.{spec,test}.{js,jsx,ts,tsx}',
   ],
+  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
+  extensionsToTreatAsEsm: [],
   coverageDirectory: 'coverage',
   collectCoverageFrom: [
     'src/**/*.{js,jsx,ts,tsx}',

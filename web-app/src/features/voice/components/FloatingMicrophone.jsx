@@ -109,6 +109,13 @@ export const FloatingMicrophone = ({
 
   const handleKeyDown = (e) => {
     if (e.key === 'Enter' || e.key === ' ') {
+      // Prevent default to avoid scrolling with Space, and let activation occur on keyUp
+      e.preventDefault();
+    }
+  };
+
+  const handleKeyUp = (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
       handleClick();
     }
@@ -176,6 +183,7 @@ export const FloatingMicrophone = ({
       <button
         onClick={handleClick}
         onKeyDown={handleKeyDown}
+        onKeyUp={handleKeyUp}
         disabled={!isEnabled || !hasPermission}
         tabIndex={0}
         className={`${getButtonClasses()} ${getPositionClasses()}`}

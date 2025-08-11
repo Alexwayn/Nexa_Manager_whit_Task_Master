@@ -2,16 +2,16 @@
 # 🎤 Voice Assistant Test Results
 
 **Status:** PASSED  
-**Generated:** 2025-08-10T00:20:00.291Z
+**Generated:** 2025-08-11T16:10:06.986Z
 
 ## 📊 Summary
 
 | Metric | Value |
 |--------|-------|
-| Total Tests | 23 |
-| Passed | 23 |
+| Total Tests | 17 |
+| Passed | 2 |
 | Failed | 0 |
-| Success Rate | 100.00% |
+| Success Rate | 11.76% |
 | Total Time | 0ms |
 | Average Test Time | 0.00ms |
 
@@ -21,15 +21,15 @@
 
 | Suite | Status | Tests | Passed | Failed | Duration |
 |-------|--------|-------|--------|--------|----------|
-| VoiceFeedbackModal.test.jsx | unknown | 23 | 23 | 0 | 3819ms |
+| VoiceFeedback.test.jsx | unknown | 17 | 2 | 0 | 23482ms |
 
 
 
 ## ⚡ Performance
 
-- **Total Duration:** 3819ms
-- **Average Duration:** 3819ms
-- **Slowest Suite:** VoiceFeedbackModal.test.jsx (3819ms)
+- **Total Duration:** 23482ms
+- **Average Duration:** 23482ms
+- **Slowest Suite:** VoiceFeedback.test.jsx (23482ms)
 
 ## 🖥️ Environment
 

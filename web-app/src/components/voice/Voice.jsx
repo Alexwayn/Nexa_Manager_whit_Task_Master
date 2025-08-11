@@ -62,8 +62,6 @@ const Voice = ({
           <VoiceIndicator
             isListening={isListening}
             isProcessing={isProcessing}
-            transcript={transcript}
-            confidence={confidence}
             className={className}
             {...props}
           />
@@ -75,7 +73,6 @@ const Voice = ({
           <VoiceActivationButton
             isListening={isListening}
             isProcessing={isProcessing}
-            onClick={handleToggleListening}
             className={className}
             {...props}
           />

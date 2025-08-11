@@ -36,7 +36,7 @@ export * from './languageUtils';
 export * from './userIdConverter';
 export * from './performance';
 export * from './realtime';
-export * from './scanner';
+// Removed re-export of './scanner' to avoid pulling Vite-specific import.meta in test environment
 export * from './websocket';
 export * from './config';
 export * from './middleware';
