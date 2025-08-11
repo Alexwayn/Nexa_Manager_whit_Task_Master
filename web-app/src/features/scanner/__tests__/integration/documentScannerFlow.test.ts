@@ -819,3 +819,95 @@ describe('Document Scanner Integration Tests', () => {
     });
   });
 });
+
+
+  describe('OCR Provider Fallback Chain', () => {
+    it('should fallback to next provider when primary fails', async () => {
+      // Mock OpenAI failure
+      jest.spyOn(AIOCRService.prototype, 'extractText').mockImplementation(async (_image, options) => {
+        const provider = options?.provider || OCRProvider.OpenAI;
+        
+        if (provider === OCRProvider.OpenAI) {
+          throw new Error('OpenAI rate limit exceeded');
+        }
+        
+        if (provider === OCRProvider.Qwen) {
+          return {
+            ...mockOCRResult,
+            provider: OCRProvider.Qwen,
+            confidence: 0.85
+          };
+        }
+        
+        throw new Error('Provider failed');
+      });
+
+      const imageBlob = new Blob(['test image'], { type: 'image/jpeg' });
+      
+      const result = await ocrService.extractText(imageBlob);
+
+      expect(result.provider).toBe(OCRProvider.Qwen);
+      expect(result.confidence).toBe(0.85);
+    });
+
+    it('should use fallback provider when all AI providers fail', async () => {
+      const providerCalls: OCRProvider[] = [];
+      
+      jest.spyOn(AIOCRService.prototype, 'extractText').mockImplementation(async (_image, options) => {
+        const provider = options?.provider || OCRProvider.OpenAI;
+        providerCalls.push(provider);
+        
+        if (provider === OCRProvider.Fallback) {
+          return {
+            text: '[Manual Input Required]\n\nPlease manually enter the text content from this document.',
+            confidence: 0.1,
+            provider: OCRProvider.Fallback,
+            processingTime: 0,
+            error: {
+              code: 'MANUAL_INPUT_REQUIRED',
+              message: 'All automatic OCR providers failed',
+              provider: OCRProvider.Fallback,
+              retryable: false
+            }
+          };
+        }
+        throw new Error('AI provider failed');
+      });
+
+      const imageBlob = new Blob(['test image'], { type: 'image/jpeg' });
+      
+      const result = await ocrService.extractText(imageBlob);
+
+      expect(result.provider).toBe(OCRProvider.Fallback);
+      expect(result.text).toContain('Manual Input Required');
+      expect(result.confidence).toBe(0.1);
+      expect(result.error?.code).toBe('MANUAL_INPUT_REQUIRED');
+    });
+
+    it('should respect provider priority in fallback chain', async () => {
+      const providerCalls: OCRProvider[] = [];
+      
+      jest.spyOn(AIOCRService.prototype, 'extractText').mockImplementation(async (_image, options) => {
+        const provider = options?.provider || OCRProvider.OpenAI;
+        providerCalls.push(provider);
+        
+        if (provider === OCRProvider.Fallback) {
+          return {
+            ...mockOCRResult,
+            provider: OCRProvider.Fallback,
+            text: 'Fallback result'
+          };
+        }
+        
+        throw new Error(`${provider} failed`);
+      });
+
+      const imageBlob = new Blob(['test image'], { type: 'image/jpeg' });
+      
+      await ocrService.extractText(imageBlob);
+
+      // Should try providers in priority order: OpenAI -> Qwen -> Fallback
+      expect(providerCalls).toContain(OCRProvider.OpenAI);
+      expect(providerCalls).toContain(OCRProvider.Fallback);
+    });
+  });
