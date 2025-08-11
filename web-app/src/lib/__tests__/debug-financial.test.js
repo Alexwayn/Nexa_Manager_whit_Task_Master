@@ -1,22 +1,20 @@
 // Debug test to check mocking
-const mockIncomeService = {
-  getIncomeStats: jest.fn(),
-  getIncomeTrend: jest.fn(),
-};
 
-const mockExpenseService = {
-  getExpenseStats: jest.fn(),
-  getExpenseTrend: jest.fn(),
-};
-
+// Define mocks after jest.mock to avoid hoisting issues
 jest.mock('../../features/financial/services/incomeService', () => ({
   __esModule: true,
-  default: mockIncomeService,
+  default: {
+    getIncomeStats: jest.fn(),
+    getIncomeTrend: jest.fn(),
+  },
 }));
 
 jest.mock('../../features/financial/services/expenseService', () => ({
   __esModule: true,
-  default: mockExpenseService,
+  default: {
+    getExpenseStats: jest.fn(),
+    getExpenseTrend: jest.fn(),
+  },
 }));
 
 import financialServiceMock from '../../features/financial/services/financialService';
