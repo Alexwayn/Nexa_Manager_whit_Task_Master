@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">7.14% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/70</span>
+                <span class='fraction'>5/70</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">8.57% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/35</span>
+                <span class='fraction'>3/35</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">13.33% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/15</span>
+                <span class='fraction'>2/15</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">7.57% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/66</span>
+                <span class='fraction'>5/66</span>
             </div>
         
             
@@ -362,7 +362,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -370,7 +370,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -623,11 +623,11 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -639,7 +639,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/**
  * Email Provider Service
@@ -650,8 +650,8 @@ import { supabaseClient } from './supabaseClient';
 import logger from '@/utils/Logger';
 &nbsp;
 export class EmailProviderService {
-<span class="fstat-no" title="function not covered" >  co</span>nstructor() {
-<span class="cstat-no" title="statement not covered" >    this.providers = {</span>
+  constructor() {
+    this.providers = {
       smtp: this.sendViaSMTP.bind(this),
       sendgrid: this.sendViaSendGrid.bind(this),
       mailgun: this.sendViaMailgun.bind(this),
@@ -659,7 +659,7 @@ export class EmailProviderService {
     };
     
     // Default provider from environment or fallback to SMTP
-<span class="cstat-no" title="statement not covered" >    this.defaultProvider = process.env.EMAIL_PROVIDER || 'smtp';</span>
+    this.defaultProvider = process.env.EMAIL_PROVIDER || 'smtp';
   }
 &nbsp;
   /**
@@ -911,12 +911,12 @@ export class EmailProviderService {
    * @param {string} provider - Provider name
    * @returns {boolean} Success
    */
-<span class="fstat-no" title="function not covered" >  se</span>tDefaultProvider(provider) {
-<span class="cstat-no" title="statement not covered" >    if (this.providers[provider]) {</span>
+  setDefaultProvider(provider) {
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (this.providers[provider]) {
 <span class="cstat-no" title="statement not covered" >      this.defaultProvider = provider;</span>
 <span class="cstat-no" title="statement not covered" >      return true;</span>
     }
-<span class="cstat-no" title="statement not covered" >    return false;</span>
+    return false;
   }
 &nbsp;
   /**
@@ -928,7 +928,7 @@ export class EmailProviderService {
   }
 }
 &nbsp;
-const emailProviderService = <span class="cstat-no" title="statement not covered" >new EmailProviderService();</span>
+const emailProviderService = new EmailProviderService();
 export default emailProviderService;
 &nbsp;</pre></td></tr></table></pre>
 
@@ -937,7 +937,7 @@ export default emailProviderService;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-08-07T19:19:19.104Z
+                at 2025-08-13T02:10:19.343Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">4.03% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/222</span>
+                <span class='fraction'>9/223</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">1.28% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/156</span>
+                <span class='fraction'>2/156</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">4.87% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/41</span>
+                <span class='fraction'>2/41</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">4.41% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/203</span>
+                <span class='fraction'>9/204</span>
             </div>
         
             
@@ -828,7 +828,10 @@
 <a name='L763'></a><a href='#L763'>763</a>
 <a name='L764'></a><a href='#L764'>764</a>
 <a name='L765'></a><a href='#L765'>765</a>
-<a name='L766'></a><a href='#L766'>766</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L766'></a><a href='#L766'>766</a>
+<a name='L767'></a><a href='#L767'>767</a>
+<a name='L768'></a><a href='#L768'>768</a>
+<a name='L769'></a><a href='#L769'>769</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -839,9 +842,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1583,14 +1586,17 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { supabase } from '@/lib/supabaseClient';
@@ -1603,10 +1609,10 @@ import { getEnvVar } from '@/utils/env';
  * EmailCampaignService - Manages bulk email campaigns with tracking and analytics
  */
 class EmailCampaignService {
-<span class="fstat-no" title="function not covered" >  co</span>nstructor() {
-<span class="cstat-no" title="statement not covered" >    this.baseTrackingUrl = getEnvVar('VITE_BASE_URL') || 'https://your-domain.com';</span>
-<span class="cstat-no" title="statement not covered" >    this.maxBatchSize = 50; </span>// Maximum emails per batch
-<span class="cstat-no" title="statement not covered" >    this.sendDelay = 1000; </span>// Delay between batches in milliseconds
+  constructor() {
+    this.baseTrackingUrl = getEnvVar('VITE_BASE_URL') || <span class="branch-1 cbranch-no" title="branch not covered" >'https://your-domain.com';</span>
+    this.maxBatchSize = 50; // Maximum emails per batch
+    this.sendDelay = 1000; // Delay between batches in milliseconds
   }
 &nbsp;
   /**
@@ -2348,14 +2354,17 @@ class EmailCampaignService {
   }
 }
 &nbsp;
-let emailCampaignServiceInstance = <span class="cstat-no" title="statement not covered" >null;</span>
+let emailCampaignServiceInstance = null;
 &nbsp;
-export const getEmailCampaignService = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >  if (!emailCampaignServiceInstance) {</span>
-<span class="cstat-no" title="statement not covered" >    emailCampaignServiceInstance = new EmailCampaignService();</span>
+export const getEmailCampaignService = () =&gt; {
+  <span class="missing-if-branch" title="else path not taken" >E</span>if (!emailCampaignServiceInstance) {
+    emailCampaignServiceInstance = new EmailCampaignService();
   }
-<span class="cstat-no" title="statement not covered" >  return emailCampaignServiceInstance;</span>
+  return emailCampaignServiceInstance;
 };
+&nbsp;
+// Export the service instance for direct access
+export const emailCampaignService = getEmailCampaignService();
 &nbsp;
 export default getEmailCampaignService;
 &nbsp;</pre></td></tr></table></pre>
@@ -2365,7 +2374,7 @@ export default getEmailCampaignService;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-08-07T19:19:19.104Z
+                at 2025-08-13T02:10:19.343Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>

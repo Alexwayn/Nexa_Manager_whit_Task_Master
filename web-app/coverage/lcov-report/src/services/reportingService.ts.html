@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">1.58% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/187</span>
+                <span class='fraction'>3/189</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/140</span>
+                <span class='fraction'>0/108</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">1.64% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/180</span>
+                <span class='fraction'>3/182</span>
             </div>
         
             
@@ -714,11 +714,13 @@
 <a name='L649'></a><a href='#L649'>649</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -731,8 +733,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -1358,7 +1358,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">// Reports and Insights Service
 // Task 71.2: Data Architecture Implementation
 &nbsp;
@@ -1376,14 +1376,14 @@ export class ReportingService {
   /**
    * Get revenue summary for a user with optional date filtering
    */
-<span class="fstat-no" title="function not covered" >  as</span>ync getRevenueSummary(
+<span class="fstat-no" title="function not covered" >  async g</span>etRevenueSummary(
     userId: string,
     dateRange?: DateRange,
     groupBy: 'month' | 'year' = <span class="branch-0 cbranch-no" title="branch not covered" >'month',</span>
   ) {
     let query = <span class="cstat-no" title="statement not covered" >supabase.from('v_revenue_summary').select('*').eq('user_id', userId);</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    if (dateRange) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (dateRange) {</span>
 <span class="cstat-no" title="statement not covered" >      query = query.gte('month_start', dateRange.start).lte('month_start', dateRange.end);</span>
     }
 &nbsp;
@@ -1391,7 +1391,7 @@ export class ReportingService {
 &nbsp;
     const { data, error } = <span class="cstat-no" title="statement not covered" >await query;</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    if (error) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (error) {</span>
 <span class="cstat-no" title="statement not covered" >      console.error('Error fetching revenue summary:', error);</span>
 <span class="cstat-no" title="statement not covered" >      throw error;</span>
     }
@@ -1402,14 +1402,14 @@ export class ReportingService {
   /**
    * Get expense summary with category breakdown
    */
-<span class="fstat-no" title="function not covered" >  as</span>ync getExpenseSummary(userId: string, dateRange?: DateRange, category?: string) {
+<span class="fstat-no" title="function not covered" >  async g</span>etExpenseSummary(userId: string, dateRange?: DateRange, category?: string) {
     let query = <span class="cstat-no" title="statement not covered" >supabase.from('v_expense_summary').select('*').eq('user_id', userId);</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    if (dateRange) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (dateRange) {</span>
 <span class="cstat-no" title="statement not covered" >      query = query.gte('month_start', dateRange.start).lte('month_start', dateRange.end);</span>
     }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    if (category) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (category) {</span>
 <span class="cstat-no" title="statement not covered" >      query = query.eq('category', category);</span>
     }
 &nbsp;
@@ -1417,7 +1417,7 @@ export class ReportingService {
 &nbsp;
     const { data, error } = <span class="cstat-no" title="statement not covered" >await query;</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    if (error) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (error) {</span>
 <span class="cstat-no" title="statement not covered" >      console.error('Error fetching expense summary:', error);</span>
 <span class="cstat-no" title="statement not covered" >      throw error;</span>
     }
@@ -1428,10 +1428,10 @@ export class ReportingService {
   /**
    * Get comprehensive profit and loss data
    */
-<span class="fstat-no" title="function not covered" >  as</span>ync getProfitLoss(userId: string, dateRange?: DateRange) {
+<span class="fstat-no" title="function not covered" >  async g</span>etProfitLoss(userId: string, dateRange?: DateRange) {
     let query = <span class="cstat-no" title="statement not covered" >supabase.from('v_profit_loss').select('*').eq('user_id', userId);</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    if (dateRange) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (dateRange) {</span>
 <span class="cstat-no" title="statement not covered" >      query = query.gte('period_start', dateRange.start).lte('period_start', dateRange.end);</span>
     }
 &nbsp;
@@ -1439,7 +1439,7 @@ export class ReportingService {
 &nbsp;
     const { data, error } = <span class="cstat-no" title="statement not covered" >await query;</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    if (error) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (error) {</span>
 <span class="cstat-no" title="statement not covered" >      console.error('Error fetching profit/loss data:', error);</span>
 <span class="cstat-no" title="statement not covered" >      throw error;</span>
     }
@@ -1450,14 +1450,14 @@ export class ReportingService {
   /**
    * Get Italian VAT (IVA) summary for tax compliance
    */
-<span class="fstat-no" title="function not covered" >  as</span>ync getIVASummary(userId: string, taxYear?: number, taxQuarter?: number) {
+<span class="fstat-no" title="function not covered" >  async g</span>etIVASummary(userId: string, taxYear?: number, taxQuarter?: number) {
     let query = <span class="cstat-no" title="statement not covered" >supabase.from('v_iva_summary').select('*').eq('user_id', userId);</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    if (taxYear) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (taxYear) {</span>
 <span class="cstat-no" title="statement not covered" >      query = query.eq('tax_year', taxYear);</span>
     }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    if (taxQuarter) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (taxQuarter) {</span>
 <span class="cstat-no" title="statement not covered" >      query = query.eq('tax_quarter', taxQuarter);</span>
     }
 &nbsp;
@@ -1465,7 +1465,7 @@ export class ReportingService {
 &nbsp;
     const { data, error } = <span class="cstat-no" title="statement not covered" >await query;</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    if (error) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (error) {</span>
 <span class="cstat-no" title="statement not covered" >      console.error('Error fetching IVA summary:', error);</span>
 <span class="cstat-no" title="statement not covered" >      throw error;</span>
     }
@@ -1476,20 +1476,20 @@ export class ReportingService {
   /**
    * Get tax deductible expenses summary
    */
-<span class="fstat-no" title="function not covered" >  as</span>ync getTaxDeductibleSummary(userId: string, taxYear?: number, category?: string) {
+<span class="fstat-no" title="function not covered" >  async g</span>etTaxDeductibleSummary(userId: string, taxYear?: number, category?: string) {
     let query = <span class="cstat-no" title="statement not covered" >supabase.from('v_tax_deductible_summary').select('*').eq('user_id', userId);</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    if (taxYear) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (taxYear) {</span>
 <span class="cstat-no" title="statement not covered" >      query = query.eq('tax_year', taxYear);</span>
     }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    if (category) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (category) {</span>
 <span class="cstat-no" title="statement not covered" >      query = query.eq('category', category);</span>
     }
 &nbsp;
     const { data, error } = <span class="cstat-no" title="statement not covered" >await query;</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    if (error) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (error) {</span>
 <span class="cstat-no" title="statement not covered" >      console.error('Error fetching tax deductible summary:', error);</span>
 <span class="cstat-no" title="statement not covered" >      throw error;</span>
     }
@@ -1504,10 +1504,10 @@ export class ReportingService {
   /**
    * Get individual client revenue and analytics
    */
-<span class="fstat-no" title="function not covered" >  as</span>ync getClientRevenue(userId: string, clientId?: string) {
+<span class="fstat-no" title="function not covered" >  async g</span>etClientRevenue(userId: string, clientId?: string) {
     let query = <span class="cstat-no" title="statement not covered" >supabase.from('v_client_revenue').select('*').eq('user_id', userId);</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    if (clientId) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (clientId) {</span>
 <span class="cstat-no" title="statement not covered" >      query = query.eq('client_id', clientId);</span>
     }
 &nbsp;
@@ -1515,7 +1515,7 @@ export class ReportingService {
 &nbsp;
     const { data, error } = <span class="cstat-no" title="statement not covered" >await query;</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    if (error) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (error) {</span>
 <span class="cstat-no" title="statement not covered" >      console.error('Error fetching client revenue:', error);</span>
 <span class="cstat-no" title="statement not covered" >      throw error;</span>
     }
@@ -1526,14 +1526,14 @@ export class ReportingService {
   /**
    * Get high-level client portfolio analytics
    */
-<span class="fstat-no" title="function not covered" >  as</span>ync getClientPortfolio(userId: string) {
+<span class="fstat-no" title="function not covered" >  async g</span>etClientPortfolio(userId: string) {
     const { data, error } = <span class="cstat-no" title="statement not covered" >await supabase</span>
       .from('v_client_portfolio')
       .select('*')
       .eq('user_id', userId)
       .single();
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    if (error) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (error) {</span>
 <span class="cstat-no" title="statement not covered" >      console.error('Error fetching client portfolio:', error);</span>
 <span class="cstat-no" title="statement not covered" >      throw error;</span>
     }
@@ -1544,14 +1544,14 @@ export class ReportingService {
   /**
    * Get top clients by revenue
    */
-<span class="fstat-no" title="function not covered" >  as</span>ync getTopClients(
+<span class="fstat-no" title="function not covered" >  async g</span>etTopClients(
     userId: string,
     limit: number = <span class="branch-0 cbranch-no" title="branch not covered" >10,</span>
     status?: 'active' | 'inactive' | 'dormant',
   ) {
     let query = <span class="cstat-no" title="statement not covered" >supabase.from('v_client_revenue').select('*').eq('user_id', userId);</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    if (status) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (status) {</span>
 <span class="cstat-no" title="statement not covered" >      query = query.eq('client_status', status);</span>
     }
 &nbsp;
@@ -1559,7 +1559,7 @@ export class ReportingService {
 &nbsp;
     const { data, error } = <span class="cstat-no" title="statement not covered" >await query;</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    if (error) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (error) {</span>
 <span class="cstat-no" title="statement not covered" >      console.error('Error fetching top clients:', error);</span>
 <span class="cstat-no" title="statement not covered" >      throw error;</span>
     }
@@ -1574,10 +1574,10 @@ export class ReportingService {
   /**
    * Get monthly business performance with growth metrics
    */
-<span class="fstat-no" title="function not covered" >  as</span>ync getMonthlyPerformance(userId: string, dateRange?: DateRange) {
+<span class="fstat-no" title="function not covered" >  async g</span>etMonthlyPerformance(userId: string, dateRange?: DateRange) {
     let query = <span class="cstat-no" title="statement not covered" >supabase.from('v_monthly_performance').select('*').eq('user_id', userId);</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    if (dateRange) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (dateRange) {</span>
 <span class="cstat-no" title="statement not covered" >      query = query.gte('period_start', dateRange.start).lte('period_start', dateRange.end);</span>
     }
 &nbsp;
@@ -1585,7 +1585,7 @@ export class ReportingService {
 &nbsp;
     const { data, error } = <span class="cstat-no" title="statement not covered" >await query;</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    if (error) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (error) {</span>
 <span class="cstat-no" title="statement not covered" >      console.error('Error fetching monthly performance:', error);</span>
 <span class="cstat-no" title="statement not covered" >      throw error;</span>
     }
@@ -1596,14 +1596,14 @@ export class ReportingService {
   /**
    * Get comprehensive business health score and metrics
    */
-<span class="fstat-no" title="function not covered" >  as</span>ync getBusinessHealth(userId: string) {
+<span class="fstat-no" title="function not covered" >  async g</span>etBusinessHealth(userId: string) {
     const { data, error } = <span class="cstat-no" title="statement not covered" >await supabase</span>
       .from('v_business_health')
       .select('*')
       .eq('user_id', userId)
       .single();
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    if (error) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (error) {</span>
 <span class="cstat-no" title="statement not covered" >      console.error('Error fetching business health:', error);</span>
 <span class="cstat-no" title="statement not covered" >      throw error;</span>
     }
@@ -1618,7 +1618,7 @@ export class ReportingService {
   /**
    * Calculate real-time KPIs for dashboard
    */
-<span class="fstat-no" title="function not covered" >  as</span>ync getRealtimeKPIs(userId: string): Promise&lt;Record&lt;string, any&gt;&gt; {
+<span class="fstat-no" title="function not covered" >  async g</span>etRealtimeKPIs(userId: string): Promise&lt;Record&lt;string, any&gt;&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
       // Get latest business health data
       const businessHealth = <span class="cstat-no" title="statement not covered" >await this.getBusinessHealth(userId);</span>
@@ -1680,7 +1680,7 @@ export class ReportingService {
   /**
    * Get trend data for charts and analytics
    */
-<span class="fstat-no" title="function not covered" >  as</span>ync getTrendData(
+<span class="fstat-no" title="function not covered" >  async g</span>etTrendData(
     userId: string,
     metric: 'revenue' | 'profit' | 'clients' | 'invoices',
     dateRange: DateRange,
@@ -1741,19 +1741,19 @@ export class ReportingService {
   /**
    * Get expense categories with totals
    */
-<span class="fstat-no" title="function not covered" >  as</span>ync getExpenseCategories(userId: string, dateRange?: DateRange) {
+<span class="fstat-no" title="function not covered" >  async g</span>etExpenseCategories(userId: string, dateRange?: DateRange) {
     let query = <span class="cstat-no" title="statement not covered" >supabase</span>
       .from('v_expense_summary')
       .select('category, total_expenses, deductible_amount')
       .eq('user_id', userId);
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    if (dateRange) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (dateRange) {</span>
 <span class="cstat-no" title="statement not covered" >      query = query.gte('month_start', dateRange.start).lte('month_start', dateRange.end);</span>
     }
 &nbsp;
     const { data, error } = <span class="cstat-no" title="statement not covered" >await query;</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    if (error) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (error) {</span>
 <span class="cstat-no" title="statement not covered" >      console.error('Error fetching expense categories:', error);</span>
 <span class="cstat-no" title="statement not covered" >      throw error;</span>
     }
@@ -1762,7 +1762,7 @@ export class ReportingService {
     const categoryTotals = <span class="cstat-no" title="statement not covered" >data?.reduce(</span>
 <span class="fstat-no" title="function not covered" >      (a</span>cc, item) =&gt; {
         const category = <span class="cstat-no" title="statement not covered" >item.category || 'Uncategorized';</span>
-<span class="cstat-no" title="statement not covered" >        if (!acc[category]) {</span>
+<span class="cstat-no" title="statement not covered" >        <span class="missing-if-branch" title="if path not taken" >I</span>if (!acc[category]) {</span>
 <span class="cstat-no" title="statement not covered" >          acc[category] = {</span>
             category,
             total_expenses: 0,
@@ -1782,12 +1782,12 @@ export class ReportingService {
   /**
    * Get revenue by client for pie charts
    */
-<span class="fstat-no" title="function not covered" >  as</span>ync getRevenueByClient(userId: string, limit: number = <span class="branch-0 cbranch-no" title="branch not covered" >10,</span> includeOthers: boolean = <span class="branch-0 cbranch-no" title="branch not covered" >true)</span> {
+<span class="fstat-no" title="function not covered" >  async g</span>etRevenueByClient(userId: string, limit: number = <span class="branch-0 cbranch-no" title="branch not covered" >10,</span> includeOthers: boolean = <span class="branch-0 cbranch-no" title="branch not covered" >true)</span> {
     const clients = <span class="cstat-no" title="statement not covered" >await this.getTopClients(userId, limit);</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    if (!clients) <span class="cstat-no" title="statement not covered" >return [];</span></span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!clients) <span class="cstat-no" title="statement not covered" >return [];</span></span>
 &nbsp;
-    let result = <span class="cstat-no" title="statement not covered" >clients.map(<span class="fstat-no" title="function not covered" >cl</span>ient =&gt; (<span class="cstat-no" title="statement not covered" >{</span></span>
+    let result = <span class="cstat-no" title="statement not covered" >clients.map(<span class="fstat-no" title="function not covered" >client </span>=&gt; (<span class="cstat-no" title="statement not covered" >{</span></span>
       name: client.client_name,
       value: client.total_revenue,
       percentage: 0, // Will be calculated below
@@ -1795,20 +1795,20 @@ export class ReportingService {
 &nbsp;
     // Calculate percentages
     const totalRevenue = <span class="cstat-no" title="statement not covered" >result.reduce(<span class="fstat-no" title="function not covered" >(s</span>um, item) =&gt; <span class="cstat-no" title="statement not covered" >sum + item.value,</span> 0);</span>
-<span class="cstat-no" title="statement not covered" >    result = result.map(<span class="fstat-no" title="function not covered" >it</span>em =&gt; (<span class="cstat-no" title="statement not covered" >{</span></span>
+<span class="cstat-no" title="statement not covered" >    result = result.map(<span class="fstat-no" title="function not covered" >item </span>=&gt; (<span class="cstat-no" title="statement not covered" >{</span></span>
       ...item,
       percentage: totalRevenue &gt; 0 ? (item.value / totalRevenue) * 100 : 0,
     }));
 &nbsp;
     // Add "Others" category if requested and there are more clients
-<span class="cstat-no" title="statement not covered" >    if (includeOthers) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (includeOthers) {</span>
       const allClients = <span class="cstat-no" title="statement not covered" >await this.getClientRevenue(userId);</span>
       const topClientsRevenue = <span class="cstat-no" title="statement not covered" >result.reduce(<span class="fstat-no" title="function not covered" >(s</span>um, item) =&gt; <span class="cstat-no" title="statement not covered" >sum + item.value,</span> 0);</span>
       const totalAllRevenue =
 <span class="cstat-no" title="statement not covered" >        allClients?.reduce(<span class="fstat-no" title="function not covered" >(s</span>um, client) =&gt; <span class="cstat-no" title="statement not covered" >sum + client.total_revenue,</span> 0) || 0;</span>
       const othersRevenue = <span class="cstat-no" title="statement not covered" >totalAllRevenue - topClientsRevenue;</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      if (othersRevenue &gt; 0) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (othersRevenue &gt; 0) {</span>
 <span class="cstat-no" title="statement not covered" >        result.push({</span>
           name: 'Others',
           value: othersRevenue,
@@ -1823,7 +1823,7 @@ export class ReportingService {
   /**
    * Compare periods for growth analysis
    */
-<span class="fstat-no" title="function not covered" >  as</span>ync comparePeriods(userId: string, currentPeriod: DateRange, previousPeriod: DateRange) {
+<span class="fstat-no" title="function not covered" >  async c</span>omparePeriods(userId: string, currentPeriod: DateRange, previousPeriod: DateRange) {
 <span class="cstat-no" title="statement not covered" >    try {</span>
       const [currentData, previousData] = <span class="cstat-no" title="statement not covered" >await Promise.all([</span>
         this.getProfitLoss(userId, currentPeriod),
@@ -1855,7 +1855,7 @@ export class ReportingService {
   /**
    * Aggregate period data for comparisons
    */
-<span class="fstat-no" title="function not covered" >  pr</span>ivate aggregatePeriodData(data: any[]) {
+  private <span class="fstat-no" title="function not covered" >aggregatePeriodData(</span>data: any[]) {
 <span class="cstat-no" title="statement not covered" >    return (</span>
       data?.reduce(
 <span class="fstat-no" title="function not covered" >        (a</span>cc, item) =&gt; (<span class="cstat-no" title="statement not covered" >{</span>
@@ -1871,15 +1871,15 @@ export class ReportingService {
   /**
    * Calculate growth rate percentage
    */
-<span class="fstat-no" title="function not covered" >  pr</span>ivate calculateGrowthRate(current: number, previous: number): number {
-<span class="cstat-no" title="statement not covered" >    if (previous === 0) <span class="cstat-no" title="statement not covered" >return current &gt; 0 ? 100 : 0;</span></span>
+  private <span class="fstat-no" title="function not covered" >calculateGrowthRate(</span>current: number, previous: number): number {
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (previous === 0) <span class="cstat-no" title="statement not covered" >return current &gt; 0 ? 100 : 0;</span></span>
 <span class="cstat-no" title="statement not covered" >    return ((current - previous) / previous) * 100;</span>
   }
 &nbsp;
   /**
    * Get date range presets
    */
-<span class="fstat-no" title="function not covered" >  st</span>atic getDateRangePresets(): Record&lt;string, DateRange&gt; {
+<span class="fstat-no" title="function not covered" >  static g</span>etDateRangePresets(): Record&lt;string, DateRange&gt; {
     const now = <span class="cstat-no" title="statement not covered" >new Date();</span>
     const currentYear = <span class="cstat-no" title="statement not covered" >now.getFullYear();</span>
     const currentMonth = <span class="cstat-no" title="statement not covered" >now.getMonth();</span>
@@ -1920,7 +1920,7 @@ export class ReportingService {
   /**
    * Get available report types
    */
-<span class="fstat-no" title="function not covered" >  as</span>ync getReportTypes() {
+<span class="fstat-no" title="function not covered" >  async g</span>etReportTypes() {
 <span class="cstat-no" title="statement not covered" >    return [</span>
       { value: 'revenue', label: 'Report Entrate', description: 'Analisi delle entrate per periodo' },
       { value: 'expenses', label: 'Report Spese', description: 'Analisi delle spese per categoria' },
@@ -1932,7 +1932,7 @@ export class ReportingService {
   /**
    * Generate a report based on parameters
    */
-<span class="fstat-no" title="function not covered" >  as</span>ync generateReport(params: {
+<span class="fstat-no" title="function not covered" >  async g</span>enerateReport(params: {
     type: string;
     startDate: string;
     endDate: string;
@@ -1958,7 +1958,7 @@ export class ReportingService {
   /**
    * Validate report parameters
    */
-<span class="fstat-no" title="function not covered" >  as</span>ync validateReportParams(params: {
+<span class="fstat-no" title="function not covered" >  async v</span>alidateReportParams(params: {
     type: string;
     startDate: string;
     endDate: string;
@@ -1967,18 +1967,18 @@ export class ReportingService {
     const validTypes = <span class="cstat-no" title="statement not covered" >['revenue', 'expenses', 'client', 'project'];</span>
     const validFormats = <span class="cstat-no" title="statement not covered" >['PDF', 'Excel', 'CSV'];</span>
     
-<span class="cstat-no" title="statement not covered" >    if (!validTypes.includes(params.type)) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!validTypes.includes(params.type)) {</span>
 <span class="cstat-no" title="statement not covered" >      return { valid: false, error: 'Invalid report type' };</span>
     }
     
-<span class="cstat-no" title="statement not covered" >    if (!validFormats.includes(params.format)) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!validFormats.includes(params.format)) {</span>
 <span class="cstat-no" title="statement not covered" >      return { valid: false, error: 'Invalid format' };</span>
     }
     
     const startDate = <span class="cstat-no" title="statement not covered" >new Date(params.startDate);</span>
     const endDate = <span class="cstat-no" title="statement not covered" >new Date(params.endDate);</span>
     
-<span class="cstat-no" title="statement not covered" >    if (startDate &gt;= endDate) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (startDate &gt;= endDate) {</span>
 <span class="cstat-no" title="statement not covered" >      return { valid: false, error: 'Start date must be before end date' };</span>
     }
     
@@ -1988,11 +1988,11 @@ export class ReportingService {
   /**
    * Refresh reporting cache (future implementation)
    */
-<span class="fstat-no" title="function not covered" >  as</span>ync refreshCache(): Promise&lt;string&gt; {
+<span class="fstat-no" title="function not covered" >  async r</span>efreshCache(): Promise&lt;string&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
       const { data, error } = <span class="cstat-no" title="statement not covered" >await supabase.rpc('refresh_reporting_cache');</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      if (error) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (error) {</span>
 <span class="cstat-no" title="statement not covered" >        console.error('Error refreshing cache:', error);</span>
 <span class="cstat-no" title="statement not covered" >        throw error;</span>
       }
@@ -2006,7 +2006,7 @@ export class ReportingService {
 }
 &nbsp;
 // Export singleton instance
-export const reportingService = <span class="cstat-no" title="statement not covered" >new ReportingService();</span>
+export const reportingService = new ReportingService();
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -2014,7 +2014,7 @@ export const reportingService = <span class="cstat-no" title="statement not cove
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-08-07T19:19:19.104Z
+                at 2025-08-13T02:10:19.343Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

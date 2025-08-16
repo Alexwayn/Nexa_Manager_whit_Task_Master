@@ -14,31 +14,53 @@ jest.mock('react-i18next', () => ({
         'search.showingResults': `Showing ${options?.start || 1}-${options?.end || 10} of ${options?.total || 0} results`,
         'common.previous': 'Previous',
         'common.next': 'Next',
+        'common.expand': 'Expand',
+        'common.collapse': 'Collapse',
         'email.content': 'Content',
         'email.attachments': 'Attachments',
         'email.recipients': 'Recipients',
+        'common.yesterday': 'Yesterday',
+        'common.daysAgo': `${options?.count || 1} days ago`,
       };
       return translations[key] || key;
     },
   }),
 }));
 
-// Mock UI components
-jest.mock('../../ui/Button', () => ({
+// Mock heroicons used by the component
+jest.mock('@heroicons/react/24/outline', () => ({
+  StarIcon: (props) => <span data-testid="icon-star-outline" {...props} />,
+  PaperClipIcon: (props) => <span data-testid="icon-paperclip" {...props} />,
+  ExclamationTriangleIcon: (props) => <span data-testid="icon-exclamation" {...props} />,
+  CalendarIcon: (props) => <span data-testid="icon-calendar" {...props} />,
+  UserIcon: (props) => <span data-testid="icon-user" {...props} />,
+  TagIcon: (props) => <span data-testid="icon-tag" {...props} />,
+  ChevronLeftIcon: (props) => <span data-testid="icon-chevron-left" {...props} />,
+  ChevronRightIcon: (props) => <span data-testid="icon-chevron-right" {...props} />,
+  EyeIcon: (props) => <span data-testid="icon-eye" {...props} />,
+  EyeSlashIcon: (props) => <span data-testid="icon-eye-slash" {...props} />,
+}), { virtual: true });
+
+jest.mock('@heroicons/react/24/solid', () => ({
+  StarIcon: (props) => <span data-testid="icon-star-solid" {...props} />,
+}), { virtual: true });
+
+// Mock the exact import paths that the component uses for shared components as virtual modules
+jest.mock('../../../shared/components/Button', () => ({
   Button: ({ children, onClick, disabled, ...props }) => (
     <button onClick={onClick} disabled={disabled} {...props}>
       {children}
     </button>
   ),
-}));
+}), { virtual: true });
 
-jest.mock('../../ui/Badge', () => ({
+jest.mock('../../../shared/components/Badge', () => ({
   Badge: ({ children, ...props }) => (
     <span {...props}>{children}</span>
   ),
-}));
+}), { virtual: true });
 
-jest.mock('../../ui/Checkbox', () => ({
+jest.mock('../../../shared/components/Checkbox', () => ({
   Checkbox: ({ checked, onCheckedChange, ...props }) => (
     <input
       type="checkbox"
@@ -47,7 +69,7 @@ jest.mock('../../ui/Checkbox', () => ({
       {...props}
     />
   ),
-}));
+}), { virtual: true });
 
 // Sample test data
 const sampleEmail = {
@@ -61,7 +83,10 @@ const sampleEmail = {
   is_read: false,
   is_starred: false,
   is_important: false,
-  labels: ['work', 'urgent'],
+  labels: [
+    { name: 'work', color: '#cccccc' },
+    { name: 'urgent', color: '#ff0000' },
+  ],
   attachments: [],
   recipients: ['recipient@example.com'],
 };
@@ -105,10 +130,10 @@ describe('EmailSearchResults', () => {
   it('handles email selection', () => {
     const onEmailSelect = jest.fn();
     render(<EmailSearchResults {...defaultProps} onEmailSelect={onEmailSelect} />);
-    
+
     const checkbox = screen.getByRole('checkbox');
     fireEvent.click(checkbox);
-    
+
     expect(onEmailSelect).toHaveBeenCalledWith(sampleEmail, true);
   });
 

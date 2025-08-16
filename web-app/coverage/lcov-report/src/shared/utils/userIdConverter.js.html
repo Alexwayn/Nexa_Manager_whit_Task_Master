@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">27.27% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/22</span>
+                <span class='fraction'>6/22</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">30% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/20</span>
+                <span class='fraction'>6/20</span>
             </div>
         
             
@@ -170,30 +170,14 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">12x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">12x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -203,7 +187,23 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">12x</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">12x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">12x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -223,7 +223,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">12x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -256,14 +256,14 @@
  */
 &nbsp;
 // UUID fisso che mappiamo al Clerk ID 'user_2yyhN4lw9ritLheD4CxN5RRMXUR'
-const FIXED_UUID = <span class="cstat-no" title="statement not covered" >'12345678-1234-5678-9abc-123456789012';</span>
+const FIXED_UUID = '12345678-1234-5678-9abc-123456789012';
 &nbsp;
 /**
  * Converte un Clerk ID in UUID (per backwards compatibility)
  * @param {string} clerkId - Il Clerk User ID
  * @returns {string} UUID corrispondente
  */
-export const convertClerkIdToUuid = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >cl</span>erkId =&gt; {</span>
+export const convertClerkIdToUuid = <span class="fstat-no" title="function not covered" >cl</span>erkId =&gt; {
 <span class="cstat-no" title="statement not covered" >  if (!clerkId) <span class="cstat-no" title="statement not covered" >return null;</span></span>
   // Per ora mappiamo tutti i Clerk ID allo stesso UUID fisso
   // In futuro si potrebbe creare una tabella di mapping
@@ -273,14 +273,14 @@ export const convertClerkIdToUuid = <span class="cstat-no" title="statement not 
 /**
  * Ottiene l'User ID corretto per le tabelle che usano TEXT (business_profiles, clients)
  */
-export const getUserIdForTextTables = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >cl</span>erkUserId =&gt; {</span>
+export const getUserIdForTextTables = <span class="fstat-no" title="function not covered" >cl</span>erkUserId =&gt; {
 <span class="cstat-no" title="statement not covered" >  return clerkUserId; </span>// Usa direttamente il Clerk ID
 };
 &nbsp;
 /**
  * Ottiene l'User ID corretto per le tabelle che usano UUID (income, expenses, categories)
  */
-export const getUserIdForUuidTables = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >cl</span>erkUserId =&gt; {</span>
+export const getUserIdForUuidTables = <span class="fstat-no" title="function not covered" >cl</span>erkUserId =&gt; {
   // Per ora mappiamo tutti i Clerk ID allo stesso UUID fisso
   // In futuro si potrebbe creare una tabella di mapping
 <span class="cstat-no" title="statement not covered" >  return FIXED_UUID;</span>
@@ -289,7 +289,7 @@ export const getUserIdForUuidTables = <span class="cstat-no" title="statement no
 /**
  * Funzione principale per ottenere l'User ID corretto per una specifica tabella
  */
-export const getUserId = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(c</span>lerkUserId, tableName) =&gt; {</span>
+export const getUserId = <span class="fstat-no" title="function not covered" >(c</span>lerkUserId, tableName) =&gt; {
 <span class="cstat-no" title="statement not covered" >  if (!clerkUserId) <span class="cstat-no" title="statement not covered" >return null;</span></span>
 &nbsp;
   // Tabelle che usano TEXT
@@ -309,7 +309,7 @@ export const getUserId = <span class="cstat-no" title="statement not covered" ><
 };
 &nbsp;
 // Per backwards compatibility
-export const convertUuidToClerkId = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >uu</span>id =&gt; {</span>
+export const convertUuidToClerkId = <span class="fstat-no" title="function not covered" >uu</span>id =&gt; {
 <span class="cstat-no" title="statement not covered" >  return uuid;</span>
 };
 &nbsp;
@@ -328,7 +328,7 @@ export default {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-08-07T19:19:19.104Z
+                at 2025-08-13T02:10:19.343Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

@@ -25,14 +25,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/65</span>
+                <span class='fraction'>0/73</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/38</span>
+                <span class='fraction'>0/31</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/65</span>
+                <span class='fraction'>0/69</span>
             </div>
         
             
@@ -351,8 +351,8 @@
 <a name='L286'></a><a href='#L286'>286</a>
 <a name='L287'></a><a href='#L287'>287</a>
 <a name='L288'></a><a href='#L288'>288</a>
-<a name='L289'></a><a href='#L289'>289</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L289'></a><a href='#L289'>289</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -376,7 +376,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -429,6 +428,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -638,9 +638,9 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { supabase } from '@/lib/supabaseClient';
-import Logger from '@/utils/Logger';
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import { supabase } from '@/lib/supabaseClient';</span>
+<span class="cstat-no" title="statement not covered" >import Logger from '@/utils/Logger';</span>
 &nbsp;
 // Translation function - to be integrated with i18n system
 const t = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(k</span>ey: string, params?: Record&lt;string, unknown&gt;): string =&gt; {</span>
@@ -657,8 +657,8 @@ const t = <span class="cstat-no" title="statement not covered" ><span class="fst
 &nbsp;
   let translation = <span class="cstat-no" title="statement not covered" >translations[key] || key;</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  if (params) {</span>
-<span class="cstat-no" title="statement not covered" >    Object.keys(params).forEach(<span class="fstat-no" title="function not covered" >pa</span>ram =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (params) {</span>
+<span class="cstat-no" title="statement not covered" >    Object.keys(params).forEach(<span class="fstat-no" title="function not covered" >param </span>=&gt; {</span>
 <span class="cstat-no" title="statement not covered" >      translation = translation.replace(`{{${param}}}`, String(params[param]));</span>
     });
   }
@@ -716,9 +716,9 @@ interface FileValidationResult {
 type SupportedBucket = 'documents' | 'receipts' | 'avatars';
 &nbsp;
 // Storage service for handling file uploads and downloads
-export class StorageService {
+<span class="cstat-no" title="statement not covered" >export class S</span>torageService {
   // Upload a file to a specific bucket
-<span class="fstat-no" title="function not covered" >  as</span>ync uploadFile(
+<span class="fstat-no" title="function not covered" >  async u</span>ploadFile(
     bucket: string,
     file: File,
     path: string | null = <span class="branch-0 cbranch-no" title="branch not covered" >null,</span>
@@ -734,7 +734,7 @@ export class StorageService {
         ...options,
       });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      if (error) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (error) {</span>
 <span class="cstat-no" title="statement not covered" >        throw error;</span>
       }
 &nbsp;
@@ -754,7 +754,7 @@ export class StorageService {
   }
 &nbsp;
   // Get public URL for a file
-<span class="fstat-no" title="function not covered" >  as</span>ync getPublicUrl(bucket: string, path: string): Promise&lt;string | null&gt; {
+<span class="fstat-no" title="function not covered" >  async g</span>etPublicUrl(bucket: string, path: string): Promise&lt;string | null&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
       const { data } = <span class="cstat-no" title="statement not covered" >supabase.storage.from(bucket).getPublicUrl(path);</span>
 &nbsp;
@@ -766,7 +766,7 @@ export class StorageService {
   }
 &nbsp;
   // Get signed URL for private files
-<span class="fstat-no" title="function not covered" >  as</span>ync getSignedUrl(
+<span class="fstat-no" title="function not covered" >  async g</span>etSignedUrl(
     bucket: string,
     path: string,
     expiresIn: number = <span class="branch-0 cbranch-no" title="branch not covered" >3600,</span>
@@ -774,7 +774,7 @@ export class StorageService {
 <span class="cstat-no" title="statement not covered" >    try {</span>
       const { data, error } = <span class="cstat-no" title="statement not covered" >await supabase.storage.from(bucket).createSignedUrl(path, expiresIn);</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      if (error) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (error) {</span>
 <span class="cstat-no" title="statement not covered" >        throw error;</span>
       }
 &nbsp;
@@ -792,11 +792,11 @@ export class StorageService {
   }
 &nbsp;
   // Delete a file
-<span class="fstat-no" title="function not covered" >  as</span>ync deleteFile(bucket: string, path: string): Promise&lt;DeleteResult&gt; {
+<span class="fstat-no" title="function not covered" >  async d</span>eleteFile(bucket: string, path: string): Promise&lt;DeleteResult&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
       const { data, error } = <span class="cstat-no" title="statement not covered" >await supabase.storage.from(bucket).remove([path]);</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      if (error) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (error) {</span>
 <span class="cstat-no" title="statement not covered" >        throw error;</span>
       }
 &nbsp;
@@ -814,7 +814,7 @@ export class StorageService {
   }
 &nbsp;
   // List files in a bucket
-<span class="fstat-no" title="function not covered" >  as</span>ync listFiles(
+<span class="fstat-no" title="function not covered" >  async l</span>istFiles(
     bucket: string,
     path: string = <span class="branch-0 cbranch-no" title="branch not covered" >'',</span>
     options: ListFilesOptions = <span class="branch-0 cbranch-no" title="branch not covered" >{},</span>
@@ -826,7 +826,7 @@ export class StorageService {
         sortBy: options.sortBy || { column: 'name', order: 'asc' },
       });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      if (error) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (error) {</span>
 <span class="cstat-no" title="statement not covered" >        throw error;</span>
       }
 &nbsp;
@@ -844,13 +844,13 @@ export class StorageService {
   }
 &nbsp;
   // Upload avatar image
-<span class="fstat-no" title="function not covered" >  as</span>ync uploadAvatar(userId: string, file: File): Promise&lt;UploadResult&gt; {
+<span class="fstat-no" title="function not covered" >  async u</span>ploadAvatar(userId: string, file: File): Promise&lt;UploadResult&gt; {
     const fileName = <span class="cstat-no" title="statement not covered" >`${userId}/avatar.${file.name.split('.').pop()}`;</span>
 <span class="cstat-no" title="statement not covered" >    return this.uploadFile('avatars', file, fileName, { upsert: true });</span>
   }
 &nbsp;
   // Upload document (invoice, quote, etc.)
-<span class="fstat-no" title="function not covered" >  as</span>ync uploadDocument(
+<span class="fstat-no" title="function not covered" >  async u</span>ploadDocument(
     userId: string,
     file: File,
     type: string = <span class="branch-0 cbranch-no" title="branch not covered" >'general',</span>
@@ -860,13 +860,13 @@ export class StorageService {
   }
 &nbsp;
   // Upload receipt
-<span class="fstat-no" title="function not covered" >  as</span>ync uploadReceipt(userId: string, file: File): Promise&lt;UploadResult&gt; {
+<span class="fstat-no" title="function not covered" >  async u</span>ploadReceipt(userId: string, file: File): Promise&lt;UploadResult&gt; {
     const fileName = <span class="cstat-no" title="statement not covered" >`${userId}/receipts/${Date.now()}-${file.name}`;</span>
 <span class="cstat-no" title="statement not covered" >    return this.uploadFile('receipts', file, fileName);</span>
   }
 &nbsp;
   // Validate file type and size
-<span class="fstat-no" title="function not covered" >  va</span>lidateFile(
+<span class="fstat-no" title="function not covered" >  validateFile(</span>
     file: File,
     allowedTypes: string[] = <span class="branch-0 cbranch-no" title="branch not covered" >[],</span>
     maxSize: number = <span class="branch-0 cbranch-no" title="branch not covered" >10485760,</span> // 10MB default
@@ -874,14 +874,14 @@ export class StorageService {
     const errors: string[] = <span class="cstat-no" title="statement not covered" >[];</span>
 &nbsp;
     // Check file size
-<span class="cstat-no" title="statement not covered" >    if (file.size &gt; maxSize) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (file.size &gt; maxSize) {</span>
 <span class="cstat-no" title="statement not covered" >      errors.push(</span>
         t('storage.validation.fileSizeExceeds', { maxSize: Math.round(maxSize / 1024 / 1024) }),
       );
     }
 &nbsp;
     // Check file type
-<span class="cstat-no" title="statement not covered" >    if (allowedTypes.length &gt; 0 &amp;&amp; !allowedTypes.includes(file.type)) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (allowedTypes.length &gt; 0 &amp;&amp; !allowedTypes.includes(file.type)) {</span>
 <span class="cstat-no" title="statement not covered" >      errors.push(t('storage.validation.fileTypeNotAllowed', { fileType: file.type }));</span>
     }
 &nbsp;
@@ -892,7 +892,7 @@ export class StorageService {
   }
 &nbsp;
   // Get file type restrictions
-<span class="fstat-no" title="function not covered" >  ge</span>tFileTypeRestrictions(bucket: SupportedBucket): string[] {
+<span class="fstat-no" title="function not covered" >  getFileTypeRestrictions(</span>bucket: SupportedBucket): string[] {
     const restrictions: Record&lt;SupportedBucket, string[]&gt; = <span class="cstat-no" title="statement not covered" >{</span>
       documents: [
         'application/pdf',
@@ -909,24 +909,24 @@ export class StorageService {
 }
 &nbsp;
 // Create and export a singleton instance
-export const storageService = <span class="cstat-no" title="statement not covered" >new StorageService();</span>
+export const <span class="cstat-no" title="statement not covered" >storageService = new StorageService();</span>
 &nbsp;
 // Helper functions for common operations
-export const uploadAvatar = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(u</span>serId: string, file: File): Promise&lt;UploadResult&gt; =&gt;</span>
+export const <span class="cstat-no" title="statement not covered" >uploadAvatar = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(</span>u</span>serId: string, file: File): Promise&lt;UploadResult&gt; =&gt;</span>
 <span class="cstat-no" title="statement not covered" >  storageService.uploadAvatar(userId, file);</span>
 &nbsp;
-export const uploadDocument = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(u</span>serId: string, file: File, type?: string): Promise&lt;UploadResult&gt; =&gt;</span>
+export const <span class="cstat-no" title="statement not covered" >uploadDocument = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(</span>u</span>serId: string, file: File, type?: string): Promise&lt;UploadResult&gt; =&gt;</span>
 <span class="cstat-no" title="statement not covered" >  storageService.uploadDocument(userId, file, type);</span>
 &nbsp;
-export const uploadReceipt = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(u</span>serId: string, file: File): Promise&lt;UploadResult&gt; =&gt;</span>
+export const <span class="cstat-no" title="statement not covered" >uploadReceipt = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(</span>u</span>serId: string, file: File): Promise&lt;UploadResult&gt; =&gt;</span>
 <span class="cstat-no" title="statement not covered" >  storageService.uploadReceipt(userId, file);</span>
 &nbsp;
-export const validateFile = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(f</span>ile: File, bucket: SupportedBucket): FileValidationResult =&gt; {</span>
+export const <span class="cstat-no" title="statement not covered" >validateFile = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(</span>f</span>ile: File, bucket: SupportedBucket): FileValidationResult =&gt; {</span>
   const allowedTypes = <span class="cstat-no" title="statement not covered" >storageService.getFileTypeRestrictions(bucket);</span>
 <span class="cstat-no" title="statement not covered" >  return storageService.validateFile(file, allowedTypes);</span>
 };
 &nbsp;
-export default storageService;
+<span class="cstat-no" title="statement not covered" >export default storageService;</span>
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -934,7 +934,7 @@ export default storageService;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-08-07T19:19:19.104Z
+                at 2025-08-13T02:10:19.343Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

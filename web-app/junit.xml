@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="jest tests" tests="19" failures="8" errors="0" time="1.231">
+  <testsuite name="useEmailPerformance" errors="0" failures="8" skipped="0" timestamp="2025-08-15T20:36:52" time="0.775" tests="19">
+    <testcase classname="useEmailPerformance hook initialization initializes with default values" name="useEmailPerformance hook initialization initializes with default values" time="0.046">
+    </testcase>
+    <testcase classname="useEmailPerformance hook initialization provides performance measurement functions" name="useEmailPerformance hook initialization provides performance measurement functions" time="0.009">
+    </testcase>
+    <testcase classname="useEmailPerformance timing measurement measures load time correctly" name="useEmailPerformance timing measurement measures load time correctly" time="0.015">
+      <failure>Error: expect(received).toBe(expected) // Object.is equality
+
+Expected: 500
+Received: 4.008199999999988
+    at Object.toBe (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\features\email\hooks\__tests__\useEmailPerformance.test.js:92:47)
+    at Promise.then.completed (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\utils.js:298:28)
+    at new Promise (&lt;anonymous&gt;)
+    at callAsyncCircusFn (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\utils.js:231:10)
+    at _callCircusTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:316:40)
+    at _runTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:252:3)
+    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:126:9)
+    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:121:9)
+    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:121:9)
+    at run (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:71:3)
+    at runAndTransformResultsToJestFormat (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)
+    at jestAdapter (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapter.js:79:19)
+    at runTestInternal (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\runTest.js:367:16)
+    at runTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\runTest.js:444:34)</failure>
+    </testcase>
+    <testcase classname="useEmailPerformance timing measurement measures render time correctly" name="useEmailPerformance timing measurement measures render time correctly" time="0.014">
+      <failure>Error: expect(received).toBe(expected) // Object.is equality
+
+Expected: 200
+Received: 4.1585999999999785
+    at Object.toBe (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\features\email\hooks\__tests__\useEmailPerformance.test.js:110:49)
+    at Promise.then.completed (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\utils.js:298:28)
+    at new Promise (&lt;anonymous&gt;)
+    at callAsyncCircusFn (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\utils.js:231:10)
+    at _callCircusTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:316:40)
+    at _runTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:252:3)
+    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:126:9)
+    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:121:9)
+    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:121:9)
+    at run (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:71:3)
+    at runAndTransformResultsToJestFormat (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)
+    at jestAdapter (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapter.js:79:19)
+    at runTestInternal (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\runTest.js:367:16)
+    at runTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\runTest.js:444:34)</failure>
+    </testcase>
+    <testcase classname="useEmailPerformance timing measurement handles multiple timing operations" name="useEmailPerformance timing measurement handles multiple timing operations" time="0.017">
+      <failure>Error: expect(received).toBe(expected) // Object.is equality
+
+Expected: 300
+Received: 2.976799999999912
+    at Object.toBe (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\features\email\hooks\__tests__\useEmailPerformance.test.js:141:47)
+    at Promise.then.completed (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\utils.js:298:28)
+    at new Promise (&lt;anonymous&gt;)
+    at callAsyncCircusFn (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\utils.js:231:10)
+    at _callCircusTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:316:40)
+    at _runTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:252:3)
+    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:126:9)
+    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:121:9)
+    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:121:9)
+    at run (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:71:3)
+    at runAndTransformResultsToJestFormat (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)
+    at jestAdapter (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapter.js:79:19)
+    at runTestInternal (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\runTest.js:367:16)
+    at runTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\runTest.js:444:34)</failure>
+    </testcase>
+    <testcase classname="useEmailPerformance timing measurement ignores invalid timing operations" name="useEmailPerformance timing measurement ignores invalid timing operations" time="0.006">
+    </testcase>
+    <testcase classname="useEmailPerformance cache hit tracking calculates cache hit rate correctly" name="useEmailPerformance cache hit tracking calculates cache hit rate correctly" time="0.005">
+      <failure>Error: expect(received).toBe(expected) // Object.is equality
+
+Expected: 75
+Received: 0
+    at Object.toBe (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\features\email\hooks\__tests__\useEmailPerformance.test.js:170:51)
+    at Promise.then.completed (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\utils.js:298:28)
+    at new Promise (&lt;anonymous&gt;)
+    at callAsyncCircusFn (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\utils.js:231:10)
+    at _callCircusTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:316:40)
+    at _runTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:252:3)
+    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:126:9)
+    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:121:9)
+    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:121:9)
+    at run (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:71:3)
+    at runAndTransformResultsToJestFormat (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)
+    at jestAdapter (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapter.js:79:19)
+    at runTestInternal (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\runTest.js:367:16)
+    at runTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\runTest.js:444:34)</failure>
+    </testcase>
+    <testcase classname="useEmailPerformance cache hit tracking handles no cache operations" name="useEmailPerformance cache hit tracking handles no cache operations" time="0.006">
+    </testcase>
+    <testcase classname="useEmailPerformance cache hit tracking handles only cache hits" name="useEmailPerformance cache hit tracking handles only cache hits" time="0.005">
+      <failure>Error: expect(received).toBe(expected) // Object.is equality
+
+Expected: 100
+Received: 0
+    at Object.toBe (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\features\email\hooks\__tests__\useEmailPerformance.test.js:187:51)
+    at Promise.then.completed (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\utils.js:298:28)
+    at new Promise (&lt;anonymous&gt;)
+    at callAsyncCircusFn (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\utils.js:231:10)
+    at _callCircusTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:316:40)
+    at _runTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:252:3)
+    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:126:9)
+    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:121:9)
+    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:121:9)
+    at run (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:71:3)
+    at runAndTransformResultsToJestFormat (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)
+    at jestAdapter (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapter.js:79:19)
+    at runTestInternal (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\runTest.js:367:16)
+    at runTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\runTest.js:444:34)</failure>
+    </testcase>
+    <testcase classname="useEmailPerformance cache hit tracking handles only cache misses" name="useEmailPerformance cache hit tracking handles only cache misses" time="0.007">
+    </testcase>
+    <testcase classname="useEmailPerformance memory usage tracking tracks memory usage when available" name="useEmailPerformance memory usage tracking tracks memory usage when available" time="0.005">
+    </testcase>
+    <testcase classname="useEmailPerformance memory usage tracking handles missing memory API gracefully" name="useEmailPerformance memory usage tracking handles missing memory API gracefully" time="0.008">
+    </testcase>
+    <testcase classname="useEmailPerformance performance report generation generates comprehensive performance report" name="useEmailPerformance performance report generation generates comprehensive performance report" time="0.014">
+      <failure>Error: expect(received).toBe(expected) // Object.is equality
+
+Expected: 500
+Received: 2.2029999999999745
+    at Object.toBe (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\features\email\hooks\__tests__\useEmailPerformance.test.js:246:39)
+    at Promise.then.completed (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\utils.js:298:28)
+    at new Promise (&lt;anonymous&gt;)
+    at callAsyncCircusFn (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\utils.js:231:10)
+    at _callCircusTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:316:40)
+    at _runTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:252:3)
+    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:126:9)
+    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:121:9)
+    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:121:9)
+    at run (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:71:3)
+    at runAndTransformResultsToJestFormat (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)
+    at jestAdapter (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapter.js:79:19)
+    at runTestInternal (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\runTest.js:367:16)
+    at runTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\runTest.js:444:34)</failure>
+    </testcase>
+    <testcase classname="useEmailPerformance performance report generation includes performance recommendations" name="useEmailPerformance performance report generation includes performance recommendations" time="0.013">
+      <failure>Error: expect(received).toContain(expected) // indexOf
+
+Expected value: &quot;Consider optimizing email loading&quot;
+Received array: []
+    at Object.toContain (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\features\email\hooks\__tests__\useEmailPerformance.test.js:266:38)
+    at Promise.then.completed (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\utils.js:298:28)
+    at new Promise (&lt;anonymous&gt;)
+    at callAsyncCircusFn (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\utils.js:231:10)
+    at _callCircusTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:316:40)
+    at _runTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:252:3)
+    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:126:9)
+    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:121:9)
+    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:121:9)
+    at run (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:71:3)
+    at runAndTransformResultsToJestFormat (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)
+    at jestAdapter (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapter.js:79:19)
+    at runTestInternal (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\runTest.js:367:16)
+    at runTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\runTest.js:444:34)</failure>
+    </testcase>
+    <testcase classname="useEmailPerformance loading state management manages loading state during operations" name="useEmailPerformance loading state management manages loading state during operations" time="0.01">
+    </testcase>
+    <testcase classname="useEmailPerformance performance optimization provides optimization suggestions based on metrics" name="useEmailPerformance performance optimization provides optimization suggestions based on metrics" time="0.008">
+    </testcase>
+    <testcase classname="useEmailPerformance performance optimization suggests lazy loading for large datasets" name="useEmailPerformance performance optimization suggests lazy loading for large datasets" time="0.013">
+      <failure>Error: expect(received).toContain(expected) // indexOf
+
+Expected value: &quot;Consider implementing lazy loading&quot;
+Received array: []
+    at Object.toContain (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\features\email\hooks\__tests__\useEmailPerformance.test.js:323:38)
+    at Promise.then.completed (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\utils.js:298:28)
+    at new Promise (&lt;anonymous&gt;)
+    at callAsyncCircusFn (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\utils.js:231:10)
+    at _callCircusTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:316:40)
+    at _runTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:252:3)
+    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:126:9)
+    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:121:9)
+    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:121:9)
+    at run (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:71:3)
+    at runAndTransformResultsToJestFormat (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)
+    at jestAdapter (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapter.js:79:19)
+    at runTestInternal (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\runTest.js:367:16)
+    at runTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\runTest.js:444:34)</failure>
+    </testcase>
+    <testcase classname="useEmailPerformance edge cases and error handling handles performance API unavailability" name="useEmailPerformance edge cases and error handling handles performance API unavailability" time="0.006">
+    </testcase>
+    <testcase classname="useEmailPerformance edge cases and error handling handles negative timing values" name="useEmailPerformance edge cases and error handling handles negative timing values" time="0.01">
+    </testcase>
+  </testsuite>
+</testsuites>

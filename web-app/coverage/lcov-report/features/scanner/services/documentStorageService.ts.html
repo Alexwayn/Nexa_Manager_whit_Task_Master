@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">54.86% </span>
+                <span class="strong">55.3% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>124/226</span>
+                <span class='fraction'>125/226</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">54.32% </span>
+                <span class="strong">43.75% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>88/162</span>
+                <span class='fraction'>49/112</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">57% </span>
+                <span class="strong">57.48% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>118/207</span>
+                <span class='fraction'>119/207</span>
             </div>
         
             
@@ -704,7 +704,10 @@
 <a name='L639'></a><a href='#L639'>639</a>
 <a name='L640'></a><a href='#L640'>640</a>
 <a name='L641'></a><a href='#L641'>641</a>
-<a name='L642'></a><a href='#L642'>642</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L642'></a><a href='#L642'>642</a>
+<a name='L643'></a><a href='#L643'>643</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -713,24 +716,22 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">27x</span>
-<span class="cline-any cline-yes">27x</span>
-<span class="cline-any cline-yes">27x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">27x</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">66x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">27x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">27x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">66x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">66x</span>
 <span class="cline-any cline-yes">54x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">27x</span>
@@ -749,7 +750,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">39x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1345,6 +1346,7 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">// Document storage service implementation with Supabase integration
 import { supabase } from '@/lib/supabaseClient';
 import Logger from '@/utils/Logger';
@@ -1390,7 +1392,7 @@ export class DocumentStorageService implements IDocumentStorageService {
         });
       }
     } catch (error) {
-<span class="cstat-no" title="statement not covered" >      Logger.error('Failed to initialize storage buckets:', error);</span>
+      Logger.error('Failed to initialize storage buckets:', error);
     }
   }
 &nbsp;
@@ -1698,7 +1700,7 @@ export class DocumentStorageService implements IDocumentStorageService {
   /**
    * Store file temporarily during processing
    */
-<span class="fstat-no" title="function not covered" >  as</span>ync storeTemporaryFile(file: Blob, fileName: string, userId: string): Promise&lt;string&gt; {
+<span class="fstat-no" title="function not covered" >  async s</span>toreTemporaryFile(file: Blob, fileName: string, userId: string): Promise&lt;string&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
       const tempPath = <span class="cstat-no" title="statement not covered" >`${userId}/${Date.now()}_${fileName}`;</span>
       
@@ -1709,7 +1711,7 @@ export class DocumentStorageService implements IDocumentStorageService {
           upsert: false
         });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      if (error) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (error) {</span>
 <span class="cstat-no" title="statement not covered" >        Logger.error('Failed to store temporary file:', error);</span>
 <span class="cstat-no" title="statement not covered" >        throw new Error(`Failed to store temporary file: ${error.message}`);</span>
       }
@@ -1724,14 +1726,14 @@ export class DocumentStorageService implements IDocumentStorageService {
   /**
    * Move file from temporary to permanent storage
    */
-<span class="fstat-no" title="function not covered" >  as</span>ync moveToPermStorage(tempPath: string, permanentPath: string): Promise&lt;string&gt; {
+<span class="fstat-no" title="function not covered" >  async m</span>oveToPermStorage(tempPath: string, permanentPath: string): Promise&lt;string&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
       // Download from temp storage
       const { data: tempFile, error: downloadError } = <span class="cstat-no" title="statement not covered" >await supabase.storage</span>
         .from(this.TEMP_BUCKET_NAME)
         .download(tempPath);
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      if (downloadError) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (downloadError) {</span>
 <span class="cstat-no" title="statement not covered" >        Logger.error('Failed to download temporary file:', downloadError);</span>
 <span class="cstat-no" title="statement not covered" >        throw new Error(`Failed to download temporary file: ${downloadError.message}`);</span>
       }
@@ -1744,7 +1746,7 @@ export class DocumentStorageService implements IDocumentStorageService {
           upsert: false
         });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      if (uploadError) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (uploadError) {</span>
 <span class="cstat-no" title="statement not covered" >        Logger.error('Failed to upload to permanent storage:', uploadError);</span>
 <span class="cstat-no" title="statement not covered" >        throw new Error(`Failed to upload to permanent storage: ${uploadError.message}`);</span>
       }
@@ -1767,13 +1769,13 @@ export class DocumentStorageService implements IDocumentStorageService {
   /**
    * Clean up temporary files
    */
-<span class="fstat-no" title="function not covered" >  as</span>ync cleanupTemporaryFile(tempPath: string): Promise&lt;void&gt; {
+<span class="fstat-no" title="function not covered" >  async c</span>leanupTemporaryFile(tempPath: string): Promise&lt;void&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
       const { error } = <span class="cstat-no" title="statement not covered" >await supabase.storage</span>
         .from(this.TEMP_BUCKET_NAME)
         .remove([tempPath]);
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      if (error) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (error) {</span>
 <span class="cstat-no" title="statement not covered" >        Logger.error('Failed to cleanup temporary file:', error);</span>
       }
     } catch (error) {
@@ -1784,7 +1786,7 @@ export class DocumentStorageService implements IDocumentStorageService {
   /**
    * Clean up old temporary files (older than 1 hour)
    */
-<span class="fstat-no" title="function not covered" >  as</span>ync cleanupOldTemporaryFiles(): Promise&lt;void&gt; {
+<span class="fstat-no" title="function not covered" >  async c</span>leanupOldTemporaryFiles(): Promise&lt;void&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
       const { data: files, error } = <span class="cstat-no" title="statement not covered" >await supabase.storage</span>
         .from(this.TEMP_BUCKET_NAME)
@@ -1793,17 +1795,17 @@ export class DocumentStorageService implements IDocumentStorageService {
           sortBy: { column: 'created_at', order: 'asc' }
         });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      if (error) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (error) {</span>
 <span class="cstat-no" title="statement not covered" >        Logger.error('Failed to list temporary files:', error);</span>
 <span class="cstat-no" title="statement not covered" >        return;</span>
       }
 &nbsp;
       const oneHourAgo = <span class="cstat-no" title="statement not covered" >new Date(Date.now() - 60 * 60 * 1000);</span>
       const filesToDelete = <span class="cstat-no" title="statement not covered" >files</span>
-        ?.filter(<span class="fstat-no" title="function not covered" >fi</span>le =&gt; <span class="cstat-no" title="statement not covered" >new Date(file.created_at) &lt; oneHourAgo)</span>
-        .map(<span class="fstat-no" title="function not covered" >fi</span>le =&gt; <span class="cstat-no" title="statement not covered" >file.name)</span> || [];
+        ?.filter(<span class="fstat-no" title="function not covered" >file </span>=&gt; <span class="cstat-no" title="statement not covered" >new Date(file.created_at) &lt; oneHourAgo)</span>
+        .map(<span class="fstat-no" title="function not covered" >file </span>=&gt; <span class="cstat-no" title="statement not covered" >file.name)</span> || [];
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      if (filesToDelete.length &gt; 0) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (filesToDelete.length &gt; 0) {</span>
         const { error: deleteError } = <span class="cstat-no" title="statement not covered" >await supabase.storage</span>
           .from(this.TEMP_BUCKET_NAME)
           .remove(filesToDelete);
@@ -1847,7 +1849,7 @@ export class DocumentStorageService implements IDocumentStorageService {
           .from(this.BUCKET_NAME)
           .remove(filesToDelete);
 &nbsp;
-<span class="cstat-no" title="statement not covered" >        if (error) {</span>
+<span class="cstat-no" title="statement not covered" >        <span class="missing-if-branch" title="if path not taken" >I</span>if (error) {</span>
 <span class="cstat-no" title="statement not covered" >          Logger.error('Failed to delete document files:', error);</span>
         }
       }
@@ -1901,7 +1903,7 @@ export class DocumentStorageService implements IDocumentStorageService {
   /**
    * Get document statistics
    */
-<span class="fstat-no" title="function not covered" >  as</span>ync getDocumentStatistics(userId?: string): Promise&lt;{
+<span class="fstat-no" title="function not covered" >  async g</span>etDocumentStatistics(userId?: string): Promise&lt;{
     totalDocuments: number;
     totalSize: number;
     byCategory: Record&lt;string, number&gt;;
@@ -1913,13 +1915,13 @@ export class DocumentStorageService implements IDocumentStorageService {
         .from(this.TABLE_NAME)
         .select('category, status, original_file_size, enhanced_file_size, pdf_file_size, created_at');
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      if (userId) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (userId) {</span>
 <span class="cstat-no" title="statement not covered" >        query = query.eq('created_by', userId);</span>
       }
 &nbsp;
       const { data, error } = <span class="cstat-no" title="statement not covered" >await query;</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      if (error) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (error) {</span>
 <span class="cstat-no" title="statement not covered" >        Logger.error('Failed to get document statistics:', error);</span>
 <span class="cstat-no" title="statement not covered" >        throw new Error(`Failed to get statistics: ${error.message}`);</span>
       }
@@ -1934,7 +1936,7 @@ export class DocumentStorageService implements IDocumentStorageService {
 &nbsp;
       const oneWeekAgo = <span class="cstat-no" title="statement not covered" >new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      data?.forEach(<span class="fstat-no" title="function not covered" >do</span>c =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >      data?.forEach(<span class="fstat-no" title="function not covered" >doc </span>=&gt; {</span>
         // Calculate total size
 <span class="cstat-no" title="statement not covered" >        stats.totalSize += (doc.original_file_size || 0) + (doc.enhanced_file_size || 0) + (doc.pdf_file_size || 0);</span>
 &nbsp;
@@ -1945,7 +1947,7 @@ export class DocumentStorageService implements IDocumentStorageService {
 <span class="cstat-no" title="statement not covered" >        stats.byStatus[doc.status] = (stats.byStatus[doc.status] || 0) + 1;</span>
 &nbsp;
         // Count recent documents
-<span class="cstat-no" title="statement not covered" >        if (new Date(doc.created_at) &gt;= oneWeekAgo) {</span>
+<span class="cstat-no" title="statement not covered" >        <span class="missing-if-branch" title="if path not taken" >I</span>if (new Date(doc.created_at) &gt;= oneWeekAgo) {</span>
 <span class="cstat-no" title="statement not covered" >          stats.recentDocuments++;</span>
         }
       });
@@ -1960,7 +1962,7 @@ export class DocumentStorageService implements IDocumentStorageService {
   /**
    * Search documents with full-text search
    */
-<span class="fstat-no" title="function not covered" >  as</span>ync searchDocuments(searchQuery: string, filters: Omit&lt;DocumentFilters, 'searchText'&gt; = <span class="branch-0 cbranch-no" title="branch not covered" >{})</span>: Promise&lt;DocumentListResult&gt; {
+<span class="fstat-no" title="function not covered" >  async s</span>earchDocuments(searchQuery: string, filters: Omit&lt;DocumentFilters, 'searchText'&gt; = <span class="branch-0 cbranch-no" title="branch not covered" >{})</span>: Promise&lt;DocumentListResult&gt; {
 <span class="cstat-no" title="statement not covered" >    return this.listDocuments({</span>
       ...filters,
       searchText: searchQuery
@@ -1972,28 +1974,29 @@ export class DocumentStorageService implements IDocumentStorageService {
   }
 &nbsp;
   // Helper method for testing
-<span class="fstat-no" title="function not covered" >  pu</span>blic async clearAll(): Promise&lt;void&gt; {
+  public <span class="fstat-no" title="function not covered" >async c</span>learAll(): Promise&lt;void&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
       const { error } = <span class="cstat-no" title="statement not covered" >await supabase</span>
         .from(this.TABLE_NAME)
         .delete()
         .neq('id', ''); // Delete all records
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      if (error) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (error) {</span>
 <span class="cstat-no" title="statement not covered" >        Logger.error('Failed to clear all documents:', error);</span>
       }
     } catch (error) {
 <span class="cstat-no" title="statement not covered" >      Logger.error('Failed to clear all documents:', error);</span>
     }
   }
-}</pre></td></tr></table></pre>
+}
+&nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-07-27T02:49:48.333Z
+                at 2025-08-16T02:32:36.617Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

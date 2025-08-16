@@ -25,14 +25,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/85</span>
+                <span class='fraction'>0/92</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/43</span>
+                <span class='fraction'>0/29</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/76</span>
+                <span class='fraction'>0/79</span>
             </div>
         
             
@@ -276,8 +276,8 @@
 <a name='L211'></a><a href='#L211'>211</a>
 <a name='L212'></a><a href='#L212'>212</a>
 <a name='L213'></a><a href='#L213'>213</a>
-<a name='L214'></a><a href='#L214'>214</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L214'></a><a href='#L214'>214</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -483,14 +483,14 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { useCallback, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import { useCallback, useMemo } from 'react';</span>
+<span class="cstat-no" title="statement not covered" >import { useNavigate } from 'react-router-dom';</span>
 &nbsp;
 // Mock authentication context - replace with your actual auth implementation
 interface User {
@@ -525,7 +525,7 @@ const mockAuthState: AuthState = <span class="cstat-no" title="statement not cov
 };
 &nbsp;
 // Get auth state - replace with your actual auth implementation
-const getAuthState = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span>: AuthState =&gt; {</span>
+const getAuthState = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(): AuthState =&gt; </span>{</span>
   // This should come from your auth context, Redux store, or auth service
 <span class="cstat-no" title="statement not covered" >  return mockAuthState;</span>
 };
@@ -534,7 +534,7 @@ const getAuthState = <span class="cstat-no" title="statement not covered" ><span
  * Basic authentication guard hook
  * Provides authentication state and redirect functionality
  */
-export const useAuthGuard = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+export const <span class="cstat-no" title="statement not covered" >useAuthGuard = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(</span>) =&gt; </span>{</span>
   const navigate = <span class="cstat-no" title="statement not covered" >useNavigate();</span>
   const { isAuthenticated, user, isLoading } = <span class="cstat-no" title="statement not covered" >getAuthState();</span>
 &nbsp;
@@ -554,11 +554,11 @@ export const useAuthGuard = <span class="cstat-no" title="statement not covered"
  * Admin authentication guard hook
  * Checks if user has admin privileges
  */
-export const useAdminGuard = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+export const <span class="cstat-no" title="statement not covered" >useAdminGuard = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(</span>) =&gt; </span>{</span>
   const navigate = <span class="cstat-no" title="statement not covered" >useNavigate();</span>
   const { isAuthenticated, user, isLoading } = <span class="cstat-no" title="statement not covered" >getAuthState();</span>
 &nbsp;
-  const hasAccess = <span class="cstat-no" title="statement not covered" >useMemo(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+  const hasAccess = <span class="cstat-no" title="statement not covered" >useMemo(<span class="fstat-no" title="function not covered" >() =&gt; </span>{</span>
 <span class="cstat-no" title="statement not covered" >    return isAuthenticated &amp;&amp; user?.role === 'admin';</span>
   }, [isAuthenticated, user?.role]);
 &nbsp;
@@ -566,12 +566,12 @@ export const useAdminGuard = <span class="cstat-no" title="statement not covered
 <span class="cstat-no" title="statement not covered" >    navigate(to, { replace: true });</span>
   }, [navigate]);
 &nbsp;
-  const requireAccess = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    if (!isAuthenticated) {</span>
+  const requireAccess = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >() =&gt; </span>{</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!isAuthenticated) {</span>
 <span class="cstat-no" title="statement not covered" >      redirect('/login');</span>
 <span class="cstat-no" title="statement not covered" >      return false;</span>
     }
-<span class="cstat-no" title="statement not covered" >    if (user?.role !== 'admin') {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (user?.role !== 'admin') {</span>
 <span class="cstat-no" title="statement not covered" >      redirect('/unauthorized');</span>
 <span class="cstat-no" title="statement not covered" >      return false;</span>
     }
@@ -592,71 +592,71 @@ export const useAdminGuard = <span class="cstat-no" title="statement not covered
  * Organization authentication guard hook
  * Provides role and permission checking within organization context
  */
-export const useOrgGuard = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+export const <span class="cstat-no" title="statement not covered" >useOrgGuard = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(</span>) =&gt; </span>{</span>
   const navigate = <span class="cstat-no" title="statement not covered" >useNavigate();</span>
   const { isAuthenticated, user, isLoading } = <span class="cstat-no" title="statement not covered" >getAuthState();</span>
 &nbsp;
-  const hasOrganization = <span class="cstat-no" title="statement not covered" >useMemo(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+  const hasOrganization = <span class="cstat-no" title="statement not covered" >useMemo(<span class="fstat-no" title="function not covered" >() =&gt; </span>{</span>
 <span class="cstat-no" title="statement not covered" >    return isAuthenticated &amp;&amp; !!user?.organizationId;</span>
   }, [isAuthenticated, user?.organizationId]);
 &nbsp;
-  const checkRole = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >(r</span>equiredRole: string): boolean =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    if (!isAuthenticated || !user) <span class="cstat-no" title="statement not covered" >return false;</span></span>
+  const checkRole = <span class="cstat-no" title="statement not covered" >useCallback((<span class="fstat-no" title="function not covered" >requiredRole: string)</span>: boolean =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!isAuthenticated || !user) <span class="cstat-no" title="statement not covered" >return false;</span></span>
 <span class="cstat-no" title="statement not covered" >    return user.role === requiredRole;</span>
   }, [isAuthenticated, user]);
 &nbsp;
-  const checkPermission = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >(p</span>ermission: string): boolean =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    if (!isAuthenticated || !user?.permissions) <span class="cstat-no" title="statement not covered" >return false;</span></span>
+  const checkPermission = <span class="cstat-no" title="statement not covered" >useCallback((<span class="fstat-no" title="function not covered" >permission: string)</span>: boolean =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!isAuthenticated || !user?.permissions) <span class="cstat-no" title="statement not covered" >return false;</span></span>
 <span class="cstat-no" title="statement not covered" >    return user.permissions.includes(permission);</span>
   }, [isAuthenticated, user?.permissions]);
 &nbsp;
-  const checkPermissions = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >(p</span>ermissions: string[]): boolean =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    if (!isAuthenticated || !user?.permissions) <span class="cstat-no" title="statement not covered" >return false;</span></span>
-<span class="cstat-no" title="statement not covered" >    return permissions.every(<span class="fstat-no" title="function not covered" >pe</span>rmission =&gt; <span class="cstat-no" title="statement not covered" >user.permissions!.includes(permission))</span>;</span>
+  const checkPermissions = <span class="cstat-no" title="statement not covered" >useCallback((<span class="fstat-no" title="function not covered" >permissions: string[])</span>: boolean =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!isAuthenticated || !user?.permissions) <span class="cstat-no" title="statement not covered" >return false;</span></span>
+<span class="cstat-no" title="statement not covered" >    return permissions.every(<span class="fstat-no" title="function not covered" >permission </span>=&gt; <span class="cstat-no" title="statement not covered" >user.permissions!.includes(permission))</span>;</span>
   }, [isAuthenticated, user?.permissions]);
 &nbsp;
-  const hasAnyPermission = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >(p</span>ermissions: string[]): boolean =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    if (!isAuthenticated || !user?.permissions) <span class="cstat-no" title="statement not covered" >return false;</span></span>
-<span class="cstat-no" title="statement not covered" >    return permissions.some(<span class="fstat-no" title="function not covered" >pe</span>rmission =&gt; <span class="cstat-no" title="statement not covered" >user.permissions!.includes(permission))</span>;</span>
+  const hasAnyPermission = <span class="cstat-no" title="statement not covered" >useCallback((<span class="fstat-no" title="function not covered" >permissions: string[])</span>: boolean =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!isAuthenticated || !user?.permissions) <span class="cstat-no" title="statement not covered" >return false;</span></span>
+<span class="cstat-no" title="statement not covered" >    return permissions.some(<span class="fstat-no" title="function not covered" >permission </span>=&gt; <span class="cstat-no" title="statement not covered" >user.permissions!.includes(permission))</span>;</span>
   }, [isAuthenticated, user?.permissions]);
 &nbsp;
   const redirect = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >(t</span>o: string = <span class="branch-0 cbranch-no" title="branch not covered" >'/setup-organization')</span> =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    navigate(to, { replace: true });</span>
   }, [navigate]);
 &nbsp;
-  const requireOrganization = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    if (!isAuthenticated) {</span>
+  const requireOrganization = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >() =&gt; </span>{</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!isAuthenticated) {</span>
 <span class="cstat-no" title="statement not covered" >      navigate('/login', { replace: true });</span>
 <span class="cstat-no" title="statement not covered" >      return false;</span>
     }
-<span class="cstat-no" title="statement not covered" >    if (!user?.organizationId) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!user?.organizationId) {</span>
 <span class="cstat-no" title="statement not covered" >      redirect('/setup-organization');</span>
 <span class="cstat-no" title="statement not covered" >      return false;</span>
     }
 <span class="cstat-no" title="statement not covered" >    return true;</span>
   }, [isAuthenticated, user?.organizationId, redirect, navigate]);
 &nbsp;
-  const requireRole = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >(r</span>equiredRole: string) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    if (!requireOrganization()) <span class="cstat-no" title="statement not covered" >return false;</span></span>
-<span class="cstat-no" title="statement not covered" >    if (!checkRole(requiredRole)) {</span>
+  const requireRole = <span class="cstat-no" title="statement not covered" >useCallback((<span class="fstat-no" title="function not covered" >requiredRole: string)</span> =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!requireOrganization()) <span class="cstat-no" title="statement not covered" >return false;</span></span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!checkRole(requiredRole)) {</span>
 <span class="cstat-no" title="statement not covered" >      redirect('/unauthorized');</span>
 <span class="cstat-no" title="statement not covered" >      return false;</span>
     }
 <span class="cstat-no" title="statement not covered" >    return true;</span>
   }, [requireOrganization, checkRole, redirect]);
 &nbsp;
-  const requirePermission = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >(p</span>ermission: string) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    if (!requireOrganization()) <span class="cstat-no" title="statement not covered" >return false;</span></span>
-<span class="cstat-no" title="statement not covered" >    if (!checkPermission(permission)) {</span>
+  const requirePermission = <span class="cstat-no" title="statement not covered" >useCallback((<span class="fstat-no" title="function not covered" >permission: string)</span> =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!requireOrganization()) <span class="cstat-no" title="statement not covered" >return false;</span></span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!checkPermission(permission)) {</span>
 <span class="cstat-no" title="statement not covered" >      redirect('/unauthorized');</span>
 <span class="cstat-no" title="statement not covered" >      return false;</span>
     }
 <span class="cstat-no" title="statement not covered" >    return true;</span>
   }, [requireOrganization, checkPermission, redirect]);
 &nbsp;
-  const requirePermissions = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >(p</span>ermissions: string[]) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    if (!requireOrganization()) <span class="cstat-no" title="statement not covered" >return false;</span></span>
-<span class="cstat-no" title="statement not covered" >    if (!checkPermissions(permissions)) {</span>
+  const requirePermissions = <span class="cstat-no" title="statement not covered" >useCallback((<span class="fstat-no" title="function not covered" >permissions: string[])</span> =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!requireOrganization()) <span class="cstat-no" title="statement not covered" >return false;</span></span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!checkPermissions(permissions)) {</span>
 <span class="cstat-no" title="statement not covered" >      redirect('/unauthorized');</span>
 <span class="cstat-no" title="statement not covered" >      return false;</span>
     }
@@ -684,7 +684,7 @@ export const useOrgGuard = <span class="cstat-no" title="statement not covered" 
  * Combined authentication hook
  * Provides all authentication functionality in one hook
  */
-export const useAuth = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+export const <span class="cstat-no" title="statement not covered" >useAuth = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(</span>) =&gt; </span>{</span>
   const authGuard = <span class="cstat-no" title="statement not covered" >useAuthGuard();</span>
   const adminGuard = <span class="cstat-no" title="statement not covered" >useAdminGuard();</span>
   const orgGuard = <span class="cstat-no" title="statement not covered" >useOrgGuard();</span>
@@ -696,7 +696,7 @@ export const useAuth = <span class="cstat-no" title="statement not covered" ><sp
   };
 };
 &nbsp;
-export default {
+<span class="cstat-no" title="statement not covered" >export default {</span>
   useAuthGuard,
   useAdminGuard,
   useOrgGuard,
@@ -709,7 +709,7 @@ export default {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-08-07T19:19:19.104Z
+                at 2025-08-13T02:10:19.343Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

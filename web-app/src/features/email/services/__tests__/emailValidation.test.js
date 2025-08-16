@@ -1,4 +1,13 @@
-import { validateEmailData, isValidEmail } from '../emailManagementService.verify';
+import EmailManagementService from '../emailManagementService';
+
+// Create a service instance and adapters to match expected boolean returns in tests
+const emailService = new EmailManagementService();
+const validateEmailData = (data) => {
+  const result = emailService.validateEmailData(data);
+  if (typeof result === 'boolean') return result;
+  return !!(result && result.isValid);
+};
+const isValidEmail = (email) => emailService.isValidEmail(email);
 
 describe('Email Validation', () => {
   describe('isValidEmail', () => {

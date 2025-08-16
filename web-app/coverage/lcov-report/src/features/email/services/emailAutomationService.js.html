@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">3.72% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/322</span>
+                <span class='fraction'>12/322</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">0.62% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/160</span>
+                <span class='fraction'>1/160</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">4.16% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/48</span>
+                <span class='fraction'>2/48</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">4.01% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/299</span>
+                <span class='fraction'>12/299</span>
             </div>
         
             
@@ -1067,12 +1067,12 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1084,7 +1084,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1092,7 +1092,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -2035,20 +2035,20 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { supabase } from '@/lib/supabaseClient';
 import Logger from '@shared/utils/logger';
 import emailManagementService from './emailManagementService';
@@ -2059,13 +2059,13 @@ import emailTemplateService from './emailTemplateService';
  * Handles email scheduling, automation rules, follow-up reminders, and campaign management
  */
 class EmailAutomationService {
-<span class="fstat-no" title="function not covered" >  co</span>nstructor() {
-<span class="cstat-no" title="statement not covered" >    this.isInitialized = false;</span>
-<span class="cstat-no" title="statement not covered" >    this.automationWorker = null;</span>
-<span class="cstat-no" title="statement not covered" >    this.schedulerInterval = null;</span>
+  constructor() {
+    this.isInitialized = false;
+    this.automationWorker = null;
+    this.schedulerInterval = null;
     
     // Automation rule types
-<span class="cstat-no" title="statement not covered" >    this.ruleTypes = {</span>
+    this.ruleTypes = {
       FILTER: 'filter',
       FORWARD: 'forward',
       LABEL: 'label',
@@ -2077,7 +2077,7 @@ class EmailAutomationService {
     };
 &nbsp;
     // Schedule frequencies
-<span class="cstat-no" title="statement not covered" >    this.frequencies = {</span>
+    this.frequencies = {
       ONCE: 'once',
       DAILY: 'daily',
       WEEKLY: 'weekly',
@@ -2085,7 +2085,7 @@ class EmailAutomationService {
     };
 &nbsp;
     // Campaign statuses
-<span class="cstat-no" title="statement not covered" >    this.campaignStatuses = {</span>
+    this.campaignStatuses = {
       DRAFT: 'draft',
       SCHEDULED: 'scheduled',
       RUNNING: 'running',
@@ -3028,20 +3028,20 @@ class EmailAutomationService {
 }
 &nbsp;
 // Create and export singleton instance with lazy initialization
-let emailAutomationServiceInstance = <span class="cstat-no" title="statement not covered" >null;</span>
+let emailAutomationServiceInstance = null;
 &nbsp;
-export const getEmailAutomationService = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >  if (!emailAutomationServiceInstance) {</span>
-<span class="cstat-no" title="statement not covered" >    emailAutomationServiceInstance = new EmailAutomationService();</span>
+export const getEmailAutomationService = () =&gt; {
+  <span class="missing-if-branch" title="else path not taken" >E</span>if (!emailAutomationServiceInstance) {
+    emailAutomationServiceInstance = new EmailAutomationService();
   }
-<span class="cstat-no" title="statement not covered" >  return emailAutomationServiceInstance;</span>
+  return emailAutomationServiceInstance;
 };
 &nbsp;
 // Export default instance for backward compatibility
 export default getEmailAutomationService;
 &nbsp;
 // Also export the named instance for backward compatibility
-export const emailAutomationService = <span class="cstat-no" title="statement not covered" >getEmailAutomationService();</span>
+export const emailAutomationService = getEmailAutomationService();
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -3049,7 +3049,7 @@ export const emailAutomationService = <span class="cstat-no" title="statement no
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-08-07T19:19:19.104Z
+                at 2025-08-13T02:10:19.343Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>

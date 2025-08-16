@@ -25,14 +25,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/125</span>
+                <span class='fraction'>0/121</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/49</span>
+                <span class='fraction'>0/32</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/118</span>
+                <span class='fraction'>0/114</span>
             </div>
         
             
@@ -513,14 +513,14 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -854,7 +854,7 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -870,7 +870,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -924,20 +924,20 @@ export interface UserInteractionMetric {
 &nbsp;
 class PerformanceMonitor {
   private static instance: PerformanceMonitor;
-  private metrics: PerformanceMetric[] = <span class="cstat-no" title="statement not covered" >[];</span>
-  private componentMetrics: ComponentRenderMetric[] = <span class="cstat-no" title="statement not covered" >[];</span>
-  private apiMetrics: APICallMetric[] = <span class="cstat-no" title="statement not covered" >[];</span>
-  private userMetrics: UserInteractionMetric[] = <span class="cstat-no" title="statement not covered" >[];</span>
-  private observers: PerformanceObserver[] = <span class="cstat-no" title="statement not covered" >[];</span>
-  private isEnabled: boolean = <span class="cstat-no" title="statement not covered" >true;</span>
+  private metrics: PerformanceMetric[] = [];
+  private componentMetrics: ComponentRenderMetric[] = [];
+  private apiMetrics: APICallMetric[] = [];
+  private userMetrics: UserInteractionMetric[] = [];
+  private observers: PerformanceObserver[] = [];
+  private isEnabled: boolean = true;
 &nbsp;
-<span class="fstat-no" title="function not covered" >  pr</span>ivate constructor() {
+<span class="fstat-no" title="function not covered" >  private constructor() {</span>
 <span class="cstat-no" title="statement not covered" >    this.initializeObservers();</span>
 <span class="cstat-no" title="statement not covered" >    this.setupPeriodicReporting();</span>
   }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  pu</span>blic static getInstance(): PerformanceMonitor {
-<span class="cstat-no" title="statement not covered" >    if (!PerformanceMonitor.instance) {</span>
+  public <span class="fstat-no" title="function not covered" >static g</span>etInstance(): PerformanceMonitor {
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!PerformanceMonitor.instance) {</span>
 <span class="cstat-no" title="statement not covered" >      PerformanceMonitor.instance = new PerformanceMonitor();</span>
     }
 <span class="cstat-no" title="statement not covered" >    return PerformanceMonitor.instance;</span>
@@ -946,14 +946,14 @@ class PerformanceMonitor {
   /**
    * Initialize Web Performance API observers
    */
-<span class="fstat-no" title="function not covered" >  pr</span>ivate initializeObservers(): void {
-<span class="cstat-no" title="statement not covered" >    if (typeof window === 'undefined' || !('PerformanceObserver' in window)) {</span>
+  private <span class="fstat-no" title="function not covered" >initializeObservers(</span>): void {
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (typeof window === 'undefined' || !('PerformanceObserver' in window)) {</span>
 <span class="cstat-no" title="statement not covered" >      return;</span>
     }
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    try {</span>
       // Monitor Core Web Vitals
-      const vitalsObserver = <span class="cstat-no" title="statement not covered" >new PerformanceObserver(<span class="fstat-no" title="function not covered" >li</span>st =&gt; {</span>
+      const vitalsObserver = <span class="cstat-no" title="statement not covered" >new PerformanceObserver(<span class="fstat-no" title="function not covered" >list </span>=&gt; {</span>
 <span class="cstat-no" title="statement not covered" >        for (const entry of list.getEntries()) {</span>
 <span class="cstat-no" title="statement not covered" >          this.recordMetric({</span>
             name: entry.name,
@@ -968,7 +968,7 @@ class PerformanceMonitor {
 <span class="cstat-no" title="statement not covered" >      this.observers.push(vitalsObserver);</span>
 &nbsp;
       // Monitor resource loading
-      const resourceObserver = <span class="cstat-no" title="statement not covered" >new PerformanceObserver(<span class="fstat-no" title="function not covered" >li</span>st =&gt; {</span>
+      const resourceObserver = <span class="cstat-no" title="statement not covered" >new PerformanceObserver(<span class="fstat-no" title="function not covered" >list </span>=&gt; {</span>
 <span class="cstat-no" title="statement not covered" >        for (const entry of list.getEntries()) {</span>
           const resource = <span class="cstat-no" title="statement not covered" >entry as PerformanceResourceTiming;</span>
 <span class="cstat-no" title="statement not covered" >          this.recordMetric({</span>
@@ -988,7 +988,7 @@ class PerformanceMonitor {
 <span class="cstat-no" title="statement not covered" >      this.observers.push(resourceObserver);</span>
 &nbsp;
       // Monitor long tasks
-      const longTaskObserver = <span class="cstat-no" title="statement not covered" >new PerformanceObserver(<span class="fstat-no" title="function not covered" >li</span>st =&gt; {</span>
+      const longTaskObserver = <span class="cstat-no" title="statement not covered" >new PerformanceObserver(<span class="fstat-no" title="function not covered" >list </span>=&gt; {</span>
 <span class="cstat-no" title="statement not covered" >        for (const entry of list.getEntries()) {</span>
 <span class="cstat-no" title="statement not covered" >          this.recordMetric({</span>
             name: 'long-task',
@@ -1009,8 +1009,8 @@ class PerformanceMonitor {
   /**
    * Record a general performance metric
    */
-<span class="fstat-no" title="function not covered" >  pu</span>blic recordMetric(metric: PerformanceMetric): void {
-<span class="cstat-no" title="statement not covered" >    if (!this.isEnabled) <span class="cstat-no" title="statement not covered" >return;</span></span>
+  public <span class="fstat-no" title="function not covered" >recordMetric(</span>metric: PerformanceMetric): void {
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!this.isEnabled) <span class="cstat-no" title="statement not covered" >return;</span></span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    this.metrics.push({</span>
       ...metric,
@@ -1018,7 +1018,7 @@ class PerformanceMonitor {
     });
 &nbsp;
     // Keep only last 1000 metrics to prevent memory leaks
-<span class="cstat-no" title="statement not covered" >    if (this.metrics.length &gt; 1000) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (this.metrics.length &gt; 1000) {</span>
 <span class="cstat-no" title="statement not covered" >      this.metrics.shift();</span>
     }
   }
@@ -1026,15 +1026,15 @@ class PerformanceMonitor {
   /**
    * Record component render performance
    */
-<span class="fstat-no" title="function not covered" >  pu</span>blic recordComponentRender(metric: ComponentRenderMetric): void {
-<span class="cstat-no" title="statement not covered" >    if (!this.isEnabled) <span class="cstat-no" title="statement not covered" >return;</span></span>
+  public <span class="fstat-no" title="function not covered" >recordComponentRender(</span>metric: ComponentRenderMetric): void {
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!this.isEnabled) <span class="cstat-no" title="statement not covered" >return;</span></span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    this.componentMetrics.push({</span>
       ...metric,
       timestamp: metric.timestamp || Date.now(),
     });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    if (this.componentMetrics.length &gt; 500) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (this.componentMetrics.length &gt; 500) {</span>
 <span class="cstat-no" title="statement not covered" >      this.componentMetrics.shift();</span>
     }
   }
@@ -1042,15 +1042,15 @@ class PerformanceMonitor {
   /**
    * Record API call performance
    */
-<span class="fstat-no" title="function not covered" >  pu</span>blic recordAPICall(metric: APICallMetric): void {
-<span class="cstat-no" title="statement not covered" >    if (!this.isEnabled) <span class="cstat-no" title="statement not covered" >return;</span></span>
+  public <span class="fstat-no" title="function not covered" >recordAPICall(</span>metric: APICallMetric): void {
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!this.isEnabled) <span class="cstat-no" title="statement not covered" >return;</span></span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    this.apiMetrics.push({</span>
       ...metric,
       timestamp: metric.timestamp || Date.now(),
     });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    if (this.apiMetrics.length &gt; 500) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (this.apiMetrics.length &gt; 500) {</span>
 <span class="cstat-no" title="statement not covered" >      this.apiMetrics.shift();</span>
     }
   }
@@ -1058,15 +1058,15 @@ class PerformanceMonitor {
   /**
    * Record user interaction
    */
-<span class="fstat-no" title="function not covered" >  pu</span>blic recordUserInteraction(metric: UserInteractionMetric): void {
-<span class="cstat-no" title="statement not covered" >    if (!this.isEnabled) <span class="cstat-no" title="statement not covered" >return;</span></span>
+  public <span class="fstat-no" title="function not covered" >recordUserInteraction(</span>metric: UserInteractionMetric): void {
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!this.isEnabled) <span class="cstat-no" title="statement not covered" >return;</span></span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    this.userMetrics.push({</span>
       ...metric,
       timestamp: metric.timestamp || Date.now(),
     });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    if (this.userMetrics.length &gt; 300) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (this.userMetrics.length &gt; 300) {</span>
 <span class="cstat-no" title="statement not covered" >      this.userMetrics.shift();</span>
     }
   }
@@ -1074,7 +1074,7 @@ class PerformanceMonitor {
   /**
    * Measure function execution time
    */
-<span class="fstat-no" title="function not covered" >  pu</span>blic measureFunction&lt;T&gt;(name: string, fn: () =&gt; T, tags?: Record&lt;string, string&gt;): T {
+  public <span class="fstat-no" title="function not covered" >measureFunction&lt;</span>T&gt;(name: string, fn: () =&gt; T, tags?: Record&lt;string, string&gt;): T {
     const start = <span class="cstat-no" title="statement not covered" >performance.now();</span>
 <span class="cstat-no" title="statement not covered" >    try {</span>
       const result = <span class="cstat-no" title="statement not covered" >fn();</span>
@@ -1103,7 +1103,7 @@ class PerformanceMonitor {
   /**
    * Measure async function execution time
    */
-<span class="fstat-no" title="function not covered" >  pu</span>blic async measureAsyncFunction&lt;T&gt;(
+  public <span class="fstat-no" title="function not covered" >async m</span>easureAsyncFunction&lt;T&gt;(
     name: string,
     fn: () =&gt; Promise&lt;T&gt;,
     tags?: Record&lt;string, string&gt;,
@@ -1136,24 +1136,24 @@ class PerformanceMonitor {
   /**
    * Get Core Web Vitals
    */
-<span class="fstat-no" title="function not covered" >  pu</span>blic getCoreWebVitals(): Record&lt;string, number&gt; {
+  public <span class="fstat-no" title="function not covered" >getCoreWebVitals(</span>): Record&lt;string, number&gt; {
     const vitals: Record&lt;string, number&gt; = <span class="cstat-no" title="statement not covered" >{};</span>
 &nbsp;
     // Largest Contentful Paint
     const lcpEntries = <span class="cstat-no" title="statement not covered" >performance.getEntriesByType('largest-contentful-paint');</span>
-<span class="cstat-no" title="statement not covered" >    if (lcpEntries.length &gt; 0) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (lcpEntries.length &gt; 0) {</span>
 <span class="cstat-no" title="statement not covered" >      vitals.LCP = lcpEntries[lcpEntries.length - 1].startTime;</span>
     }
 &nbsp;
     // First Input Delay (would need additional setup in real implementation)
     const fidMetrics = <span class="cstat-no" title="statement not covered" >this.metrics.filter(<span class="fstat-no" title="function not covered" >m </span>=&gt; <span class="cstat-no" title="statement not covered" >m.name === 'first-input-delay')</span>;</span>
-<span class="cstat-no" title="statement not covered" >    if (fidMetrics.length &gt; 0) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (fidMetrics.length &gt; 0) {</span>
 <span class="cstat-no" title="statement not covered" >      vitals.FID = fidMetrics[fidMetrics.length - 1].value;</span>
     }
 &nbsp;
     // Cumulative Layout Shift (would need additional setup)
     const clsMetrics = <span class="cstat-no" title="statement not covered" >this.metrics.filter(<span class="fstat-no" title="function not covered" >m </span>=&gt; <span class="cstat-no" title="statement not covered" >m.name === 'cumulative-layout-shift')</span>;</span>
-<span class="cstat-no" title="statement not covered" >    if (clsMetrics.length &gt; 0) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (clsMetrics.length &gt; 0) {</span>
 <span class="cstat-no" title="statement not covered" >      vitals.CLS = clsMetrics[clsMetrics.length - 1].value;</span>
     }
 &nbsp;
@@ -1163,7 +1163,7 @@ class PerformanceMonitor {
   /**
    * Get performance summary
    */
-<span class="fstat-no" title="function not covered" >  pu</span>blic getPerformanceSummary(): {
+  public <span class="fstat-no" title="function not covered" >getPerformanceSummary(</span>): {
     totalMetrics: number;
     avgRenderTime: number;
     slowestComponents: ComponentRenderMetric[];
@@ -1196,7 +1196,7 @@ class PerformanceMonitor {
   /**
    * Export metrics for analysis
    */
-<span class="fstat-no" title="function not covered" >  pu</span>blic exportMetrics(): {
+  public <span class="fstat-no" title="function not covered" >exportMetrics(</span>): {
     general: PerformanceMetric[];
     components: ComponentRenderMetric[];
     api: APICallMetric[];
@@ -1213,7 +1213,7 @@ class PerformanceMonitor {
   /**
    * Clear all metrics
    */
-<span class="fstat-no" title="function not covered" >  pu</span>blic clearMetrics(): void {
+  public <span class="fstat-no" title="function not covered" >clearMetrics(</span>): void {
 <span class="cstat-no" title="statement not covered" >    this.metrics.length = 0;</span>
 <span class="cstat-no" title="statement not covered" >    this.componentMetrics.length = 0;</span>
 <span class="cstat-no" title="statement not covered" >    this.apiMetrics.length = 0;</span>
@@ -1223,26 +1223,26 @@ class PerformanceMonitor {
   /**
    * Enable/disable monitoring
    */
-<span class="fstat-no" title="function not covered" >  pu</span>blic setEnabled(enabled: boolean): void {
+  public <span class="fstat-no" title="function not covered" >setEnabled(</span>enabled: boolean): void {
 <span class="cstat-no" title="statement not covered" >    this.isEnabled = enabled;</span>
   }
 &nbsp;
   /**
    * Set up periodic reporting to console (development only)
    */
-<span class="fstat-no" title="function not covered" >  pr</span>ivate setupPeriodicReporting(): void {
-<span class="cstat-no" title="statement not covered" >    if (import.meta.env.MODE === 'development') {</span>
-<span class="cstat-no" title="statement not covered" >      setInterval(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+  private <span class="fstat-no" title="function not covered" >setupPeriodicReporting(</span>): void {
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (import.meta.env.MODE === 'development') {</span>
+<span class="cstat-no" title="statement not covered" >      setInterval(<span class="fstat-no" title="function not covered" >() =&gt; </span>{</span>
         const summary = <span class="cstat-no" title="statement not covered" >this.getPerformanceSummary();</span>
-<span class="cstat-no" title="statement not covered" >        if (summary.totalMetrics &gt; 0) {</span>
+<span class="cstat-no" title="statement not covered" >        <span class="missing-if-branch" title="if path not taken" >I</span>if (summary.totalMetrics &gt; 0) {</span>
 <span class="cstat-no" title="statement not covered" >          console.group('🔍 Performance Summary');</span>
 <span class="cstat-no" title="statement not covered" >          console.log('Total metrics:', summary.totalMetrics);</span>
 <span class="cstat-no" title="statement not covered" >          console.log('Average render time:', summary.avgRenderTime.toFixed(2), 'ms');</span>
 <span class="cstat-no" title="statement not covered" >          console.log('Core Web Vitals:', summary.coreWebVitals);</span>
-<span class="cstat-no" title="statement not covered" >          if (summary.slowestComponents.length &gt; 0) {</span>
+<span class="cstat-no" title="statement not covered" >          <span class="missing-if-branch" title="if path not taken" >I</span>if (summary.slowestComponents.length &gt; 0) {</span>
 <span class="cstat-no" title="statement not covered" >            console.log('Slowest components:', summary.slowestComponents);</span>
           }
-<span class="cstat-no" title="statement not covered" >          if (summary.slowestAPICalls.length &gt; 0) {</span>
+<span class="cstat-no" title="statement not covered" >          <span class="missing-if-branch" title="if path not taken" >I</span>if (summary.slowestAPICalls.length &gt; 0) {</span>
 <span class="cstat-no" title="statement not covered" >            console.log('Slowest API calls:', summary.slowestAPICalls);</span>
           }
 <span class="cstat-no" title="statement not covered" >          console.groupEnd();</span>
@@ -1254,25 +1254,25 @@ class PerformanceMonitor {
   /**
    * Cleanup observers
    */
-<span class="fstat-no" title="function not covered" >  pu</span>blic destroy(): void {
-<span class="cstat-no" title="statement not covered" >    this.observers.forEach(<span class="fstat-no" title="function not covered" >ob</span>server =&gt; <span class="cstat-no" title="statement not covered" >observer.disconnect())</span>;</span>
+  public <span class="fstat-no" title="function not covered" >destroy(</span>): void {
+<span class="cstat-no" title="statement not covered" >    this.observers.forEach(<span class="fstat-no" title="function not covered" >observer </span>=&gt; <span class="cstat-no" title="statement not covered" >observer.disconnect())</span>;</span>
 <span class="cstat-no" title="statement not covered" >    this.observers = [];</span>
 <span class="cstat-no" title="statement not covered" >    this.clearMetrics();</span>
   }
 }
 &nbsp;
 // Singleton instance
-export const performanceMonitor = <span class="cstat-no" title="statement not covered" >PerformanceMonitor.getInstance();</span>
+export const <span class="cstat-no" title="statement not covered" >performanceMonitor = PerformanceMonitor.getInstance();</span>
 &nbsp;
 // Utility decorators and HOCs for easy integration
-export function <span class="fstat-no" title="function not covered" >measurePerformance(</span>_name: string, _tags?: Record&lt;string, string&gt;) {
-<span class="cstat-no" title="statement not covered" >  return <span class="fstat-no" title="function not covered" >fu</span>nction (target: any, propertyKey: string, descriptor: PropertyDescriptor) {</span>
+<span class="cstat-no" title="statement not covered" >export function <span class="fstat-no" title="function not covered" >m</span>easurePerformance(</span>_name: string, _tags?: Record&lt;string, string&gt;) {
+<span class="cstat-no" title="statement not covered" >  return <span class="fstat-no" title="function not covered" >function (t</span>arget: any, propertyKey: string, descriptor: PropertyDescriptor) {</span>
     const originalMethod = <span class="cstat-no" title="statement not covered" >descriptor.value;</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    descriptor.value = <span class="fstat-no" title="function not covered" >fu</span>nction (...args: any[]) {</span>
+<span class="cstat-no" title="statement not covered" >    descriptor.value = <span class="fstat-no" title="function not covered" >function (.</span>..args: any[]) {</span>
 <span class="cstat-no" title="statement not covered" >      return performanceMonitor.measureFunction(</span>
         `${target.constructor.name}.${propertyKey}`,
-<span class="fstat-no" title="function not covered" >        ()</span> =&gt; <span class="cstat-no" title="statement not covered" >originalMethod.apply(this, args),</span>
+<span class="fstat-no" title="function not covered" >        () =&gt; <span class="cstat-no" title="statement not covered" >o</span>riginalMethod.apply(this, args),</span>
         _tags,
       );
     };
@@ -1281,14 +1281,14 @@ export function <span class="fstat-no" title="function not covered" >measurePerf
   };
 }
 &nbsp;
-export function <span class="fstat-no" title="function not covered" >measureAsyncPerformance(</span>_name: string, _tags?: Record&lt;string, string&gt;) {
-<span class="cstat-no" title="statement not covered" >  return <span class="fstat-no" title="function not covered" >fu</span>nction (target: any, propertyKey: string, descriptor: PropertyDescriptor) {</span>
+<span class="cstat-no" title="statement not covered" >export function <span class="fstat-no" title="function not covered" >m</span>easureAsyncPerformance(</span>_name: string, _tags?: Record&lt;string, string&gt;) {
+<span class="cstat-no" title="statement not covered" >  return <span class="fstat-no" title="function not covered" >function (t</span>arget: any, propertyKey: string, descriptor: PropertyDescriptor) {</span>
     const originalMethod = <span class="cstat-no" title="statement not covered" >descriptor.value;</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    descriptor.value = <span class="fstat-no" title="function not covered" >as</span>ync function (...args: any[]) {</span>
+<span class="cstat-no" title="statement not covered" >    descriptor.value = <span class="fstat-no" title="function not covered" >async function (.</span>..args: any[]) {</span>
 <span class="cstat-no" title="statement not covered" >      return performanceMonitor.measureAsyncFunction(</span>
         `${target.constructor.name}.${propertyKey}`,
-<span class="fstat-no" title="function not covered" >        ()</span> =&gt; <span class="cstat-no" title="statement not covered" >originalMethod.apply(this, args),</span>
+<span class="fstat-no" title="function not covered" >        () =&gt; <span class="cstat-no" title="statement not covered" >o</span>riginalMethod.apply(this, args),</span>
         _tags,
       );
     };
@@ -1303,7 +1303,7 @@ export function <span class="fstat-no" title="function not covered" >measureAsyn
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-08-07T19:19:19.104Z
+                at 2025-08-13T02:10:19.343Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

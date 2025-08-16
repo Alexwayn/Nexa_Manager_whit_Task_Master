@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">5.3% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/132</span>
+                <span class='fraction'>7/132</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">5.46% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/128</span>
+                <span class='fraction'>7/128</span>
             </div>
         
             
@@ -719,7 +719,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -728,7 +728,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -736,7 +736,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -744,28 +744,14 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -774,7 +760,21 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1359,7 +1359,7 @@ import Logger from '@/utils/Logger';
  */
 &nbsp;
 // Template type constants
-export const TEMPLATE_TYPES = <span class="cstat-no" title="statement not covered" >{</span>
+export const TEMPLATE_TYPES = {
   PROFESSIONAL: 'professional',
   MINIMAL: 'minimal',
   CREATIVE: 'creative',
@@ -1368,7 +1368,7 @@ export const TEMPLATE_TYPES = <span class="cstat-no" title="statement not covere
 };
 &nbsp;
 // Layout style constants
-export const LAYOUT_STYLES = <span class="cstat-no" title="statement not covered" >{</span>
+export const LAYOUT_STYLES = {
   PROFESSIONAL: 'professional',
   MINIMAL: 'minimal',
   CREATIVE: 'creative',
@@ -1376,7 +1376,7 @@ export const LAYOUT_STYLES = <span class="cstat-no" title="statement not covered
 };
 &nbsp;
 // Numbering format constants
-export const NUMBERING_FORMATS = <span class="cstat-no" title="statement not covered" >{</span>
+export const NUMBERING_FORMATS = {
   SEQUENTIAL: 'sequential',
   DATE_BASED: 'date_based',
   YEARLY_RESET: 'yearly_reset',
@@ -1384,14 +1384,14 @@ export const NUMBERING_FORMATS = <span class="cstat-no" title="statement not cov
 };
 &nbsp;
 // Logo position constants
-export const LOGO_POSITIONS = <span class="cstat-no" title="statement not covered" >{</span>
+export const LOGO_POSITIONS = {
   LEFT: 'left',
   CENTER: 'center',
   RIGHT: 'right',
 };
 &nbsp;
 // Currency constants
-export const CURRENCIES = <span class="cstat-no" title="statement not covered" >{</span>
+export const CURRENCIES = {
   EUR: 'EUR',
   USD: 'USD',
   GBP: 'GBP',
@@ -1405,7 +1405,7 @@ export const CURRENCIES = <span class="cstat-no" title="statement not covered" >
 };
 &nbsp;
 // Date format constants
-export const DATE_FORMATS = <span class="cstat-no" title="statement not covered" >{</span>
+export const DATE_FORMATS = {
   DD_MM_YYYY: 'DD/MM/YYYY',
   MM_DD_YYYY: 'MM/DD/YYYY',
   YYYY_MM_DD: 'YYYY/MM/DD',
@@ -1414,7 +1414,7 @@ export const DATE_FORMATS = <span class="cstat-no" title="statement not covered"
 };
 &nbsp;
 // Number format constants
-export const NUMBER_FORMATS = <span class="cstat-no" title="statement not covered" >{</span>
+export const NUMBER_FORMATS = {
   EUROPEAN: 'european', // 1.234,56
   AMERICAN: 'american', // 1,234.56
 };
@@ -1990,7 +1990,7 @@ export default InvoiceSettingsService;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-08-07T19:19:19.104Z
+                at 2025-08-13T02:10:19.343Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>

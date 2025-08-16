@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">2.08% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/48</span>
+                <span class='fraction'>1/48</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/14</span>
+                <span class='fraction'>0/9</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/11</span>
+                <span class='fraction'>0/12</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">2.17% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/46</span>
+                <span class='fraction'>1/46</span>
             </div>
         
             
@@ -167,8 +167,8 @@
 <a name='L102'></a><a href='#L102'>102</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -268,13 +268,13 @@
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">// Camera service implementation
 import type { CameraService as ICameraService } from '@/types/scanner';
 &nbsp;
-export class CameraService implements ICameraService {
-  private stream: MediaStream | null = <span class="cstat-no" title="statement not covered" >null;</span>
+<span class="fstat-no" title="function not covered" >export class C</span>ameraService implements ICameraService {
+  private stream: MediaStream | null = null;
 &nbsp;
-<span class="fstat-no" title="function not covered" >  as</span>ync initialize(): Promise&lt;boolean&gt; {
+<span class="fstat-no" title="function not covered" >  async i</span>nitialize(): Promise&lt;boolean&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
       const hasCamera = <span class="cstat-no" title="statement not covered" >await this.hasCamera();</span>
-<span class="cstat-no" title="statement not covered" >      if (!hasCamera) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (!hasCamera) {</span>
 <span class="cstat-no" title="statement not covered" >        return false;</span>
       }
 &nbsp;
@@ -286,7 +286,7 @@ export class CameraService implements ICameraService {
     }
   }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  as</span>ync startCamera(): Promise&lt;MediaStream&gt; {
+<span class="fstat-no" title="function not covered" >  async s</span>tartCamera(): Promise&lt;MediaStream&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
 <span class="cstat-no" title="statement not covered" >      this.stream = await navigator.mediaDevices.getUserMedia({</span>
         video: {
@@ -302,15 +302,15 @@ export class CameraService implements ICameraService {
     }
   }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  st</span>opCamera(): void {
-<span class="cstat-no" title="statement not covered" >    if (this.stream) {</span>
-<span class="cstat-no" title="statement not covered" >      this.stream.getTracks().forEach(<span class="fstat-no" title="function not covered" >tr</span>ack =&gt; <span class="cstat-no" title="statement not covered" >track.stop())</span>;</span>
+<span class="fstat-no" title="function not covered" >  stopCamera(</span>): void {
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (this.stream) {</span>
+<span class="cstat-no" title="statement not covered" >      this.stream.getTracks().forEach(<span class="fstat-no" title="function not covered" >track </span>=&gt; <span class="cstat-no" title="statement not covered" >track.stop())</span>;</span>
 <span class="cstat-no" title="statement not covered" >      this.stream = null;</span>
     }
   }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  as</span>ync captureImage(): Promise&lt;Blob&gt; {
-<span class="cstat-no" title="statement not covered" >    if (!this.stream) {</span>
+<span class="fstat-no" title="function not covered" >  async c</span>aptureImage(): Promise&lt;Blob&gt; {
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!this.stream) {</span>
 <span class="cstat-no" title="statement not covered" >      throw new Error('Camera not started');</span>
     }
 &nbsp;
@@ -320,11 +320,11 @@ export class CameraService implements ICameraService {
 <span class="cstat-no" title="statement not covered" >    video.play();</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    return new Promise(<span class="fstat-no" title="function not covered" >(r</span>esolve, reject) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >      video.addEventListener('loadedmetadata', <span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >      video.addEventListener('loadedmetadata', <span class="fstat-no" title="function not covered" >() =&gt; </span>{</span>
         const canvas = <span class="cstat-no" title="statement not covered" >document.createElement('canvas');</span>
         const context = <span class="cstat-no" title="statement not covered" >canvas.getContext('2d');</span>
         
-<span class="cstat-no" title="statement not covered" >        if (!context) {</span>
+<span class="cstat-no" title="statement not covered" >        <span class="missing-if-branch" title="if path not taken" >I</span>if (!context) {</span>
 <span class="cstat-no" title="statement not covered" >          reject(new Error('Unable to create canvas context'));</span>
 <span class="cstat-no" title="statement not covered" >          return;</span>
         }
@@ -334,7 +334,7 @@ export class CameraService implements ICameraService {
         
 <span class="cstat-no" title="statement not covered" >        context.drawImage(video, 0, 0);</span>
         
-<span class="cstat-no" title="statement not covered" >        canvas.toBlob(<span class="fstat-no" title="function not covered" >(b</span>lob) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >        canvas.toBlob((<span class="fstat-no" title="function not covered" >blob)</span> =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >          if (blob) {</span>
 <span class="cstat-no" title="statement not covered" >            resolve(blob);</span>
           } else {
@@ -345,16 +345,16 @@ export class CameraService implements ICameraService {
     });
   }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  ha</span>sCamera(): boolean {
+<span class="fstat-no" title="function not covered" >  hasCamera(</span>): boolean {
 <span class="cstat-no" title="statement not covered" >    return !!(navigator.mediaDevices &amp;&amp; navigator.mediaDevices.getUserMedia);</span>
   }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  as</span>ync requestPermission(): Promise&lt;PermissionState&gt; {
+<span class="fstat-no" title="function not covered" >  async r</span>equestPermission(): Promise&lt;PermissionState&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
-<span class="cstat-no" title="statement not covered" >      if (!navigator.permissions) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (!navigator.permissions) {</span>
         // Fallback: try to access camera directly
         const stream = <span class="cstat-no" title="statement not covered" >await navigator.mediaDevices.getUserMedia({ video: true });</span>
-<span class="cstat-no" title="statement not covered" >        stream.getTracks().forEach(<span class="fstat-no" title="function not covered" >tr</span>ack =&gt; <span class="cstat-no" title="statement not covered" >track.stop())</span>;</span>
+<span class="cstat-no" title="statement not covered" >        stream.getTracks().forEach(<span class="fstat-no" title="function not covered" >track </span>=&gt; <span class="cstat-no" title="statement not covered" >track.stop())</span>;</span>
 <span class="cstat-no" title="statement not covered" >        return 'granted';</span>
       }
 &nbsp;
@@ -373,7 +373,7 @@ export class CameraService implements ICameraService {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-08-07T19:19:19.104Z
+                at 2025-08-13T02:10:19.343Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>

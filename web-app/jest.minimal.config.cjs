@@ -23,6 +23,12 @@ module.exports = {
     // Asset mappings
     '^@assets/(.*)\\.(png|jpg|jpeg|gif|svg)$': 'jest-transform-stub',
     '^@assets/(.*)$': '<rootDir>/../assets/$1',
+
+    // CSS modules and styles
+    '^.+\\.(css|scss|sass|less)$': 'identity-obj-proxy',
+    // Some libraries import their own CSS files directly
+    '^react-grid-layout/css/styles\\.css$': 'identity-obj-proxy',
+    '^react-resizable/css/styles\\.css$': 'identity-obj-proxy',
     
     // Path mappings - order matters, most specific first
     '^@/(.*)$': '<rootDir>/src/$1',

@@ -1,40 +1,12 @@
 === INITIAL STATE ===
-Button 0: text="", type="button", disabled=false, className="text-gray-400 hover:text-gray-600"
-Button 1: text="Worked perfectly", type="button", disabled=false, className="p-2 border rounded hover:bg-gray-50 text-left"
-Button 2: text="Mostly correct", type="button", disabled=false, className="p-2 border rounded hover:bg-gray-50 text-left"
-Button 3: text="Partially correct", type="button", disabled=false, className="p-2 border rounded hover:bg-gray-50 text-left"
-Button 4: text="Incorrect", type="button", disabled=false, className="p-2 border rounded hover:bg-gray-50 text-left"
-Button 5: text="Completely wrong", type="button", disabled=false, className="p-2 border rounded hover:bg-gray-50 text-left"
-Button 6: text="Positive", type="button", disabled=false, className="p-3 border rounded-md flex flex-col items-center space-y-1 transition-colors border-gray-300 hover:border-gray-400"
-Button 7: text="Negative", type="button", disabled=false, className="p-3 border rounded-md flex flex-col items-center space-y-1 transition-colors border-gray-300 hover:border-gray-400"
-Button 8: text="Suggestion", type="button", disabled=false, className="p-3 border rounded-md flex flex-col items-center space-y-1 transition-colors border-gray-300 hover:border-gray-400"
-Button 9: text="", type="button", disabled=false, className="text-yellow-400 hover:text-yellow-500"
-Button 10: text="", type="button", disabled=false, className="text-yellow-400 hover:text-yellow-500"
-Button 11: text="", type="button", disabled=false, className="text-yellow-400 hover:text-yellow-500"
-Button 12: text="", type="button", disabled=false, className="text-yellow-400 hover:text-yellow-500"
-Button 13: text="", type="button", disabled=false, className="text-yellow-400 hover:text-yellow-500"
-Button 14: text="Detailed feedback", type="button", disabled=false, className="underline text-sm"
-Button 15: text="Close", type="button", disabled=false, className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 border border-gray-300 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
-Button 16: text="Submit", type="submit", disabled=false, className="px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
-Submit button found: true, disabled: false
-Close button found: true
+Button 0: text="Count: 0", type="submit", disabled=false, className=""
+Submit button found: false, disabled: undefined
+Close button found: false
 === TESTING CLOSE BUTTON ===
-Clicking close button...
-mockOnClose called: 1 times
 === TESTING FEEDBACK SELECTION ===
-Positive button found: true
-Clicking positive button...
-Positive button after click - className: "p-3 border rounded-md flex flex-col items-center space-y-1 transition-colors border-green-500 bg-green-50 text-green-700"
+Positive button found: false
 === TESTING STAR RATING ===
-Star buttons found: 5
-Clicking 3rd star...
-Star 0: className="text-yellow-400 hover:text-yellow-500"
-Star 1: className="text-yellow-400 hover:text-yellow-500"
-Star 2: className="text-yellow-400 hover:text-yellow-500"
-Star 3: className="text-yellow-400 hover:text-yellow-500"
-Star 4: className="text-yellow-400 hover:text-yellow-500"
+Star buttons found: 0
 === CHECKING SUBMIT BUTTON AFTER SELECTIONS ===
-Submit button after selections - disabled: false
+Submit button after selections - disabled: undefined
 === TESTING CLOSE BUTTON AGAIN ===
-Clicking close button again...
-mockOnClose called: 1 times

@@ -25,14 +25,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/119</span>
+                <span class='fraction'>0/126</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/69</span>
+                <span class='fraction'>0/61</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/104</span>
+                <span class='fraction'>0/111</span>
             </div>
         
             
@@ -565,12 +565,9 @@
 <a name='L500'></a><a href='#L500'>500</a>
 <a name='L501'></a><a href='#L501'>501</a>
 <a name='L502'></a><a href='#L502'>502</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -580,6 +577,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1064,11 +1064,11 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">// Document search component with advanced search capabilities
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import { useDebounce } from '../../hooks/useDebounce';
-import { 
+<span class="cstat-no" title="statement not covered" >import React, { useState, useEffect, useCallback, useMemo } from 'react';</span>
+<span class="cstat-no" title="statement not covered" >import { useDebounce } from '../../hooks/useDebounce';</span>
+<span class="cstat-no" title="statement not covered" >import { </span>
   MagnifyingGlassIcon, 
   FunnelIcon, 
   XMarkIcon,
@@ -1078,9 +1078,9 @@ import {
   DocumentTextIcon,
   AdjustmentsHorizontalIcon
 } from '@heroicons/react/24/outline';
-import { documentSearchService, type SearchResult, type SearchOptions, type SearchField } from '@/features/scanner/services';
-import { documentTaggingService } from '@/features/scanner/services';
-import clientService from '../../features/clients/services/clientService';
+<span class="cstat-no" title="statement not covered" >import { documentSearchService, type SearchResult, type SearchOptions, type SearchField } from '@/features/scanner/services';</span>
+<span class="cstat-no" title="statement not covered" >import { documentTaggingService } from '@/features/scanner/services';</span>
+<span class="cstat-no" title="statement not covered" >import clientService from '../../features/clients/services/clientService';</span>
 import type { Client } from '../../features/clients/services/clientService';
 import type { ProcessedDocument } from '@/types/scanner';
 &nbsp;
@@ -1139,13 +1139,13 @@ const DocumentSearch: React.FC&lt;DocumentSearchProps&gt; = <span class="cstat-n
   const debouncedQuery = <span class="cstat-no" title="statement not covered" >useDebounce(query, 300);</span>
 &nbsp;
   // Load filter options on mount
-<span class="cstat-no" title="statement not covered" >  useEffect(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >  useEffect(<span class="fstat-no" title="function not covered" >() =&gt; </span>{</span>
 <span class="cstat-no" title="statement not covered" >    loadFilterOptions();</span>
 <span class="cstat-no" title="statement not covered" >    loadRecentSearches();</span>
   }, [userId]);
 &nbsp;
   // Perform search when query or filters change
-<span class="cstat-no" title="statement not covered" >  useEffect(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >  useEffect(<span class="fstat-no" title="function not covered" >() =&gt; </span>{</span>
 <span class="cstat-no" title="statement not covered" >    if (debouncedQuery.trim() || Object.keys(filters).length &gt; 0) {</span>
 <span class="cstat-no" title="statement not covered" >      performSearch();</span>
     } else {
@@ -1155,17 +1155,17 @@ const DocumentSearch: React.FC&lt;DocumentSearchProps&gt; = <span class="cstat-n
   }, [debouncedQuery, filters, advancedSearch.searchFields, advancedSearch.sortBy, advancedSearch.sortOrder]);
 &nbsp;
   // Load filter options
-  const loadFilterOptions = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {</span>
+  const loadFilterOptions = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >async () =&gt; </span>{</span>
 <span class="cstat-no" title="statement not covered" >    try {</span>
       // Load categories
       const categoriesData = <span class="cstat-no" title="statement not covered" >await documentTaggingService.getDocumentCategories();</span>
-<span class="cstat-no" title="statement not covered" >      setCategories(categoriesData.map(<span class="fstat-no" title="function not covered" >(c</span>at: any) =&gt; (<span class="cstat-no" title="statement not covered" >{ id: cat.id, name: cat.name })</span>));</span>
+<span class="cstat-no" title="statement not covered" >      setCategories(categoriesData.map((<span class="fstat-no" title="function not covered" >cat: any)</span> =&gt; (<span class="cstat-no" title="statement not covered" >{ id: cat.id, name: cat.name })</span>));</span>
 &nbsp;
       // Load clients
       const clientsResult = <span class="cstat-no" title="statement not covered" >await clientService.getClients({ userId, limit: 100 });</span>
-<span class="cstat-no" title="statement not covered" >      if (clientsResult.data) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (clientsResult.data) {</span>
         const clientsArray = <span class="cstat-no" title="statement not covered" >Array.isArray(clientsResult.data) ? clientsResult.data : [clientsResult.data];</span>
-<span class="cstat-no" title="statement not covered" >        setClients(clientsArray.map(<span class="fstat-no" title="function not covered" >(c</span>lient: Client) =&gt; (<span class="cstat-no" title="statement not covered" >{ </span></span>
+<span class="cstat-no" title="statement not covered" >        setClients(clientsArray.map((<span class="fstat-no" title="function not covered" >client: Client)</span> =&gt; (<span class="cstat-no" title="statement not covered" >{ </span></span>
           id: client.id, 
           name: client.displayName || client.full_name 
         })));
@@ -1173,25 +1173,25 @@ const DocumentSearch: React.FC&lt;DocumentSearchProps&gt; = <span class="cstat-n
 &nbsp;
       // Load user tags
       const userTags = <span class="cstat-no" title="statement not covered" >await documentTaggingService.getUserTags(userId);</span>
-<span class="cstat-no" title="statement not covered" >      setAvailableTags(userTags.map(<span class="fstat-no" title="function not covered" >(t</span>ag: any) =&gt; <span class="cstat-no" title="statement not covered" >tag.name)</span>);</span>
+<span class="cstat-no" title="statement not covered" >      setAvailableTags(userTags.map((<span class="fstat-no" title="function not covered" >tag: any)</span> =&gt; <span class="cstat-no" title="statement not covered" >tag.name)</span>);</span>
     } catch (error) {
 <span class="cstat-no" title="statement not covered" >      console.error('Failed to load filter options:', error);</span>
     }
   };
 &nbsp;
   // Load recent searches
-  const loadRecentSearches = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {</span>
+  const loadRecentSearches = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >async () =&gt; </span>{</span>
 <span class="cstat-no" title="statement not covered" >    try {</span>
       const analytics = <span class="cstat-no" title="statement not covered" >await documentSearchService.getSearchAnalytics(userId, 7);</span>
-<span class="cstat-no" title="statement not covered" >      setRecentSearches(analytics.topQueries.slice(0, 5).map(<span class="fstat-no" title="function not covered" >(q</span>: any) =&gt; <span class="cstat-no" title="statement not covered" >q.query)</span>);</span>
+<span class="cstat-no" title="statement not covered" >      setRecentSearches(analytics.topQueries.slice(0, 5).map((<span class="fstat-no" title="function not covered" >q: any)</span> =&gt; <span class="cstat-no" title="statement not covered" >q.query)</span>);</span>
     } catch (error) {
 <span class="cstat-no" title="statement not covered" >      console.error('Failed to load recent searches:', error);</span>
     }
   };
 &nbsp;
   // Perform search
-  const performSearch = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    if (!debouncedQuery.trim() &amp;&amp; Object.keys(filters).length === 0) {</span>
+  const performSearch = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >async () =&gt; </span>{</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!debouncedQuery.trim() &amp;&amp; Object.keys(filters).length === 0) {</span>
 <span class="cstat-no" title="statement not covered" >      return;</span>
     }
 &nbsp;
@@ -1219,9 +1219,9 @@ const DocumentSearch: React.FC&lt;DocumentSearchProps&gt; = <span class="cstat-n
 &nbsp;
 <span class="cstat-no" title="statement not covered" >      setResults(searchResult.results);</span>
 <span class="cstat-no" title="statement not covered" >      setShowResults(true);</span>
-<span class="cstat-no" title="statement not covered" >      setSuggestions(searchResult.suggestions.map(<span class="fstat-no" title="function not covered" >(s</span>: any) =&gt; <span class="cstat-no" title="statement not covered" >s.query)</span>);</span>
+<span class="cstat-no" title="statement not covered" >      setSuggestions(searchResult.suggestions.map((<span class="fstat-no" title="function not covered" >s: any)</span> =&gt; <span class="cstat-no" title="statement not covered" >s.query)</span>);</span>
       
-<span class="cstat-no" title="statement not covered" >      if (onSearchResults) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (onSearchResults) {</span>
 <span class="cstat-no" title="statement not covered" >        onSearchResults(searchResult.results);</span>
       }
     } catch (error) {
@@ -1233,13 +1233,13 @@ const DocumentSearch: React.FC&lt;DocumentSearchProps&gt; = <span class="cstat-n
   }, [debouncedQuery, filters, advancedSearch, userId, onSearchResults]);
 &nbsp;
   // Handle search input change
-  const handleQueryChange = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(v</span>alue: string) =&gt; {</span>
+  const handleQueryChange = (<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >value: string)</span> =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    setQuery(value);</span>
 <span class="cstat-no" title="statement not covered" >    setShowSuggestions(value.length &gt; 0);</span>
   };
 &nbsp;
   // Handle suggestion click
-  const handleSuggestionClick = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(s</span>uggestion: string) =&gt; {</span>
+  const handleSuggestionClick = (<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >suggestion: string)</span> =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    setQuery(suggestion);</span>
 <span class="cstat-no" title="statement not covered" >    setShowSuggestions(false);</span>
 <span class="cstat-no" title="statement not covered" >    performSearch();</span>
@@ -1247,20 +1247,20 @@ const DocumentSearch: React.FC&lt;DocumentSearchProps&gt; = <span class="cstat-n
 &nbsp;
   // Handle filter changes
   const updateFilter = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(k</span>ey: keyof SearchFilters, value: any) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    setFilters(<span class="fstat-no" title="function not covered" >pr</span>ev =&gt; (<span class="cstat-no" title="statement not covered" >{</span></span>
+<span class="cstat-no" title="statement not covered" >    setFilters(<span class="fstat-no" title="function not covered" >prev </span>=&gt; (<span class="cstat-no" title="statement not covered" >{</span></span>
       ...prev,
       [key]: value
     }));
   };
 &nbsp;
   // Clear filters
-  const clearFilters = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+  const clearFilters = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >() =&gt; </span>{</span>
 <span class="cstat-no" title="statement not covered" >    setFilters({});</span>
   };
 &nbsp;
   // Toggle advanced search
-  const toggleAdvancedSearch = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    setAdvancedSearch(<span class="fstat-no" title="function not covered" >pr</span>ev =&gt; (<span class="cstat-no" title="statement not covered" >{</span></span>
+  const toggleAdvancedSearch = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >() =&gt; </span>{</span>
+<span class="cstat-no" title="statement not covered" >    setAdvancedSearch(<span class="fstat-no" title="function not covered" >prev </span>=&gt; (<span class="cstat-no" title="statement not covered" >{</span></span>
       ...prev,
       isOpen: !prev.isOpen
     }));
@@ -1268,11 +1268,11 @@ const DocumentSearch: React.FC&lt;DocumentSearchProps&gt; = <span class="cstat-n
 &nbsp;
   // Format search result highlights
   const formatHighlight = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(t</span>ext: string, highlights: any[]) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    if (!highlights.length) <span class="cstat-no" title="statement not covered" >return text;</span></span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!highlights.length) <span class="cstat-no" title="statement not covered" >return text;</span></span>
     
     // Simple highlighting - in a real implementation, you'd want more sophisticated highlighting
     let highlightedText = <span class="cstat-no" title="statement not covered" >text;</span>
-<span class="cstat-no" title="statement not covered" >    highlights.forEach(<span class="fstat-no" title="function not covered" >hi</span>ghlight =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    highlights.forEach(<span class="fstat-no" title="function not covered" >highlight </span>=&gt; {</span>
       const regex = <span class="cstat-no" title="statement not covered" >new RegExp(`(${highlight.snippet.replace(/[.*+?^${}()|[\]\\]/g, '\\$&amp;')})`, 'gi');</span>
 <span class="cstat-no" title="statement not covered" >      highlightedText = highlightedText.replace(regex, '&lt;mark&gt;$1&lt;/mark&gt;');</span>
     });
@@ -1281,12 +1281,12 @@ const DocumentSearch: React.FC&lt;DocumentSearchProps&gt; = <span class="cstat-n
   };
 &nbsp;
   // Active filters count
-  const activeFiltersCount = <span class="cstat-no" title="statement not covered" >useMemo(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+  const activeFiltersCount = <span class="cstat-no" title="statement not covered" >useMemo(<span class="fstat-no" title="function not covered" >() =&gt; </span>{</span>
     let count = <span class="cstat-no" title="statement not covered" >0;</span>
-<span class="cstat-no" title="statement not covered" >    if (filters.category) <span class="cstat-no" title="statement not covered" >count++;</span></span>
-<span class="cstat-no" title="statement not covered" >    if (filters.clientId) <span class="cstat-no" title="statement not covered" >count++;</span></span>
-<span class="cstat-no" title="statement not covered" >    if (filters.tags?.length) <span class="cstat-no" title="statement not covered" >count++;</span></span>
-<span class="cstat-no" title="statement not covered" >    if (filters.dateRange) <span class="cstat-no" title="statement not covered" >count++;</span></span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (filters.category) <span class="cstat-no" title="statement not covered" >count++;</span></span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (filters.clientId) <span class="cstat-no" title="statement not covered" >count++;</span></span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (filters.tags?.length) <span class="cstat-no" title="statement not covered" >count++;</span></span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (filters.dateRange) <span class="cstat-no" title="statement not covered" >count++;</span></span>
 <span class="cstat-no" title="statement not covered" >    return count;</span>
   }, [filters]);
 &nbsp;
@@ -1299,8 +1299,8 @@ const DocumentSearch: React.FC&lt;DocumentSearchProps&gt; = <span class="cstat-n
           &lt;input
             type="text"
             value={query}
-            onChange={<span class="fstat-no" title="function not covered" >(e</span>) =&gt; <span class="cstat-no" title="statement not covered" >handleQueryChange(e.target.value)}</span>
-            onFocus={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >setShowSuggestions(query.length &gt; 0)}</span>
+            onChange={(<span class="fstat-no" title="function not covered" >e)</span> =&gt; <span class="cstat-no" title="statement not covered" >handleQueryChange(e.target.value)}</span>
+            onFocus={<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >s</span>etShowSuggestions(query.length &gt; 0)}</span>
             placeholder="Search documents..."
             className="w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
           /&gt;
@@ -1318,7 +1318,7 @@ const DocumentSearch: React.FC&lt;DocumentSearchProps&gt; = <span class="cstat-n
             &lt;/button&gt;
             
             &lt;button
-              onClick={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >setShowSuggestions(!showSuggestions)}</span>
+              onClick={<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >s</span>etShowSuggestions(!showSuggestions)}</span>
               className={`p-1.5 rounded-md hover:bg-gray-100 relative ${
                 activeFiltersCount &gt; 0 ? 'text-blue-600' : 'text-gray-400'
               }`}
@@ -1357,16 +1357,16 @@ const DocumentSearch: React.FC&lt;DocumentSearchProps&gt; = <span class="cstat-n
                   { value: 'description', label: 'Description' },
                   { value: 'textContent', label: 'Text Content' },
                   { value: 'tags', label: 'Tags' }
-                ].map(<span class="fstat-no" title="function not covered" >fi</span>eld =&gt; (
-<span class="cstat-no" title="statement not covered" >                  &lt;label key={field.value} className="flex items-center"&gt;</span>
+                ].map(<span class="fstat-no" title="function not covered" >field </span>=&gt; (
+<span class="cstat-no" title="statement not covered" >                  &lt;label key={field.value} c</span>lassName="flex items-center"&gt;
                     &lt;input
                       type="checkbox"
                       checked={advancedSearch.searchFields.includes(field.value as SearchField)}
-                      onChange={<span class="fstat-no" title="function not covered" >(e</span>) =&gt; {
+                      onChange={(<span class="fstat-no" title="function not covered" >e)</span> =&gt; {
                         const fields = <span class="cstat-no" title="statement not covered" >e.target.checked</span>
                           ? [...advancedSearch.searchFields, field.value as SearchField]
                           : advancedSearch.searchFields.filter(<span class="fstat-no" title="function not covered" >f </span>=&gt; <span class="cstat-no" title="statement not covered" >f !== field.value)</span>;
-<span class="cstat-no" title="statement not covered" >                        setAdvancedSearch(<span class="fstat-no" title="function not covered" >pr</span>ev =&gt; (<span class="cstat-no" title="statement not covered" >{ ...prev, searchFields: fields })</span>);</span>
+<span class="cstat-no" title="statement not covered" >                        setAdvancedSearch(<span class="fstat-no" title="function not covered" >prev </span>=&gt; (<span class="cstat-no" title="statement not covered" >{ ...prev, searchFields: fields })</span>);</span>
                       }}
                       className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                     /&gt;
@@ -1383,7 +1383,7 @@ const DocumentSearch: React.FC&lt;DocumentSearchProps&gt; = <span class="cstat-n
               &lt;/label&gt;
               &lt;select
                 value={advancedSearch.sortBy}
-                onChange={<span class="fstat-no" title="function not covered" >(e</span>) =&gt; <span class="cstat-no" title="statement not covered" >setAdvancedSearch(<span class="fstat-no" title="function not covered" >pr</span>ev =&gt; (<span class="cstat-no" title="statement not covered" >{ </span></span>
+                onChange={(<span class="fstat-no" title="function not covered" >e)</span> =&gt; <span class="cstat-no" title="statement not covered" >setAdvancedSearch(<span class="fstat-no" title="function not covered" >prev </span>=&gt; (<span class="cstat-no" title="statement not covered" >{ </span></span>
                   ...prev, 
                   sortBy: e.target.value as 'relevance' | 'date' | 'title' 
                 }))}
@@ -1396,7 +1396,7 @@ const DocumentSearch: React.FC&lt;DocumentSearchProps&gt; = <span class="cstat-n
               
               &lt;select
                 value={advancedSearch.sortOrder}
-                onChange={<span class="fstat-no" title="function not covered" >(e</span>) =&gt; <span class="cstat-no" title="statement not covered" >setAdvancedSearch(<span class="fstat-no" title="function not covered" >pr</span>ev =&gt; (<span class="cstat-no" title="statement not covered" >{ </span></span>
+                onChange={(<span class="fstat-no" title="function not covered" >e)</span> =&gt; <span class="cstat-no" title="statement not covered" >setAdvancedSearch(<span class="fstat-no" title="function not covered" >prev </span>=&gt; (<span class="cstat-no" title="statement not covered" >{ </span></span>
                   ...prev, 
                   sortOrder: e.target.value as 'asc' | 'desc' 
                 }))}
@@ -1415,12 +1415,12 @@ const DocumentSearch: React.FC&lt;DocumentSearchProps&gt; = <span class="cstat-n
               &lt;div className="space-y-2"&gt;
                 &lt;select
                   value={filters.category || ''}
-                  onChange={<span class="fstat-no" title="function not covered" >(e</span>) =&gt; <span class="cstat-no" title="statement not covered" >updateFilter('category', e.target.value || undefined)}</span>
+                  onChange={(<span class="fstat-no" title="function not covered" >e)</span> =&gt; <span class="cstat-no" title="statement not covered" >updateFilter('category', e.target.value || undefined)}</span>
                   className="w-full border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
                 &gt;
                   &lt;option value=""&gt;All categories&lt;/option&gt;
-                  {categories.map(<span class="fstat-no" title="function not covered" >ca</span>tegory =&gt; (
-<span class="cstat-no" title="statement not covered" >                    &lt;option key={category.id} value={category.id}&gt;</span>
+                  {categories.map(<span class="fstat-no" title="function not covered" >category </span>=&gt; (
+<span class="cstat-no" title="statement not covered" >                    &lt;option key={category.id} v</span>alue={category.id}&gt;
                       {category.name}
                     &lt;/option&gt;
                   ))}
@@ -1428,12 +1428,12 @@ const DocumentSearch: React.FC&lt;DocumentSearchProps&gt; = <span class="cstat-n
 &nbsp;
                 &lt;select
                   value={filters.clientId || ''}
-                  onChange={<span class="fstat-no" title="function not covered" >(e</span>) =&gt; <span class="cstat-no" title="statement not covered" >updateFilter('clientId', e.target.value || undefined)}</span>
+                  onChange={(<span class="fstat-no" title="function not covered" >e)</span> =&gt; <span class="cstat-no" title="statement not covered" >updateFilter('clientId', e.target.value || undefined)}</span>
                   className="w-full border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
                 &gt;
                   &lt;option value=""&gt;All clients&lt;/option&gt;
-                  {clients.map(<span class="fstat-no" title="function not covered" >cl</span>ient =&gt; (
-<span class="cstat-no" title="statement not covered" >                    &lt;option key={client.id} value={client.id}&gt;</span>
+                  {clients.map(<span class="fstat-no" title="function not covered" >client </span>=&gt; (
+<span class="cstat-no" title="statement not covered" >                    &lt;option key={client.id} v</span>alue={client.id}&gt;
                       {client.name}
                     &lt;/option&gt;
                   ))}
@@ -1466,7 +1466,7 @@ const DocumentSearch: React.FC&lt;DocumentSearchProps&gt; = <span class="cstat-n
               {suggestions.map(<span class="fstat-no" title="function not covered" >(s</span>uggestion, index) =&gt; (
 <span class="cstat-no" title="statement not covered" >                &lt;button</span>
                   key={index}
-                  onClick={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >handleSuggestionClick(suggestion)}</span>
+                  onClick={<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >h</span>andleSuggestionClick(suggestion)}</span>
                   className="w-full text-left px-3 py-2 hover:bg-gray-100 rounded-md text-sm"
                 &gt;
                   &lt;MagnifyingGlassIcon className="inline h-4 w-4 mr-2 text-gray-400" /&gt;
@@ -1483,7 +1483,7 @@ const DocumentSearch: React.FC&lt;DocumentSearchProps&gt; = <span class="cstat-n
               {recentSearches.map(<span class="fstat-no" title="function not covered" >(s</span>earch, index) =&gt; (
 <span class="cstat-no" title="statement not covered" >                &lt;button</span>
                   key={index}
-                  onClick={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >handleSuggestionClick(search)}</span>
+                  onClick={<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >h</span>andleSuggestionClick(search)}</span>
                   className="w-full text-left px-3 py-2 hover:bg-gray-100 rounded-md text-sm"
                 &gt;
                   &lt;ClockIcon className="inline h-4 w-4 mr-2 text-gray-400" /&gt;
@@ -1506,7 +1506,7 @@ const DocumentSearch: React.FC&lt;DocumentSearchProps&gt; = <span class="cstat-n
               {results.map(<span class="fstat-no" title="function not covered" >(r</span>esult, index) =&gt; (
 <span class="cstat-no" title="statement not covered" >                &lt;button</span>
                   key={result.document.id}
-                  onClick={<span class="fstat-no" title="function not covered" >()</span> =&gt; {
+                  onClick={<span class="fstat-no" title="function not covered" >() =&gt; </span>{
 <span class="cstat-no" title="statement not covered" >                    onDocumentSelect(result.document);</span>
 <span class="cstat-no" title="statement not covered" >                    setShowResults(false);</span>
                   }}
@@ -1528,8 +1528,8 @@ const DocumentSearch: React.FC&lt;DocumentSearchProps&gt; = <span class="cstat-n
                           &lt;FolderIcon className="h-3 w-3 mr-1" /&gt;
                           {result.document.category}
                         &lt;/span&gt;
-                        {result.document.tags.slice(0, 2).map(<span class="fstat-no" title="function not covered" >(t</span>ag: string) =&gt; (
-<span class="cstat-no" title="statement not covered" >                          &lt;span key={tag} className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800"&gt;</span>
+                        {result.document.tags.slice(0, 2).map((<span class="fstat-no" title="function not covered" >tag: string)</span> =&gt; (
+<span class="cstat-no" title="statement not covered" >                          &lt;span key={tag} c</span>lassName="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800"&gt;
                             &lt;TagIcon className="h-3 w-3 mr-1" /&gt;
                             {tag}
                           &lt;/span&gt;
@@ -1555,7 +1555,7 @@ const DocumentSearch: React.FC&lt;DocumentSearchProps&gt; = <span class="cstat-n
       {(showSuggestions || showResults) &amp;&amp; (
         &lt;div
           className="fixed inset-0 z-0"
-          onClick={<span class="fstat-no" title="function not covered" >()</span> =&gt; {
+          onClick={<span class="fstat-no" title="function not covered" >() =&gt; </span>{
 <span class="cstat-no" title="statement not covered" >            setShowSuggestions(false);</span>
 <span class="cstat-no" title="statement not covered" >            setShowResults(false);</span>
           }}
@@ -1565,7 +1565,7 @@ const DocumentSearch: React.FC&lt;DocumentSearchProps&gt; = <span class="cstat-n
   );
 };
 &nbsp;
-export default DocumentSearch;
+<span class="cstat-no" title="statement not covered" >export default DocumentSearch;</span>
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -1573,7 +1573,7 @@ export default DocumentSearch;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-08-07T19:19:19.104Z
+                at 2025-08-13T02:10:19.343Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

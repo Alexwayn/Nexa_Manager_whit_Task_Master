@@ -23,14 +23,14 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/0</span>
+                <span class='fraction'>64/64</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
                 <span class='fraction'>0/0</span>
             </div>
@@ -39,14 +39,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/0</span>
+                <span class='fraction'>0/42</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/0</span>
+                <span class='fraction'>22/22</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -84,24 +84,52 @@
 <a name='L19'></a><a href='#L19'>19</a>
 <a name='L20'></a><a href='#L20'>20</a>
 <a name='L21'></a><a href='#L21'>21</a>
-<a name='L22'></a><a href='#L22'>22</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L22'></a><a href='#L22'>22</a>
+<a name='L23'></a><a href='#L23'>23</a>
+<a name='L24'></a><a href='#L24'>24</a>
+<a name='L25'></a><a href='#L25'>25</a>
+<a name='L26'></a><a href='#L26'>26</a>
+<a name='L27'></a><a href='#L27'>27</a>
+<a name='L28'></a><a href='#L28'>28</a>
+<a name='L29'></a><a href='#L29'>29</a>
+<a name='L30'></a><a href='#L30'>30</a>
+<a name='L31'></a><a href='#L31'>31</a>
+<a name='L32'></a><a href='#L32'>32</a>
+<a name='L33'></a><a href='#L33'>33</a>
+<a name='L34'></a><a href='#L34'>34</a>
+<a name='L35'></a><a href='#L35'>35</a>
+<a name='L36'></a><a href='#L36'>36</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -109,31 +137,45 @@
 // This file exports all shared components that can be used across features
 &nbsp;
 // UI Components
-export * from './ui';
+export { <span class="fstat-no" title="function not covered" >default </span>as Badge } from './Badge.jsx';
+export { <span class="fstat-no" title="function not covered" >default </span>as Button } from './Button.jsx';
+export { <span class="fstat-no" title="function not covered" >Card,</span> <span class="fstat-no" title="function not covered" >CardContent,</span> <span class="fstat-no" title="function not covered" >CardHeader,</span> <span class="fstat-no" title="function not covered" >CardTitle,</span> <span class="fstat-no" title="function not covered" >CardDescription,</span> <span class="fstat-no" title="function not covered" >CardFooter,</span> <span class="fstat-no" title="function not covered" >StatCard </span>} from './Card.jsx';
+export { <span class="fstat-no" title="function not covered" >default </span>as Checkbox } from './Checkbox.jsx';
+export { <span class="fstat-no" title="function not covered" >default </span>as Input, <span class="fstat-no" title="function not covered" >Textarea </span>} from './Input.jsx';
+export { <span class="fstat-no" title="function not covered" >Select,</span> <span class="fstat-no" title="function not covered" >SelectTrigger,</span> <span class="fstat-no" title="function not covered" >SelectContent,</span> <span class="fstat-no" title="function not covered" >SelectItem,</span> <span class="fstat-no" title="function not covered" >SelectValue </span>} from './Select.jsx';
+export { <span class="fstat-no" title="function not covered" >default </span>as Spacing } from './Spacing.jsx';
+export { <span class="fstat-no" title="function not covered" >default </span>as Typography } from './Typography.jsx';
+export { <span class="fstat-no" title="function not covered" >Alert,</span> <span class="fstat-no" title="function not covered" >AlertDescription,</span> <span class="fstat-no" title="function not covered" >AlertTitle </span>} from './alert.jsx';
+export { <span class="fstat-no" title="function not covered" >default </span>as Calendar } from './calendar.jsx';
+export { <span class="fstat-no" title="function not covered" >DatePickerWithRange </span>} from './date-picker.jsx';
+export { <span class="fstat-no" title="function not covered" >default </span>as Popover } from './popover.jsx';
+export { <span class="fstat-no" title="function not covered" >Progress </span>} from './progress.jsx';
+export { <span class="fstat-no" title="function not covered" >Tabs,</span> <span class="fstat-no" title="function not covered" >TabsList,</span> <span class="fstat-no" title="function not covered" >TabsTrigger,</span> <span class="fstat-no" title="function not covered" >TabsContent </span>} from './tabs.jsx';
 &nbsp;
 // Layout Components
-export { default as Footer } from './layout/Footer';
+export { <span class="fstat-no" title="function not covered" >default </span>as Footer } from './Footer.jsx';
 &nbsp;
 // Feedback Components
-export { default as ErrorBoundary } from './feedback/ErrorBoundary';
-export { default as ComponentErrorBoundary } from './feedback/ComponentErrorBoundary';
-export { default as LoadingSkeleton } from './feedback/LoadingSkeleton';
-export { default as ConfirmationDialog } from './feedback/ConfirmationDialog';
-export { default as Modal } from './feedback/Modal';
-export { default as ConfirmationModal } from './feedback/ConfirmationModal';
+export { <span class="fstat-no" title="function not covered" >default </span>as ErrorBoundary, <span class="fstat-no" title="function not covered" >withErrorBoundary,</span> <span class="fstat-no" title="function not covered" >ChartErrorFallback,</span> <span class="fstat-no" title="function not covered" >useErrorHandler,</span> <span class="fstat-no" title="function not covered" >SentryErrorBoundary </span>} from './ErrorBoundary.jsx';
+export { <span class="fstat-no" title="function not covered" >default </span>as ComponentErrorBoundary } from './ComponentErrorBoundary.jsx';
+export { <span class="fstat-no" title="function not covered" >default </span>as LoadingSkeleton } from './LoadingSkeleton.jsx';
+export { <span class="fstat-no" title="function not covered" >default </span>as ConfirmationDialog } from './ConfirmationDialog.jsx';
+export { <span class="fstat-no" title="function not covered" >default </span>as Modal } from './Modal.jsx';
+export { <span class="fstat-no" title="function not covered" >default </span>as ConfirmationModal } from './ConfirmationModal.jsx';
 &nbsp;
-// Form Components
-// (To be added as form components are identified and moved)
+// Test Components
+export { <span class="fstat-no" title="function not covered" >default </span>as TestRoute } from './TestRoute.jsx';
 &nbsp;
 // Re-export commonly used types
-export type { ComponentProps, ReactNode } from 'react';</pre></td></tr></table></pre>
+export type { ComponentProps, ReactNode } from 'react';
+&nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-07-27T02:49:48.333Z
+                at 2025-08-16T02:32:36.617Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

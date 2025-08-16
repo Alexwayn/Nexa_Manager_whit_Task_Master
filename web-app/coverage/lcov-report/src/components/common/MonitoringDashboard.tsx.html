@@ -25,14 +25,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/65</span>
+                <span class='fraction'>0/71</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/47</span>
+                <span class='fraction'>0/38</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/58</span>
+                <span class='fraction'>0/63</span>
             </div>
         
             
@@ -485,10 +485,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -896,16 +896,16 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/**
  * Monitoring Dashboard Component
  * Provides real-time monitoring of performance, errors, and accessibility
  */
 &nbsp;
-import React, { useState, useEffect, useCallback } from 'react';
-import { performanceMonitor } from '../../utils/PerformanceMonitor';
-import { errorMonitor } from '../../utils/ErrorMonitor';
-import { accessibilityTester, useAccessibilityTest } from '../../utils/AccessibilityTester';
+<span class="cstat-no" title="statement not covered" >import React, { useState, useEffect, useCallback } from 'react';</span>
+<span class="cstat-no" title="statement not covered" >import { performanceMonitor } from '../../utils/PerformanceMonitor';</span>
+<span class="cstat-no" title="statement not covered" >import { errorMonitor } from '../../utils/ErrorMonitor';</span>
+<span class="cstat-no" title="statement not covered" >import { accessibilityTester, useAccessibilityTest } from '../../utils/AccessibilityTester';</span>
 &nbsp;
 interface MonitoringDashboardProps {
   className?: string;
@@ -939,7 +939,7 @@ interface SystemMetrics {
   };
 }
 &nbsp;
-export const MonitoringDashboard: React.FC&lt;MonitoringDashboardProps&gt; = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >({</span></span>
+export const <span class="cstat-no" title="statement not covered" >MonitoringDashboard: React.FC&lt;MonitoringDashboardProps&gt; = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(</span>{</span></span>
   className = <span class="branch-0 cbranch-no" title="branch not covered" >'',</span>
   showDetailed = <span class="branch-0 cbranch-no" title="branch not covered" >false,</span>
   autoRefresh = <span class="branch-0 cbranch-no" title="branch not covered" >true,</span>
@@ -952,7 +952,7 @@ export const MonitoringDashboard: React.FC&lt;MonitoringDashboardProps&gt; = <sp
 &nbsp;
   const { report: a11yReport, runTest: runA11yTest } = <span class="cstat-no" title="statement not covered" >useAccessibilityTest();</span>
 &nbsp;
-  const collectMetrics = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {</span>
+  const collectMetrics = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >async () =&gt; </span>{</span>
 <span class="cstat-no" title="statement not covered" >    setIsLoading(true);</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    try {</span>
@@ -1009,32 +1009,32 @@ export const MonitoringDashboard: React.FC&lt;MonitoringDashboardProps&gt; = <sp
     }
   }, [a11yReport, runA11yTest]);
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  useEffect(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >  useEffect(<span class="fstat-no" title="function not covered" >() =&gt; </span>{</span>
 <span class="cstat-no" title="statement not covered" >    collectMetrics();</span>
   }, [collectMetrics]);
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  useEffect(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    if (autoRefresh) {</span>
+<span class="cstat-no" title="statement not covered" >  useEffect(<span class="fstat-no" title="function not covered" >() =&gt; </span>{</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (autoRefresh) {</span>
       const interval = <span class="cstat-no" title="statement not covered" >setInterval(collectMetrics, refreshInterval);</span>
-<span class="cstat-no" title="statement not covered" >      return <span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >clearInterval(interval);</span></span>
+<span class="cstat-no" title="statement not covered" >      return <span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >c</span>learInterval(interval);</span></span>
     }
   }, [autoRefresh, refreshInterval, collectMetrics]);
 &nbsp;
-  const getScoreColor = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(s</span>core: number): string =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    if (score &gt;= 90) <span class="cstat-no" title="statement not covered" >return 'text-green-600';</span></span>
-<span class="cstat-no" title="statement not covered" >    if (score &gt;= 70) <span class="cstat-no" title="statement not covered" >return 'text-yellow-600';</span></span>
-<span class="cstat-no" title="statement not covered" >    if (score &gt;= 50) <span class="cstat-no" title="statement not covered" >return 'text-orange-600';</span></span>
+  const getScoreColor = (<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >score: number)</span>: string =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (score &gt;= 90) <span class="cstat-no" title="statement not covered" >return 'text-green-600';</span></span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (score &gt;= 70) <span class="cstat-no" title="statement not covered" >return 'text-yellow-600';</span></span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (score &gt;= 50) <span class="cstat-no" title="statement not covered" >return 'text-orange-600';</span></span>
 <span class="cstat-no" title="statement not covered" >    return 'text-red-600';</span>
   };
 &nbsp;
-  const getScoreBgColor = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(s</span>core: number): string =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    if (score &gt;= 90) <span class="cstat-no" title="statement not covered" >return 'bg-green-100';</span></span>
-<span class="cstat-no" title="statement not covered" >    if (score &gt;= 70) <span class="cstat-no" title="statement not covered" >return 'bg-yellow-100';</span></span>
-<span class="cstat-no" title="statement not covered" >    if (score &gt;= 50) <span class="cstat-no" title="statement not covered" >return 'bg-orange-100';</span></span>
+  const getScoreBgColor = (<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >score: number)</span>: string =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (score &gt;= 90) <span class="cstat-no" title="statement not covered" >return 'bg-green-100';</span></span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (score &gt;= 70) <span class="cstat-no" title="statement not covered" >return 'bg-yellow-100';</span></span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (score &gt;= 50) <span class="cstat-no" title="statement not covered" >return 'bg-orange-100';</span></span>
 <span class="cstat-no" title="statement not covered" >    return 'bg-red-100';</span>
   };
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  if (isLoading &amp;&amp; !metrics) {</span>
+<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (isLoading &amp;&amp; !metrics) {</span>
 <span class="cstat-no" title="statement not covered" >    return (</span>
       &lt;div className={`p-4 bg-white rounded-lg shadow ${className}`}&gt;
         &lt;div className='animate-pulse'&gt;
@@ -1049,7 +1049,7 @@ export const MonitoringDashboard: React.FC&lt;MonitoringDashboardProps&gt; = <sp
     );
   }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  if (!metrics) {</span>
+<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (!metrics) {</span>
 <span class="cstat-no" title="statement not covered" >    return (</span>
       &lt;div className={`p-4 bg-white rounded-lg shadow ${className}`}&gt;
         &lt;div className='text-center text-gray-500'&gt;
@@ -1112,7 +1112,7 @@ export const MonitoringDashboard: React.FC&lt;MonitoringDashboardProps&gt; = <sp
 &nbsp;
             {/* Expand/Collapse Button */}
             &lt;button
-              onClick={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >setIsExpanded(!isExpanded)}</span>
+              onClick={<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >s</span>etIsExpanded(!isExpanded)}</span>
               className='p-2 text-gray-400 hover:text-gray-600'
               title={isExpanded ? 'Collapse' : 'Expand'}
             &gt;
@@ -1153,7 +1153,7 @@ export const MonitoringDashboard: React.FC&lt;MonitoringDashboardProps&gt; = <sp
                 &lt;div className='mt-2'&gt;
                   &lt;p className='font-medium'&gt;Core Web Vitals:&lt;/p&gt;
                   {Object.entries(metrics.performance.coreWebVitals).map(<span class="fstat-no" title="function not covered" >([</span>key, value]) =&gt; (
-<span class="cstat-no" title="statement not covered" >                    &lt;p key={key} className='ml-2'&gt;</span>
+<span class="cstat-no" title="statement not covered" >                    &lt;p key={key} c</span>lassName='ml-2'&gt;
                       {key}: {value.toFixed(2)}
                     &lt;/p&gt;
                   ))}
@@ -1175,7 +1175,7 @@ export const MonitoringDashboard: React.FC&lt;MonitoringDashboardProps&gt; = <sp
                 &lt;div className='mt-2'&gt;
                   &lt;p className='font-medium'&gt;By Severity:&lt;/p&gt;
                   {Object.entries(metrics.errors.errorsBySeverity).map(<span class="fstat-no" title="function not covered" >([</span>severity, count]) =&gt; (
-<span class="cstat-no" title="statement not covered" >                    &lt;p key={severity} className='ml-2'&gt;</span>
+<span class="cstat-no" title="statement not covered" >                    &lt;p key={severity} c</span>lassName='ml-2'&gt;
                       {severity}: {count}
                     &lt;/p&gt;
                   ))}
@@ -1251,7 +1251,7 @@ export const MonitoringDashboard: React.FC&lt;MonitoringDashboardProps&gt; = <sp
                     &lt;div&gt;
                       &lt;p className='font-medium mb-1'&gt;By Type:&lt;/p&gt;
                       {Object.entries(metrics.errors.errorsByType).map(<span class="fstat-no" title="function not covered" >([</span>type, count]) =&gt; (
-<span class="cstat-no" title="statement not covered" >                        &lt;p key={type} className='text-gray-600 ml-2'&gt;</span>
+<span class="cstat-no" title="statement not covered" >                        &lt;p key={type} c</span>lassName='text-gray-600 ml-2'&gt;
                           {type}: {count}
                         &lt;/p&gt;
                       ))}
@@ -1259,7 +1259,7 @@ export const MonitoringDashboard: React.FC&lt;MonitoringDashboardProps&gt; = <sp
                     &lt;div&gt;
                       &lt;p className='font-medium mb-1'&gt;By Severity:&lt;/p&gt;
                       {Object.entries(metrics.errors.errorsBySeverity).map(<span class="fstat-no" title="function not covered" >([</span>severity, count]) =&gt; (
-<span class="cstat-no" title="statement not covered" >                        &lt;p key={severity} className='text-gray-600 ml-2'&gt;</span>
+<span class="cstat-no" title="statement not covered" >                        &lt;p key={severity} c</span>lassName='text-gray-600 ml-2'&gt;
                           {severity}: {count}
                         &lt;/p&gt;
                       ))}
@@ -1274,13 +1274,13 @@ export const MonitoringDashboard: React.FC&lt;MonitoringDashboardProps&gt; = <sp
               &lt;h5 className='text-sm font-medium text-gray-700 mb-2'&gt;Quick Actions&lt;/h5&gt;
               &lt;div className='flex flex-wrap gap-2'&gt;
                 &lt;button
-                  onClick={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >performanceMonitor.clearMetrics()}</span>
+                  onClick={<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >p</span>erformanceMonitor.clearMetrics()}</span>
                   className='px-3 py-1 text-xs bg-blue-100 text-blue-700 rounded hover:bg-blue-200'
                 &gt;
                   Clear Performance Data
                 &lt;/button&gt;
                 &lt;button
-                  onClick={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >errorMonitor.clearErrors()}</span>
+                  onClick={<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >e</span>rrorMonitor.clearErrors()}</span>
                   className='px-3 py-1 text-xs bg-red-100 text-red-700 rounded hover:bg-red-200'
                 &gt;
                   Clear Error Data
@@ -1292,7 +1292,7 @@ export const MonitoringDashboard: React.FC&lt;MonitoringDashboardProps&gt; = <sp
                   Run A11y Test
                 &lt;/button&gt;
                 &lt;button
-                  onClick={<span class="fstat-no" title="function not covered" >()</span> =&gt; {
+                  onClick={<span class="fstat-no" title="function not covered" >() =&gt; </span>{
                     const data = <span class="cstat-no" title="statement not covered" >{</span>
                       performance: performanceMonitor.exportMetrics(),
                       errors: errorMonitor.exportErrors(),
@@ -1313,7 +1313,7 @@ export const MonitoringDashboard: React.FC&lt;MonitoringDashboardProps&gt; = <sp
   );
 };
 &nbsp;
-export default MonitoringDashboard;
+<span class="cstat-no" title="statement not covered" >export default MonitoringDashboard;</span>
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -1321,7 +1321,7 @@ export default MonitoringDashboard;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-08-07T19:19:19.104Z
+                at 2025-08-13T02:10:19.343Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

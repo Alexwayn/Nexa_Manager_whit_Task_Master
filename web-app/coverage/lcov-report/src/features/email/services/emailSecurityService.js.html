@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">5.42% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/166</span>
+                <span class='fraction'>9/166</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">1.56% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/64</span>
+                <span class='fraction'>1/64</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">6.89% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/29</span>
+                <span class='fraction'>2/29</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">5.76% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/156</span>
+                <span class='fraction'>9/156</span>
             </div>
         
             
@@ -610,13 +610,13 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1121,20 +1121,20 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { supabase } from '@/lib/supabaseClient';
 import logger from '@/utils/Logger';
 import { securityService } from '@features/auth';
@@ -1145,14 +1145,14 @@ import { getEnvVar } from '@/utils/env';
  * Handles email encryption, secure credential storage, audit logging, and spam detection
  */
 class EmailSecurityService {
-<span class="fstat-no" title="function not covered" >  co</span>nstructor() {
-<span class="cstat-no" title="statement not covered" >    this.encryptionKey = null;</span>
-<span class="cstat-no" title="statement not covered" >    this.spamKeywords = [</span>
+  constructor() {
+    this.encryptionKey = null;
+    this.spamKeywords = [
       'urgent', 'act now', 'limited time', 'click here', 'free money',
       'congratulations', 'winner', 'lottery', 'inheritance', 'prince',
       'verify account', 'suspended account', 'update payment'
     ];
-<span class="cstat-no" title="statement not covered" >    this.phishingPatterns = [</span>
+    this.phishingPatterns = [
       /bit\.ly|tinyurl|goo\.gl/i, // Suspicious URL shorteners
       /urgent.*action.*required/i,
       /verify.*account.*immediately/i,
@@ -1657,20 +1657,20 @@ class EmailSecurityService {
 }
 &nbsp;
 // Create singleton instance with lazy initialization
-let emailSecurityServiceInstance = <span class="cstat-no" title="statement not covered" >null;</span>
+let emailSecurityServiceInstance = null;
 &nbsp;
-export const getEmailSecurityService = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >  if (!emailSecurityServiceInstance) {</span>
-<span class="cstat-no" title="statement not covered" >    emailSecurityServiceInstance = new EmailSecurityService();</span>
+export const getEmailSecurityService = () =&gt; {
+  <span class="missing-if-branch" title="else path not taken" >E</span>if (!emailSecurityServiceInstance) {
+    emailSecurityServiceInstance = new EmailSecurityService();
   }
-<span class="cstat-no" title="statement not covered" >  return emailSecurityServiceInstance;</span>
+  return emailSecurityServiceInstance;
 };
 &nbsp;
 // Export default instance for backward compatibility
 export default getEmailSecurityService;
 &nbsp;
 // Also export the named instance for backward compatibility
-export const emailSecurityService = <span class="cstat-no" title="statement not covered" >getEmailSecurityService();</span>
+export const emailSecurityService = getEmailSecurityService();
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -1678,7 +1678,7 @@ export const emailSecurityService = <span class="cstat-no" title="statement not 
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-08-07T19:19:19.104Z
+                at 2025-08-13T02:10:19.343Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>

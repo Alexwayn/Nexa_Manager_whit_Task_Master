@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">83.33% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/12</span>
+                <span class='fraction'>10/12</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">35.89% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/39</span>
+                <span class='fraction'>14/39</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">50% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/4</span>
+                <span class='fraction'>2/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">83.33% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/12</span>
+                <span class='fraction'>10/12</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -165,7 +165,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">11x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -177,17 +177,15 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -197,11 +195,13 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -209,13 +209,13 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -260,43 +260,43 @@ import { CheckIcon } from '@heroicons/react/24/outline';
  * Checkbox Component
  * A customizable checkbox component
  */
-export const Checkbox = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >({</span></span>
+export const Checkbox = ({
   checked = <span class="branch-0 cbranch-no" title="branch not covered" >false,</span>
   onCheckedChange,
-  disabled = <span class="branch-0 cbranch-no" title="branch not covered" >false,</span>
-  indeterminate = <span class="branch-0 cbranch-no" title="branch not covered" >false,</span>
+  disabled = false,
+  indeterminate = false,
   className = <span class="branch-0 cbranch-no" title="branch not covered" >'',</span>
-  size = <span class="branch-0 cbranch-no" title="branch not covered" >'default',</span>
-  variant = <span class="branch-0 cbranch-no" title="branch not covered" >'default',</span>
+  size = 'default',
+  variant = 'default',
   label,
   id,
   ...props
 }) =&gt; {
-  const baseClasses = <span class="cstat-no" title="statement not covered" >'relative inline-flex items-center justify-center rounded border-2 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2';</span>
+  const baseClasses = 'relative inline-flex items-center justify-center rounded border-2 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2';
   
-  const sizeClasses = <span class="cstat-no" title="statement not covered" >{</span>
+  const sizeClasses = {
     sm: 'w-4 h-4',
     default: 'w-5 h-5',
     lg: 'w-6 h-6',
   };
 &nbsp;
-  const variantClasses = <span class="cstat-no" title="statement not covered" >{</span>
+  const variantClasses = {
     default: checked 
-      ? 'bg-blue-600 border-blue-600 text-white focus:ring-blue-500' 
+      ? <span class="branch-0 cbranch-no" title="branch not covered" >'bg-blue-600 border-blue-600 text-white focus:ring-blue-500' </span>
       : 'bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 focus:ring-blue-500',
     primary: checked 
-      ? 'bg-blue-600 border-blue-600 text-white focus:ring-blue-500' 
+      ? <span class="branch-0 cbranch-no" title="branch not covered" >'bg-blue-600 border-blue-600 text-white focus:ring-blue-500' </span>
       : 'bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 focus:ring-blue-500',
     success: checked 
-      ? 'bg-green-600 border-green-600 text-white focus:ring-green-500' 
+      ? <span class="branch-0 cbranch-no" title="branch not covered" >'bg-green-600 border-green-600 text-white focus:ring-green-500' </span>
       : 'bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 focus:ring-green-500',
   };
 &nbsp;
-  const disabledClasses = <span class="cstat-no" title="statement not covered" >disabled </span>
-    ? 'opacity-50 cursor-not-allowed' 
+  const disabledClasses = disabled 
+    ? <span class="branch-0 cbranch-no" title="branch not covered" >'opacity-50 cursor-not-allowed' </span>
     : 'cursor-pointer hover:border-gray-400 dark:hover:border-gray-500';
 &nbsp;
-  const checkboxClasses = <span class="cstat-no" title="statement not covered" >`</span>
+  const checkboxClasses = `
     ${baseClasses}
     ${sizeClasses[size]}
     ${variantClasses[variant]}
@@ -304,13 +304,13 @@ export const Checkbox = <span class="cstat-no" title="statement not covered" ><s
     ${className}
   `.trim().replace(/\s+/g, ' ');
 &nbsp;
-  const handleChange = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(e</span>) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    if (!disabled &amp;&amp; onCheckedChange) {</span>
-<span class="cstat-no" title="statement not covered" >      onCheckedChange(e.target.checked);</span>
+  const handleChange = (e) =&gt; {
+    <span class="missing-if-branch" title="else path not taken" >E</span>if (!disabled &amp;&amp; onCheckedChange) {
+      onCheckedChange(e.target.checked);
     }
   };
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  return (</span>
+  return (
     &lt;div className="flex items-center"&gt;
       &lt;div className="relative"&gt;
         &lt;input
@@ -327,15 +327,15 @@ export const Checkbox = <span class="cstat-no" title="statement not covered" ><s
           onClick={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >!disabled &amp;&amp; onCheckedChange?.(!checked)}</span>
         &gt;
           {checked &amp;&amp; (
-            &lt;CheckIcon className={`${size === 'sm' ? 'w-3 h-3' : size === 'lg' ? 'w-4 h-4' : 'w-3.5 h-3.5'} stroke-2`} /&gt;
+<span class="branch-1 cbranch-no" title="branch not covered" >            &lt;CheckIcon className={`${size === 'sm' ? 'w-3 h-3' : size === 'lg' ? 'w-4 h-4' : 'w-3.5 h-3.5'} stroke-2`} /&gt;</span>
           )}
-          {indeterminate &amp;&amp; !checked &amp;&amp; (
-            &lt;div className={`${size === 'sm' ? 'w-2 h-0.5' : size === 'lg' ? 'w-3 h-0.5' : 'w-2.5 h-0.5'} bg-current`} /&gt;
+          {indeterminate &amp;&amp; <span class="branch-1 cbranch-no" title="branch not covered" >!checked </span>&amp;&amp; (
+<span class="branch-2 cbranch-no" title="branch not covered" >            &lt;div className={`${size === 'sm' ? 'w-2 h-0.5' : size === 'lg' ? 'w-3 h-0.5' : 'w-2.5 h-0.5'} bg-current`} /&gt;</span>
           )}
         &lt;/div&gt;
       &lt;/div&gt;
       {label &amp;&amp; (
-        &lt;label
+<span class="branch-1 cbranch-no" title="branch not covered" >        &lt;label</span>
           htmlFor={id}
           className={`ml-2 text-sm text-gray-900 dark:text-gray-100 ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
           onClick={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >!disabled &amp;&amp; onCheckedChange?.(!checked)}</span>
@@ -355,7 +355,7 @@ export default Checkbox;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-08-07T19:19:19.104Z
+                at 2025-08-13T02:10:19.343Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

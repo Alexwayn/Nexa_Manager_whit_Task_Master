@@ -402,7 +402,8 @@ Object.defineProperty(navigator, 'clipboard', {
     write: jest.fn(() => Promise.resolve()),
     read: jest.fn(() => Promise.resolve([]))
   },
-  writable: true
+  writable: true,
+  configurable: true
 });
 
 // Mock getComputedStyle

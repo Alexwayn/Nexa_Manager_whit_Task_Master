@@ -25,14 +25,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/75</span>
+                <span class='fraction'>0/82</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/57</span>
+                <span class='fraction'>0/52</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/72</span>
+                <span class='fraction'>0/79</span>
             </div>
         
             
@@ -473,12 +473,10 @@
 <a name='L408'></a><a href='#L408'>408</a>
 <a name='L409'></a><a href='#L409'>409</a>
 <a name='L410'></a><a href='#L410'>410</a>
-<a name='L411'></a><a href='#L411'>411</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L411'></a><a href='#L411'>411</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -486,7 +484,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -882,11 +882,11 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React, { useState, useEffect } from 'react';
-import { Dialog, Transition } from '@headlessui/react';
-import { Fragment } from 'react';
-import { 
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import React, { useState, useEffect } from 'react';</span>
+<span class="cstat-no" title="statement not covered" >import { Dialog, Transition } from '@headlessui/react';</span>
+<span class="cstat-no" title="statement not covered" >import { Fragment } from 'react';</span>
+<span class="cstat-no" title="statement not covered" >import { </span>
   XMarkIcon, 
   ShareIcon, 
   UserPlusIcon, 
@@ -894,9 +894,9 @@ import {
   ExclamationTriangleIcon,
   CheckCircleIcon
 } from '@heroicons/react/24/outline';
-import { documentSharingService } from '@/services/scanner';
+<span class="cstat-no" title="statement not covered" >import { documentSharingService } from '@/services/scanner';</span>
 import type { ProcessedDocument, AccessLevel } from '@/types/scanner';
-import { useTranslation } from '@/hooks/useTranslation';
+<span class="cstat-no" title="statement not covered" >import { useTranslation } from '@/hooks/useTranslation';</span>
 &nbsp;
 interface DocumentSharingDialogProps {
   isOpen: boolean;
@@ -932,8 +932,8 @@ const DocumentSharingDialog: React.FC&lt;DocumentSharingDialogProps&gt; = <span 
   } | null&gt;(null);
 &nbsp;
   // Reset form when dialog opens
-<span class="cstat-no" title="statement not covered" >  useEffect(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    if (isOpen) {</span>
+<span class="cstat-no" title="statement not covered" >  useEffect(<span class="fstat-no" title="function not covered" >() =&gt; </span>{</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (isOpen) {</span>
 <span class="cstat-no" title="statement not covered" >      setRecipients([{ email: '', accessLevel: 'view' as AccessLevel, isValid: false }]);</span>
 <span class="cstat-no" title="statement not covered" >      setMessage('');</span>
 <span class="cstat-no" title="statement not covered" >      setExpiresAt('');</span>
@@ -942,20 +942,20 @@ const DocumentSharingDialog: React.FC&lt;DocumentSharingDialogProps&gt; = <span 
     }
   }, [isOpen]);
 &nbsp;
-  const validateEmail = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(e</span>mail: string): boolean =&gt; {</span>
+  const validateEmail = (<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >email: string)</span>: boolean =&gt; {</span>
     const emailRegex = <span class="cstat-no" title="statement not covered" >/^[^\s@]+@[^\s@]+\.[^\s@]+$/;</span>
 <span class="cstat-no" title="statement not covered" >    return emailRegex.test(email);</span>
   };
 &nbsp;
-  const addRecipient = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+  const addRecipient = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >() =&gt; </span>{</span>
 <span class="cstat-no" title="statement not covered" >    setRecipients([</span>
       ...recipients,
       { email: '', accessLevel: 'view' as AccessLevel, isValid: false }
     ]);
   };
 &nbsp;
-  const removeRecipient = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(i</span>ndex: number) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    if (recipients.length &gt; 1) {</span>
+  const removeRecipient = (<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >index: number)</span> =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (recipients.length &gt; 1) {</span>
 <span class="cstat-no" title="statement not covered" >      setRecipients(recipients.filter(<span class="fstat-no" title="function not covered" >(_</span>, i) =&gt; <span class="cstat-no" title="statement not covered" >i !== index)</span>);</span>
     }
   };
@@ -964,14 +964,14 @@ const DocumentSharingDialog: React.FC&lt;DocumentSharingDialogProps&gt; = <span 
     const updated = <span class="cstat-no" title="statement not covered" >[...recipients];</span>
 <span class="cstat-no" title="statement not covered" >    updated[index] = { ...updated[index], [field]: value };</span>
     
-<span class="cstat-no" title="statement not covered" >    if (field === 'email') {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (field === 'email') {</span>
 <span class="cstat-no" title="statement not covered" >      updated[index].isValid = validateEmail(value);</span>
     }
     
 <span class="cstat-no" title="statement not covered" >    setRecipients(updated);</span>
   };
 &nbsp;
-  const getAccessLevelLabel = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(l</span>evel: AccessLevel): string =&gt; {</span>
+  const getAccessLevelLabel = (<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >level: AccessLevel)</span>: string =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    switch (level) {</span>
       case 'view':
 <span class="cstat-no" title="statement not covered" >        return t('scanner.sharing.accessLevel.view');</span>
@@ -984,7 +984,7 @@ const DocumentSharingDialog: React.FC&lt;DocumentSharingDialogProps&gt; = <span 
     }
   };
 &nbsp;
-  const getAccessLevelDescription = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(l</span>evel: AccessLevel): string =&gt; {</span>
+  const getAccessLevelDescription = (<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >level: AccessLevel)</span>: string =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    switch (level) {</span>
       case 'view':
 <span class="cstat-no" title="statement not covered" >        return t('scanner.sharing.accessLevel.viewDescription');</span>
@@ -997,10 +997,10 @@ const DocumentSharingDialog: React.FC&lt;DocumentSharingDialogProps&gt; = <span 
     }
   };
 &nbsp;
-  const handleShare = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {</span>
+  const handleShare = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >async () =&gt; </span>{</span>
     const validRecipients = <span class="cstat-no" title="statement not covered" >recipients.filter(<span class="fstat-no" title="function not covered" >r </span>=&gt; <span class="cstat-no" title="statement not covered" >r.email &amp;&amp; r.isValid)</span>;</span>
     
-<span class="cstat-no" title="statement not covered" >    if (validRecipients.length === 0) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (validRecipients.length === 0) {</span>
 <span class="cstat-no" title="statement not covered" >      setShareResult({</span>
         success: false,
         error: t('scanner.sharing.errors.noValidRecipients')
@@ -1027,9 +1027,9 @@ const DocumentSharingDialog: React.FC&lt;DocumentSharingDialogProps&gt; = <span 
       
 <span class="cstat-no" title="statement not covered" >      setShareResult(result);</span>
       
-<span class="cstat-no" title="statement not covered" >      if (result.success) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (result.success) {</span>
         // Auto-close after successful share
-<span class="cstat-no" title="statement not covered" >        setTimeout(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >        setTimeout(<span class="fstat-no" title="function not covered" >() =&gt; </span>{</span>
 <span class="cstat-no" title="statement not covered" >          onClose();</span>
         }, 2000);
       }
@@ -1043,7 +1043,7 @@ const DocumentSharingDialog: React.FC&lt;DocumentSharingDialogProps&gt; = <span 
     }
   };
 &nbsp;
-  const copyPublicLink = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync (link: string) =&gt; {</span>
+  const copyPublicLink = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >async (l</span>ink: string) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    try {</span>
 <span class="cstat-no" title="statement not covered" >      await navigator.clipboard.writeText(link);</span>
       // Could add a toast notification here
@@ -1146,7 +1146,7 @@ const DocumentSharingDialog: React.FC&lt;DocumentSharingDialogProps&gt; = <span 
                             className="flex-1 text-sm bg-white border border-green-300 rounded px-3 py-1"
                           /&gt;
                           &lt;button
-                            onClick={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >copyPublicLink(shareResult.publicLink!)}</span>
+                            onClick={<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >c</span>opyPublicLink(shareResult.publicLink!)}</span>
                             className="text-green-600 hover:text-green-800 transition-colors"
                             title={t('scanner.sharing.copyLink')}
                           &gt;
@@ -1165,13 +1165,13 @@ const DocumentSharingDialog: React.FC&lt;DocumentSharingDialogProps&gt; = <span 
                   &lt;/label&gt;
                   &lt;div className="space-y-3"&gt;
                     {recipients.map(<span class="fstat-no" title="function not covered" >(r</span>ecipient, index) =&gt; (
-<span class="cstat-no" title="statement not covered" >                      &lt;div key={index} className="flex items-center space-x-3"&gt;</span>
+<span class="cstat-no" title="statement not covered" >                      &lt;div key={index} c</span>lassName="flex items-center space-x-3"&gt;
                         &lt;div className="flex-1"&gt;
                           &lt;input
                             type="email"
                             placeholder={t('scanner.sharing.emailPlaceholder')}
                             value={recipient.email}
-                            onChange={<span class="fstat-no" title="function not covered" >(e</span>) =&gt; <span class="cstat-no" title="statement not covered" >updateRecipient(index, 'email', e.target.value)}</span>
+                            onChange={(<span class="fstat-no" title="function not covered" >e)</span> =&gt; <span class="cstat-no" title="statement not covered" >updateRecipient(index, 'email', e.target.value)}</span>
                             className={`w-full px-3 py-2 border rounded-md text-sm ${
                               recipient.email &amp;&amp; !recipient.isValid
                                 ? 'border-red-300 focus:border-red-500 focus:ring-red-500'
@@ -1186,7 +1186,7 @@ const DocumentSharingDialog: React.FC&lt;DocumentSharingDialogProps&gt; = <span 
                         &lt;/div&gt;
                         &lt;select
                           value={recipient.accessLevel}
-                          onChange={<span class="fstat-no" title="function not covered" >(e</span>) =&gt; <span class="cstat-no" title="statement not covered" >updateRecipient(index, 'accessLevel', e.target.value as AccessLevel)}</span>
+                          onChange={(<span class="fstat-no" title="function not covered" >e)</span> =&gt; <span class="cstat-no" title="statement not covered" >updateRecipient(index, 'accessLevel', e.target.value as AccessLevel)}</span>
                           className="px-3 py-2 border border-gray-300 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500"
                         &gt;
                           &lt;option value="view"&gt;{getAccessLevelLabel('view' as AccessLevel)}&lt;/option&gt;
@@ -1195,7 +1195,7 @@ const DocumentSharingDialog: React.FC&lt;DocumentSharingDialogProps&gt; = <span 
                         &lt;/select&gt;
                         {recipients.length &gt; 1 &amp;&amp; (
                           &lt;button
-                            onClick={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >removeRecipient(index)}</span>
+                            onClick={<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >r</span>emoveRecipient(index)}</span>
                             className="text-red-600 hover:text-red-800 transition-colors"
                           &gt;
                             &lt;XMarkIcon className="h-5 w-5" /&gt;
@@ -1220,7 +1220,7 @@ const DocumentSharingDialog: React.FC&lt;DocumentSharingDialogProps&gt; = <span 
                   &lt;/label&gt;
                   &lt;textarea
                     value={message}
-                    onChange={<span class="fstat-no" title="function not covered" >(e</span>) =&gt; <span class="cstat-no" title="statement not covered" >setMessage(e.target.value)}</span>
+                    onChange={(<span class="fstat-no" title="function not covered" >e)</span> =&gt; <span class="cstat-no" title="statement not covered" >setMessage(e.target.value)}</span>
                     placeholder={t('scanner.sharing.messagePlaceholder')}
                     rows={3}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500"
@@ -1234,7 +1234,7 @@ const DocumentSharingDialog: React.FC&lt;DocumentSharingDialogProps&gt; = <span 
                       type="checkbox"
                       id="allowPublicLink"
                       checked={allowPublicLink}
-                      onChange={<span class="fstat-no" title="function not covered" >(e</span>) =&gt; <span class="cstat-no" title="statement not covered" >setAllowPublicLink(e.target.checked)}</span>
+                      onChange={(<span class="fstat-no" title="function not covered" >e)</span> =&gt; <span class="cstat-no" title="statement not covered" >setAllowPublicLink(e.target.checked)}</span>
                       className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                     /&gt;
                     &lt;label htmlFor="allowPublicLink" className="text-sm text-gray-700"&gt;
@@ -1249,7 +1249,7 @@ const DocumentSharingDialog: React.FC&lt;DocumentSharingDialogProps&gt; = <span 
                     &lt;input
                       type="datetime-local"
                       value={expiresAt}
-                      onChange={<span class="fstat-no" title="function not covered" >(e</span>) =&gt; <span class="cstat-no" title="statement not covered" >setExpiresAt(e.target.value)}</span>
+                      onChange={(<span class="fstat-no" title="function not covered" >e)</span> =&gt; <span class="cstat-no" title="statement not covered" >setExpiresAt(e.target.value)}</span>
                       min={new Date().toISOString().slice(0, 16)}
                       className="px-3 py-2 border border-gray-300 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500"
                     /&gt;
@@ -1292,7 +1292,7 @@ const DocumentSharingDialog: React.FC&lt;DocumentSharingDialogProps&gt; = <span 
   );
 };
 &nbsp;
-export default DocumentSharingDialog;
+<span class="cstat-no" title="statement not covered" >export default DocumentSharingDialog;</span>
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -1300,7 +1300,7 @@ export default DocumentSharingDialog;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-08-07T19:19:19.104Z
+                at 2025-08-13T02:10:19.343Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

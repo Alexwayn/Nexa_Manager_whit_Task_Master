@@ -29,12 +29,12 @@
     "paths": {
       // Base paths
       "@/*": ["./src/*"],
-      
+
       // Feature-based structure
       "@/features/*": ["./src/features/*"],
       "@/shared/*": ["./src/shared/*"],
       "@/pages/*": ["./src/pages/*"],
-      
+
       // Shared module paths
       "@/shared/components/*": ["./src/shared/components/*"],
       "@/shared/hooks/*": ["./src/shared/hooks/*"],
@@ -43,7 +43,7 @@
       "@/shared/types/*": ["./src/shared/types/*"],
       "@/shared/constants/*": ["./src/shared/constants/*"],
       "@/shared/styles/*": ["./src/shared/styles/*"],
-      
+
       // Legacy paths for backward compatibility (to be removed gradually)
       "@components/*": ["./src/shared/components/*"],
       "@shared/*": ["./src/shared/*"],
@@ -55,7 +55,10 @@
       "@assets/*": ["./src/assets/*"],
       "@styles/*": ["./src/shared/styles/*"],
       "@lib/*": ["./src/lib/*"],
-      "@scanner/*": ["./src/features/scanner/*"]
+      "@scanner/*": ["./src/features/scanner/*"],
+      
+      // Stagewise Toolbar shim path mapping (aligns with Vite alias)
+      "@stagewise/toolbar": ["./src/shims/stagewise-toolbar"]
     }
   },
   "include": ["src", "src/types"],

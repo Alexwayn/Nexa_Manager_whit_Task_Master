@@ -1,6 +1,8 @@
 // Debug test to check mocking
 
 // Define mocks after jest.mock to avoid hoisting issues
+jest.mock('../../features/financial/services/financialService');
+
 jest.mock('../../features/financial/services/incomeService', () => ({
   __esModule: true,
   default: {

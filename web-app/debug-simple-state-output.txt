@@ -1,5 +1,5 @@
-Container HTML: <div><button data-testid="count-button">Count: 0</button><button data-testid="text-button">Text: initial</button></div>
-Count button HTML: <button data-testid="count-button">Count: 0</button>
-Text button HTML: <button data-testid="text-button">Text: initial</button>
-Count button textContent: "Count: 0"
-Text button textContent: "Text: initial"
+Container HTML: 
+Count button HTML: <div data-testid="count-button"></div>
+Text button HTML: <div data-testid="text-button"></div>
+Count button textContent: ""
+Text button textContent: ""

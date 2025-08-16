@@ -25,14 +25,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/76</span>
+                <span class='fraction'>0/81</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/61</span>
+                <span class='fraction'>0/58</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/75</span>
+                <span class='fraction'>0/80</span>
             </div>
         
             
@@ -475,10 +475,10 @@
 <a name='L410'></a><a href='#L410'>410</a>
 <a name='L411'></a><a href='#L411'>411</a>
 <a name='L412'></a><a href='#L412'>412</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -884,12 +884,12 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">// Document metadata form component for categorization and tagging
-import React, { useState, useEffect } from 'react';
-import { useForm, Controller } from 'react-hook-form';
-import { TagIcon, UserIcon, FolderIcon, DocumentTextIcon } from '@heroicons/react/24/outline';
-import clientService from '@/lib/clientService';
+<span class="cstat-no" title="statement not covered" >import React, { useState, useEffect } from 'react';</span>
+<span class="cstat-no" title="statement not covered" >import { useForm, Controller } from 'react-hook-form';</span>
+<span class="cstat-no" title="statement not covered" >import { TagIcon, UserIcon, FolderIcon, DocumentTextIcon } from '@heroicons/react/24/outline';</span>
+<span class="cstat-no" title="statement not covered" >import clientService from '@/lib/clientService';</span>
 import type { ProcessedDocument } from '@/types/scanner';
 &nbsp;
 interface DocumentMetadataFormProps {
@@ -959,12 +959,12 @@ const DocumentMetadataForm: React.FC&lt;DocumentMetadataFormProps&gt; = <span cl
   const watchedClientId = <span class="cstat-no" title="statement not covered" >watch('clientId');</span>
 &nbsp;
   // Load clients on component mount
-<span class="cstat-no" title="statement not covered" >  useEffect(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >  useEffect(<span class="fstat-no" title="function not covered" >() =&gt; </span>{</span>
 <span class="cstat-no" title="statement not covered" >    loadClients();</span>
   }, []);
 &nbsp;
   // Load projects when client changes
-<span class="cstat-no" title="statement not covered" >  useEffect(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >  useEffect(<span class="fstat-no" title="function not covered" >() =&gt; </span>{</span>
 <span class="cstat-no" title="statement not covered" >    if (watchedClientId) {</span>
 <span class="cstat-no" title="statement not covered" >      loadProjects(watchedClientId);</span>
     } else {
@@ -973,7 +973,7 @@ const DocumentMetadataForm: React.FC&lt;DocumentMetadataFormProps&gt; = <span cl
   }, [watchedClientId]);
 &nbsp;
   // Update suggested tags based on category and existing tags
-<span class="cstat-no" title="statement not covered" >  useEffect(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >  useEffect(<span class="fstat-no" title="function not covered" >() =&gt; </span>{</span>
     const category = <span class="cstat-no" title="statement not covered" >watch('category');</span>
     const currentTags = <span class="cstat-no" title="statement not covered" >watchedTags || [];</span>
     
@@ -1000,13 +1000,13 @@ const DocumentMetadataForm: React.FC&lt;DocumentMetadataFormProps&gt; = <span cl
     }
 &nbsp;
     const suggested = <span class="cstat-no" title="statement not covered" >[...categoryTags, ...COMMON_TAGS]</span>
-      .filter(<span class="fstat-no" title="function not covered" >ta</span>g =&gt; <span class="cstat-no" title="statement not covered" >!currentTags.includes(tag))</span>
+      .filter(<span class="fstat-no" title="function not covered" >tag </span>=&gt; <span class="cstat-no" title="statement not covered" >!currentTags.includes(tag))</span>
       .slice(0, 8);
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    setSuggestedTags(suggested);</span>
   }, [watch('category'), watchedTags]);
 &nbsp;
-  const loadClients = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {</span>
+  const loadClients = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >async () =&gt; </span>{</span>
 <span class="cstat-no" title="statement not covered" >    try {</span>
 <span class="cstat-no" title="statement not covered" >      setLoadingClients(true);</span>
       const result = <span class="cstat-no" title="statement not covered" >await clientService.getClients({</span>
@@ -1015,7 +1015,7 @@ const DocumentMetadataForm: React.FC&lt;DocumentMetadataFormProps&gt; = <span cl
         ascending: true
       });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      if (result.data) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (result.data) {</span>
 <span class="cstat-no" title="statement not covered" >        setClients(Array.isArray(result.data) ? result.data : [result.data]);</span>
       }
     } catch (error) {
@@ -1025,7 +1025,7 @@ const DocumentMetadataForm: React.FC&lt;DocumentMetadataFormProps&gt; = <span cl
     }
   };
 &nbsp;
-  const loadProjects = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync (clientId: string) =&gt; {</span>
+  const loadProjects = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >async (c</span>lientId: string) =&gt; {</span>
     // TODO: Implement project loading when project service is available
     // For now, we'll use mock data
 <span class="cstat-no" title="statement not covered" >    setProjects([</span>
@@ -1034,27 +1034,27 @@ const DocumentMetadataForm: React.FC&lt;DocumentMetadataFormProps&gt; = <span cl
     ]);
   };
 &nbsp;
-  const addTag = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(t</span>ag: string) =&gt; {</span>
+  const addTag = (<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >tag: string)</span> =&gt; {</span>
     const currentTags = <span class="cstat-no" title="statement not covered" >watchedTags || [];</span>
-<span class="cstat-no" title="statement not covered" >    if (!currentTags.includes(tag)) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!currentTags.includes(tag)) {</span>
 <span class="cstat-no" title="statement not covered" >      setValue('tags', [...currentTags, tag], { shouldDirty: true });</span>
     }
 <span class="cstat-no" title="statement not covered" >    setTagInput('');</span>
   };
 &nbsp;
-  const removeTag = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(t</span>agToRemove: string) =&gt; {</span>
+  const removeTag = (<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >tagToRemove: string)</span> =&gt; {</span>
     const currentTags = <span class="cstat-no" title="statement not covered" >watchedTags || [];</span>
-<span class="cstat-no" title="statement not covered" >    setValue('tags', currentTags.filter(<span class="fstat-no" title="function not covered" >ta</span>g =&gt; <span class="cstat-no" title="statement not covered" >tag !== tagToRemove)</span>, { shouldDirty: true });</span>
+<span class="cstat-no" title="statement not covered" >    setValue('tags', currentTags.filter(<span class="fstat-no" title="function not covered" >tag </span>=&gt; <span class="cstat-no" title="statement not covered" >tag !== tagToRemove)</span>, { shouldDirty: true });</span>
   };
 &nbsp;
-  const handleTagInputKeyPress = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(e</span>: React.KeyboardEvent) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    if (e.key === 'Enter' &amp;&amp; tagInput.trim()) {</span>
+  const handleTagInputKeyPress = (<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >e: React.KeyboardEvent)</span> =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (e.key === 'Enter' &amp;&amp; tagInput.trim()) {</span>
 <span class="cstat-no" title="statement not covered" >      e.preventDefault();</span>
 <span class="cstat-no" title="statement not covered" >      addTag(tagInput.trim().toLowerCase());</span>
     }
   };
 &nbsp;
-  const onSubmit = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(d</span>ata: FormData) =&gt; {</span>
+  const onSubmit = (<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >data: FormData)</span> =&gt; {</span>
     const updatedDocument: ProcessedDocument = <span class="cstat-no" title="statement not covered" >{</span>
       ...document,
       title: data.title,
@@ -1138,8 +1138,8 @@ const DocumentMetadataForm: React.FC&lt;DocumentMetadataFormProps&gt; = <span cl
                 id="category"
                 className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
               &gt;
-                {DOCUMENT_CATEGORIES.map(<span class="fstat-no" title="function not covered" >(c</span>ategory) =&gt; (
-<span class="cstat-no" title="statement not covered" >                  &lt;option key={category.value} value={category.value}&gt;</span>
+                {DOCUMENT_CATEGORIES.map((<span class="fstat-no" title="function not covered" >category)</span> =&gt; (
+<span class="cstat-no" title="statement not covered" >                  &lt;option key={category.value} v</span>alue={category.value}&gt;
                     {category.label}
                   &lt;/option&gt;
                 ))}
@@ -1167,8 +1167,8 @@ const DocumentMetadataForm: React.FC&lt;DocumentMetadataFormProps&gt; = <span cl
                 className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm disabled:bg-gray-100"
               &gt;
                 &lt;option value=""&gt;Select a client (optional)&lt;/option&gt;
-                {clients.map(<span class="fstat-no" title="function not covered" >(c</span>lient) =&gt; (
-<span class="cstat-no" title="statement not covered" >                  &lt;option key={client.id} value={client.id}&gt;</span>
+                {clients.map((<span class="fstat-no" title="function not covered" >client)</span> =&gt; (
+<span class="cstat-no" title="statement not covered" >                  &lt;option key={client.id} v</span>alue={client.id}&gt;
                     {client.displayName || client.full_name}
                   &lt;/option&gt;
                 ))}
@@ -1196,8 +1196,8 @@ const DocumentMetadataForm: React.FC&lt;DocumentMetadataFormProps&gt; = <span cl
                   className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                 &gt;
                   &lt;option value=""&gt;Select a project (optional)&lt;/option&gt;
-                  {projects.map(<span class="fstat-no" title="function not covered" >(p</span>roject) =&gt; (
-<span class="cstat-no" title="statement not covered" >                    &lt;option key={project.id} value={project.id}&gt;</span>
+                  {projects.map((<span class="fstat-no" title="function not covered" >project)</span> =&gt; (
+<span class="cstat-no" title="statement not covered" >                    &lt;option key={project.id} v</span>alue={project.id}&gt;
                       {project.name}
                     &lt;/option&gt;
                   ))}
@@ -1214,7 +1214,7 @@ const DocumentMetadataForm: React.FC&lt;DocumentMetadataFormProps&gt; = <span cl
           {/* Current Tags */}
           {watchedTags &amp;&amp; watchedTags.length &gt; 0 &amp;&amp; (
             &lt;div className="mt-2 flex flex-wrap gap-2"&gt;
-              {watchedTags.map(<span class="fstat-no" title="function not covered" >(t</span>ag) =&gt; (
+              {watchedTags.map((<span class="fstat-no" title="function not covered" >tag)</span> =&gt; (
 <span class="cstat-no" title="statement not covered" >                &lt;span</span>
                   key={tag}
                   className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800"
@@ -1222,7 +1222,7 @@ const DocumentMetadataForm: React.FC&lt;DocumentMetadataFormProps&gt; = <span cl
                   {tag}
                   &lt;button
                     type="button"
-                    onClick={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >removeTag(tag)}</span>
+                    onClick={<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >r</span>emoveTag(tag)}</span>
                     className="ml-1.5 inline-flex items-center justify-center w-4 h-4 rounded-full text-blue-400 hover:bg-blue-200 hover:text-blue-600 focus:outline-none"
                   &gt;
                     ×
@@ -1237,7 +1237,7 @@ const DocumentMetadataForm: React.FC&lt;DocumentMetadataFormProps&gt; = <span cl
             &lt;input
               type="text"
               value={tagInput}
-              onChange={<span class="fstat-no" title="function not covered" >(e</span>) =&gt; <span class="cstat-no" title="statement not covered" >setTagInput(e.target.value)}</span>
+              onChange={(<span class="fstat-no" title="function not covered" >e)</span> =&gt; <span class="cstat-no" title="statement not covered" >setTagInput(e.target.value)}</span>
               onKeyPress={handleTagInputKeyPress}
               placeholder="Type a tag and press Enter"
               className="block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
@@ -1249,11 +1249,11 @@ const DocumentMetadataForm: React.FC&lt;DocumentMetadataFormProps&gt; = <span cl
             &lt;div className="mt-2"&gt;
               &lt;p className="text-xs text-gray-500 mb-2"&gt;Suggested tags:&lt;/p&gt;
               &lt;div className="flex flex-wrap gap-2"&gt;
-                {suggestedTags.map(<span class="fstat-no" title="function not covered" >(t</span>ag) =&gt; (
+                {suggestedTags.map((<span class="fstat-no" title="function not covered" >tag)</span> =&gt; (
 <span class="cstat-no" title="statement not covered" >                  &lt;button</span>
                     key={tag}
                     type="button"
-                    onClick={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >addTag(tag)}</span>
+                    onClick={<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >a</span>ddTag(tag)}</span>
                     className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                   &gt;
                     &lt;TagIcon className="w-3 h-3 mr-1" /&gt;
@@ -1295,7 +1295,7 @@ const DocumentMetadataForm: React.FC&lt;DocumentMetadataFormProps&gt; = <span cl
   );
 };
 &nbsp;
-export default DocumentMetadataForm;
+<span class="cstat-no" title="statement not covered" >export default DocumentMetadataForm;</span>
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -1303,7 +1303,7 @@ export default DocumentMetadataForm;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-08-07T19:19:19.104Z
+                at 2025-08-13T02:10:19.343Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

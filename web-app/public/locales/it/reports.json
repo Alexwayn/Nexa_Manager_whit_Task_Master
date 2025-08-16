@@ -156,15 +156,20 @@
     "type": "Tipo"
   },
   "scheduler": {
-    "title": "Programmatore Report",
-    "create": "Crea Nuova Programmazione",
+    "title": "Programmazione Report",
+    "create": "Nuovo Schedule",
+    "createNew": "Crea Nuovo Schedule",
+    "modify": "Modifica Schedule",
+    "save": "Salva Schedule",
+    "cancel": "Annulla",
     "searchSchedules": "Cerca programmazioni...",
     "allStatuses": "Tutti gli Stati",
+    "soloActive": "Solo Attivi",
     "noSchedules": "Nessuna programmazione trovata",
     "active": "Attivo",
     "inactive": "Inattivo",
     "hourly": "Ogni Ora",
-    "daily": "Giornaliero",
+    "daily": "Giornaliera",
     "weekly": "Settimanale",
     "monthly": "Mensile",
     "quarterly": "Trimestrale",
@@ -191,7 +196,33 @@
     "success": "Successo",
     "failed": "Fallito",
     "edit": "Modifica",
-    "delete": "Elimina"
+    "delete": "Elimina",
+    "nome": "Nome Schedule",
+    "tipo": "Tipo Report",
+    "ora": "Ora",
+    "email": "Email Destinatario",
+    "giornoDellaSett": "Giorno della Settimana",
+    "giornoDelMese": "Giorno del Mese",
+    "nomeRichiesto": "Nome richiesto",
+    "tipoRichiesto": "Tipo report richiesto",
+    "emailRichiesta": "Email richiesta",
+    "emailNonValida": "Email non valida",
+    "createSuccess": "Schedule creato con successo",
+    "createError": "Errore nella creazione dello schedule",
+    "deleteConfirm": "Sei sicuro di voler eliminare questo schedule?",
+    "prossEsecuzione": "Prossima esecuzione:",
+    "nextRunAt": "alle",
+    "onMonday": "Lunedì",
+    "monthDay1": "1° del mese",
+    "format": {
+      "weekly": "Settimanale",
+      "monthly": "Mensile"
+    },
+    "reportTypes": {
+      "revenue": "Entrate",
+      "expense": "Spese",
+      "client": "Clienti"
+    }
   },
   "reports": {
     "scheduler": "Programmatore Report"

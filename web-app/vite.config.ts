@@ -68,6 +68,9 @@ export default defineConfig(({ mode }) => {
         '@scanner': path.resolve(__dirname, './src/features/scanner'),
         '@router': path.resolve(__dirname, './src/router'),
         '@pages': path.resolve(__dirname, './src/pages'),
+        
+        // Stagewise Toolbar shim (no-op if real package not installed)
+        '@stagewise/toolbar': path.resolve(__dirname, './src/shims/stagewise-toolbar'),
       },
     },
     esbuild: {

@@ -25,14 +25,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/40</span>
+                <span class='fraction'>0/50</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/71</span>
+                <span class='fraction'>0/68</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/39</span>
+                <span class='fraction'>0/49</span>
             </div>
         
             
@@ -321,16 +321,16 @@
 <a name='L256'></a><a href='#L256'>256</a>
 <a name='L257'></a><a href='#L257'>257</a>
 <a name='L258'></a><a href='#L258'>258</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -576,18 +576,18 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">// Scanner page component - main entry point for document scanning
-import React, { useState, useEffect } from 'react';
-import { CameraIcon, DocumentArrowUpIcon, ExclamationTriangleIcon } from '@heroicons/react/24/outline';
-import { useScanner } from '@/hooks/scanner/useScanner';
-import { ScannerStep } from '@/hooks/scanner/types';
+<span class="cstat-no" title="statement not covered" >import React, { useState, useEffect } from 'react';</span>
+<span class="cstat-no" title="statement not covered" >import { CameraIcon, DocumentArrowUpIcon, ExclamationTriangleIcon } from '@heroicons/react/24/outline';</span>
+<span class="cstat-no" title="statement not covered" >import { useScanner } from '@/hooks/scanner/useScanner';</span>
+<span class="cstat-no" title="statement not covered" >import { ScannerStep } from '@/hooks/scanner/types';</span>
 import type { ScannerProps } from './types';
-import CameraCapture from './CameraCapture';
-import FileUpload from './FileUpload';
-import DocumentPreview from './DocumentPreview';
-import { ScannerErrorBoundary } from './ScannerErrorBoundary';
-import { useErrorNotifications, NotificationContainer } from './ErrorNotification';
+<span class="cstat-no" title="statement not covered" >import CameraCapture from './CameraCapture';</span>
+<span class="cstat-no" title="statement not covered" >import FileUpload from './FileUpload';</span>
+<span class="cstat-no" title="statement not covered" >import DocumentPreview from './DocumentPreview';</span>
+<span class="cstat-no" title="statement not covered" >import { ScannerErrorBoundary } from './ScannerErrorBoundary';</span>
+<span class="cstat-no" title="statement not covered" >import { useErrorNotifications, NotificationContainer } from './ErrorNotification';</span>
 &nbsp;
 type ScannerTab = 'camera' | 'upload';
 &nbsp;
@@ -604,20 +604,20 @@ const ScannerPage: React.FC&lt;ScannerProps&gt; = <span class="cstat-no" title="
   const { notifications } = <span class="cstat-no" title="statement not covered" >useErrorNotifications();</span>
 &nbsp;
   // Check camera support and set default tab
-<span class="cstat-no" title="statement not covered" >  useEffect(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    if (!scanner.camera.isSupported) {</span>
+<span class="cstat-no" title="statement not covered" >  useEffect(<span class="fstat-no" title="function not covered" >() =&gt; </span>{</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!scanner.camera.isSupported) {</span>
 <span class="cstat-no" title="statement not covered" >      setActiveTab('upload');</span>
     }
   }, [scanner.camera.isSupported]);
 &nbsp;
   // Handle document processing completion
-<span class="cstat-no" title="statement not covered" >  useEffect(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    if (scanner.currentStep === ScannerStep.Complete &amp;&amp; scanner.processedDocument) {</span>
+<span class="cstat-no" title="statement not covered" >  useEffect(<span class="fstat-no" title="function not covered" >() =&gt; </span>{</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (scanner.currentStep === ScannerStep.Complete &amp;&amp; scanner.processedDocument) {</span>
 <span class="cstat-no" title="statement not covered" >      onDocumentProcessed(scanner.processedDocument);</span>
     }
   }, [scanner.currentStep, scanner.processedDocument, onDocumentProcessed]);
 &nbsp;
-  const handleCameraCapture = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync (image: Blob) =&gt; {</span>
+  const handleCameraCapture = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >async (i</span>mage: Blob) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    try {</span>
 <span class="cstat-no" title="statement not covered" >      setError(null);</span>
 <span class="cstat-no" title="statement not covered" >      await scanner.processDocument(image);</span>
@@ -626,13 +626,13 @@ const ScannerPage: React.FC&lt;ScannerProps&gt; = <span class="cstat-no" title="
     }
   };
 &nbsp;
-  const handleFileUpload = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync (files: File[]) =&gt; {</span>
+  const handleFileUpload = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >async (f</span>iles: File[]) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    try {</span>
 <span class="cstat-no" title="statement not covered" >      setError(null);</span>
 <span class="cstat-no" title="statement not covered" >      await scanner.fileUpload.processFiles(files);</span>
       
       // Process the first file for now (multi-file support in later tasks)
-<span class="cstat-no" title="statement not covered" >      if (files.length &gt; 0) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (files.length &gt; 0) {</span>
         const blob = <span class="cstat-no" title="statement not covered" >new Blob([files[0]], { type: files[0].type });</span>
 <span class="cstat-no" title="statement not covered" >        await scanner.processDocument(blob);</span>
       }
@@ -641,11 +641,11 @@ const ScannerPage: React.FC&lt;ScannerProps&gt; = <span class="cstat-no" title="
     }
   };
 &nbsp;
-  const handleError = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(e</span>rrorMessage: string) =&gt; {</span>
+  const handleError = (<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >errorMessage: string)</span> =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    setError(errorMessage);</span>
   };
 &nbsp;
-  const clearError = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+  const clearError = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >() =&gt; </span>{</span>
 <span class="cstat-no" title="statement not covered" >    setError(null);</span>
   };
 &nbsp;
@@ -723,11 +723,11 @@ const ScannerPage: React.FC&lt;ScannerProps&gt; = <span class="cstat-no" title="
           // Document Preview/Review Step
           &lt;DocumentPreview
             document={scanner.processedDocument}
-            onEdit={<span class="fstat-no" title="function not covered" >(d</span>oc) =&gt; {
+            onEdit={(<span class="fstat-no" title="function not covered" >doc)</span> =&gt; {
               // Handle document editing
 <span class="cstat-no" title="statement not covered" >              console.log('Edit document:', doc);</span>
             }}
-            onSave={<span class="fstat-no" title="function not covered" >as</span>ync (doc) =&gt; {
+            onSave={<span class="fstat-no" title="function not covered" >async (d</span>oc) =&gt; {
 <span class="cstat-no" title="statement not covered" >              try {</span>
 <span class="cstat-no" title="statement not covered" >                await scanner.saveProcessedDocument({</span>
                   ...doc,
@@ -739,7 +739,7 @@ const ScannerPage: React.FC&lt;ScannerProps&gt; = <span class="cstat-no" title="
 <span class="cstat-no" title="statement not covered" >                setError(err instanceof Error ? err.message : 'Failed to save document');</span>
               }
             }}
-            onCancel={<span class="fstat-no" title="function not covered" >()</span> =&gt; {
+            onCancel={<span class="fstat-no" title="function not covered" >() =&gt; </span>{
 <span class="cstat-no" title="statement not covered" >              scanner.reset();</span>
             }}
             showOCRResults={true}
@@ -751,7 +751,7 @@ const ScannerPage: React.FC&lt;ScannerProps&gt; = <span class="cstat-no" title="
             &lt;div className="border-b border-gray-200"&gt;
               &lt;nav className="-mb-px flex space-x-8 px-6" aria-label="Tabs"&gt;
                 &lt;button
-                  onClick={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >setActiveTab('camera')}</span>
+                  onClick={<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >s</span>etActiveTab('camera')}</span>
                   disabled={!scanner.camera.isSupported || isLoading}
                   className={`${
                     activeTab === 'camera'
@@ -771,7 +771,7 @@ const ScannerPage: React.FC&lt;ScannerProps&gt; = <span class="cstat-no" title="
                 &lt;/button&gt;
                 
                 &lt;button
-                  onClick={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >setActiveTab('upload')}</span>
+                  onClick={<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >s</span>etActiveTab('upload')}</span>
                   disabled={isLoading}
                   className={`${
                     activeTab === 'upload'
@@ -798,7 +798,7 @@ const ScannerPage: React.FC&lt;ScannerProps&gt; = <span class="cstat-no" title="
               
               {activeTab === 'upload' &amp;&amp; (
                 &lt;FileUpload
-                  onFilesSelected={<span class="fstat-no" title="function not covered" >(f</span>iles) =&gt; {
+                  onFilesSelected={(<span class="fstat-no" title="function not covered" >files)</span> =&gt; {
                     const fileObjects = <span class="cstat-no" title="statement not covered" >files.map(<span class="fstat-no" title="function not covered" >f </span>=&gt; <span class="cstat-no" title="statement not covered" >f.originalFile)</span>;</span>
 <span class="cstat-no" title="statement not covered" >                    handleFileUpload(fileObjects);</span>
                   }}
@@ -833,7 +833,7 @@ const ScannerPage: React.FC&lt;ScannerProps&gt; = <span class="cstat-no" title="
   );
 };
 &nbsp;
-export default ScannerPage;
+<span class="cstat-no" title="statement not covered" >export default ScannerPage;</span>
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -841,7 +841,7 @@ export default ScannerPage;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-08-07T19:19:19.104Z
+                at 2025-08-13T02:10:19.343Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

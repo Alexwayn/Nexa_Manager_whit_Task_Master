@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">7.46% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/67</span>
+                <span class='fraction'>5/67</span>
             </div>
         
             
@@ -37,16 +37,16 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">7.14% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/14</span>
+                <span class='fraction'>1/14</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">7.46% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/67</span>
+                <span class='fraction'>5/67</span>
             </div>
         
             
@@ -275,7 +275,8 @@
 <a name='L210'></a><a href='#L210'>210</a>
 <a name='L211'></a><a href='#L211'>211</a>
 <a name='L212'></a><a href='#L212'>212</a>
-<a name='L213'></a><a href='#L213'>213</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L213'></a><a href='#L213'>213</a>
+<a name='L214'></a><a href='#L214'>214</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -285,8 +286,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -431,14 +432,14 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -468,8 +469,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -484,21 +485,22 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { supabase } from '@lib/supabaseClient';
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { supabase } from '@/lib/supabaseClient';
 import { useClerk, useAuth } from '@clerk/clerk-react';
-import Logger from '@utils/Logger';
+import Logger from '@/utils/Logger';
 &nbsp;
 /**
  * Clerk-Supabase Integration Service
  * Handles proper authentication between Clerk and Supabase RLS policies
  */
 class ClerkSupabaseIntegration {
-<span class="fstat-no" title="function not covered" >  co</span>nstructor() {
-<span class="cstat-no" title="statement not covered" >    this.currentUserId = null;</span>
-<span class="cstat-no" title="statement not covered" >    this.isInitialized = false;</span>
+  constructor() {
+    this.currentUserId = null;
+    this.isInitialized = false;
   }
 &nbsp;
   /**
@@ -643,12 +645,12 @@ class ClerkSupabaseIntegration {
 }
 &nbsp;
 // Create singleton instance
-export const clerkSupabaseIntegration = <span class="cstat-no" title="statement not covered" >new ClerkSupabaseIntegration();</span>
+export const clerkSupabaseIntegration = new ClerkSupabaseIntegration();
 &nbsp;
 /**
  * React hook for Clerk-Supabase integration
  */
-export const useClerkSupabase = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+export const useClerkSupabase = <span class="fstat-no" title="function not covered" >()</span> =&gt; {
   const { user, isSignedIn } = <span class="cstat-no" title="statement not covered" >useAuth();</span>
   const { signOut } = <span class="cstat-no" title="statement not covered" >useClerk();</span>
 &nbsp;
@@ -680,7 +682,7 @@ export const useClerkSupabase = <span class="cstat-no" title="statement not cove
 /**
  * Helper function for testing with demo data
  */
-export const useDemoData = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+export const useDemoData = <span class="fstat-no" title="function not covered" >()</span> =&gt; {
   const testUserId = <span class="cstat-no" title="statement not covered" >'demo_user_123';</span>
   
   const executeTestQuery = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync (queryFunction) =&gt; {</span>
@@ -699,14 +701,15 @@ export const useDemoData = <span class="cstat-no" title="statement not covered" 
     executeTestQuery,
     testUserId
   };
-};</pre></td></tr></table></pre>
+};
+&nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-07-27T02:49:48.333Z
+                at 2025-08-16T02:32:36.617Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

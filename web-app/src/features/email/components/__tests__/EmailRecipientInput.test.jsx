@@ -4,7 +4,7 @@ import { jest } from '@jest/globals';
 import EmailRecipientInput from '../EmailRecipientInput';
 
 // Mock the useClients hook
-jest.mock('@hooks/useClients', () => ({
+jest.mock('../../../clients/hooks/useClients', () => ({
   useClients: () => ({
     clients: [
       {

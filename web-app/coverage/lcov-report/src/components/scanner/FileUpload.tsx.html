@@ -25,14 +25,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/118</span>
+                <span class='fraction'>0/121</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/67</span>
+                <span class='fraction'>0/59</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/102</span>
+                <span class='fraction'>0/105</span>
             </div>
         
             
@@ -462,8 +462,8 @@
 <a name='L397'></a><a href='#L397'>397</a>
 <a name='L398'></a><a href='#L398'>398</a>
 <a name='L399'></a><a href='#L399'>399</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -858,10 +858,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">// File upload component for document scanning
-import React, { useState, useRef, useCallback } from 'react';
-import { 
+<span class="cstat-no" title="statement not covered" >import React, { useState, useRef, useCallback } from 'react';</span>
+<span class="cstat-no" title="statement not covered" >import { </span>
   DocumentArrowUpIcon, 
   XMarkIcon, 
   CheckCircleIcon,
@@ -895,8 +895,8 @@ const FileUpload: React.FC&lt;FileUploadProps&gt; = <span class="cstat-no" title
   const [processedFiles, setProcessedFiles] = <span class="cstat-no" title="statement not covered" >useState&lt;ProcessedFile[]&gt;([]);</span>
 &nbsp;
   // Format file size for display
-  const formatFileSize = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >(b</span>ytes: number): string =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    if (bytes === 0) <span class="cstat-no" title="statement not covered" >return '0 Bytes';</span></span>
+  const formatFileSize = <span class="cstat-no" title="statement not covered" >useCallback((<span class="fstat-no" title="function not covered" >bytes: number)</span>: string =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (bytes === 0) <span class="cstat-no" title="statement not covered" >return '0 Bytes';</span></span>
     const k = <span class="cstat-no" title="statement not covered" >1024;</span>
     const sizes = <span class="cstat-no" title="statement not covered" >['Bytes', 'KB', 'MB', 'GB'];</span>
     const i = <span class="cstat-no" title="statement not covered" >Math.floor(Math.log(bytes) / Math.log(k));</span>
@@ -904,7 +904,7 @@ const FileUpload: React.FC&lt;FileUploadProps&gt; = <span class="cstat-no" title
   }, []);
 &nbsp;
   // Get file type display name
-  const getFileTypeDisplay = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >(t</span>ype: string): string =&gt; {</span>
+  const getFileTypeDisplay = <span class="cstat-no" title="statement not covered" >useCallback((<span class="fstat-no" title="function not covered" >type: string)</span>: string =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    switch (type) {</span>
       case 'image/jpeg':
       case 'image/jpg':
@@ -919,24 +919,24 @@ const FileUpload: React.FC&lt;FileUploadProps&gt; = <span class="cstat-no" title
   }, []);
 &nbsp;
   // Get file icon
-  const getFileIcon = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >(t</span>ype: string) =&gt; {</span>
+  const getFileIcon = <span class="cstat-no" title="statement not covered" >useCallback((<span class="fstat-no" title="function not covered" >type: string)</span> =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    if (type.startsWith('image/')) {</span>
 <span class="cstat-no" title="statement not covered" >      return &lt;PhotoIcon className="h-8 w-8 text-blue-500" /&gt;;</span>
-    } else <span class="cstat-no" title="statement not covered" >if (type === 'application/pdf') {</span>
+    } else <span class="cstat-no" title="statement not covered" ><span class="missing-if-branch" title="if path not taken" >I</span>if (type === 'application/pdf') {</span>
 <span class="cstat-no" title="statement not covered" >      return &lt;DocumentIcon className="h-8 w-8 text-red-500" /&gt;;</span>
     }
 <span class="cstat-no" title="statement not covered" >    return &lt;DocumentIcon className="h-8 w-8 text-gray-500" /&gt;;</span>
   }, []);
 &nbsp;
   // Validate file
-  const validateFile = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >(f</span>ile: File): string | null =&gt; {</span>
+  const validateFile = <span class="cstat-no" title="statement not covered" >useCallback((<span class="fstat-no" title="function not covered" >file: File)</span>: string | null =&gt; {</span>
     // Check file type
-<span class="cstat-no" title="statement not covered" >    if (!acceptedTypes.includes(file.type)) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!acceptedTypes.includes(file.type)) {</span>
 <span class="cstat-no" title="statement not covered" >      return `File type ${file.type} is not supported. Accepted types: ${acceptedTypes.join(', ')}`;</span>
     }
 &nbsp;
     // Check file size
-<span class="cstat-no" title="statement not covered" >    if (file.size &gt; maxFileSize) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (file.size &gt; maxFileSize) {</span>
 <span class="cstat-no" title="statement not covered" >      return `File size ${formatFileSize(file.size)} exceeds maximum allowed size of ${formatFileSize(maxFileSize)}`;</span>
     }
 &nbsp;
@@ -944,14 +944,14 @@ const FileUpload: React.FC&lt;FileUploadProps&gt; = <span class="cstat-no" title
   }, [acceptedTypes, maxFileSize, formatFileSize]);
 &nbsp;
   // Create file preview
-  const createFilePreview = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >as</span>ync (file: File): Promise&lt;string&gt; =&gt; {</span>
+  const createFilePreview = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >async (f</span>ile: File): Promise&lt;string&gt; =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    return new Promise(<span class="fstat-no" title="function not covered" >(r</span>esolve, reject) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >      if (file.type.startsWith('image/')) {</span>
         const reader = <span class="cstat-no" title="statement not covered" >new FileReader();</span>
-<span class="cstat-no" title="statement not covered" >        reader.onload = <span class="fstat-no" title="function not covered" >(e</span>) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >        reader.onload = (<span class="fstat-no" title="function not covered" >e)</span> =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >          resolve(e.target?.result as string);</span>
         };
-<span class="cstat-no" title="statement not covered" >        reader.onerror = <span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >        reader.onerror = <span class="fstat-no" title="function not covered" >() =&gt; </span>{</span>
 <span class="cstat-no" title="statement not covered" >          reject(new Error('Failed to read file'));</span>
         };
 <span class="cstat-no" title="statement not covered" >        reader.readAsDataURL(file);</span>
@@ -963,17 +963,17 @@ const FileUpload: React.FC&lt;FileUploadProps&gt; = <span class="cstat-no" title
   }, []);
 &nbsp;
   // Process files
-  const processFiles = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >as</span>ync (files: File[]) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    setUploadState(<span class="fstat-no" title="function not covered" >pr</span>ev =&gt; (<span class="cstat-no" title="statement not covered" >{ ...prev, isProcessing: true, error: null, uploadProgress: 0 })</span>);</span>
+  const processFiles = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >async (f</span>iles: File[]) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    setUploadState(<span class="fstat-no" title="function not covered" >prev </span>=&gt; (<span class="cstat-no" title="statement not covered" >{ ...prev, isProcessing: true, error: null, uploadProgress: 0 })</span>);</span>
     
 <span class="cstat-no" title="statement not covered" >    try {</span>
       const newProcessedFiles: ProcessedFile[] = <span class="cstat-no" title="statement not covered" >[];</span>
       
 <span class="cstat-no" title="statement not covered" >      for (let i = <span class="cstat-no" title="statement not covered" >0;</span> i &lt; files.length; i++) {</span>
         const file = <span class="cstat-no" title="statement not covered" >files[i];</span>
-        const progress = <span class="cstat-no" title="statement not covered" >((i + 1) / files.length) * 100;</span>
+        const progress = (<span class="cstat-no" title="statement not covered" >(i + 1) / files.length) * 100;</span>
         
-<span class="cstat-no" title="statement not covered" >        setUploadState(<span class="fstat-no" title="function not covered" >pr</span>ev =&gt; (<span class="cstat-no" title="statement not covered" >{ ...prev, uploadProgress: progress })</span>);</span>
+<span class="cstat-no" title="statement not covered" >        setUploadState(<span class="fstat-no" title="function not covered" >prev </span>=&gt; (<span class="cstat-no" title="statement not covered" >{ ...prev, uploadProgress: progress })</span>);</span>
         
         // Validate file
         const validationError = <span class="cstat-no" title="statement not covered" >validateFile(file);</span>
@@ -1005,17 +1005,17 @@ const FileUpload: React.FC&lt;FileUploadProps&gt; = <span class="cstat-no" title
 <span class="cstat-no" title="statement not covered" >        newProcessedFiles.push(processedFile);</span>
       }
       
-<span class="cstat-no" title="statement not covered" >      setProcessedFiles(<span class="fstat-no" title="function not covered" >pr</span>ev =&gt; <span class="cstat-no" title="statement not covered" >multiple ? [...prev, ...newProcessedFiles] : newProcessedFiles)</span>;</span>
+<span class="cstat-no" title="statement not covered" >      setProcessedFiles(<span class="fstat-no" title="function not covered" >prev </span>=&gt; <span class="cstat-no" title="statement not covered" >multiple ? [...prev, ...newProcessedFiles] : newProcessedFiles)</span>;</span>
       
       // Call callback with valid files only
       const validFiles = <span class="cstat-no" title="statement not covered" >newProcessedFiles.filter(<span class="fstat-no" title="function not covered" >f </span>=&gt; <span class="cstat-no" title="statement not covered" >!f.error)</span>;</span>
-<span class="cstat-no" title="statement not covered" >      if (validFiles.length &gt; 0) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (validFiles.length &gt; 0) {</span>
 <span class="cstat-no" title="statement not covered" >        onFilesSelected(validFiles);</span>
       }
       
       // Report errors for invalid files
       const invalidFiles = <span class="cstat-no" title="statement not covered" >newProcessedFiles.filter(<span class="fstat-no" title="function not covered" >f </span>=&gt; <span class="cstat-no" title="statement not covered" >f.error)</span>;</span>
-<span class="cstat-no" title="statement not covered" >      if (invalidFiles.length &gt; 0) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (invalidFiles.length &gt; 0) {</span>
         const errorMessage = <span class="cstat-no" title="statement not covered" >`${invalidFiles.length} file(s) could not be processed: ${invalidFiles.map(<span class="fstat-no" title="function not covered" >f </span>=&gt; <span class="cstat-no" title="statement not covered" >f.error)</span>.join(', ')}`;</span>
 <span class="cstat-no" title="statement not covered" >        onError(errorMessage);</span>
       }
@@ -1023,17 +1023,17 @@ const FileUpload: React.FC&lt;FileUploadProps&gt; = <span class="cstat-no" title
     } catch (error) {
 <span class="cstat-no" title="statement not covered" >      console.error('File processing error:', error);</span>
       const errorMessage = <span class="cstat-no" title="statement not covered" >error instanceof Error ? error.message : 'Failed to process files';</span>
-<span class="cstat-no" title="statement not covered" >      setUploadState(<span class="fstat-no" title="function not covered" >pr</span>ev =&gt; (<span class="cstat-no" title="statement not covered" >{ ...prev, error: errorMessage })</span>);</span>
+<span class="cstat-no" title="statement not covered" >      setUploadState(<span class="fstat-no" title="function not covered" >prev </span>=&gt; (<span class="cstat-no" title="statement not covered" >{ ...prev, error: errorMessage })</span>);</span>
 <span class="cstat-no" title="statement not covered" >      onError(errorMessage);</span>
     } finally {
-<span class="cstat-no" title="statement not covered" >      setUploadState(<span class="fstat-no" title="function not covered" >pr</span>ev =&gt; (<span class="cstat-no" title="statement not covered" >{ ...prev, isProcessing: false, uploadProgress: 0 })</span>);</span>
+<span class="cstat-no" title="statement not covered" >      setUploadState(<span class="fstat-no" title="function not covered" >prev </span>=&gt; (<span class="cstat-no" title="statement not covered" >{ ...prev, isProcessing: false, uploadProgress: 0 })</span>);</span>
     }
   }, [validateFile, createFilePreview, multiple, onFilesSelected, onError]);
 &nbsp;
   // Handle file input change
-  const handleFileInputChange = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >(e</span>vent: React.ChangeEvent&lt;HTMLInputElement&gt;) =&gt; {</span>
+  const handleFileInputChange = <span class="cstat-no" title="statement not covered" >useCallback((<span class="fstat-no" title="function not covered" >event: React.ChangeEvent&lt;HTMLInputElement&gt;)</span> =&gt; {</span>
     const files = <span class="cstat-no" title="statement not covered" >Array.from(event.target.files || []);</span>
-<span class="cstat-no" title="statement not covered" >    if (files.length &gt; 0) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (files.length &gt; 0) {</span>
 <span class="cstat-no" title="statement not covered" >      processFiles(files);</span>
     }
     // Reset input value to allow selecting the same file again
@@ -1041,45 +1041,45 @@ const FileUpload: React.FC&lt;FileUploadProps&gt; = <span class="cstat-no" title
   }, [processFiles]);
 &nbsp;
   // Handle drag events
-  const handleDragOver = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >(e</span>vent: React.DragEvent) =&gt; {</span>
+  const handleDragOver = <span class="cstat-no" title="statement not covered" >useCallback((<span class="fstat-no" title="function not covered" >event: React.DragEvent)</span> =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    event.preventDefault();</span>
-<span class="cstat-no" title="statement not covered" >    setUploadState(<span class="fstat-no" title="function not covered" >pr</span>ev =&gt; (<span class="cstat-no" title="statement not covered" >{ ...prev, isDragOver: true })</span>);</span>
+<span class="cstat-no" title="statement not covered" >    setUploadState(<span class="fstat-no" title="function not covered" >prev </span>=&gt; (<span class="cstat-no" title="statement not covered" >{ ...prev, isDragOver: true })</span>);</span>
   }, []);
 &nbsp;
-  const handleDragLeave = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >(e</span>vent: React.DragEvent) =&gt; {</span>
+  const handleDragLeave = <span class="cstat-no" title="statement not covered" >useCallback((<span class="fstat-no" title="function not covered" >event: React.DragEvent)</span> =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    event.preventDefault();</span>
-<span class="cstat-no" title="statement not covered" >    setUploadState(<span class="fstat-no" title="function not covered" >pr</span>ev =&gt; (<span class="cstat-no" title="statement not covered" >{ ...prev, isDragOver: false })</span>);</span>
+<span class="cstat-no" title="statement not covered" >    setUploadState(<span class="fstat-no" title="function not covered" >prev </span>=&gt; (<span class="cstat-no" title="statement not covered" >{ ...prev, isDragOver: false })</span>);</span>
   }, []);
 &nbsp;
-  const handleDrop = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >(e</span>vent: React.DragEvent) =&gt; {</span>
+  const handleDrop = <span class="cstat-no" title="statement not covered" >useCallback((<span class="fstat-no" title="function not covered" >event: React.DragEvent)</span> =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    event.preventDefault();</span>
-<span class="cstat-no" title="statement not covered" >    setUploadState(<span class="fstat-no" title="function not covered" >pr</span>ev =&gt; (<span class="cstat-no" title="statement not covered" >{ ...prev, isDragOver: false })</span>);</span>
+<span class="cstat-no" title="statement not covered" >    setUploadState(<span class="fstat-no" title="function not covered" >prev </span>=&gt; (<span class="cstat-no" title="statement not covered" >{ ...prev, isDragOver: false })</span>);</span>
     
     const files = <span class="cstat-no" title="statement not covered" >Array.from(event.dataTransfer.files);</span>
-<span class="cstat-no" title="statement not covered" >    if (files.length &gt; 0) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (files.length &gt; 0) {</span>
 <span class="cstat-no" title="statement not covered" >      processFiles(files);</span>
     }
   }, [processFiles]);
 &nbsp;
   // Open file picker
-  const openFilePicker = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+  const openFilePicker = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >() =&gt; </span>{</span>
 <span class="cstat-no" title="statement not covered" >    fileInputRef.current?.click();</span>
   }, []);
 &nbsp;
   // Remove file
-  const removeFile = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >(f</span>ileId: string) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    setProcessedFiles(<span class="fstat-no" title="function not covered" >pr</span>ev =&gt; <span class="cstat-no" title="statement not covered" >prev.filter(<span class="fstat-no" title="function not covered" >f </span>=&gt; <span class="cstat-no" title="statement not covered" >f.id !== fileId)</span>)</span>;</span>
+  const removeFile = <span class="cstat-no" title="statement not covered" >useCallback((<span class="fstat-no" title="function not covered" >fileId: string)</span> =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    setProcessedFiles(<span class="fstat-no" title="function not covered" >prev </span>=&gt; <span class="cstat-no" title="statement not covered" >prev.filter(<span class="fstat-no" title="function not covered" >f </span>=&gt; <span class="cstat-no" title="statement not covered" >f.id !== fileId)</span>)</span>;</span>
   }, []);
 &nbsp;
   // Clear all files
-  const clearAllFiles = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+  const clearAllFiles = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >() =&gt; </span>{</span>
 <span class="cstat-no" title="statement not covered" >    setProcessedFiles([]);</span>
-<span class="cstat-no" title="statement not covered" >    setUploadState(<span class="fstat-no" title="function not covered" >pr</span>ev =&gt; (<span class="cstat-no" title="statement not covered" >{ ...prev, error: null })</span>);</span>
+<span class="cstat-no" title="statement not covered" >    setUploadState(<span class="fstat-no" title="function not covered" >prev </span>=&gt; (<span class="cstat-no" title="statement not covered" >{ ...prev, error: null })</span>);</span>
   }, []);
 &nbsp;
   // Get accepted file extensions for display
-  const getAcceptedExtensions = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    return acceptedTypes.map(<span class="fstat-no" title="function not covered" >ty</span>pe =&gt; {</span>
+  const getAcceptedExtensions = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >() =&gt; </span>{</span>
+<span class="cstat-no" title="statement not covered" >    return acceptedTypes.map(<span class="fstat-no" title="function not covered" >type </span>=&gt; {</span>
 <span class="cstat-no" title="statement not covered" >      switch (type) {</span>
         case 'image/jpeg':
 <span class="cstat-no" title="statement not covered" >          return 'JPG';</span>
@@ -1172,7 +1172,7 @@ const FileUpload: React.FC&lt;FileUploadProps&gt; = <span class="cstat-no" title
           &lt;/div&gt;
           
           &lt;div className="space-y-3"&gt;
-            {processedFiles.map(<span class="fstat-no" title="function not covered" >(f</span>ile) =&gt; (
+            {processedFiles.map((<span class="fstat-no" title="function not covered" >file)</span> =&gt; (
 <span class="cstat-no" title="statement not covered" >              &lt;div</span>
                 key={file.id}
                 className={`flex items-center space-x-4 p-4 border rounded-lg ${
@@ -1216,7 +1216,7 @@ const FileUpload: React.FC&lt;FileUploadProps&gt; = <span class="cstat-no" title
                 
                 {/* Remove button */}
                 &lt;button
-                  onClick={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >removeFile(file.id)}</span>
+                  onClick={<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >r</span>emoveFile(file.id)}</span>
                   className="flex-shrink-0 p-1 text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded"
                 &gt;
                   &lt;XMarkIcon className="h-4 w-4" /&gt;
@@ -1256,7 +1256,7 @@ const FileUpload: React.FC&lt;FileUploadProps&gt; = <span class="cstat-no" title
   );
 };
 &nbsp;
-export default FileUpload;
+<span class="cstat-no" title="statement not covered" >export default FileUpload;</span>
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -1264,7 +1264,7 @@ export default FileUpload;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-08-07T19:19:19.104Z
+                at 2025-08-13T02:10:19.343Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

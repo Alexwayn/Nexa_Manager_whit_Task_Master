@@ -43,6 +43,8 @@ const ReportScheduler = ({
   const [selectedSchedule, setSelectedSchedule] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
+  const [errors, setErrors] = useState({});
+  const [createError, setCreateError] = useState('');
 
   // Schedule form state
   const [scheduleForm, setScheduleForm] = useState({
@@ -120,6 +122,40 @@ const ReportScheduler = ({
   });
 
   /**
+   * Validate email
+   */
+  const isValidEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  /**
+   * Validate form
+   */
+  const validateForm = () => {
+    const newErrors = {};
+    
+    if (!scheduleForm.name.trim()) {
+      newErrors.name = t('scheduler.nomeRichiesto');
+    }
+    
+    if (!scheduleForm.templateId) {
+      newErrors.templateId = t('scheduler.tipoRichiesto');
+    }
+    
+    if (scheduleForm.recipients.length === 0) {
+      newErrors.recipients = t('scheduler.emailRichiesta');
+    }
+    
+    if (scheduleForm.recipients.some(r => !isValidEmail(r.email))) {
+      newErrors.recipients = t('scheduler.emailNonValida');
+    }
+    
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  /**
    * Reset form
    */
   const resetForm = useCallback(() => {
@@ -150,41 +186,49 @@ const ReportScheduler = ({
         retryInterval: 30
       }
     });
+    setErrors({});
+    setCreateError('');
   }, []);
 
   /**
    * Handle create schedule
    */
-  const handleCreateSchedule = useCallback(() => {
-    if (!scheduleForm.name.trim() || !scheduleForm.templateId) return;
+  const handleCreateSchedule = useCallback(async () => {
+    if (!validateForm()) return;
     
-    const newSchedule = {
-      id: Date.now(),
-      ...scheduleForm,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-      createdBy: 'current-user',
-      lastRun: null,
-      nextRun: calculateNextRun(scheduleForm),
-      runCount: 0,
-      successCount: 0,
-      failureCount: 0,
-      status: 'scheduled'
-    };
-    
-    if (onCreateSchedule) {
-      onCreateSchedule(newSchedule);
+    try {
+      setCreateError('');
+      
+      const newSchedule = {
+        id: Date.now(),
+        ...scheduleForm,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        createdBy: 'current-user',
+        lastRun: null,
+        nextRun: calculateNextRun(scheduleForm),
+        runCount: 0,
+        successCount: 0,
+        failureCount: 0,
+        status: 'scheduled'
+      };
+      
+      if (onCreateSchedule) {
+        await onCreateSchedule(newSchedule);
+      }
+      
+      resetForm();
+      setShowCreateDialog(false);
+    } catch (error) {
+      setCreateError(t('scheduler.createError'));
     }
-    
-    resetForm();
-    setShowCreateDialog(false);
-  }, [scheduleForm, onCreateSchedule, resetForm]);
+  }, [scheduleForm, onCreateSchedule, resetForm, t, validateForm]);
 
   /**
    * Handle update schedule
    */
   const handleUpdateSchedule = useCallback(() => {
-    if (!editingSchedule || !scheduleForm.name.trim()) return;
+    if (!editingSchedule || !validateForm()) return;
     
     const updatedSchedule = {
       ...editingSchedule,
@@ -199,7 +243,7 @@ const ReportScheduler = ({
     
     resetForm();
     setEditingSchedule(null);
-  }, [editingSchedule, scheduleForm, onUpdateSchedule, resetForm]);
+  }, [editingSchedule, scheduleForm, onUpdateSchedule, resetForm, validateForm]);
 
   /**
    * Start editing schedule
@@ -207,6 +251,7 @@ const ReportScheduler = ({
   const startEditing = useCallback((schedule) => {
     setScheduleForm({ ...schedule });
     setEditingSchedule(schedule);
+    setShowCreateDialog(true);
   }, []);
 
   /**
@@ -245,22 +290,25 @@ const ReportScheduler = ({
     
     return nextRun.toISOString();
   }, []);
-        /**
+
+  /**
    * Handle recipient management
    */
-  const addRecipient = useCallback((user) => {
-    if (!scheduleForm.recipients.find(r => r.id === user.id)) {
+  const addRecipient = useCallback((email) => {
+    if (!email.trim() || !isValidEmail(email)) return;
+    
+    if (!scheduleForm.recipients.find(r => r.email === email)) {
       setScheduleForm(prev => ({
         ...prev,
-        recipients: [...prev.recipients, user]
+        recipients: [...prev.recipients, { id: Date.now(), email }]
       }));
     }
   }, [scheduleForm.recipients]);
 
-  const removeRecipient = useCallback((userId) => {
+  const removeRecipient = useCallback((recipientId) => {
     setScheduleForm(prev => ({
       ...prev,
-      recipients: prev.recipients.filter(r => r.id !== userId)
+      recipients: prev.recipients.filter(r => r.id !== recipientId)
     }));
   }, []);
 
@@ -311,6 +359,44 @@ const ReportScheduler = ({
   }, []);
 
   /**
+   * Handle delete schedule
+   */
+  const handleDeleteSchedule = useCallback((scheduleId) => {
+    if (global.confirm && global.confirm(t('scheduler.deleteConfirm'))) {
+      if (onDeleteSchedule) {
+        onDeleteSchedule(scheduleId);
+      }
+    }
+  }, [onDeleteSchedule, t]);
+
+  /**
+   * Format next run time
+   */
+  const formatNextRun = useCallback((schedule) => {
+    if (!schedule.isActive || !schedule.nextRun) return '';
+    
+    const nextRun = new Date(schedule.nextRun);
+    const today = new Date();
+    const tomorrow = new Date(today);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    
+    const isToday = nextRun.toDateString() === today.toDateString();
+    const isTomorrow = nextRun.toDateString() === tomorrow.toDateString();
+    
+    if (isToday) {
+      return `${t('scheduler.prossEsecuzione')} ${nextRun.toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' })}`;
+    } else if (isTomorrow) {
+      return `${t('scheduler.prossEsecuzione')} domani ${t('scheduler.nextRunAt')} ${nextRun.toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' })}`;
+    } else if (schedule.frequency === 'weekly') {
+      return `${t('scheduler.prossEsecuzione')} ${t('scheduler.onMonday')} ${t('scheduler.nextRunAt')} ${nextRun.toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' })}`;
+    } else if (schedule.frequency === 'monthly') {
+      return `${t('scheduler.prossEsecuzione')} ${t('scheduler.monthDay1')} ${t('scheduler.nextRunAt')} ${nextRun.toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' })}`;
+    }
+    
+    return `${t('scheduler.prossEsecuzione')} ${nextRun.toLocaleDateString('it-IT')} ${t('scheduler.nextRunAt')} ${nextRun.toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' })}`;
+  }, [t]);
+
+  /**
    * Render schedule card
    */
   const renderScheduleCard = useCallback((schedule) => {
@@ -319,7 +405,7 @@ const ReportScheduler = ({
     const statusColor = getStatusColor(schedule);
     
     return (
-      <div key={schedule.id} className="bg-white border rounded-lg p-4 hover:shadow-md transition-shadow">
+      <div key={schedule.id} className="bg-white border rounded-lg p-4 hover:shadow-md transition-shadow" data-testid={`schedule-${schedule.id}`}>
         <div className="flex items-start justify-between mb-3">
           <div className="flex items-center gap-3">
             <div className={`p-2 rounded-lg ${schedule.isActive ? 'bg-green-100' : 'bg-gray-100'}`}>
@@ -335,6 +421,7 @@ const ReportScheduler = ({
               onClick={() => onTestSchedule && onTestSchedule(schedule)}
               className="p-1 text-gray-500 hover:bg-gray-100 rounded"
               title={t('scheduler.test')}
+              data-testid={`test-schedule-${schedule.id}`}
             >
               <Play className="w-4 h-4" />
             </button>
@@ -342,6 +429,7 @@ const ReportScheduler = ({
               onClick={() => startEditing(schedule)}
               className="p-1 text-gray-500 hover:bg-gray-100 rounded"
               title={t('scheduler.edit')}
+              data-testid={`edit-schedule-${schedule.id}`}
             >
               <Edit3 className="w-4 h-4" />
             </button>
@@ -349,13 +437,15 @@ const ReportScheduler = ({
               onClick={() => onToggleSchedule && onToggleSchedule(schedule.id, !schedule.isActive)}
               className={`p-1 rounded ${schedule.isActive ? 'text-yellow-500 hover:bg-yellow-100' : 'text-green-500 hover:bg-green-100'}`}
               title={schedule.isActive ? t('scheduler.pause') : t('scheduler.resume')}
+              data-testid={`toggle-schedule-${schedule.id}`}
             >
               {schedule.isActive ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
             </button>
             <button
-              onClick={() => onDeleteSchedule && onDeleteSchedule(schedule.id)}
+              onClick={() => handleDeleteSchedule(schedule.id)}
               className="p-1 text-red-500 hover:bg-red-100 rounded"
               title={t('scheduler.delete')}
+              data-testid={`delete-schedule-${schedule.id}`}
             >
               <Trash2 className="w-4 h-4" />
             </button>
@@ -371,10 +461,11 @@ const ReportScheduler = ({
             <span className="font-medium">{t('scheduler.frequency')}:</span>
             <span className="ml-1">{frequencyOptions.find(f => f.value === schedule.frequency)?.label}</span>
           </div>
-          <div>
-            <span className="font-medium">{t('scheduler.nextRun')}:</span>
-            <span className="ml-1">{new Date(schedule.nextRun).toLocaleString()}</span>
-          </div>
+          {schedule.isActive && schedule.nextRun && (
+            <div className="col-span-2">
+              <span className="text-blue-600 font-medium">{formatNextRun(schedule)}</span>
+            </div>
+          )}
           <div>
             <span className="font-medium">{t('scheduler.recipients')}:</span>
             <span className="ml-1">{schedule.recipients.length}</span>
@@ -397,7 +488,7 @@ const ReportScheduler = ({
         </div>
       </div>
     );
-  }, [templates, getStatusIcon, getStatusColor, frequencyOptions, onTestSchedule, startEditing, onToggleSchedule, onDeleteSchedule, t]);
+  }, [templates, getStatusIcon, getStatusColor, frequencyOptions, onTestSchedule, startEditing, onToggleSchedule, handleDeleteSchedule, formatNextRun, t]);
 
   return (
     <div className={`bg-white border rounded-lg p-6 ${className}`}>
@@ -405,11 +496,12 @@ const ReportScheduler = ({
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-2">
           <Calendar className="w-6 h-6 text-gray-600" />
-          <h2 className="text-xl font-semibold">{t('reports.scheduler')}</h2>
+          <h2 className="text-xl font-semibold">{t('scheduler.title')}</h2>
         </div>
         <button
           onClick={() => setShowCreateDialog(true)}
           className="flex items-center gap-1 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+          data-testid="create-schedule-button"
         >
           <Plus className="w-4 h-4" />
           {t('scheduler.create')}
@@ -425,15 +517,17 @@ const ReportScheduler = ({
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder={t('scheduler.searchSchedules')}
             className="w-full px-3 py-2 border rounded-md"
+            data-testid="search-schedules"
           />
         </div>
         <select
           value={statusFilter}
           onChange={(e) => setStatusFilter(e.target.value)}
           className="px-3 py-2 border rounded-md"
+          data-testid="filter-schedules"
         >
           <option value="all">{t('scheduler.allStatuses')}</option>
-          <option value="active">{t('scheduler.active')}</option>
+          <option value="active">{t('scheduler.soloActive')}</option>
           <option value="inactive">{t('scheduler.inactive')}</option>
         </select>
       </div>
@@ -447,6 +541,213 @@ const ReportScheduler = ({
         <div className="text-center py-12">
           <Calendar className="w-12 h-12 text-gray-400 mx-auto mb-4" />
           <p className="text-gray-500">{t('scheduler.noSchedules')}</p>
+        </div>
+      )}
+
+      {/* Create/Edit Schedule Dialog */}
+      {showCreateDialog && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" data-testid="schedule-dialog">
+          <div className="bg-white rounded-lg p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="text-lg font-semibold">
+                {editingSchedule ? t('scheduler.modify') : t('scheduler.createNew')}
+              </h3>
+              <button
+                onClick={() => {
+                  setShowCreateDialog(false);
+                  setEditingSchedule(null);
+                  resetForm();
+                }}
+                className="text-gray-500 hover:text-gray-700"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {createError && (
+              <div className="mb-4 p-3 bg-red-100 border border-red-300 text-red-700 rounded">
+                {createError}
+              </div>
+            )}
+
+            <form onSubmit={(e) => e.preventDefault()} className="space-y-4">
+              {/* Schedule Name */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  {t('scheduler.nome')}
+                </label>
+                <input
+                  type="text"
+                  value={scheduleForm.name}
+                  onChange={(e) => setScheduleForm(prev => ({ ...prev, name: e.target.value }))}
+                  className={`w-full px-3 py-2 border rounded-md ${errors.name ? 'border-red-500' : ''}`}
+                  data-testid="schedule-name"
+                />
+                {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
+              </div>
+
+              {/* Report Type */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  {t('scheduler.tipo')}
+                </label>
+                <select
+                  value={scheduleForm.templateId}
+                  onChange={(e) => setScheduleForm(prev => ({ ...prev, templateId: e.target.value }))}
+                  className={`w-full px-3 py-2 border rounded-md ${errors.templateId ? 'border-red-500' : ''}`}
+                  data-testid="report-type"
+                >
+                  <option value="">Seleziona tipo report</option>
+                  <option value="revenue">{t('scheduler.reportTypes.revenue')}</option>
+                  <option value="expense">{t('scheduler.reportTypes.expense')}</option>
+                  <option value="client">{t('scheduler.reportTypes.client')}</option>
+                </select>
+                {errors.templateId && <p className="text-red-500 text-sm mt-1">{errors.templateId}</p>}
+              </div>
+
+              {/* Frequency */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  {t('scheduler.frequency')}
+                </label>
+                <select
+                  value={scheduleForm.frequency}
+                  onChange={(e) => setScheduleForm(prev => ({ ...prev, frequency: e.target.value }))}
+                  className="w-full px-3 py-2 border rounded-md"
+                  data-testid="frequency"
+                >
+                  {frequencyOptions.map(option => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Time */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  {t('scheduler.ora')}
+                </label>
+                <input
+                  type="time"
+                  value={scheduleForm.time}
+                  onChange={(e) => setScheduleForm(prev => ({ ...prev, time: e.target.value }))}
+                  className="w-full px-3 py-2 border rounded-md"
+                  data-testid="time"
+                />
+              </div>
+
+              {/* Weekly frequency options */}
+              {scheduleForm.frequency === 'weekly' && (
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    {t('scheduler.giornoDellaSett')}
+                  </label>
+                  <select
+                    value={scheduleForm.weekdays[0] || 1}
+                    onChange={(e) => setScheduleForm(prev => ({ ...prev, weekdays: [parseInt(e.target.value)] }))}
+                    className="w-full px-3 py-2 border rounded-md"
+                    data-testid="day-of-week"
+                  >
+                    {weekdays.map(day => (
+                      <option key={day.value} value={day.value}>
+                        {day.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              )}
+
+              {/* Monthly frequency options */}
+              {scheduleForm.frequency === 'monthly' && (
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    {t('scheduler.giornoDelMese')}
+                  </label>
+                  <input
+                    type="number"
+                    min="1"
+                    max="31"
+                    value={scheduleForm.monthDay}
+                    onChange={(e) => setScheduleForm(prev => ({ ...prev, monthDay: parseInt(e.target.value) }))}
+                    className="w-full px-3 py-2 border rounded-md"
+                    data-testid="day-of-month"
+                  />
+                </div>
+              )}
+
+              {/* Email Recipients */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  {t('scheduler.email')}
+                </label>
+                <div className="space-y-2">
+                  {scheduleForm.recipients.map(recipient => (
+                    <div key={recipient.id} className="flex items-center gap-2">
+                      <input
+                        type="email"
+                        value={recipient.email}
+                        readOnly
+                        className="flex-1 px-3 py-2 border rounded-md bg-gray-50"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => removeRecipient(recipient.id)}
+                        className="text-red-500 hover:text-red-700"
+                      >
+                        <X className="w-4 h-4" />
+                      </button>
+                    </div>
+                  ))}
+                  <input
+                    type="email"
+                    placeholder="Aggiungi email destinatario"
+                    onKeyPress={(e) => {
+                      if (e.key === 'Enter') {
+                        e.preventDefault();
+                        addRecipient(e.target.value);
+                        e.target.value = '';
+                      }
+                    }}
+                    onBlur={(e) => {
+                      if (e.target.value) {
+                        addRecipient(e.target.value);
+                        e.target.value = '';
+                      }
+                    }}
+                    className={`w-full px-3 py-2 border rounded-md ${errors.recipients ? 'border-red-500' : ''}`}
+                    data-testid="email-input"
+                  />
+                </div>
+                {errors.recipients && <p className="text-red-500 text-sm mt-1">{errors.recipients}</p>}
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex items-center justify-end gap-3 pt-4">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowCreateDialog(false);
+                    setEditingSchedule(null);
+                    resetForm();
+                  }}
+                  className="px-4 py-2 text-gray-600 border border-gray-300 rounded hover:bg-gray-50"
+                  data-testid="cancel-button"
+                >
+                  {t('scheduler.cancel')}
+                </button>
+                <button
+                  type="button"
+                  onClick={editingSchedule ? handleUpdateSchedule : handleCreateSchedule}
+                  className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                  data-testid="save-button"
+                >
+                  {t('scheduler.save')}
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       )}
     </div>

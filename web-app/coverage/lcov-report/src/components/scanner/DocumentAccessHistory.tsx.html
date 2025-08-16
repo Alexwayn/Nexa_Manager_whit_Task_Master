@@ -25,14 +25,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/91</span>
+                <span class='fraction'>0/96</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/86</span>
+                <span class='fraction'>0/77</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/86</span>
+                <span class='fraction'>0/91</span>
             </div>
         
             
@@ -576,10 +576,8 @@
 <a name='L511'></a><a href='#L511'>511</a>
 <a name='L512'></a><a href='#L512'>512</a>
 <a name='L513'></a><a href='#L513'>513</a>
-<a name='L514'></a><a href='#L514'>514</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L514'></a><a href='#L514'>514</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -592,7 +590,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1088,9 +1088,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React, { useState, useEffect } from 'react';
-import { 
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import React, { useState, useEffect } from 'react';</span>
+<span class="cstat-no" title="statement not covered" >import { </span>
   ClockIcon, 
   EyeIcon, 
   ArrowDownTrayIcon, 
@@ -1103,9 +1103,9 @@ import {
   CalendarIcon,
   FunnelIcon
 } from '@heroicons/react/24/outline';
-import { documentAccessTrackingService } from '@/services/scanner';
+<span class="cstat-no" title="statement not covered" >import { documentAccessTrackingService } from '@/services/scanner';</span>
 import type { AccessEvent, AccessStatistics, ProcessedDocument } from '@/types/scanner';
-import { useTranslation } from '@/hooks/useTranslation';
+<span class="cstat-no" title="statement not covered" >import { useTranslation } from '@/hooks/useTranslation';</span>
 &nbsp;
 interface DocumentAccessHistoryProps {
   document: ProcessedDocument;
@@ -1131,11 +1131,11 @@ const DocumentAccessHistory: React.FC&lt;DocumentAccessHistoryProps&gt; = <span 
   const [filters, setFilters] = <span class="cstat-no" title="statement not covered" >useState&lt;FilterOptions&gt;({});</span>
   const [showFilters, setShowFilters] = <span class="cstat-no" title="statement not covered" >useState(false);</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  useEffect(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >  useEffect(<span class="fstat-no" title="function not covered" >() =&gt; </span>{</span>
 <span class="cstat-no" title="statement not covered" >    loadData();</span>
   }, [document.id, filters]);
 &nbsp;
-  const loadData = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {</span>
+  const loadData = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >async () =&gt; </span>{</span>
 <span class="cstat-no" title="statement not covered" >    setIsLoading(true);</span>
 <span class="cstat-no" title="statement not covered" >    setError(null);</span>
 &nbsp;
@@ -1155,8 +1155,8 @@ const DocumentAccessHistory: React.FC&lt;DocumentAccessHistoryProps&gt; = <span 
         let filteredHistory = <span class="cstat-no" title="statement not covered" >historyResult.accessHistory;</span>
         
         // Apply user email filter
-<span class="cstat-no" title="statement not covered" >        if (filters.userEmail) {</span>
-<span class="cstat-no" title="statement not covered" >          filteredHistory = filteredHistory.filter(<span class="fstat-no" title="function not covered" >ev</span>ent =&gt; </span>
+<span class="cstat-no" title="statement not covered" >        <span class="missing-if-branch" title="if path not taken" >I</span>if (filters.userEmail) {</span>
+<span class="cstat-no" title="statement not covered" >          filteredHistory = filteredHistory.filter(<span class="fstat-no" title="function not covered" >event </span>=&gt; </span>
 <span class="cstat-no" title="statement not covered" >            event.userEmail?.toLowerCase().includes(filters.userEmail!.toLowerCase())</span>
           );
         }
@@ -1173,7 +1173,7 @@ const DocumentAccessHistory: React.FC&lt;DocumentAccessHistoryProps&gt; = <span 
         filters.dateRange
       );
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      if (statsResult.success &amp;&amp; statsResult.statistics) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (statsResult.success &amp;&amp; statsResult.statistics) {</span>
 <span class="cstat-no" title="statement not covered" >        setStatistics(statsResult.statistics);</span>
       }
 &nbsp;
@@ -1184,7 +1184,7 @@ const DocumentAccessHistory: React.FC&lt;DocumentAccessHistoryProps&gt; = <span 
     }
   };
 &nbsp;
-  const getActionIcon = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(a</span>ction: string) =&gt; {</span>
+  const getActionIcon = (<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >action: string)</span> =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    switch (action) {</span>
       case 'view':
 <span class="cstat-no" title="statement not covered" >        return &lt;EyeIcon className="h-4 w-4" /&gt;;</span>
@@ -1199,7 +1199,7 @@ const DocumentAccessHistory: React.FC&lt;DocumentAccessHistoryProps&gt; = <span 
     }
   };
 &nbsp;
-  const getActionLabel = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(a</span>ction: string): string =&gt; {</span>
+  const getActionLabel = (<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >action: string)</span>: string =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    switch (action) {</span>
       case 'view':
 <span class="cstat-no" title="statement not covered" >        return t('scanner.accessHistory.actions.view');</span>
@@ -1216,7 +1216,7 @@ const DocumentAccessHistory: React.FC&lt;DocumentAccessHistoryProps&gt; = <span 
     }
   };
 &nbsp;
-  const getActionColor = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(a</span>ction: string): string =&gt; {</span>
+  const getActionColor = (<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >action: string)</span>: string =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    switch (action) {</span>
       case 'view':
 <span class="cstat-no" title="statement not covered" >        return 'text-blue-600 bg-blue-50';</span>
@@ -1233,8 +1233,8 @@ const DocumentAccessHistory: React.FC&lt;DocumentAccessHistoryProps&gt; = <span 
     }
   };
 &nbsp;
-  const getDeviceIcon = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(u</span>serAgent?: string) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    if (!userAgent) <span class="cstat-no" title="statement not covered" >return &lt;ComputerDesktopIcon className="h-4 w-4" /&gt;;</span></span>
+  const getDeviceIcon = (<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >userAgent?: string)</span> =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!userAgent) <span class="cstat-no" title="statement not covered" >return &lt;ComputerDesktopIcon className="h-4 w-4" /&gt;;</span></span>
     
     const isMobile = <span class="cstat-no" title="statement not covered" >/Mobile|Android|iPhone|iPad/.test(userAgent);</span>
 <span class="cstat-no" title="statement not covered" >    return isMobile </span>
@@ -1242,7 +1242,7 @@ const DocumentAccessHistory: React.FC&lt;DocumentAccessHistoryProps&gt; = <span 
       : &lt;ComputerDesktopIcon className="h-4 w-4" /&gt;;
   };
 &nbsp;
-  const formatDate = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(d</span>ate: Date): string =&gt; {</span>
+  const formatDate = (<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >date: Date)</span>: string =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    return new Intl.DateTimeFormat(undefined, {</span>
       year: 'numeric',
       month: 'short',
@@ -1252,27 +1252,27 @@ const DocumentAccessHistory: React.FC&lt;DocumentAccessHistoryProps&gt; = <span 
     }).format(date);
   };
 &nbsp;
-  const formatRelativeTime = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(d</span>ate: Date): string =&gt; {</span>
+  const formatRelativeTime = (<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >date: Date)</span>: string =&gt; {</span>
     const now = <span class="cstat-no" title="statement not covered" >new Date();</span>
     const diffMs = <span class="cstat-no" title="statement not covered" >now.getTime() - date.getTime();</span>
     const diffMins = <span class="cstat-no" title="statement not covered" >Math.floor(diffMs / (1000 * 60));</span>
     const diffHours = <span class="cstat-no" title="statement not covered" >Math.floor(diffMs / (1000 * 60 * 60));</span>
     const diffDays = <span class="cstat-no" title="statement not covered" >Math.floor(diffMs / (1000 * 60 * 60 * 24));</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    if (diffMins &lt; 1) <span class="cstat-no" title="statement not covered" >return t('common.time.justNow');</span></span>
-<span class="cstat-no" title="statement not covered" >    if (diffMins &lt; 60) <span class="cstat-no" title="statement not covered" >return t('common.time.minutesAgo', { count: diffMins });</span></span>
-<span class="cstat-no" title="statement not covered" >    if (diffHours &lt; 24) <span class="cstat-no" title="statement not covered" >return t('common.time.hoursAgo', { count: diffHours });</span></span>
-<span class="cstat-no" title="statement not covered" >    if (diffDays &lt; 7) <span class="cstat-no" title="statement not covered" >return t('common.time.daysAgo', { count: diffDays });</span></span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (diffMins &lt; 1) <span class="cstat-no" title="statement not covered" >return t('common.time.justNow');</span></span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (diffMins &lt; 60) <span class="cstat-no" title="statement not covered" >return t('common.time.minutesAgo', { count: diffMins });</span></span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (diffHours &lt; 24) <span class="cstat-no" title="statement not covered" >return t('common.time.hoursAgo', { count: diffHours });</span></span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (diffDays &lt; 7) <span class="cstat-no" title="statement not covered" >return t('common.time.daysAgo', { count: diffDays });</span></span>
     
 <span class="cstat-no" title="statement not covered" >    return formatDate(date);</span>
   };
 &nbsp;
-  const clearFilters = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+  const clearFilters = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >() =&gt; </span>{</span>
 <span class="cstat-no" title="statement not covered" >    setFilters({});</span>
 <span class="cstat-no" title="statement not covered" >    setShowFilters(false);</span>
   };
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  if (isLoading) {</span>
+<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (isLoading) {</span>
 <span class="cstat-no" title="statement not covered" >    return (</span>
       &lt;div className="flex items-center justify-center py-8"&gt;
         &lt;div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"&gt;&lt;/div&gt;
@@ -1280,7 +1280,7 @@ const DocumentAccessHistory: React.FC&lt;DocumentAccessHistoryProps&gt; = <span 
     );
   }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  if (error) {</span>
+<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (error) {</span>
 <span class="cstat-no" title="statement not covered" >    return (</span>
       &lt;div className="p-4 bg-red-50 border border-red-200 rounded-lg"&gt;
         &lt;p className="text-sm text-red-800"&gt;{error}&lt;/p&gt;
@@ -1300,7 +1300,7 @@ const DocumentAccessHistory: React.FC&lt;DocumentAccessHistoryProps&gt; = <span 
       &lt;div className="flex items-center justify-between"&gt;
         &lt;div className="flex space-x-1"&gt;
           &lt;button
-            onClick={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >setActiveTab('history')}</span>
+            onClick={<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >s</span>etActiveTab('history')}</span>
             className={`px-3 py-2 text-sm font-medium rounded-md transition-colors ${
               activeTab === 'history'
                 ? 'bg-blue-100 text-blue-700'
@@ -1310,7 +1310,7 @@ const DocumentAccessHistory: React.FC&lt;DocumentAccessHistoryProps&gt; = <span 
             {t('scanner.accessHistory.tabs.history')}
           &lt;/button&gt;
           &lt;button
-            onClick={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >setActiveTab('statistics')}</span>
+            onClick={<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >s</span>etActiveTab('statistics')}</span>
             className={`px-3 py-2 text-sm font-medium rounded-md transition-colors ${
               activeTab === 'statistics'
                 ? 'bg-blue-100 text-blue-700'
@@ -1323,7 +1323,7 @@ const DocumentAccessHistory: React.FC&lt;DocumentAccessHistoryProps&gt; = <span 
 &nbsp;
         {activeTab === 'history' &amp;&amp; (
           &lt;button
-            onClick={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >setShowFilters(!showFilters)}</span>
+            onClick={<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >s</span>etShowFilters(!showFilters)}</span>
             className="flex items-center space-x-2 px-3 py-2 text-sm text-gray-600 hover:text-gray-800 border border-gray-300 rounded-md transition-colors"
           &gt;
             &lt;FunnelIcon className="h-4 w-4" /&gt;
@@ -1342,7 +1342,7 @@ const DocumentAccessHistory: React.FC&lt;DocumentAccessHistoryProps&gt; = <span 
               &lt;/label&gt;
               &lt;select
                 value={filters.action || ''}
-                onChange={<span class="fstat-no" title="function not covered" >(e</span>) =&gt; <span class="cstat-no" title="statement not covered" >setFilters({ ...filters, action: e.target.value || undefined })}</span>
+                onChange={(<span class="fstat-no" title="function not covered" >e)</span> =&gt; <span class="cstat-no" title="statement not covered" >setFilters({ ...filters, action: e.target.value || undefined })}</span>
                 className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500"
               &gt;
                 &lt;option value=""&gt;{t('common.all')}&lt;/option&gt;
@@ -1360,7 +1360,7 @@ const DocumentAccessHistory: React.FC&lt;DocumentAccessHistoryProps&gt; = <span 
               &lt;input
                 type="text"
                 value={filters.userEmail || ''}
-                onChange={<span class="fstat-no" title="function not covered" >(e</span>) =&gt; <span class="cstat-no" title="statement not covered" >setFilters({ ...filters, userEmail: e.target.value || undefined })}</span>
+                onChange={(<span class="fstat-no" title="function not covered" >e)</span> =&gt; <span class="cstat-no" title="statement not covered" >setFilters({ ...filters, userEmail: e.target.value || undefined })}</span>
                 placeholder={t('scanner.accessHistory.filters.userEmailPlaceholder')}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500"
               /&gt;
@@ -1373,7 +1373,7 @@ const DocumentAccessHistory: React.FC&lt;DocumentAccessHistoryProps&gt; = <span 
               &lt;input
                 type="date"
                 value={filters.dateRange?.start.toISOString().split('T')[0] || ''}
-                onChange={<span class="fstat-no" title="function not covered" >(e</span>) =&gt; {
+                onChange={(<span class="fstat-no" title="function not covered" >e)</span> =&gt; {
                   const start = <span class="cstat-no" title="statement not covered" >e.target.value ? new Date(e.target.value) : undefined;</span>
 <span class="cstat-no" title="statement not covered" >                  setFilters({ </span>
                     ...filters, 
@@ -1414,7 +1414,7 @@ const DocumentAccessHistory: React.FC&lt;DocumentAccessHistoryProps&gt; = <span 
             &lt;/div&gt;
           ) : (
             &lt;div className="space-y-3"&gt;
-              {accessHistory.map(<span class="fstat-no" title="function not covered" >(e</span>vent) =&gt; (
+              {accessHistory.map((<span class="fstat-no" title="function not covered" >event)</span> =&gt; (
 <span class="cstat-no" title="statement not covered" >                &lt;div</span>
                   key={event.id}
                   className="flex items-start space-x-4 p-4 bg-white border border-gray-200 rounded-lg hover:shadow-sm transition-shadow"
@@ -1537,7 +1537,7 @@ const DocumentAccessHistory: React.FC&lt;DocumentAccessHistoryProps&gt; = <span 
                   &lt;/h3&gt;
                   &lt;div className="space-y-3"&gt;
                     {statistics.topViewers.map(<span class="fstat-no" title="function not covered" >(a</span>ccessor, index) =&gt; (
-<span class="cstat-no" title="statement not covered" >                      &lt;div key={accessor.userEmail} className="flex items-center justify-between"&gt;</span>
+<span class="cstat-no" title="statement not covered" >                      &lt;div key={accessor.userEmail} c</span>lassName="flex items-center justify-between"&gt;
                         &lt;div className="flex items-center space-x-3"&gt;
                           &lt;div className="flex-shrink-0 w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center"&gt;
                             &lt;span className="text-xs font-medium text-blue-600"&gt;
@@ -1573,8 +1573,8 @@ const DocumentAccessHistory: React.FC&lt;DocumentAccessHistoryProps&gt; = <span 
                     {t('scanner.accessHistory.stats.recentActivity')}
                   &lt;/h3&gt;
                   &lt;div className="space-y-3"&gt;
-                    {statistics.recentActivity.slice(0, 10).map(<span class="fstat-no" title="function not covered" >(e</span>vent) =&gt; (
-<span class="cstat-no" title="statement not covered" >                      &lt;div key={event.id} className="flex items-center justify-between"&gt;</span>
+                    {statistics.recentActivity.slice(0, 10).map((<span class="fstat-no" title="function not covered" >event)</span> =&gt; (
+<span class="cstat-no" title="statement not covered" >                      &lt;div key={event.id} c</span>lassName="flex items-center justify-between"&gt;
                         &lt;div className="flex items-center space-x-3"&gt;
                           &lt;div className={`p-1 rounded ${getActionColor(event.action)}`}&gt;
                             {getActionIcon(event.action)}
@@ -1601,7 +1601,7 @@ const DocumentAccessHistory: React.FC&lt;DocumentAccessHistoryProps&gt; = <span 
   );
 };
 &nbsp;
-export default DocumentAccessHistory;
+<span class="cstat-no" title="statement not covered" >export default DocumentAccessHistory;</span>
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -1609,7 +1609,7 @@ export default DocumentAccessHistory;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-08-07T19:19:19.104Z
+                at 2025-08-13T02:10:19.343Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

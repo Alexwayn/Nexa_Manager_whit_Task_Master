@@ -74,18 +74,8 @@ jest.mock('@/utils/Logger', () => ({
   },
 }));
 
-// Mock React hooks
-jest.mock('react', () => {
-  const actualReact = jest.requireActual('react');
-  return {
-    ...actualReact,
-    // keep real useRef, but ensure it's defined in case of environment issues
-    useRef: actualReact.useRef || ((initial) => ({ current: initial })),
-    useCallback: (fn) => fn,
-    useEffect: jest.fn(),
-    useState: jest.fn(() => [false, jest.fn()]),
-  };
-});
+// Note: React hooks are already available from the actual React module
+// We don't need to mock them globally for this test file
 
 describe('useEmails Hook', () => {
   beforeEach(() => {

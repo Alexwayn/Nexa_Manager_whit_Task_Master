@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">2.85% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/35</span>
+                <span class='fraction'>1/35</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/14</span>
+                <span class='fraction'>0/9</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/11</span>
+                <span class='fraction'>0/12</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">2.94% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/34</span>
+                <span class='fraction'>1/34</span>
             </div>
         
             
@@ -168,9 +168,9 @@
 <a name='L103'></a><a href='#L103'>103</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -270,25 +270,25 @@
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">// File upload service implementation
 import type { FileUploadService as IFileUploadService, ProcessedFile } from '@/types/scanner';
 &nbsp;
-export class FileUploadService implements IFileUploadService {
-  private readonly maxFileSize = <span class="cstat-no" title="statement not covered" >10 * 1024 * 1024;</span> // 10MB
-  private readonly acceptedTypes = <span class="cstat-no" title="statement not covered" >['image/jpeg', 'image/png', 'image/webp', 'application/pdf'];</span>
+<span class="fstat-no" title="function not covered" >export class F</span>ileUploadService implements IFileUploadService {
+  private readonly <span class="cstat-no" title="statement not covered" >maxFileSize = 10 * 1024 * 1024; /</span>/ 10MB
+  private readonly acceptedTypes = ['image/jpeg', 'image/png', 'image/webp', 'application/pdf'];
 &nbsp;
-<span class="fstat-no" title="function not covered" >  va</span>lidateFile(file: File): boolean {
+<span class="fstat-no" title="function not covered" >  validateFile(</span>file: File): boolean {
     // Check file size
-<span class="cstat-no" title="statement not covered" >    if (file.size &gt; this.maxFileSize) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (file.size &gt; this.maxFileSize) {</span>
 <span class="cstat-no" title="statement not covered" >      return false;</span>
     }
 &nbsp;
     // Check file type
-<span class="cstat-no" title="statement not covered" >    if (!this.acceptedTypes.includes(file.type)) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!this.acceptedTypes.includes(file.type)) {</span>
 <span class="cstat-no" title="statement not covered" >      return false;</span>
     }
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    return true;</span>
   }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  as</span>ync processFiles(files: File[]): Promise&lt;ProcessedFile[]&gt; {
+<span class="fstat-no" title="function not covered" >  async p</span>rocessFiles(files: File[]): Promise&lt;ProcessedFile[]&gt; {
     const processedFiles: ProcessedFile[] = <span class="cstat-no" title="statement not covered" >[];</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    for (const file of files) {</span>
@@ -311,8 +311,8 @@ export class FileUploadService implements IFileUploadService {
 <span class="cstat-no" title="statement not covered" >    return processedFiles;</span>
   }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  pr</span>ivate async processFile(file: File): Promise&lt;ProcessedFile&gt; {
-<span class="cstat-no" title="statement not covered" >    if (!this.validateFile(file)) {</span>
+  private <span class="fstat-no" title="function not covered" >async p</span>rocessFile(file: File): Promise&lt;ProcessedFile&gt; {
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!this.validateFile(file)) {</span>
 <span class="cstat-no" title="statement not covered" >      throw new Error(this.getValidationError(file));</span>
     }
 &nbsp;
@@ -328,11 +328,11 @@ export class FileUploadService implements IFileUploadService {
     };
   }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  pr</span>ivate async generatePreview(file: File): Promise&lt;string&gt; {
+  private <span class="fstat-no" title="function not covered" >async g</span>eneratePreview(file: File): Promise&lt;string&gt; {
 <span class="cstat-no" title="statement not covered" >    return new Promise(<span class="fstat-no" title="function not covered" >(r</span>esolve, reject) =&gt; {</span>
       const reader = <span class="cstat-no" title="statement not covered" >new FileReader();</span>
       
-<span class="cstat-no" title="statement not covered" >      reader.onload = <span class="fstat-no" title="function not covered" >(e</span>) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >      reader.onload = (<span class="fstat-no" title="function not covered" >e)</span> =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >        if (e.target?.result) {</span>
 <span class="cstat-no" title="statement not covered" >          resolve(e.target.result as string);</span>
         } else {
@@ -340,32 +340,32 @@ export class FileUploadService implements IFileUploadService {
         }
       };
       
-<span class="cstat-no" title="statement not covered" >      reader.onerror = <span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >reject(new Error('Failed to read file'));</span></span>
+<span class="cstat-no" title="statement not covered" >      reader.onerror = <span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >r</span>eject(new Error('Failed to read file'));</span></span>
 <span class="cstat-no" title="statement not covered" >      reader.readAsDataURL(file);</span>
     });
   }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  pr</span>ivate getValidationError(file: File): string {
-<span class="cstat-no" title="statement not covered" >    if (file.size &gt; this.maxFileSize) {</span>
+  private <span class="fstat-no" title="function not covered" >getValidationError(</span>file: File): string {
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (file.size &gt; this.maxFileSize) {</span>
 <span class="cstat-no" title="statement not covered" >      return `File size exceeds maximum limit of ${this.maxFileSize / (1024 * 1024)}MB`;</span>
     }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    if (!this.acceptedTypes.includes(file.type)) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!this.acceptedTypes.includes(file.type)) {</span>
 <span class="cstat-no" title="statement not covered" >      return `File type ${file.type} is not supported. Accepted types: ${this.acceptedTypes.join(', ')}`;</span>
     }
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    return 'Invalid file';</span>
   }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  pr</span>ivate generateId(): string {
+  private <span class="fstat-no" title="function not covered" >generateId(</span>): string {
 <span class="cstat-no" title="statement not covered" >    return `file_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;</span>
   }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  ge</span>tAcceptedFileTypes(): string[] {
+<span class="fstat-no" title="function not covered" >  getAcceptedFileTypes(</span>): string[] {
 <span class="cstat-no" title="statement not covered" >    return [...this.acceptedTypes];</span>
   }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  ge</span>tMaxFileSize(): number {
+<span class="fstat-no" title="function not covered" >  getMaxFileSize(</span>): number {
 <span class="cstat-no" title="statement not covered" >    return this.maxFileSize;</span>
   }
 }
@@ -376,7 +376,7 @@ export class FileUploadService implements IFileUploadService {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-08-07T19:19:19.104Z
+                at 2025-08-13T02:10:19.343Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>

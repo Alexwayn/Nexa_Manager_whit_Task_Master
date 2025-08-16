@@ -25,28 +25,28 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/97</span>
+                <span class='fraction'>0/108</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/70</span>
+                <span class='fraction'>0/66</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/30</span>
+                <span class='fraction'>0/31</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/90</span>
+                <span class='fraction'>0/100</span>
             </div>
         
             
@@ -462,21 +462,21 @@
 <a name='L397'></a><a href='#L397'>397</a>
 <a name='L398'></a><a href='#L398'>398</a>
 <a name='L399'></a><a href='#L399'>399</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -687,7 +687,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -717,6 +716,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -822,7 +822,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -860,21 +860,21 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">// User-friendly error notifications for scanner operations
-import React, { useState, useEffect } from 'react';
-import { 
+<span class="cstat-no" title="statement not covered" >import React, { useState, useEffect } from 'react';</span>
+<span class="cstat-no" title="statement not covered" >import { </span>
   ExclamationTriangleIcon, 
   XMarkIcon,
   ArrowPathIcon,
   InformationCircleIcon,
   CheckCircleIcon
 } from '@heroicons/react/24/outline';
-import { ErrorType, RecoveryAction } from '@/services/scanner/errorRecoveryService';
+<span class="cstat-no" title="statement not covered" >import { ErrorType, RecoveryAction } from '@/services/scanner/errorRecoveryService';</span>
 &nbsp;
-export enum NotificationType {
-  ERROR = 'error',
-  WARNING = 'warning',
-  INFO = 'info',
-  SUCCESS = 'success'
+<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >export enum N</span>otificationType {</span>
+<span class="cstat-no" title="statement not covered" >  ERROR = 'error',</span>
+<span class="cstat-no" title="statement not covered" >  WARNING = 'warning',</span>
+<span class="cstat-no" title="statement not covered" >  INFO = 'info',</span>
+<span class="cstat-no" title="statement not covered" >  SUCCESS = 'success'</span>
 }
 &nbsp;
 export interface ErrorNotificationProps {
@@ -913,39 +913,39 @@ const ErrorNotification: React.FC&lt;ErrorNotificationProps&gt; = <span class="c
   const [isVisible, setIsVisible] = <span class="cstat-no" title="statement not covered" >useState(true);</span>
   const [countdown, setCountdown] = <span class="cstat-no" title="statement not covered" >useState(hideDelay / 1000);</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  useEffect(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    if (autoHide &amp;&amp; type !== NotificationType.ERROR) {</span>
-      const timer = <span class="cstat-no" title="statement not covered" >setTimeout(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >  useEffect(<span class="fstat-no" title="function not covered" >() =&gt; </span>{</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (autoHide &amp;&amp; type !== NotificationType.ERROR) {</span>
+      const timer = <span class="cstat-no" title="statement not covered" >setTimeout(<span class="fstat-no" title="function not covered" >() =&gt; </span>{</span>
 <span class="cstat-no" title="statement not covered" >        setIsVisible(false);</span>
 <span class="cstat-no" title="statement not covered" >        onDismiss?.();</span>
       }, hideDelay);
 &nbsp;
       // Countdown for auto-hide
-      const countdownInterval = <span class="cstat-no" title="statement not covered" >setInterval(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >        setCountdown(<span class="fstat-no" title="function not covered" >pr</span>ev =&gt; <span class="cstat-no" title="statement not covered" >Math.max(0, prev - 1))</span>;</span>
+      const countdownInterval = <span class="cstat-no" title="statement not covered" >setInterval(<span class="fstat-no" title="function not covered" >() =&gt; </span>{</span>
+<span class="cstat-no" title="statement not covered" >        setCountdown(<span class="fstat-no" title="function not covered" >prev </span>=&gt; <span class="cstat-no" title="statement not covered" >Math.max(0, prev - 1))</span>;</span>
       }, 1000);
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      return <span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >      return <span class="fstat-no" title="function not covered" >() =&gt; </span>{</span>
 <span class="cstat-no" title="statement not covered" >        clearTimeout(timer);</span>
 <span class="cstat-no" title="statement not covered" >        clearInterval(countdownInterval);</span>
       };
     }
   }, [autoHide, hideDelay, type, onDismiss]);
 &nbsp;
-  const handleDismiss = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+  const handleDismiss = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >() =&gt; </span>{</span>
 <span class="cstat-no" title="statement not covered" >    setIsVisible(false);</span>
 <span class="cstat-no" title="statement not covered" >    onDismiss?.();</span>
   };
 &nbsp;
-  const handleAction = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(a</span>ctionKey: string) =&gt; {</span>
+  const handleAction = (<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >actionKey: string)</span> =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    if (actionKey === 'retry' &amp;&amp; onRetry) {</span>
 <span class="cstat-no" title="statement not covered" >      onRetry();</span>
-    } else <span class="cstat-no" title="statement not covered" >if (onAction) {</span>
+    } else <span class="cstat-no" title="statement not covered" ><span class="missing-if-branch" title="if path not taken" >I</span>if (onAction) {</span>
 <span class="cstat-no" title="statement not covered" >      onAction(actionKey);</span>
     }
   };
 &nbsp;
-  const getNotificationStyles = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+  const getNotificationStyles = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >() =&gt; </span>{</span>
 <span class="cstat-no" title="statement not covered" >    switch (type) {</span>
       case NotificationType.ERROR:
 <span class="cstat-no" title="statement not covered" >        return {</span>
@@ -990,7 +990,7 @@ const ErrorNotification: React.FC&lt;ErrorNotificationProps&gt; = <span class="c
     }
   };
 &nbsp;
-  const getIcon = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+  const getIcon = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >() =&gt; </span>{</span>
 <span class="cstat-no" title="statement not covered" >    switch (type) {</span>
       case NotificationType.ERROR:
 <span class="cstat-no" title="statement not covered" >        return ExclamationTriangleIcon;</span>
@@ -1005,8 +1005,8 @@ const ErrorNotification: React.FC&lt;ErrorNotificationProps&gt; = <span class="c
     }
   };
 &nbsp;
-  const getRecoveryMessage = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    if (!recoveryAction) <span class="cstat-no" title="statement not covered" >return null;</span></span>
+  const getRecoveryMessage = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >() =&gt; </span>{</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!recoveryAction) <span class="cstat-no" title="statement not covered" >return null;</span></span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    switch (recoveryAction) {</span>
       case RecoveryAction.RETRY:
@@ -1028,7 +1028,7 @@ const ErrorNotification: React.FC&lt;ErrorNotificationProps&gt; = <span class="c
     }
   };
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  if (!isVisible) <span class="cstat-no" title="statement not covered" >return null;</span></span>
+<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (!isVisible) <span class="cstat-no" title="statement not covered" >return null;</span></span>
 &nbsp;
   const styles = <span class="cstat-no" title="statement not covered" >getNotificationStyles();</span>
   const IconComponent = <span class="cstat-no" title="statement not covered" >getIcon();</span>
@@ -1072,7 +1072,7 @@ const ErrorNotification: React.FC&lt;ErrorNotificationProps&gt; = <span class="c
               {isRecoverable &amp;&amp; onRetry &amp;&amp; (
                 &lt;button
                   type="button"
-                  onClick={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >handleAction('retry')}</span>
+                  onClick={<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >h</span>andleAction('retry')}</span>
                   className={`inline-flex items-center px-3 py-1.5 rounded-md text-sm font-medium transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 ${styles.button}`}
                 &gt;
                   &lt;ArrowPathIcon className="w-4 h-4 mr-1" /&gt;
@@ -1084,7 +1084,7 @@ const ErrorNotification: React.FC&lt;ErrorNotificationProps&gt; = <span class="c
 <span class="cstat-no" title="statement not covered" >                &lt;button</span>
                   key={index}
                   type="button"
-                  onClick={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >handleAction(action.action)}</span>
+                  onClick={<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >h</span>andleAction(action.action)}</span>
                   className={`inline-flex items-center px-3 py-1.5 rounded-md text-sm font-medium transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 ${
                     action.primary 
                       ? 'bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500' 
@@ -1114,25 +1114,25 @@ const ErrorNotification: React.FC&lt;ErrorNotificationProps&gt; = <span class="c
   );
 };
 &nbsp;
-export default ErrorNotification;
+<span class="cstat-no" title="statement not covered" >export default ErrorNotification;</span>
 &nbsp;
 // Hook for managing error notifications
-export const useErrorNotifications = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+export const <span class="cstat-no" title="statement not covered" >useErrorNotifications = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(</span>) =&gt; </span>{</span>
   const [notifications, setNotifications] = <span class="cstat-no" title="statement not covered" >useState&lt;Array&lt;ErrorNotificationProps &amp; { id: string }&gt;&gt;([]);</span>
 &nbsp;
-  const addNotification = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(n</span>otification: Omit&lt;ErrorNotificationProps, 'onDismiss'&gt;) =&gt; {</span>
+  const addNotification = (<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >notification: Omit&lt;ErrorNotificationProps, 'onDismiss'&gt;)</span> =&gt; {</span>
     const id = <span class="cstat-no" title="statement not covered" >`notification_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;</span>
     const newNotification = <span class="cstat-no" title="statement not covered" >{</span>
       ...notification,
       id,
-      onDismiss: <span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >removeNotification(id)</span>
+      onDismiss: <span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >r</span>emoveNotification(id)</span>
     };
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    setNotifications(<span class="fstat-no" title="function not covered" >pr</span>ev =&gt; <span class="cstat-no" title="statement not covered" >[...prev, newNotification])</span>;</span>
+<span class="cstat-no" title="statement not covered" >    setNotifications(<span class="fstat-no" title="function not covered" >prev </span>=&gt; <span class="cstat-no" title="statement not covered" >[...prev, newNotification])</span>;</span>
 &nbsp;
     // Auto-remove error notifications after a longer delay
-<span class="cstat-no" title="statement not covered" >    if (notification.type === NotificationType.ERROR) {</span>
-<span class="cstat-no" title="statement not covered" >      setTimeout(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (notification.type === NotificationType.ERROR) {</span>
+<span class="cstat-no" title="statement not covered" >      setTimeout(<span class="fstat-no" title="function not covered" >() =&gt; </span>{</span>
 <span class="cstat-no" title="statement not covered" >        removeNotification(id);</span>
       }, 10000); // 10 seconds for errors
     }
@@ -1140,11 +1140,11 @@ export const useErrorNotifications = <span class="cstat-no" title="statement not
 <span class="cstat-no" title="statement not covered" >    return id;</span>
   };
 &nbsp;
-  const removeNotification = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(i</span>d: string) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    setNotifications(<span class="fstat-no" title="function not covered" >pr</span>ev =&gt; <span class="cstat-no" title="statement not covered" >prev.filter(<span class="fstat-no" title="function not covered" >n </span>=&gt; <span class="cstat-no" title="statement not covered" >n.id !== id)</span>)</span>;</span>
+  const removeNotification = (<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >id: string)</span> =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    setNotifications(<span class="fstat-no" title="function not covered" >prev </span>=&gt; <span class="cstat-no" title="statement not covered" >prev.filter(<span class="fstat-no" title="function not covered" >n </span>=&gt; <span class="cstat-no" title="statement not covered" >n.id !== id)</span>)</span>;</span>
   };
 &nbsp;
-  const clearAllNotifications = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+  const clearAllNotifications = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >() =&gt; </span>{</span>
 <span class="cstat-no" title="statement not covered" >    setNotifications([]);</span>
   };
 &nbsp;
@@ -1220,14 +1220,14 @@ export const useErrorNotifications = <span class="cstat-no" title="statement not
 };
 &nbsp;
 // Notification container component
-export const NotificationContainer: React.FC&lt;{
+export const <span class="cstat-no" title="statement not covered" >NotificationContainer: React.FC&lt;{</span>
   notifications: Array&lt;ErrorNotificationProps &amp; { id: string }&gt;;
   position?: 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left' | 'top-center';
 }&gt; = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >({ </span></span>
   notifications, 
   position = <span class="branch-0 cbranch-no" title="branch not covered" >'top-right' </span>
 }) =&gt; {
-  const getPositionClasses = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+  const getPositionClasses = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >() =&gt; </span>{</span>
 <span class="cstat-no" title="statement not covered" >    switch (position) {</span>
       case 'top-right':
 <span class="cstat-no" title="statement not covered" >        return 'top-4 right-4';</span>
@@ -1244,11 +1244,11 @@ export const NotificationContainer: React.FC&lt;{
     }
   };
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  if (notifications.length === 0) <span class="cstat-no" title="statement not covered" >return null;</span></span>
+<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (notifications.length === 0) <span class="cstat-no" title="statement not covered" >return null;</span></span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >  return (</span>
     &lt;div className={`fixed z-50 ${getPositionClasses()} max-w-sm w-full space-y-3`}&gt;
-      {notifications.map(<span class="fstat-no" title="function not covered" >(n</span>otification) =&gt; (
+      {notifications.map((<span class="fstat-no" title="function not covered" >notification)</span> =&gt; (
 <span class="cstat-no" title="statement not covered" >        &lt;ErrorNotification</span>
           key={notification.id}
           {...notification}
@@ -1264,7 +1264,7 @@ export const NotificationContainer: React.FC&lt;{
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-08-07T19:19:19.104Z
+                at 2025-08-13T02:10:19.343Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

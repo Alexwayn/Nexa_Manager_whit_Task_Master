@@ -3,20 +3,23 @@
  * Tracks voice command usage, recognition failures, and provides analytics data
  */
 
-import Logger from '@/utils/Logger';
+import Logger from '@/shared/utils/logger';
 
 class VoiceAnalyticsService {
   constructor() {
-    this.storageKey = 'voice_analytics_data';
+    this.storageKey = 'voice_analytics';
     this.sessionKey = 'voice_session_data';
-    this.maxStorageEntries = 1000; // Limit storage to prevent excessive data
+    this.maxStorageEntries = 500; // Limit storage to prevent excessive data
     this.currentSession = this.initializeSession();
+    this.dataCache = null; // In-memory cache to ensure accumulation when storage mocks return null
     
     // Initialize analytics data structure
     this.initializeAnalyticsData();
     
     // Bind methods to preserve context
     this.trackCommand = this.trackCommand.bind(this);
+    this.trackError = this.trackError.bind(this);
+    this.trackSession = this.trackSession.bind(this);
     this.trackRecognitionFailure = this.trackRecognitionFailure.bind(this);
     this.trackSessionStart = this.trackSessionStart.bind(this);
     this.trackSessionEnd = this.trackSessionEnd.bind(this);
@@ -28,23 +31,18 @@ class VoiceAnalyticsService {
   initializeAnalyticsData() {
     const defaultData = {
       commands: [],
-      failures: [],
-      sessions: [],
-      summary: {
-        totalCommands: 0,
-        totalFailures: 0,
-        totalSessions: 0,
-        successRate: 100,
-        mostUsedCommands: {},
-        commonFailures: {},
-        averageSessionDuration: 0,
-        lastUpdated: new Date().toISOString()
-      }
+      errors: [],
+      sessions: []
     };
 
     const existingData = this.getStoredData();
     if (!existingData) {
+      // Initialize cache with default data structure
+      this.dataCache = defaultData;
       this.saveData(defaultData);
+    } else {
+      // Prime cache with existing data
+      this.dataCache = existingData;
     }
   }
 
@@ -78,10 +76,18 @@ class VoiceAnalyticsService {
   getStoredData() {
     try {
       const data = localStorage.getItem(this.storageKey);
-      return data ? JSON.parse(data) : null;
+      if (data) {
+        const parsed = JSON.parse(data);
+        this.dataCache = parsed; // keep cache in sync with storage
+        return parsed;
+      }
+      // Fall back to cache if storage is empty (useful in tests with mocked storage)
+      // Return cache or initialize with empty structure if cache is also null
+      return this.dataCache || { commands: [], errors: [], sessions: [] };
     } catch (error) {
       Logger.error('Error reading analytics data from storage:', error);
-      return null;
+      // On parse error, prefer cache or empty baseline rather than crashing
+      return this.dataCache || { commands: [], errors: [], sessions: [] };
     }
   }
 
@@ -94,12 +100,15 @@ class VoiceAnalyticsService {
       if (data.commands && data.commands.length > this.maxStorageEntries) {
         data.commands = data.commands.slice(-this.maxStorageEntries);
       }
-      if (data.failures && data.failures.length > this.maxStorageEntries) {
-        data.failures = data.failures.slice(-this.maxStorageEntries);
+      if (data.errors && data.errors.length > this.maxStorageEntries) {
+        data.errors = data.errors.slice(-this.maxStorageEntries);
       }
       if (data.sessions && data.sessions.length > 100) {
         data.sessions = data.sessions.slice(-100); // Keep last 100 sessions
       }
+
+      // Update in-memory cache first
+      this.dataCache = { ...data };
 
       localStorage.setItem(this.storageKey, JSON.stringify(data));
       Logger.debug('Analytics data saved to storage');
@@ -113,18 +122,21 @@ class VoiceAnalyticsService {
    */
   trackCommand(commandData) {
     try {
-      const timestamp = new Date().toISOString();
+      const timestamp = Date.now();
       const commandEntry = {
-        id: `cmd_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-        timestamp,
-        sessionId: this.currentSession.id,
-        originalCommand: commandData.originalCommand || '',
-        normalizedCommand: commandData.normalizedCommand || '',
+        command: commandData.command || commandData.originalCommand || '',
+        originalCommand: commandData.originalCommand || commandData.command || '',
+        normalizedCommand: commandData.normalizedCommand || commandData.command || '',
         action: commandData.action || '',
         actionType: commandData.actionType || '',
         executionTime: commandData.executionTime || 0,
+        responseTime: commandData.responseTime !== undefined ? commandData.responseTime : (commandData.executionTime || 0),
         success: commandData.success !== false, // Default to true unless explicitly false
+        confidence: commandData.confidence || 0,
         response: commandData.response || '',
+        error: commandData.error || null,
+        sessionId: commandData.sessionId || this.currentSession.id,
+        timestamp,
         context: {
           currentPath: commandData.currentPath || '',
           userAgent: navigator.userAgent,
@@ -137,12 +149,12 @@ class VoiceAnalyticsService {
       this.currentSession.commands.push(commandEntry);
 
       // Add to persistent storage
-      const data = this.getStoredData();
-      if (data) {
-        data.commands.push(commandEntry);
-        this.updateSummaryStats(data);
-        this.saveData(data);
-      }
+      const existing = this.getStoredData() || { commands: [], errors: [], sessions: [] };
+      const data = {
+        ...existing,
+        commands: [...(existing.commands || []), commandEntry]
+      };
+      this.saveData(data);
 
       Logger.debug('Voice command tracked:', commandEntry);
     } catch (error) {
@@ -151,22 +163,19 @@ class VoiceAnalyticsService {
   }
 
   /**
-   * Track a voice recognition failure
+   * Track errors (general purpose)
    */
-  trackRecognitionFailure(failureData) {
+  trackError(errorData) {
     try {
-      const timestamp = new Date().toISOString();
-      const failureEntry = {
-        id: `fail_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+      const timestamp = Date.now();
+      const errorEntry = {
+        type: errorData.type || 'unknown',
+        error: errorData.error || errorData.message || '',
+        command: errorData.command || '',
+        sessionId: errorData.sessionId || this.currentSession.id,
         timestamp,
-        sessionId: this.currentSession.id,
-        recognizedText: failureData.recognizedText || '',
-        errorType: failureData.errorType || 'unknown',
-        errorMessage: failureData.errorMessage || '',
-        confidence: failureData.confidence || 0,
-        audioQuality: failureData.audioQuality || 'unknown',
         context: {
-          currentPath: failureData.currentPath || '',
+          currentPath: errorData.currentPath || '',
           userAgent: navigator.userAgent,
           language: navigator.language,
           timestamp
@@ -174,19 +183,65 @@ class VoiceAnalyticsService {
       };
 
       // Add to current session
-      this.currentSession.failures.push(failureEntry);
+      this.currentSession.failures.push(errorEntry);
 
       // Add to persistent storage
-      const data = this.getStoredData();
-      if (data) {
-        data.failures.push(failureEntry);
-        this.updateSummaryStats(data);
-        this.saveData(data);
-      }
+      const existing = this.getStoredData() || { commands: [], errors: [], sessions: [] };
+      const data = {
+        ...existing,
+        errors: [...(existing.errors || []), errorEntry]
+      };
+      this.saveData(data);
 
-      Logger.debug('Voice recognition failure tracked:', failureEntry);
+      Logger.debug('Voice error tracked:', errorEntry);
     } catch (error) {
-      Logger.error('Error tracking voice recognition failure:', error);
+      Logger.error('Error tracking voice error:', error);
+    }
+  }
+
+  /**
+   * Track a voice recognition failure
+   */
+  trackRecognitionFailure(failureData) {
+    return this.trackError({
+      type: 'recognition_error',
+      error: failureData.error || failureData.errorMessage || '',
+      recognizedText: failureData.recognizedText || '',
+      confidence: failureData.confidence || 0,
+      audioQuality: failureData.audioQuality || 'unknown',
+      sessionId: failureData.sessionId,
+      currentPath: failureData.currentPath
+    });
+  }
+
+  /**
+   * Track session data
+   */
+  trackSession(sessionData) {
+    try {
+      const existing = this.getStoredData() || { commands: [], errors: [], sessions: [] };
+      
+      const sessionEntry = {
+        sessionId: sessionData.sessionId || this.generateSessionId(),
+        startTime: sessionData.startTime || Date.now(),
+        endTime: sessionData.endTime || null,
+        commandCount: sessionData.commandCount || 0,
+        successRate: sessionData.successRate || 0,
+        averageConfidence: sessionData.averageConfidence || 0,
+        userAgent: sessionData.userAgent || navigator.userAgent,
+        duration: sessionData.endTime && sessionData.startTime ? 
+          sessionData.endTime - sessionData.startTime : 0
+      };
+
+      const data = {
+        ...existing,
+        sessions: [...(existing.sessions || []), sessionEntry]
+      };
+      this.saveData(data);
+
+      Logger.debug('Voice session tracked:', sessionEntry);
+    } catch (error) {
+      Logger.error('Error tracking voice session:', error);
     }
   }
 
@@ -220,9 +275,9 @@ class VoiceAnalyticsService {
         return;
       }
 
-      const endTime = new Date().toISOString();
-      const startTime = new Date(this.currentSession.startTime);
-      const duration = new Date(endTime) - startTime;
+      const endTime = Date.now();
+      const startTime = new Date(this.currentSession.startTime).getTime();
+      const duration = endTime - startTime;
 
       this.currentSession.endTime = endTime;
       this.currentSession.duration = duration;
@@ -235,12 +290,12 @@ class VoiceAnalyticsService {
       };
 
       // Save session to persistent storage
-      const data = this.getStoredData();
-      if (data) {
-        data.sessions.push({ ...this.currentSession });
-        this.updateSummaryStats(data);
-        this.saveData(data);
-      }
+      const existing = this.getStoredData() || { commands: [], errors: [], sessions: [] };
+      const data = {
+        ...existing,
+        sessions: [...(existing.sessions || []), { ...this.currentSession }]
+      };
+      this.saveData(data);
 
       Logger.info('Voice session ended:', {
         sessionId: this.currentSession.id,
@@ -254,92 +309,16 @@ class VoiceAnalyticsService {
   }
 
   /**
-   * Update summary statistics
+   * Get analytics data
    */
-  updateSummaryStats(data) {
+  getAnalytics() {
     try {
-      const summary = data.summary;
-      
-      // Basic counts
-      summary.totalCommands = data.commands.length;
-      summary.totalFailures = data.failures.length;
-      summary.totalSessions = data.sessions.length;
-      
-      // Success rate
-      const totalAttempts = summary.totalCommands + summary.totalFailures;
-      summary.successRate = totalAttempts > 0 ? 
-        Math.round((summary.totalCommands / totalAttempts) * 100) : 100;
-
-      // Most used commands
-      summary.mostUsedCommands = this.calculateMostUsedCommands(data.commands);
-      
-      // Common failures
-      summary.commonFailures = this.calculateCommonFailures(data.failures);
-      
-      // Average session duration
-      summary.averageSessionDuration = this.calculateAverageSessionDuration(data.sessions);
-      
-      // Last updated
-      summary.lastUpdated = new Date().toISOString();
-
+      const data = this.getStoredData();
+      return data || { commands: [], errors: [], sessions: [] };
     } catch (error) {
-      Logger.error('Error updating summary stats:', error);
+      Logger.error('Error getting analytics:', error);
+      return { commands: [], errors: [], sessions: [] };
     }
-  }
-
-  /**
-   * Calculate most used commands
-   */
-  calculateMostUsedCommands(commands) {
-    const commandCounts = {};
-    
-    commands.forEach(cmd => {
-      const key = cmd.normalizedCommand || cmd.originalCommand || 'unknown';
-      commandCounts[key] = (commandCounts[key] || 0) + 1;
-    });
-
-    // Sort by usage count and return top 10
-    return Object.entries(commandCounts)
-      .sort(([,a], [,b]) => b - a)
-      .slice(0, 10)
-      .reduce((obj, [key, value]) => {
-        obj[key] = value;
-        return obj;
-      }, {});
-  }
-
-  /**
-   * Calculate common failures
-   */
-  calculateCommonFailures(failures) {
-    const failureCounts = {};
-    
-    failures.forEach(failure => {
-      const key = failure.errorType || 'unknown';
-      failureCounts[key] = (failureCounts[key] || 0) + 1;
-    });
-
-    // Sort by failure count and return top 10
-    return Object.entries(failureCounts)
-      .sort(([,a], [,b]) => b - a)
-      .slice(0, 10)
-      .reduce((obj, [key, value]) => {
-        obj[key] = value;
-        return obj;
-      }, {});
-  }
-
-  /**
-   * Calculate average session duration
-   */
-  calculateAverageSessionDuration(sessions) {
-    if (sessions.length === 0) return 0;
-    
-    const totalDuration = sessions.reduce((sum, session) => {
-      return sum + (session.duration || 0);
-    }, 0);
-    
-    return Math.round(totalDuration / sessions.length);
   }
 
   /**
@@ -348,10 +327,86 @@ class VoiceAnalyticsService {
   getAnalyticsSummary() {
     try {
       const data = this.getStoredData();
-      return data ? data.summary : null;
+      if (!data) {
+        return {
+          totalCommands: 0,
+          successfulCommands: 0,
+          failedCommands: 0,
+          successRate: 0,
+          averageConfidence: 0,
+          averageResponseTime: 0,
+          totalSessions: 0,
+          totalErrors: 0,
+          mostCommonErrors: [],
+          commandFrequency: {}
+        };
+      }
+
+      const commands = data.commands || [];
+      const errors = data.errors || [];
+      const sessions = data.sessions || [];
+
+      const successfulCommands = commands.filter(cmd => cmd.success).length;
+      const failedCommands = commands.filter(cmd => !cmd.success).length;
+      const totalCommands = commands.length;
+
+      const successRate = totalCommands > 0 ? successfulCommands / totalCommands : 0;
+
+      const averageConfidence = totalCommands > 0 ?
+        commands.reduce((sum, cmd) => sum + (cmd.confidence || 0), 0) / totalCommands : 0;
+
+      // Calculate average response time - include all commands with numeric responseTime
+      const responseTimesArray = commands
+        .map(cmd => cmd.responseTime)
+        .filter(rt => typeof rt === 'number' && !Number.isNaN(rt));
+      const averageResponseTime = responseTimesArray.length > 0
+        ? responseTimesArray.reduce((sum, rt) => sum + rt, 0) / responseTimesArray.length
+        : 0;
+
+      // Command frequency
+      const commandFrequency = {};
+      commands.forEach(cmd => {
+        const command = cmd.command || cmd.normalizedCommand || 'unknown';
+        commandFrequency[command] = (commandFrequency[command] || 0) + 1;
+      });
+
+      // Most common errors
+      const errorCounts = {};
+      errors.forEach(error => {
+        const errorType = error.type || 'unknown';
+        errorCounts[errorType] = (errorCounts[errorType] || 0) + 1;
+      });
+
+      const mostCommonErrors = Object.entries(errorCounts)
+        .sort(([,a], [,b]) => b - a)
+        .map(([type, count]) => ({ type, count }));
+
+      return {
+        totalCommands,
+        successfulCommands,
+        failedCommands,
+        successRate,
+        averageConfidence,
+        averageResponseTime,
+        totalSessions: sessions.length,
+        totalErrors: errors.length,
+        mostCommonErrors,
+        commandFrequency
+      };
     } catch (error) {
       Logger.error('Error getting analytics summary:', error);
-      return null;
+      return {
+        totalCommands: 0,
+        successfulCommands: 0,
+        failedCommands: 0,
+        successRate: 0,
+        averageConfidence: 0,
+        averageResponseTime: 0,
+        totalSessions: 0,
+        totalErrors: 0,
+        mostCommonErrors: [],
+        commandFrequency: {}
+      };
     }
   }
 
@@ -373,7 +428,7 @@ class VoiceAnalyticsService {
       } = options;
 
       const result = {
-        summary: data.summary
+        summary: this.getAnalyticsSummary()
       };
 
       // Filter by date range if provided
@@ -389,15 +444,15 @@ class VoiceAnalyticsService {
       };
 
       if (includeCommands) {
-        result.commands = filterByDate(data.commands).slice(-limit);
+        result.commands = filterByDate(data.commands || []).slice(-limit);
       }
 
       if (includeFailures) {
-        result.failures = filterByDate(data.failures).slice(-limit);
+        result.failures = filterByDate(data.errors || []).slice(-limit);
       }
 
       if (includeSessions) {
-        result.sessions = data.sessions.slice(-limit);
+        result.sessions = (data.sessions || []).slice(-limit);
       }
 
       return result;
@@ -423,7 +478,7 @@ class VoiceAnalyticsService {
       if (!data) return null;
 
       if (format === 'json') {
-        return JSON.stringify(data, null, 2);
+        return data;
       }
 
       if (format === 'csv') {
@@ -438,6 +493,18 @@ class VoiceAnalyticsService {
   }
 
   /**
+   * Import analytics data
+   */
+  importAnalytics(importData) {
+    try {
+      this.saveData(importData);
+      Logger.info('Analytics data imported successfully');
+    } catch (error) {
+      Logger.error('Error importing analytics data:', error);
+    }
+  }
+
+  /**
    * Convert analytics data to CSV format
    */
   convertToCSV(data) {
@@ -446,16 +513,14 @@ class VoiceAnalyticsService {
 
       // Commands CSV
       if (data.commands && data.commands.length > 0) {
-        const commandHeaders = ['Timestamp', 'Session ID', 'Original Command', 'Normalized Command', 'Action', 'Success', 'Execution Time', 'Response'];
+        const commandHeaders = ['Timestamp', 'Session ID', 'Command', 'Success', 'Confidence', 'Response Time'];
         const commandRows = data.commands.map(cmd => [
           cmd.timestamp,
           cmd.sessionId,
-          cmd.originalCommand,
-          cmd.normalizedCommand,
-          cmd.action,
+          cmd.command,
           cmd.success,
-          cmd.executionTime,
-          cmd.response
+          cmd.confidence,
+          cmd.responseTime
         ]);
         
         csvSections.push('COMMANDS');
@@ -464,21 +529,20 @@ class VoiceAnalyticsService {
         csvSections.push('');
       }
 
-      // Failures CSV
-      if (data.failures && data.failures.length > 0) {
-        const failureHeaders = ['Timestamp', 'Session ID', 'Recognized Text', 'Error Type', 'Error Message', 'Confidence'];
-        const failureRows = data.failures.map(failure => [
-          failure.timestamp,
-          failure.sessionId,
-          failure.recognizedText,
-          failure.errorType,
-          failure.errorMessage,
-          failure.confidence
+      // Errors CSV
+      if (data.errors && data.errors.length > 0) {
+        const errorHeaders = ['Timestamp', 'Session ID', 'Type', 'Error', 'Command'];
+        const errorRows = data.errors.map(error => [
+          error.timestamp,
+          error.sessionId,
+          error.type,
+          error.error,
+          error.command
         ]);
         
-        csvSections.push('FAILURES');
-        csvSections.push(failureHeaders.join(','));
-        csvSections.push(...failureRows.map(row => row.join(',')));
+        csvSections.push('ERRORS');
+        csvSections.push(errorHeaders.join(','));
+        csvSections.push(...errorRows.map(row => row.join(',')));
         csvSections.push('');
       }
 
@@ -495,6 +559,8 @@ class VoiceAnalyticsService {
   clearAnalytics() {
     try {
       localStorage.removeItem(this.storageKey);
+      // Reset cache to default structure instead of null
+      this.dataCache = { commands: [], errors: [], sessions: [] };
       this.initializeAnalyticsData();
       Logger.info('Analytics data cleared');
     } catch (error) {

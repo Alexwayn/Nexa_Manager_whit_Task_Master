@@ -209,8 +209,8 @@ describe('EmailAnalyticsService', () => {
         lastHour: expect.objectContaining({
           activity: expect.any(Array),
         }),
-        queue: expect.any(Object),
         liveEvents: expect.any(Array),
+        queue: expect.any(Object),
       });
     });
   });

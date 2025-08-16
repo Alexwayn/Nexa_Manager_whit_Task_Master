@@ -25,14 +25,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/65</span>
+                <span class='fraction'>0/70</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/48</span>
+                <span class='fraction'>0/45</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/64</span>
+                <span class='fraction'>0/69</span>
             </div>
         
             
@@ -355,10 +355,8 @@
 <a name='L290'></a><a href='#L290'>290</a>
 <a name='L291'></a><a href='#L291'>291</a>
 <a name='L292'></a><a href='#L292'>292</a>
-<a name='L293'></a><a href='#L293'>293</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L293'></a><a href='#L293'>293</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -368,7 +366,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -646,9 +646,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React, { useState, useEffect } from 'react';
-import { 
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import React, { useState, useEffect } from 'react';</span>
+<span class="cstat-no" title="statement not covered" >import { </span>
   UserGroupIcon, 
   EyeIcon, 
   ArrowDownTrayIcon, 
@@ -658,9 +658,9 @@ import {
   CalendarIcon,
   ExclamationTriangleIcon
 } from '@heroicons/react/24/outline';
-import { documentSharingService } from '@/services/scanner';
+<span class="cstat-no" title="statement not covered" >import { documentSharingService } from '@/services/scanner';</span>
 import type { DocumentShare, ProcessedDocument, AccessLevel } from '@/types/scanner';
-import { useTranslation } from '@/hooks/useTranslation';
+<span class="cstat-no" title="statement not covered" >import { useTranslation } from '@/hooks/useTranslation';</span>
 &nbsp;
 interface DocumentSharesManagerProps {
   document: ProcessedDocument;
@@ -679,11 +679,11 @@ const DocumentSharesManager: React.FC&lt;DocumentSharesManagerProps&gt; = <span 
   const [error, setError] = <span class="cstat-no" title="statement not covered" >useState&lt;string | null&gt;(null);</span>
   const [revokingShareId, setRevokingShareId] = <span class="cstat-no" title="statement not covered" >useState&lt;string | null&gt;(null);</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  useEffect(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >  useEffect(<span class="fstat-no" title="function not covered" >() =&gt; </span>{</span>
 <span class="cstat-no" title="statement not covered" >    loadShares();</span>
   }, [document.id]);
 &nbsp;
-  const loadShares = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {</span>
+  const loadShares = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >async () =&gt; </span>{</span>
 <span class="cstat-no" title="statement not covered" >    setIsLoading(true);</span>
 <span class="cstat-no" title="statement not covered" >    setError(null);</span>
 &nbsp;
@@ -702,7 +702,7 @@ const DocumentSharesManager: React.FC&lt;DocumentSharesManagerProps&gt; = <span 
     }
   };
 &nbsp;
-  const handleRevokeShare = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync (shareId: string) =&gt; {</span>
+  const handleRevokeShare = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >async (s</span>hareId: string) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    setRevokingShareId(shareId);</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    try {</span>
@@ -710,7 +710,7 @@ const DocumentSharesManager: React.FC&lt;DocumentSharesManagerProps&gt; = <span 
       
 <span class="cstat-no" title="statement not covered" >      if (result.success) {</span>
         // Remove the revoked share from the list
-<span class="cstat-no" title="statement not covered" >        setShares(shares.filter(<span class="fstat-no" title="function not covered" >sh</span>are =&gt; <span class="cstat-no" title="statement not covered" >share.id !== shareId)</span>);</span>
+<span class="cstat-no" title="statement not covered" >        setShares(shares.filter(<span class="fstat-no" title="function not covered" >share </span>=&gt; <span class="cstat-no" title="statement not covered" >share.id !== shareId)</span>);</span>
 <span class="cstat-no" title="statement not covered" >        onSharesUpdated?.();</span>
       } else {
 <span class="cstat-no" title="statement not covered" >        setError(result.error || t('scanner.sharing.errors.revokeFailure'));</span>
@@ -722,7 +722,7 @@ const DocumentSharesManager: React.FC&lt;DocumentSharesManagerProps&gt; = <span 
     }
   };
 &nbsp;
-  const copyPublicLink = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync (link: string) =&gt; {</span>
+  const copyPublicLink = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >async (l</span>ink: string) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    try {</span>
 <span class="cstat-no" title="statement not covered" >      await navigator.clipboard.writeText(link);</span>
       // Could add a toast notification here
@@ -731,7 +731,7 @@ const DocumentSharesManager: React.FC&lt;DocumentSharesManagerProps&gt; = <span 
     }
   };
 &nbsp;
-  const getAccessLevelIcon = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(l</span>evel: AccessLevel) =&gt; {</span>
+  const getAccessLevelIcon = (<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >level: AccessLevel)</span> =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    switch (level) {</span>
       case 'view':
 <span class="cstat-no" title="statement not covered" >        return &lt;EyeIcon className="h-4 w-4" /&gt;;</span>
@@ -744,7 +744,7 @@ const DocumentSharesManager: React.FC&lt;DocumentSharesManagerProps&gt; = <span 
     }
   };
 &nbsp;
-  const getAccessLevelLabel = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(l</span>evel: AccessLevel): string =&gt; {</span>
+  const getAccessLevelLabel = (<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >level: AccessLevel)</span>: string =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    switch (level) {</span>
       case 'view':
 <span class="cstat-no" title="statement not covered" >        return t('scanner.sharing.accessLevel.view');</span>
@@ -757,7 +757,7 @@ const DocumentSharesManager: React.FC&lt;DocumentSharesManagerProps&gt; = <span 
     }
   };
 &nbsp;
-  const getAccessLevelColor = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(l</span>evel: AccessLevel): string =&gt; {</span>
+  const getAccessLevelColor = (<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >level: AccessLevel)</span>: string =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    switch (level) {</span>
       case 'view':
 <span class="cstat-no" title="statement not covered" >        return 'text-blue-600 bg-blue-50';</span>
@@ -770,11 +770,11 @@ const DocumentSharesManager: React.FC&lt;DocumentSharesManagerProps&gt; = <span 
     }
   };
 &nbsp;
-  const isExpired = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(s</span>hare: DocumentShare): boolean =&gt; {</span>
+  const isExpired = (<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >share: DocumentShare)</span>: boolean =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    return share.expiresAt ? new Date(share.expiresAt) &lt; new Date() : false;</span>
   };
 &nbsp;
-  const formatDate = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(d</span>ate: Date): string =&gt; {</span>
+  const formatDate = (<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >date: Date)</span>: string =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    return new Intl.DateTimeFormat(undefined, {</span>
       year: 'numeric',
       month: 'short',
@@ -784,7 +784,7 @@ const DocumentSharesManager: React.FC&lt;DocumentSharesManagerProps&gt; = <span 
     }).format(date);
   };
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  if (isLoading) {</span>
+<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (isLoading) {</span>
 <span class="cstat-no" title="statement not covered" >    return (</span>
       &lt;div className="flex items-center justify-center py-8"&gt;
         &lt;div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"&gt;&lt;/div&gt;
@@ -792,7 +792,7 @@ const DocumentSharesManager: React.FC&lt;DocumentSharesManagerProps&gt; = <span 
     );
   }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  if (error) {</span>
+<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (error) {</span>
 <span class="cstat-no" title="statement not covered" >    return (</span>
       &lt;div className="p-4 bg-red-50 border border-red-200 rounded-lg"&gt;
         &lt;div className="flex items-center space-x-2"&gt;
@@ -809,7 +809,7 @@ const DocumentSharesManager: React.FC&lt;DocumentSharesManagerProps&gt; = <span 
     );
   }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  if (shares.length === 0) {</span>
+<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (shares.length === 0) {</span>
 <span class="cstat-no" title="statement not covered" >    return (</span>
       &lt;div className="text-center py-8"&gt;
         &lt;UserGroupIcon className="mx-auto h-12 w-12 text-gray-400" /&gt;
@@ -832,7 +832,7 @@ const DocumentSharesManager: React.FC&lt;DocumentSharesManagerProps&gt; = <span 
       &lt;/div&gt;
 &nbsp;
       &lt;div className="space-y-3"&gt;
-        {shares.map(<span class="fstat-no" title="function not covered" >(s</span>hare) =&gt; (
+        {shares.map((<span class="fstat-no" title="function not covered" >share)</span> =&gt; (
 <span class="cstat-no" title="statement not covered" >          &lt;div</span>
             key={share.id}
             className={`p-4 border rounded-lg ${
@@ -904,7 +904,7 @@ const DocumentSharesManager: React.FC&lt;DocumentSharesManagerProps&gt; = <span 
                         className="flex-1 text-xs bg-gray-50 border border-gray-200 rounded px-2 py-1"
                       /&gt;
                       &lt;button
-                        onClick={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >copyPublicLink(share.publicLink!)}</span>
+                        onClick={<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >c</span>opyPublicLink(share.publicLink!)}</span>
                         className="text-gray-400 hover:text-gray-600 transition-colors"
                         title={t('scanner.sharing.copyLink')}
                       &gt;
@@ -918,7 +918,7 @@ const DocumentSharesManager: React.FC&lt;DocumentSharesManagerProps&gt; = <span 
               {/* Actions */}
               &lt;div className="flex-shrink-0 ml-4"&gt;
                 &lt;button
-                  onClick={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >handleRevokeShare(share.id)}</span>
+                  onClick={<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >h</span>andleRevokeShare(share.id)}</span>
                   disabled={revokingShareId === share.id}
                   className="text-red-600 hover:text-red-800 transition-colors disabled:opacity-50"
                   title={t('scanner.sharing.revokeAccess')}
@@ -938,7 +938,7 @@ const DocumentSharesManager: React.FC&lt;DocumentSharesManagerProps&gt; = <span 
   );
 };
 &nbsp;
-export default DocumentSharesManager;
+<span class="cstat-no" title="statement not covered" >export default DocumentSharesManager;</span>
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -946,7 +946,7 @@ export default DocumentSharesManager;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-08-07T19:19:19.104Z
+                at 2025-08-13T02:10:19.343Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

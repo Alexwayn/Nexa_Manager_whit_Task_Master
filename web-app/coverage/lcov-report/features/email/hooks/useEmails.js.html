@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">0.49% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/200</span>
+                <span class='fraction'>1/204</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/110</span>
+                <span class='fraction'>0/118</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">0.54% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/180</span>
+                <span class='fraction'>1/184</span>
             </div>
         
             
@@ -554,7 +554,12 @@
 <a name='L489'></a><a href='#L489'>489</a>
 <a name='L490'></a><a href='#L490'>490</a>
 <a name='L491'></a><a href='#L491'>491</a>
-<a name='L492'></a><a href='#L492'>492</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L492'></a><a href='#L492'>492</a>
+<a name='L493'></a><a href='#L493'>493</a>
+<a name='L494'></a><a href='#L494'>494</a>
+<a name='L495'></a><a href='#L495'>495</a>
+<a name='L496'></a><a href='#L496'>496</a>
+<a name='L497'></a><a href='#L497'>497</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -564,7 +569,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -640,6 +645,7 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -828,6 +834,7 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -865,6 +872,7 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1000,6 +1008,7 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1042,20 +1051,21 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { useCallback, useEffect, useState } from 'react';
-import { useEmailContext } from '@/shared/state/providers';
-import emailManagementService from '@features/email';
+import { useEmailContext } from '@shared/hooks/providers';
+import { emailManagementService } from '@features/email';
 import { useUser } from '@clerk/clerk-react';
-import Logger from '@utils/Logger';
+import Logger from '@/utils/Logger';
 &nbsp;
 /**
  * Enhanced useEmails hook
  * Provides email management functionality with context integration
  */
-export const useEmails = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(o</span>ptions = <span class="branch-0 cbranch-no" title="branch not covered" >{})</span> =&gt; {</span>
+export const useEmails = <span class="fstat-no" title="function not covered" >(o</span>ptions = <span class="branch-0 cbranch-no" title="branch not covered" >{})</span> =&gt; {
   const {
     autoLoad = <span class="branch-0 cbranch-no" title="branch not covered" >true,</span>
     folderId = <span class="branch-0 cbranch-no" title="branch not covered" >null,</span>
@@ -1128,7 +1138,8 @@ export const useEmails = <span class="cstat-no" title="statement not covered" ><
       
 <span class="cstat-no" title="statement not covered" >      if (result.success) {</span>
         // Update email in context if it exists in current list
-        const emailIndex = <span class="cstat-no" title="statement not covered" >emails.findIndex(<span class="fstat-no" title="function not covered" >e </span>=&gt; <span class="cstat-no" title="statement not covered" >e.id === emailId)</span>;</span>
+        const safeEmails = <span class="cstat-no" title="statement not covered" >Array.isArray(emails) ? emails : [];</span>
+        const emailIndex = <span class="cstat-no" title="statement not covered" >safeEmails.findIndex(<span class="fstat-no" title="function not covered" >e </span>=&gt; <span class="cstat-no" title="statement not covered" >e.id === emailId)</span>;</span>
 <span class="cstat-no" title="statement not covered" >        if (emailIndex !== -1) {</span>
 <span class="cstat-no" title="statement not covered" >          dispatch({</span>
             type: 'UPDATE_EMAIL',
@@ -1320,7 +1331,8 @@ export const useEmails = <span class="cstat-no" title="statement not covered" ><
       const result = <span class="cstat-no" title="statement not covered" >await emailManagementService.applyLabel(emailId, user.id, labelId);</span>
       
 <span class="cstat-no" title="statement not covered" >      if (result.success) {</span>
-        const email = <span class="cstat-no" title="statement not covered" >emails.find(<span class="fstat-no" title="function not covered" >e </span>=&gt; <span class="cstat-no" title="statement not covered" >e.id === emailId)</span>;</span>
+        const safeEmails = <span class="cstat-no" title="statement not covered" >Array.isArray(emails) ? emails : [];</span>
+        const email = <span class="cstat-no" title="statement not covered" >safeEmails.find(<span class="fstat-no" title="function not covered" >e </span>=&gt; <span class="cstat-no" title="statement not covered" >e.id === emailId)</span>;</span>
 <span class="cstat-no" title="statement not covered" >        if (email) {</span>
           const updatedLabels = <span class="cstat-no" title="statement not covered" >[...(email.labels || []), labelId];</span>
 <span class="cstat-no" title="statement not covered" >          dispatch({</span>
@@ -1352,7 +1364,8 @@ export const useEmails = <span class="cstat-no" title="statement not covered" ><
       const result = <span class="cstat-no" title="statement not covered" >await emailManagementService.removeLabel(emailId, user.id, labelId);</span>
       
 <span class="cstat-no" title="statement not covered" >      if (result.success) {</span>
-        const email = <span class="cstat-no" title="statement not covered" >emails.find(<span class="fstat-no" title="function not covered" >e </span>=&gt; <span class="cstat-no" title="statement not covered" >e.id === emailId)</span>;</span>
+        const safeEmails = <span class="cstat-no" title="statement not covered" >Array.isArray(emails) ? emails : [];</span>
+        const email = <span class="cstat-no" title="statement not covered" >safeEmails.find(<span class="fstat-no" title="function not covered" >e </span>=&gt; <span class="cstat-no" title="statement not covered" >e.id === emailId)</span>;</span>
 <span class="cstat-no" title="statement not covered" >        if (email) {</span>
           const updatedLabels = <span class="cstat-no" title="statement not covered" >(email.labels || []).filter(<span class="fstat-no" title="function not covered" >l </span>=&gt; <span class="cstat-no" title="statement not covered" >l !== labelId)</span>;</span>
 <span class="cstat-no" title="statement not covered" >          dispatch({</span>
@@ -1487,14 +1500,15 @@ export const useEmails = <span class="cstat-no" title="statement not covered" ><
     }
   }, [user?.id]);
 &nbsp;
-  // Computed values
-  const unreadEmails = <span class="cstat-no" title="statement not covered" >emails.filter(<span class="fstat-no" title="function not covered" >em</span>ail =&gt; <span class="cstat-no" title="statement not covered" >!email.isRead)</span>;</span>
-  const starredEmails = <span class="cstat-no" title="statement not covered" >emails.filter(<span class="fstat-no" title="function not covered" >em</span>ail =&gt; <span class="cstat-no" title="statement not covered" >email.isStarred)</span>;</span>
-  const importantEmails = <span class="cstat-no" title="statement not covered" >emails.filter(<span class="fstat-no" title="function not covered" >em</span>ail =&gt; <span class="cstat-no" title="statement not covered" >email.isImportant)</span>;</span>
+  // Computed values - ensure emails is always an array
+  const safeEmails = <span class="cstat-no" title="statement not covered" >Array.isArray(emails) ? emails : [];</span>
+  const unreadEmails = <span class="cstat-no" title="statement not covered" >safeEmails.filter(<span class="fstat-no" title="function not covered" >em</span>ail =&gt; <span class="cstat-no" title="statement not covered" >!email.isRead)</span>;</span>
+  const starredEmails = <span class="cstat-no" title="statement not covered" >safeEmails.filter(<span class="fstat-no" title="function not covered" >em</span>ail =&gt; <span class="cstat-no" title="statement not covered" >email.isStarred)</span>;</span>
+  const importantEmails = <span class="cstat-no" title="statement not covered" >safeEmails.filter(<span class="fstat-no" title="function not covered" >em</span>ail =&gt; <span class="cstat-no" title="statement not covered" >email.isImportant)</span>;</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >  return {</span>
     // State
-    emails,
+    emails: safeEmails,
     selectedEmail,
     loading: emailsLoading || localLoading,
     error: emailsError || localError,
@@ -1536,14 +1550,15 @@ export const useEmails = <span class="cstat-no" title="statement not covered" ><
   };
 };
 &nbsp;
-export default useEmails;</pre></td></tr></table></pre>
+export default useEmails;
+&nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-07-27T02:49:48.333Z
+                at 2025-08-16T02:32:36.617Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

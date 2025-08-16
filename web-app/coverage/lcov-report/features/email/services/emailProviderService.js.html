@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">0.62% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/315</span>
+                <span class='fraction'>2/320</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/211</span>
+                <span class='fraction'>0/213</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/54</span>
+                <span class='fraction'>0/55</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">0.64% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/303</span>
+                <span class='fraction'>2/308</span>
             </div>
         
             
@@ -1259,7 +1259,17 @@
 <a name='L1194'></a><a href='#L1194'>1194</a>
 <a name='L1195'></a><a href='#L1195'>1195</a>
 <a name='L1196'></a><a href='#L1196'>1196</a>
-<a name='L1197'></a><a href='#L1197'>1197</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L1197'></a><a href='#L1197'>1197</a>
+<a name='L1198'></a><a href='#L1198'>1198</a>
+<a name='L1199'></a><a href='#L1199'>1199</a>
+<a name='L1200'></a><a href='#L1200'>1200</a>
+<a name='L1201'></a><a href='#L1201'>1201</a>
+<a name='L1202'></a><a href='#L1202'>1202</a>
+<a name='L1203'></a><a href='#L1203'>1203</a>
+<a name='L1204'></a><a href='#L1204'>1204</a>
+<a name='L1205'></a><a href='#L1205'>1205</a>
+<a name='L1206'></a><a href='#L1206'>1206</a>
+<a name='L1207'></a><a href='#L1207'>1207</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1268,6 +1278,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -2445,17 +2456,27 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import Logger from '@utils/Logger';
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import Logger from '@/utils/Logger';
+import { getEnvVar } from '@/utils/env';
 &nbsp;
 /**
  * EmailProviderService - Comprehensive email provider service with IMAP/SMTP support
@@ -2541,7 +2562,7 @@ class EmailProviderService {
    * Get the currently active email provider
    */
 <span class="fstat-no" title="function not covered" >  ge</span>tActiveProvider() {
-    const provider = <span class="cstat-no" title="statement not covered" >import.meta.env.VITE_EMAIL_PROVIDER || 'sendgrid';</span>
+    const provider = <span class="cstat-no" title="statement not covered" >getEnvVar('VITE_EMAIL_PROVIDER') || 'sendgrid';</span>
 <span class="cstat-no" title="statement not covered" >    return this.providers[provider] ? provider : 'sendgrid';</span>
   }
 &nbsp;
@@ -2580,7 +2601,7 @@ class EmailProviderService {
    * Send email using SendGrid
    */
 <span class="fstat-no" title="function not covered" >  as</span>ync sendWithSendGrid(emailData) {
-    const apiKey = <span class="cstat-no" title="statement not covered" >import.meta.env.VITE_SENDGRID_API_KEY;</span>
+    const apiKey = <span class="cstat-no" title="statement not covered" >getEnvVar('VITE_SENDGRID_API_KEY');</span>
 <span class="cstat-no" title="statement not covered" >    if (!apiKey) {</span>
 <span class="cstat-no" title="statement not covered" >      return await this.sendWithMockProvider(emailData, 'SendGrid API key not configured');</span>
     }
@@ -2594,8 +2615,8 @@ class EmailProviderService {
           },
         ],
         from: {
-          email: emailData.from || import.meta.env.VITE_FROM_EMAIL || 'noreply@nexamanager.com',
-          name: emailData.fromName || import.meta.env.VITE_FROM_NAME || 'Nexa Manager',
+          email: emailData.from || getEnvVar('VITE_FROM_EMAIL') || 'noreply@nexamanager.com',
+          name: emailData.fromName || getEnvVar('VITE_FROM_NAME') || 'Nexa Manager',
         },
         content: [
           {
@@ -2662,9 +2683,9 @@ class EmailProviderService {
    * Send email using AWS SES
    */
 <span class="fstat-no" title="function not covered" >  as</span>ync sendWithSES(emailData) {
-    const accessKey = <span class="cstat-no" title="statement not covered" >import.meta.env.VITE_AWS_ACCESS_KEY_ID;</span>
-    const secretKey = <span class="cstat-no" title="statement not covered" >import.meta.env.VITE_AWS_SECRET_ACCESS_KEY;</span>
-    const region = <span class="cstat-no" title="statement not covered" >import.meta.env.VITE_AWS_REGION || 'us-east-1';</span>
+    const accessKey = <span class="cstat-no" title="statement not covered" >getEnvVar('VITE_AWS_ACCESS_KEY_ID');</span>
+    const secretKey = <span class="cstat-no" title="statement not covered" >getEnvVar('VITE_AWS_SECRET_ACCESS_KEY');</span>
+    const region = <span class="cstat-no" title="statement not covered" >getEnvVar('VITE_AWS_REGION') || 'us-east-1';</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    if (!accessKey || !secretKey) {</span>
 <span class="cstat-no" title="statement not covered" >      return await this.sendWithMockProvider(emailData, 'AWS credentials not configured');</span>
@@ -2673,7 +2694,7 @@ class EmailProviderService {
 <span class="cstat-no" title="statement not covered" >    try {</span>
       // This is a simplified example - in production, you'd use AWS SDK
       const payload = <span class="cstat-no" title="statement not covered" >{</span>
-        Source: emailData.from || import.meta.env.VITE_FROM_EMAIL || 'noreply@nexamanager.com',
+        Source: emailData.from || getEnvVar('VITE_FROM_EMAIL') || 'noreply@nexamanager.com',
         Destination: {
           ToAddresses: [emailData.to],
         },
@@ -2718,8 +2739,8 @@ class EmailProviderService {
    * Send email using Mailgun
    */
 <span class="fstat-no" title="function not covered" >  as</span>ync sendWithMailgun(emailData) {
-    const apiKey = <span class="cstat-no" title="statement not covered" >import.meta.env.VITE_MAILGUN_API_KEY;</span>
-    const domain = <span class="cstat-no" title="statement not covered" >import.meta.env.VITE_MAILGUN_DOMAIN;</span>
+    const apiKey = <span class="cstat-no" title="statement not covered" >getEnvVar('VITE_MAILGUN_API_KEY');</span>
+    const domain = <span class="cstat-no" title="statement not covered" >getEnvVar('VITE_MAILGUN_DOMAIN');</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    if (!apiKey || !domain) {</span>
 <span class="cstat-no" title="statement not covered" >      return await this.sendWithMockProvider(emailData, 'Mailgun credentials not configured');</span>
@@ -2729,7 +2750,7 @@ class EmailProviderService {
       const formData = <span class="cstat-no" title="statement not covered" >new FormData();</span>
 <span class="cstat-no" title="statement not covered" >      formData.append(</span>
         'from',
-        emailData.from || import.meta.env.VITE_FROM_EMAIL || 'noreply@nexamanager.com',
+        emailData.from || getEnvVar('VITE_FROM_EMAIL') || 'noreply@nexamanager.com',
       );
 <span class="cstat-no" title="statement not covered" >      formData.append('to', emailData.to);</span>
 <span class="cstat-no" title="statement not covered" >      formData.append('subject', emailData.subject);</span>
@@ -2776,7 +2797,7 @@ class EmailProviderService {
    * Send email using Postmark
    */
 <span class="fstat-no" title="function not covered" >  as</span>ync sendWithPostmark(emailData) {
-    const serverToken = <span class="cstat-no" title="statement not covered" >import.meta.env.VITE_POSTMARK_SERVER_TOKEN;</span>
+    const serverToken = <span class="cstat-no" title="statement not covered" >getEnvVar('VITE_POSTMARK_SERVER_TOKEN');</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    if (!serverToken) {</span>
 <span class="cstat-no" title="statement not covered" >      return await this.sendWithMockProvider(emailData, 'Postmark server token not configured');</span>
@@ -2784,7 +2805,7 @@ class EmailProviderService {
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    try {</span>
       const payload = <span class="cstat-no" title="statement not covered" >{</span>
-        From: emailData.from || import.meta.env.VITE_FROM_EMAIL || 'noreply@nexamanager.com',
+        From: emailData.from || getEnvVar('VITE_FROM_EMAIL') || 'noreply@nexamanager.com',
         To: emailData.to,
         Subject: emailData.subject,
         TextBody: emailData.text || this.htmlToText(emailData.html),
@@ -3223,11 +3244,11 @@ class EmailProviderService {
 &nbsp;
 <span class="fstat-no" title="function not covered" >  ge</span>tSmtpConfig() {
 <span class="cstat-no" title="statement not covered" >    return {</span>
-      host: import.meta.env.VITE_SMTP_HOST,
-      port: parseInt(import.meta.env.VITE_SMTP_PORT) || 587,
-      username: import.meta.env.VITE_SMTP_USER,
-      password: import.meta.env.VITE_SMTP_PASS,
-      secure: import.meta.env.VITE_SMTP_SECURE === 'true',
+      host: getEnvVar('VITE_SMTP_HOST'),
+      port: parseInt(getEnvVar('VITE_SMTP_PORT')) || 587,
+      username: getEnvVar('VITE_SMTP_USER'),
+      password: getEnvVar('VITE_SMTP_PASS'),
+      secure: getEnvVar('VITE_SMTP_SECURE') === 'true',
     };
   }
 &nbsp;
@@ -3392,21 +3413,21 @@ class EmailProviderService {
 <span class="fstat-no" title="function not covered" >  is</span>ProviderConfigured(provider) {
 <span class="cstat-no" title="statement not covered" >    switch (provider) {</span>
       case 'sendgrid':
-<span class="cstat-no" title="statement not covered" >        return !!import.meta.env.VITE_SENDGRID_API_KEY;</span>
+<span class="cstat-no" title="statement not covered" >        return !!getEnvVar('VITE_SENDGRID_API_KEY');</span>
       case 'ses':
 <span class="cstat-no" title="statement not covered" >        return !!(</span>
-          import.meta.env.VITE_AWS_ACCESS_KEY_ID &amp;&amp; import.meta.env.VITE_AWS_SECRET_ACCESS_KEY
+          getEnvVar('VITE_AWS_ACCESS_KEY_ID') &amp;&amp; getEnvVar('VITE_AWS_SECRET_ACCESS_KEY')
         );
       case 'mailgun':
-<span class="cstat-no" title="statement not covered" >        return !!(import.meta.env.VITE_MAILGUN_API_KEY &amp;&amp; import.meta.env.VITE_MAILGUN_DOMAIN);</span>
+<span class="cstat-no" title="statement not covered" >        return !!(getEnvVar('VITE_MAILGUN_API_KEY') &amp;&amp; getEnvVar('VITE_MAILGUN_DOMAIN'));</span>
       case 'postmark':
-<span class="cstat-no" title="statement not covered" >        return !!import.meta.env.VITE_POSTMARK_SERVER_TOKEN;</span>
+<span class="cstat-no" title="statement not covered" >        return !!getEnvVar('VITE_POSTMARK_SERVER_TOKEN');</span>
       case 'imap_smtp':
-<span class="cstat-no" title="statement not covered" >        return !!(import.meta.env.VITE_IMAP_HOST &amp;&amp; import.meta.env.VITE_SMTP_HOST);</span>
+<span class="cstat-no" title="statement not covered" >        return !!(getEnvVar('VITE_IMAP_HOST') &amp;&amp; getEnvVar('VITE_SMTP_HOST'));</span>
       case 'gmail':
-<span class="cstat-no" title="statement not covered" >        return !!(import.meta.env.VITE_GMAIL_CLIENT_ID &amp;&amp; import.meta.env.VITE_GMAIL_CLIENT_SECRET);</span>
+<span class="cstat-no" title="statement not covered" >        return !!(getEnvVar('VITE_GMAIL_CLIENT_ID') &amp;&amp; getEnvVar('VITE_GMAIL_CLIENT_SECRET'));</span>
       case 'outlook':
-<span class="cstat-no" title="statement not covered" >        return !!(import.meta.env.VITE_OUTLOOK_CLIENT_ID &amp;&amp; import.meta.env.VITE_OUTLOOK_CLIENT_SECRET);</span>
+<span class="cstat-no" title="statement not covered" >        return !!(getEnvVar('VITE_OUTLOOK_CLIENT_ID') &amp;&amp; getEnvVar('VITE_OUTLOOK_CLIENT_SECRET'));</span>
       default:
 <span class="cstat-no" title="statement not covered" >        return true; </span>// Mock provider is always "configured"
     }
@@ -3490,7 +3511,7 @@ class EmailProviderService {
    * Get webhook URLs for tracking (if supported)
    */
 <span class="fstat-no" title="function not covered" >  ge</span>tWebhookUrls() {
-    const baseUrl = <span class="cstat-no" title="statement not covered" >import.meta.env.VITE_BASE_URL || 'https://your-domain.com';</span>
+    const baseUrl = <span class="cstat-no" title="statement not covered" >getEnvVar('VITE_BASE_URL') || 'https://your-domain.com';</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    return {</span>
       sendgrid: `${baseUrl}/api/webhooks/sendgrid`,
@@ -3650,7 +3671,16 @@ class EmailProviderService {
   }
 }
 &nbsp;
-export default new EmailProviderService();
+let emailProviderServiceInstance = null;
+&nbsp;
+export const getEmailProviderService = <span class="fstat-no" title="function not covered" >()</span> =&gt; {
+<span class="cstat-no" title="statement not covered" >  if (!emailProviderServiceInstance) {</span>
+<span class="cstat-no" title="statement not covered" >    emailProviderServiceInstance = new EmailProviderService();</span>
+  }
+<span class="cstat-no" title="statement not covered" >  return emailProviderServiceInstance;</span>
+};
+&nbsp;
+export default getEmailProviderService;
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -3658,7 +3688,7 @@ export default new EmailProviderService();
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-07-27T02:49:48.333Z
+                at 2025-08-16T02:32:36.617Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

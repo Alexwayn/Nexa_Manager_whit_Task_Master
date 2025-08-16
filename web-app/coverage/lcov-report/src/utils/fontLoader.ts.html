@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/32</span>
+                <span class='fraction'>0/35</span>
             </div>
         
             
@@ -228,18 +228,18 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">// Font loading optimization utility for Plus Jakarta Sans
-export const preloadFonts = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span>: void =&gt; {</span>
+export const <span class="cstat-no" title="statement not covered" >preloadFonts = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(</span>): void =&gt; </span>{</span>
 <span class="cstat-no" title="statement not covered" >  try {</span>
     const fonts: string[] = <span class="cstat-no" title="statement not covered" >['Plus+Jakarta+Sans:wght@200;300;400;500;600;700;800'];</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    fonts.forEach(<span class="fstat-no" title="function not covered" >(f</span>ont: string) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    fonts.forEach((<span class="fstat-no" title="function not covered" >font: string)</span> =&gt; {</span>
       const link: HTMLLinkElement = <span class="cstat-no" title="statement not covered" >document.createElement('link');</span>
 <span class="cstat-no" title="statement not covered" >      link.rel = 'stylesheet';</span>
 <span class="cstat-no" title="statement not covered" >      link.href = `https://fonts.googleapis.com/css2?family=${font}&amp;display=swap`;</span>
 <span class="cstat-no" title="statement not covered" >      link.crossOrigin = 'anonymous';</span>
 &nbsp;
       // Gestione errori per CSP
-<span class="cstat-no" title="statement not covered" >      link.onerror = <span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >      link.onerror = <span class="fstat-no" title="function not covered" >() =&gt; </span>{</span>
 <span class="cstat-no" title="statement not covered" >        console.warn('Font loading blocked by CSP, using fallback fonts');</span>
       };
 &nbsp;
@@ -251,7 +251,7 @@ export const preloadFonts = <span class="cstat-no" title="statement not covered"
 };
 &nbsp;
 // Font display optimization for better performance
-export const optimizeFontDisplay = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span>: void =&gt; {</span>
+export const <span class="cstat-no" title="statement not covered" >optimizeFontDisplay = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(</span>): void =&gt; </span>{</span>
 <span class="cstat-no" title="statement not covered" >  try {</span>
     const style: HTMLStyleElement = <span class="cstat-no" title="statement not covered" >document.createElement('style');</span>
 <span class="cstat-no" title="statement not covered" >    style.textContent = `</span>
@@ -277,7 +277,7 @@ export const optimizeFontDisplay = <span class="cstat-no" title="statement not c
 };
 &nbsp;
 // Initialize font loading with performance optimizations
-export const initFontLoading = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span>: void =&gt; {</span>
+export const <span class="cstat-no" title="statement not covered" >initFontLoading = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(</span>): void =&gt; </span>{</span>
 <span class="cstat-no" title="statement not covered" >  try {</span>
     // Preload critical fonts
 <span class="cstat-no" title="statement not covered" >    preloadFonts();</span>
@@ -288,20 +288,20 @@ export const initFontLoading = <span class="cstat-no" title="statement not cover
     // Add font loading class to body for progressive enhancement
 <span class="cstat-no" title="statement not covered" >    if (document.fonts &amp;&amp; document.fonts.ready) {</span>
 <span class="cstat-no" title="statement not covered" >      document.fonts.ready</span>
-        .then(<span class="fstat-no" title="function not covered" >()</span> =&gt; {
+        .then(<span class="fstat-no" title="function not covered" >() =&gt; </span>{
 <span class="cstat-no" title="statement not covered" >          document.body.classList.add('fonts-loaded');</span>
 <span class="cstat-no" title="statement not covered" >          console.log('✅ Fonts loaded successfully');</span>
         })
-        .catch(<span class="fstat-no" title="function not covered" >er</span>ror =&gt; {
+        .catch(<span class="fstat-no" title="function not covered" >error </span>=&gt; {
 <span class="cstat-no" title="statement not covered" >          console.warn('Font loading promise failed:', error);</span>
           // Fallback: add class anyway after timeout
-<span class="cstat-no" title="statement not covered" >          setTimeout(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >          setTimeout(<span class="fstat-no" title="function not covered" >() =&gt; </span>{</span>
 <span class="cstat-no" title="statement not covered" >            document.body.classList.add('fonts-loaded');</span>
           }, 1000);
         });
     } else {
       // Fallback per browser che non supportano document.fonts
-<span class="cstat-no" title="statement not covered" >      setTimeout(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >      setTimeout(<span class="fstat-no" title="function not covered" >() =&gt; </span>{</span>
 <span class="cstat-no" title="statement not covered" >        document.body.classList.add('fonts-loaded');</span>
       }, 1000);
     }
@@ -316,7 +316,7 @@ export const initFontLoading = <span class="cstat-no" title="statement not cover
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-08-07T19:19:19.104Z
+                at 2025-08-13T02:10:19.343Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

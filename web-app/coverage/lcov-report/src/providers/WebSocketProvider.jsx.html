@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">3.42% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/146</span>
+                <span class='fraction'>5/146</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">3.52% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/142</span>
+                <span class='fraction'>5/142</span>
             </div>
         
             
@@ -451,7 +451,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -474,25 +474,25 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -816,7 +816,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -833,7 +833,7 @@ import { getWebSocketUrl, CONNECTION_STATES } from '../shared/utils/websocket';
 import { toast } from 'react-hot-toast';
 &nbsp;
 // Environment variable access that works in both Vite and Jest
-const getEnvVar = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(k</span>ey, defaultValue = <span class="branch-0 cbranch-no" title="branch not covered" >'')</span> =&gt; {</span>
+const getEnvVar = <span class="fstat-no" title="function not covered" >(k</span>ey, defaultValue = <span class="branch-0 cbranch-no" title="branch not covered" >'')</span> =&gt; {
   // In test environment, use process.env
 <span class="cstat-no" title="statement not covered" >  if (typeof process !== 'undefined' &amp;&amp; process.env &amp;&amp; process.env.NODE_ENV === 'test') {</span>
 <span class="cstat-no" title="statement not covered" >    return process.env[key] || defaultValue;</span>
@@ -856,20 +856,20 @@ const getEnvVar = <span class="cstat-no" title="statement not covered" ><span cl
 <span class="cstat-no" title="statement not covered" >  return defaultValue;</span>
 };
 &nbsp;
-const isDev = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+const isDev = <span class="fstat-no" title="function not covered" >()</span> =&gt; {
 <span class="cstat-no" title="statement not covered" >  return getEnvVar('DEV', false) || getEnvVar('NODE_ENV') === 'development';</span>
 };
 &nbsp;
 /**
  * WebSocket Context
  */
-const WebSocketContext = <span class="cstat-no" title="statement not covered" >createContext(null);</span>
+const WebSocketContext = createContext(null);
 &nbsp;
 /**
  * WebSocket Provider Component
  * Manages global WebSocket connection and provides context to child components
  */
-export const WebSocketProvider = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >({</span> children, enabled = <span class="branch-0 cbranch-no" title="branch not covered" >true </span>}) =&gt; {</span>
+export const WebSocketProvider = <span class="fstat-no" title="function not covered" >({</span> children, enabled = <span class="branch-0 cbranch-no" title="branch not covered" >true </span>}) =&gt; {
   const [connectionState, setConnectionState] = <span class="cstat-no" title="statement not covered" >useState(CONNECTION_STATES.DISCONNECTED);</span>
   const [error, setError] = <span class="cstat-no" title="statement not covered" >useState(null);</span>
   const [isConnected, setIsConnected] = <span class="cstat-no" title="statement not covered" >useState(false);</span>
@@ -1198,7 +1198,7 @@ export const WebSocketProvider = <span class="cstat-no" title="statement not cov
 /**
  * Hook to use WebSocket context
  */
-export const useWebSocketContext = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+export const useWebSocketContext = <span class="fstat-no" title="function not covered" >()</span> =&gt; {
   const context = <span class="cstat-no" title="statement not covered" >useContext(WebSocketContext);</span>
   
 <span class="cstat-no" title="statement not covered" >  if (!context) {</span>
@@ -1216,7 +1216,7 @@ export default WebSocketProvider;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-08-07T19:19:19.104Z
+                at 2025-08-13T02:10:19.343Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

@@ -25,14 +25,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/101</span>
+                <span class='fraction'>0/104</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/62</span>
+                <span class='fraction'>0/48</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/94</span>
+                <span class='fraction'>0/97</span>
             </div>
         
             
@@ -446,8 +446,8 @@
 <a name='L381'></a><a href='#L381'>381</a>
 <a name='L382'></a><a href='#L382'>382</a>
 <a name='L383'></a><a href='#L383'>383</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -826,10 +826,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">// Camera capture component for document scanning
-import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { 
+<span class="cstat-no" title="statement not covered" >import React, { useState, useRef, useEffect, useCallback } from 'react';</span>
+<span class="cstat-no" title="statement not covered" >import { </span>
   CameraIcon, 
   CheckIcon, 
   ArrowPathIcon,
@@ -871,25 +871,25 @@ const CameraCapture: React.FC&lt;CameraCaptureProps&gt; = <span class="cstat-no"
   const [capturedImage, setCapturedImage] = <span class="cstat-no" title="statement not covered" >useState&lt;string | null&gt;(null);</span>
 &nbsp;
   // Initialize camera on mount
-<span class="cstat-no" title="statement not covered" >  useEffect(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >  useEffect(<span class="fstat-no" title="function not covered" >() =&gt; </span>{</span>
 <span class="cstat-no" title="statement not covered" >    startCamera();</span>
-<span class="cstat-no" title="statement not covered" >    return <span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    return <span class="fstat-no" title="function not covered" >() =&gt; </span>{</span>
 <span class="cstat-no" title="statement not covered" >      stopCamera();</span>
     };
   }, []);
 &nbsp;
   // Start camera stream
-  const startCamera = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    setCameraState(<span class="fstat-no" title="function not covered" >pr</span>ev =&gt; (<span class="cstat-no" title="statement not covered" >{ </span></span>
+  const startCamera = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >async () =&gt; </span>{</span>
+<span class="cstat-no" title="statement not covered" >    setCameraState(<span class="fstat-no" title="function not covered" >prev </span>=&gt; (<span class="cstat-no" title="statement not covered" >{ </span></span>
       ...prev, 
       error: null, 
       permissionDenied: false,
       isInitialized: false 
     }));
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {</span>
       const error = <span class="cstat-no" title="statement not covered" >'Camera not supported on this device';</span>
-<span class="cstat-no" title="statement not covered" >      setCameraState(<span class="fstat-no" title="function not covered" >pr</span>ev =&gt; (<span class="cstat-no" title="statement not covered" >{ ...prev, error })</span>);</span>
+<span class="cstat-no" title="statement not covered" >      setCameraState(<span class="fstat-no" title="function not covered" >prev </span>=&gt; (<span class="cstat-no" title="statement not covered" >{ ...prev, error })</span>);</span>
 <span class="cstat-no" title="statement not covered" >      onError(error);</span>
 <span class="cstat-no" title="statement not covered" >      return;</span>
     }
@@ -903,12 +903,12 @@ const CameraCapture: React.FC&lt;CameraCaptureProps&gt; = <span class="cstat-no"
         }
       });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      if (videoRef.current) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (videoRef.current) {</span>
 <span class="cstat-no" title="statement not covered" >        videoRef.current.srcObject = stream;</span>
 <span class="cstat-no" title="statement not covered" >        streamRef.current = stream;</span>
         
-<span class="cstat-no" title="statement not covered" >        videoRef.current.onloadedmetadata = <span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >          setCameraState(<span class="fstat-no" title="function not covered" >pr</span>ev =&gt; (<span class="cstat-no" title="statement not covered" >{</span></span>
+<span class="cstat-no" title="statement not covered" >        videoRef.current.onloadedmetadata = <span class="fstat-no" title="function not covered" >() =&gt; </span>{</span>
+<span class="cstat-no" title="statement not covered" >          setCameraState(<span class="fstat-no" title="function not covered" >prev </span>=&gt; (<span class="cstat-no" title="statement not covered" >{</span></span>
             ...prev,
             isInitialized: true,
             isStreaming: true,
@@ -923,7 +923,7 @@ const CameraCapture: React.FC&lt;CameraCaptureProps&gt; = <span class="cstat-no"
       let errorMessage = <span class="cstat-no" title="statement not covered" >'Failed to access camera';</span>
       let permissionDenied = <span class="cstat-no" title="statement not covered" >false;</span>
       
-<span class="cstat-no" title="statement not covered" >      if (error instanceof Error) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (error instanceof Error) {</span>
 <span class="cstat-no" title="statement not covered" >        if (error.name === 'NotAllowedError' || error.name === 'PermissionDeniedError') {</span>
 <span class="cstat-no" title="statement not covered" >          errorMessage = 'Camera access denied. Please enable camera permissions.';</span>
 <span class="cstat-no" title="statement not covered" >          permissionDenied = true;</span>
@@ -931,12 +931,12 @@ const CameraCapture: React.FC&lt;CameraCaptureProps&gt; = <span class="cstat-no"
 <span class="cstat-no" title="statement not covered" >          errorMessage = 'No camera found on this device';</span>
         } else <span class="cstat-no" title="statement not covered" >if (error.name === 'NotReadableError' || error.name === 'TrackStartError') {</span>
 <span class="cstat-no" title="statement not covered" >          errorMessage = 'Camera is already in use by another application';</span>
-        } else <span class="cstat-no" title="statement not covered" >if (error.name === 'OverconstrainedError') {</span>
+        } else <span class="cstat-no" title="statement not covered" ><span class="missing-if-branch" title="if path not taken" >I</span>if (error.name === 'OverconstrainedError') {</span>
 <span class="cstat-no" title="statement not covered" >          errorMessage = 'Camera does not support the required settings';</span>
         }
       }
       
-<span class="cstat-no" title="statement not covered" >      setCameraState(<span class="fstat-no" title="function not covered" >pr</span>ev =&gt; (<span class="cstat-no" title="statement not covered" >{</span></span>
+<span class="cstat-no" title="statement not covered" >      setCameraState(<span class="fstat-no" title="function not covered" >prev </span>=&gt; (<span class="cstat-no" title="statement not covered" >{</span></span>
         ...prev,
         error: errorMessage,
         permissionDenied,
@@ -948,17 +948,17 @@ const CameraCapture: React.FC&lt;CameraCaptureProps&gt; = <span class="cstat-no"
   }, [onError]);
 &nbsp;
   // Stop camera stream
-  const stopCamera = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    if (streamRef.current) {</span>
-<span class="cstat-no" title="statement not covered" >      streamRef.current.getTracks().forEach(<span class="fstat-no" title="function not covered" >tr</span>ack =&gt; <span class="cstat-no" title="statement not covered" >track.stop())</span>;</span>
+  const stopCamera = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >() =&gt; </span>{</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (streamRef.current) {</span>
+<span class="cstat-no" title="statement not covered" >      streamRef.current.getTracks().forEach(<span class="fstat-no" title="function not covered" >track </span>=&gt; <span class="cstat-no" title="statement not covered" >track.stop())</span>;</span>
 <span class="cstat-no" title="statement not covered" >      streamRef.current = null;</span>
     }
     
-<span class="cstat-no" title="statement not covered" >    if (videoRef.current) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (videoRef.current) {</span>
 <span class="cstat-no" title="statement not covered" >      videoRef.current.srcObject = null;</span>
     }
     
-<span class="cstat-no" title="statement not covered" >    setCameraState(<span class="fstat-no" title="function not covered" >pr</span>ev =&gt; (<span class="cstat-no" title="statement not covered" >{</span></span>
+<span class="cstat-no" title="statement not covered" >    setCameraState(<span class="fstat-no" title="function not covered" >prev </span>=&gt; (<span class="cstat-no" title="statement not covered" >{</span></span>
       ...prev,
       isStreaming: false,
       isInitialized: false
@@ -966,8 +966,8 @@ const CameraCapture: React.FC&lt;CameraCaptureProps&gt; = <span class="cstat-no"
   }, []);
 &nbsp;
   // Capture image from video stream
-  const captureImage = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    if (!videoRef.current || !canvasRef.current || !cameraState.isStreaming) {</span>
+  const captureImage = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >async () =&gt; </span>{</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!videoRef.current || !canvasRef.current || !cameraState.isStreaming) {</span>
 <span class="cstat-no" title="statement not covered" >      onError('Camera not ready for capture');</span>
 <span class="cstat-no" title="statement not covered" >      return;</span>
     }
@@ -977,7 +977,7 @@ const CameraCapture: React.FC&lt;CameraCaptureProps&gt; = <span class="cstat-no"
       const canvas = <span class="cstat-no" title="statement not covered" >canvasRef.current;</span>
       const context = <span class="cstat-no" title="statement not covered" >canvas.getContext('2d');</span>
       
-<span class="cstat-no" title="statement not covered" >      if (!context) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (!context) {</span>
 <span class="cstat-no" title="statement not covered" >        throw new Error('Failed to get canvas context');</span>
       }
 &nbsp;
@@ -990,7 +990,7 @@ const CameraCapture: React.FC&lt;CameraCaptureProps&gt; = <span class="cstat-no"
       
       // Convert canvas to blob
       const blob = <span class="cstat-no" title="statement not covered" >await new Promise&lt;Blob&gt;(<span class="fstat-no" title="function not covered" >(r</span>esolve, reject) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >        canvas.toBlob(<span class="fstat-no" title="function not covered" >(b</span>lob) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >        canvas.toBlob((<span class="fstat-no" title="function not covered" >blob)</span> =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >          if (blob) {</span>
 <span class="cstat-no" title="statement not covered" >            resolve(blob);</span>
           } else {
@@ -1011,8 +1011,8 @@ const CameraCapture: React.FC&lt;CameraCaptureProps&gt; = <span class="cstat-no"
   }, [cameraState.isStreaming, onError]);
 &nbsp;
   // Confirm captured image
-  const confirmCapture = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    if (!capturedImage) <span class="cstat-no" title="statement not covered" >return;</span></span>
+  const confirmCapture = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >async () =&gt; </span>{</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!capturedImage) <span class="cstat-no" title="statement not covered" >return;</span></span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    try {</span>
       // Convert data URL back to blob for processing
@@ -1033,8 +1033,8 @@ const CameraCapture: React.FC&lt;CameraCaptureProps&gt; = <span class="cstat-no"
   }, [capturedImage, onCapture, onError]);
 &nbsp;
   // Retake image
-  const retakeImage = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    if (capturedImage) {</span>
+  const retakeImage = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >() =&gt; </span>{</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (capturedImage) {</span>
 <span class="cstat-no" title="statement not covered" >      URL.revokeObjectURL(capturedImage);</span>
 <span class="cstat-no" title="statement not covered" >      setCapturedImage(null);</span>
     }
@@ -1042,7 +1042,7 @@ const CameraCapture: React.FC&lt;CameraCaptureProps&gt; = <span class="cstat-no"
   }, [capturedImage, startCamera]);
 &nbsp;
   // Render permission denied state
-<span class="cstat-no" title="statement not covered" >  if (cameraState.permissionDenied) {</span>
+<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (cameraState.permissionDenied) {</span>
 <span class="cstat-no" title="statement not covered" >    return (</span>
       &lt;div className="flex flex-col items-center justify-center p-8 text-center"&gt;
         &lt;ShieldExclamationIcon className="h-16 w-16 text-red-500 mb-4" /&gt;
@@ -1062,7 +1062,7 @@ const CameraCapture: React.FC&lt;CameraCaptureProps&gt; = <span class="cstat-no"
   }
 &nbsp;
   // Render camera not supported state
-<span class="cstat-no" title="statement not covered" >  if (cameraState.error &amp;&amp; !cameraState.permissionDenied) {</span>
+<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (cameraState.error &amp;&amp; !cameraState.permissionDenied) {</span>
 <span class="cstat-no" title="statement not covered" >    return (</span>
       &lt;div className="flex flex-col items-center justify-center p-8 text-center"&gt;
         &lt;ExclamationTriangleIcon className="h-16 w-16 text-yellow-500 mb-4" /&gt;
@@ -1075,7 +1075,7 @@ const CameraCapture: React.FC&lt;CameraCaptureProps&gt; = <span class="cstat-no"
   }
 &nbsp;
   // Render camera error state
-<span class="cstat-no" title="statement not covered" >  if (cameraState.error) {</span>
+<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (cameraState.error) {</span>
 <span class="cstat-no" title="statement not covered" >    return (</span>
       &lt;div className="flex flex-col items-center justify-center p-8 text-center"&gt;
         &lt;ExclamationTriangleIcon className="h-16 w-16 text-red-500 mb-4" /&gt;
@@ -1093,7 +1093,7 @@ const CameraCapture: React.FC&lt;CameraCaptureProps&gt; = <span class="cstat-no"
   }
 &nbsp;
   // Render captured image preview
-<span class="cstat-no" title="statement not covered" >  if (capturedImage) {</span>
+<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (capturedImage) {</span>
 <span class="cstat-no" title="statement not covered" >    return (</span>
       &lt;div className="space-y-6"&gt;
         &lt;div className="text-center"&gt;
@@ -1208,7 +1208,7 @@ const CameraCapture: React.FC&lt;CameraCaptureProps&gt; = <span class="cstat-no"
   );
 };
 &nbsp;
-export default CameraCapture;
+<span class="cstat-no" title="statement not covered" >export default CameraCapture;</span>
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -1216,7 +1216,7 @@ export default CameraCapture;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-08-07T19:19:19.104Z
+                at 2025-08-13T02:10:19.343Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

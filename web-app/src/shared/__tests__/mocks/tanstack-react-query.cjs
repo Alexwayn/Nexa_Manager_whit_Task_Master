@@ -265,6 +265,8 @@ const ReactQueryDevtools = () => null;
 module.exports = {
   QueryClient,
   QueryClientProvider,
+  // Alias to match projects importing QueryProvider instead of QueryClientProvider
+  QueryProvider: QueryClientProvider,
   useQuery,
   useMutation,
   useQueryClient,

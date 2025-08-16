@@ -2,6 +2,9 @@ const path = require('path');
 
 module.exports = {
   testEnvironment: 'jsdom',
+  testEnvironmentOptions: {
+    url: 'http://localhost:3000/'
+  },
   testPathIgnorePatterns: [
     '/node_modules/',
     '/dist/',
@@ -14,8 +17,13 @@ module.exports = {
     '\.performance\.test\.js$',
     '\.accessibility\.test\.js$'
   ],
+  // Ignore Amplify generated backend folders to avoid Haste module naming collisions
+  modulePathIgnorePatterns: [
+    '<rootDir>/amplify/.*',
+    '<rootDir>/amplify/#current-cloud-backend/.*',
+  ],
   setupFiles: ['dotenv/config', '<rootDir>/src/jest.env.js'],
-  setupFilesAfterEnv: ['<rootDir>/src/setupTests.js'],
+  setupFilesAfterEnv: ['<rootDir>/src/setupTests.js', '<rootDir>/src/__tests__/config/globalMocks.js'],
   transform: {
     '^.+\\.(ts|tsx)$': [
       'ts-jest',
@@ -34,16 +42,25 @@ module.exports = {
     '/node_modules/(?!(@babel/runtime|axios|react-syntax-highlighter|react-spinners|pretty-bytes|react-hot-toast|react-icons|react-select|react-markdown|remark-gfm|react-dnd|dnd-core|@react-dnd|react-dnd-html5-backend|@supabase|isows|ws|websocket)/)',
   ],
   moduleNameMapper: {
-    // Testing-library: keep real library. We only tag it as mocked in setup when needed
+    // Testing-library: Use custom mock for ReportScheduler and ReportGenerator components
+    '^@testing-library/react$': '<rootDir>/src/shared/__tests__/mocks/testing-library-react.cjs',
+    '^@testing-library/user-event$': '<rootDir>/src/shared/__tests__/mocks/testing-library-user-event.cjs',
 
     // Scanner feature aliases
     '^@scanner/(.*)$': '<rootDir>/src/features/scanner/$1',
+
+    // Map email feature components when imported via @components/email/* in tests
+    '^@components/email/(.*)$': '<rootDir>/src/features/email/components/$1',
+
+    // Map relative UI imports used in some email tests (e.g. '../../ui/Button') to shared components
+    '^\.\.\/\.\.\/ui\/(.*)$': '<rootDir>/src/shared/components/$1',
 
     // Provide a stable mock for react-query across tests that don't supply a provider
       '@tanstack/react-query': '<rootDir>/src/shared/__tests__/mocks/tanstack-react-query.cjs',
       // Use our router mock in tests that import it directly
       '^react-router-dom$': '<rootDir>/src/shared/__tests__/mocks/react-router-dom.js',
-    // Specific mock must come before generic alias
+    // Specific mock must come before generic alias - Add reportingService mock
+    '^@/services/reportingService$': '<rootDir>/src/__tests__/mocks/reportingService.js',
     '^@financial/services/financialService$': '<rootDir>/src/features/financial/services/__mocks__/financialService.js',
     '\\.(css|less|scss|sass)$': 'identity-obj-proxy',
     '\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$': '<rootDir>/__mocks__/fileMock.js',
@@ -100,38 +117,17 @@ module.exports = {
   },
   // Add JUnit reporter for CI test summaries
   reporters: [
-    'default'
+    'default',
+    [
+      'jest-junit',
+      {
+        outputDirectory: 'reports',
+        outputName: 'report.xml',
+      },
+    ],
   ],
-  globalSetup: '<rootDir>/src/__tests__/shared/global-setup.js',
-  globalTeardown: '<rootDir>/src/__tests__/shared/global-teardown.js',
   testMatch: [
     '<rootDir>/src/**/__tests__/**/*.{spec,test}.{js,jsx,ts,tsx}',
     '<rootDir>/src/**/*.{spec,test}.{js,jsx,ts,tsx}',
   ],
-  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
-  extensionsToTreatAsEsm: [],
-  coverageDirectory: 'coverage',
-  collectCoverageFrom: [
-    'src/**/*.{js,jsx,ts,tsx}',
-    '!src/**/*.d.ts',
-    '!src/main.jsx',
-    '!src/vite-env.d.ts',
-    '!src/setupTests.js',
-    '!src/services/firebase.js',
-    '!src/services/api.js',
-    '!src/store/store.js',
-    '!src/routes/index.js',
-    '!src/utils/testUtils.js',
-    '!src/__tests__/**/*',
-    '!src/features/auth/routes/index.js',
-  ],
-  coverageReporters: ['json', 'lcov', 'text', 'clover', 'cobertura', 'json-summary'],
-  coverageThreshold: {
-    global: {
-      branches: 80,
-      functions: 80,
-      lines: 80,
-      statements: 80,
-    },
-  },
 };

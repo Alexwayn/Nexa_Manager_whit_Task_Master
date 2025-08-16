@@ -2,19 +2,13 @@ import { renderHook, act } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import useEmailPerformance from '../useEmailPerformance';
 
-// Mock the performance API
-const mockPerformance = {
-  now: jest.fn(() => 1000),
-  mark: jest.fn(),
-  measure: jest.fn(),
-  getEntriesByType: jest.fn(() => []),
-};
-
-global.performance = mockPerformance;
-
 // Mock console methods
 global.console.warn = jest.fn();
 global.console.log = jest.fn();
+
+// Set up performance mock
+let performanceNowSpy;
+let currentNow;
 
 const createWrapper = () => {
   const queryClient = new QueryClient({
@@ -39,7 +33,11 @@ describe('useEmailPerformance', () => {
   beforeEach(() => {
     wrapper = createWrapper();
     jest.clearAllMocks();
-    mockPerformance.now.mockReturnValue(1000);
+    // Use globally provided performance mock from setup (globalMocks)
+    if (global.performance && jest.isMockFunction(global.performance.now)) {
+      currentNow = 1000;
+      global.performance.now.mockImplementation(() => currentNow);
+    }
   });
 
   afterEach(() => {
@@ -78,15 +76,20 @@ describe('useEmailPerformance', () => {
     test('measures load time correctly', () => {
       const { result } = renderHook(() => useEmailPerformance(), { wrapper });
 
+      // Setup sequential timing values: start=1000, end=1500
+      if (global.performance && jest.isMockFunction(global.performance.now)) {
+        currentNow = 1000; // start
+      }
+
       // Start timing
       act(() => {
         result.current.startTiming('load');
       });
 
-      // Simulate passage of time
-      mockPerformance.now.mockReturnValue(1500);
-
-      // End timing
+      // End timing with later time
+      if (global.performance && jest.isMockFunction(global.performance.now)) {
+        currentNow = 1500; // end
+      }
       act(() => {
         result.current.endTiming('load');
       });
@@ -97,12 +100,17 @@ describe('useEmailPerformance', () => {
     test('measures render time correctly', () => {
       const { result } = renderHook(() => useEmailPerformance(), { wrapper });
 
+      if (global.performance && jest.isMockFunction(global.performance.now)) {
+        currentNow = 1000; // start
+      }
+
       act(() => {
         result.current.startTiming('render');
       });
 
-      mockPerformance.now.mockReturnValue(1200);
-
+      if (global.performance && jest.isMockFunction(global.performance.now)) {
+        currentNow = 1200; // end
+      }
       act(() => {
         result.current.endTiming('render');
       });
@@ -114,20 +122,29 @@ describe('useEmailPerformance', () => {
       const { result } = renderHook(() => useEmailPerformance(), { wrapper });
 
       // Measure load time
+      if (global.performance && jest.isMockFunction(global.performance.now)) {
+        currentNow = 1000; // load start
+      }
       act(() => {
         result.current.startTiming('load');
       });
-      mockPerformance.now.mockReturnValue(1300);
+      if (global.performance && jest.isMockFunction(global.performance.now)) {
+        currentNow = 1300; // load end
+      }
       act(() => {
         result.current.endTiming('load');
       });
 
       // Measure render time
-      mockPerformance.now.mockReturnValue(1400);
+      if (global.performance && jest.isMockFunction(global.performance.now)) {
+        currentNow = 1400; // render start
+      }
       act(() => {
         result.current.startTiming('render');
       });
-      mockPerformance.now.mockReturnValue(1600);
+      if (global.performance && jest.isMockFunction(global.performance.now)) {
+        currentNow = 1600; // render end
+      }
       act(() => {
         result.current.endTiming('render');
       });
@@ -220,10 +237,15 @@ describe('useEmailPerformance', () => {
       const { result } = renderHook(() => useEmailPerformance(), { wrapper });
 
       // Set up some metrics
+      if (global.performance && jest.isMockFunction(global.performance.now)) {
+        currentNow = 1000; // load start
+      }
       act(() => {
         result.current.startTiming('load');
       });
-      mockPerformance.now.mockReturnValue(1500);
+      if (global.performance && jest.isMockFunction(global.performance.now)) {
+        currentNow = 1500; // load end
+      }
       act(() => {
         result.current.endTiming('load');
         result.current.recordCacheHit();
@@ -242,11 +264,16 @@ describe('useEmailPerformance', () => {
     test('includes performance recommendations', () => {
       const { result } = renderHook(() => useEmailPerformance(), { wrapper });
 
-      // Simulate slow performance
+      // Simulate slow performance (load time >= 2000ms)
+      if (global.performance && jest.isMockFunction(global.performance.now)) {
+        currentNow = 1000; // load start
+      }
       act(() => {
         result.current.startTiming('load');
       });
-      mockPerformance.now.mockReturnValue(3000); // 2 second load time
+      if (global.performance && jest.isMockFunction(global.performance.now)) {
+        currentNow = 3000; // load end
+      }
       act(() => {
         result.current.endTiming('load');
       });
@@ -278,8 +305,34 @@ describe('useEmailPerformance', () => {
   });
 
   describe('performance optimization', () => {
-    test('provides optimization suggestions based on metrics', () => {
+    test('provides comprehensive performance optimization recommendations', () => {
       const { result } = renderHook(() => useEmailPerformance(), { wrapper });
+
+      if (global.performance && jest.isMockFunction(global.performance.now)) {
+        currentNow = 1000; // load start
+      }
+      act(() => {
+        result.current.startTiming('load');
+      });
+      if (global.performance && jest.isMockFunction(global.performance.now)) {
+        currentNow = 3000; // load end (2s)
+      }
+      act(() => {
+        result.current.endTiming('load');
+      });
+
+      if (global.performance && jest.isMockFunction(global.performance.now)) {
+        currentNow = 1000; // render start
+      }
+      act(() => {
+        result.current.startTiming('render');
+      });
+      if (global.performance && jest.isMockFunction(global.performance.now)) {
+        currentNow = 2000; // render end (1s)
+      }
+      act(() => {
+        result.current.endTiming('render');
+      });
 
       // Simulate poor cache performance
       act(() => {
@@ -291,17 +344,28 @@ describe('useEmailPerformance', () => {
 
       const report = result.current.getPerformanceReport();
 
-      expect(report.recommendations).toContain('Improve caching strategy');
+      expect(report.recommendations).toEqual(
+        expect.arrayContaining([
+          'Consider optimizing email loading',
+          'Improve caching strategy',
+          'Consider implementing lazy loading'
+        ])
+      );
     });
 
     test('suggests lazy loading for large datasets', () => {
       const { result } = renderHook(() => useEmailPerformance(), { wrapper });
 
       // Simulate slow render time
+      if (global.performance && jest.isMockFunction(global.performance.now)) {
+        currentNow = 1000; // render start
+      }
       act(() => {
         result.current.startTiming('render');
       });
-      mockPerformance.now.mockReturnValue(2000); // 1 second render time
+      if (global.performance && jest.isMockFunction(global.performance.now)) {
+        currentNow = 2000; // render end (1s)
+      }
       act(() => {
         result.current.endTiming('render');
       });
@@ -330,10 +394,20 @@ describe('useEmailPerformance', () => {
     test('handles negative timing values', () => {
       const { result } = renderHook(() => useEmailPerformance(), { wrapper });
 
-      mockPerformance.now.mockReturnValueOnce(2000).mockReturnValueOnce(1000);
+      // Set start time higher than end time to create negative duration
+      if (global.performance && jest.isMockFunction(global.performance.now)) {
+        currentNow = 2000; // start higher
+      }
 
       act(() => {
         result.current.startTiming('load');
+      });
+
+      if (global.performance && jest.isMockFunction(global.performance.now)) {
+        currentNow = 1000; // end lower
+      }
+
+      act(() => {
         result.current.endTiming('load');
       });
 

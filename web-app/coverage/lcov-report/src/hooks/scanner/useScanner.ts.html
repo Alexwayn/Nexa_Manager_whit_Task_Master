@@ -25,14 +25,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/98</span>
+                <span class='fraction'>0/105</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/32</span>
+                <span class='fraction'>0/30</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/94</span>
+                <span class='fraction'>0/100</span>
             </div>
         
             
@@ -333,14 +333,14 @@
 <a name='L268'></a><a href='#L268'>268</a>
 <a name='L269'></a><a href='#L269'>269</a>
 <a name='L270'></a><a href='#L270'>270</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -602,16 +602,16 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">// Main scanner hook that orchestrates all scanner functionality
-import { useState, useCallback } from 'react';
+<span class="cstat-no" title="statement not covered" >import { useState, useCallback } from 'react';</span>
 import type { UseScannerReturn } from './types';
-import { ScannerStep } from './types';
+<span class="cstat-no" title="statement not covered" >import { ScannerStep } from './types';</span>
 import type { ProcessedDocument } from '@/types/scanner';
-import ErrorRecoveryService, { ErrorType } from '@/services/scanner/errorRecoveryService';
-import { useErrorNotifications } from '@/components/scanner/ErrorNotification';
-import { captureError } from '@/lib/sentry';
-import Logger from '@/utils/Logger';
+<span class="cstat-no" title="statement not covered" >import ErrorRecoveryService, { ErrorType } from '@/services/scanner/errorRecoveryService';</span>
+<span class="cstat-no" title="statement not covered" >import { useErrorNotifications } from '@/components/scanner/ErrorNotification';</span>
+<span class="cstat-no" title="statement not covered" >import { captureError } from '@/lib/sentry';</span>
+<span class="cstat-no" title="statement not covered" >import Logger from '@/utils/Logger';</span>
 &nbsp;
-export const useScanner = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span>: UseScannerReturn =&gt; {</span>
+export const <span class="cstat-no" title="statement not covered" >useScanner = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(</span>): UseScannerReturn =&gt; </span>{</span>
   const [currentStep, setCurrentStep] = <span class="cstat-no" title="statement not covered" >useState&lt;ScannerStep&gt;(ScannerStep.Idle);</span>
   const [processedDocument, setProcessedDocument] = <span class="cstat-no" title="statement not covered" >useState&lt;ProcessedDocument | null&gt;(null);</span>
   const [isProcessing, setIsProcessing] = <span class="cstat-no" title="statement not covered" >useState(false);</span>
@@ -620,7 +620,7 @@ export const useScanner = <span class="cstat-no" title="statement not covered" >
   const errorRecoveryService = <span class="cstat-no" title="statement not covered" >ErrorRecoveryService.getInstance();</span>
   const { addErrorNotification, addWarningNotification, addInfoNotification } = <span class="cstat-no" title="statement not covered" >useErrorNotifications();</span>
 &nbsp;
-  const processDocument = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >as</span>ync (image: Blob, retryCount = <span class="branch-0 cbranch-no" title="branch not covered" >0)</span> =&gt; {</span>
+  const processDocument = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >async (i</span>mage: Blob, retryCount = <span class="branch-0 cbranch-no" title="branch not covered" >0)</span> =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    setIsProcessing(true);</span>
 <span class="cstat-no" title="statement not covered" >    setCurrentStep(ScannerStep.Processing);</span>
 <span class="cstat-no" title="statement not covered" >    setLastError(null);</span>
@@ -630,10 +630,10 @@ export const useScanner = <span class="cstat-no" title="statement not covered" >
 <span class="cstat-no" title="statement not covered" >      console.log('Processing document...', image);</span>
       
       // Placeholder implementation with potential failure simulation
-<span class="cstat-no" title="statement not covered" >      await new Promise(<span class="fstat-no" title="function not covered" >re</span>solve =&gt; <span class="cstat-no" title="statement not covered" >setTimeout(resolve, 1000))</span>;</span>
+<span class="cstat-no" title="statement not covered" >      await new Promise(<span class="fstat-no" title="function not covered" >resolve </span>=&gt; <span class="cstat-no" title="statement not covered" >setTimeout(resolve, 1000))</span>;</span>
       
       // Simulate occasional failures for testing error handling
-<span class="cstat-no" title="statement not covered" >      if (import.meta.env.DEV &amp;&amp; Math.random() &lt; 0.1) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (import.meta.env.DEV &amp;&amp; Math.random() &lt; 0.1) {</span>
 <span class="cstat-no" title="statement not covered" >        throw new Error('Simulated processing error for testing');</span>
       }
       
@@ -672,9 +672,9 @@ export const useScanner = <span class="cstat-no" title="statement not covered" >
             recoveryResult.message,
             {
               isRecoverable: true,
-              onRetry: <span class="fstat-no" title="function not covered" >()</span> =&gt; {
+              onRetry: <span class="fstat-no" title="function not covered" >() =&gt; </span>{
 <span class="cstat-no" title="statement not covered" >                if (recoveryResult.retryDelay) {</span>
-<span class="cstat-no" title="statement not covered" >                  setTimeout(<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >processDocument(image, retryCount + 1),</span> recoveryResult.retryDelay);</span>
+<span class="cstat-no" title="statement not covered" >                  setTimeout(<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >p</span>rocessDocument(image, retryCount + 1),</span> recoveryResult.retryDelay);</span>
                 } else {
 <span class="cstat-no" title="statement not covered" >                  processDocument(image, retryCount + 1);</span>
                 }
@@ -692,7 +692,7 @@ export const useScanner = <span class="cstat-no" title="statement not covered" >
             errorRecoveryService.getUserMessage(processError),
             {
               isRecoverable: errorRecoveryService.isRecoverable(processError),
-              onRetry: retryCount &lt; 3 ? <span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >processDocument(image, retryCount + 1) </span>: undefined
+              onRetry: retryCount &lt; 3 ? <span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >p</span>rocessDocument(image, retryCount + 1) </span>: undefined
             }
           );
         }
@@ -710,7 +710,7 @@ export const useScanner = <span class="cstat-no" title="statement not covered" >
     }
   }, [errorRecoveryService, addErrorNotification, addWarningNotification, addInfoNotification]);
 &nbsp;
-  const saveProcessedDocument = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >as</span>ync (metadata: Partial&lt;ProcessedDocument&gt;, retryCount = <span class="branch-0 cbranch-no" title="branch not covered" >0)</span>: Promise&lt;string&gt; =&gt; {</span>
+  const saveProcessedDocument = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >async (m</span>etadata: Partial&lt;ProcessedDocument&gt;, retryCount = <span class="branch-0 cbranch-no" title="branch not covered" >0)</span>: Promise&lt;string&gt; =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    setIsProcessing(true);</span>
 <span class="cstat-no" title="statement not covered" >    setCurrentStep(ScannerStep.Saving);</span>
 <span class="cstat-no" title="statement not covered" >    setLastError(null);</span>
@@ -720,10 +720,10 @@ export const useScanner = <span class="cstat-no" title="statement not covered" >
 <span class="cstat-no" title="statement not covered" >      console.log('Saving document...', metadata);</span>
       
       // Placeholder implementation
-<span class="cstat-no" title="statement not covered" >      await new Promise(<span class="fstat-no" title="function not covered" >re</span>solve =&gt; <span class="cstat-no" title="statement not covered" >setTimeout(resolve, 500))</span>;</span>
+<span class="cstat-no" title="statement not covered" >      await new Promise(<span class="fstat-no" title="function not covered" >resolve </span>=&gt; <span class="cstat-no" title="statement not covered" >setTimeout(resolve, 500))</span>;</span>
       
       // Simulate occasional failures for testing error handling
-<span class="cstat-no" title="statement not covered" >      if (import.meta.env.DEV &amp;&amp; Math.random() &lt; 0.05) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (import.meta.env.DEV &amp;&amp; Math.random() &lt; 0.05) {</span>
 <span class="cstat-no" title="statement not covered" >        throw new Error('Simulated storage error for testing');</span>
       }
       
@@ -763,9 +763,9 @@ export const useScanner = <span class="cstat-no" title="statement not covered" >
             recoveryResult.message,
             {
               isRecoverable: true,
-              onRetry: <span class="fstat-no" title="function not covered" >()</span> =&gt; {
+              onRetry: <span class="fstat-no" title="function not covered" >() =&gt; </span>{
 <span class="cstat-no" title="statement not covered" >                if (recoveryResult.retryDelay) {</span>
-<span class="cstat-no" title="statement not covered" >                  setTimeout(<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >saveProcessedDocument(metadata, retryCount + 1),</span> recoveryResult.retryDelay);</span>
+<span class="cstat-no" title="statement not covered" >                  setTimeout(<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >s</span>aveProcessedDocument(metadata, retryCount + 1),</span> recoveryResult.retryDelay);</span>
                 } else {
 <span class="cstat-no" title="statement not covered" >                  saveProcessedDocument(metadata, retryCount + 1);</span>
                 }
@@ -779,7 +779,7 @@ export const useScanner = <span class="cstat-no" title="statement not covered" >
             errorRecoveryService.getUserMessage(saveError),
             {
               isRecoverable: errorRecoveryService.isRecoverable(saveError),
-              onRetry: retryCount &lt; 3 ? <span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >saveProcessedDocument(metadata, retryCount + 1) </span>: undefined
+              onRetry: retryCount &lt; 3 ? <span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >s</span>aveProcessedDocument(metadata, retryCount + 1) </span>: undefined
             }
           );
         }
@@ -798,7 +798,7 @@ export const useScanner = <span class="cstat-no" title="statement not covered" >
     }
   }, [errorRecoveryService, addErrorNotification, addWarningNotification, addInfoNotification]);
 &nbsp;
-  const reset = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+  const reset = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >() =&gt; </span>{</span>
 <span class="cstat-no" title="statement not covered" >    setCurrentStep(ScannerStep.Idle);</span>
 <span class="cstat-no" title="statement not covered" >    setProcessedDocument(null);</span>
 <span class="cstat-no" title="statement not covered" >    setIsProcessing(false);</span>
@@ -815,44 +815,44 @@ export const useScanner = <span class="cstat-no" title="statement not covered" >
     isActive: false,
     stream: null,
     error: null,
-    startCamera: <span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {},
-    stopCamera: <span class="fstat-no" title="function not covered" >()</span> =&gt; {},
-    captureImage: <span class="fstat-no" title="function not covered" >as</span>ync () =&gt; <span class="cstat-no" title="statement not covered" >new Blob(),</span>
-    requestPermission: <span class="fstat-no" title="function not covered" >as</span>ync () =&gt; <span class="cstat-no" title="statement not covered" >'denied' as PermissionState</span>
+    startCamera: <span class="fstat-no" title="function not covered" >async () =&gt; </span>{},
+    stopCamera: <span class="fstat-no" title="function not covered" >() =&gt; </span>{},
+    captureImage: <span class="fstat-no" title="function not covered" >async () =&gt; <span class="cstat-no" title="statement not covered" >n</span>ew Blob(),</span>
+    requestPermission: <span class="fstat-no" title="function not covered" >async () =&gt; <span class="cstat-no" title="statement not covered" >'</span>denied' as PermissionState</span>
   };
 &nbsp;
   const fileUpload = <span class="cstat-no" title="statement not covered" >{</span>
     files: [],
     isProcessing: false,
     error: null,
-    processFiles: <span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {},
-    removeFile: <span class="fstat-no" title="function not covered" >()</span> =&gt; {},
-    clearFiles: <span class="fstat-no" title="function not covered" >()</span> =&gt; {}
+    processFiles: <span class="fstat-no" title="function not covered" >async () =&gt; </span>{},
+    removeFile: <span class="fstat-no" title="function not covered" >() =&gt; </span>{},
+    clearFiles: <span class="fstat-no" title="function not covered" >() =&gt; </span>{}
   };
 &nbsp;
   const imageProcessing = <span class="cstat-no" title="statement not covered" >{</span>
     isProcessing: false,
     error: null,
-    enhanceImage: <span class="fstat-no" title="function not covered" >as</span>ync (image: Blob) =&gt; (<span class="cstat-no" title="statement not covered" >{ original: image, enhanced: image })</span>,
-    detectEdges: <span class="fstat-no" title="function not covered" >as</span>ync () =&gt; (<span class="cstat-no" title="statement not covered" >{})</span>,
-    cropImage: <span class="fstat-no" title="function not covered" >as</span>ync (image: Blob) =&gt; <span class="cstat-no" title="statement not covered" >image</span>
+    enhanceImage: <span class="fstat-no" title="function not covered" >async (i</span>mage: Blob) =&gt; (<span class="cstat-no" title="statement not covered" >{ original: image, enhanced: image })</span>,
+    detectEdges: <span class="fstat-no" title="function not covered" >async () =&gt; (<span class="cstat-no" title="statement not covered" >{</span>})</span>,
+    cropImage: <span class="fstat-no" title="function not covered" >async (i</span>mage: Blob) =&gt; <span class="cstat-no" title="statement not covered" >image</span>
   };
 &nbsp;
   const ocr = <span class="cstat-no" title="statement not covered" >{</span>
     isProcessing: false,
     result: null,
     error: null,
-    extractText: <span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {},
-    clearResult: <span class="fstat-no" title="function not covered" >()</span> =&gt; {}
+    extractText: <span class="fstat-no" title="function not covered" >async () =&gt; </span>{},
+    clearResult: <span class="fstat-no" title="function not covered" >() =&gt; </span>{}
   };
 &nbsp;
   const storage = <span class="cstat-no" title="statement not covered" >{</span>
     isLoading: false,
     error: null,
-    saveDocument: <span class="fstat-no" title="function not covered" >as</span>ync () =&gt; <span class="cstat-no" title="statement not covered" >'',</span>
-    getDocument: <span class="fstat-no" title="function not covered" >as</span>ync () =&gt; (<span class="cstat-no" title="statement not covered" >{} as ProcessedDocument)</span>,
-    deleteDocument: <span class="fstat-no" title="function not covered" >as</span>ync () =&gt; <span class="cstat-no" title="statement not covered" >false,</span>
-    updateDocument: <span class="fstat-no" title="function not covered" >as</span>ync () =&gt; (<span class="cstat-no" title="statement not covered" >{} as ProcessedDocument)</span>
+    saveDocument: <span class="fstat-no" title="function not covered" >async () =&gt; <span class="cstat-no" title="statement not covered" >'</span>',</span>
+    getDocument: <span class="fstat-no" title="function not covered" >async () =&gt; (<span class="cstat-no" title="statement not covered" >{</span>} as ProcessedDocument),</span>
+    deleteDocument: <span class="fstat-no" title="function not covered" >async () =&gt; <span class="cstat-no" title="statement not covered" >f</span>alse,</span>
+    updateDocument: <span class="fstat-no" title="function not covered" >async () =&gt; (<span class="cstat-no" title="statement not covered" >{</span>} as ProcessedDocument)</span>
   };
 &nbsp;
 <span class="cstat-no" title="statement not covered" >  return {</span>
@@ -877,7 +877,7 @@ export const useScanner = <span class="cstat-no" title="statement not covered" >
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-08-07T19:19:19.104Z
+                at 2025-08-13T02:10:19.343Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

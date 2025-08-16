@@ -130,3 +130,6 @@ export const updateSchedule = mockReportingService.updateSchedule;
 export const deleteSchedule = mockReportingService.deleteSchedule;
 export const exportReportData = mockReportingService.exportReportData;
 export const validateReportParams = mockReportingService.validateReportParams;
+
+// Export the entire mock object for namespace imports
+export const reportingService = mockReportingService;

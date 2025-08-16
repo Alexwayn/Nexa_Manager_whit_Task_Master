@@ -384,9 +384,11 @@ describe('ReportScheduler Component', () => {
     const deleteBtn = screen.getByTestId('delete-schedule-1');
     await user.click(deleteBtn);
 
-    expect(global.confirm).toHaveBeenCalledWith(
-      'Sei sicuro di voler eliminare questo schedule?'
-    );
+    await waitFor(() => {
+      expect(global.confirm).toHaveBeenCalledWith(
+        'Sei sicuro di voler eliminare questo schedule?'
+      );
+    });
 
     await waitFor(() => {
       expect(reportingService.deleteSchedule).toHaveBeenCalledWith(1);
@@ -410,7 +412,10 @@ describe('ReportScheduler Component', () => {
     const deleteBtn = screen.getByTestId('delete-schedule-1');
     await user.click(deleteBtn);
 
-    expect(global.confirm).toHaveBeenCalled();
+    await waitFor(() => {
+      expect(global.confirm).toHaveBeenCalled();
+    });
+    
     expect(reportingService.deleteSchedule).not.toHaveBeenCalled();
   });
 

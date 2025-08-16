@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">11.57% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/95</span>
+                <span class='fraction'>11/95</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">12.22% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/90</span>
+                <span class='fraction'>11/90</span>
             </div>
         
             
@@ -537,12 +537,12 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -600,10 +600,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -664,10 +664,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -730,10 +730,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -980,7 +980,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React, { memo, useMemo, useCallback, useState, useRef, useEffect } from 'react';
@@ -997,12 +997,12 @@ import { LoadingSkeleton } from '@shared/components';
 import { usePerformanceMonitor } from '@utils/performance';
 &nbsp;
 // Row height constants
-const ROW_HEIGHT = <span class="cstat-no" title="statement not covered" >48;</span>
-const HEADER_HEIGHT = <span class="cstat-no" title="statement not covered" >56;</span>
-const OVERSCAN_COUNT = <span class="cstat-no" title="statement not covered" >5;</span>
+const ROW_HEIGHT = 48;
+const HEADER_HEIGHT = 56;
+const OVERSCAN_COUNT = 5;
 &nbsp;
 // Memoized table cell component
-const TableCell = <span class="cstat-no" title="statement not covered" >memo(<span class="fstat-no" title="function not covered" >({ </span></span>
+const TableCell = memo(<span class="fstat-no" title="function not covered" >({ </span>
   value, 
   column, 
   rowIndex, 
@@ -1060,10 +1060,10 @@ const TableCell = <span class="cstat-no" title="statement not covered" >memo(<sp
   );
 });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >TableCell.displayName = 'TableCell';</span>
+TableCell.displayName = 'TableCell';
 &nbsp;
 // Memoized table row component
-const TableRow = <span class="cstat-no" title="statement not covered" >memo(<span class="fstat-no" title="function not covered" >({ </span></span>
+const TableRow = memo(<span class="fstat-no" title="function not covered" >({ </span>
   index, 
   style, 
   data: { items, columns, selectedRows, onRowClick, onRowSelect } 
@@ -1124,10 +1124,10 @@ const TableRow = <span class="cstat-no" title="statement not covered" >memo(<spa
   );
 });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >TableRow.displayName = 'TableRow';</span>
+TableRow.displayName = 'TableRow';
 &nbsp;
 // Table header component
-const TableHeader = <span class="cstat-no" title="statement not covered" >memo(<span class="fstat-no" title="function not covered" >({ </span></span>
+const TableHeader = memo(<span class="fstat-no" title="function not covered" >({ </span>
   columns, 
   sortConfig, 
   onSort, 
@@ -1190,10 +1190,10 @@ const TableHeader = <span class="cstat-no" title="statement not covered" >memo(<
   );
 });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >TableHeader.displayName = 'TableHeader';</span>
+TableHeader.displayName = 'TableHeader';
 &nbsp;
 // Main virtualized table component
-const VirtualizedReportTable = <span class="cstat-no" title="statement not covered" >memo(<span class="fstat-no" title="function not covered" >({</span></span>
+const VirtualizedReportTable = memo(<span class="fstat-no" title="function not covered" >({</span>
   data = <span class="branch-0 cbranch-no" title="branch not covered" >[],</span>
   columns = <span class="branch-0 cbranch-no" title="branch not covered" >[],</span>
   height = <span class="branch-0 cbranch-no" title="branch not covered" >400,</span>
@@ -1440,7 +1440,7 @@ const VirtualizedReportTable = <span class="cstat-no" title="statement not cover
   );
 });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >VirtualizedReportTable.displayName = 'VirtualizedReportTable';</span>
+VirtualizedReportTable.displayName = 'VirtualizedReportTable';
 &nbsp;
 export default VirtualizedReportTable;
 &nbsp;</pre></td></tr></table></pre>
@@ -1450,7 +1450,7 @@ export default VirtualizedReportTable;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-08-07T19:19:19.104Z
+                at 2025-08-13T02:10:19.343Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

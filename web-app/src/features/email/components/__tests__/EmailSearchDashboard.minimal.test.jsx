@@ -3,7 +3,7 @@ import { render } from '@testing-library/react';
 import '@testing-library/jest-dom';
 
 // Mock all dependencies first
-jest.mock('@/features/email/hooks/useEmailSearch', () => ({
+jest.mock('../../hooks/useEmailSearch', () => ({
   useEmailSearch: jest.fn(() => ({
     searchResults: [],
     totalResults: 0,
@@ -19,7 +19,7 @@ jest.mock('@/features/email/hooks/useEmailSearch', () => ({
   })),
 }));
 
-jest.mock('../../../hooks/useEmails', () => ({
+jest.mock('../../hooks/useEmails', () => ({
   useEmails: jest.fn(() => ({
     selectedEmails: [],
     handleEmailSelect: jest.fn(),
@@ -64,19 +64,13 @@ jest.mock('../EmailSearchResults', () => {
   };
 });
 
-jest.mock('../../ui/Button', () => ({
+jest.mock('@shared/components', () => ({
   Button: function MockButton({ children }) {
     return <button>{children}</button>;
   },
-}));
-
-jest.mock('../../ui/Card', () => ({
   Card: function MockCard({ children }) {
     return <div>{children}</div>;
   },
-}));
-
-jest.mock('../../ui/Badge', () => ({
   Badge: function MockBadge({ children }) {
     return <span>{children}</span>;
   },

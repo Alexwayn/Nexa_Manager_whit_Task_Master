@@ -25,14 +25,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/74</span>
+                <span class='fraction'>0/78</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/51</span>
+                <span class='fraction'>0/48</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/58</span>
+                <span class='fraction'>0/62</span>
             </div>
         
             
@@ -525,6 +525,8 @@
 <a name='L460'></a><a href='#L460'>460</a>
 <a name='L461'></a><a href='#L461'>461</a>
 <a name='L462'></a><a href='#L462'>462</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -536,9 +538,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -984,10 +984,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">// Document preview component for reviewing scanned documents
-import React, { useState, useRef, useCallback } from 'react';
-import { 
+<span class="cstat-no" title="statement not covered" >import React, { useState, useRef, useCallback } from 'react';</span>
+<span class="cstat-no" title="statement not covered" >import { </span>
   MagnifyingGlassMinusIcon,
   MagnifyingGlassPlusIcon,
   ArrowPathIcon,
@@ -999,7 +999,7 @@ import {
   DocumentTextIcon,
   PhotoIcon
 } from '@heroicons/react/24/outline';
-import DocumentMetadataForm from './DocumentMetadataForm';
+<span class="cstat-no" title="statement not covered" >import DocumentMetadataForm from './DocumentMetadataForm';</span>
 import type { DocumentPreviewProps } from './types';
 &nbsp;
 interface ViewState {
@@ -1045,38 +1045,38 @@ const DocumentPreview: React.FC&lt;DocumentPreviewProps&gt; = <span class="cstat
   });
 &nbsp;
   // Zoom controls
-  const zoomIn = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    setViewState(<span class="fstat-no" title="function not covered" >pr</span>ev =&gt; (<span class="cstat-no" title="statement not covered" >{ ...prev, zoom: Math.min(prev.zoom * 1.2, 5) })</span>);</span>
+  const zoomIn = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >() =&gt; </span>{</span>
+<span class="cstat-no" title="statement not covered" >    setViewState(<span class="fstat-no" title="function not covered" >prev </span>=&gt; (<span class="cstat-no" title="statement not covered" >{ ...prev, zoom: Math.min(prev.zoom * 1.2, 5) })</span>);</span>
   }, []);
 &nbsp;
-  const zoomOut = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    setViewState(<span class="fstat-no" title="function not covered" >pr</span>ev =&gt; (<span class="cstat-no" title="statement not covered" >{ ...prev, zoom: Math.max(prev.zoom / 1.2, 0.1) })</span>);</span>
+  const zoomOut = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >() =&gt; </span>{</span>
+<span class="cstat-no" title="statement not covered" >    setViewState(<span class="fstat-no" title="function not covered" >prev </span>=&gt; (<span class="cstat-no" title="statement not covered" >{ ...prev, zoom: Math.max(prev.zoom / 1.2, 0.1) })</span>);</span>
   }, []);
 &nbsp;
-  const resetZoom = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    setViewState(<span class="fstat-no" title="function not covered" >pr</span>ev =&gt; (<span class="cstat-no" title="statement not covered" >{ ...prev, zoom: 1, panX: 0, panY: 0 })</span>);</span>
+  const resetZoom = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >() =&gt; </span>{</span>
+<span class="cstat-no" title="statement not covered" >    setViewState(<span class="fstat-no" title="function not covered" >prev </span>=&gt; (<span class="cstat-no" title="statement not covered" >{ ...prev, zoom: 1, panX: 0, panY: 0 })</span>);</span>
   }, []);
 &nbsp;
   // Rotation controls
-  const rotateLeft = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    setViewState(<span class="fstat-no" title="function not covered" >pr</span>ev =&gt; (<span class="cstat-no" title="statement not covered" >{ ...prev, rotation: prev.rotation - 90 })</span>);</span>
+  const rotateLeft = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >() =&gt; </span>{</span>
+<span class="cstat-no" title="statement not covered" >    setViewState(<span class="fstat-no" title="function not covered" >prev </span>=&gt; (<span class="cstat-no" title="statement not covered" >{ ...prev, rotation: prev.rotation - 90 })</span>);</span>
   }, []);
 &nbsp;
-  const rotateRight = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    setViewState(<span class="fstat-no" title="function not covered" >pr</span>ev =&gt; (<span class="cstat-no" title="statement not covered" >{ ...prev, rotation: prev.rotation + 90 })</span>);</span>
+  const rotateRight = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >() =&gt; </span>{</span>
+<span class="cstat-no" title="statement not covered" >    setViewState(<span class="fstat-no" title="function not covered" >prev </span>=&gt; (<span class="cstat-no" title="statement not covered" >{ ...prev, rotation: prev.rotation + 90 })</span>);</span>
   }, []);
 &nbsp;
   // Pan controls
-  const handleMouseDown = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >(e</span>vent: React.MouseEvent) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    if (viewState.zoom &gt; 1) {</span>
+  const handleMouseDown = <span class="cstat-no" title="statement not covered" >useCallback((<span class="fstat-no" title="function not covered" >event: React.MouseEvent)</span> =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (viewState.zoom &gt; 1) {</span>
 <span class="cstat-no" title="statement not covered" >      setIsDragging(true);</span>
 <span class="cstat-no" title="statement not covered" >      setDragStart({ x: event.clientX - viewState.panX, y: event.clientY - viewState.panY });</span>
     }
   }, [viewState.zoom, viewState.panX, viewState.panY]);
 &nbsp;
-  const handleMouseMove = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >(e</span>vent: React.MouseEvent) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    if (isDragging) {</span>
-<span class="cstat-no" title="statement not covered" >      setViewState(<span class="fstat-no" title="function not covered" >pr</span>ev =&gt; (<span class="cstat-no" title="statement not covered" >{</span></span>
+  const handleMouseMove = <span class="cstat-no" title="statement not covered" >useCallback((<span class="fstat-no" title="function not covered" >event: React.MouseEvent)</span> =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (isDragging) {</span>
+<span class="cstat-no" title="statement not covered" >      setViewState(<span class="fstat-no" title="function not covered" >prev </span>=&gt; (<span class="cstat-no" title="statement not covered" >{</span></span>
         ...prev,
         panX: event.clientX - dragStart.x,
         panY: event.clientY - dragStart.y
@@ -1084,41 +1084,41 @@ const DocumentPreview: React.FC&lt;DocumentPreviewProps&gt; = <span class="cstat
     }
   }, [isDragging, dragStart]);
 &nbsp;
-  const handleMouseUp = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+  const handleMouseUp = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >() =&gt; </span>{</span>
 <span class="cstat-no" title="statement not covered" >    setIsDragging(false);</span>
   }, []);
 &nbsp;
   // Toggle views
-  const toggleOriginal = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    setViewState(<span class="fstat-no" title="function not covered" >pr</span>ev =&gt; (<span class="cstat-no" title="statement not covered" >{ ...prev, showOriginal: !prev.showOriginal })</span>);</span>
+  const toggleOriginal = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >() =&gt; </span>{</span>
+<span class="cstat-no" title="statement not covered" >    setViewState(<span class="fstat-no" title="function not covered" >prev </span>=&gt; (<span class="cstat-no" title="statement not covered" >{ ...prev, showOriginal: !prev.showOriginal })</span>);</span>
   }, []);
 &nbsp;
-  const toggleOCR = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    setViewState(<span class="fstat-no" title="function not covered" >pr</span>ev =&gt; (<span class="cstat-no" title="statement not covered" >{ ...prev, showOCR: !prev.showOCR })</span>);</span>
+  const toggleOCR = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >() =&gt; </span>{</span>
+<span class="cstat-no" title="statement not covered" >    setViewState(<span class="fstat-no" title="function not covered" >prev </span>=&gt; (<span class="cstat-no" title="statement not covered" >{ ...prev, showOCR: !prev.showOCR })</span>);</span>
   }, []);
 &nbsp;
   // Edit controls
-  const startEditingMetadata = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    setEditState(<span class="fstat-no" title="function not covered" >pr</span>ev =&gt; (<span class="cstat-no" title="statement not covered" >{ ...prev, isEditingMetadata: true })</span>);</span>
+  const startEditingMetadata = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >() =&gt; </span>{</span>
+<span class="cstat-no" title="statement not covered" >    setEditState(<span class="fstat-no" title="function not covered" >prev </span>=&gt; (<span class="cstat-no" title="statement not covered" >{ ...prev, isEditingMetadata: true })</span>);</span>
   }, []);
 &nbsp;
-  const cancelEditingMetadata = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    setEditState(<span class="fstat-no" title="function not covered" >pr</span>ev =&gt; (<span class="cstat-no" title="statement not covered" >{ ...prev, isEditingMetadata: false })</span>);</span>
+  const cancelEditingMetadata = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >() =&gt; </span>{</span>
+<span class="cstat-no" title="statement not covered" >    setEditState(<span class="fstat-no" title="function not covered" >prev </span>=&gt; (<span class="cstat-no" title="statement not covered" >{ ...prev, isEditingMetadata: false })</span>);</span>
   }, []);
 &nbsp;
-  const startEditingText = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    setEditState(<span class="fstat-no" title="function not covered" >pr</span>ev =&gt; (<span class="cstat-no" title="statement not covered" >{ ...prev, isEditingText: true })</span>);</span>
+  const startEditingText = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >() =&gt; </span>{</span>
+<span class="cstat-no" title="statement not covered" >    setEditState(<span class="fstat-no" title="function not covered" >prev </span>=&gt; (<span class="cstat-no" title="statement not covered" >{ ...prev, isEditingText: true })</span>);</span>
   }, []);
 &nbsp;
-  const cancelEditingText = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    setEditState(<span class="fstat-no" title="function not covered" >pr</span>ev =&gt; (<span class="cstat-no" title="statement not covered" >{ </span></span>
+  const cancelEditingText = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >() =&gt; </span>{</span>
+<span class="cstat-no" title="statement not covered" >    setEditState(<span class="fstat-no" title="function not covered" >prev </span>=&gt; (<span class="cstat-no" title="statement not covered" >{ </span></span>
       ...prev, 
       isEditingText: false,
       textContent: document.textContent
     }));
   }, [document.textContent]);
 &nbsp;
-  const saveTextChanges = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+  const saveTextChanges = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >() =&gt; </span>{</span>
     const updatedDocument = <span class="cstat-no" title="statement not covered" >{</span>
       ...document,
       textContent: editState.textContent,
@@ -1126,22 +1126,22 @@ const DocumentPreview: React.FC&lt;DocumentPreviewProps&gt; = <span class="cstat
     };
     
 <span class="cstat-no" title="statement not covered" >    onSave(updatedDocument);</span>
-<span class="cstat-no" title="statement not covered" >    setEditState(<span class="fstat-no" title="function not covered" >pr</span>ev =&gt; (<span class="cstat-no" title="statement not covered" >{ ...prev, isEditingText: false })</span>);</span>
+<span class="cstat-no" title="statement not covered" >    setEditState(<span class="fstat-no" title="function not covered" >prev </span>=&gt; (<span class="cstat-no" title="statement not covered" >{ ...prev, isEditingText: false })</span>);</span>
   }, [document, editState.textContent, onSave]);
 &nbsp;
   // Get image URL based on view state
-  const getImageUrl = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+  const getImageUrl = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >() =&gt; </span>{</span>
 <span class="cstat-no" title="statement not covered" >    return viewState.showOriginal ? document.originalFile.url : document.enhancedFile.url;</span>
   }, [viewState.showOriginal, document.originalFile.url, document.enhancedFile.url]);
 &nbsp;
   // Format confidence score
-  const formatConfidence = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >(c</span>onfidence: number) =&gt; {</span>
+  const formatConfidence = <span class="cstat-no" title="statement not covered" >useCallback((<span class="fstat-no" title="function not covered" >confidence: number)</span> =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    return `${Math.round(confidence * 100)}%`;</span>
   }, []);
 &nbsp;
   // Format file size
-  const formatFileSize = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >(b</span>ytes: number) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    if (bytes === 0) <span class="cstat-no" title="statement not covered" >return '0 Bytes';</span></span>
+  const formatFileSize = <span class="cstat-no" title="statement not covered" >useCallback((<span class="fstat-no" title="function not covered" >bytes: number)</span> =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (bytes === 0) <span class="cstat-no" title="statement not covered" >return '0 Bytes';</span></span>
     const k = <span class="cstat-no" title="statement not covered" >1024;</span>
     const sizes = <span class="cstat-no" title="statement not covered" >['Bytes', 'KB', 'MB', 'GB'];</span>
     const i = <span class="cstat-no" title="statement not covered" >Math.floor(Math.log(bytes) / Math.log(k));</span>
@@ -1181,7 +1181,7 @@ const DocumentPreview: React.FC&lt;DocumentPreviewProps&gt; = <span class="cstat
             
             {!editState.isEditingMetadata &amp;&amp; (
               &lt;button
-                onClick={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >onSave(document)}</span>
+                onClick={<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >o</span>nSave(document)}</span>
                 className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
               &gt;
                 &lt;CheckIcon className="h-4 w-4 mr-2" /&gt;
@@ -1302,9 +1302,9 @@ const DocumentPreview: React.FC&lt;DocumentPreviewProps&gt; = <span class="cstat
             {editState.isEditingMetadata ? (
               &lt;DocumentMetadataForm
                 document={document}
-                onSave={<span class="fstat-no" title="function not covered" >(u</span>pdatedDocument) =&gt; {
+                onSave={(<span class="fstat-no" title="function not covered" >updatedDocument)</span> =&gt; {
 <span class="cstat-no" title="statement not covered" >                  onSave(updatedDocument);</span>
-<span class="cstat-no" title="statement not covered" >                  setEditState(<span class="fstat-no" title="function not covered" >pr</span>ev =&gt; (<span class="cstat-no" title="statement not covered" >{ ...prev, isEditingMetadata: false })</span>);</span>
+<span class="cstat-no" title="statement not covered" >                  setEditState(<span class="fstat-no" title="function not covered" >prev </span>=&gt; (<span class="cstat-no" title="statement not covered" >{ ...prev, isEditingMetadata: false })</span>);</span>
                 }}
                 onCancel={cancelEditingMetadata}
                 isLoading={false}
@@ -1408,7 +1408,7 @@ const DocumentPreview: React.FC&lt;DocumentPreviewProps&gt; = <span class="cstat
                         &lt;div className="space-y-3"&gt;
                           &lt;textarea
                             value={editState.textContent}
-                            onChange={<span class="fstat-no" title="function not covered" >(e</span>) =&gt; <span class="cstat-no" title="statement not covered" >setEditState(<span class="fstat-no" title="function not covered" >pr</span>ev =&gt; (<span class="cstat-no" title="statement not covered" >{ ...prev, textContent: e.target.value })</span>)}</span>
+                            onChange={(<span class="fstat-no" title="function not covered" >e)</span> =&gt; <span class="cstat-no" title="statement not covered" >setEditState(<span class="fstat-no" title="function not covered" >prev </span>=&gt; (<span class="cstat-no" title="statement not covered" >{ ...prev, textContent: e.target.value })</span>)}</span>
                             rows={10}
                             className="w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm font-mono"
                             placeholder="Extracted text will appear here..."
@@ -1445,7 +1445,7 @@ const DocumentPreview: React.FC&lt;DocumentPreviewProps&gt; = <span class="cstat
   );
 };
 &nbsp;
-export default DocumentPreview;
+<span class="cstat-no" title="statement not covered" >export default DocumentPreview;</span>
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -1453,7 +1453,7 @@ export default DocumentPreview;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-08-07T19:19:19.104Z
+                at 2025-08-13T02:10:19.343Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

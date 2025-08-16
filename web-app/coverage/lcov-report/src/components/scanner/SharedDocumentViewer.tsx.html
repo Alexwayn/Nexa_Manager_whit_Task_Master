@@ -25,14 +25,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/77</span>
+                <span class='fraction'>0/84</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/49</span>
+                <span class='fraction'>0/44</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/75</span>
+                <span class='fraction'>0/82</span>
             </div>
         
             
@@ -391,12 +391,9 @@
 <a name='L326'></a><a href='#L326'>326</a>
 <a name='L327'></a><a href='#L327'>327</a>
 <a name='L328'></a><a href='#L328'>328</a>
-<a name='L329'></a><a href='#L329'>329</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L329'></a><a href='#L329'>329</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -404,7 +401,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -718,10 +718,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { 
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import React, { useState, useEffect } from 'react';</span>
+<span class="cstat-no" title="statement not covered" >import { useParams, useNavigate } from 'react-router-dom';</span>
+<span class="cstat-no" title="statement not covered" >import { </span>
   DocumentIcon, 
   EyeIcon, 
   ArrowDownTrayIcon, 
@@ -729,10 +729,10 @@ import {
   ExclamationTriangleIcon,
   ShieldExclamationIcon
 } from '@heroicons/react/24/outline';
-import { DocumentSharingService } from '@/services/scanner';
+<span class="cstat-no" title="statement not covered" >import { DocumentSharingService } from '@/services/scanner';</span>
 import type { ProcessedDocument, AccessLevel } from '@/types/scanner';
-import { useTranslation } from '@/hooks/useTranslation';
-import DocumentPreview from './DocumentPreview';
+<span class="cstat-no" title="statement not covered" >import { useTranslation } from '@/hooks/useTranslation';</span>
+<span class="cstat-no" title="statement not covered" >import DocumentPreview from './DocumentPreview';</span>
 &nbsp;
 interface SharedDocumentViewerProps {
   shareToken?: string; // Can be passed as prop or from URL params
@@ -753,7 +753,7 @@ const SharedDocumentViewer: React.FC&lt;SharedDocumentViewerProps&gt; = <span cl
   const [error, setError] = <span class="cstat-no" title="statement not covered" >useState&lt;string | null&gt;(null);</span>
   const [isDownloading, setIsDownloading] = <span class="cstat-no" title="statement not covered" >useState(false);</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  useEffect(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >  useEffect(<span class="fstat-no" title="function not covered" >() =&gt; </span>{</span>
 <span class="cstat-no" title="statement not covered" >    if (shareToken) {</span>
 <span class="cstat-no" title="statement not covered" >      loadSharedDocument();</span>
     } else {
@@ -762,8 +762,8 @@ const SharedDocumentViewer: React.FC&lt;SharedDocumentViewerProps&gt; = <span cl
     }
   }, [shareToken]);
 &nbsp;
-  const loadSharedDocument = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    if (!shareToken) <span class="cstat-no" title="statement not covered" >return;</span></span>
+  const loadSharedDocument = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >async () =&gt; </span>{</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!shareToken) <span class="cstat-no" title="statement not covered" >return;</span></span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    setIsLoading(true);</span>
 <span class="cstat-no" title="statement not covered" >    setError(null);</span>
@@ -793,8 +793,8 @@ const SharedDocumentViewer: React.FC&lt;SharedDocumentViewerProps&gt; = <span cl
     }
   };
 &nbsp;
-  const handleDownload = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    if (!shareToken || !document || !canDownload()) <span class="cstat-no" title="statement not covered" >return;</span></span>
+  const handleDownload = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >async () =&gt; </span>{</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!shareToken || !document || !canDownload()) <span class="cstat-no" title="statement not covered" >return;</span></span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    setIsDownloading(true);</span>
 &nbsp;
@@ -827,7 +827,7 @@ const SharedDocumentViewer: React.FC&lt;SharedDocumentViewerProps&gt; = <span cl
     }
   };
 &nbsp;
-  const getClientIP = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync (): Promise&lt;string | undefined&gt; =&gt; {</span>
+  const getClientIP = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >async (): Promise&lt;string | undefined&gt; =&gt; </span>{</span>
 <span class="cstat-no" title="statement not covered" >    try {</span>
       // This would typically use a service to get the client IP
       // For now, return undefined
@@ -837,16 +837,16 @@ const SharedDocumentViewer: React.FC&lt;SharedDocumentViewerProps&gt; = <span cl
     }
   };
 &nbsp;
-  const getFileExtension = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(u</span>rl: string): string =&gt; {</span>
+  const getFileExtension = (<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >url: string)</span>: string =&gt; {</span>
     const parts = <span class="cstat-no" title="statement not covered" >url.split('.');</span>
 <span class="cstat-no" title="statement not covered" >    return parts[parts.length - 1] || 'jpg';</span>
   };
 &nbsp;
-  const canDownload = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span>: boolean =&gt; {</span>
+  const canDownload = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(): boolean =&gt; </span>{</span>
 <span class="cstat-no" title="statement not covered" >    return accessLevel === 'download' || accessLevel === 'edit';</span>
   };
 &nbsp;
-  const getAccessLevelIcon = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(l</span>evel: AccessLevel) =&gt; {</span>
+  const getAccessLevelIcon = (<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >level: AccessLevel)</span> =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    switch (level) {</span>
       case 'view':
 <span class="cstat-no" title="statement not covered" >        return &lt;EyeIcon className="h-4 w-4" /&gt;;</span>
@@ -859,7 +859,7 @@ const SharedDocumentViewer: React.FC&lt;SharedDocumentViewerProps&gt; = <span cl
     }
   };
 &nbsp;
-  const getAccessLevelLabel = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(l</span>evel: AccessLevel): string =&gt; {</span>
+  const getAccessLevelLabel = (<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >level: AccessLevel)</span>: string =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    switch (level) {</span>
       case 'view':
 <span class="cstat-no" title="statement not covered" >        return t('scanner.sharing.accessLevel.view');</span>
@@ -872,7 +872,7 @@ const SharedDocumentViewer: React.FC&lt;SharedDocumentViewerProps&gt; = <span cl
     }
   };
 &nbsp;
-  const formatDate = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(d</span>ate: Date): string =&gt; {</span>
+  const formatDate = (<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >date: Date)</span>: string =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    return new Intl.DateTimeFormat(undefined, {</span>
       year: 'numeric',
       month: 'long',
@@ -882,7 +882,7 @@ const SharedDocumentViewer: React.FC&lt;SharedDocumentViewerProps&gt; = <span cl
     }).format(date);
   };
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  if (isLoading) {</span>
+<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (isLoading) {</span>
 <span class="cstat-no" title="statement not covered" >    return (</span>
       &lt;div className="min-h-screen bg-gray-50 flex items-center justify-center"&gt;
         &lt;div className="text-center"&gt;
@@ -893,7 +893,7 @@ const SharedDocumentViewer: React.FC&lt;SharedDocumentViewerProps&gt; = <span cl
     );
   }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  if (error) {</span>
+<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (error) {</span>
 <span class="cstat-no" title="statement not covered" >    return (</span>
       &lt;div className="min-h-screen bg-gray-50 flex items-center justify-center"&gt;
         &lt;div className="max-w-md w-full bg-white rounded-lg shadow-lg p-6"&gt;
@@ -904,7 +904,7 @@ const SharedDocumentViewer: React.FC&lt;SharedDocumentViewerProps&gt; = <span cl
             &lt;/h2&gt;
             &lt;p className="mt-2 text-sm text-gray-600"&gt;{error}&lt;/p&gt;
             &lt;button
-              onClick={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >navigate('/')}</span>
+              onClick={<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >n</span>avigate('/')}</span>
               className="mt-4 px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 transition-colors"
             &gt;
               {t('common.goHome')}
@@ -915,7 +915,7 @@ const SharedDocumentViewer: React.FC&lt;SharedDocumentViewerProps&gt; = <span cl
     );
   }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  if (!document) {</span>
+<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (!document) {</span>
 <span class="cstat-no" title="statement not covered" >    return (</span>
       &lt;div className="min-h-screen bg-gray-50 flex items-center justify-center"&gt;
         &lt;div className="text-center"&gt;
@@ -1021,9 +1021,9 @@ const SharedDocumentViewer: React.FC&lt;SharedDocumentViewerProps&gt; = <span cl
         &lt;div className="bg-white rounded-lg shadow-sm"&gt;
           &lt;DocumentPreview
             document={document}
-            onEdit={<span class="fstat-no" title="function not covered" >()</span> =&gt; {}}
-            onSave={<span class="fstat-no" title="function not covered" >()</span> =&gt; {}}
-            onCancel={<span class="fstat-no" title="function not covered" >()</span> =&gt; {}}
+            onEdit={<span class="fstat-no" title="function not covered" >() =&gt; </span>{}}
+            onSave={<span class="fstat-no" title="function not covered" >() =&gt; </span>{}}
+            onCancel={<span class="fstat-no" title="function not covered" >() =&gt; </span>{}}
             showOCRResults={true}
           /&gt;
         &lt;/div&gt;
@@ -1046,7 +1046,7 @@ const SharedDocumentViewer: React.FC&lt;SharedDocumentViewerProps&gt; = <span cl
   );
 };
 &nbsp;
-export default SharedDocumentViewer;
+<span class="cstat-no" title="statement not covered" >export default SharedDocumentViewer;</span>
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -1054,7 +1054,7 @@ export default SharedDocumentViewer;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-08-07T19:19:19.104Z
+                at 2025-08-13T02:10:19.343Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>
