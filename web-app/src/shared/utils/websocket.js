@@ -3,6 +3,8 @@
  * Centralized configuration for WebSocket connections and real-time features
  */
 
+import { getMode, getEnvVar } from '@/utils/env';
+
 // WebSocket connection settings
 export const WEBSOCKET_CONFIG = {
   // Connection URLs
@@ -133,7 +135,10 @@ export const EVENT_PRIORITIES = {
 
 // Get WebSocket URL based on environment
 export const getWebSocketUrl = () => {
-  const env = import.meta.env.MODE || 'development';
+  // Allow explicit override via env var
+  const override = getEnvVar('VITE_WS_URL');
+  if (override) return override;
+  const env = getMode();
   return WEBSOCKET_CONFIG.urls[env] || WEBSOCKET_CONFIG.urls.development;
 };
 

@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">10.44% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/67</span>
+                <span class='fraction'>7/67</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">10.44% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/67</span>
+                <span class='fraction'>7/67</span>
             </div>
         
             
@@ -379,7 +379,8 @@
 <a name='L314'></a><a href='#L314'>314</a>
 <a name='L315'></a><a href='#L315'>315</a>
 <a name='L316'></a><a href='#L316'>316</a>
-<a name='L317'></a><a href='#L317'>317</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L317'></a><a href='#L317'>317</a>
+<a name='L318'></a><a href='#L318'>318</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -389,7 +390,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -482,11 +484,11 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -537,7 +539,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -580,8 +582,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -608,7 +610,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -650,8 +652,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -677,7 +679,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -698,16 +700,17 @@
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React from 'react';
 import { ErrorBoundary as ReactErrorBoundary } from 'react-error-boundary';
 import { ExclamationTriangleIcon, ArrowPathIcon } from '@heroicons/react/24/outline';
-import Logger from '@utils/Logger';
+import Logger from '@/utils/Logger';
+import { isDev } from '@/utils/env';
 &nbsp;
-import { captureError, addBreadcrumb, Sentry } from '@lib/sentry';
+import { captureError, addBreadcrumb, Sentry } from '@/lib/sentry';
 &nbsp;
 /**
  * Error fallback component for displaying user-friendly error messages
  */
-const ErrorFallback = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >({</span> error, resetErrorBoundary }) =&gt; {</span>
+const ErrorFallback = <span class="fstat-no" title="function not covered" >({</span> error, resetErrorBoundary }) =&gt; {
   // Log error to console for development
-<span class="cstat-no" title="statement not covered" >  if (import.meta.env.DEV) {</span>
+<span class="cstat-no" title="statement not covered" >  if (isDev()) {</span>
     const errorMessage = <span class="cstat-no" title="statement not covered" >typeof error?.message === 'string' ? error.message : String(error?.message || 'Unknown error');</span>
     const errorStack = <span class="cstat-no" title="statement not covered" >typeof error?.stack === 'string' ? error.stack : String(error?.stack || 'No stack trace');</span>
     const errorName = <span class="cstat-no" title="statement not covered" >typeof error?.name === 'string' ? error.name : String(error?.name || 'Error');</span>
@@ -760,7 +763,7 @@ const ErrorFallback = <span class="cstat-no" title="statement not covered" ><spa
           &lt;/h1&gt;
           &lt;p className='mt-2 text-sm text-gray-600 dark:text-gray-400'&gt;{errorInfo.message}&lt;/p&gt;
 &nbsp;
-          {import.meta.env.DEV &amp;&amp; (
+          {isDev() &amp;&amp; (
             &lt;details className='mt-4 text-left'&gt;
               &lt;summary className='cursor-pointer text-sm text-gray-500 hover:text-gray-700'&gt;
                 Show error details (Development)
@@ -798,7 +801,7 @@ const ErrorFallback = <span class="cstat-no" title="statement not covered" ><spa
 /**
  * Enhanced error logging function with Sentry integration
  */
-const onError = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(e</span>rror, errorInfo) =&gt; {</span>
+const onError = <span class="fstat-no" title="function not covered" >(e</span>rror, errorInfo) =&gt; {
   const errorMessage = <span class="cstat-no" title="statement not covered" >typeof error?.message === 'string' ? error.message : String(error?.message || 'Unknown error');</span>
   const errorStack = <span class="cstat-no" title="statement not covered" >typeof error?.stack === 'string' ? error.stack : String(error?.stack || 'No stack trace');</span>
   const errorName = <span class="cstat-no" title="statement not covered" >typeof error?.name === 'string' ? error.name : String(error?.name || 'Error');</span>
@@ -843,7 +846,7 @@ const onError = <span class="cstat-no" title="statement not covered" ><span clas
   );
 &nbsp;
   // In development, also log component stack for debugging
-<span class="cstat-no" title="statement not covered" >  if (import.meta.env.DEV &amp;&amp; errorInfo?.componentStack) {</span>
+<span class="cstat-no" title="statement not covered" >  if (isDev() &amp;&amp; errorInfo?.componentStack) {</span>
 <span class="cstat-no" title="statement not covered" >    console.group('Component Stack Trace:');</span>
 <span class="cstat-no" title="statement not covered" >    console.log(errorInfo.componentStack);</span>
 <span class="cstat-no" title="statement not covered" >    console.groupEnd();</span>
@@ -853,7 +856,7 @@ const onError = <span class="cstat-no" title="statement not covered" ><span clas
 /**
  * Enhanced Error Boundary component with Sentry integration
  */
-const ErrorBoundary = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >({</span></span>
+const ErrorBoundary = <span class="fstat-no" title="function not covered" >({</span>
   children,
   fallback: CustomFallback,
   onError: customOnError,
@@ -878,7 +881,7 @@ const ErrorBoundary = <span class="cstat-no" title="statement not covered" ><spa
 <span class="cstat-no" title="statement not covered" >    addBreadcrumb('Error boundary reset', 'user_action', { component }, 'info');</span>
 &nbsp;
     // Clear any error state if needed
-<span class="cstat-no" title="statement not covered" >    if (import.meta.env.DEV) {</span>
+<span class="cstat-no" title="statement not covered" >    if (isDev()) {</span>
 <span class="cstat-no" title="statement not covered" >      console.log(`Error boundary reset for component: ${component}`);</span>
     }
   }, [component]);
@@ -896,7 +899,7 @@ const ErrorBoundary = <span class="cstat-no" title="statement not covered" ><spa
 };
 &nbsp;
 // Chart-specific error fallback component
-export const ChartErrorFallback = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >({</span> error, retry }) =&gt; {</span>
+export const ChartErrorFallback = <span class="fstat-no" title="function not covered" >({</span> error, retry }) =&gt; {
 <span class="cstat-no" title="statement not covered" >  return (</span>
     &lt;div className="flex flex-col items-center justify-center h-full bg-gray-50 dark:bg-gray-800 rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-600"&gt;
       &lt;ExclamationTriangleIcon className="h-8 w-8 text-yellow-500 mb-2" /&gt;
@@ -924,7 +927,7 @@ export default ErrorBoundary;
 /**
  * Higher-order component for wrapping components with error boundaries
  */
-export const withErrorBoundary = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(C</span>omponent, options = <span class="branch-0 cbranch-no" title="branch not covered" >{})</span> =&gt; {</span>
+export const withErrorBoundary = <span class="fstat-no" title="function not covered" >(C</span>omponent, options = <span class="branch-0 cbranch-no" title="branch not covered" >{})</span> =&gt; {
   const { customFallback, componentName, isolateErrors = <span class="branch-0 cbranch-no" title="branch not covered" >false,</span> captureProps = <span class="branch-0 cbranch-no" title="branch not covered" >false </span>} = <span class="cstat-no" title="statement not covered" >options;</span>
 &nbsp;
   const WrappedComponent = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >pr</span>ops =&gt; {</span>
@@ -966,7 +969,7 @@ export const withErrorBoundary = <span class="cstat-no" title="statement not cov
 /**
  * Hook for manually triggering error boundary with Sentry integration
  */
-export const useErrorHandler = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+export const useErrorHandler = <span class="fstat-no" title="function not covered" >()</span> =&gt; {
 <span class="cstat-no" title="statement not covered" >  return React.useCallback(<span class="fstat-no" title="function not covered" >(e</span>rror, context = <span class="branch-0 cbranch-no" title="branch not covered" >{})</span> =&gt; {</span>
     // Capture with Sentry before throwing
 <span class="cstat-no" title="statement not covered" >    captureError(error, {</span>
@@ -993,7 +996,7 @@ export const useErrorHandler = <span class="cstat-no" title="statement not cover
  * Sentry-enhanced version of the original ErrorBoundary
  * This creates a Sentry ErrorBoundary with fallback to our custom ErrorBoundary
  */
-export const SentryErrorBoundary = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >({</span> children, ...props }) =&gt; {</span>
+export const SentryErrorBoundary = <span class="fstat-no" title="function not covered" >({</span> children, ...props }) =&gt; {
 <span class="cstat-no" title="statement not covered" >  return (</span>
     &lt;Sentry.ErrorBoundary
       fallback={ErrorFallback}
@@ -1018,7 +1021,7 @@ export const SentryErrorBoundary = <span class="cstat-no" title="statement not c
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-07-27T02:49:48.033Z
+                at 2025-08-19T02:42:45.877Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

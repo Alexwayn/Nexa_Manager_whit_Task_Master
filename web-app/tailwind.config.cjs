@@ -1,6 +1,56 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  content: [
+    './index.html',
+    './src/**/*.{js,ts,jsx,tsx,html}'
+  ],
   darkMode: 'class',
+  safelist: [
+    // Dynamic color utilities for status badges and indicators
+    'bg-red-100', 'bg-red-500', 'text-red-800', 'text-red-500', 'text-red-600',
+    'bg-yellow-100', 'bg-yellow-500', 'text-yellow-800', 'text-yellow-500', 'text-yellow-600',
+    'bg-blue-100', 'bg-blue-500', 'text-blue-800', 'text-blue-500', 'text-blue-600',
+    'bg-green-100', 'bg-green-500', 'text-green-800', 'text-green-500', 'text-green-600',
+    'bg-gray-100', 'bg-gray-500', 'text-gray-800', 'text-gray-500', 'text-gray-600',
+    'bg-orange-100', 'bg-orange-500', 'text-orange-800', 'text-orange-500', 'text-orange-600',
+    'bg-purple-100', 'bg-purple-500', 'text-purple-800', 'text-purple-500', 'text-purple-600',
+    
+    // Dynamic spacing utilities
+    'h-1', 'h-2', 'h-3', 'h-4', 'h-5', 'h-6', 'h-8', 'h-10', 'h-12', 'h-16', 'h-20', 'h-24',
+    'w-1', 'w-2', 'w-3', 'w-4', 'w-5', 'w-6', 'w-8', 'w-10', 'w-12', 'w-16', 'w-20', 'w-24',
+    
+    // Dynamic border colors
+    'border-red-500', 'border-yellow-500', 'border-blue-500', 'border-green-500', 'border-gray-500', 'border-orange-500',
+    
+    // Potential dynamic chart colors (match SimpleChart.jsx)
+    'bg-indigo-500', 'bg-purple-500',
+    
+    // Dynamic width classes
+    'w-8', 'w-12', 'w-16', 'w-20', 'w-24', 'w-28', 'w-32', 'w-36', 'w-40',
+    
+    // Additional dynamic utility patterns
+    {
+      pattern: /bg-(red|yellow|blue|green|gray|orange|purple|indigo)-(50|100|200|300|400|500|600|700|800|900)/,
+    },
+    {
+      pattern: /text-(red|yellow|blue|green|gray|orange|purple|indigo)-(50|100|200|300|400|500|600|700|800|900)/,
+    },
+    {
+      pattern: /border-(red|yellow|blue|green|gray|orange|purple|indigo)-(50|100|200|300|400|500|600|700|800|900)/,
+    },
+    {
+      // numeric w/h like w-4, h-10
+      pattern: /(h|w)-([1-9]|[1-9][0-9])/,
+    },
+    {
+      // fractional and special widths used via template strings
+      pattern: /w-(1\/2|1\/3|2\/3|1\/4|2\/4|3\/4|1\/5|2\/5|3\/5|4\/5|1\/6|2\/6|3\/6|4\/6|5\/6|full|screen|min|max|fit)/,
+    },
+    {
+      // gradient color stops for ReportHeader and similar components
+      pattern: /(from|via|to)-(red|yellow|blue|green|gray|orange|purple|indigo)-(50|100|200|300|400|500|600|700|800|900)/,
+    },
+  ],
   theme: {
     extend: {
       colors: {

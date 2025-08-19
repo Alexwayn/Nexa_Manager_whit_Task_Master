@@ -1,12 +1,12 @@
 {
-  "timestamp": "2025-08-11T16:10:06.986Z",
+  "timestamp": "2025-08-18T05:31:45.965Z",
   "summary": {
-    "totalTests": 17,
-    "passedTests": 2,
+    "totalTests": 185,
+    "passedTests": 183,
     "failedTests": 0,
-    "pendingTests": 15,
+    "pendingTests": 2,
     "todoTests": 0,
-    "successRate": "11.76",
+    "successRate": "98.92",
     "failureRate": "0.00",
     "totalTime": 0,
     "averageTestTime": "0.00",
@@ -14,21 +14,1625 @@
   },
   "testSuites": [
     {
+      "name": "VoiceCommandHelp.test.js",
+      "fullPath": "E:\\AlexVenturesStudio\\Nexa_Manager_whit_Task_Master\\web-app\\src\\__tests__\\features\\voice\\VoiceCommandHelp.test.js",
+      "status": "unknown",
+      "duration": 880,
+      "numTests": 24,
+      "numPassing": 24,
+      "numFailing": 0,
+      "numPending": 0,
+      "numTodo": 0,
+      "tests": [
+        {
+          "title": "renders voice command help correctly",
+          "fullName": "VoiceCommandHelp renders voice command help correctly",
+          "status": "passed",
+          "duration": 7,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceCommandHelp"
+          ]
+        },
+        {
+          "title": "displays commands grouped by category",
+          "fullName": "VoiceCommandHelp displays commands grouped by category",
+          "status": "passed",
+          "duration": 1,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceCommandHelp"
+          ]
+        },
+        {
+          "title": "shows command descriptions",
+          "fullName": "VoiceCommandHelp shows command descriptions",
+          "status": "passed",
+          "duration": 1,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceCommandHelp"
+          ]
+        },
+        {
+          "title": "includes search functionality",
+          "fullName": "VoiceCommandHelp includes search functionality",
+          "status": "passed",
+          "duration": 1,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceCommandHelp"
+          ]
+        },
+        {
+          "title": "includes filter dropdown",
+          "fullName": "VoiceCommandHelp includes filter dropdown",
+          "status": "passed",
+          "duration": 1,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceCommandHelp"
+          ]
+        },
+        {
+          "title": "shows confidence levels",
+          "fullName": "VoiceCommandHelp shows confidence levels",
+          "status": "passed",
+          "duration": 1,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceCommandHelp"
+          ]
+        },
+        {
+          "title": "handles loading state",
+          "fullName": "VoiceCommandHelp handles loading state",
+          "status": "passed",
+          "duration": 0,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceCommandHelp"
+          ]
+        },
+        {
+          "title": "handles error state",
+          "fullName": "VoiceCommandHelp handles error state",
+          "status": "passed",
+          "duration": 1,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceCommandHelp"
+          ]
+        },
+        {
+          "title": "includes interactive buttons",
+          "fullName": "VoiceCommandHelp includes interactive buttons",
+          "status": "passed",
+          "duration": 1,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceCommandHelp"
+          ]
+        },
+        {
+          "title": "shows command examples when expanded",
+          "fullName": "VoiceCommandHelp shows command examples when expanded",
+          "status": "passed",
+          "duration": 1,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceCommandHelp"
+          ]
+        },
+        {
+          "title": "handles empty search results",
+          "fullName": "VoiceCommandHelp handles empty search results",
+          "status": "passed",
+          "duration": 0,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceCommandHelp"
+          ]
+        },
+        {
+          "title": "shows popular commands section",
+          "fullName": "VoiceCommandHelp shows popular commands section",
+          "status": "passed",
+          "duration": 0,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceCommandHelp"
+          ]
+        },
+        {
+          "title": "displays usage statistics",
+          "fullName": "VoiceCommandHelp displays usage statistics",
+          "status": "passed",
+          "duration": 0,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceCommandHelp"
+          ]
+        },
+        {
+          "title": "supports compact view",
+          "fullName": "VoiceCommandHelp supports compact view",
+          "status": "passed",
+          "duration": 0,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceCommandHelp"
+          ]
+        },
+        {
+          "title": "includes export functionality",
+          "fullName": "VoiceCommandHelp includes export functionality",
+          "status": "passed",
+          "duration": 0,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceCommandHelp"
+          ]
+        },
+        {
+          "title": "shows command aliases",
+          "fullName": "VoiceCommandHelp shows command aliases",
+          "status": "passed",
+          "duration": 0,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceCommandHelp"
+          ]
+        },
+        {
+          "title": "includes pronunciation guide",
+          "fullName": "VoiceCommandHelp includes pronunciation guide",
+          "status": "passed",
+          "duration": 1,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceCommandHelp"
+          ]
+        },
+        {
+          "title": "shows difficulty levels",
+          "fullName": "VoiceCommandHelp shows difficulty levels",
+          "status": "passed",
+          "duration": 0,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceCommandHelp"
+          ]
+        },
+        {
+          "title": "has proper ARIA attributes",
+          "fullName": "VoiceCommandHelp has proper ARIA attributes",
+          "status": "passed",
+          "duration": 0,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceCommandHelp"
+          ]
+        },
+        {
+          "title": "includes practice mode",
+          "fullName": "VoiceCommandHelp includes practice mode",
+          "status": "passed",
+          "duration": 1,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceCommandHelp"
+          ]
+        },
+        {
+          "title": "shows context information",
+          "fullName": "VoiceCommandHelp shows context information",
+          "status": "passed",
+          "duration": 0,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceCommandHelp"
+          ]
+        },
+        {
+          "title": "provides clipboard feedback",
+          "fullName": "VoiceCommandHelp provides clipboard feedback",
+          "status": "passed",
+          "duration": 0,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceCommandHelp"
+          ]
+        },
+        {
+          "title": "calls onTryCommand when try button is clicked",
+          "fullName": "VoiceCommandHelp calls onTryCommand when try button is clicked",
+          "status": "passed",
+          "duration": 1,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceCommandHelp"
+          ]
+        },
+        {
+          "title": "help service returns expected data",
+          "fullName": "VoiceCommandHelp help service returns expected data",
+          "status": "passed",
+          "duration": 1,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceCommandHelp"
+          ]
+        }
+      ],
+      "failureMessage": null,
+      "coverage": null
+    },
+    {
+      "name": "EmailCommandHandler.test.js",
+      "fullPath": "E:\\AlexVenturesStudio\\Nexa_Manager_whit_Task_Master\\web-app\\src\\__tests__\\features\\voice\\EmailCommandHandler.test.js",
+      "status": "unknown",
+      "duration": 919,
+      "numTests": 34,
+      "numPassing": 34,
+      "numFailing": 0,
+      "numPending": 0,
+      "numTodo": 0,
+      "tests": [
+        {
+          "title": "recognizes send email commands",
+          "fullName": "EmailCommandHandler Command Recognition recognizes send email commands",
+          "status": "passed",
+          "duration": 6,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "EmailCommandHandler",
+            "Command Recognition"
+          ]
+        },
+        {
+          "title": "recognizes email template commands",
+          "fullName": "EmailCommandHandler Command Recognition recognizes email template commands",
+          "status": "passed",
+          "duration": 0,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "EmailCommandHandler",
+            "Command Recognition"
+          ]
+        },
+        {
+          "title": "rejects non-email commands",
+          "fullName": "EmailCommandHandler Command Recognition rejects non-email commands",
+          "status": "passed",
+          "duration": 1,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "EmailCommandHandler",
+            "Command Recognition"
+          ]
+        },
+        {
+          "title": "extracts email addresses from commands",
+          "fullName": "EmailCommandHandler Email Address Extraction extracts email addresses from commands",
+          "status": "passed",
+          "duration": 2,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "EmailCommandHandler",
+            "Email Address Extraction"
+          ]
+        },
+        {
+          "title": "extracts multiple email addresses",
+          "fullName": "EmailCommandHandler Email Address Extraction extracts multiple email addresses",
+          "status": "passed",
+          "duration": 1,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "EmailCommandHandler",
+            "Email Address Extraction"
+          ]
+        },
+        {
+          "title": "handles contact names",
+          "fullName": "EmailCommandHandler Email Address Extraction handles contact names",
+          "status": "passed",
+          "duration": 0,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "EmailCommandHandler",
+            "Email Address Extraction"
+          ]
+        },
+        {
+          "title": "handles partial contact names",
+          "fullName": "EmailCommandHandler Email Address Extraction handles partial contact names",
+          "status": "passed",
+          "duration": 0,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "EmailCommandHandler",
+            "Email Address Extraction"
+          ]
+        },
+        {
+          "title": "extracts subject from \"about\" keyword",
+          "fullName": "EmailCommandHandler Subject Extraction extracts subject from \"about\" keyword",
+          "status": "passed",
+          "duration": 1,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "EmailCommandHandler",
+            "Subject Extraction"
+          ]
+        },
+        {
+          "title": "extracts subject from \"regarding\" keyword",
+          "fullName": "EmailCommandHandler Subject Extraction extracts subject from \"regarding\" keyword",
+          "status": "passed",
+          "duration": 1,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "EmailCommandHandler",
+            "Subject Extraction"
+          ]
+        },
+        {
+          "title": "extracts subject from \"with subject\" phrase",
+          "fullName": "EmailCommandHandler Subject Extraction extracts subject from \"with subject\" phrase",
+          "status": "passed",
+          "duration": 0,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "EmailCommandHandler",
+            "Subject Extraction"
+          ]
+        },
+        {
+          "title": "identifies invoice template commands",
+          "fullName": "EmailCommandHandler Template Handling identifies invoice template commands",
+          "status": "passed",
+          "duration": 0,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "EmailCommandHandler",
+            "Template Handling"
+          ]
+        },
+        {
+          "title": "identifies quote template commands",
+          "fullName": "EmailCommandHandler Template Handling identifies quote template commands",
+          "status": "passed",
+          "duration": 0,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "EmailCommandHandler",
+            "Template Handling"
+          ]
+        },
+        {
+          "title": "handles template with number",
+          "fullName": "EmailCommandHandler Template Handling handles template with number",
+          "status": "passed",
+          "duration": 0,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "EmailCommandHandler",
+            "Template Handling"
+          ]
+        },
+        {
+          "title": "validates email addresses",
+          "fullName": "EmailCommandHandler Email Validation validates email addresses",
+          "status": "passed",
+          "duration": 1,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "EmailCommandHandler",
+            "Email Validation"
+          ]
+        },
+        {
+          "title": "handles missing recipient",
+          "fullName": "EmailCommandHandler Email Validation handles missing recipient",
+          "status": "passed",
+          "duration": 0,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "EmailCommandHandler",
+            "Email Validation"
+          ]
+        },
+        {
+          "title": "validates contact existence",
+          "fullName": "EmailCommandHandler Email Validation validates contact existence",
+          "status": "passed",
+          "duration": 0,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "EmailCommandHandler",
+            "Email Validation"
+          ]
+        },
+        {
+          "title": "composes basic email",
+          "fullName": "EmailCommandHandler Email Composition composes basic email",
+          "status": "passed",
+          "duration": 1,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "EmailCommandHandler",
+            "Email Composition"
+          ]
+        },
+        {
+          "title": "composes template email",
+          "fullName": "EmailCommandHandler Email Composition composes template email",
+          "status": "passed",
+          "duration": 1,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "EmailCommandHandler",
+            "Email Composition"
+          ]
+        },
+        {
+          "title": "handles multiple recipients",
+          "fullName": "EmailCommandHandler Email Composition handles multiple recipients",
+          "status": "passed",
+          "duration": 2,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "EmailCommandHandler",
+            "Email Composition"
+          ]
+        },
+        {
+          "title": "handles email service errors",
+          "fullName": "EmailCommandHandler Error Handling handles email service errors",
+          "status": "passed",
+          "duration": 0,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "EmailCommandHandler",
+            "Error Handling"
+          ]
+        },
+        {
+          "title": "handles network errors gracefully",
+          "fullName": "EmailCommandHandler Error Handling handles network errors gracefully",
+          "status": "passed",
+          "duration": 1,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "EmailCommandHandler",
+            "Error Handling"
+          ]
+        },
+        {
+          "title": "handles template loading errors",
+          "fullName": "EmailCommandHandler Error Handling handles template loading errors",
+          "status": "passed",
+          "duration": 0,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "EmailCommandHandler",
+            "Error Handling"
+          ]
+        },
+        {
+          "title": "returns high confidence for exact matches",
+          "fullName": "EmailCommandHandler Command Confidence returns high confidence for exact matches",
+          "status": "passed",
+          "duration": 0,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "EmailCommandHandler",
+            "Command Confidence"
+          ]
+        },
+        {
+          "title": "returns medium confidence for partial matches",
+          "fullName": "EmailCommandHandler Command Confidence returns medium confidence for partial matches",
+          "status": "passed",
+          "duration": 0,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "EmailCommandHandler",
+            "Command Confidence"
+          ]
+        },
+        {
+          "title": "returns low confidence for unclear commands",
+          "fullName": "EmailCommandHandler Command Confidence returns low confidence for unclear commands",
+          "status": "passed",
+          "duration": 0,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "EmailCommandHandler",
+            "Command Confidence"
+          ]
+        },
+        {
+          "title": "provides suggestions for failed commands",
+          "fullName": "EmailCommandHandler Command Suggestions provides suggestions for failed commands",
+          "status": "passed",
+          "duration": 0,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "EmailCommandHandler",
+            "Command Suggestions"
+          ]
+        },
+        {
+          "title": "suggests template commands",
+          "fullName": "EmailCommandHandler Command Suggestions suggests template commands",
+          "status": "passed",
+          "duration": 0,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "EmailCommandHandler",
+            "Command Suggestions"
+          ]
+        },
+        {
+          "title": "suggests contact-based commands",
+          "fullName": "EmailCommandHandler Command Suggestions suggests contact-based commands",
+          "status": "passed",
+          "duration": 0,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "EmailCommandHandler",
+            "Command Suggestions"
+          ]
+        },
+        {
+          "title": "handles complete email workflow",
+          "fullName": "EmailCommandHandler Integration Tests handles complete email workflow",
+          "status": "passed",
+          "duration": 0,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "EmailCommandHandler",
+            "Integration Tests"
+          ]
+        },
+        {
+          "title": "handles contact resolution workflow",
+          "fullName": "EmailCommandHandler Integration Tests handles contact resolution workflow",
+          "status": "passed",
+          "duration": 1,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "EmailCommandHandler",
+            "Integration Tests"
+          ]
+        },
+        {
+          "title": "executes commands within reasonable time",
+          "fullName": "EmailCommandHandler Performance executes commands within reasonable time",
+          "status": "passed",
+          "duration": 0,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "EmailCommandHandler",
+            "Performance"
+          ]
+        },
+        {
+          "title": "handles concurrent commands",
+          "fullName": "EmailCommandHandler Performance handles concurrent commands",
+          "status": "passed",
+          "duration": 1,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "EmailCommandHandler",
+            "Performance"
+          ]
+        },
+        {
+          "title": "provides accessible command descriptions",
+          "fullName": "EmailCommandHandler Accessibility provides accessible command descriptions",
+          "status": "passed",
+          "duration": 0,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "EmailCommandHandler",
+            "Accessibility"
+          ]
+        },
+        {
+          "title": "provides accessible error messages",
+          "fullName": "EmailCommandHandler Accessibility provides accessible error messages",
+          "status": "passed",
+          "duration": 0,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "EmailCommandHandler",
+            "Accessibility"
+          ]
+        }
+      ],
+      "failureMessage": null,
+      "coverage": null
+    },
+    {
+      "name": "VoiceActivationButton.test.jsx",
+      "fullPath": "E:\\AlexVenturesStudio\\Nexa_Manager_whit_Task_Master\\web-app\\src\\__tests__\\features\\voice\\VoiceActivationButton.test.jsx",
+      "status": "unknown",
+      "duration": 1177,
+      "numTests": 4,
+      "numPassing": 4,
+      "numFailing": 0,
+      "numPending": 0,
+      "numTodo": 0,
+      "tests": [
+        {
+          "title": "mock functions work correctly",
+          "fullName": "VoiceActivationButton Component mock functions work correctly",
+          "status": "passed",
+          "duration": 4,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceActivationButton Component"
+          ]
+        },
+        {
+          "title": "button click event works",
+          "fullName": "VoiceActivationButton Component button click event works",
+          "status": "passed",
+          "duration": 73,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceActivationButton Component"
+          ]
+        },
+        {
+          "title": "calls activateVoice when clicked and not listening",
+          "fullName": "VoiceActivationButton Component calls activateVoice when clicked and not listening",
+          "status": "passed",
+          "duration": 27,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceActivationButton Component"
+          ]
+        },
+        {
+          "title": "calls deactivateVoice when clicked and listening",
+          "fullName": "VoiceActivationButton Component calls deactivateVoice when clicked and listening",
+          "status": "passed",
+          "duration": 44,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceActivationButton Component"
+          ]
+        }
+      ],
+      "failureMessage": null,
+      "coverage": null
+    },
+    {
+      "name": "Voice.test.jsx",
+      "fullPath": "E:\\AlexVenturesStudio\\Nexa_Manager_whit_Task_Master\\web-app\\src\\__tests__\\features\\voice\\Voice.test.jsx",
+      "status": "unknown",
+      "duration": 1241,
+      "numTests": 17,
+      "numPassing": 17,
+      "numFailing": 0,
+      "numPending": 0,
+      "numTodo": 0,
+      "tests": [
+        {
+          "title": "renders voice component in button mode by default",
+          "fullName": "Voice Component renders voice component in button mode by default",
+          "status": "passed",
+          "duration": 42,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "Voice Component"
+          ]
+        },
+        {
+          "title": "renders voice component in floating mode",
+          "fullName": "Voice Component renders voice component in floating mode",
+          "status": "passed",
+          "duration": 10,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "Voice Component"
+          ]
+        },
+        {
+          "title": "renders voice component in indicator mode",
+          "fullName": "Voice Component renders voice component in indicator mode",
+          "status": "passed",
+          "duration": 5,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "Voice Component"
+          ]
+        },
+        {
+          "title": "shows listening state when voice is active",
+          "fullName": "Voice Component shows listening state when voice is active",
+          "status": "passed",
+          "duration": 4,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "Voice Component"
+          ]
+        },
+        {
+          "title": "shows processing state",
+          "fullName": "Voice Component shows processing state",
+          "status": "passed",
+          "duration": 1,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "Voice Component"
+          ]
+        },
+        {
+          "title": "handles voice activation click",
+          "fullName": "Voice Component handles voice activation click",
+          "status": "passed",
+          "duration": 40,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "Voice Component"
+          ]
+        },
+        {
+          "title": "handles voice deactivation when listening",
+          "fullName": "Voice Component handles voice deactivation when listening",
+          "status": "passed",
+          "duration": 49,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "Voice Component"
+          ]
+        },
+        {
+          "title": "displays error message when error occurs",
+          "fullName": "Voice Component displays error message when error occurs",
+          "status": "passed",
+          "duration": 5,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "Voice Component"
+          ]
+        },
+        {
+          "title": "applies custom className when provided",
+          "fullName": "Voice Component applies custom className when provided",
+          "status": "passed",
+          "duration": 1,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "Voice Component"
+          ]
+        },
+        {
+          "title": "shows microphone icon when not listening",
+          "fullName": "Voice Component shows microphone icon when not listening",
+          "status": "passed",
+          "duration": 1,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "Voice Component"
+          ]
+        },
+        {
+          "title": "shows stop icon when listening",
+          "fullName": "Voice Component shows stop icon when listening",
+          "status": "passed",
+          "duration": 1,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "Voice Component"
+          ]
+        },
+        {
+          "title": "shows processing state correctly",
+          "fullName": "Voice Component shows processing state correctly",
+          "status": "passed",
+          "duration": 2,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "Voice Component"
+          ]
+        },
+        {
+          "title": "handles floating mode correctly",
+          "fullName": "Voice Component handles floating mode correctly",
+          "status": "passed",
+          "duration": 6,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "Voice Component"
+          ]
+        },
+        {
+          "title": "shows correct tooltip text based on state",
+          "fullName": "Voice Component shows correct tooltip text based on state",
+          "status": "passed",
+          "duration": 2,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "Voice Component"
+          ]
+        },
+        {
+          "title": "shows stop tooltip when listening",
+          "fullName": "Voice Component shows stop tooltip when listening",
+          "status": "passed",
+          "duration": 2,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "Voice Component"
+          ]
+        },
+        {
+          "title": "shows disabled state when voice assistant is disabled",
+          "fullName": "Voice Component shows disabled state when voice assistant is disabled",
+          "status": "passed",
+          "duration": 2,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "Voice Component"
+          ]
+        },
+        {
+          "title": "renders indicator mode correctly",
+          "fullName": "Voice Component renders indicator mode correctly",
+          "status": "passed",
+          "duration": 3,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "Voice Component"
+          ]
+        }
+      ],
+      "failureMessage": null,
+      "coverage": null
+    },
+    {
+      "name": "FeedbackAnalysisTools.test.jsx",
+      "fullPath": "E:\\AlexVenturesStudio\\Nexa_Manager_whit_Task_Master\\web-app\\src\\__tests__\\features\\voice\\FeedbackAnalysisTools.test.jsx",
+      "status": "unknown",
+      "duration": 1456,
+      "numTests": 5,
+      "numPassing": 5,
+      "numFailing": 0,
+      "numPending": 0,
+      "numTodo": 0,
+      "tests": [
+        {
+          "title": "renders header and analytics summary",
+          "fullName": "FeedbackAnalysisTools (aligned with current component) renders header and analytics summary",
+          "status": "passed",
+          "duration": 100,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "FeedbackAnalysisTools (aligned with current component)"
+          ]
+        },
+        {
+          "title": "shows loading state while fetching",
+          "fullName": "FeedbackAnalysisTools (aligned with current component) shows loading state while fetching",
+          "status": "passed",
+          "duration": 2,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "FeedbackAnalysisTools (aligned with current component)"
+          ]
+        },
+        {
+          "title": "refresh button reloads data",
+          "fullName": "FeedbackAnalysisTools (aligned with current component) refresh button reloads data",
+          "status": "passed",
+          "duration": 90,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "FeedbackAnalysisTools (aligned with current component)"
+          ]
+        },
+        {
+          "title": "exports data via browser download",
+          "fullName": "FeedbackAnalysisTools (aligned with current component) exports data via browser download",
+          "status": "passed",
+          "duration": 138,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "FeedbackAnalysisTools (aligned with current component)"
+          ]
+        },
+        {
+          "title": "updates filters and triggers reload",
+          "fullName": "FeedbackAnalysisTools (aligned with current component) updates filters and triggers reload",
+          "status": "passed",
+          "duration": 93,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "FeedbackAnalysisTools (aligned with current component)"
+          ]
+        }
+      ],
+      "failureMessage": null,
+      "coverage": null
+    },
+    {
+      "name": "VoiceOnboarding.test.jsx",
+      "fullPath": "E:\\AlexVenturesStudio\\Nexa_Manager_whit_Task_Master\\web-app\\src\\__tests__\\features\\voice\\VoiceOnboarding.test.jsx",
+      "status": "unknown",
+      "duration": 2525,
+      "numTests": 25,
+      "numPassing": 25,
+      "numFailing": 0,
+      "numPending": 0,
+      "numTodo": 0,
+      "tests": [
+        {
+          "title": "renders onboarding steps correctly",
+          "fullName": "VoiceOnboarding renders onboarding steps correctly",
+          "status": "passed",
+          "duration": 46,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceOnboarding"
+          ]
+        },
+        {
+          "title": "navigates through onboarding steps",
+          "fullName": "VoiceOnboarding navigates through onboarding steps",
+          "status": "passed",
+          "duration": 57,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceOnboarding"
+          ]
+        },
+        {
+          "title": "requests microphone permission in step 2",
+          "fullName": "VoiceOnboarding requests microphone permission in step 2",
+          "status": "passed",
+          "duration": 103,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceOnboarding"
+          ]
+        },
+        {
+          "title": "handles permission denied gracefully",
+          "fullName": "VoiceOnboarding handles permission denied gracefully",
+          "status": "passed",
+          "duration": 134,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceOnboarding"
+          ]
+        },
+        {
+          "title": "shows voice command examples in step 3",
+          "fullName": "VoiceOnboarding shows voice command examples in step 3",
+          "status": "passed",
+          "duration": 113,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceOnboarding"
+          ]
+        },
+        {
+          "title": "allows practice in step 4",
+          "fullName": "VoiceOnboarding allows practice in step 4",
+          "status": "passed",
+          "duration": 108,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceOnboarding"
+          ]
+        },
+        {
+          "title": "completes onboarding successfully",
+          "fullName": "VoiceOnboarding completes onboarding successfully",
+          "status": "passed",
+          "duration": 231,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceOnboarding"
+          ]
+        },
+        {
+          "title": "allows skipping onboarding",
+          "fullName": "VoiceOnboarding allows skipping onboarding",
+          "status": "passed",
+          "duration": 53,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceOnboarding"
+          ]
+        },
+        {
+          "title": "shows progress indicator",
+          "fullName": "VoiceOnboarding shows progress indicator",
+          "status": "passed",
+          "duration": 7,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceOnboarding"
+          ]
+        },
+        {
+          "title": "allows going back to previous steps",
+          "fullName": "VoiceOnboarding allows going back to previous steps",
+          "status": "passed",
+          "duration": 113,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceOnboarding"
+          ]
+        },
+        {
+          "title": "disables next button when required actions are not completed",
+          "fullName": "VoiceOnboarding disables next button when required actions are not completed",
+          "status": "passed",
+          "duration": 45,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceOnboarding"
+          ]
+        },
+        {
+          "title": "shows helpful tips for each step",
+          "fullName": "VoiceOnboarding shows helpful tips for each step",
+          "status": "passed",
+          "duration": 57,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceOnboarding"
+          ]
+        },
+        {
+          "title": "handles keyboard navigation",
+          "fullName": "VoiceOnboarding handles keyboard navigation",
+          "status": "passed",
+          "duration": 6,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceOnboarding"
+          ]
+        },
+        {
+          "title": "shows error states appropriately",
+          "fullName": "VoiceOnboarding shows error states appropriately",
+          "status": "passed",
+          "duration": 91,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceOnboarding"
+          ]
+        },
+        {
+          "title": "saves progress and can resume",
+          "fullName": "VoiceOnboarding saves progress and can resume",
+          "status": "passed",
+          "duration": 3,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceOnboarding"
+          ]
+        },
+        {
+          "title": "shows animated demonstrations",
+          "fullName": "VoiceOnboarding shows animated demonstrations",
+          "status": "passed",
+          "duration": 92,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceOnboarding"
+          ]
+        },
+        {
+          "title": "provides accessibility features",
+          "fullName": "VoiceOnboarding provides accessibility features",
+          "status": "passed",
+          "duration": 4,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceOnboarding"
+          ]
+        },
+        {
+          "title": "handles mobile-specific features",
+          "fullName": "VoiceOnboarding handles mobile-specific features",
+          "status": "passed",
+          "duration": 2,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceOnboarding"
+          ]
+        },
+        {
+          "title": "shows browser compatibility warnings",
+          "fullName": "VoiceOnboarding shows browser compatibility warnings",
+          "status": "passed",
+          "duration": 3,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceOnboarding"
+          ]
+        },
+        {
+          "title": "provides troubleshooting help",
+          "fullName": "VoiceOnboarding provides troubleshooting help",
+          "status": "passed",
+          "duration": 57,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceOnboarding"
+          ]
+        },
+        {
+          "title": "tracks onboarding analytics",
+          "fullName": "VoiceOnboarding tracks onboarding analytics",
+          "status": "passed",
+          "duration": 42,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceOnboarding"
+          ]
+        },
+        {
+          "title": "shows personalized recommendations",
+          "fullName": "VoiceOnboarding shows personalized recommendations",
+          "status": "passed",
+          "duration": 94,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceOnboarding"
+          ]
+        },
+        {
+          "title": "supports multiple languages",
+          "fullName": "VoiceOnboarding supports multiple languages",
+          "status": "passed",
+          "duration": 2,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceOnboarding"
+          ]
+        },
+        {
+          "title": "handles offline mode gracefully",
+          "fullName": "VoiceOnboarding handles offline mode gracefully",
+          "status": "passed",
+          "duration": 3,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceOnboarding"
+          ]
+        },
+        {
+          "title": "provides video tutorials",
+          "fullName": "VoiceOnboarding provides video tutorials",
+          "status": "passed",
+          "duration": 58,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceOnboarding"
+          ]
+        }
+      ],
+      "failureMessage": null,
+      "coverage": null
+    },
+    {
+      "name": "VoiceFeedbackButton.test.jsx",
+      "fullPath": "E:\\AlexVenturesStudio\\Nexa_Manager_whit_Task_Master\\web-app\\src\\__tests__\\features\\voice\\VoiceFeedbackButton.test.jsx",
+      "status": "unknown",
+      "duration": 2528,
+      "numTests": 16,
+      "numPassing": 16,
+      "numFailing": 0,
+      "numPending": 0,
+      "numTodo": 0,
+      "tests": [
+        {
+          "title": "renders feedback button",
+          "fullName": "VoiceFeedbackButton renders feedback button",
+          "status": "passed",
+          "duration": 16,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceFeedbackButton"
+          ]
+        },
+        {
+          "title": "shows correct icon and text",
+          "fullName": "VoiceFeedbackButton shows correct icon and text",
+          "status": "passed",
+          "duration": 3,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceFeedbackButton"
+          ]
+        },
+        {
+          "title": "opens feedback modal when clicked",
+          "fullName": "VoiceFeedbackButton opens feedback modal when clicked",
+          "status": "passed",
+          "duration": 184,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceFeedbackButton"
+          ]
+        },
+        {
+          "title": "handles feedback submission",
+          "fullName": "VoiceFeedbackButton handles feedback submission",
+          "status": "passed",
+          "duration": 228,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceFeedbackButton"
+          ]
+        },
+        {
+          "title": "shows tooltip on hover",
+          "fullName": "VoiceFeedbackButton shows tooltip on hover",
+          "status": "passed",
+          "duration": 2,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceFeedbackButton"
+          ]
+        },
+        {
+          "title": "supports keyboard navigation",
+          "fullName": "VoiceFeedbackButton supports keyboard navigation",
+          "status": "passed",
+          "duration": 153,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceFeedbackButton"
+          ]
+        },
+        {
+          "title": "shows loading state during submission",
+          "fullName": "VoiceFeedbackButton shows loading state during submission",
+          "status": "passed",
+          "duration": 229,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceFeedbackButton"
+          ]
+        },
+        {
+          "title": "handles submission errors gracefully",
+          "fullName": "VoiceFeedbackButton handles submission errors gracefully",
+          "status": "passed",
+          "duration": 233,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceFeedbackButton"
+          ]
+        },
+        {
+          "title": "displays success message after submission",
+          "fullName": "VoiceFeedbackButton displays success message after submission",
+          "status": "passed",
+          "duration": 218,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceFeedbackButton"
+          ]
+        },
+        {
+          "title": "supports custom styling",
+          "fullName": "VoiceFeedbackButton supports custom styling",
+          "status": "passed",
+          "duration": 4,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceFeedbackButton"
+          ]
+        },
+        {
+          "title": "shows feedback count when available",
+          "fullName": "VoiceFeedbackButton shows feedback count when available",
+          "status": "passed",
+          "duration": 1,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceFeedbackButton"
+          ]
+        },
+        {
+          "title": "handles rapid clicks gracefully",
+          "fullName": "VoiceFeedbackButton handles rapid clicks gracefully",
+          "status": "passed",
+          "duration": 236,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceFeedbackButton"
+          ]
+        },
+        {
+          "title": "updates when voice state changes",
+          "fullName": "VoiceFeedbackButton updates when voice state changes",
+          "status": "passed",
+          "duration": 4,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceFeedbackButton"
+          ]
+        },
+        {
+          "title": "has proper ARIA attributes",
+          "fullName": "VoiceFeedbackButton has proper ARIA attributes",
+          "status": "passed",
+          "duration": 2,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceFeedbackButton"
+          ]
+        },
+        {
+          "title": "supports icon-only mode",
+          "fullName": "VoiceFeedbackButton supports icon-only mode",
+          "status": "passed",
+          "duration": 1,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceFeedbackButton"
+          ]
+        },
+        {
+          "title": "handles voice assistant disabled state",
+          "fullName": "VoiceFeedbackButton handles voice assistant disabled state",
+          "status": "passed",
+          "duration": 1,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceFeedbackButton"
+          ]
+        }
+      ],
+      "failureMessage": null,
+      "coverage": null
+    },
+    {
+      "name": "FloatingMicrophone.test.jsx",
+      "fullPath": "E:\\AlexVenturesStudio\\Nexa_Manager_whit_Task_Master\\web-app\\src\\__tests__\\features\\voice\\FloatingMicrophone.test.jsx",
+      "status": "unknown",
+      "duration": 2939,
+      "numTests": 20,
+      "numPassing": 19,
+      "numFailing": 0,
+      "numPending": 1,
+      "numTodo": 0,
+      "tests": [
+        {
+          "title": "should render the floating microphone button",
+          "fullName": "FloatingMicrophone should render the floating microphone button",
+          "status": "passed",
+          "duration": 23,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "FloatingMicrophone"
+          ]
+        },
+        {
+          "title": "shows correct icon based on voice state",
+          "fullName": "FloatingMicrophone shows correct icon based on voice state",
+          "status": "passed",
+          "duration": 132,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "FloatingMicrophone"
+          ]
+        },
+        {
+          "title": "toggles voice recognition on click",
+          "fullName": "FloatingMicrophone toggles voice recognition on click",
+          "status": "passed",
+          "duration": 83,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "FloatingMicrophone"
+          ]
+        },
+        {
+          "title": "shows feedback button after command execution",
+          "fullName": "FloatingMicrophone shows feedback button after command execution",
+          "status": "passed",
+          "duration": 118,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "FloatingMicrophone"
+          ]
+        },
+        {
+          "title": "opens feedback modal when feedback button is clicked",
+          "fullName": "FloatingMicrophone opens feedback modal when feedback button is clicked",
+          "status": "passed",
+          "duration": 303,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "FloatingMicrophone"
+          ]
+        },
+        {
+          "title": "handles feedback submission",
+          "fullName": "FloatingMicrophone handles feedback submission",
+          "status": "passed",
+          "duration": 296,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "FloatingMicrophone"
+          ]
+        },
+        {
+          "title": "shows processing state during command execution",
+          "fullName": "FloatingMicrophone shows processing state during command execution",
+          "status": "passed",
+          "duration": 77,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "FloatingMicrophone"
+          ]
+        },
+        {
+          "title": "displays error state when recognition fails",
+          "fullName": "FloatingMicrophone displays error state when recognition fails",
+          "status": "passed",
+          "duration": 136,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "FloatingMicrophone"
+          ]
+        },
+        {
+          "title": "handles permission denied gracefully",
+          "fullName": "FloatingMicrophone handles permission denied gracefully",
+          "status": "passed",
+          "duration": 14,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "FloatingMicrophone"
+          ]
+        },
+        {
+          "title": "shows tooltip on hover",
+          "fullName": "FloatingMicrophone shows tooltip on hover",
+          "status": "passed",
+          "duration": 28,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "FloatingMicrophone"
+          ]
+        },
+        {
+          "title": "supports keyboard navigation",
+          "fullName": "FloatingMicrophone supports keyboard navigation",
+          "status": "passed",
+          "duration": 25,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "FloatingMicrophone"
+          ]
+        },
+        {
+          "title": "maintains position during scroll",
+          "fullName": "FloatingMicrophone maintains position during scroll",
+          "status": "passed",
+          "duration": 1,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "FloatingMicrophone"
+          ]
+        },
+        {
+          "title": "shows pulse animation during listening",
+          "fullName": "FloatingMicrophone shows pulse animation during listening",
+          "status": "passed",
+          "duration": 12,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "FloatingMicrophone"
+          ]
+        },
+        {
+          "title": "handles rapid clicks gracefully",
+          "fullName": "FloatingMicrophone handles rapid clicks gracefully",
+          "status": "passed",
+          "duration": 13,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "FloatingMicrophone"
+          ]
+        },
+        {
+          "title": "cleans up resources on unmount",
+          "fullName": "FloatingMicrophone cleans up resources on unmount",
+          "status": "passed",
+          "duration": 1,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "FloatingMicrophone"
+          ]
+        },
+        {
+          "title": "adapts to mobile viewport",
+          "fullName": "FloatingMicrophone adapts to mobile viewport",
+          "status": "passed",
+          "duration": 25,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "FloatingMicrophone"
+          ]
+        },
+        {
+          "title": "shows command suggestions after failed recognition",
+          "fullName": "FloatingMicrophone shows command suggestions after failed recognition",
+          "status": "pending",
+          "duration": 0,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "FloatingMicrophone"
+          ]
+        },
+        {
+          "title": "should be disabled when voice assistant is disabled",
+          "fullName": "FloatingMicrophone should be disabled when voice assistant is disabled",
+          "status": "passed",
+          "duration": 2,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "FloatingMicrophone"
+          ]
+        },
+        {
+          "title": "shows confidence indicator for recognized commands",
+          "fullName": "FloatingMicrophone shows confidence indicator for recognized commands",
+          "status": "passed",
+          "duration": 75,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "FloatingMicrophone"
+          ]
+        },
+        {
+          "title": "handles multiple feedback sessions",
+          "fullName": "FloatingMicrophone handles multiple feedback sessions",
+          "status": "passed",
+          "duration": 537,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "FloatingMicrophone"
+          ]
+        }
+      ],
+      "failureMessage": null,
+      "coverage": null
+    },
+    {
       "name": "VoiceFeedback.test.jsx",
       "fullPath": "E:\\AlexVenturesStudio\\Nexa_Manager_whit_Task_Master\\web-app\\src\\__tests__\\features\\voice\\VoiceFeedback.test.jsx",
       "status": "unknown",
-      "duration": 23482,
+      "duration": 3057,
       "numTests": 17,
-      "numPassing": 2,
+      "numPassing": 16,
       "numFailing": 0,
-      "numPending": 15,
+      "numPending": 1,
       "numTodo": 0,
       "tests": [
         {
           "title": "renders voice feedback page correctly",
           "fullName": "VoiceFeedback Page renders voice feedback page correctly",
-          "status": "pending",
-          "duration": 0,
+          "status": "passed",
+          "duration": 37,
           "failureMessages": [],
           "ancestorTitles": [
             "VoiceFeedback Page"
@@ -37,8 +1641,8 @@
         {
           "title": "displays feedback analytics",
           "fullName": "VoiceFeedback Page displays feedback analytics",
-          "status": "pending",
-          "duration": 0,
+          "status": "passed",
+          "duration": 66,
           "failureMessages": [],
           "ancestorTitles": [
             "VoiceFeedback Page"
@@ -47,8 +1651,8 @@
         {
           "title": "shows feedback modal when add feedback button is clicked",
           "fullName": "VoiceFeedback Page shows feedback modal when add feedback button is clicked",
-          "status": "pending",
-          "duration": 0,
+          "status": "passed",
+          "duration": 14,
           "failureMessages": [],
           "ancestorTitles": [
             "VoiceFeedback Page"
@@ -57,8 +1661,8 @@
         {
           "title": "verifies spy works",
           "fullName": "VoiceFeedback Page verifies spy works",
-          "status": "pending",
-          "duration": 0,
+          "status": "passed",
+          "duration": 1,
           "failureMessages": [],
           "ancestorTitles": [
             "VoiceFeedback Page"
@@ -68,7 +1672,7 @@
           "title": "handles feedback submission",
           "fullName": "VoiceFeedback Page handles feedback submission",
           "status": "passed",
-          "duration": 69,
+          "duration": 39,
           "failureMessages": [],
           "ancestorTitles": [
             "VoiceFeedback Page"
@@ -77,8 +1681,8 @@
         {
           "title": "displays error message when analytics loading fails",
           "fullName": "VoiceFeedback Page displays error message when analytics loading fails",
-          "status": "pending",
-          "duration": 0,
+          "status": "passed",
+          "duration": 54,
           "failureMessages": [],
           "ancestorTitles": [
             "VoiceFeedback Page"
@@ -87,8 +1691,8 @@
         {
           "title": "shows queued feedback count when offline",
           "fullName": "VoiceFeedback Page shows queued feedback count when offline",
-          "status": "pending",
-          "duration": 0,
+          "status": "passed",
+          "duration": 68,
           "failureMessages": [],
           "ancestorTitles": [
             "VoiceFeedback Page"
@@ -97,8 +1701,8 @@
         {
           "title": "handles sync queued feedback",
           "fullName": "VoiceFeedback Page handles sync queued feedback",
-          "status": "pending",
-          "duration": 0,
+          "status": "passed",
+          "duration": 88,
           "failureMessages": [],
           "ancestorTitles": [
             "VoiceFeedback Page"
@@ -107,8 +1711,8 @@
         {
           "title": "displays feedback analysis tools",
           "fullName": "VoiceFeedback Page displays feedback analysis tools",
-          "status": "pending",
-          "duration": 0,
+          "status": "passed",
+          "duration": 16,
           "failureMessages": [],
           "ancestorTitles": [
             "VoiceFeedback Page"
@@ -117,8 +1721,8 @@
         {
           "title": "displays rating distribution chart",
           "fullName": "VoiceFeedback Page displays rating distribution chart",
-          "status": "pending",
-          "duration": 0,
+          "status": "passed",
+          "duration": 81,
           "failureMessages": [],
           "ancestorTitles": [
             "VoiceFeedback Page"
@@ -127,8 +1731,8 @@
         {
           "title": "shows common issues section",
           "fullName": "VoiceFeedback Page shows common issues section",
-          "status": "pending",
-          "duration": 0,
+          "status": "passed",
+          "duration": 73,
           "failureMessages": [],
           "ancestorTitles": [
             "VoiceFeedback Page"
@@ -137,8 +1741,8 @@
         {
           "title": "handles empty analytics data gracefully",
           "fullName": "VoiceFeedback Page handles empty analytics data gracefully",
-          "status": "pending",
-          "duration": 0,
+          "status": "passed",
+          "duration": 70,
           "failureMessages": [],
           "ancestorTitles": [
             "VoiceFeedback Page"
@@ -147,8 +1751,8 @@
         {
           "title": "refreshes analytics data",
           "fullName": "VoiceFeedback Page refreshes analytics data",
-          "status": "pending",
-          "duration": 0,
+          "status": "passed",
+          "duration": 67,
           "failureMessages": [],
           "ancestorTitles": [
             "VoiceFeedback Page"
@@ -157,8 +1761,8 @@
         {
           "title": "exports feedback data",
           "fullName": "VoiceFeedback Page exports feedback data",
-          "status": "pending",
-          "duration": 0,
+          "status": "passed",
+          "duration": 98,
           "failureMessages": [],
           "ancestorTitles": [
             "VoiceFeedback Page"
@@ -177,8 +1781,8 @@
         {
           "title": "displays loading state while fetching analytics",
           "fullName": "VoiceFeedback Page displays loading state while fetching analytics",
-          "status": "pending",
-          "duration": 0,
+          "status": "passed",
+          "duration": 15,
           "failureMessages": [],
           "ancestorTitles": [
             "VoiceFeedback Page"
@@ -188,10 +1792,255 @@
           "title": "handles feedback submission errors",
           "fullName": "VoiceFeedback Page handles feedback submission errors",
           "status": "passed",
-          "duration": 194,
+          "duration": 218,
           "failureMessages": [],
           "ancestorTitles": [
             "VoiceFeedback Page"
+          ]
+        }
+      ],
+      "failureMessage": null,
+      "coverage": null
+    },
+    {
+      "name": "VoiceFeedbackModal.test.jsx",
+      "fullPath": "E:\\AlexVenturesStudio\\Nexa_Manager_whit_Task_Master\\web-app\\src\\__tests__\\features\\voice\\VoiceFeedbackModal.test.jsx",
+      "status": "unknown",
+      "duration": 3854,
+      "numTests": 23,
+      "numPassing": 23,
+      "numFailing": 0,
+      "numPending": 0,
+      "numTodo": 0,
+      "tests": [
+        {
+          "title": "renders modal when open",
+          "fullName": "VoiceFeedbackModal renders modal when open",
+          "status": "passed",
+          "duration": 54,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceFeedbackModal"
+          ]
+        },
+        {
+          "title": "does not render when closed",
+          "fullName": "VoiceFeedbackModal does not render when closed",
+          "status": "passed",
+          "duration": 2,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceFeedbackModal"
+          ]
+        },
+        {
+          "title": "displays quick feedback options",
+          "fullName": "VoiceFeedbackModal displays quick feedback options",
+          "status": "passed",
+          "duration": 9,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceFeedbackModal"
+          ]
+        },
+        {
+          "title": "handles quick feedback selection",
+          "fullName": "VoiceFeedbackModal handles quick feedback selection",
+          "status": "passed",
+          "duration": 34,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceFeedbackModal"
+          ]
+        },
+        {
+          "title": "allows custom rating selection",
+          "fullName": "VoiceFeedbackModal allows custom rating selection",
+          "status": "passed",
+          "duration": 40,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceFeedbackModal"
+          ]
+        },
+        {
+          "title": "handles comment input",
+          "fullName": "VoiceFeedbackModal handles comment input",
+          "status": "passed",
+          "duration": 360,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceFeedbackModal"
+          ]
+        },
+        {
+          "title": "submits feedback with all data",
+          "fullName": "VoiceFeedbackModal submits feedback with all data",
+          "status": "passed",
+          "duration": 428,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceFeedbackModal"
+          ]
+        },
+        {
+          "title": "requires rating before submission",
+          "fullName": "VoiceFeedbackModal requires rating before submission",
+          "status": "passed",
+          "duration": 44,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceFeedbackModal"
+          ]
+        },
+        {
+          "title": "closes modal when close button is clicked",
+          "fullName": "VoiceFeedbackModal closes modal when close button is clicked",
+          "status": "passed",
+          "duration": 62,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceFeedbackModal"
+          ]
+        },
+        {
+          "title": "closes modal when clicking outside",
+          "fullName": "VoiceFeedbackModal closes modal when clicking outside",
+          "status": "passed",
+          "duration": 55,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceFeedbackModal"
+          ]
+        },
+        {
+          "title": "closes modal with Escape key",
+          "fullName": "VoiceFeedbackModal closes modal with Escape key",
+          "status": "passed",
+          "duration": 4,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceFeedbackModal"
+          ]
+        },
+        {
+          "title": "prevents closing when clicking inside modal content",
+          "fullName": "VoiceFeedbackModal prevents closing when clicking inside modal content",
+          "status": "passed",
+          "duration": 39,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceFeedbackModal"
+          ]
+        },
+        {
+          "title": "displays command suggestions for low confidence",
+          "fullName": "VoiceFeedbackModal displays command suggestions for low confidence",
+          "status": "passed",
+          "duration": 7,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceFeedbackModal"
+          ]
+        },
+        {
+          "title": "handles suggestion selection",
+          "fullName": "VoiceFeedbackModal handles suggestion selection",
+          "status": "passed",
+          "duration": 25,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceFeedbackModal"
+          ]
+        },
+        {
+          "title": "shows loading state during submission",
+          "fullName": "VoiceFeedbackModal shows loading state during submission",
+          "status": "passed",
+          "duration": 114,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceFeedbackModal"
+          ]
+        },
+        {
+          "title": "handles submission errors",
+          "fullName": "VoiceFeedbackModal handles submission errors",
+          "status": "passed",
+          "duration": 97,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceFeedbackModal"
+          ]
+        },
+        {
+          "title": "displays feedback categories",
+          "fullName": "VoiceFeedbackModal displays feedback categories",
+          "status": "passed",
+          "duration": 12,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceFeedbackModal"
+          ]
+        },
+        {
+          "title": "handles category selection",
+          "fullName": "VoiceFeedbackModal handles category selection",
+          "status": "passed",
+          "duration": 61,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceFeedbackModal"
+          ]
+        },
+        {
+          "title": "includes selected categories in submission",
+          "fullName": "VoiceFeedbackModal includes selected categories in submission",
+          "status": "passed",
+          "duration": 189,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceFeedbackModal"
+          ]
+        },
+        {
+          "title": "maintains focus management for accessibility",
+          "fullName": "VoiceFeedbackModal maintains focus management for accessibility",
+          "status": "passed",
+          "duration": 19,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceFeedbackModal"
+          ]
+        },
+        {
+          "title": "has proper ARIA attributes",
+          "fullName": "VoiceFeedbackModal has proper ARIA attributes",
+          "status": "passed",
+          "duration": 5,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceFeedbackModal"
+          ]
+        },
+        {
+          "title": "handles detailed feedback mode",
+          "fullName": "VoiceFeedbackModal handles detailed feedback mode",
+          "status": "passed",
+          "duration": 46,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceFeedbackModal"
+          ]
+        },
+        {
+          "title": "validates detailed feedback inputs",
+          "fullName": "VoiceFeedbackModal validates detailed feedback inputs",
+          "status": "passed",
+          "duration": 107,
+          "failureMessages": [],
+          "ancestorTitles": [
+            "VoiceFeedbackModal"
           ]
         }
       ],
@@ -201,18 +2050,63 @@
   ],
   "coverage": null,
   "performance": {
-    "totalDuration": 23482,
-    "averageDuration": 23482,
+    "totalDuration": 20576,
+    "averageDuration": 2057.6,
     "slowestSuite": {
-      "name": "VoiceFeedback.test.jsx",
-      "duration": 23482,
-      "slow": true
+      "name": "VoiceFeedbackModal.test.jsx",
+      "duration": 3854,
+      "slow": false
     },
     "suitePerformance": [
       {
+        "name": "VoiceFeedbackModal.test.jsx",
+        "duration": 3854,
+        "slow": false
+      },
+      {
         "name": "VoiceFeedback.test.jsx",
-        "duration": 23482,
-        "slow": true
+        "duration": 3057,
+        "slow": false
+      },
+      {
+        "name": "FloatingMicrophone.test.jsx",
+        "duration": 2939,
+        "slow": false
+      },
+      {
+        "name": "VoiceFeedbackButton.test.jsx",
+        "duration": 2528,
+        "slow": false
+      },
+      {
+        "name": "VoiceOnboarding.test.jsx",
+        "duration": 2525,
+        "slow": false
+      },
+      {
+        "name": "FeedbackAnalysisTools.test.jsx",
+        "duration": 1456,
+        "slow": false
+      },
+      {
+        "name": "Voice.test.jsx",
+        "duration": 1241,
+        "slow": false
+      },
+      {
+        "name": "VoiceActivationButton.test.jsx",
+        "duration": 1177,
+        "slow": false
+      },
+      {
+        "name": "EmailCommandHandler.test.js",
+        "duration": 919,
+        "slow": false
+      },
+      {
+        "name": "VoiceCommandHelp.test.js",
+        "duration": 880,
+        "slow": false
       }
     ]
   },
@@ -230,15 +2124,15 @@
   "metadata": {
     "jestVersion": "unknown",
     "totalTime": 0,
-    "startTime": 1754928583201,
+    "startTime": 1755495101527,
     "success": true,
-    "numTotalTestSuites": 1,
-    "numPassedTestSuites": 1,
+    "numTotalTestSuites": 10,
+    "numPassedTestSuites": 10,
     "numFailedTestSuites": 0,
-    "numTotalTests": 17,
-    "numPassedTests": 2,
+    "numTotalTests": 185,
+    "numPassedTests": 183,
     "numFailedTests": 0,
-    "numPendingTests": 15,
+    "numPendingTests": 2,
     "numTodoTests": 0
   }
 }

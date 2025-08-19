@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">4.22% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/71</span>
+                <span class='fraction'>3/71</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">4.41% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/68</span>
+                <span class='fraction'>3/68</span>
             </div>
         
             
@@ -514,7 +514,8 @@
 <a name='L449'></a><a href='#L449'>449</a>
 <a name='L450'></a><a href='#L450'>450</a>
 <a name='L451'></a><a href='#L451'>451</a>
-<a name='L452'></a><a href='#L452'>452</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L452'></a><a href='#L452'>452</a>
+<a name='L453'></a><a href='#L453'>453</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -820,10 +821,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -922,7 +923,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -955,9 +956,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -967,8 +969,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React, { useState } from 'react';
 import { ExclamationTriangleIcon, ArrowPathIcon, XMarkIcon } from '@heroicons/react/24/outline';
-import logger from '@lib/logger';
-import errorReportingService from '@lib/errorReportingService';
+import logger from '../../../utils/Logger';
+import errorReportingService from '../../../shared/services/errorReportingService';
 &nbsp;
 /**
  * EmailErrorBoundary - Error boundary component for email operations
@@ -1271,7 +1273,7 @@ class EmailErrorBoundary extends React.Component {
 /**
  * FeedbackForm - Component for collecting user feedback about errors
  */
-const FeedbackForm = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >({</span> onSubmit, onClose, submitted, error }) =&gt; {</span>
+const FeedbackForm = <span class="fstat-no" title="function not covered" >({</span> onSubmit, onClose, submitted, error }) =&gt; {
   const [description, setDescription] = <span class="cstat-no" title="statement not covered" >useState('');</span>
   const [email, setEmail] = <span class="cstat-no" title="statement not covered" >useState('');</span>
   const [isSubmitting, setIsSubmitting] = <span class="cstat-no" title="statement not covered" >useState(false);</span>
@@ -1373,7 +1375,7 @@ const FeedbackForm = <span class="cstat-no" title="statement not covered" ><span
 /**
  * EmailErrorFallback - Functional component for custom error fallbacks
  */
-export const EmailErrorFallback = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >({</span> error, retry, reload }) =&gt; (</span>
+export const EmailErrorFallback = <span class="fstat-no" title="function not covered" >({</span> error, retry, reload }) =&gt; (
 <span class="cstat-no" title="statement not covered" >  &lt;div className="bg-red-50 border border-red-200 rounded-lg p-4 m-4"&gt;</span>
     &lt;div className="flex items-start"&gt;
       &lt;ExclamationTriangleIcon className="h-5 w-5 text-red-500 mt-0.5 mr-3 flex-shrink-0" /&gt;
@@ -1406,7 +1408,7 @@ export const EmailErrorFallback = <span class="cstat-no" title="statement not co
 /**
  * withEmailErrorBoundary - HOC to wrap components with error boundary
  */
-export const withEmailErrorBoundary = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(C</span>omponent, options = <span class="branch-0 cbranch-no" title="branch not covered" >{})</span> =&gt; {</span>
+export const withEmailErrorBoundary = <span class="fstat-no" title="function not covered" >(C</span>omponent, options = <span class="branch-0 cbranch-no" title="branch not covered" >{})</span> =&gt; {
 <span class="cstat-no" title="statement not covered" >  return function <span class="fstat-no" title="function not covered" >WrappedComponent(</span>props) {</span>
 <span class="cstat-no" title="statement not covered" >    return (</span>
       &lt;EmailErrorBoundary {...options}&gt;
@@ -1416,14 +1418,15 @@ export const withEmailErrorBoundary = <span class="cstat-no" title="statement no
   };
 };
 &nbsp;
-export default EmailErrorBoundary;</pre></td></tr></table></pre>
+export default EmailErrorBoundary;
+&nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-07-27T02:49:48.033Z
+                at 2025-08-19T02:42:45.877Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

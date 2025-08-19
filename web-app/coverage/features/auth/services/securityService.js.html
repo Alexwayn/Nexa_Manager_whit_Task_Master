@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">2.61% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/153</span>
+                <span class='fraction'>4/153</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">2.94% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/136</span>
+                <span class='fraction'>4/136</span>
             </div>
         
             
@@ -574,7 +574,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">8x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -582,7 +582,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">8x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -609,7 +609,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">8x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1075,13 +1075,13 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">8x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { supabase } from '@lib/supabaseClient';
-import logger from '@shared/utils';
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { supabase } from '@/lib/supabaseClient';
+import Logger from '@/utils/Logger';
 &nbsp;
 // User roles and permissions management
-export const ROLES = <span class="cstat-no" title="statement not covered" >{</span>
+export const ROLES = {
   SUPER_ADMIN: 'super_admin',
   ADMIN: 'admin',
   MANAGER: 'manager',
@@ -1089,7 +1089,7 @@ export const ROLES = <span class="cstat-no" title="statement not covered" >{</sp
   VIEWER: 'viewer',
 };
 &nbsp;
-export const PERMISSIONS = <span class="cstat-no" title="statement not covered" >{</span>
+export const PERMISSIONS = {
   // User management
   MANAGE_USERS: 'manage_users',
   VIEW_USERS: 'view_users',
@@ -1116,7 +1116,7 @@ export const PERMISSIONS = <span class="cstat-no" title="statement not covered" 
 };
 &nbsp;
 // Role-permission mapping
-const ROLE_PERMISSIONS = <span class="cstat-no" title="statement not covered" >{</span>
+const ROLE_PERMISSIONS = {
   [ROLES.SUPER_ADMIN]: Object.values(PERMISSIONS),
   [ROLES.ADMIN]: [
     PERMISSIONS.MANAGE_USERS,
@@ -1178,7 +1178,7 @@ class SecurityService {
 &nbsp;
 <span class="cstat-no" title="statement not covered" >      return data?.roles?.name || ROLES.USER;</span>
     } catch (error) {
-<span class="cstat-no" title="statement not covered" >      logger.error('Error getting user role:', error);</span>
+<span class="cstat-no" title="statement not covered" >      Logger.error('Error getting user role:', error);</span>
 <span class="cstat-no" title="statement not covered" >      return ROLES.USER; </span>// Default role
     }
   }
@@ -1226,7 +1226,7 @@ class SecurityService {
 &nbsp;
 <span class="cstat-no" title="statement not covered" >      return data;</span>
     } catch (error) {
-<span class="cstat-no" title="statement not covered" >      logger.error('Error updating user role:', error);</span>
+<span class="cstat-no" title="statement not covered" >      Logger.error('Error updating user role:', error);</span>
 <span class="cstat-no" title="statement not covered" >      throw error;</span>
     }
   }
@@ -1266,7 +1266,7 @@ class SecurityService {
 &nbsp;
 <span class="cstat-no" title="statement not covered" >      if (error) <span class="cstat-no" title="statement not covered" >throw error;</span></span>
     } catch (error) {
-<span class="cstat-no" title="statement not covered" >      logger.error('Error logging security event:', error);</span>
+<span class="cstat-no" title="statement not covered" >      Logger.error('Error logging security event:', error);</span>
     }
   }
 &nbsp;
@@ -1307,7 +1307,7 @@ class SecurityService {
 <span class="cstat-no" title="statement not covered" >      if (error) <span class="cstat-no" title="statement not covered" >throw error;</span></span>
 <span class="cstat-no" title="statement not covered" >      return data;</span>
     } catch (error) {
-<span class="cstat-no" title="statement not covered" >      logger.error('Error getting audit logs:', error);</span>
+<span class="cstat-no" title="statement not covered" >      Logger.error('Error getting audit logs:', error);</span>
 <span class="cstat-no" title="statement not covered" >      throw error;</span>
     }
   }
@@ -1343,7 +1343,7 @@ class SecurityService {
 &nbsp;
 <span class="cstat-no" title="statement not covered" >      return { success: true, backupCodes };</span>
     } catch (error) {
-<span class="cstat-no" title="statement not covered" >      logger.error('Error enabling 2FA:', error);</span>
+<span class="cstat-no" title="statement not covered" >      Logger.error('Error enabling 2FA:', error);</span>
 <span class="cstat-no" title="statement not covered" >      throw error;</span>
     }
   }
@@ -1369,7 +1369,7 @@ class SecurityService {
 &nbsp;
 <span class="cstat-no" title="statement not covered" >      return { success: true };</span>
     } catch (error) {
-<span class="cstat-no" title="statement not covered" >      logger.error('Error disabling 2FA:', error);</span>
+<span class="cstat-no" title="statement not covered" >      Logger.error('Error disabling 2FA:', error);</span>
 <span class="cstat-no" title="statement not covered" >      throw error;</span>
     }
   }
@@ -1381,7 +1381,7 @@ class SecurityService {
       // Mock implementation - replace with actual TOTP verification
 <span class="cstat-no" title="statement not covered" >      return code === '123456'; </span>// For demo purposes
     } catch (error) {
-<span class="cstat-no" title="statement not covered" >      logger.error('Error verifying 2FA code:', error);</span>
+<span class="cstat-no" title="statement not covered" >      Logger.error('Error verifying 2FA code:', error);</span>
 <span class="cstat-no" title="statement not covered" >      return false;</span>
     }
   }
@@ -1413,7 +1413,7 @@ class SecurityService {
 &nbsp;
 <span class="cstat-no" title="statement not covered" >      if (insertError) <span class="cstat-no" title="statement not covered" >throw insertError;</span></span>
     } catch (error) {
-<span class="cstat-no" title="statement not covered" >      logger.error('Error saving backup codes:', error);</span>
+<span class="cstat-no" title="statement not covered" >      Logger.error('Error saving backup codes:', error);</span>
 <span class="cstat-no" title="statement not covered" >      throw error;</span>
     }
   }
@@ -1424,7 +1424,7 @@ class SecurityService {
 &nbsp;
 <span class="cstat-no" title="statement not covered" >      if (error) <span class="cstat-no" title="statement not covered" >throw error;</span></span>
     } catch (error) {
-<span class="cstat-no" title="statement not covered" >      logger.error('Error clearing backup codes:', error);</span>
+<span class="cstat-no" title="statement not covered" >      Logger.error('Error clearing backup codes:', error);</span>
 <span class="cstat-no" title="statement not covered" >      throw error;</span>
     }
   }
@@ -1468,7 +1468,7 @@ class SecurityService {
 &nbsp;
 <span class="cstat-no" title="statement not covered" >      return { success: true, backupId: data[0]?.id };</span>
     } catch (error) {
-<span class="cstat-no" title="statement not covered" >      logger.error('Error creating security backup:', error);</span>
+<span class="cstat-no" title="statement not covered" >      Logger.error('Error creating security backup:', error);</span>
 <span class="cstat-no" title="statement not covered" >      throw error;</span>
     }
   }
@@ -1505,7 +1505,7 @@ class SecurityService {
 &nbsp;
 <span class="cstat-no" title="statement not covered" >      return { success: true };</span>
     } catch (error) {
-<span class="cstat-no" title="statement not covered" >      logger.error('Error restoring security backup:', error);</span>
+<span class="cstat-no" title="statement not covered" >      Logger.error('Error restoring security settings:', error);</span>
 <span class="cstat-no" title="statement not covered" >      throw error;</span>
     }
   }
@@ -1523,7 +1523,7 @@ class SecurityService {
 <span class="cstat-no" title="statement not covered" >      if (error) <span class="cstat-no" title="statement not covered" >throw error;</span></span>
 <span class="cstat-no" title="statement not covered" >      return data || [];</span>
     } catch (error) {
-<span class="cstat-no" title="statement not covered" >      logger.error('Error getting user sessions:', error);</span>
+<span class="cstat-no" title="statement not covered" >      Logger.error('Error getting user sessions:', error);</span>
 <span class="cstat-no" title="statement not covered" >      return [];</span>
     }
   }
@@ -1548,7 +1548,7 @@ class SecurityService {
 &nbsp;
 <span class="cstat-no" title="statement not covered" >      return { success: true };</span>
     } catch (error) {
-<span class="cstat-no" title="statement not covered" >      logger.error('Error revoking session:', error);</span>
+<span class="cstat-no" title="statement not covered" >      Logger.error('Error revoking session:', error);</span>
 <span class="cstat-no" title="statement not covered" >      throw error;</span>
     }
   }
@@ -1576,13 +1576,13 @@ class SecurityService {
 &nbsp;
 <span class="cstat-no" title="statement not covered" >      return { success: true };</span>
     } catch (error) {
-<span class="cstat-no" title="statement not covered" >      logger.error('Error revoking all sessions:', error);</span>
+<span class="cstat-no" title="statement not covered" >      Logger.error('Error revoking all sessions:', error);</span>
 <span class="cstat-no" title="statement not covered" >      throw error;</span>
     }
   }
 }
 &nbsp;
-export const securityService = <span class="cstat-no" title="statement not covered" >new SecurityService();</span>
+export const securityService = new SecurityService();
 export default securityService;
 &nbsp;</pre></td></tr></table></pre>
 
@@ -1591,7 +1591,7 @@ export default securityService;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-07-27T02:49:48.033Z
+                at 2025-08-19T02:42:45.877Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

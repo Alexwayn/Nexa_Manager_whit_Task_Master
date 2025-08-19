@@ -4,7 +4,7 @@
  */
 
 import { useState, useEffect, useCallback, useRef } from 'react';
-import websocketService from '../services/websocketService';
+import websocketService from '@/services/websocketService';
 import { useQueryClient } from '@tanstack/react-query';
 
 /**

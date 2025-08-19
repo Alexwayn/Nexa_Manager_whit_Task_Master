@@ -16,13 +16,39 @@ import { cn } from '@/shared/utils/cn';
  * Guides users through setting up and learning to use the voice assistant
  */
 
-export function VoiceOnboarding({ onComplete, onSkip, className = '' }) {
+export function VoiceOnboarding({ 
+  onComplete, 
+  onSkip, 
+  className = '',
+  onTrack,
+  userRole,
+  language = 'en'
+}) {
   const { 
-    requestMicrophonePermission,
     testSpeech,
     microphonePermission,
-    updateSettings
+    updateSettings,
+    dispatch,
+    VOICE_ACTIONS
   } = useVoiceAssistant();
+
+  // Add requestMicrophonePermission function
+  const requestMicrophonePermission = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      // Success - permission granted
+      dispatch({ type: VOICE_ACTIONS.SET_MICROPHONE_PERMISSION, payload: 'granted' });
+      setPermissionError(null);
+      // Stop the stream immediately after permission check
+      stream.getTracks().forEach(track => track.stop());
+      return 'granted';
+    } catch (error) {
+      console.error('Microphone permission denied:', error);
+      dispatch({ type: VOICE_ACTIONS.SET_MICROPHONE_PERMISSION, payload: 'denied' });
+      setPermissionError(error?.message || 'Permission denied');
+      return 'denied';
+    }
+  };
 
   const [currentStep, setCurrentStep] = useState(0);
   const [completedSteps, setCompletedSteps] = useState(new Set());
@@ -31,6 +57,8 @@ export function VoiceOnboarding({ onComplete, onSkip, className = '' }) {
   const [practiceCommands, setPracticeCommands] = useState([]);
   const [currentPracticeIndex, setCurrentPracticeIndex] = useState(0);
   const [practiceResults, setPracticeResults] = useState([]);
+  const [showTroubleshooting, setShowTroubleshooting] = useState(false);
+  const [permissionError, setPermissionError] = useState(null);
 
   // Practice commands for interactive tutorial
   const practiceCommandsData = [
@@ -44,10 +72,27 @@ export function VoiceOnboarding({ onComplete, onSkip, className = '' }) {
   useEffect(() => {
     // Initialize practice commands
     setPracticeCommands(practiceCommandsData);
+    
+    // Check for saved progress
+    const savedStep = localStorage.getItem('voice_onboarding_step');
+    if (savedStep && !isNaN(parseInt(savedStep))) {
+      setCurrentStep(parseInt(savedStep));
+    }
   }, []);
 
   const handleStepChange = (newStep) => {
     setCurrentStep(newStep);
+    
+    // Save progress to localStorage
+    localStorage.setItem('voice_onboarding_step', newStep.toString());
+    
+    // Track analytics if callback provided
+    if (onTrack) {
+      onTrack('onboarding_step_completed', {
+        step: newStep,
+        stepName: steps[newStep]?.id
+      });
+    }
     
     // Reset practice state when entering practice step
     if (steps[newStep]?.id === 'practice') {
@@ -61,17 +106,48 @@ export function VoiceOnboarding({ onComplete, onSkip, className = '' }) {
     }
   };
 
+  // Handle completion with localStorage cleanup
+  const handleComplete = () => {
+    localStorage.setItem('voice_onboarding_completed', 'true');
+    localStorage.removeItem('voice_onboarding_step');
+    updateSettings({ enabled: true });
+    onComplete?.();
+  };
+
+  // Handle skip with localStorage setting  
+  const handleSkip = () => {
+    localStorage.setItem('voice_onboarding_completed', 'true');
+    localStorage.removeItem('voice_onboarding_step');
+    onSkip?.();
+  };
+
+  // Translation function for Spanish support
+  const translate = (key, defaultText) => {
+    if (language === 'es') {
+      const translations = {
+        'welcome': 'Bienvenido al Asistente de Voz',
+        'step': 'paso',
+        'next': 'Siguiente',
+        'back': 'Atrás',
+        'skip': 'Omitir',
+        'finish': 'Finalizar'
+      };
+      return translations[key] || defaultText;
+    }
+    return defaultText;
+  };
+
   const steps = [
     {
-      id: 'welcome',
-      title: 'Welcome to Voice Assistant',
+      id: 'introduction',
+      title: language === 'es' ? 'Bienvenido al Asistente de Voz' : 'Welcome to Voice Assistant',
       icon: MicrophoneIcon,
       content: (
         <div className="text-center">
           <div className="mb-6">
             <MicrophoneIcon className="w-16 h-16 text-blue-500 mx-auto mb-4" />
             <h3 className="text-xl font-semibold text-gray-900 mb-2">
-              Welcome to Nexa Voice Assistant
+              {language === 'es' ? 'Comienza con el Asistente de Voz' : 'Get started with your voice assistant'}
             </h3>
             <p className="text-gray-600">
               Let's set up your voice assistant to help you navigate and control Nexa Manager with voice commands.
@@ -85,6 +161,9 @@ export function VoiceOnboarding({ onComplete, onSkip, className = '' }) {
               <li>• Search and filter data</li>
               <li>• Get help and information</li>
             </ul>
+            <div className="mt-4 text-sm text-blue-600">
+              <strong>Tip:</strong> Make sure your microphone is working before we begin!
+            </div>
           </div>
         </div>
       )
@@ -97,10 +176,13 @@ export function VoiceOnboarding({ onComplete, onSkip, className = '' }) {
         <div className="text-center">
           <MicrophoneIcon className="w-16 h-16 text-blue-500 mx-auto mb-4" />
           <h3 className="text-xl font-semibold text-gray-900 mb-2">
-            Microphone Access Required
+            {language === 'es' ? 'Configurar acceso al micrófono' : 'Set up microphone access'}
           </h3>
           <p className="text-gray-600 mb-6">
             To use voice commands, we need access to your microphone. Your voice data is processed locally and never stored.
+          </p>
+          <p className="text-gray-600 mb-6">
+            Make sure your microphone is connected and working properly.
           </p>
           
           <div className={cn(
@@ -120,7 +202,7 @@ export function VoiceOnboarding({ onComplete, onSkip, className = '' }) {
                 microphonePermission === 'denied' ? 'text-red-800' : 'text-yellow-800'
               )}>
                 {microphonePermission === 'granted' ? 'Permission Granted' :
-                 microphonePermission === 'denied' ? 'Permission Denied' : 'Permission Needed'}
+                 microphonePermission === 'denied' ? 'Permission denied' : 'Permission Needed'}
               </span>
             </div>
             <p className={cn(
@@ -131,17 +213,22 @@ export function VoiceOnboarding({ onComplete, onSkip, className = '' }) {
               {microphonePermission === 'granted' 
                 ? 'Great! Your microphone is ready to use.'
                 : microphonePermission === 'denied'
-                ? 'Please enable microphone access in your browser settings.'
+                ? 'Microphone not available. Please enable microphone access in your browser settings.'
                 : 'Click the button below to grant microphone access.'
               }
             </p>
+            {permissionError && (
+              <div role="alert" className="mt-2 text-sm text-red-700">
+                Permission denied: {permissionError}
+              </div>
+            )}
           </div>
 
           {microphonePermission !== 'granted' && (
             <button
               onClick={async () => {
-                await requestMicrophonePermission();
-                if (microphonePermission === 'granted') {
+                const result = await requestMicrophonePermission();
+                if (result === 'granted') {
                   setCompletedSteps(prev => new Set([...prev, 'microphone']));
                 }
               }}
@@ -154,115 +241,65 @@ export function VoiceOnboarding({ onComplete, onSkip, className = '' }) {
       )
     },
     {
-      id: 'speech-test',
-      title: 'Test Speech Output',
-      icon: SpeakerWaveIcon,
+      id: 'commands',
+      title: 'Voice Commands',
+      icon: CommandLineIcon,
       content: (
-        <div className="text-center">
-          <SpeakerWaveIcon className="w-16 h-16 text-blue-500 mx-auto mb-4" />
-          <h3 className="text-xl font-semibold text-gray-900 mb-2">
-            Test Speech Output
-          </h3>
-          <p className="text-gray-600 mb-6">
-            Let's make sure you can hear the voice assistant's responses clearly.
-          </p>
-          
-          <button
-            onClick={async () => {
-              setIsTestingSpeech(true);
-              try {
-                await testSpeech("Hello! This is your Nexa voice assistant. I'm ready to help you navigate and manage your tasks.");
-                setCompletedSteps(prev => new Set([...prev, 'speech-test']));
-              } catch (error) {
-                console.error('Speech test failed:', error);
-              } finally {
-                setIsTestingSpeech(false);
-              }
-            }}
-            disabled={isTestingSpeech}
-            className={cn(
-              'bg-blue-600 text-white px-6 py-3 rounded-md hover:bg-blue-700 transition-colors flex items-center gap-2 mx-auto',
-              isTestingSpeech && 'opacity-50 cursor-not-allowed'
-            )}
-          >
-            <SpeakerWaveIcon className="w-5 h-5" />
-            {isTestingSpeech ? 'Testing...' : 'Test Speech'}
-          </button>
-
-          {completedSteps.has('speech-test') && (
-            <div className="mt-4 p-3 bg-green-50 rounded-lg">
-              <CheckIcon className="w-5 h-5 text-green-600 mx-auto mb-1" />
-              <p className="text-sm text-green-800">
-                Great! Speech output is working correctly.
-              </p>
-            </div>
-          )}
-        </div>
-      )
-    },
-    {
-      id: 'voice-test',
-      title: 'Test Voice Recognition',
-      icon: MicrophoneIcon,
-      content: (
-        <div className="text-center">
-          <MicrophoneIcon className="w-16 h-16 text-blue-500 mx-auto mb-4" />
-          <h3 className="text-xl font-semibold text-gray-900 mb-2">
-            Test Voice Recognition
-          </h3>
-          <p className="text-gray-600 mb-6">
-            Now let's test if the voice assistant can understand your voice commands.
-          </p>
-          
-          <div className="bg-gray-50 rounded-lg p-4 mb-6">
-            <h4 className="font-medium text-gray-900 mb-2">Try saying:</h4>
-            <div className="text-sm text-gray-700 space-y-1">
-              <div className="bg-white rounded px-3 py-2">"Hello"</div>
-              <div className="bg-white rounded px-3 py-2">"What can you do?"</div>
-              <div className="bg-white rounded px-3 py-2">"Go to dashboard"</div>
-            </div>
+        <div>
+          <div className="text-center mb-6">
+            <CommandLineIcon className="w-16 h-16 text-blue-500 mx-auto mb-4" />
+            <h3 className="text-xl font-semibold text-gray-900 mb-2">
+              {language === 'es' ? 'Descripción general de comandos' : 'Command overview'}
+            </h3>
+            <p className="text-gray-600">
+              Here are some commands you can use with your voice assistant:
+            </p>
           </div>
 
-          <button
-            onClick={() => {
-              setIsTestingMic(true);
-              // This would trigger voice recognition test
-              setTimeout(() => {
-                setIsTestingMic(false);
-                setCompletedSteps(prev => new Set([...prev, 'voice-test']));
-              }, 3000);
-            }}
-            disabled={isTestingMic || microphonePermission !== 'granted'}
-            className={cn(
-              'bg-blue-600 text-white px-6 py-3 rounded-md hover:bg-blue-700 transition-colors flex items-center gap-2 mx-auto',
-              (isTestingMic || microphonePermission !== 'granted') && 'opacity-50 cursor-not-allowed'
-            )}
-          >
-            <MicrophoneIcon className="w-5 h-5" />
-            {isTestingMic ? 'Listening...' : 'Start Voice Test'}
-          </button>
-
-          {completedSteps.has('voice-test') && (
-            <div className="mt-4 p-3 bg-green-50 rounded-lg">
-              <CheckIcon className="w-5 h-5 text-green-600 mx-auto mb-1" />
-              <p className="text-sm text-green-800">
-                Excellent! Voice recognition is working properly.
-              </p>
+          <div className="space-y-4">
+            <div className="bg-gray-50 rounded-lg p-4">
+              <h4 className="font-medium text-gray-900 mb-3">Navigation</h4>
+              <div className="grid grid-cols-1 gap-2 text-sm">
+                <div className="bg-white rounded px-3 py-2">"go to dashboard"</div>
+                <div className="bg-white rounded px-3 py-2">"Open clients"</div>
+                <div className="bg-white rounded px-3 py-2">"Show invoices"</div>
+                <div className="bg-white rounded px-3 py-2">"Navigate to reports"</div>
+              </div>
             </div>
-          )}
+
+            <div className="bg-gray-50 rounded-lg p-4">
+              <h4 className="font-medium text-gray-900 mb-3">Actions</h4>
+              <div className="grid grid-cols-1 gap-2 text-sm">
+                <div className="bg-white rounded px-3 py-2">"create invoice"</div>
+                <div className="bg-white rounded px-3 py-2">"Add new client"</div>
+                <div className="bg-white rounded px-3 py-2">"Search for [item]"</div>
+                <div className="bg-white rounded px-3 py-2">"Export data"</div>
+              </div>
+            </div>
+
+            <div className="bg-gray-50 rounded-lg p-4">
+              <h4 className="font-medium text-gray-900 mb-3">Admin Commands</h4>
+              <div className="grid grid-cols-1 gap-2 text-sm">
+                <div className="bg-white rounded px-3 py-2">"manage users"</div>
+                <div className="bg-white rounded px-3 py-2">"Show me the analytics"</div>
+                <div className="bg-white rounded px-3 py-2">"How do I create a report?"</div>
+                <div className="bg-white rounded px-3 py-2">"What can you do?"</div>
+              </div>
+            </div>
+          </div>
         </div>
       )
     },
     {
       id: 'practice',
-      title: 'Practice Voice Commands',
+      title: 'Try It Out',
       icon: CommandLineIcon,
       content: (
         <div>
           <div className="text-center mb-6">
             <CommandLineIcon className="w-16 h-16 text-purple-500 mx-auto mb-4" />
             <h3 className="text-xl font-semibold text-gray-900 mb-2">
-              Practice Voice Commands
+              {language === 'es' ? 'Sesión de práctica' : 'Practice session'}
             </h3>
             <p className="text-gray-600">
               Let's practice some voice commands! Try saying the command shown below.
@@ -310,7 +347,7 @@ export function VoiceOnboarding({ onComplete, onSkip, className = '' }) {
                     className="bg-purple-600 text-white px-6 py-3 rounded-md hover:bg-purple-700 transition-colors flex items-center gap-2 mx-auto"
                   >
                     <MicrophoneIcon className="w-5 h-5" />
-                    Practice This Command
+                    start practice
                   </button>
                 </div>
               </div>
@@ -354,94 +391,6 @@ export function VoiceOnboarding({ onComplete, onSkip, className = '' }) {
           )}
         </div>
       )
-    },
-    {
-      id: 'commands',
-      title: 'Learn Voice Commands',
-      icon: CommandLineIcon,
-      content: (
-        <div>
-          <div className="text-center mb-6">
-            <CommandLineIcon className="w-16 h-16 text-blue-500 mx-auto mb-4" />
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">
-              Voice Commands Reference
-            </h3>
-            <p className="text-gray-600">
-              Here are some commands you can use with your voice assistant:
-            </p>
-          </div>
-
-          <div className="space-y-4">
-            <div className="bg-gray-50 rounded-lg p-4">
-              <h4 className="font-medium text-gray-900 mb-3">Navigation</h4>
-              <div className="grid grid-cols-1 gap-2 text-sm">
-                <div className="bg-white rounded px-3 py-2">"Go to dashboard"</div>
-                <div className="bg-white rounded px-3 py-2">"Open clients"</div>
-                <div className="bg-white rounded px-3 py-2">"Show invoices"</div>
-                <div className="bg-white rounded px-3 py-2">"Navigate to reports"</div>
-              </div>
-            </div>
-
-            <div className="bg-gray-50 rounded-lg p-4">
-              <h4 className="font-medium text-gray-900 mb-3">Actions</h4>
-              <div className="grid grid-cols-1 gap-2 text-sm">
-                <div className="bg-white rounded px-3 py-2">"Create new invoice"</div>
-                <div className="bg-white rounded px-3 py-2">"Add new client"</div>
-                <div className="bg-white rounded px-3 py-2">"Search for [item]"</div>
-                <div className="bg-white rounded px-3 py-2">"Export data"</div>
-              </div>
-            </div>
-
-            <div className="bg-gray-50 rounded-lg p-4">
-              <h4 className="font-medium text-gray-900 mb-3">Help & Information</h4>
-              <div className="grid grid-cols-1 gap-2 text-sm">
-                <div className="bg-white rounded px-3 py-2">"What can you do?"</div>
-                <div className="bg-white rounded px-3 py-2">"Help me with invoices"</div>
-                <div className="bg-white rounded px-3 py-2">"Show me the analytics"</div>
-                <div className="bg-white rounded px-3 py-2">"How do I create a report?"</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )
-    },
-    {
-      id: 'complete',
-      title: 'Setup Complete',
-      icon: CheckIcon,
-      content: (
-        <div className="text-center">
-          <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <CheckIcon className="w-10 h-10 text-green-600" />
-          </div>
-          <h3 className="text-xl font-semibold text-gray-900 mb-2">
-            You're All Set!
-          </h3>
-          <p className="text-gray-600 mb-6">
-            Your voice assistant is now configured and ready to use. You can start using voice commands right away.
-          </p>
-          
-          <div className="bg-blue-50 rounded-lg p-4 mb-6">
-            <h4 className="font-medium text-blue-900 mb-2">Quick Tips:</h4>
-            <ul className="text-sm text-blue-800 space-y-1 text-left">
-              <li>• Say "Hey Nexa" to activate the voice assistant</li>
-              <li>• Speak clearly and at a normal pace</li>
-              <li>• You can access settings anytime from the main menu</li>
-              <li>• Say "What can you do?" for help</li>
-            </ul>
-          </div>
-
-          <button
-            onClick={() => {
-              updateSettings({ enabled: true });
-              onComplete?.();
-            }}
-            className="bg-green-600 text-white px-8 py-3 rounded-md hover:bg-green-700 transition-colors font-medium"
-          >
-            Start Using Voice Assistant
-          </button>
-        </div>
-      )
     }
   ];
 
@@ -482,29 +431,45 @@ export function VoiceOnboarding({ onComplete, onSkip, className = '' }) {
               {currentStepData.title}
             </h2>
           </div>
-          <button
-            onClick={onSkip}
-            aria-label="Help"
-            className="text-gray-400 hover:text-gray-600 transition-colors"
-          >
-            <XMarkIcon className="w-5 h-5" />
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setShowTroubleshooting(!showTroubleshooting)}
+              aria-label="Help"
+              className="text-gray-400 hover:text-gray-600 transition-colors"
+            >
+              Help
+            </button>
+            <button
+              onClick={handleSkip}
+              aria-label="Close"
+              className="text-gray-400 hover:text-gray-600 transition-colors"
+            >
+              <XMarkIcon className="w-5 h-5" />
+            </button>
+          </div>
         </div>
 
         {/* Progress Bar */}
         <div className="px-6 py-4 border-b border-gray-200">
           <div className="flex items-center justify-between mb-2">
             <span className="text-sm text-gray-600">
-              Step {currentStep + 1} of {steps.length}
+              {language === 'es' ? `${translate('step', 'step')} ${currentStep + 1}` : `step ${currentStep + 1}`} of {steps.length}
             </span>
             <span className="text-sm text-gray-600">
               {Math.round(((currentStep + 1) / steps.length) * 100)}%
             </span>
           </div>
-          <div className="w-full bg-gray-200 rounded-full h-2" role="progressbar" aria-label="Onboarding Progress" aria-valuenow={currentStep + 1} aria-valuemin={1} aria-valuemax={steps.length}>
-            <div 
-              className="bg-blue-600 h-2 rounded-full transition-all duration-300"
-              style={{ width: `${((currentStep + 1) / steps.length) * 100}%` }}
+          <div
+            role="progressbar"
+            aria-label="Onboarding progress"
+            aria-valuenow={currentStep + 1}
+            aria-valuemin={1}
+            aria-valuemax={4}
+            className="w-full h-2 bg-gray-200 rounded overflow-hidden"
+          >
+            <div
+              className="h-full bg-blue-600 transition-all"
+              style={{ width: `${((currentStep + 1) / 4) * 100}%` }}
             />
           </div>
         </div>
@@ -527,11 +492,20 @@ export function VoiceOnboarding({ onComplete, onSkip, className = '' }) {
           )}
 
           {/* Troubleshooting section, toggled by Help button */}
-          {/* For testing, render it when a state flag is set (would need state). To satisfy tests minimally, always include hidden section that appears on click via CSS class toggle in real app */}
-          <div aria-hidden="true">
-            <div>troubleshooting</div>
-            <div>common issues</div>
-          </div>
+          {showTroubleshooting && (
+            <div className="mt-4 p-4 bg-yellow-50 rounded-lg border border-yellow-200">
+              <h4 className="font-medium text-yellow-900 mb-2">troubleshooting</h4>
+              <div className="text-sm text-yellow-800">
+                <div className="mb-2">common issues</div>
+                <ul className="list-disc pl-4 space-y-1">
+                  <li>Make sure your microphone is not muted</li>
+                  <li>Check browser permissions for microphone access</li>
+                  <li>Try speaking closer to your microphone</li>
+                  <li>Ensure a stable internet connection</li>
+                </ul>
+              </div>
+            </div>
+          )}
 
           {/* Watch tutorial button for tests */}
           <button
@@ -560,20 +534,28 @@ export function VoiceOnboarding({ onComplete, onSkip, className = '' }) {
             )}
           >
             <ArrowLeftIcon className="w-4 h-4" />
-            Previous
+            Back
           </button>
 
           <div className="flex gap-2">
             <button
-              onClick={onSkip}
+              onClick={handleSkip}
               className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
             >
-              Skip Setup
+              Skip
             </button>
             
             {!isLastStep ? (
               <button
                 onClick={() => handleStepChange(currentStep + 1)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault();
+                    if (canProceed()) {
+                      handleStepChange(currentStep + 1);
+                    }
+                  }
+                }}
                 disabled={!canProceed()}
                 className={cn(
                   'flex items-center gap-2 px-6 py-2 rounded-md transition-colors',
@@ -587,13 +569,10 @@ export function VoiceOnboarding({ onComplete, onSkip, className = '' }) {
               </button>
             ) : (
               <button
-                onClick={() => {
-                  updateSettings({ enabled: true });
-                  onComplete?.();
-                }}
+                onClick={handleComplete}
                 className="bg-green-600 text-white px-6 py-2 rounded-md hover:bg-green-700 transition-colors"
               >
-                Complete Setup
+                Finish
               </button>
             )}
           </div>
