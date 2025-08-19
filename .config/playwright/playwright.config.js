@@ -80,7 +80,7 @@ module.exports = defineConfig({
 
   /* Run your local dev server before starting the tests */
   webServer: {
-    command: 'npm run dev:ci',
+    command: 'npm --prefix ./../../web-app run dev:ci',
     url: 'http://localhost:3001',
     reuseExistingServer: !process.env.CI,
     timeout: 120000,
