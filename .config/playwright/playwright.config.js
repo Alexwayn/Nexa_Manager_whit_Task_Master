@@ -40,6 +40,9 @@ module.exports = defineConfig({
     navigationTimeout: 30000,
   },
 
+  /* Snapshot path template - align with existing baselines that include project and platform */
+  snapshotPathTemplate: '{testDir}/{testFilePath}-snapshots/{arg}-{projectName}-{platform}{ext}',
+
   /* Configure projects for major browsers */
   projects: [
     {
