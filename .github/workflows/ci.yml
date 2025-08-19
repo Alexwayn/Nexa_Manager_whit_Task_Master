@@ -53,13 +53,19 @@ jobs:
         reporter: jest-junit
         fail-on-error: false
 
+    - name: Create orphan branch for badges (default branch only)
+      if: ${{ github.event_name == 'push' && github.ref == format('refs/heads/{0}', github.event.repository.default_branch) }}
+      uses: action-badges/create-orphan-branch@0.1.1
+      with:
+        branch-name: badges
+
     - name: Generate Coverage Badge
-      uses: action-badges/cobertura-coverage-xml-badges@0.2.1
-      if: success()
+      uses: action-badges/cobertura-coverage-xml-badges@0.3.1
+      if: ${{ github.event_name == 'push' && github.ref == format('refs/heads/{0}', github.event.repository.default_branch) && hashFiles('web-app/coverage/cobertura-coverage.xml') != '' }}
       with:
         file-name: coverage.svg
         badge-branch: badges
-        github-token: '${{ secrets.GITHUB_TOKEN }}'
+        github-token: ${{ secrets.GITHUB_TOKEN }}
         coverage-file-name: web-app/coverage/cobertura-coverage.xml
 
   build:
