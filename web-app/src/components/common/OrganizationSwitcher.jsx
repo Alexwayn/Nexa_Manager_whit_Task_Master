@@ -151,7 +151,7 @@ export default function OrganizationSwitcher() {
           leaveFrom='transform opacity-100 scale-100'
           leaveTo='transform opacity-0 scale-95'
         >
-          <Menu.Items className='absolute left-0 z-10 mt-2 w-72 origin-top-left rounded-lg bg-white dark:bg-gray-800 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none border border-gray-200 dark:border-gray-700'>
+          <Menu.Items className='absolute left-0 z-10 mt-2 w-72 origin-top-left rounded-lg bg-white dark:bg-gray-800 shadow-lg ring-1 ring-black/5 focus:outline-none border border-gray-200 dark:border-gray-700'>
             <div className='py-1'>
               {/* Current Organization Header */}
               <div className='px-4 py-2 border-b border-gray-100 dark:border-gray-700'>

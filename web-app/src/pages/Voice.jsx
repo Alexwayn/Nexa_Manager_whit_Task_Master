@@ -390,12 +390,12 @@ const TutorialCard = ({ tutorial }) => {
     <div className='border border-gray-200 rounded-lg overflow-hidden hover:shadow-md transition-shadow cursor-pointer'>
       <div className='relative'>
         <img src={tutorial.thumbnail} alt={tutorial.title} className='w-full h-40 object-cover' />
-        <div className='absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center'>
-          <div className='bg-white bg-opacity-80 rounded-full p-3'>
+        <div className='absolute inset-0 bg-black/30 flex items-center justify-center'>
+          <div className='bg-white/80 rounded-full p-3'>
             <PlayIcon className='w-6 h-6 text-blue-600' />
           </div>
         </div>
-        <div className='absolute bottom-2 right-2 bg-black bg-opacity-70 rounded px-2 py-1'>
+        <div className='absolute bottom-2 right-2 bg-black/70 rounded px-2 py-1'>
           <span className='text-white text-xs'>{tutorial.duration}</span>
         </div>
       </div>

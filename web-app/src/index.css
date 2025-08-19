@@ -1,9 +1,6 @@
+@import "tailwindcss";
 /* Import shared styles */
 @import './shared/styles/index.css';
-
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
 
 
 

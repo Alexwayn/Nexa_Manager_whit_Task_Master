@@ -1,10 +1,12 @@
-import { defineConfig, devices } from '@playwright/test';
+const { defineConfig, devices } = require('@playwright/test');
 
 /**
  * @see https://playwright.dev/docs/test-configuration
  */
-export default defineConfig({
+module.exports = defineConfig({
   testDir: './../../web-app/src/__tests__/e2e',
+  testMatch: ['**/*.spec.ts'],
+  testIgnore: ['**/*.test.js'],
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
@@ -85,8 +87,9 @@ export default defineConfig({
   },
 
   /* Global setup and teardown */
-  globalSetup: require.resolve('./../../web-app/src/__tests__/e2e/global-setup.js'),
-  globalTeardown: require.resolve('./../../web-app/src/__tests__/e2e/global-teardown.js'),
+  // Use ESM global setup/teardown files (.js under type: module)
+  globalSetup: require.resolve('./../../web-app/src/__tests__/shared/global-setup.js'),
+  globalTeardown: require.resolve('./../../web-app/src/__tests__/shared/global-teardown.js'),
 
   /* Test timeout */
   timeout: 30000,

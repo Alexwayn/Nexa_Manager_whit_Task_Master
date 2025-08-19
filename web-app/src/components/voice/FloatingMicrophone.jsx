@@ -123,7 +123,7 @@ const FloatingMicrophone = ({
             animate={{ opacity: isListening || isProcessing ? 1 : 0, y: 0 }}
             className="absolute -top-12 left-1/2 transform -translate-x-1/2"
           >
-            <div className="bg-black bg-opacity-75 text-white text-xs px-2 py-1 rounded whitespace-nowrap">
+            <div className="bg-black/75 text-white text-xs px-2 py-1 rounded whitespace-nowrap">
               {getStatusText()}
             </div>
           </motion.div>

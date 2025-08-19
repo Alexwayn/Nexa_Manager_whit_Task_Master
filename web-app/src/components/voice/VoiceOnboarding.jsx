@@ -464,7 +464,7 @@ export function VoiceOnboarding({ onComplete, onSkip, className = '' }) {
 
   return (
     <div className={cn(
-      'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4',
+      'fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4',
       className
     )}>
       <div 

@@ -331,7 +331,7 @@ const EmailComposer = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
       <div className="bg-white rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh] flex flex-col">
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b border-gray-200">
@@ -592,7 +592,7 @@ const EmailComposer = ({
 
       {/* Template Selector Modal */}
       {showTemplateSelector && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-60">
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-60">
           <div className="bg-white rounded-lg shadow-xl w-full max-w-6xl max-h-[90vh] overflow-hidden">
             <EmailTemplateSelector
               onSelectTemplate={handleTemplateSelect}
@@ -605,7 +605,7 @@ const EmailComposer = ({
 
       {/* Preview Modal */}
       {showPreview && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-60">
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-60">
           <div className="bg-white rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh] overflow-hidden">
             <div className="flex items-center justify-between p-4 border-b">
               <h3 className="text-lg font-semibold">Email Preview</h3>
@@ -651,7 +651,7 @@ const EmailComposer = ({
 
       {/* Send Confirmation Modal */}
       {showSendConfirmation && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-60">
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-60">
           <div className="bg-white rounded-lg shadow-xl w-full max-w-md">
             <div className="p-6">
               <div className="flex items-center mb-4">

@@ -300,14 +300,14 @@ const OptimizedImage = ({
       
       {/* Loading indicator */}
       {loadingState === LOADING_STATES.LOADING && (
-        <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-20">
+        <div className="absolute inset-0 flex items-center justify-center bg-black/20">
           <div className="animate-spin rounded-full h-6 w-6 border-2 border-white border-t-transparent"></div>
         </div>
       )}
       
       {/* Development info */}
       {import.meta.env.DEV && loadTime && (
-        <div className="absolute top-0 left-0 bg-black bg-opacity-75 text-white text-xs p-1 rounded-br">
+        <div className="absolute top-0 left-0 bg-black/75 text-white text-xs p-1 rounded-br">
           {loadTime.toFixed(0)}ms
         </div>
       )}
