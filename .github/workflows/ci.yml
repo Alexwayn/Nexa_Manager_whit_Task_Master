@@ -162,7 +162,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: playwright-html-report
-        path: web-app/playwright-report/
+        path: .config/playwright/playwright-report/
         retention-days: 7
         if-no-files-found: warn
 
@@ -172,7 +172,7 @@ jobs:
       with:
         name: playwright-test-results
         path: |
-          web-app/test-results/
+          .config/playwright/test-results/
         retention-days: 7
         if-no-files-found: warn
 
@@ -181,6 +181,6 @@ jobs:
       uses: dorny/test-reporter@v1
       with:
         name: Playwright E2E (Chromium)
-        path: web-app/test-results/results.xml
+        path: .config/playwright/test-results/results.xml
         reporter: java-junit
         fail-on-error: false
