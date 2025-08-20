@@ -31,7 +31,7 @@ module.exports = defineConfig({
   outputDir: 'test-results/',
 
   // Ensure snapshot names match existing -{project}-{platform} suffixes and correct base directory
-  snapshotPathTemplate: '{testDir}/{testFileDir}/{testFileName}-snapshots/{arg}-{projectName}-{platform}{ext}',
+  snapshotPathTemplate: '{testFileDir}/{testFileName}-snapshots/{arg}-{projectName}-{platform}{ext}',
   
   /* Test timeout */
   timeout: 30000,
