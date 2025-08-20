@@ -16,6 +16,24 @@ async function gotoAndStabilize(page: import('@playwright/test').Page, path: str
   } else {
     await page.locator('body').waitFor({ state: 'visible', timeout: 5000 });
   }
+  // Ensure web fonts are fully loaded to avoid glyph/kerning diffs
+  try {
+    await page.evaluate(async () => {
+      const anyDoc = document as any;
+      if (anyDoc.fonts && typeof anyDoc.fonts.ready?.then === 'function') {
+        await anyDoc.fonts.ready;
+      }
+    });
+  } catch {}
+  // Apply minimal CSS normalizations for consistent rendering
+  try {
+    await page.addStyleTag({
+      content: `
+        html { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+        *, *::before, *::after { text-rendering: optimizeLegibility; }
+      `
+    });
+  } catch {}
 }
 
 // Common masking for dynamic regions (charts, loaders, skeletons, time widgets)
