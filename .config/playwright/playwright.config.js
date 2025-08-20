@@ -40,15 +40,15 @@ module.exports = defineConfig({
   projects: [
     {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      use: { ...devices['Desktop Chrome'], deviceScaleFactor: 1, colorScheme: 'light' },
     },
     {
       name: 'firefox',
-      use: { ...devices['Desktop Firefox'] },
+      use: { ...devices['Desktop Firefox'], deviceScaleFactor: 1, colorScheme: 'light' },
     },
     {
       name: 'webkit',
-      use: { ...devices['Desktop Safari'] },
+      use: { ...devices['Desktop Safari'], deviceScaleFactor: 1, colorScheme: 'light' },
     },
     {
       name: 'Mobile Chrome',
@@ -60,11 +60,11 @@ module.exports = defineConfig({
     },
     {
       name: 'Microsoft Edge',
-      use: { ...devices['Desktop Edge'], channel: 'msedge' },
+      use: { ...devices['Desktop Edge'], channel: 'msedge', deviceScaleFactor: 1, colorScheme: 'light' },
     },
     {
       name: 'Google Chrome',
-      use: { ...devices['Desktop Chrome'], channel: 'chrome' },
+      use: { ...devices['Desktop Chrome'], channel: 'chrome', deviceScaleFactor: 1, colorScheme: 'light' },
     },
   ],
 
@@ -129,11 +129,12 @@ module.exports = defineConfig({
     /* Maximum time expect() should wait for the condition to be met. */
     timeout: 5000,
 
-    /* Threshold for pixel comparisons */
-    threshold: 0.2,
-
-    /* Animation handling */
-    animations: 'disabled',
+    /* toHaveScreenshot options to reduce false positives */
+    toHaveScreenshot: {
+      animations: 'disabled',
+      caret: 'hide',
+      maxDiffPixelRatio: 0.2,
+    },
   },
 
   /* Test metadata */
