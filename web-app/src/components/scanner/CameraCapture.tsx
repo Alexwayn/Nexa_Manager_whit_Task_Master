@@ -341,7 +341,7 @@ const CameraCapture: React.FC<CameraCaptureProps> = ({
           
           {/* Center instruction */}
           <div className="absolute inset-0 flex items-center justify-center">
-            <div className="bg-black bg-opacity-50 text-white px-3 py-1 rounded-full text-sm">
+            <div className="bg-black/50 text-white px-3 py-1 rounded-full text-sm">
               Align document within the guides
             </div>
           </div>

@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">2.09% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/143</span>
+                <span class='fraction'>3/143</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">2.22% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/135</span>
+                <span class='fraction'>3/135</span>
             </div>
         
             
@@ -1082,6 +1082,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -1090,7 +1091,6 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -1554,9 +1554,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1871,7 +1871,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">8x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -2083,10 +2083,10 @@ import {
   DocumentTextIcon,
   CheckCircleIcon,
 } from '@heroicons/react/24/outline';
-import Logger from '@utils/Logger';
+import Logger from '@/utils/Logger';
 import { useTranslation } from 'react-i18next';
 &nbsp;
-const QuoteTemplateManager = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >({</span> isOpen, onClose, onSelectTemplate, currentUser }) =&gt; {</span>
+const QuoteTemplateManager = <span class="fstat-no" title="function not covered" >({</span> isOpen, onClose, onSelectTemplate, currentUser }) =&gt; {
   const { t } = <span class="cstat-no" title="statement not covered" >useTranslation('quotes');</span>
   const [templates, setTemplates] = <span class="cstat-no" title="statement not covered" >useState([]);</span>
   const [loading, setLoading] = <span class="cstat-no" title="statement not covered" >useState(false);</span>
@@ -2376,7 +2376,7 @@ const QuoteTemplateManager = <span class="cstat-no" title="statement not covered
             leaveFrom='opacity-100'
             leaveTo='opacity-0'
           &gt;
-            &lt;div className='fixed inset-0 bg-black bg-opacity-25' /&gt;
+            &lt;div className='fixed inset-0 bg-black/25' /&gt;
           &lt;/Transition.Child&gt;
 &nbsp;
           &lt;div className='fixed inset-0 overflow-y-auto'&gt;
@@ -2558,7 +2558,7 @@ const QuoteTemplateManager = <span class="cstat-no" title="statement not covered
 };
 &nbsp;
 // Template Form Modal Component
-const TemplateFormModal = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >({</span> isOpen, onClose, onSave, template, isEditing }) =&gt; {</span>
+const TemplateFormModal = <span class="fstat-no" title="function not covered" >({</span> isOpen, onClose, onSave, template, isEditing }) =&gt; {
   const { t } = <span class="cstat-no" title="statement not covered" >useTranslation('quotes');</span>
   const [formData, setFormData] = <span class="cstat-no" title="statement not covered" >useState({</span>
     name: '',
@@ -2650,7 +2650,7 @@ const TemplateFormModal = <span class="cstat-no" title="statement not covered" >
           leaveFrom='opacity-100'
           leaveTo='opacity-0'
         &gt;
-          &lt;div className='fixed inset-0 bg-black bg-opacity-25' /&gt;
+          &lt;div className='fixed inset-0 bg-black/25' /&gt;
         &lt;/Transition.Child&gt;
 &nbsp;
         &lt;div className='fixed inset-0 overflow-y-auto'&gt;
@@ -2875,7 +2875,7 @@ const TemplateFormModal = <span class="cstat-no" title="statement not covered" >
 };
 &nbsp;
 // Template Preview Modal Component
-const TemplatePreviewModal = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >({</span> isOpen, onClose, template }) =&gt; {</span>
+const TemplatePreviewModal = <span class="fstat-no" title="function not covered" >({</span> isOpen, onClose, template }) =&gt; {
   const { t } = <span class="cstat-no" title="statement not covered" >useTranslation('quotes');</span>
 <span class="cstat-no" title="statement not covered" >  if (!template) <span class="cstat-no" title="statement not covered" >return null;</span></span>
 &nbsp;
@@ -2909,7 +2909,7 @@ const TemplatePreviewModal = <span class="cstat-no" title="statement not covered
           leaveFrom='opacity-100'
           leaveTo='opacity-0'
         &gt;
-          &lt;div className='fixed inset-0 bg-black bg-opacity-25' /&gt;
+          &lt;div className='fixed inset-0 bg-black/25' /&gt;
         &lt;/Transition.Child&gt;
 &nbsp;
         &lt;div className='fixed inset-0 overflow-y-auto'&gt;
@@ -2953,7 +2953,7 @@ const TemplatePreviewModal = <span class="cstat-no" title="statement not covered
                     &lt;h4 className='font-medium text-gray-900 dark:text-white mb-3'&gt;
                       {t('templateManager.previewModal.items')}
                     &lt;/h4&gt;
-                    &lt;div className='overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg'&gt;
+                    &lt;div className='overflow-hidden shadow ring-1 ring-black/5 md:rounded-lg'&gt;
                       &lt;table className='min-w-full divide-y divide-gray-300 dark:divide-gray-600'&gt;
                         &lt;thead className='bg-gray-50 dark:bg-gray-700'&gt;
                           &lt;tr&gt;
@@ -3082,7 +3082,7 @@ export default QuoteTemplateManager;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-07-27T02:49:48.033Z
+                at 2025-08-19T02:42:45.877Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

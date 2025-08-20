@@ -5,12 +5,31 @@ import VoiceOnboarding from '@/features/voice/components/VoiceOnboarding';
 import { VoiceAssistantProvider } from '@/providers/VoiceAssistantProvider';
 import React from 'react';
 
-const renderWithProviders = (component, props = {}) => {
+// Mock the useVoiceAssistant hook properly  
+jest.mock('@/providers/VoiceAssistantProvider', () => ({
+  useVoiceAssistant: jest.fn(),
+  VoiceAssistantProvider: ({ children }) => children
+}));
+
+import { useVoiceAssistant } from '@/providers/VoiceAssistantProvider';
+const mockUseVoiceAssistant = useVoiceAssistant;
+
+const renderWithProviders = (component, props = {}, options = {}) => {
+  const { microphonePermission = 'granted' } = options;
+
+  mockUseVoiceAssistant.mockReturnValue({
+    testSpeech: jest.fn(),
+    microphonePermission,
+    updateSettings: jest.fn(),
+    dispatch: jest.fn(),
+    VOICE_ACTIONS: {
+      SET_MICROPHONE_PERMISSION: 'SET_MICROPHONE_PERMISSION'
+    }
+  });
+  
   return render(
     <BrowserRouter>
-      <VoiceAssistantProvider>
-        {React.cloneElement(component, props)}
-      </VoiceAssistantProvider>
+      {React.cloneElement(component, props)}
     </BrowserRouter>
   );
 };
@@ -50,7 +69,7 @@ describe('VoiceOnboarding', () => {
     );
 
     expect(screen.getByText(/welcome to voice assistant/i)).toBeInTheDocument();
-    expect(screen.getByText(/step 1/i)).toBeInTheDocument();
+    expect(screen.getByText(/step 1 of 4/i)).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /next/i })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /skip/i })).toBeInTheDocument();
   });
@@ -62,20 +81,24 @@ describe('VoiceOnboarding', () => {
     );
 
     // Step 1 - Introduction
-    expect(screen.getByText(/step 1/i)).toBeInTheDocument();
+    expect(screen.getByText(/step 1 of 4/i)).toBeInTheDocument();
     
     const nextButton = screen.getByRole('button', { name: /next/i });
     await user.click(nextButton);
 
     // Step 2 - Permissions
-    expect(screen.getByText(/step 2/i)).toBeInTheDocument();
+    expect(screen.getByText(/step 2 of 4/i)).toBeInTheDocument();
     expect(screen.getByText(/microphone permission/i)).toBeInTheDocument();
   });
 
   it('requests microphone permission in step 2', async () => {
     const user = userEvent.setup();
+
+    // Render with 'prompt' permission so Enable button is visible
     renderWithProviders(
-      <VoiceOnboarding onComplete={mockOnComplete} onSkip={mockOnSkip} />
+      <VoiceOnboarding onComplete={mockOnComplete} onSkip={mockOnSkip} />,
+      {},
+      { microphonePermission: 'prompt' }
     );
 
     // Navigate to step 2
@@ -91,12 +114,15 @@ describe('VoiceOnboarding', () => {
 
   it('handles permission denied gracefully', async () => {
     const user = userEvent.setup();
+
     navigator.mediaDevices.getUserMedia.mockRejectedValue(
       new Error('Permission denied')
     );
 
     renderWithProviders(
-      <VoiceOnboarding onComplete={mockOnComplete} onSkip={mockOnSkip} />
+      <VoiceOnboarding onComplete={mockOnComplete} onSkip={mockOnSkip} />,
+      {},
+      { microphonePermission: 'prompt' }
     );
 
     // Navigate to step 2
@@ -120,8 +146,8 @@ describe('VoiceOnboarding', () => {
     await user.click(screen.getByRole('button', { name: /next/i }));
     await user.click(screen.getByRole('button', { name: /next/i }));
 
-    expect(screen.getByText(/step 3/i)).toBeInTheDocument();
-    expect(screen.getByText(/voice commands/i)).toBeInTheDocument();
+    expect(screen.getByText(/step 3 of 4/i)).toBeInTheDocument();
+    expect(screen.getByText(/command overview/i)).toBeInTheDocument();
     expect(screen.getByText(/go to dashboard/i)).toBeInTheDocument();
     expect(screen.getByText(/create invoice/i)).toBeInTheDocument();
   });
@@ -137,8 +163,8 @@ describe('VoiceOnboarding', () => {
       await user.click(screen.getByRole('button', { name: /next/i }));
     }
 
-    expect(screen.getByText(/step 4/i)).toBeInTheDocument();
-    expect(screen.getByText(/try it out/i)).toBeInTheDocument();
+    expect(screen.getByText(/step 4 of 4/i)).toBeInTheDocument();
+    expect(screen.getByText(/practice session/i)).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /start practice/i })).toBeInTheDocument();
   });
 
@@ -149,7 +175,7 @@ describe('VoiceOnboarding', () => {
     );
 
     // Navigate through all steps
-    for (let i = 0; i < 4; i++) {
+    for (let i = 0; i < 3; i++) {
       await user.click(screen.getByRole('button', { name: /next/i }));
     }
 
@@ -193,17 +219,20 @@ describe('VoiceOnboarding', () => {
 
     // Go to step 2
     await user.click(screen.getByRole('button', { name: /next/i }));
-    expect(screen.getByText(/step 2/i)).toBeInTheDocument();
+    expect(screen.getByText(/step 2 of 4/i)).toBeInTheDocument();
 
     // Go back to step 1
     await user.click(screen.getByRole('button', { name: /back/i }));
-    expect(screen.getByText(/step 1/i)).toBeInTheDocument();
+    expect(screen.getByText(/step 1 of 4/i)).toBeInTheDocument();
   });
 
   it('disables next button when required actions are not completed', async () => {
     const user = userEvent.setup();
+
     renderWithProviders(
-      <VoiceOnboarding onComplete={mockOnComplete} onSkip={mockOnSkip} />
+      <VoiceOnboarding onComplete={mockOnComplete} onSkip={mockOnSkip} />,
+      {},
+      { microphonePermission: 'prompt' }
     );
 
     // Navigate to step 2 (permission step)
@@ -237,17 +266,20 @@ describe('VoiceOnboarding', () => {
     expect(nextButton).toHaveFocus();
 
     fireEvent.keyDown(nextButton, { key: 'Enter' });
-    expect(screen.getByText(/step 2/i)).toBeInTheDocument();
+    expect(screen.getByText(/step 2 of 4/i)).toBeInTheDocument();
   });
 
   it('shows error states appropriately', async () => {
     const user = userEvent.setup();
+
     navigator.mediaDevices.getUserMedia.mockRejectedValue(
       new Error('Microphone not available')
     );
 
     renderWithProviders(
-      <VoiceOnboarding onComplete={mockOnComplete} onSkip={mockOnSkip} />
+      <VoiceOnboarding onComplete={mockOnComplete} onSkip={mockOnSkip} />,
+      {},
+      { microphonePermission: 'prompt' }
     );
 
     // Navigate to permission step
@@ -260,13 +292,13 @@ describe('VoiceOnboarding', () => {
   });
 
   it('saves progress and can resume', () => {
-    localStorage.getItem.mockReturnValue('2'); // Saved at step 2
+    localStorage.getItem.mockReturnValue('1'); // Saved at step 2 (0-indexed)
 
     renderWithProviders(
       <VoiceOnboarding onComplete={mockOnComplete} onSkip={mockOnSkip} />
     );
 
-    expect(screen.getByText(/step 2/i)).toBeInTheDocument();
+    expect(screen.getByText(/step 2 of 4/i)).toBeInTheDocument();
   });
 
   it('shows animated demonstrations', async () => {
@@ -355,7 +387,7 @@ describe('VoiceOnboarding', () => {
 
     expect(mockTrack).toHaveBeenCalledWith('onboarding_step_completed', {
       step: 1,
-      stepName: 'introduction'
+      stepName: 'microphone'
     });
   });
 

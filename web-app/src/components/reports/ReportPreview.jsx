@@ -187,7 +187,7 @@ const ReportPreview = ({
 
   return (
     <div className={`fixed inset-0 z-50 overflow-hidden ${
-      isFullscreen ? 'bg-white dark:bg-gray-900' : 'bg-black bg-opacity-50'
+      isFullscreen ? 'bg-white dark:bg-gray-900' : 'bg-black/50'
     } ${className}`}>
       <div className={`flex flex-col h-full ${
         isFullscreen ? '' : 'max-w-6xl mx-auto my-4 bg-white dark:bg-gray-900 rounded-lg shadow-xl'

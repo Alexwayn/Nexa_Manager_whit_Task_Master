@@ -38,7 +38,7 @@ const FileUploadField = ({
         >
           <img className='h-full w-full object-contain' src={currentImage} alt={finalAltText} />
           {isUploading && (
-            <div className='absolute inset-0 flex items-center justify-center bg-black bg-opacity-40'>
+            <div className='absolute inset-0 flex items-center justify-center bg-black/40'>
               <svg
                 className='animate-spin h-8 w-8 text-white'
                 xmlns='http://www.w3.org/2000/svg'

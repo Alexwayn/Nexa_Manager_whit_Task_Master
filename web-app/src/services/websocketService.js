@@ -1,5 +1,5 @@
-import { getEnvVar, isDev } from '../utils/env';
-import { getWebSocketUrl as getWSUrl } from '../shared/utils/websocket';
+import { getEnvVar, isDev } from '@/utils/env';
+import { getWebSocketUrl as getWSUrl } from '@/shared/utils/websocket';
 
 /**
  * WebSocket Service for Real-time Communication

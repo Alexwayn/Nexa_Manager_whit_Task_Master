@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">1.7% </span>
+                <span class="strong">2.8% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>3/176</span>
+                <span class='fraction'>5/178</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/93</span>
+                <span class='fraction'>0/69</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">2.38% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/41</span>
+                <span class='fraction'>1/42</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">1.78% </span>
+                <span class="strong">2.94% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>3/168</span>
+                <span class='fraction'>5/170</span>
             </div>
         
             
@@ -656,7 +656,10 @@
 <a name='L591'></a><a href='#L591'>591</a>
 <a name='L592'></a><a href='#L592'>592</a>
 <a name='L593'></a><a href='#L593'>593</a>
-<a name='L594'></a><a href='#L594'>594</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L594'></a><a href='#L594'>594</a>
+<a name='L595'></a><a href='#L595'>595</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -697,11 +700,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -714,7 +716,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -1248,7 +1249,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">// Document search service for full-text search and indexing
 import { supabase } from '@/lib/supabaseClient';
 import Logger from '@/utils/Logger';
@@ -1299,7 +1301,7 @@ export class DocumentSearchService {
   /**
    * Perform full-text search on documents
    */
-<span class="fstat-no" title="function not covered" >  as</span>ync searchDocuments(
+<span class="fstat-no" title="function not covered" >  async s</span>earchDocuments(
     query: string,
     userId: string,
     options: SearchOptions = <span class="branch-0 cbranch-no" title="branch not covered" >{}</span>
@@ -1337,7 +1339,7 @@ export class DocumentSearchService {
   /**
    * Perform the actual search query
    */
-<span class="fstat-no" title="function not covered" >  pr</span>ivate async performSearch(
+  private <span class="fstat-no" title="function not covered" >async p</span>erformSearch(
     query: string,
     userId: string,
     options: SearchOptions
@@ -1359,41 +1361,41 @@ export class DocumentSearchService {
       .eq('created_by', userId);
 &nbsp;
     // Apply filters
-<span class="cstat-no" title="statement not covered" >    if (filters.category) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (filters.category) {</span>
 <span class="cstat-no" title="statement not covered" >      searchQuery = searchQuery.eq('category', filters.category);</span>
     }
-<span class="cstat-no" title="statement not covered" >    if (filters.clientId) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (filters.clientId) {</span>
 <span class="cstat-no" title="statement not covered" >      searchQuery = searchQuery.eq('client_id', filters.clientId);</span>
     }
-<span class="cstat-no" title="statement not covered" >    if (filters.projectId) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (filters.projectId) {</span>
 <span class="cstat-no" title="statement not covered" >      searchQuery = searchQuery.eq('project_id', filters.projectId);</span>
     }
-<span class="cstat-no" title="statement not covered" >    if (filters.tags &amp;&amp; filters.tags.length &gt; 0) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (filters.tags &amp;&amp; filters.tags.length &gt; 0) {</span>
 <span class="cstat-no" title="statement not covered" >      searchQuery = searchQuery.overlaps('tags', filters.tags);</span>
     }
-<span class="cstat-no" title="statement not covered" >    if (filters.dateRange) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (filters.dateRange) {</span>
 <span class="cstat-no" title="statement not covered" >      searchQuery = searchQuery</span>
         .gte('created_at', filters.dateRange.start.toISOString())
         .lte('created_at', filters.dateRange.end.toISOString());
     }
 &nbsp;
     // Apply full-text search
-<span class="cstat-no" title="statement not covered" >    if (query.trim()) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (query.trim()) {</span>
       const searchTerm = <span class="cstat-no" title="statement not covered" >this.preprocessSearchQuery(query);</span>
       
-<span class="cstat-no" title="statement not covered" >      if (searchFields.includes('title') || searchFields.includes('description') || searchFields.includes('textContent')) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (searchFields.includes('title') || searchFields.includes('description') || searchFields.includes('textContent')) {</span>
         // Use PostgreSQL full-text search with ranking
-        const tsQuery = <span class="cstat-no" title="statement not covered" >searchTerm.split(' ').map(<span class="fstat-no" title="function not covered" >te</span>rm =&gt; <span class="cstat-no" title="statement not covered" >`${term}:*`)</span>.join(' &amp; ');</span>
+        const tsQuery = <span class="cstat-no" title="statement not covered" >searchTerm.split(' ').map(<span class="fstat-no" title="function not covered" >term </span>=&gt; <span class="cstat-no" title="statement not covered" >`${term}:*`)</span>.join(' &amp; ');</span>
         
 <span class="cstat-no" title="statement not covered" >        searchQuery = searchQuery.or(</span>
           `title.ilike.%${searchTerm}%,description.ilike.%${searchTerm}%,text_content.ilike.%${searchTerm}%`
         );
       }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      if (searchFields.includes('tags')) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (searchFields.includes('tags')) {</span>
         // Search in tags array
-        const tagSearchTerms = <span class="cstat-no" title="statement not covered" >searchTerm.split(' ').map(<span class="fstat-no" title="function not covered" >te</span>rm =&gt; <span class="cstat-no" title="statement not covered" >`%${term}%`)</span>;</span>
-        const tagConditions = <span class="cstat-no" title="statement not covered" >tagSearchTerms.map(<span class="fstat-no" title="function not covered" >te</span>rm =&gt; <span class="cstat-no" title="statement not covered" >`tags.cs.{${term}}`)</span>.join(',');</span>
+        const tagSearchTerms = <span class="cstat-no" title="statement not covered" >searchTerm.split(' ').map(<span class="fstat-no" title="function not covered" >term </span>=&gt; <span class="cstat-no" title="statement not covered" >`%${term}%`)</span>;</span>
+        const tagConditions = <span class="cstat-no" title="statement not covered" >tagSearchTerms.map(<span class="fstat-no" title="function not covered" >term </span>=&gt; <span class="cstat-no" title="statement not covered" >`tags.cs.{${term}}`)</span>.join(',');</span>
 <span class="cstat-no" title="statement not covered" >        searchQuery = searchQuery.or(tagConditions);</span>
       }
     }
@@ -1413,7 +1415,7 @@ export class DocumentSearchService {
 &nbsp;
     const { data, error } = <span class="cstat-no" title="statement not covered" >await searchQuery;</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    if (error) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (error) {</span>
 <span class="cstat-no" title="statement not covered" >      Logger.error('Search query failed:', error);</span>
 <span class="cstat-no" title="statement not covered" >      throw new Error(`Search query failed: ${error.message}`);</span>
     }
@@ -1434,7 +1436,7 @@ export class DocumentSearchService {
     }
 &nbsp;
     // Sort by relevance score if needed
-<span class="cstat-no" title="statement not covered" >    if (sortBy === 'relevance') {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (sortBy === 'relevance') {</span>
 <span class="cstat-no" title="statement not covered" >      results.sort(<span class="fstat-no" title="function not covered" >(a</span>, b) =&gt; <span class="cstat-no" title="statement not covered" >sortOrder === 'asc' ? a.score - b.score : b.score - a.score)</span>;</span>
     }
 &nbsp;
@@ -1444,7 +1446,7 @@ export class DocumentSearchService {
   /**
    * Calculate search statistics
    */
-<span class="fstat-no" title="function not covered" >  pr</span>ivate async calculateSearchStatistics(
+  private <span class="fstat-no" title="function not covered" >async c</span>alculateSearchStatistics(
     results: SearchResult[],
     startTime: number
   ): Promise&lt;SearchStatistics&gt; {
@@ -1455,11 +1457,11 @@ export class DocumentSearchService {
     const categoryCount = <span class="cstat-no" title="statement not covered" >new Map&lt;string, number&gt;();</span>
     const tagCount = <span class="cstat-no" title="statement not covered" >new Map&lt;string, number&gt;();</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    results.forEach(<span class="fstat-no" title="function not covered" >re</span>sult =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    results.forEach(<span class="fstat-no" title="function not covered" >result </span>=&gt; {</span>
       const category = <span class="cstat-no" title="statement not covered" >result.document.category;</span>
 <span class="cstat-no" title="statement not covered" >      categoryCount.set(category, (categoryCount.get(category) || 0) + 1);</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      result.document.tags.forEach(<span class="fstat-no" title="function not covered" >ta</span>g =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >      result.document.tags.forEach(<span class="fstat-no" title="function not covered" >tag </span>=&gt; {</span>
 <span class="cstat-no" title="statement not covered" >        tagCount.set(tag, (tagCount.get(tag) || 0) + 1);</span>
       });
     });
@@ -1485,7 +1487,7 @@ export class DocumentSearchService {
   /**
    * Generate search suggestions
    */
-<span class="fstat-no" title="function not covered" >  pr</span>ivate async generateSearchSuggestions(
+  private <span class="fstat-no" title="function not covered" >async g</span>enerateSearchSuggestions(
     query: string,
     userId: string
   ): Promise&lt;SearchSuggestion[]&gt; {
@@ -1500,14 +1502,14 @@ export class DocumentSearchService {
         .order('created_at', { ascending: false })
         .limit(10);
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      if (recentSearches) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (recentSearches) {</span>
         const completions = <span class="cstat-no" title="statement not covered" >recentSearches</span>
-          .filter(<span class="fstat-no" title="function not covered" >se</span>arch =&gt; 
+          .filter(<span class="fstat-no" title="function not covered" >search </span>=&gt; 
 <span class="cstat-no" title="statement not covered" >            search.query.toLowerCase().startsWith(query.toLowerCase()) &amp;&amp; </span>
             search.query.toLowerCase() !== query.toLowerCase()
           )
           .slice(0, 3)
-          .map(<span class="fstat-no" title="function not covered" >se</span>arch =&gt; (<span class="cstat-no" title="statement not covered" >{</span>
+          .map(<span class="fstat-no" title="function not covered" >search </span>=&gt; (<span class="cstat-no" title="statement not covered" >{</span>
             query: search.query,
             type: 'completion' as const,
             score: 0.8
@@ -1530,7 +1532,7 @@ export class DocumentSearchService {
   /**
    * Generate related search suggestions
    */
-<span class="fstat-no" title="function not covered" >  pr</span>ivate async generateRelatedSuggestions(
+  private <span class="fstat-no" title="function not covered" >async g</span>enerateRelatedSuggestions(
     query: string,
     userId: string
   ): Promise&lt;SearchSuggestion[]&gt; {
@@ -1544,20 +1546,20 @@ export class DocumentSearchService {
         .eq('created_by', userId)
         .limit(100);
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      if (documents) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (documents) {</span>
         const categories = <span class="cstat-no" title="statement not covered" >new Set&lt;string&gt;();</span>
         const tags = <span class="cstat-no" title="statement not covered" >new Set&lt;string&gt;();</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >        documents.forEach(<span class="fstat-no" title="function not covered" >do</span>c =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >        documents.forEach(<span class="fstat-no" title="function not covered" >doc </span>=&gt; {</span>
 <span class="cstat-no" title="statement not covered" >          categories.add(doc.category);</span>
-<span class="cstat-no" title="statement not covered" >          doc.tags?.forEach(<span class="fstat-no" title="function not covered" >(t</span>ag: string) =&gt; <span class="cstat-no" title="statement not covered" >tags.add(tag))</span>;</span>
+<span class="cstat-no" title="statement not covered" >          doc.tags?.forEach((<span class="fstat-no" title="function not covered" >tag: string)</span> =&gt; <span class="cstat-no" title="statement not covered" >tags.add(tag))</span>;</span>
         });
 &nbsp;
         // Suggest categories
 <span class="cstat-no" title="statement not covered" >        Array.from(categories)</span>
-          .filter(<span class="fstat-no" title="function not covered" >ca</span>tegory =&gt; <span class="cstat-no" title="statement not covered" >category.toLowerCase().includes(query.toLowerCase()))</span>
+          .filter(<span class="fstat-no" title="function not covered" >category </span>=&gt; <span class="cstat-no" title="statement not covered" >category.toLowerCase().includes(query.toLowerCase()))</span>
           .slice(0, 2)
-          .forEach(<span class="fstat-no" title="function not covered" >ca</span>tegory =&gt; {
+          .forEach(<span class="fstat-no" title="function not covered" >category </span>=&gt; {
 <span class="cstat-no" title="statement not covered" >            suggestions.push({</span>
               query: `category:${category}`,
               type: 'related',
@@ -1567,9 +1569,9 @@ export class DocumentSearchService {
 &nbsp;
         // Suggest tags
 <span class="cstat-no" title="statement not covered" >        Array.from(tags)</span>
-          .filter(<span class="fstat-no" title="function not covered" >ta</span>g =&gt; <span class="cstat-no" title="statement not covered" >tag.toLowerCase().includes(query.toLowerCase()))</span>
+          .filter(<span class="fstat-no" title="function not covered" >tag </span>=&gt; <span class="cstat-no" title="statement not covered" >tag.toLowerCase().includes(query.toLowerCase()))</span>
           .slice(0, 3)
-          .forEach(<span class="fstat-no" title="function not covered" >ta</span>g =&gt; {
+          .forEach(<span class="fstat-no" title="function not covered" >tag </span>=&gt; {
 <span class="cstat-no" title="statement not covered" >            suggestions.push({</span>
               query: `tag:${tag}`,
               type: 'related',
@@ -1587,7 +1589,7 @@ export class DocumentSearchService {
   /**
    * Index a document for search
    */
-<span class="fstat-no" title="function not covered" >  as</span>ync indexDocument(document: ProcessedDocument): Promise&lt;void&gt; {
+<span class="fstat-no" title="function not covered" >  async i</span>ndexDocument(document: ProcessedDocument): Promise&lt;void&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
       // The document is already indexed when saved to the database
       // This method can be used for additional indexing operations if needed
@@ -1601,7 +1603,7 @@ export class DocumentSearchService {
   /**
    * Remove document from search index
    */
-<span class="fstat-no" title="function not covered" >  as</span>ync removeFromIndex(documentId: string): Promise&lt;void&gt; {
+<span class="fstat-no" title="function not covered" >  async r</span>emoveFromIndex(documentId: string): Promise&lt;void&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
       // Document is removed from index when deleted from database
 <span class="cstat-no" title="statement not covered" >      Logger.info(`Document ${documentId} removed from search index`);</span>
@@ -1614,7 +1616,7 @@ export class DocumentSearchService {
   /**
    * Get search analytics for a user
    */
-<span class="fstat-no" title="function not covered" >  as</span>ync getSearchAnalytics(userId: string, days: number = <span class="branch-0 cbranch-no" title="branch not covered" >30)</span>: Promise&lt;{
+<span class="fstat-no" title="function not covered" >  async g</span>etSearchAnalytics(userId: string, days: number = <span class="branch-0 cbranch-no" title="branch not covered" >30)</span>: Promise&lt;{
     totalSearches: number;
     topQueries: Array&lt;{ query: string; count: number }&gt;;
     searchTrends: Array&lt;{ date: string; count: number }&gt;;
@@ -1630,7 +1632,7 @@ export class DocumentSearchService {
         .gte('created_at', startDate.toISOString())
         .order('created_at', { ascending: false });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      if (!searches) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (!searches) {</span>
 <span class="cstat-no" title="statement not covered" >        return { totalSearches: 0, topQueries: [], searchTrends: [] };</span>
       }
 &nbsp;
@@ -1638,7 +1640,7 @@ export class DocumentSearchService {
 &nbsp;
       // Calculate top queries
       const queryCount = <span class="cstat-no" title="statement not covered" >new Map&lt;string, number&gt;();</span>
-<span class="cstat-no" title="statement not covered" >      searches.forEach(<span class="fstat-no" title="function not covered" >se</span>arch =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >      searches.forEach(<span class="fstat-no" title="function not covered" >search </span>=&gt; {</span>
 <span class="cstat-no" title="statement not covered" >        queryCount.set(search.query, (queryCount.get(search.query) || 0) + 1);</span>
       });
 &nbsp;
@@ -1649,7 +1651,7 @@ export class DocumentSearchService {
 &nbsp;
       // Calculate search trends by day
       const trendMap = <span class="cstat-no" title="statement not covered" >new Map&lt;string, number&gt;();</span>
-<span class="cstat-no" title="statement not covered" >      searches.forEach(<span class="fstat-no" title="function not covered" >se</span>arch =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >      searches.forEach(<span class="fstat-no" title="function not covered" >search </span>=&gt; {</span>
         const date = <span class="cstat-no" title="statement not covered" >new Date(search.created_at).toISOString().split('T')[0];</span>
 <span class="cstat-no" title="statement not covered" >        trendMap.set(date, (trendMap.get(date) || 0) + 1);</span>
       });
@@ -1672,7 +1674,7 @@ export class DocumentSearchService {
   /**
    * Log search query for analytics
    */
-<span class="fstat-no" title="function not covered" >  pr</span>ivate async logSearchQuery(query: string, userId: string): Promise&lt;void&gt; {
+  private <span class="fstat-no" title="function not covered" >async l</span>ogSearchQuery(query: string, userId: string): Promise&lt;void&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
 <span class="cstat-no" title="statement not covered" >      await supabase</span>
         .from(this.SEARCH_HISTORY_TABLE)
@@ -1690,7 +1692,7 @@ export class DocumentSearchService {
   /**
    * Preprocess search query
    */
-<span class="fstat-no" title="function not covered" >  pr</span>ivate preprocessSearchQuery(query: string): string {
+  private <span class="fstat-no" title="function not covered" >preprocessSearchQuery(</span>query: string): string {
 <span class="cstat-no" title="statement not covered" >    return query</span>
       .trim()
       .toLowerCase()
@@ -1701,33 +1703,33 @@ export class DocumentSearchService {
   /**
    * Calculate relevance score for a document
    */
-<span class="fstat-no" title="function not covered" >  pr</span>ivate calculateRelevanceScore(document: ProcessedDocument, query: string): number {
+  private <span class="fstat-no" title="function not covered" >calculateRelevanceScore(</span>document: ProcessedDocument, query: string): number {
     const searchTerms = <span class="cstat-no" title="statement not covered" >this.preprocessSearchQuery(query).split(' ');</span>
     let score = <span class="cstat-no" title="statement not covered" >0;</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    searchTerms.forEach(<span class="fstat-no" title="function not covered" >te</span>rm =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    searchTerms.forEach(<span class="fstat-no" title="function not covered" >term </span>=&gt; {</span>
       // Title matches get highest score
-<span class="cstat-no" title="statement not covered" >      if (document.title.toLowerCase().includes(term)) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (document.title.toLowerCase().includes(term)) {</span>
 <span class="cstat-no" title="statement not covered" >        score += 10;</span>
       }
 &nbsp;
       // Description matches get medium score
-<span class="cstat-no" title="statement not covered" >      if (document.description?.toLowerCase().includes(term)) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (document.description?.toLowerCase().includes(term)) {</span>
 <span class="cstat-no" title="statement not covered" >        score += 5;</span>
       }
 &nbsp;
       // Text content matches get lower score
-<span class="cstat-no" title="statement not covered" >      if (document.textContent.toLowerCase().includes(term)) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (document.textContent.toLowerCase().includes(term)) {</span>
 <span class="cstat-no" title="statement not covered" >        score += 2;</span>
       }
 &nbsp;
       // Tag matches get high score
-<span class="cstat-no" title="statement not covered" >      if (document.tags.some(<span class="fstat-no" title="function not covered" >ta</span>g =&gt; <span class="cstat-no" title="statement not covered" >tag.toLowerCase().includes(term))</span>) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (document.tags.some(<span class="fstat-no" title="function not covered" >tag </span>=&gt; <span class="cstat-no" title="statement not covered" >tag.toLowerCase().includes(term))</span>) {</span>
 <span class="cstat-no" title="statement not covered" >        score += 8;</span>
       }
 &nbsp;
       // Category matches get medium score
-<span class="cstat-no" title="statement not covered" >      if (document.category.toLowerCase().includes(term)) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (document.category.toLowerCase().includes(term)) {</span>
 <span class="cstat-no" title="statement not covered" >        score += 6;</span>
       }
     });
@@ -1741,14 +1743,14 @@ export class DocumentSearchService {
   /**
    * Generate search highlights
    */
-<span class="fstat-no" title="function not covered" >  pr</span>ivate generateHighlights(document: ProcessedDocument, query: string): SearchHighlight[] {
+  private <span class="fstat-no" title="function not covered" >generateHighlights(</span>document: ProcessedDocument, query: string): SearchHighlight[] {
     const highlights: SearchHighlight[] = <span class="cstat-no" title="statement not covered" >[];</span>
     const searchTerms = <span class="cstat-no" title="statement not covered" >this.preprocessSearchQuery(query).split(' ');</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    searchTerms.forEach(<span class="fstat-no" title="function not covered" >te</span>rm =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    searchTerms.forEach(<span class="fstat-no" title="function not covered" >term </span>=&gt; {</span>
       // Highlight in title
       const titleIndex = <span class="cstat-no" title="statement not covered" >document.title.toLowerCase().indexOf(term);</span>
-<span class="cstat-no" title="statement not covered" >      if (titleIndex !== -1) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (titleIndex !== -1) {</span>
 <span class="cstat-no" title="statement not covered" >        highlights.push({</span>
           field: 'title',
           snippet: this.createSnippet(document.title, titleIndex, term.length),
@@ -1758,9 +1760,9 @@ export class DocumentSearchService {
       }
 &nbsp;
       // Highlight in description
-<span class="cstat-no" title="statement not covered" >      if (document.description) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (document.description) {</span>
         const descIndex = <span class="cstat-no" title="statement not covered" >document.description.toLowerCase().indexOf(term);</span>
-<span class="cstat-no" title="statement not covered" >        if (descIndex !== -1) {</span>
+<span class="cstat-no" title="statement not covered" >        <span class="missing-if-branch" title="if path not taken" >I</span>if (descIndex !== -1) {</span>
 <span class="cstat-no" title="statement not covered" >          highlights.push({</span>
             field: 'description',
             snippet: this.createSnippet(document.description, descIndex, term.length),
@@ -1772,7 +1774,7 @@ export class DocumentSearchService {
 &nbsp;
       // Highlight in text content
       const textIndex = <span class="cstat-no" title="statement not covered" >document.textContent.toLowerCase().indexOf(term);</span>
-<span class="cstat-no" title="statement not covered" >      if (textIndex !== -1) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (textIndex !== -1) {</span>
 <span class="cstat-no" title="statement not covered" >        highlights.push({</span>
           field: 'textContent',
           snippet: this.createSnippet(document.textContent, textIndex, term.length, 100),
@@ -1788,14 +1790,14 @@ export class DocumentSearchService {
   /**
    * Create a snippet around a search term
    */
-<span class="fstat-no" title="function not covered" >  pr</span>ivate createSnippet(text: string, index: number, termLength: number, maxLength: number = <span class="branch-0 cbranch-no" title="branch not covered" >50)</span>: string {
+  private <span class="fstat-no" title="function not covered" >createSnippet(</span>text: string, index: number, termLength: number, maxLength: number = <span class="branch-0 cbranch-no" title="branch not covered" >50)</span>: string {
     const start = <span class="cstat-no" title="statement not covered" >Math.max(0, index - maxLength / 2);</span>
     const end = <span class="cstat-no" title="statement not covered" >Math.min(text.length, index + termLength + maxLength / 2);</span>
     
     let snippet = <span class="cstat-no" title="statement not covered" >text.substring(start, end);</span>
     
-<span class="cstat-no" title="statement not covered" >    if (start &gt; 0) <span class="cstat-no" title="statement not covered" >snippet = '...' + snippet;</span></span>
-<span class="cstat-no" title="statement not covered" >    if (end &lt; text.length) <span class="cstat-no" title="statement not covered" >snippet = snippet + '...';</span></span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (start &gt; 0) <span class="cstat-no" title="statement not covered" >snippet = '...' + snippet;</span></span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (end &lt; text.length) <span class="cstat-no" title="statement not covered" >snippet = snippet + '...';</span></span>
     
 <span class="cstat-no" title="statement not covered" >    return snippet;</span>
   }
@@ -1803,7 +1805,7 @@ export class DocumentSearchService {
   /**
    * Map database record to ProcessedDocument
    */
-<span class="fstat-no" title="function not covered" >  pr</span>ivate mapRecordToDocument(record: any): ProcessedDocument {
+  private <span class="fstat-no" title="function not covered" >mapRecordToDocument(</span>record: any): ProcessedDocument {
 <span class="cstat-no" title="statement not covered" >    return {</span>
       id: record.id,
       title: record.title,
@@ -1842,14 +1844,15 @@ export class DocumentSearchService {
 &nbsp;
 // Create and export singleton instance
 export const documentSearchService = new DocumentSearchService();
-export default documentSearchService;</pre></td></tr></table></pre>
+export default documentSearchService;
+&nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-07-27T02:49:48.033Z
+                at 2025-08-19T02:42:45.877Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

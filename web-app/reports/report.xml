@@ -1,1607 +1,370 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="126" failures="52" errors="0" time="3.298">
-  <testsuite name="VoiceAnalyticsService" errors="0" failures="0" skipped="0" timestamp="2025-08-16T05:13:47" time="1.012" tests="19">
-    <testcase classname="VoiceAnalyticsService Command Tracking tracks successful voice commands" name="VoiceAnalyticsService Command Tracking tracks successful voice commands" time="0.005">
-    </testcase>
-    <testcase classname="VoiceAnalyticsService Command Tracking tracks failed voice commands" name="VoiceAnalyticsService Command Tracking tracks failed voice commands" time="0">
-    </testcase>
-    <testcase classname="VoiceAnalyticsService Command Tracking maintains command history with timestamps" name="VoiceAnalyticsService Command Tracking maintains command history with timestamps" time="0.001">
-    </testcase>
-    <testcase classname="VoiceAnalyticsService Command Tracking limits command history to prevent storage overflow" name="VoiceAnalyticsService Command Tracking limits command history to prevent storage overflow" time="0.002">
-    </testcase>
-    <testcase classname="VoiceAnalyticsService Error Tracking tracks voice recognition errors" name="VoiceAnalyticsService Error Tracking tracks voice recognition errors" time="0.001">
-    </testcase>
-    <testcase classname="VoiceAnalyticsService Error Tracking tracks permission errors" name="VoiceAnalyticsService Error Tracking tracks permission errors" time="0.001">
-    </testcase>
-    <testcase classname="VoiceAnalyticsService Error Tracking tracks command execution errors" name="VoiceAnalyticsService Error Tracking tracks command execution errors" time="0">
-    </testcase>
-    <testcase classname="VoiceAnalyticsService Session Tracking tracks voice assistant sessions" name="VoiceAnalyticsService Session Tracking tracks voice assistant sessions" time="0.001">
-    </testcase>
-    <testcase classname="VoiceAnalyticsService Session Tracking calculates session duration correctly" name="VoiceAnalyticsService Session Tracking calculates session duration correctly" time="0">
-    </testcase>
-    <testcase classname="VoiceAnalyticsService Analytics Retrieval retrieves analytics data" name="VoiceAnalyticsService Analytics Retrieval retrieves analytics data" time="0.001">
-    </testcase>
-    <testcase classname="VoiceAnalyticsService Analytics Retrieval returns empty analytics when no data exists" name="VoiceAnalyticsService Analytics Retrieval returns empty analytics when no data exists" time="0.001">
-    </testcase>
-    <testcase classname="VoiceAnalyticsService Analytics Retrieval handles corrupted analytics data gracefully" name="VoiceAnalyticsService Analytics Retrieval handles corrupted analytics data gracefully" time="0">
-    </testcase>
-    <testcase classname="VoiceAnalyticsService Analytics Summary generates analytics summary" name="VoiceAnalyticsService Analytics Summary generates analytics summary" time="0.001">
-    </testcase>
-    <testcase classname="VoiceAnalyticsService Analytics Summary handles empty analytics data in summary" name="VoiceAnalyticsService Analytics Summary handles empty analytics data in summary" time="0">
-    </testcase>
-    <testcase classname="VoiceAnalyticsService Data Management clears analytics data" name="VoiceAnalyticsService Data Management clears analytics data" time="0.001">
-    </testcase>
-    <testcase classname="VoiceAnalyticsService Data Management exports analytics data" name="VoiceAnalyticsService Data Management exports analytics data" time="0">
-    </testcase>
-    <testcase classname="VoiceAnalyticsService Data Management imports analytics data" name="VoiceAnalyticsService Data Management imports analytics data" time="0.001">
-    </testcase>
-    <testcase classname="VoiceAnalyticsService Performance Metrics tracks response times" name="VoiceAnalyticsService Performance Metrics tracks response times" time="0">
-    </testcase>
-    <testcase classname="VoiceAnalyticsService Performance Metrics calculates average response time" name="VoiceAnalyticsService Performance Metrics calculates average response time" time="0">
-    </testcase>
-  </testsuite>
-  <testsuite name="useEmails Hook" errors="0" failures="0" skipped="0" timestamp="2025-08-16T05:13:47" time="0.992" tests="11">
-    <testcase classname="useEmails Hook Service Integration should have email management service properly mocked" name="useEmails Hook Service Integration should have email management service properly mocked" time="0.005">
-    </testcase>
-    <testcase classname="useEmails Hook Service Integration should have email context properly mocked" name="useEmails Hook Service Integration should have email context properly mocked" time="0.001">
-    </testcase>
-    <testcase classname="useEmails Hook Service Integration should have user context properly mocked" name="useEmails Hook Service Integration should have user context properly mocked" time="0.001">
-    </testcase>
-    <testcase classname="useEmails Hook Mock Functionality should call searchEmails service with correct parameters" name="useEmails Hook Mock Functionality should call searchEmails service with correct parameters" time="0.001">
-    </testcase>
-    <testcase classname="useEmails Hook Mock Functionality should call sendEmail service with correct parameters" name="useEmails Hook Mock Functionality should call sendEmail service with correct parameters" time="0.001">
-    </testcase>
-    <testcase classname="useEmails Hook Mock Functionality should call deleteEmail service with correct parameters" name="useEmails Hook Mock Functionality should call deleteEmail service with correct parameters" time="0.001">
-    </testcase>
-    <testcase classname="useEmails Hook Mock Functionality should call markAsRead service with correct parameters" name="useEmails Hook Mock Functionality should call markAsRead service with correct parameters" time="0">
-    </testcase>
-    <testcase classname="useEmails Hook Mock Functionality should handle service errors properly" name="useEmails Hook Mock Functionality should handle service errors properly" time="0.001">
-    </testcase>
-    <testcase classname="useEmails Hook Context Integration should dispatch actions to email context" name="useEmails Hook Context Integration should dispatch actions to email context" time="0.001">
-    </testcase>
-    <testcase classname="useEmails Hook Context Integration should call context methods" name="useEmails Hook Context Integration should call context methods" time="0">
-    </testcase>
-    <testcase classname="useEmails Hook Computed Values should compute email counts correctly" name="useEmails Hook Computed Values should compute email counts correctly" time="0">
-    </testcase>
-  </testsuite>
-  <testsuite name="VoiceActivationButton Simple Test" errors="0" failures="0" skipped="0" timestamp="2025-08-16T05:13:47" time="1.007" tests="2">
-    <testcase classname="VoiceActivationButton Simple Test should import without errors" name="VoiceActivationButton Simple Test should import without errors" time="0.009">
-    </testcase>
-    <testcase classname="VoiceActivationButton Simple Test should render basic structure" name="VoiceActivationButton Simple Test should render basic structure" time="0">
-    </testcase>
-  </testsuite>
-  <testsuite name="Isolated Service (ESM import) Tests" errors="0" failures="0" skipped="0" timestamp="2025-08-16T05:13:47" time="1.013" tests="1">
-    <testcase classname="Isolated Service (ESM import) Tests should import reportingService and call generateReport via dynamic import" name="Isolated Service (ESM import) Tests should import reportingService and call generateReport via dynamic import" time="0.015">
-    </testcase>
-  </testsuite>
-  <testsuite name="QueryClient Debug" errors="0" failures="0" skipped="0" timestamp="2025-08-16T05:13:47" time="1.001" tests="1">
-    <testcase classname="QueryClient Debug QueryClient can be instantiated" name="QueryClient Debug QueryClient can be instantiated" time="0.012">
-    </testcase>
-  </testsuite>
-  <testsuite name="Debug Service Tests" errors="0" failures="0" skipped="0" timestamp="2025-08-16T05:13:47" time="1.011" tests="2">
-    <testcase classname="Debug Service Tests should test raw Supabase query" name="Debug Service Tests should test raw Supabase query" time="0.01">
-    </testcase>
-    <testcase classname="Debug Service Tests should debug generateReport" name="Debug Service Tests should debug generateReport" time="0.01">
-    </testcase>
-  </testsuite>
-  <testsuite name="Debug FinancialService" errors="0" failures="0" skipped="0" timestamp="2025-08-16T05:13:47" time="1.022" tests="1">
-    <testcase classname="Debug FinancialService should have methods defined" name="Debug FinancialService should have methods defined" time="0.017">
-    </testcase>
-  </testsuite>
-  <testsuite name="BusinessEmailIntegration" errors="0" failures="25" skipped="0" timestamp="2025-08-16T05:13:47" time="1.107" tests="25">
-    <testcase classname="BusinessEmailIntegration Invoice Email Integration should send invoice email successfully" name="BusinessEmailIntegration Invoice Email Integration should send invoice email successfully" time="0.005">
-      <failure>TypeError: _businessEmailIntegration.default.sendInvoiceEmail is not a function
-    at Object.sendInvoiceEmail (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\lib\__tests__\businessEmailIntegration.test.js:81:53)
+<testsuites name="jest tests" tests="25" failures="25" errors="0" time="7.967">
+  <testsuite name="VoiceOnboarding" errors="0" failures="25" skipped="0" timestamp="2025-08-18T05:05:51" time="7.094" tests="25">
+    <testcase classname="VoiceOnboarding renders onboarding steps correctly" name="VoiceOnboarding renders onboarding steps correctly" time="0.004">
+      <failure>TestingLibraryElementError: Unable to find an element with the text: /welcome to voice assistant/i
+    at Object.getElementError (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\shared\__tests__\mocks\testing-library-react.cjs:18:19)
+    at Object.&lt;anonymous&gt; (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\shared\__tests__\mocks\testing-library-react.cjs:650:23)
+    at E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-mock\build\index.js:397:39
+    at Object.&lt;anonymous&gt; (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-mock\build\index.js:404:13)
+    at Object.mockConstructor [as getByText] (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-mock\build\index.js:103:19)
+    at Object.getByText (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\__tests__\features\voice\VoiceOnboarding.test.jsx:73:19)
     at Promise.then.completed (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\utils.js:298:28)
     at new Promise (&lt;anonymous&gt;)
     at callAsyncCircusFn (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\utils.js:231:10)
     at _callCircusTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:316:40)
-    at processTicksAndRejections (node:internal/process/task_queues:95:5)
     at _runTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:252:3)
     at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:126:9)
-    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:121:9)
     at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:121:9)
     at run (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:71:3)
     at runAndTransformResultsToJestFormat (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)
     at jestAdapter (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapter.js:79:19)
     at runTestInternal (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\runTest.js:367:16)
-    at runTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\runTest.js:444:34)
-    at Object.worker (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\testWorker.js:106:12)</failure>
+    at runTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\runTest.js:444:34)</failure>
     </testcase>
-    <testcase classname="BusinessEmailIntegration Invoice Email Integration should send payment reminder successfully" name="BusinessEmailIntegration Invoice Email Integration should send payment reminder successfully" time="0">
-      <failure>TypeError: _businessEmailIntegration.default.sendPaymentReminder is not a function
-    at Object.sendPaymentReminder (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\lib\__tests__\businessEmailIntegration.test.js:97:53)
+    <testcase classname="VoiceOnboarding navigates through onboarding steps" name="VoiceOnboarding navigates through onboarding steps" time="0.001">
+      <failure>TestingLibraryElementError: Unable to find an element with the text: /step 1 of 4/i
+    at Object.getElementError (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\shared\__tests__\mocks\testing-library-react.cjs:18:19)
+    at Object.&lt;anonymous&gt; (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\shared\__tests__\mocks\testing-library-react.cjs:650:23)
+    at E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-mock\build\index.js:397:39
+    at Object.&lt;anonymous&gt; (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-mock\build\index.js:404:13)
+    at Object.mockConstructor [as getByText] (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-mock\build\index.js:103:19)
+    at Object.getByText (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\__tests__\features\voice\VoiceOnboarding.test.jsx:86:19)
     at Promise.then.completed (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\utils.js:298:28)
     at new Promise (&lt;anonymous&gt;)
     at callAsyncCircusFn (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\utils.js:231:10)
     at _callCircusTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:316:40)
-    at processTicksAndRejections (node:internal/process/task_queues:95:5)
     at _runTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:252:3)
     at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:126:9)
-    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:121:9)
     at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:121:9)
     at run (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:71:3)
     at runAndTransformResultsToJestFormat (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)
     at jestAdapter (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapter.js:79:19)
     at runTestInternal (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\runTest.js:367:16)
-    at runTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\runTest.js:444:34)
-    at Object.worker (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\testWorker.js:106:12)</failure>
+    at runTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\runTest.js:444:34)</failure>
     </testcase>
-    <testcase classname="BusinessEmailIntegration Invoice Email Integration should handle invoice email errors gracefully" name="BusinessEmailIntegration Invoice Email Integration should handle invoice email errors gracefully" time="0.001">
-      <failure>TypeError: _businessEmailIntegration.default.sendInvoiceEmail is not a function
-    at Object.sendInvoiceEmail (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\lib\__tests__\businessEmailIntegration.test.js:110:53)
-    at Promise.then.completed (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\utils.js:298:28)
-    at new Promise (&lt;anonymous&gt;)
-    at callAsyncCircusFn (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\utils.js:231:10)
-    at _callCircusTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:316:40)
-    at processTicksAndRejections (node:internal/process/task_queues:95:5)
-    at _runTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:252:3)
-    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:126:9)
-    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:121:9)
-    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:121:9)
-    at run (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:71:3)
-    at runAndTransformResultsToJestFormat (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)
-    at jestAdapter (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapter.js:79:19)
-    at runTestInternal (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\runTest.js:367:16)
-    at runTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\runTest.js:444:34)
-    at Object.worker (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\testWorker.js:106:12)</failure>
-    </testcase>
-    <testcase classname="BusinessEmailIntegration Quote Email Integration should send quote email successfully" name="BusinessEmailIntegration Quote Email Integration should send quote email successfully" time="0">
-      <failure>TypeError: _businessEmailIntegration.default.sendQuoteEmail is not a function
-    at Object.sendQuoteEmail (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\lib\__tests__\businessEmailIntegration.test.js:123:53)
-    at Promise.then.completed (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\utils.js:298:28)
-    at new Promise (&lt;anonymous&gt;)
-    at callAsyncCircusFn (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\utils.js:231:10)
-    at _callCircusTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:316:40)
-    at processTicksAndRejections (node:internal/process/task_queues:95:5)
-    at _runTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:252:3)
-    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:126:9)
-    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:121:9)
-    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:121:9)
-    at run (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:71:3)
-    at runAndTransformResultsToJestFormat (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)
-    at jestAdapter (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapter.js:79:19)
-    at runTestInternal (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\runTest.js:367:16)
-    at runTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\runTest.js:444:34)
-    at Object.worker (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\testWorker.js:106:12)</failure>
-    </testcase>
-    <testcase classname="BusinessEmailIntegration Quote Email Integration should handle quote email errors gracefully" name="BusinessEmailIntegration Quote Email Integration should handle quote email errors gracefully" time="0">
-      <failure>TypeError: _businessEmailIntegration.default.sendQuoteEmail is not a function
-    at Object.sendQuoteEmail (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\lib\__tests__\businessEmailIntegration.test.js:139:53)
-    at Promise.then.completed (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\utils.js:298:28)
-    at new Promise (&lt;anonymous&gt;)
-    at callAsyncCircusFn (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\utils.js:231:10)
-    at _callCircusTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:316:40)
-    at processTicksAndRejections (node:internal/process/task_queues:95:5)
-    at _runTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:252:3)
-    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:126:9)
-    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:121:9)
-    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:121:9)
-    at run (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:71:3)
-    at runAndTransformResultsToJestFormat (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)
-    at jestAdapter (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapter.js:79:19)
-    at runTestInternal (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\runTest.js:367:16)
-    at runTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\runTest.js:444:34)
-    at Object.worker (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\testWorker.js:106:12)</failure>
-    </testcase>
-    <testcase classname="BusinessEmailIntegration Client Email History should get client email history successfully" name="BusinessEmailIntegration Client Email History should get client email history successfully" time="0.001">
-      <failure>TypeError: _businessEmailIntegration.default.getClientEmailHistory is not a function
-    at Object.getClientEmailHistory (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\lib\__tests__\businessEmailIntegration.test.js:152:53)
-    at Promise.then.completed (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\utils.js:298:28)
-    at new Promise (&lt;anonymous&gt;)
-    at callAsyncCircusFn (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\utils.js:231:10)
-    at _callCircusTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:316:40)
-    at processTicksAndRejections (node:internal/process/task_queues:95:5)
-    at _runTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:252:3)
-    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:126:9)
-    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:121:9)
-    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:121:9)
-    at run (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:71:3)
-    at runAndTransformResultsToJestFormat (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)
-    at jestAdapter (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapter.js:79:19)
-    at runTestInternal (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\runTest.js:367:16)
-    at runTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\runTest.js:444:34)
-    at Object.worker (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\testWorker.js:106:12)</failure>
-    </testcase>
-    <testcase classname="BusinessEmailIntegration Client Email History should handle client email history errors" name="BusinessEmailIntegration Client Email History should handle client email history errors" time="0">
-      <failure>TypeError: _businessEmailIntegration.default.getClientEmailHistory is not a function
-    at Object.getClientEmailHistory (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\lib\__tests__\businessEmailIntegration.test.js:167:53)
-    at Promise.then.completed (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\utils.js:298:28)
-    at new Promise (&lt;anonymous&gt;)
-    at callAsyncCircusFn (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\utils.js:231:10)
-    at _callCircusTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:316:40)
-    at processTicksAndRejections (node:internal/process/task_queues:95:5)
-    at _runTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:252:3)
-    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:126:9)
-    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:121:9)
-    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:121:9)
-    at run (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:71:3)
-    at runAndTransformResultsToJestFormat (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)
-    at jestAdapter (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapter.js:79:19)
-    at runTestInternal (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\runTest.js:367:16)
-    at runTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\runTest.js:444:34)
-    at Object.worker (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\testWorker.js:106:12)</failure>
-    </testcase>
-    <testcase classname="BusinessEmailIntegration Business Email Analytics should get business email analytics successfully" name="BusinessEmailIntegration Business Email Analytics should get business email analytics successfully" time="0.001">
-      <failure>TypeError: _businessEmailIntegration.default.getBusinessEmailAnalytics is not a function
-    at Object.getBusinessEmailAnalytics (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\lib\__tests__\businessEmailIntegration.test.js:179:53)
-    at Promise.then.completed (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\utils.js:298:28)
-    at new Promise (&lt;anonymous&gt;)
-    at callAsyncCircusFn (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\utils.js:231:10)
-    at _callCircusTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:316:40)
-    at processTicksAndRejections (node:internal/process/task_queues:95:5)
-    at _runTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:252:3)
-    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:126:9)
-    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:121:9)
-    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:121:9)
-    at run (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:71:3)
-    at runAndTransformResultsToJestFormat (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)
-    at jestAdapter (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapter.js:79:19)
-    at runTestInternal (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\runTest.js:367:16)
-    at runTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\runTest.js:444:34)
-    at Object.worker (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\testWorker.js:106:12)</failure>
-    </testcase>
-    <testcase classname="BusinessEmailIntegration Business Email Analytics should get business document email analytics" name="BusinessEmailIntegration Business Email Analytics should get business document email analytics" time="0">
-      <failure>TypeError: _businessEmailIntegration.default.getBusinessDocumentEmailAnalytics is not a function
-    at Object.getBusinessDocumentEmailAnalytics (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\lib\__tests__\businessEmailIntegration.test.js:192:53)
-    at Promise.then.completed (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\utils.js:298:28)
-    at new Promise (&lt;anonymous&gt;)
-    at callAsyncCircusFn (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\utils.js:231:10)
-    at _callCircusTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:316:40)
-    at processTicksAndRejections (node:internal/process/task_queues:95:5)
-    at _runTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:252:3)
-    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:126:9)
-    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:121:9)
-    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:121:9)
-    at run (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:71:3)
-    at runAndTransformResultsToJestFormat (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)
-    at jestAdapter (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapter.js:79:19)
-    at runTestInternal (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\runTest.js:367:16)
-    at runTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\runTest.js:444:34)
-    at Object.worker (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\testWorker.js:106:12)</failure>
-    </testcase>
-    <testcase classname="BusinessEmailIntegration Business Email Analytics should get client business email filters" name="BusinessEmailIntegration Business Email Analytics should get client business email filters" time="0">
-      <failure>TypeError: _businessEmailIntegration.default.getClientBusinessEmailFilters is not a function
-    at Object.getClientBusinessEmailFilters (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\lib\__tests__\businessEmailIntegration.test.js:205:53)
-    at Promise.then.completed (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\utils.js:298:28)
-    at new Promise (&lt;anonymous&gt;)
-    at callAsyncCircusFn (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\utils.js:231:10)
-    at _callCircusTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:316:40)
-    at processTicksAndRejections (node:internal/process/task_queues:95:5)
-    at _runTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:252:3)
-    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:126:9)
-    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:121:9)
-    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:121:9)
-    at run (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:71:3)
-    at runAndTransformResultsToJestFormat (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)
-    at jestAdapter (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapter.js:79:19)
-    at runTestInternal (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\runTest.js:367:16)
-    at runTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\runTest.js:444:34)
-    at Object.worker (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\testWorker.js:106:12)</failure>
-    </testcase>
-    <testcase classname="BusinessEmailIntegration Email Activity Logging should log email activity successfully" name="BusinessEmailIntegration Email Activity Logging should log email activity successfully" time="0">
-      <failure>TypeError: _businessEmailIntegration.default.logEmailActivity is not a function
-    at Object.logEmailActivity (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\lib\__tests__\businessEmailIntegration.test.js:219:53)
-    at Promise.then.completed (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\utils.js:298:28)
-    at new Promise (&lt;anonymous&gt;)
-    at callAsyncCircusFn (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\utils.js:231:10)
-    at _callCircusTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:316:40)
-    at processTicksAndRejections (node:internal/process/task_queues:95:5)
-    at _runTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:252:3)
-    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:126:9)
-    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:121:9)
-    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:121:9)
-    at run (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:71:3)
-    at runAndTransformResultsToJestFormat (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)
-    at jestAdapter (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapter.js:79:19)
-    at runTestInternal (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\runTest.js:367:16)
-    at runTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\runTest.js:444:34)
-    at Object.worker (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\testWorker.js:106:12)</failure>
-    </testcase>
-    <testcase classname="BusinessEmailIntegration Automated Follow-up Sequences should send automated follow-up sequence for invoices" name="BusinessEmailIntegration Automated Follow-up Sequences should send automated follow-up sequence for invoices" time="0">
-      <failure>TypeError: _businessEmailIntegration.default.sendAutomatedFollowUpSequence is not a function
-    at Object.sendAutomatedFollowUpSequence (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\lib\__tests__\businessEmailIntegration.test.js:238:53)
-    at Promise.then.completed (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\utils.js:298:28)
-    at new Promise (&lt;anonymous&gt;)
-    at callAsyncCircusFn (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\utils.js:231:10)
-    at _callCircusTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:316:40)
-    at processTicksAndRejections (node:internal/process/task_queues:95:5)
-    at _runTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:252:3)
-    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:126:9)
-    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:121:9)
-    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:121:9)
-    at run (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:71:3)
-    at runAndTransformResultsToJestFormat (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)
-    at jestAdapter (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapter.js:79:19)
-    at runTestInternal (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\runTest.js:367:16)
-    at runTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\runTest.js:444:34)
-    at Object.worker (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\testWorker.js:106:12)</failure>
-    </testcase>
-    <testcase classname="BusinessEmailIntegration Automated Follow-up Sequences should send automated follow-up sequence for quotes" name="BusinessEmailIntegration Automated Follow-up Sequences should send automated follow-up sequence for quotes" time="0">
-      <failure>TypeError: _businessEmailIntegration.default.sendAutomatedFollowUpSequence is not a function
-    at Object.sendAutomatedFollowUpSequence (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\lib\__tests__\businessEmailIntegration.test.js:251:53)
-    at Promise.then.completed (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\utils.js:298:28)
-    at new Promise (&lt;anonymous&gt;)
-    at callAsyncCircusFn (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\utils.js:231:10)
-    at _callCircusTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:316:40)
-    at processTicksAndRejections (node:internal/process/task_queues:95:5)
-    at _runTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:252:3)
-    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:126:9)
-    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:121:9)
-    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:121:9)
-    at run (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:71:3)
-    at runAndTransformResultsToJestFormat (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)
-    at jestAdapter (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapter.js:79:19)
-    at runTestInternal (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\runTest.js:367:16)
-    at runTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\runTest.js:444:34)
-    at Object.worker (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\testWorker.js:106:12)</failure>
-    </testcase>
-    <testcase classname="BusinessEmailIntegration Bulk Email Operations should send bulk business emails successfully" name="BusinessEmailIntegration Bulk Email Operations should send bulk business emails successfully" time="0">
-      <failure>TypeError: _businessEmailIntegration.default.bulkSendBusinessEmails is not a function
-    at Object.bulkSendBusinessEmails (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\lib\__tests__\businessEmailIntegration.test.js:276:53)
-    at Promise.then.completed (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\utils.js:298:28)
-    at new Promise (&lt;anonymous&gt;)
-    at callAsyncCircusFn (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\utils.js:231:10)
-    at _callCircusTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:316:40)
-    at processTicksAndRejections (node:internal/process/task_queues:95:5)
-    at _runTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:252:3)
-    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:126:9)
-    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:121:9)
-    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:121:9)
-    at run (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:71:3)
-    at runAndTransformResultsToJestFormat (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)
-    at jestAdapter (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapter.js:79:19)
-    at runTestInternal (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\runTest.js:367:16)
-    at runTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\runTest.js:444:34)
-    at Object.worker (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\testWorker.js:106:12)</failure>
-    </testcase>
-    <testcase classname="BusinessEmailIntegration Helper Methods should group emails by type correctly" name="BusinessEmailIntegration Helper Methods should group emails by type correctly" time="0">
-      <failure>TypeError: _businessEmailIntegration.default.groupEmailsByType is not a function
-    at Object.groupEmailsByType (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\lib\__tests__\businessEmailIntegration.test.js:297:48)
-    at Promise.then.completed (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\utils.js:298:28)
-    at new Promise (&lt;anonymous&gt;)
-    at callAsyncCircusFn (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\utils.js:231:10)
-    at _callCircusTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:316:40)
-    at processTicksAndRejections (node:internal/process/task_queues:95:5)
-    at _runTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:252:3)
-    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:126:9)
-    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:121:9)
-    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:121:9)
-    at run (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:71:3)
-    at runAndTransformResultsToJestFormat (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)
-    at jestAdapter (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapter.js:79:19)
-    at runTestInternal (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\runTest.js:367:16)
-    at runTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\runTest.js:444:34)
-    at Object.worker (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\testWorker.js:106:12)</failure>
-    </testcase>
-    <testcase classname="BusinessEmailIntegration Helper Methods should group emails by client correctly" name="BusinessEmailIntegration Helper Methods should group emails by client correctly" time="0">
-      <failure>TypeError: _businessEmailIntegration.default.groupEmailsByClient is not a function
-    at Object.groupEmailsByClient (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\lib\__tests__\businessEmailIntegration.test.js:314:48)
-    at Promise.then.completed (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\utils.js:298:28)
-    at new Promise (&lt;anonymous&gt;)
-    at callAsyncCircusFn (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\utils.js:231:10)
-    at _callCircusTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:316:40)
-    at processTicksAndRejections (node:internal/process/task_queues:95:5)
-    at _runTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:252:3)
-    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:126:9)
-    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:121:9)
-    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:121:9)
-    at run (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:71:3)
-    at runAndTransformResultsToJestFormat (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)
-    at jestAdapter (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapter.js:79:19)
-    at runTestInternal (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\runTest.js:367:16)
-    at runTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\runTest.js:444:34)
-    at Object.worker (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\testWorker.js:106:12)</failure>
-    </testcase>
-    <testcase classname="BusinessEmailIntegration Helper Methods should group emails by month correctly" name="BusinessEmailIntegration Helper Methods should group emails by month correctly" time="0">
-      <failure>TypeError: _businessEmailIntegration.default.groupEmailsByMonth is not a function
-    at Object.groupEmailsByMonth (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\lib\__tests__\businessEmailIntegration.test.js:330:48)
-    at Promise.then.completed (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\utils.js:298:28)
-    at new Promise (&lt;anonymous&gt;)
-    at callAsyncCircusFn (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\utils.js:231:10)
-    at _callCircusTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:316:40)
-    at processTicksAndRejections (node:internal/process/task_queues:95:5)
-    at _runTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:252:3)
-    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:126:9)
-    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:121:9)
-    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:121:9)
-    at run (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:71:3)
-    at runAndTransformResultsToJestFormat (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)
-    at jestAdapter (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapter.js:79:19)
-    at runTestInternal (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\runTest.js:367:16)
-    at runTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\runTest.js:444:34)
-    at Object.worker (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\testWorker.js:106:12)</failure>
-    </testcase>
-    <testcase classname="BusinessEmailIntegration Helper Methods should get top performing templates" name="BusinessEmailIntegration Helper Methods should get top performing templates" time="0.001">
-      <failure>TypeError: _businessEmailIntegration.default.getTopPerformingTemplates is not a function
-    at Object.getTopPerformingTemplates (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\lib\__tests__\businessEmailIntegration.test.js:347:53)
-    at Promise.then.completed (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\utils.js:298:28)
-    at new Promise (&lt;anonymous&gt;)
-    at callAsyncCircusFn (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\utils.js:231:10)
-    at _callCircusTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:316:40)
-    at processTicksAndRejections (node:internal/process/task_queues:95:5)
-    at _runTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:252:3)
-    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:126:9)
-    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:121:9)
-    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:121:9)
-    at run (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:71:3)
-    at runAndTransformResultsToJestFormat (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)
-    at jestAdapter (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapter.js:79:19)
-    at runTestInternal (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\runTest.js:367:16)
-    at runTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\runTest.js:444:34)
-    at Object.worker (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\testWorker.js:106:12)</failure>
-    </testcase>
-    <testcase classname="BusinessEmailIntegration Helper Methods should calculate client engagement correctly" name="BusinessEmailIntegration Helper Methods should calculate client engagement correctly" time="0">
-      <failure>TypeError: _businessEmailIntegration.default.calculateClientEngagement is not a function
-    at Object.calculateClientEngagement (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\lib\__tests__\businessEmailIntegration.test.js:374:51)
-    at Promise.then.completed (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\utils.js:298:28)
-    at new Promise (&lt;anonymous&gt;)
-    at callAsyncCircusFn (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\utils.js:231:10)
-    at _callCircusTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:316:40)
-    at processTicksAndRejections (node:internal/process/task_queues:95:5)
-    at _runTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:252:3)
-    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:126:9)
-    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:121:9)
-    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:121:9)
-    at run (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:71:3)
-    at runAndTransformResultsToJestFormat (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)
-    at jestAdapter (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapter.js:79:19)
-    at runTestInternal (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\runTest.js:367:16)
-    at runTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\runTest.js:444:34)
-    at Object.worker (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\testWorker.js:106:12)</failure>
-    </testcase>
-    <testcase classname="BusinessEmailIntegration Helper Methods should calculate engagement score correctly" name="BusinessEmailIntegration Helper Methods should calculate engagement score correctly" time="0.001">
-      <failure>TypeError: _businessEmailIntegration.default.calculateEngagementScore is not a function
-    at Object.calculateEngagementScore (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\lib\__tests__\businessEmailIntegration.test.js:390:46)
-    at Promise.then.completed (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\utils.js:298:28)
-    at new Promise (&lt;anonymous&gt;)
-    at callAsyncCircusFn (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\utils.js:231:10)
-    at _callCircusTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:316:40)
-    at processTicksAndRejections (node:internal/process/task_queues:95:5)
-    at _runTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:252:3)
-    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:126:9)
-    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:121:9)
-    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:121:9)
-    at run (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:71:3)
-    at runAndTransformResultsToJestFormat (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)
-    at jestAdapter (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapter.js:79:19)
-    at runTestInternal (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\runTest.js:367:16)
-    at runTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\runTest.js:444:34)
-    at Object.worker (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\testWorker.js:106:12)</failure>
-    </testcase>
-    <testcase classname="BusinessEmailIntegration Helper Methods should create batches correctly" name="BusinessEmailIntegration Helper Methods should create batches correctly" time="0">
-      <failure>TypeError: _businessEmailIntegration.default.createBatches is not a function
-    at Object.createBatches (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\lib\__tests__\businessEmailIntegration.test.js:399:48)
-    at Promise.then.completed (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\utils.js:298:28)
-    at new Promise (&lt;anonymous&gt;)
-    at callAsyncCircusFn (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\utils.js:231:10)
-    at _callCircusTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:316:40)
-    at processTicksAndRejections (node:internal/process/task_queues:95:5)
-    at _runTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:252:3)
-    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:126:9)
-    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:121:9)
-    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:121:9)
-    at run (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:71:3)
-    at runAndTransformResultsToJestFormat (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)
-    at jestAdapter (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapter.js:79:19)
-    at runTestInternal (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\runTest.js:367:16)
-    at runTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\runTest.js:444:34)
-    at Object.worker (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\testWorker.js:106:12)</failure>
-    </testcase>
-    <testcase classname="BusinessEmailIntegration Error Handling should handle missing invoice gracefully" name="BusinessEmailIntegration Error Handling should handle missing invoice gracefully" time="0">
-      <failure>TypeError: _businessEmailIntegration.default.sendInvoiceEmail is not a function
-    at Object.sendInvoiceEmail (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\lib\__tests__\businessEmailIntegration.test.js:411:53)
-    at Promise.then.completed (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\utils.js:298:28)
-    at new Promise (&lt;anonymous&gt;)
-    at callAsyncCircusFn (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\utils.js:231:10)
-    at _callCircusTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:316:40)
-    at processTicksAndRejections (node:internal/process/task_queues:95:5)
-    at _runTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:252:3)
-    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:126:9)
-    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:121:9)
-    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:121:9)
-    at run (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:71:3)
-    at runAndTransformResultsToJestFormat (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)
-    at jestAdapter (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapter.js:79:19)
-    at runTestInternal (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\runTest.js:367:16)
-    at runTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\runTest.js:444:34)
-    at Object.worker (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\testWorker.js:106:12)</failure>
-    </testcase>
-    <testcase classname="BusinessEmailIntegration Error Handling should handle missing quote gracefully" name="BusinessEmailIntegration Error Handling should handle missing quote gracefully" time="0">
-      <failure>TypeError: _businessEmailIntegration.default.sendQuoteEmail is not a function
-    at Object.sendQuoteEmail (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\lib\__tests__\businessEmailIntegration.test.js:422:53)
-    at Promise.then.completed (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\utils.js:298:28)
-    at new Promise (&lt;anonymous&gt;)
-    at callAsyncCircusFn (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\utils.js:231:10)
-    at _callCircusTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:316:40)
-    at processTicksAndRejections (node:internal/process/task_queues:95:5)
-    at _runTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:252:3)
-    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:126:9)
-    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:121:9)
-    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:121:9)
-    at run (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:71:3)
-    at runAndTransformResultsToJestFormat (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)
-    at jestAdapter (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapter.js:79:19)
-    at runTestInternal (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\runTest.js:367:16)
-    at runTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\runTest.js:444:34)
-    at Object.worker (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\testWorker.js:106:12)</failure>
-    </testcase>
-    <testcase classname="BusinessEmailIntegration Error Handling should handle invalid email addresses" name="BusinessEmailIntegration Error Handling should handle invalid email addresses" time="0">
-      <failure>TypeError: _businessEmailIntegration.default.sendInvoiceEmail is not a function
-    at Object.sendInvoiceEmail (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\lib\__tests__\businessEmailIntegration.test.js:433:53)
-    at Promise.then.completed (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\utils.js:298:28)
-    at new Promise (&lt;anonymous&gt;)
-    at callAsyncCircusFn (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\utils.js:231:10)
-    at _callCircusTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:316:40)
-    at processTicksAndRejections (node:internal/process/task_queues:95:5)
-    at _runTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:252:3)
-    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:126:9)
-    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:121:9)
-    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:121:9)
-    at run (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:71:3)
-    at runAndTransformResultsToJestFormat (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)
-    at jestAdapter (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapter.js:79:19)
-    at runTestInternal (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\runTest.js:367:16)
-    at runTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\runTest.js:444:34)
-    at Object.worker (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\testWorker.js:106:12)</failure>
-    </testcase>
-    <testcase classname="BusinessEmailIntegration Error Handling should handle database errors gracefully" name="BusinessEmailIntegration Error Handling should handle database errors gracefully" time="0.001">
-      <failure>TypeError: _businessEmailIntegration.default.getBusinessEmailAnalytics is not a function
-    at Object.getBusinessEmailAnalytics (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\lib\__tests__\businessEmailIntegration.test.js:452:53)
-    at Promise.then.completed (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\utils.js:298:28)
-    at new Promise (&lt;anonymous&gt;)
-    at callAsyncCircusFn (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\utils.js:231:10)
-    at _callCircusTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:316:40)
-    at processTicksAndRejections (node:internal/process/task_queues:95:5)
-    at _runTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:252:3)
-    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:126:9)
-    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:121:9)
-    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:121:9)
-    at run (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:71:3)
-    at runAndTransformResultsToJestFormat (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)
-    at jestAdapter (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapter.js:79:19)
-    at runTestInternal (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\runTest.js:367:16)
-    at runTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\runTest.js:444:34)
-    at Object.worker (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\testWorker.js:106:12)</failure>
-    </testcase>
-  </testsuite>
-  <testsuite name="Minimal React test" errors="0" failures="0" skipped="0" timestamp="2025-08-16T05:13:48" time="0.145" tests="1">
-    <testcase classname="Minimal React test should work with React import" name="Minimal React test should work with React import" time="0.001">
-    </testcase>
-  </testsuite>
-  <testsuite name="Simple test" errors="0" failures="0" skipped="0" timestamp="2025-08-16T05:13:48" time="0.15" tests="1">
-    <testcase classname="Simple test should pass" name="Simple test should pass" time="0.001">
-    </testcase>
-  </testsuite>
-  <testsuite name="Route Configuration" errors="0" failures="0" skipped="0" timestamp="2025-08-16T05:13:48" time="0.151" tests="4">
-    <testcase classname="Route Configuration Lazy Loading should handle dynamic imports for route components" name="Route Configuration Lazy Loading should handle dynamic imports for route components" time="0.001">
-    </testcase>
-    <testcase classname="Route Configuration Lazy Loading should handle React.lazy in route configuration" name="Route Configuration Lazy Loading should handle React.lazy in route configuration" time="0.001">
-    </testcase>
-    <testcase classname="Route Configuration Lazy Loading should handle multiple lazy components" name="Route Configuration Lazy Loading should handle multiple lazy components" time="0.001">
-    </testcase>
-    <testcase classname="Route Configuration Dynamic Import Error Handling should handle lazy loading with fallback" name="Route Configuration Dynamic Import Error Handling should handle lazy loading with fallback" time="0.001">
-    </testcase>
-  </testsuite>
-  <testsuite name="EmailAnalyticsService" errors="0" failures="10" skipped="0" timestamp="2025-08-16T05:13:47" time="1.333" tests="14">
-    <testcase classname="EmailAnalyticsService getDashboardAnalytics should return comprehensive dashboard analytics" name="EmailAnalyticsService getDashboardAnalytics should return comprehensive dashboard analytics" time="0.023">
-      <failure>Error: expect(received).toEqual(expected) // deep equality
+    <testcase classname="VoiceOnboarding requests microphone permission in step 2" name="VoiceOnboarding requests microphone permission in step 2" time="0.009">
+      <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
-- Expected  -   6
-+ Received  + 176
+Expected: {&quot;audio&quot;: true}
 
-  Object {
-    &quot;data&quot;: Object {
--     &quot;activity&quot;: Any&lt;Object&gt;,
--     &quot;clients&quot;: Any&lt;Object&gt;,
--     &quot;generatedAt&quot;: Any&lt;String&gt;,
--     &quot;overview&quot;: Any&lt;Object&gt;,
--     &quot;performance&quot;: Any&lt;Object&gt;,
--     &quot;realTime&quot;: Any&lt;Object&gt;,
-+     &quot;data&quot;: Object {
-+       &quot;activity&quot;: Object {
-+         &quot;data&quot;: Object {
-+           &quot;dailyTrends&quot;: Array [],
-+           &quot;hourlyDistribution&quot;: Array [
-+             Object {
-+               &quot;count&quot;: 0,
-+               &quot;hour&quot;: 0,
-+             },
-+             Object {
-+               &quot;count&quot;: 0,
-+               &quot;hour&quot;: 1,
-+             },
-+             Object {
-+               &quot;count&quot;: 0,
-+               &quot;hour&quot;: 2,
-+             },
-+             Object {
-+               &quot;count&quot;: 0,
-+               &quot;hour&quot;: 3,
-+             },
-+             Object {
-+               &quot;count&quot;: 0,
-+               &quot;hour&quot;: 4,
-+             },
-+             Object {
-+               &quot;count&quot;: 0,
-+               &quot;hour&quot;: 5,
-+             },
-+             Object {
-+               &quot;count&quot;: 0,
-+               &quot;hour&quot;: 6,
-+             },
-+             Object {
-+               &quot;count&quot;: 0,
-+               &quot;hour&quot;: 7,
-+             },
-+             Object {
-+               &quot;count&quot;: 0,
-+               &quot;hour&quot;: 8,
-+             },
-+             Object {
-+               &quot;count&quot;: 0,
-+               &quot;hour&quot;: 9,
-+             },
-+             Object {
-+               &quot;count&quot;: 0,
-+               &quot;hour&quot;: 10,
-+             },
-+             Object {
-+               &quot;count&quot;: 0,
-+               &quot;hour&quot;: 11,
-+             },
-+             Object {
-+               &quot;count&quot;: 0,
-+               &quot;hour&quot;: 12,
-+             },
-+             Object {
-+               &quot;count&quot;: 0,
-+               &quot;hour&quot;: 13,
-+             },
-+             Object {
-+               &quot;count&quot;: 0,
-+               &quot;hour&quot;: 14,
-+             },
-+             Object {
-+               &quot;count&quot;: 0,
-+               &quot;hour&quot;: 15,
-+             },
-+             Object {
-+               &quot;count&quot;: 0,
-+               &quot;hour&quot;: 16,
-+             },
-+             Object {
-+               &quot;count&quot;: 0,
-+               &quot;hour&quot;: 17,
-+             },
-+             Object {
-+               &quot;count&quot;: 0,
-+               &quot;hour&quot;: 18,
-+             },
-+             Object {
-+               &quot;count&quot;: 0,
-+               &quot;hour&quot;: 19,
-+             },
-+             Object {
-+               &quot;count&quot;: 0,
-+               &quot;hour&quot;: 20,
-+             },
-+             Object {
-+               &quot;count&quot;: 0,
-+               &quot;hour&quot;: 21,
-+             },
-+             Object {
-+               &quot;count&quot;: 0,
-+               &quot;hour&quot;: 22,
-+             },
-+             Object {
-+               &quot;count&quot;: 0,
-+               &quot;hour&quot;: 23,
-+             },
-+           ],
-+           &quot;timeline&quot;: Array [],
-+           &quot;totalActivities&quot;: 0,
-+           &quot;typeBreakdown&quot;: Array [],
-+         },
-+         &quot;success&quot;: true,
-+       },
-+       &quot;clients&quot;: Object {
-+         &quot;data&quot;: Object {
-+           &quot;communicationHistory&quot;: Array [],
-+           &quot;engagement&quot;: Object {},
-+           &quot;responseRates&quot;: Object {
-+             &quot;average&quot;: 0,
-+             &quot;overall&quot;: 0,
-+           },
-+           &quot;topClients&quot;: Array [],
-+         },
-+         &quot;success&quot;: true,
-+       },
-+       &quot;generatedAt&quot;: &quot;2025-08-16T05:13:49.008Z&quot;,
-+       &quot;overview&quot;: Object {
-+         &quot;data&quot;: Object {
-+           &quot;businessEmails&quot;: 0,
-+           &quot;clickRate&quot;: 0,
-+           &quot;deliveryRate&quot;: 0,
-+           &quot;draftEmails&quot;: 0,
-+           &quot;growthMetrics&quot;: Object {
-+             &quot;emailGrowth&quot;: 0,
-+             &quot;engagementGrowth&quot;: 0,
-+             &quot;responseGrowth&quot;: 0,
-+           },
-+           &quot;invoiceEmails&quot;: 0,
-+           &quot;openRate&quot;: 0,
-+           &quot;quoteEmails&quot;: 0,
-+           &quot;receivedEmails&quot;: 0,
-+           &quot;reminderEmails&quot;: 0,
-+           &quot;responseRate&quot;: 0,
-+           &quot;sentEmails&quot;: 0,
-+           &quot;starredEmails&quot;: 0,
-+           &quot;totalEmails&quot;: 0,
-+           &quot;unreadEmails&quot;: 0,
-+         },
-+         &quot;success&quot;: true,
-+       },
-+       &quot;performance&quot;: Object {
-+         &quot;data&quot;: Object {
-+           &quot;delivery&quot;: Object {},
-+           &quot;engagement&quot;: Object {},
-+           &quot;responseTimes&quot;: Object {},
-+           &quot;templates&quot;: Array [],
-+         },
-+         &quot;success&quot;: true,
-+       },
-+       &quot;realTime&quot;: Object {
-+         &quot;data&quot;: Object {
-+           &quot;last24Hours&quot;: Object {
-+             &quot;clicks&quot;: 0,
-+             &quot;emailsReceived&quot;: 0,
-+             &quot;emailsSent&quot;: 0,
-+             &quot;opens&quot;: 0,
-+           },
-+           &quot;lastHour&quot;: Object {
-+             &quot;activity&quot;: Array [],
-+           },
-+           &quot;liveEvents&quot;: Array [],
-+           &quot;queue&quot;: Object {
-+             &quot;failed&quot;: 0,
-+             &quot;pending&quot;: 0,
-+             &quot;processing&quot;: 0,
-+           },
-+         },
-+         &quot;success&quot;: true,
-+       },
-+     },
-+     &quot;success&quot;: true,
-    },
-    &quot;success&quot;: true,
-  }
-    at Object.toEqual (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\lib\__tests__\emailAnalyticsService.test.js:75:22)
-    at processTicksAndRejections (node:internal/process/task_queues:95:5)</failure>
+Number of calls: 0
+    at Object.toHaveBeenCalledWith (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\__tests__\features\voice\VoiceOnboarding.test.jsx:112:49)</failure>
     </testcase>
-    <testcase classname="EmailAnalyticsService getDashboardAnalytics should handle errors gracefully" name="EmailAnalyticsService getDashboardAnalytics should handle errors gracefully" time="0.006">
-      <failure>Error: expect(received).toBe(expected) // Object.is equality
+    <testcase classname="VoiceOnboarding handles permission denied gracefully" name="VoiceOnboarding handles permission denied gracefully" time="2.462">
+      <failure>TestingLibraryElementError: Unable to find an element with the text: /permission denied/i
+    at Object.getElementError (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\shared\__tests__\mocks\testing-library-react.cjs:18:19)
+    at Object.&lt;anonymous&gt; (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\shared\__tests__\mocks\testing-library-react.cjs:650:23)
+    at E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-mock\build\index.js:397:39
+    at Object.&lt;anonymous&gt; (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-mock\build\index.js:404:13)
+    at Object.mockConstructor [as getByText] (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-mock\build\index.js:103:19)
+    at getByText (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\__tests__\features\voice\VoiceOnboarding.test.jsx:137:21)
+    at check (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\shared\__tests__\mocks\testing-library-react.cjs:938:24)
+    at Timeout.task [as _onTimeout] (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\node_modules\jest-environment-jsdom\node_modules\jsdom\lib\jsdom\browser\Window.js:520:19)
+    at listOnTimeout (node:internal/timers:573:17)
+    at processTimers (node:internal/timers:514:7)</failure>
+    </testcase>
+    <testcase classname="VoiceOnboarding shows voice command examples in step 3" name="VoiceOnboarding shows voice command examples in step 3" time="0.03">
+      <failure>TestingLibraryElementError: Unable to find an element with the text: /step 3 of 4/i
+    at Object.getElementError (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\shared\__tests__\mocks\testing-library-react.cjs:18:19)
+    at Object.&lt;anonymous&gt; (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\shared\__tests__\mocks\testing-library-react.cjs:650:23)
+    at E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-mock\build\index.js:397:39
+    at Object.&lt;anonymous&gt; (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-mock\build\index.js:404:13)
+    at Object.mockConstructor [as getByText] (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-mock\build\index.js:103:19)
+    at Object.getByText (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\__tests__\features\voice\VoiceOnboarding.test.jsx:151:19)</failure>
+    </testcase>
+    <testcase classname="VoiceOnboarding allows practice in step 4" name="VoiceOnboarding allows practice in step 4" time="0.047">
+      <failure>TestingLibraryElementError: Unable to find an element with the text: /step 4 of 4/i
+    at Object.getElementError (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\shared\__tests__\mocks\testing-library-react.cjs:18:19)
+    at Object.&lt;anonymous&gt; (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\shared\__tests__\mocks\testing-library-react.cjs:650:23)
+    at E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-mock\build\index.js:397:39
+    at Object.&lt;anonymous&gt; (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-mock\build\index.js:404:13)
+    at Object.mockConstructor [as getByText] (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-mock\build\index.js:103:19)
+    at Object.getByText (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\__tests__\features\voice\VoiceOnboarding.test.jsx:168:19)</failure>
+    </testcase>
+    <testcase classname="VoiceOnboarding completes onboarding successfully" name="VoiceOnboarding completes onboarding successfully" time="0.062">
+      <failure>Error: expect(jest.fn()).toHaveBeenCalled()
 
-Expected: false
-Received: true
-    at Object.toBe (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\lib\__tests__\emailAnalyticsService.test.js:101:30)
-    at processTicksAndRejections (node:internal/process/task_queues:95:5)</failure>
+Expected number of calls: &gt;= 1
+Received number of calls:    0
+    at Object.toHaveBeenCalled (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\__tests__\features\voice\VoiceOnboarding.test.jsx:187:28)</failure>
     </testcase>
-    <testcase classname="EmailAnalyticsService getEmailStats should return email statistics" name="EmailAnalyticsService getEmailStats should return email statistics" time="0.007">
-      <failure>Error: expect(received).toEqual(expected) // deep equality
+    <testcase classname="VoiceOnboarding allows skipping onboarding" name="VoiceOnboarding allows skipping onboarding" time="0.015">
+      <failure>Error: expect(jest.fn()).toHaveBeenCalled()
 
-- Expected  - 15
-+ Received  + 22
-
-  Object {
--   &quot;businessEmails&quot;: Any&lt;Number&gt;,
--   &quot;clickRate&quot;: Any&lt;Number&gt;,
--   &quot;deliveryRate&quot;: Any&lt;Number&gt;,
--   &quot;draftEmails&quot;: Any&lt;Number&gt;,
--   &quot;growthMetrics&quot;: Any&lt;Object&gt;,
--   &quot;invoiceEmails&quot;: Any&lt;Number&gt;,
--   &quot;openRate&quot;: Any&lt;Number&gt;,
--   &quot;quoteEmails&quot;: Any&lt;Number&gt;,
--   &quot;receivedEmails&quot;: Any&lt;Number&gt;,
--   &quot;reminderEmails&quot;: Any&lt;Number&gt;,
--   &quot;responseRate&quot;: Any&lt;Number&gt;,
--   &quot;sentEmails&quot;: Any&lt;Number&gt;,
--   &quot;starredEmails&quot;: Any&lt;Number&gt;,
--   &quot;totalEmails&quot;: Any&lt;Number&gt;,
--   &quot;unreadEmails&quot;: Any&lt;Number&gt;,
-+   &quot;data&quot;: Object {
-+     &quot;businessEmails&quot;: 0,
-+     &quot;clickRate&quot;: 0,
-+     &quot;deliveryRate&quot;: 0,
-+     &quot;draftEmails&quot;: 0,
-+     &quot;growthMetrics&quot;: Object {
-+       &quot;emailGrowth&quot;: 0,
-+       &quot;engagementGrowth&quot;: 0,
-+       &quot;responseGrowth&quot;: 0,
-+     },
-+     &quot;invoiceEmails&quot;: 0,
-+     &quot;openRate&quot;: 0,
-+     &quot;quoteEmails&quot;: 0,
-+     &quot;receivedEmails&quot;: 0,
-+     &quot;reminderEmails&quot;: 0,
-+     &quot;responseRate&quot;: 0,
-+     &quot;sentEmails&quot;: 0,
-+     &quot;starredEmails&quot;: 0,
-+     &quot;totalEmails&quot;: 0,
-+     &quot;unreadEmails&quot;: 0,
-+   },
-+   &quot;success&quot;: true,
-  }
-    at Object.toEqual (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\lib\__tests__\emailAnalyticsService.test.js:118:27)
-    at processTicksAndRejections (node:internal/process/task_queues:95:5)</failure>
+Expected number of calls: &gt;= 1
+Received number of calls:    0
+    at Object.toHaveBeenCalled (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\__tests__\features\voice\VoiceOnboarding.test.jsx:202:24)</failure>
     </testcase>
-    <testcase classname="EmailAnalyticsService getActivityMetrics should return activity metrics" name="EmailAnalyticsService getActivityMetrics should return activity metrics" time="0.003">
-      <failure>Error: expect(received).toEqual(expected) // deep equality
-
-- Expected  -   5
-+ Received  + 105
-
-  Object {
--   &quot;dailyTrends&quot;: Any&lt;Array&gt;,
--   &quot;hourlyDistribution&quot;: Any&lt;Array&gt;,
--   &quot;timeline&quot;: Any&lt;Array&gt;,
--   &quot;totalActivities&quot;: Any&lt;Number&gt;,
--   &quot;typeBreakdown&quot;: Any&lt;Array&gt;,
-+   &quot;data&quot;: Object {
-+     &quot;dailyTrends&quot;: Array [],
-+     &quot;hourlyDistribution&quot;: Array [
-+       Object {
-+         &quot;count&quot;: 0,
-+         &quot;hour&quot;: 0,
-+       },
-+       Object {
-+         &quot;count&quot;: 0,
-+         &quot;hour&quot;: 1,
-+       },
-+       Object {
-+         &quot;count&quot;: 0,
-+         &quot;hour&quot;: 2,
-+       },
-+       Object {
-+         &quot;count&quot;: 0,
-+         &quot;hour&quot;: 3,
-+       },
-+       Object {
-+         &quot;count&quot;: 0,
-+         &quot;hour&quot;: 4,
-+       },
-+       Object {
-+         &quot;count&quot;: 0,
-+         &quot;hour&quot;: 5,
-+       },
-+       Object {
-+         &quot;count&quot;: 0,
-+         &quot;hour&quot;: 6,
-+       },
-+       Object {
-+         &quot;count&quot;: 0,
-+         &quot;hour&quot;: 7,
-+       },
-+       Object {
-+         &quot;count&quot;: 0,
-+         &quot;hour&quot;: 8,
-+       },
-+       Object {
-+         &quot;count&quot;: 0,
-+         &quot;hour&quot;: 9,
-+       },
-+       Object {
-+         &quot;count&quot;: 0,
-+         &quot;hour&quot;: 10,
-+       },
-+       Object {
-+         &quot;count&quot;: 0,
-+         &quot;hour&quot;: 11,
-+       },
-+       Object {
-+         &quot;count&quot;: 0,
-+         &quot;hour&quot;: 12,
-+       },
-+       Object {
-+         &quot;count&quot;: 0,
-+         &quot;hour&quot;: 13,
-+       },
-+       Object {
-+         &quot;count&quot;: 0,
-+         &quot;hour&quot;: 14,
-+       },
-+       Object {
-+         &quot;count&quot;: 0,
-+         &quot;hour&quot;: 15,
-+       },
-+       Object {
-+         &quot;count&quot;: 0,
-+         &quot;hour&quot;: 16,
-+       },
-+       Object {
-+         &quot;count&quot;: 0,
-+         &quot;hour&quot;: 17,
-+       },
-+       Object {
-+         &quot;count&quot;: 0,
-+         &quot;hour&quot;: 18,
-+       },
-+       Object {
-+         &quot;count&quot;: 0,
-+         &quot;hour&quot;: 19,
-+       },
-+       Object {
-+         &quot;count&quot;: 0,
-+         &quot;hour&quot;: 20,
-+       },
-+       Object {
-+         &quot;count&quot;: 0,
-+         &quot;hour&quot;: 21,
-+       },
-+       Object {
-+         &quot;count&quot;: 0,
-+         &quot;hour&quot;: 22,
-+       },
-+       Object {
-+         &quot;count&quot;: 0,
-+         &quot;hour&quot;: 23,
-+       },
-+     ],
-+     &quot;timeline&quot;: Array [],
-+     &quot;totalActivities&quot;: 0,
-+     &quot;typeBreakdown&quot;: Array [],
-+   },
-+   &quot;success&quot;: true,
-  }
-    at Object.toEqual (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\lib\__tests__\emailAnalyticsService.test.js:149:27)
-    at processTicksAndRejections (node:internal/process/task_queues:95:5)</failure>
-    </testcase>
-    <testcase classname="EmailAnalyticsService getClientCommunicationMetrics should return client communication metrics" name="EmailAnalyticsService getClientCommunicationMetrics should return client communication metrics" time="0.001">
-    </testcase>
-    <testcase classname="EmailAnalyticsService getPerformanceMetrics should return performance metrics" name="EmailAnalyticsService getPerformanceMetrics should return performance metrics" time="0.001">
-      <failure>Error: expect(received).toEqual(expected) // deep equality
-
-- Expected  - 4
-+ Received  + 7
-
-  Object {
--   &quot;delivery&quot;: Any&lt;Object&gt;,
--   &quot;engagement&quot;: Any&lt;Object&gt;,
--   &quot;responseTimes&quot;: Any&lt;Object&gt;,
--   &quot;templates&quot;: Any&lt;Array&gt;,
-+   &quot;data&quot;: Object {
-+     &quot;delivery&quot;: Object {},
-+     &quot;engagement&quot;: Object {},
-+     &quot;responseTimes&quot;: Object {},
-+     &quot;templates&quot;: Array [],
-+   },
-+   &quot;success&quot;: true,
-  }
-    at Object.toEqual (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\lib\__tests__\emailAnalyticsService.test.js:186:27)
-    at processTicksAndRejections (node:internal/process/task_queues:95:5)</failure>
-    </testcase>
-    <testcase classname="EmailAnalyticsService getRealTimeMetrics should return real-time metrics" name="EmailAnalyticsService getRealTimeMetrics should return real-time metrics" time="0.002">
-      <failure>Error: expect(received).toEqual(expected) // deep equality
-
-- Expected  -  9
-+ Received  + 16
-
-  Object {
--   &quot;last24Hours&quot;: ObjectContaining {
--     &quot;clicks&quot;: Any&lt;Number&gt;,
--     &quot;emailsReceived&quot;: Any&lt;Number&gt;,
--     &quot;emailsSent&quot;: Any&lt;Number&gt;,
--     &quot;opens&quot;: Any&lt;Number&gt;,
-+   &quot;data&quot;: Object {
-+     &quot;last24Hours&quot;: Object {
-+       &quot;clicks&quot;: 0,
-+       &quot;emailsReceived&quot;: 0,
-+       &quot;emailsSent&quot;: 0,
-+       &quot;opens&quot;: 0,
-+     },
-+     &quot;lastHour&quot;: Object {
-+       &quot;activity&quot;: Array [],
-+     },
-+     &quot;liveEvents&quot;: Array [],
-+     &quot;queue&quot;: Object {
-+       &quot;failed&quot;: 0,
-+       &quot;pending&quot;: 0,
-+       &quot;processing&quot;: 0,
-      },
--   &quot;lastHour&quot;: ObjectContaining {
--     &quot;activity&quot;: Any&lt;Array&gt;,
-    },
--   &quot;liveEvents&quot;: Any&lt;Array&gt;,
--   &quot;queue&quot;: Any&lt;Object&gt;,
-+   &quot;success&quot;: true,
-  }
-    at Object.toEqual (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\lib\__tests__\emailAnalyticsService.test.js:202:27)
-    at processTicksAndRejections (node:internal/process/task_queues:95:5)</failure>
-    </testcase>
-    <testcase classname="EmailAnalyticsService generateEmailReport should generate a comprehensive email report" name="EmailAnalyticsService generateEmailReport should generate a comprehensive email report" time="0.009">
-      <failure>Error: expect(received).toEqual(expected) // deep equality
-
-- Expected  -   6
-+ Received  + 167
-
-  Object {
--   &quot;clientAnalysis&quot;: Any&lt;Object&gt;,
--   &quot;detailed&quot;: Any&lt;Object&gt;,
--   &quot;metadata&quot;: ObjectContaining {
-+   &quot;data&quot;: Object {
-+     &quot;clientAnalysis&quot;: Object {},
-+     &quot;detailed&quot;: Object {},
-+     &quot;metadata&quot;: Object {
-        &quot;dateFrom&quot;: &quot;2024-01-01T00:00:00.000Z&quot;,
-        &quot;dateTo&quot;: &quot;2024-01-31T23:59:59.999Z&quot;,
-        &quot;format&quot;: &quot;json&quot;,
--     &quot;generatedAt&quot;: Any&lt;String&gt;,
-+       &quot;generatedAt&quot;: &quot;2025-08-16T05:13:49.056Z&quot;,
-        &quot;includeCharts&quot;: true,
-        &quot;includeDetails&quot;: true,
-        &quot;userId&quot;: &quot;test-user-id&quot;,
-+     },
-+     &quot;performanceAnalysis&quot;: Object {},
-+     &quot;summary&quot;: Object {
-+       &quot;data&quot;: Object {
-+         &quot;activity&quot;: Object {
-+           &quot;data&quot;: Object {
-+             &quot;dailyTrends&quot;: Array [],
-+             &quot;hourlyDistribution&quot;: Array [
-+               Object {
-+                 &quot;count&quot;: 0,
-+                 &quot;hour&quot;: 0,
-+               },
-+               Object {
-+                 &quot;count&quot;: 0,
-+                 &quot;hour&quot;: 1,
-+               },
-+               Object {
-+                 &quot;count&quot;: 0,
-+                 &quot;hour&quot;: 2,
-+               },
-+               Object {
-+                 &quot;count&quot;: 0,
-+                 &quot;hour&quot;: 3,
-+               },
-+               Object {
-+                 &quot;count&quot;: 0,
-+                 &quot;hour&quot;: 4,
-+               },
-+               Object {
-+                 &quot;count&quot;: 0,
-+                 &quot;hour&quot;: 5,
-+               },
-+               Object {
-+                 &quot;count&quot;: 0,
-+                 &quot;hour&quot;: 6,
-                },
--   &quot;performanceAnalysis&quot;: Any&lt;Object&gt;,
--   &quot;summary&quot;: Any&lt;Object&gt;,
-+               Object {
-+                 &quot;count&quot;: 0,
-+                 &quot;hour&quot;: 7,
-+               },
-+               Object {
-+                 &quot;count&quot;: 0,
-+                 &quot;hour&quot;: 8,
-+               },
-+               Object {
-+                 &quot;count&quot;: 0,
-+                 &quot;hour&quot;: 9,
-+               },
-+               Object {
-+                 &quot;count&quot;: 0,
-+                 &quot;hour&quot;: 10,
-+               },
-+               Object {
-+                 &quot;count&quot;: 0,
-+                 &quot;hour&quot;: 11,
-+               },
-+               Object {
-+                 &quot;count&quot;: 0,
-+                 &quot;hour&quot;: 12,
-+               },
-+               Object {
-+                 &quot;count&quot;: 0,
-+                 &quot;hour&quot;: 13,
-+               },
-+               Object {
-+                 &quot;count&quot;: 0,
-+                 &quot;hour&quot;: 14,
-+               },
-+               Object {
-+                 &quot;count&quot;: 0,
-+                 &quot;hour&quot;: 15,
-+               },
-+               Object {
-+                 &quot;count&quot;: 0,
-+                 &quot;hour&quot;: 16,
-+               },
-+               Object {
-+                 &quot;count&quot;: 0,
-+                 &quot;hour&quot;: 17,
-+               },
-+               Object {
-+                 &quot;count&quot;: 0,
-+                 &quot;hour&quot;: 18,
-+               },
-+               Object {
-+                 &quot;count&quot;: 0,
-+                 &quot;hour&quot;: 19,
-+               },
-+               Object {
-+                 &quot;count&quot;: 0,
-+                 &quot;hour&quot;: 20,
-+               },
-+               Object {
-+                 &quot;count&quot;: 0,
-+                 &quot;hour&quot;: 21,
-+               },
-+               Object {
-+                 &quot;count&quot;: 0,
-+                 &quot;hour&quot;: 22,
-+               },
-+               Object {
-+                 &quot;count&quot;: 0,
-+                 &quot;hour&quot;: 23,
-+               },
-+             ],
-+             &quot;timeline&quot;: Array [],
-+             &quot;totalActivities&quot;: 0,
-+             &quot;typeBreakdown&quot;: Array [],
-+           },
-+           &quot;success&quot;: true,
-+         },
-+         &quot;clients&quot;: Object {
-+           &quot;data&quot;: Object {
-+             &quot;communicationHistory&quot;: Array [],
-+             &quot;engagement&quot;: Object {},
-+             &quot;responseRates&quot;: Object {
-+               &quot;average&quot;: 0,
-+               &quot;overall&quot;: 0,
-+             },
-+             &quot;topClients&quot;: Array [],
-+           },
-+           &quot;success&quot;: true,
-+         },
-+         &quot;generatedAt&quot;: &quot;2025-08-16T05:13:49.056Z&quot;,
-+         &quot;overview&quot;: Object {
-+           &quot;data&quot;: Object {
-+             &quot;businessEmails&quot;: 0,
-+             &quot;clickRate&quot;: 0,
-+             &quot;deliveryRate&quot;: 0,
-+             &quot;draftEmails&quot;: 0,
-+             &quot;growthMetrics&quot;: Object {
-+               &quot;emailGrowth&quot;: 0,
-+               &quot;engagementGrowth&quot;: 0,
-+               &quot;responseGrowth&quot;: 0,
-+             },
-+             &quot;invoiceEmails&quot;: 0,
-+             &quot;openRate&quot;: 0,
-+             &quot;quoteEmails&quot;: 0,
-+             &quot;receivedEmails&quot;: 0,
-+             &quot;reminderEmails&quot;: 0,
-+             &quot;responseRate&quot;: 0,
-+             &quot;sentEmails&quot;: 0,
-+             &quot;starredEmails&quot;: 0,
-+             &quot;totalEmails&quot;: 0,
-+             &quot;unreadEmails&quot;: 0,
-+           },
-+           &quot;success&quot;: true,
-+         },
-+         &quot;performance&quot;: Object {
-+           &quot;data&quot;: Object {
-+             &quot;delivery&quot;: Object {},
-+             &quot;engagement&quot;: Object {},
-+             &quot;responseTimes&quot;: Object {},
-+             &quot;templates&quot;: Array [],
-+           },
-+           &quot;success&quot;: true,
-+         },
-+         &quot;realTime&quot;: null,
-+       },
-+       &quot;success&quot;: true,
-+     },
-+   },
-+   &quot;success&quot;: true,
-  }
-    at Object.toEqual (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\lib\__tests__\emailAnalyticsService.test.js:232:27)
-    at processTicksAndRejections (node:internal/process/task_queues:95:5)</failure>
-    </testcase>
-    <testcase classname="EmailAnalyticsService generateEmailReport should cache reports" name="EmailAnalyticsService generateEmailReport should cache reports" time="0.005">
-      <failure>Error: expect(received).toBe(expected) // Object.is equality
-
-Expected: true
-Received: undefined
-    at Object.toBe (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\lib\__tests__\emailAnalyticsService.test.js:263:30)
-    at processTicksAndRejections (node:internal/process/task_queues:95:5)</failure>
-    </testcase>
-    <testcase classname="EmailAnalyticsService getUsageReports should return usage reports" name="EmailAnalyticsService getUsageReports should return usage reports" time="0.001">
-      <failure>Error: expect(received).toEqual(expected) // deep equality
-
-- Expected  -  6
-+ Received  + 13
-
-  Object {
--   &quot;features&quot;: Any&lt;Object&gt;,
--   &quot;period&quot;: ObjectContaining {
-+   &quot;data&quot;: Object {
-+     &quot;features&quot;: Object {},
-+     &quot;period&quot;: Object {
-        &quot;days&quot;: 30,
--     &quot;from&quot;: Any&lt;String&gt;,
--     &quot;to&quot;: Any&lt;String&gt;,
-+       &quot;from&quot;: &quot;2025-07-17T05:13:49.065Z&quot;,
-+       &quot;to&quot;: &quot;2025-08-16T05:13:49.065Z&quot;,
-+     },
-+     &quot;storage&quot;: Object {
-+       &quot;percentage&quot;: 0,
-+       &quot;total&quot;: 0,
-+       &quot;used&quot;: 0,
-+     },
-+     &quot;usage&quot;: Array [],
-    },
--   &quot;storage&quot;: Any&lt;Object&gt;,
--   &quot;usage&quot;: Any&lt;Array&gt;,
-+   &quot;success&quot;: true,
-  }
-    at Object.toEqual (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\lib\__tests__\emailAnalyticsService.test.js:278:27)
-    at processTicksAndRejections (node:internal/process/task_queues:95:5)</failure>
-    </testcase>
-    <testcase classname="EmailAnalyticsService Helper methods calculatePercentageChange should calculate percentage change correctly" name="EmailAnalyticsService Helper methods calculatePercentageChange should calculate percentage change correctly" time="0">
-    </testcase>
-    <testcase classname="EmailAnalyticsService Helper methods getDefaultDateFrom should return date 30 days ago" name="EmailAnalyticsService Helper methods getDefaultDateFrom should return date 30 days ago" time="0.001">
-    </testcase>
-    <testcase classname="EmailAnalyticsService Helper methods getEmptyDashboardData should return empty dashboard data structure" name="EmailAnalyticsService Helper methods getEmptyDashboardData should return empty dashboard data structure" time="0">
-    </testcase>
-    <testcase classname="EmailAnalyticsService Error handling should handle database errors gracefully" name="EmailAnalyticsService Error handling should handle database errors gracefully" time="0.036">
-      <failure>Error: expect(received).toBe(expected) // Object.is equality
-
-Expected: false
-Received: true
-    at Object.toBe (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\lib\__tests__\emailAnalyticsService.test.js:339:30)
-    at processTicksAndRejections (node:internal/process/task_queues:95:5)</failure>
-    </testcase>
-  </testsuite>
-  <testsuite name="Document Scanner Integration Tests" errors="0" failures="0" skipped="0" timestamp="2025-08-16T05:13:47" time="1.408" tests="18">
-    <testcase classname="Document Scanner Integration Tests End-to-End Document Scanning Flow should process a single document from image to storage" name="Document Scanner Integration Tests End-to-End Document Scanning Flow should process a single document from image to storage" time="0.017">
-    </testcase>
-    <testcase classname="Document Scanner Integration Tests End-to-End Document Scanning Flow should handle multi-page PDF processing" name="Document Scanner Integration Tests End-to-End Document Scanning Flow should handle multi-page PDF processing" time="0.006">
-    </testcase>
-    <testcase classname="Document Scanner Integration Tests End-to-End Document Scanning Flow should process batch of documents with progress tracking" name="Document Scanner Integration Tests End-to-End Document Scanning Flow should process batch of documents with progress tracking" time="0.006">
-    </testcase>
-    <testcase classname="Document Scanner Integration Tests OCR Provider Fallback Mechanism should fallback to secondary provider when primary fails" name="Document Scanner Integration Tests OCR Provider Fallback Mechanism should fallback to secondary provider when primary fails" time="0.002">
-    </testcase>
-    <testcase classname="Document Scanner Integration Tests OCR Provider Fallback Mechanism should use fallback provider when all AI providers fail" name="Document Scanner Integration Tests OCR Provider Fallback Mechanism should use fallback provider when all AI providers fail" time="0.002">
-    </testcase>
-    <testcase classname="Document Scanner Integration Tests OCR Provider Fallback Mechanism should respect provider priority in fallback chain" name="Document Scanner Integration Tests OCR Provider Fallback Mechanism should respect provider priority in fallback chain" time="0.001">
-    </testcase>
-    <testcase classname="Document Scanner Integration Tests Error Handling and Recovery should handle rate limiting gracefully" name="Document Scanner Integration Tests Error Handling and Recovery should handle rate limiting gracefully" time="0.004">
-    </testcase>
-    <testcase classname="Document Scanner Integration Tests Error Handling and Recovery should handle image processing errors with graceful degradation" name="Document Scanner Integration Tests Error Handling and Recovery should handle image processing errors with graceful degradation" time="0.001">
-    </testcase>
-    <testcase classname="Document Scanner Integration Tests Error Handling and Recovery should handle storage failures with retry mechanism" name="Document Scanner Integration Tests Error Handling and Recovery should handle storage failures with retry mechanism" time="0.026">
-    </testcase>
-    <testcase classname="Document Scanner Integration Tests Error Handling and Recovery should handle network timeouts with appropriate error messages" name="Document Scanner Integration Tests Error Handling and Recovery should handle network timeouts with appropriate error messages" time="0.018">
-    </testcase>
-    <testcase classname="Document Scanner Integration Tests Error Handling and Recovery should handle corrupted image files gracefully" name="Document Scanner Integration Tests Error Handling and Recovery should handle corrupted image files gracefully" time="0.001">
-    </testcase>
-    <testcase classname="Document Scanner Integration Tests Caching Integration should cache and retrieve OCR results across services" name="Document Scanner Integration Tests Caching Integration should cache and retrieve OCR results across services" time="0.001">
-    </testcase>
-    <testcase classname="Document Scanner Integration Tests Caching Integration should handle cache eviction under memory pressure" name="Document Scanner Integration Tests Caching Integration should handle cache eviction under memory pressure" time="0.001">
-    </testcase>
-    <testcase classname="Document Scanner Integration Tests Caching Integration should integrate caching with batch processing" name="Document Scanner Integration Tests Caching Integration should integrate caching with batch processing" time="0.002">
-    </testcase>
-    <testcase classname="Document Scanner Integration Tests Performance and Scalability should handle large batch processing efficiently" name="Document Scanner Integration Tests Performance and Scalability should handle large batch processing efficiently" time="0.004">
-    </testcase>
-    <testcase classname="Document Scanner Integration Tests Performance and Scalability should maintain performance under concurrent load" name="Document Scanner Integration Tests Performance and Scalability should maintain performance under concurrent load" time="0.003">
-    </testcase>
-    <testcase classname="Document Scanner Integration Tests Data Consistency and Integrity should maintain data consistency across service boundaries" name="Document Scanner Integration Tests Data Consistency and Integrity should maintain data consistency across service boundaries" time="0.001">
-    </testcase>
-    <testcase classname="Document Scanner Integration Tests Data Consistency and Integrity should handle partial failures without data corruption" name="Document Scanner Integration Tests Data Consistency and Integrity should handle partial failures without data corruption" time="0.001">
-    </testcase>
-  </testsuite>
-  <testsuite name="Email Validation" errors="0" failures="8" skipped="0" timestamp="2025-08-16T05:13:47" time="2.428" tests="13">
-    <testcase classname="Email Validation isValidEmail validates correct email formats" name="Email Validation isValidEmail validates correct email formats" time="0.004">
-    </testcase>
-    <testcase classname="Email Validation isValidEmail rejects invalid email formats" name="Email Validation isValidEmail rejects invalid email formats" time="0.002">
-      <failure>Error: expect(received).toBe(expected) // Object.is equality
-
-Expected: false
-Received: true
-    at toBe (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\features\email\services\__tests__\emailValidation.test.js:48:37)
-    at Array.forEach (&lt;anonymous&gt;)
-    at Object.forEach (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\features\email\services\__tests__\emailValidation.test.js:47:21)
+    <testcase classname="VoiceOnboarding shows progress indicator" name="VoiceOnboarding shows progress indicator" time="0.002">
+      <failure>TestingLibraryElementError: Unable to find an element with role: progressbar
+    at Object.getElementError (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\shared\__tests__\mocks\testing-library-react.cjs:18:19)
+    at Object.&lt;anonymous&gt; (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\shared\__tests__\mocks\testing-library-react.cjs:676:23)
+    at E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-mock\build\index.js:397:39
+    at Object.&lt;anonymous&gt; (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-mock\build\index.js:404:13)
+    at Object.mockConstructor [as getByRole] (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-mock\build\index.js:103:19)
+    at Object.getByRole (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\__tests__\features\voice\VoiceOnboarding.test.jsx:210:32)
     at Promise.then.completed (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\utils.js:298:28)
     at new Promise (&lt;anonymous&gt;)
     at callAsyncCircusFn (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\utils.js:231:10)
     at _callCircusTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:316:40)
-    at processTicksAndRejections (node:internal/process/task_queues:95:5)
     at _runTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:252:3)
     at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:126:9)
-    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:121:9)
     at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:121:9)
     at run (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:71:3)
     at runAndTransformResultsToJestFormat (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)
     at jestAdapter (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapter.js:79:19)
     at runTestInternal (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\runTest.js:367:16)
-    at runTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\runTest.js:444:34)
-    at Object.worker (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\testWorker.js:106:12)</failure>
+    at runTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\runTest.js:444:34)</failure>
     </testcase>
-    <testcase classname="Email Validation isValidEmail handles edge cases" name="Email Validation isValidEmail handles edge cases" time="0">
-      <failure>Error: expect(received).toBe(expected) // Object.is equality
+    <testcase classname="VoiceOnboarding allows going back to previous steps" name="VoiceOnboarding allows going back to previous steps" time="0.012">
+      <failure>TestingLibraryElementError: Unable to find an element with the text: /step 2 of 4/i
+    at Object.getElementError (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\shared\__tests__\mocks\testing-library-react.cjs:18:19)
+    at Object.&lt;anonymous&gt; (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\shared\__tests__\mocks\testing-library-react.cjs:650:23)
+    at E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-mock\build\index.js:397:39
+    at Object.&lt;anonymous&gt; (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-mock\build\index.js:404:13)
+    at Object.mockConstructor [as getByText] (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-mock\build\index.js:103:19)
+    at Object.getByText (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\__tests__\features\voice\VoiceOnboarding.test.jsx:224:19)</failure>
+    </testcase>
+    <testcase classname="VoiceOnboarding disables next button when required actions are not completed" name="VoiceOnboarding disables next button when required actions are not completed" time="0.017">
+      <failure>Error: expect(element).toBeDisabled()
 
-Expected: false
-Received: true
-    at Object.toBe (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\features\email\services\__tests__\emailValidation.test.js:55:52)
+Received element is not disabled:
+  &lt;button aria-label=&quot;Increment counter&quot; data-testid=&quot;increment-button&quot; /&gt;
+    at Object.toBeDisabled (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\__tests__\features\voice\VoiceOnboarding.test.jsx:244:24)</failure>
+    </testcase>
+    <testcase classname="VoiceOnboarding shows helpful tips for each step" name="VoiceOnboarding shows helpful tips for each step" time="0">
+      <failure>TestingLibraryElementError: Unable to find an element with the text: /tip:/i
+    at Object.getElementError (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\shared\__tests__\mocks\testing-library-react.cjs:18:19)
+    at Object.&lt;anonymous&gt; (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\shared\__tests__\mocks\testing-library-react.cjs:650:23)
+    at E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-mock\build\index.js:397:39
+    at Object.&lt;anonymous&gt; (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-mock\build\index.js:404:13)
+    at Object.mockConstructor [as getByText] (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-mock\build\index.js:103:19)
+    at Object.getByText (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\__tests__\features\voice\VoiceOnboarding.test.jsx:254:19)
     at Promise.then.completed (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\utils.js:298:28)
     at new Promise (&lt;anonymous&gt;)
     at callAsyncCircusFn (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\utils.js:231:10)
     at _callCircusTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:316:40)
-    at processTicksAndRejections (node:internal/process/task_queues:95:5)
     at _runTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:252:3)
     at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:126:9)
-    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:121:9)
     at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:121:9)
     at run (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:71:3)
     at runAndTransformResultsToJestFormat (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)
     at jestAdapter (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapter.js:79:19)
     at runTestInternal (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\runTest.js:367:16)
-    at runTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\runTest.js:444:34)
-    at Object.worker (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\testWorker.js:106:12)</failure>
+    at runTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\runTest.js:444:34)</failure>
     </testcase>
-    <testcase classname="Email Validation validateEmailData validates complete email data object" name="Email Validation validateEmailData validates complete email data object" time="0">
-      <failure>Error: expect(received).toBe(expected) // Object.is equality
+    <testcase classname="VoiceOnboarding handles keyboard navigation" name="VoiceOnboarding handles keyboard navigation" time="0.002">
+      <failure>Error: expect(element).toHaveFocus()
 
-Expected: true
-Received: false
-    at Object.toBe (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\features\email\services\__tests__\emailValidation.test.js:69:49)
+Expected element with focus:
+  &lt;button aria-label=&quot;Increment counter&quot; data-testid=&quot;increment-button&quot;&gt;Count: 0&lt;/button&gt;
+Received element with focus:
+  &lt;body&gt;&lt;div&gt;&lt;div data-testid=&quot;test-component&quot;&gt;&lt;h1&gt;Test Component&lt;/h1&gt;&lt;button aria-label=&quot;Increment counter&quot; data-testid=&quot;increment-button&quot;&gt;Count: 0&lt;/button&gt;&lt;input aria-label=&quot;Text input field&quot; data-testid=&quot;text-input&quot; placeholder=&quot;Enter text&quot; /&gt;&lt;div data-testid=&quot;text-display&quot; /&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div data-testid=&quot;test-component&quot;&gt;&lt;h1&gt;Test Component&lt;/h1&gt;&lt;button aria-label=&quot;Increment counter&quot; data-testid=&quot;increment-button&quot;&gt;Count: 0&lt;/button&gt;&lt;input aria-label=&quot;Text input field&quot; data-testid=&quot;text-input&quot; placeholder=&quot;Enter text&quot; /&gt;&lt;div data-testid=&quot;text-display&quot; /&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div data-testid=&quot;test-component&quot;&gt;&lt;h1&gt;Test Component&lt;/h1&gt;&lt;button aria-label=&quot;Increment counter&quot; data-testid=&quot;increment-button&quot;&gt;Count: 2&lt;/button&gt;&lt;input aria-label=&quot;Text input field&quot; data-testid=&quot;text-input&quot; placeholder=&quot;Enter text&quot; /&gt;&lt;div data-testid=&quot;text-display&quot; /&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div data-testid=&quot;test-component&quot;&gt;&lt;h1&gt;Test Component&lt;/h1&gt;&lt;button aria-label=&quot;Increment counter&quot; data-testid=&quot;increment-button&quot;&gt;Count: 2&lt;/button&gt;&lt;input aria-label=&quot;Text input field&quot; data-testid=&quot;text-input&quot; placeholder=&quot;Enter text&quot; /&gt;&lt;div data-testid=&quot;text-display&quot; /&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div data-testid=&quot;test-component&quot;&gt;&lt;h1&gt;Test Component&lt;/h1&gt;&lt;button aria-label=&quot;Increment counter&quot; data-testid=&quot;increment-button&quot;&gt;Count: 2&lt;/button&gt;&lt;input aria-label=&quot;Text input field&quot; data-testid=&quot;text-input&quot; placeholder=&quot;Enter text&quot; /&gt;&lt;div data-testid=&quot;text-display&quot; /&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div data-testid=&quot;test-component&quot;&gt;&lt;h1&gt;Test Component&lt;/h1&gt;&lt;button aria-label=&quot;Increment counter&quot; data-testid=&quot;increment-button&quot;&gt;Count: 3&lt;/button&gt;&lt;input aria-label=&quot;Text input field&quot; data-testid=&quot;text-input&quot; placeholder=&quot;Enter text&quot; /&gt;&lt;div data-testid=&quot;text-display&quot; /&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div data-testid=&quot;test-component&quot;&gt;&lt;h1&gt;Test Component&lt;/h1&gt;&lt;button aria-label=&quot;Increment counter&quot; data-testid=&quot;increment-button&quot;&gt;Count: 4&lt;/button&gt;&lt;input aria-label=&quot;Text input field&quot; data-testid=&quot;text-input&quot; placeholder=&quot;Enter text&quot; /&gt;&lt;div data-testid=&quot;text-display&quot; /&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div data-testid=&quot;test-component&quot;&gt;&lt;h1&gt;Test Component&lt;/h1&gt;&lt;button aria-label=&quot;Increment counter&quot; data-testid=&quot;increment-button&quot;&gt;Count: 1&lt;/button&gt;&lt;input aria-label=&quot;Text input field&quot; data-testid=&quot;text-input&quot; placeholder=&quot;Enter text&quot; /&gt;&lt;div data-testid=&quot;text-display&quot; /&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div data-testid=&quot;test-component&quot;&gt;&lt;h1&gt;Test Component&lt;/h1&gt;&lt;button aria-label=&quot;Increment counter&quot; data-testid=&quot;increment-button&quot;&gt;Count: 0&lt;/button&gt;&lt;input aria-label=&quot;Text input field&quot; data-testid=&quot;text-input&quot; placeholder=&quot;Enter text&quot; /&gt;&lt;div data-testid=&quot;text-display&quot; /&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div data-testid=&quot;test-component&quot;&gt;&lt;h1&gt;Test Component&lt;/h1&gt;&lt;button aria-label=&quot;Increment counter&quot; data-testid=&quot;increment-button&quot;&gt;Count: 1&lt;/button&gt;&lt;input aria-label=&quot;Text input field&quot; data-testid=&quot;text-input&quot; placeholder=&quot;Enter text&quot; /&gt;&lt;div data-testid=&quot;text-display&quot; /&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div data-testid=&quot;test-component&quot;&gt;&lt;h1&gt;Test Component&lt;/h1&gt;&lt;button aria-label=&quot;Increment counter&quot; data-testid=&quot;increment-button&quot;&gt;Count: 1&lt;/button&gt;&lt;input aria-label=&quot;Text input field&quot; data-testid=&quot;text-input&quot; placeholder=&quot;Enter text&quot; /&gt;&lt;div data-testid=&quot;text-display&quot; /&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div data-testid=&quot;test-component&quot;&gt;&lt;h1&gt;Test Component&lt;/h1&gt;&lt;button aria-label=&quot;Increment counter&quot; data-testid=&quot;increment-button&quot;&gt;Count: 0&lt;/button&gt;&lt;input aria-label=&quot;Text input field&quot; data-testid=&quot;text-input&quot; placeholder=&quot;Enter text&quot; /&gt;&lt;div data-testid=&quot;text-display&quot; /&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div data-testid=&quot;test-component&quot;&gt;&lt;h1&gt;Test Component&lt;/h1&gt;&lt;button aria-label=&quot;Increment counter&quot; data-testid=&quot;increment-button&quot;&gt;Count: 0&lt;/button&gt;&lt;input aria-label=&quot;Text input field&quot; data-testid=&quot;text-input&quot; placeholder=&quot;Enter text&quot; /&gt;&lt;div data-testid=&quot;text-display&quot; /&gt;&lt;/div&gt;&lt;/div&gt;&lt;/body&gt;
+    at Object.toHaveFocus (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\__tests__\features\voice\VoiceOnboarding.test.jsx:268:24)
     at Promise.then.completed (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\utils.js:298:28)
     at new Promise (&lt;anonymous&gt;)
     at callAsyncCircusFn (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\utils.js:231:10)
     at _callCircusTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:316:40)
-    at processTicksAndRejections (node:internal/process/task_queues:95:5)
     at _runTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:252:3)
     at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:126:9)
-    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:121:9)
     at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:121:9)
     at run (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:71:3)
     at runAndTransformResultsToJestFormat (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)
     at jestAdapter (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapter.js:79:19)
     at runTestInternal (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\runTest.js:367:16)
-    at runTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\runTest.js:444:34)
-    at Object.worker (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\testWorker.js:106:12)</failure>
+    at runTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\runTest.js:444:34)</failure>
     </testcase>
-    <testcase classname="Email Validation validateEmailData validates email data with optional fields" name="Email Validation validateEmailData validates email data with optional fields" time="0">
-      <failure>Error: expect(received).toBe(expected) // Object.is equality
-
-Expected: true
-Received: false
-    at Object.toBe (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\features\email\services\__tests__\emailValidation.test.js:83:57)
+    <testcase classname="VoiceOnboarding shows error states appropriately" name="VoiceOnboarding shows error states appropriately" time="2.447">
+      <failure>TestingLibraryElementError: Unable to find an element with the text: /microphone not available/i
+    at Object.getElementError (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\shared\__tests__\mocks\testing-library-react.cjs:18:19)
+    at Object.&lt;anonymous&gt; (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\shared\__tests__\mocks\testing-library-react.cjs:650:23)
+    at E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-mock\build\index.js:397:39
+    at Object.&lt;anonymous&gt; (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-mock\build\index.js:404:13)
+    at Object.mockConstructor [as getByText] (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-mock\build\index.js:103:19)
+    at getByText (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\__tests__\features\voice\VoiceOnboarding.test.jsx:292:21)
+    at check (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\shared\__tests__\mocks\testing-library-react.cjs:938:24)
+    at Timeout.task [as _onTimeout] (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\node_modules\jest-environment-jsdom\node_modules\jsdom\lib\jsdom\browser\Window.js:520:19)
+    at listOnTimeout (node:internal/timers:573:17)
+    at processTimers (node:internal/timers:514:7)</failure>
+    </testcase>
+    <testcase classname="VoiceOnboarding saves progress and can resume" name="VoiceOnboarding saves progress and can resume" time="0.001">
+      <failure>TestingLibraryElementError: Unable to find an element with the text: /step 2 of 4/i
+    at Object.getElementError (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\shared\__tests__\mocks\testing-library-react.cjs:18:19)
+    at Object.&lt;anonymous&gt; (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\shared\__tests__\mocks\testing-library-react.cjs:650:23)
+    at E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-mock\build\index.js:397:39
+    at Object.&lt;anonymous&gt; (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-mock\build\index.js:404:13)
+    at Object.mockConstructor [as getByText] (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-mock\build\index.js:103:19)
+    at Object.getByText (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\__tests__\features\voice\VoiceOnboarding.test.jsx:303:19)
     at Promise.then.completed (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\utils.js:298:28)
     at new Promise (&lt;anonymous&gt;)
     at callAsyncCircusFn (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\utils.js:231:10)
     at _callCircusTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:316:40)
-    at processTicksAndRejections (node:internal/process/task_queues:95:5)
     at _runTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:252:3)
     at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:126:9)
-    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:121:9)
     at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:121:9)
     at run (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:71:3)
     at runAndTransformResultsToJestFormat (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)
     at jestAdapter (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapter.js:79:19)
     at runTestInternal (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\runTest.js:367:16)
-    at runTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\runTest.js:444:34)
-    at Object.worker (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\testWorker.js:106:12)</failure>
+    at runTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\runTest.js:444:34)</failure>
     </testcase>
-    <testcase classname="Email Validation validateEmailData rejects email data with invalid to address" name="Email Validation validateEmailData rejects email data with invalid to address" time="0.001">
+    <testcase classname="VoiceOnboarding shows animated demonstrations" name="VoiceOnboarding shows animated demonstrations" time="0.03">
+      <failure>TestingLibraryElementError: Unable to find an element by: [data-testid=&quot;voice-demo-animation&quot;]
+    at Object.getElementError (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\shared\__tests__\mocks\testing-library-react.cjs:18:19)
+    at Object.&lt;anonymous&gt; (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\shared\__tests__\mocks\testing-library-react.cjs:655:23)
+    at E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-mock\build\index.js:397:39
+    at Object.&lt;anonymous&gt; (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-mock\build\index.js:404:13)
+    at Object.mockConstructor [as getByTestId] (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-mock\build\index.js:103:19)
+    at Object.getByTestId (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\__tests__\features\voice\VoiceOnboarding.test.jsx:317:19)
+    at runNextTicks (node:internal/process/task_queues:60:5)
+    at processTimers (node:internal/timers:511:9)</failure>
     </testcase>
-    <testcase classname="Email Validation validateEmailData rejects email data with invalid from address" name="Email Validation validateEmailData rejects email data with invalid from address" time="0">
-    </testcase>
-    <testcase classname="Email Validation validateEmailData rejects email data with missing required fields" name="Email Validation validateEmailData rejects email data with missing required fields" time="0">
-    </testcase>
-    <testcase classname="Email Validation validateEmailData handles empty or null input" name="Email Validation validateEmailData handles empty or null input" time="0">
-      <failure>TypeError: Cannot read properties of null (reading &apos;to&apos;)
-    at EmailManagementService.to [as validateEmailData] (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\features\email\services\emailManagementService.js:1538:20)
-    at validateEmailData (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\features\email\services\__tests__\emailValidation.test.js:6:31)
-    at Object.validateEmailData (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\features\email\services\__tests__\emailValidation.test.js:133:14)
+    <testcase classname="VoiceOnboarding provides accessibility features" name="VoiceOnboarding provides accessibility features" time="0.001">
+      <failure>TestingLibraryElementError: Unable to find an element with role: dialog
+    at Object.getElementError (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\shared\__tests__\mocks\testing-library-react.cjs:18:19)
+    at Object.&lt;anonymous&gt; (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\shared\__tests__\mocks\testing-library-react.cjs:676:23)
+    at E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-mock\build\index.js:397:39
+    at Object.&lt;anonymous&gt; (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-mock\build\index.js:404:13)
+    at Object.mockConstructor [as getByRole] (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-mock\build\index.js:103:19)
+    at Object.getByRole (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\__tests__\features\voice\VoiceOnboarding.test.jsx:326:19)
     at Promise.then.completed (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\utils.js:298:28)
     at new Promise (&lt;anonymous&gt;)
     at callAsyncCircusFn (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\utils.js:231:10)
     at _callCircusTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:316:40)
-    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at runNextTicks (node:internal/process/task_queues:60:5)
+    at processTimers (node:internal/timers:511:9)
     at _runTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:252:3)
     at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:126:9)
-    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:121:9)
     at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:121:9)
     at run (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:71:3)
     at runAndTransformResultsToJestFormat (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)
     at jestAdapter (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapter.js:79:19)
     at runTestInternal (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\runTest.js:367:16)
-    at runTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\runTest.js:444:34)
-    at Object.worker (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\testWorker.js:106:12)</failure>
+    at runTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\runTest.js:444:34)</failure>
     </testcase>
-    <testcase classname="Email Validation validateEmailData validates multiple recipients in to field" name="Email Validation validateEmailData validates multiple recipients in to field" time="0">
-      <failure>Error: expect(received).toBe(expected) // Object.is equality
-
-Expected: true
-Received: false
-    at Object.toBe (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\features\email\services\__tests__\emailValidation.test.js:147:53)
+    <testcase classname="VoiceOnboarding handles mobile-specific features" name="VoiceOnboarding handles mobile-specific features" time="0.001">
+      <failure>TestingLibraryElementError: Unable to find an element by: [data-testid=&quot;mobile-onboarding&quot;]
+    at Object.getElementError (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\shared\__tests__\mocks\testing-library-react.cjs:18:19)
+    at Object.&lt;anonymous&gt; (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\shared\__tests__\mocks\testing-library-react.cjs:655:23)
+    at E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-mock\build\index.js:397:39
+    at Object.&lt;anonymous&gt; (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-mock\build\index.js:404:13)
+    at Object.mockConstructor [as getByTestId] (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-mock\build\index.js:103:19)
+    at Object.getByTestId (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\__tests__\features\voice\VoiceOnboarding.test.jsx:346:19)
     at Promise.then.completed (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\utils.js:298:28)
     at new Promise (&lt;anonymous&gt;)
     at callAsyncCircusFn (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\utils.js:231:10)
     at _callCircusTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:316:40)
-    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at runNextTicks (node:internal/process/task_queues:60:5)
+    at processTimers (node:internal/timers:511:9)
     at _runTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:252:3)
     at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:126:9)
-    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:121:9)
     at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:121:9)
     at run (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:71:3)
     at runAndTransformResultsToJestFormat (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)
     at jestAdapter (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapter.js:79:19)
     at runTestInternal (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\runTest.js:367:16)
-    at runTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\runTest.js:444:34)
-    at Object.worker (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\testWorker.js:106:12)</failure>
+    at runTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\runTest.js:444:34)</failure>
     </testcase>
-    <testcase classname="Email Validation validateEmailData rejects email data with one invalid recipient among valid ones" name="Email Validation validateEmailData rejects email data with one invalid recipient among valid ones" time="0">
-    </testcase>
-    <testcase classname="Email Validation validateEmailData validates email data with empty body" name="Email Validation validateEmailData validates email data with empty body" time="0">
-      <failure>Error: expect(received).toBe(expected) // Object.is equality
-
-Expected: true
-Received: false
-    at Object.toBe (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\features\email\services\__tests__\emailValidation.test.js:170:49)
+    <testcase classname="VoiceOnboarding shows browser compatibility warnings" name="VoiceOnboarding shows browser compatibility warnings" time="0.001">
+      <failure>TestingLibraryElementError: Unable to find an element with the text: /browser not supported/i
+    at Object.getElementError (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\shared\__tests__\mocks\testing-library-react.cjs:18:19)
+    at Object.&lt;anonymous&gt; (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\shared\__tests__\mocks\testing-library-react.cjs:650:23)
+    at E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-mock\build\index.js:397:39
+    at Object.&lt;anonymous&gt; (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-mock\build\index.js:404:13)
+    at Object.mockConstructor [as getByText] (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-mock\build\index.js:103:19)
+    at Object.getByText (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\__tests__\features\voice\VoiceOnboarding.test.jsx:360:19)
     at Promise.then.completed (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\utils.js:298:28)
     at new Promise (&lt;anonymous&gt;)
     at callAsyncCircusFn (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\utils.js:231:10)
     at _callCircusTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:316:40)
-    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at runNextTicks (node:internal/process/task_queues:60:5)
+    at processTimers (node:internal/timers:511:9)
     at _runTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:252:3)
     at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:126:9)
-    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:121:9)
     at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:121:9)
     at run (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:71:3)
     at runAndTransformResultsToJestFormat (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)
     at jestAdapter (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapter.js:79:19)
     at runTestInternal (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\runTest.js:367:16)
-    at runTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\runTest.js:444:34)
-    at Object.worker (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\testWorker.js:106:12)</failure>
+    at runTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\runTest.js:444:34)</failure>
     </testcase>
-    <testcase classname="Email Validation validateEmailData validates email data with HTML content in body" name="Email Validation validateEmailData validates email data with HTML content in body" time="0.001">
-      <failure>Error: expect(received).toBe(expected) // Object.is equality
+    <testcase classname="VoiceOnboarding provides troubleshooting help" name="VoiceOnboarding provides troubleshooting help" time="0.012">
+      <failure>TestingLibraryElementError: Unable to find an element with the text: /troubleshooting/i
+    at Object.getElementError (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\shared\__tests__\mocks\testing-library-react.cjs:18:19)
+    at Object.&lt;anonymous&gt; (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\shared\__tests__\mocks\testing-library-react.cjs:650:23)
+    at E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-mock\build\index.js:397:39
+    at Object.&lt;anonymous&gt; (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-mock\build\index.js:404:13)
+    at Object.mockConstructor [as getByText] (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-mock\build\index.js:103:19)
+    at Object.getByText (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\__tests__\features\voice\VoiceOnboarding.test.jsx:372:19)</failure>
+    </testcase>
+    <testcase classname="VoiceOnboarding tracks onboarding analytics" name="VoiceOnboarding tracks onboarding analytics" time="0.015">
+      <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
-Expected: true
-Received: false
-    at Object.toBe (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\features\email\services\__tests__\emailValidation.test.js:181:48)
+Expected: &quot;onboarding_step_completed&quot;, {&quot;step&quot;: 1, &quot;stepName&quot;: &quot;microphone&quot;}
+
+Number of calls: 0
+    at Object.toHaveBeenCalledWith (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\__tests__\features\voice\VoiceOnboarding.test.jsx:390:23)</failure>
+    </testcase>
+    <testcase classname="VoiceOnboarding shows personalized recommendations" name="VoiceOnboarding shows personalized recommendations" time="0.03">
+      <failure>TestingLibraryElementError: Unable to find an element with the text: /admin commands/i
+    at Object.getElementError (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\shared\__tests__\mocks\testing-library-react.cjs:18:19)
+    at Object.&lt;anonymous&gt; (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\shared\__tests__\mocks\testing-library-react.cjs:650:23)
+    at E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-mock\build\index.js:397:39
+    at Object.&lt;anonymous&gt; (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-mock\build\index.js:404:13)
+    at Object.mockConstructor [as getByText] (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-mock\build\index.js:103:19)
+    at Object.getByText (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\__tests__\features\voice\VoiceOnboarding.test.jsx:411:19)</failure>
+    </testcase>
+    <testcase classname="VoiceOnboarding supports multiple languages" name="VoiceOnboarding supports multiple languages" time="0">
+      <failure>TestingLibraryElementError: Unable to find an element with the text: /bienvenido/i
+    at Object.getElementError (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\shared\__tests__\mocks\testing-library-react.cjs:18:19)
+    at Object.&lt;anonymous&gt; (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\shared\__tests__\mocks\testing-library-react.cjs:650:23)
+    at E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-mock\build\index.js:397:39
+    at Object.&lt;anonymous&gt; (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-mock\build\index.js:404:13)
+    at Object.mockConstructor [as getByText] (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-mock\build\index.js:103:19)
+    at Object.getByText (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\__tests__\features\voice\VoiceOnboarding.test.jsx:424:19)
     at Promise.then.completed (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\utils.js:298:28)
     at new Promise (&lt;anonymous&gt;)
     at callAsyncCircusFn (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\utils.js:231:10)
     at _callCircusTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:316:40)
-    at processTicksAndRejections (node:internal/process/task_queues:95:5)
     at _runTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:252:3)
     at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:126:9)
-    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:121:9)
     at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:121:9)
     at run (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:71:3)
     at runAndTransformResultsToJestFormat (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)
     at jestAdapter (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapter.js:79:19)
     at runTestInternal (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\runTest.js:367:16)
-    at runTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\runTest.js:444:34)
-    at Object.worker (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\testWorker.js:106:12)</failure>
+    at runTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\runTest.js:444:34)</failure>
     </testcase>
-  </testsuite>
-  <testsuite name="EmailManagementService" errors="0" failures="9" skipped="0" timestamp="2025-08-16T05:13:47" time="2.426" tests="13">
-    <testcase classname="EmailManagementService fetchEmails should fetch emails successfully" name="EmailManagementService fetchEmails should fetch emails successfully" time="0.005">
-      <failure>Error: expect(received).toEqual(expected) // deep equality
-
-Expected: [{&quot;id&quot;: &quot;email-1&quot;, &quot;isRead&quot;: false, &quot;sender&quot;: {&quot;email&quot;: &quot;john@example.com&quot;, &quot;name&quot;: &quot;John Doe&quot;}, &quot;subject&quot;: &quot;Test Email 1&quot;}, {&quot;id&quot;: &quot;email-2&quot;, &quot;isRead&quot;: true, &quot;sender&quot;: {&quot;email&quot;: &quot;jane@example.com&quot;, &quot;name&quot;: &quot;Jane Smith&quot;}, &quot;subject&quot;: &quot;Test Email 2&quot;}]
-Received: {&quot;data&quot;: [{&quot;id&quot;: &quot;email-1&quot;, &quot;isRead&quot;: false, &quot;sender&quot;: {&quot;email&quot;: &quot;john@example.com&quot;, &quot;name&quot;: &quot;John Doe&quot;}, &quot;subject&quot;: &quot;Test Email 1&quot;}, {&quot;id&quot;: &quot;email-2&quot;, &quot;isRead&quot;: true, &quot;sender&quot;: {&quot;email&quot;: &quot;jane@example.com&quot;, &quot;name&quot;: &quot;Jane Smith&quot;}, &quot;subject&quot;: &quot;Test Email 2&quot;}], &quot;hasMore&quot;: false, &quot;success&quot;: true, &quot;total&quot;: 2}
-    at Object.toEqual (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\lib\__tests__\emailManagementService.test.js:49:27)
-    at processTicksAndRejections (node:internal/process/task_queues:95:5)</failure>
-    </testcase>
-    <testcase classname="EmailManagementService fetchEmails should handle fetch emails error" name="EmailManagementService fetchEmails should handle fetch emails error" time="0.001">
-      <failure>Error: expect(received).toBe(expected) // Object.is equality
-
-Expected: false
-Received: true
-    at Object.toBe (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\lib\__tests__\emailManagementService.test.js:68:30)
-    at processTicksAndRejections (node:internal/process/task_queues:95:5)</failure>
-    </testcase>
-    <testcase classname="EmailManagementService sendEmail should send email successfully" name="EmailManagementService sendEmail should send email successfully" time="0">
-      <failure>TypeError: Cannot read properties of undefined (reading &apos;mockResolvedValue&apos;)
-    at Object.mockResolvedValue (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\lib\__tests__\emailManagementService.test.js:83:38)
+    <testcase classname="VoiceOnboarding handles offline mode gracefully" name="VoiceOnboarding handles offline mode gracefully" time="0">
+      <failure>TestingLibraryElementError: Unable to find an element with the text: /offline mode/i
+    at Object.getElementError (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\shared\__tests__\mocks\testing-library-react.cjs:18:19)
+    at Object.&lt;anonymous&gt; (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\shared\__tests__\mocks\testing-library-react.cjs:650:23)
+    at E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-mock\build\index.js:397:39
+    at Object.&lt;anonymous&gt; (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-mock\build\index.js:404:13)
+    at Object.mockConstructor [as getByText] (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-mock\build\index.js:103:19)
+    at Object.getByText (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\__tests__\features\voice\VoiceOnboarding.test.jsx:438:19)
     at Promise.then.completed (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\utils.js:298:28)
     at new Promise (&lt;anonymous&gt;)
     at callAsyncCircusFn (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\utils.js:231:10)
     at _callCircusTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:316:40)
-    at processTicksAndRejections (node:internal/process/task_queues:95:5)
     at _runTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:252:3)
     at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:126:9)
-    at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:121:9)
     at _runTestsForDescribeBlock (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:121:9)
     at run (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\run.js:71:3)
     at runAndTransformResultsToJestFormat (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)
     at jestAdapter (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapter.js:79:19)
     at runTestInternal (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\runTest.js:367:16)
-    at runTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\runTest.js:444:34)
-    at Object.worker (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\testWorker.js:106:12)</failure>
+    at runTest (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-runner\build\runTest.js:444:34)</failure>
     </testcase>
-    <testcase classname="EmailManagementService sendEmail should validate email data before sending" name="EmailManagementService sendEmail should validate email data before sending" time="0.025">
-      <failure>Error: expect(received).toBe(expected) // Object.is equality
-
-Expected: &quot;Invalid email data&quot;
-Received: {&quot;context&quot;: {&quot;attempt&quot;: 1, &quot;emailId&quot;: undefined, &quot;operation&quot;: &quot;send_email&quot;, &quot;provider&quot;: undefined, &quot;timestamp&quot;: &quot;2025-08-16T05:13:50.180Z&quot;, &quot;userId&quot;: &quot;test-user-123&quot;}, &quot;id&quot;: &quot;email_error_1755321230172_3glqwj0o0&quot;, &quot;message&quot;: &quot;_email.emailOfflineService.queueOfflineOperation is not a function&quot;, &quot;severity&quot;: &quot;low&quot;, &quot;stack&quot;: &quot;TypeError: _email.emailOfflineService.queueOfflineOperation is not a function
-    at queueOfflineOperation (E:\\AlexVenturesStudio\\Nexa_Manager_whit_Task_Master\\web-app\\src\\features\\email\\services\\emailManagementService.js:153:44)
-    at EmailErrorHandler.operation [as withErrorHandling] (E:\\AlexVenturesStudio\\Nexa_Manager_whit_Task_Master\\web-app\\src\\features\\email\\services\\emailErrorHandler.js:400:30)
-    at EmailManagementService.withErrorHandling [as sendEmail] (E:\\AlexVenturesStudio\\Nexa_Manager_whit_Task_Master\\web-app\\src\\features\\email\\services\\emailManagementService.js:149:36)
-    at Object.sendEmail (E:\\AlexVenturesStudio\\Nexa_Manager_whit_Task_Master\\web-app\\src\\lib\\__tests__\\emailManagementService.test.js:112:51)
-    at Promise.then.completed (E:\\AlexVenturesStudio\\Nexa_Manager_whit_Task_Master\\node_modules\\jest-circus\\build\\utils.js:298:28)
-    at new Promise (&lt;anonymous&gt;)
-    at callAsyncCircusFn (E:\\AlexVenturesStudio\\Nexa_Manager_whit_Task_Master\\node_modules\\jest-circus\\build\\utils.js:231:10)
-    at _callCircusTest (E:\\AlexVenturesStudio\\Nexa_Manager_whit_Task_Master\\node_modules\\jest-circus\\build\\run.js:316:40)
-    at processTicksAndRejections (node:internal/process/task_queues:95:5)
-    at _runTest (E:\\AlexVenturesStudio\\Nexa_Manager_whit_Task_Master\\node_modules\\jest-circus\\build\\run.js:252:3)
-    at _runTestsForDescribeBlock (E:\\AlexVenturesStudio\\Nexa_Manager_whit_Task_Master\\node_modules\\jest-circus\\build\\run.js:126:9)
-    at _runTestsForDescribeBlock (E:\\AlexVenturesStudio\\Nexa_Manager_whit_Task_Master\\node_modules\\jest-circus\\build\\run.js:121:9)
-    at _runTestsForDescribeBlock (E:\\AlexVenturesStudio\\Nexa_Manager_whit_Task_Master\\node_modules\\jest-circus\\build\\run.js:121:9)
-    at run (E:\\AlexVenturesStudio\\Nexa_Manager_whit_Task_Master\\node_modules\\jest-circus\\build\\run.js:71:3)
-    at runAndTransformResultsToJestFormat (E:\\AlexVenturesStudio\\Nexa_Manager_whit_Task_Master\\node_modules\\jest-circus\\build\\legacy-code-todo-rewrite\\jestAdapterInit.js:122:21)
-    at jestAdapter (E:\\AlexVenturesStudio\\Nexa_Manager_whit_Task_Master\\node_modules\\jest-circus\\build\\legacy-code-todo-rewrite\\jestAdapter.js:79:19)
-    at runTestInternal (E:\\AlexVenturesStudio\\Nexa_Manager_whit_Task_Master\\node_modules\\jest-runner\\build\\runTest.js:367:16)
-    at runTest (E:\\AlexVenturesStudio\\Nexa_Manager_whit_Task_Master\\node_modules\\jest-runner\\build\\runTest.js:444:34)
-    at Object.worker (E:\\AlexVenturesStudio\\Nexa_Manager_whit_Task_Master\\node_modules\\jest-runner\\build\\testWorker.js:106:12)&quot;, &quot;type&quot;: &quot;UNKNOWN_ERROR&quot;}
-    at Object.toBe (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\lib\__tests__\emailManagementService.test.js:115:28)
-    at processTicksAndRejections (node:internal/process/task_queues:95:5)</failure>
-    </testcase>
-    <testcase classname="EmailManagementService markAsRead should mark email as read successfully" name="EmailManagementService markAsRead should mark email as read successfully" time="0.002">
-      <failure>Error: expect(received).toBe(expected) // Object.is equality
-
-Expected: true
-Received: false
-    at Object.toBe (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\lib\__tests__\emailManagementService.test.js:136:30)
-    at processTicksAndRejections (node:internal/process/task_queues:95:5)</failure>
-    </testcase>
-    <testcase classname="EmailManagementService starEmail should star email successfully" name="EmailManagementService starEmail should star email successfully" time="0.001">
-      <failure>Error: expect(received).toBe(expected) // Object.is equality
-
-Expected: true
-Received: false
-    at Object.toBe (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\lib\__tests__\emailManagementService.test.js:159:30)
-    at processTicksAndRejections (node:internal/process/task_queues:95:5)</failure>
-    </testcase>
-    <testcase classname="EmailManagementService searchEmails should search emails successfully" name="EmailManagementService searchEmails should search emails successfully" time="0">
-      <failure>Error: expect(received).toEqual(expected) // deep equality
-
-Expected: [{&quot;id&quot;: &quot;email-1&quot;, &quot;sender&quot;: {&quot;email&quot;: &quot;boss@company.com&quot;, &quot;name&quot;: &quot;Boss&quot;}, &quot;subject&quot;: &quot;Important Meeting&quot;}]
-Received: {&quot;data&quot;: [{&quot;id&quot;: &quot;email-1&quot;, &quot;sender&quot;: {&quot;email&quot;: &quot;boss@company.com&quot;, &quot;name&quot;: &quot;Boss&quot;}, &quot;subject&quot;: &quot;Important Meeting&quot;}], &quot;hasMore&quot;: false, &quot;success&quot;: true, &quot;total&quot;: 1}
-    at Object.toEqual (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\lib\__tests__\emailManagementService.test.js:189:27)
-    at processTicksAndRejections (node:internal/process/task_queues:95:5)</failure>
-    </testcase>
-    <testcase classname="EmailManagementService createFolder should create folder successfully" name="EmailManagementService createFolder should create folder successfully" time="0.001">
-    </testcase>
-    <testcase classname="EmailManagementService applyLabel should apply label to email successfully" name="EmailManagementService applyLabel should apply label to email successfully" time="0.001">
-      <failure>Error: expect(received).toBe(expected) // Object.is equality
-
-Expected: true
-Received: false
-    at Object.toBe (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\lib\__tests__\emailManagementService.test.js:249:30)
-    at processTicksAndRejections (node:internal/process/task_queues:95:5)</failure>
-    </testcase>
-    <testcase classname="EmailManagementService applyLabel should not duplicate existing labels" name="EmailManagementService applyLabel should not duplicate existing labels" time="0.001">
-      <failure>Error: expect(received).toBe(expected) // Object.is equality
-
-Expected: true
-Received: false
-    at Object.toBe (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\lib\__tests__\emailManagementService.test.js:269:30)
-    at processTicksAndRejections (node:internal/process/task_queues:95:5)</failure>
-    </testcase>
-    <testcase classname="EmailManagementService validateEmailData should validate valid email data" name="EmailManagementService validateEmailData should validate valid email data" time="0.001">
-    </testcase>
-    <testcase classname="EmailManagementService validateEmailData should detect missing required fields" name="EmailManagementService validateEmailData should detect missing required fields" time="0">
-    </testcase>
-    <testcase classname="EmailManagementService validateEmailData should detect invalid email format" name="EmailManagementService validateEmailData should detect invalid email format" time="0">
+    <testcase classname="VoiceOnboarding provides video tutorials" name="VoiceOnboarding provides video tutorials" time="0.013">
+      <failure>TestingLibraryElementError: Unable to find an element by: [data-testid=&quot;tutorial-video&quot;]
+    at Object.getElementError (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\shared\__tests__\mocks\testing-library-react.cjs:18:19)
+    at Object.&lt;anonymous&gt; (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\shared\__tests__\mocks\testing-library-react.cjs:655:23)
+    at E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-mock\build\index.js:397:39
+    at Object.&lt;anonymous&gt; (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-mock\build\index.js:404:13)
+    at Object.mockConstructor [as getByTestId] (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\node_modules\jest-mock\build\index.js:103:19)
+    at Object.getByTestId (E:\AlexVenturesStudio\Nexa_Manager_whit_Task_Master\web-app\src\__tests__\features\voice\VoiceOnboarding.test.jsx:451:19)</failure>
     </testcase>
   </testsuite>
 </testsuites>

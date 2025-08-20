@@ -1,2 +1,11 @@
 Suite,Status,Tests,Passed,Failed,Duration
-VoiceFeedback.test.jsx,unknown,17,2,0,23482
+VoiceCommandHelp.test.js,unknown,24,24,0,880
+EmailCommandHandler.test.js,unknown,34,34,0,919
+VoiceActivationButton.test.jsx,unknown,4,4,0,1177
+Voice.test.jsx,unknown,17,17,0,1241
+FeedbackAnalysisTools.test.jsx,unknown,5,5,0,1456
+VoiceOnboarding.test.jsx,unknown,25,25,0,2525
+VoiceFeedbackButton.test.jsx,unknown,16,16,0,2528
+FloatingMicrophone.test.jsx,unknown,20,19,0,2939
+VoiceFeedback.test.jsx,unknown,17,16,0,3057
+VoiceFeedbackModal.test.jsx,unknown,23,23,0,3854
