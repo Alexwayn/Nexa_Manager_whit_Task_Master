@@ -825,22 +825,22 @@ const InvoicesPage = () => {
       {/* Main Content */}
       <div className='flex-1 flex flex-col'>
         {/* Header Section */}
-        <div className='bg-white border-b border-gray-200 px-8 py-6'>
-          <div className='flex justify-between items-center'>
+        <div className='bg-white border-b border-gray-200 px-4 sm:px-8 py-4 sm:py-6'>
+          <div className='flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4'>
             <div>
-              <h1 className='text-page-title'>{t('title')}</h1>
+              <h1 className='text-2xl sm:text-page-title'>{t('title')}</h1>
             </div>
-            <div className='flex space-x-3'>
+            <div className='flex flex-col sm:flex-row gap-3 w-full sm:w-auto'>
               <button
                 onClick={handleCreateInvoice}
-                className='bg-[#357AF3] text-white px-6 py-3 rounded-lg flex items-center space-x-2 hover:bg-blue-700 transition-colors font-semibold'
+                className='bg-[#357AF3] text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg flex items-center justify-center space-x-2 hover:bg-blue-700 transition-colors font-semibold whitespace-nowrap'
               >
                 <Plus className='w-5 h-5' />
                 <span>{t('actions.createNew')}</span>
               </button>
               <button
                 onClick={handleExportData}
-                className='bg-white border border-gray-300 text-gray-700 px-6 py-3 rounded-lg flex items-center space-x-2 hover:bg-gray-50 transition-colors font-semibold'
+                className='bg-white border border-gray-300 text-gray-700 px-4 sm:px-6 py-2 sm:py-3 rounded-lg flex items-center justify-center space-x-2 hover:bg-gray-50 transition-colors font-semibold whitespace-nowrap'
               >
                 <Download className='w-5 h-5' />
                 <span>{t('actions.export')}</span>
@@ -850,11 +850,11 @@ const InvoicesPage = () => {
         </div>
 
         {/* Tab Navigation */}
-        <div className='bg-white border-b border-gray-200 px-8'>
-          <div className='flex space-x-8'>
+        <div className='bg-white border-b border-gray-200 px-4 sm:px-8 overflow-x-auto'>
+          <div className='flex space-x-4 sm:space-x-8 min-w-max'>
             <button
               onClick={() => setActiveTab('invoices')}
-              className={`py-4 px-2 text-base font-semibold border-b-2 transition-colors ${
+              className={`py-4 px-2 text-sm sm:text-base font-semibold border-b-2 transition-colors whitespace-nowrap ${
                 activeTab === 'invoices'
                   ? 'text-[#357AF3] border-[#357AF3]'
                   : 'text-gray-500 hover:text-gray-700 border-transparent'
@@ -864,7 +864,7 @@ const InvoicesPage = () => {
             </button>
             <button
               onClick={() => navigate('/quotes')}
-              className={`py-4 px-2 text-base font-semibold border-b-2 transition-colors ${
+              className={`py-4 px-2 text-sm sm:text-base font-semibold border-b-2 transition-colors whitespace-nowrap ${
                 activeTab === 'quotes'
                   ? 'text-[#357AF3] border-[#357AF3]'
                   : 'text-gray-500 hover:text-gray-700 border-transparent'
@@ -876,12 +876,12 @@ const InvoicesPage = () => {
         </div>
 
         {/* Main Content Area */}
-        <div className='px-8 py-8'>
+        <div className='px-4 sm:px-8 py-4 sm:py-8'>
           {/* Stats Cards + Action Buttons - Combined Layout */}
-          <div className='grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8'>
+          <div className='grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8 mb-6 sm:mb-8'>
             {/* Left: Stats Cards (2x2 Grid) */}
             <div className='lg:col-span-2'>
-              <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
+              <div className='grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6'>
                 {stats.map((stat, index) => {
                   // Define card colors based on stat type
                   const cardColors = {
@@ -929,7 +929,7 @@ const InvoicesPage = () => {
             </div>
 
             {/* Right: Quick Action Cards - Beautiful Design with Patterns */}
-            <div className='grid grid-cols-2 gap-4'>
+            <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
               {/* Create Invoice */}
               <div className='group relative bg-gradient-to-br from-[#4F46E5] to-[#357AF3] rounded-2xl p-4 text-white shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 cursor-pointer overflow-hidden h-full'>
                 {/* Background Pattern */}
@@ -1441,24 +1441,23 @@ const InvoicesPage = () => {
 
           {/* Invoices Table */}
           <div className='bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm mb-8'>
-            <div className='px-8 py-6 border-b border-gray-200 flex justify-between items-center'>
-              <h3 className='text-section-title'>{t('table.title')}</h3>
-              <div className='relative'>
+            <div className='px-4 sm:px-8 py-4 sm:py-6 border-b border-gray-200 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4'>
+              <h3 className='text-lg sm:text-section-title'>{t('table.title')}</h3>
+              <div className='relative w-full sm:w-auto'>
                 <Search className='absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4' />
                 <input
                   type='text'
                   placeholder='Search invoices...'
                   value={searchTerm}
                   onChange={e => setSearchTerm(e.target.value)}
-                  className='w-64 bg-white border border-gray-300 rounded-lg pl-12 pr-4 py-2 text-sm focus:ring-blue-500 focus:border-blue-500'
-                  style={{ textIndent: '20px' }}
+                  className='w-full sm:w-64 bg-white border border-gray-300 rounded-lg pl-10 pr-4 py-2 text-sm focus:ring-blue-500 focus:border-blue-500'
                 />
               </div>
             </div>
 
             {/* Table Header */}
-            <div className='bg-gray-50 px-8 py-4 border-b border-gray-200 text-table-header'>
-              <div className='grid grid-cols-7 gap-6 text-sm font-semibold text-gray-700'>
+            <div className='bg-gray-50 px-4 sm:px-8 py-4 border-b border-gray-200 text-table-header overflow-x-auto'>
+              <div className='grid grid-cols-7 gap-4 sm:gap-6 text-xs sm:text-sm font-semibold text-gray-700 min-w-[800px]'>
                 <div>{t('table.headers.invoice')}</div>
                 <div>{t('table.headers.client')}</div>
                 <div>{t('table.headers.issueDate')}</div>
@@ -1470,11 +1469,11 @@ const InvoicesPage = () => {
             </div>
 
             {/* Table Body */}
-            <div className='divide-y divide-gray-200'>
+            <div className='divide-y divide-gray-200 overflow-x-auto'>
               {currentInvoices.length > 0 ? (
                 currentInvoices.map(invoice => (
-                  <div key={invoice.id} className='px-8 py-6 hover:bg-gray-50 transition-colors'>
-                    <div className='grid grid-cols-7 gap-6 items-center'>
+                  <div key={invoice.id} className='px-4 sm:px-8 py-4 sm:py-6 hover:bg-gray-50 transition-colors'>
+                    <div className='grid grid-cols-7 gap-4 sm:gap-6 items-center min-w-[800px]'>
                       <div>
                         <span className='text-[#357AF3] font-semibold hover:text-blue-800 cursor-pointer transition-colors'>
                           {invoice.id}
@@ -1525,7 +1524,7 @@ const InvoicesPage = () => {
                   </div>
                 ))
               ) : (
-                <div className='px-8 py-16 text-center'>
+                <div className='px-4 sm:px-8 py-12 sm:py-16 text-center'>
                   <FileText className='w-16 h-16 text-gray-300 mx-auto mb-4' />
                   <h3 className='text-lg font-medium text-gray-900 mb-2'>
                     {t('table.noInvoices.title', 'No invoices found')}

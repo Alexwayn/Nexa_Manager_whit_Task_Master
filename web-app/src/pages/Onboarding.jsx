@@ -163,9 +163,9 @@ export default function Onboarding() {
   };
 
   const StepIndicator = () => (
-    <div className='flex items-center justify-center mb-8'>
+    <div className='flex items-center justify-center mb-6 sm:mb-8 overflow-x-auto pb-2'>
       {[1, 2, 3].map(step => (
-        <div key={step} className='flex items-center'>
+        <div key={step} className='flex items-center flex-shrink-0'>
           <div
             className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
               step <= currentStep ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-600'
@@ -175,7 +175,7 @@ export default function Onboarding() {
           </div>
           {step < 3 && (
             <div
-              className={`w-16 h-1 mx-2 ${step < currentStep ? 'bg-blue-600' : 'bg-gray-200'}`}
+              className={`w-8 sm:w-16 h-1 mx-2 ${step < currentStep ? 'bg-blue-600' : 'bg-gray-200'}`}
             />
           )}
         </div>
@@ -410,7 +410,7 @@ export default function Onboarding() {
   return (
     <ErrorBoundary>
       <div className='min-h-screen bg-gray-50 flex items-center justify-center p-4'>
-        <div className='max-w-2xl w-full bg-white rounded-lg shadow-xl p-8'>
+        <div className='max-w-2xl w-full bg-white rounded-lg shadow-xl p-4 sm:p-8'>
           {/* Header */}
           <div className='text-center mb-8'>
             <img src={nexaLogo} alt='Nexa Manager' className='h-12 mx-auto mb-4' />
@@ -426,12 +426,12 @@ export default function Onboarding() {
             {getStepContent()}
 
             {/* Navigation Buttons */}
-            <div className='flex justify-between items-center mt-8 pt-6 border-t border-gray-200'>
+            <div className='flex flex-col sm:flex-row justify-between items-center gap-4 mt-6 sm:mt-8 pt-6 border-t border-gray-200'>
               <button
                 type='button'
                 onClick={prevStep}
                 disabled={currentStep === 1}
-                className={`px-6 py-2 rounded-md text-sm font-medium ${
+                className={`w-full sm:w-auto px-6 py-2 rounded-md text-sm font-medium transition-colors ${
                   currentStep === 1
                     ? 'text-gray-400 cursor-not-allowed'
                     : 'text-gray-700 hover:text-gray-900'
@@ -440,7 +440,7 @@ export default function Onboarding() {
                 Previous
               </button>
 
-              <div className='text-sm text-gray-500'>
+              <div className='text-sm text-gray-500 order-first sm:order-none'>
                 Step {currentStep} of {totalSteps}
               </div>
 
@@ -448,7 +448,7 @@ export default function Onboarding() {
                 <button
                   type='button'
                   onClick={nextStep}
-                  className='px-6 py-2 bg-blue-600 text-white rounded-md text-sm font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2'
+                  className='w-full sm:w-auto px-6 py-2 bg-blue-600 text-white rounded-md text-sm font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors'
                 >
                   Next
                 </button>
@@ -456,7 +456,7 @@ export default function Onboarding() {
                 <button
                   type='submit'
                   disabled={isSubmitting}
-                  className='px-6 py-2 bg-green-600 text-white rounded-md text-sm font-medium hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed flex items-center'
+                  className='w-full sm:w-auto px-6 py-2 bg-green-600 text-white rounded-md text-sm font-medium hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center transition-colors'
                 >
                   {isSubmitting ? (
                     <>

@@ -393,24 +393,24 @@ const Dashboard = () => {
         <div className='flex-1 p-0'>
           {/* Breadcrumb */}
           <nav className='bg-blue-50 border-b border-gray-200 py-2 px-4 md:px-8'>
-            <div className='flex items-center justify-between'>
+            <div className='flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-0'>
               <div className='flex items-center space-x-2 text-base'>
-                <HomeIcon className='h-5 w-5 text-blue-600' />
+                <HomeIcon className='h-5 w-5 text-blue-600 flex-shrink-0' />
                 <button className='text-blue-600 hover:text-blue-700 font-medium transition-colors'>
                   Dashboard
                 </button>
-                <ChevronRightIcon className='h-5 w-5 text-gray-400' />
+                <ChevronRightIcon className='h-5 w-5 text-gray-400 flex-shrink-0' />
                 <span className='text-gray-600 font-bold'>{t('overview')}</span>
               </div>
               {/* Search Bar */}
-              <div className='flex items-center bg-white rounded px-2 h-10 w-100 py-0 relative'>
-                <Search className='h-2 w-2 text-gray-400 mr-1' />
+              <div className='flex items-center bg-white rounded px-2 h-10 w-full sm:w-auto min-w-[200px] py-0 relative'>
+                <Search className='h-4 w-4 text-gray-400 mr-1 flex-shrink-0' />
                 <input
                   type='text'
                   placeholder={t('search.placeholder')}
                   value={searchTerm}
                   onChange={e => setSearchTerm(e.target.value)}
-                  className='flex-1 h-5 text-gray-700 bg-transparent border-none focus:border-none focus:ring-0 focus:outline-none text-xs leading-tight font-light placeholder:text-xs placeholder:font-light'
+                  className='flex-1 h-5 text-gray-700 bg-transparent border-none focus:border-none focus:ring-0 focus:outline-none text-xs leading-tight font-light placeholder:text-xs placeholder:font-light min-w-0'
                   style={{ textIndent: '6px' }}
                 />
                 {/* Search results dropdown */}
@@ -614,7 +614,7 @@ const Dashboard = () => {
               <div className='bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border border-purple-200 hover:border-purple-300'>
                 <h3 className='text-section-title text-gray-900 mb-6'>{t('quickActions.title')}</h3>
 
-                <div className='grid grid-cols-2 gap-3'>
+                <div className='grid grid-cols-1 sm:grid-cols-2 gap-3'>
                   {/* Add Client Card */}
                   <div className='group relative bg-gradient-to-br from-[#4F46E5] to-[#357AF3] rounded-2xl p-4 text-white shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 cursor-pointer overflow-hidden h-full'>
                     {/* Background Pattern */}
@@ -856,7 +856,7 @@ const Dashboard = () => {
             </div>
 
             {/* Second Row - Invoice Tracker and Revenue Overview */}
-            <div className='grid grid-cols-2 gap-4 w-full'>
+            <div className='grid grid-cols-1 lg:grid-cols-2 gap-4 w-full'>
               {/* Invoice Tracker */}
               <div className='bg-gradient-to-br from-orange-50 to-orange-100 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border border-orange-200 hover:border-orange-300'>
                 <div className='flex items-center justify-between mb-6'>
@@ -924,12 +924,12 @@ const Dashboard = () => {
 
               {/* Revenue Overview Chart */}
               <div className='bg-gradient-to-br from-indigo-50 to-indigo-100 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border border-indigo-200 hover:border-indigo-300'>
-                <div className='flex items-center justify-between mb-6'>
+                <div className='flex items-center justify-between mb-6 flex-wrap gap-3'>
                   <h3 className='text-section-title text-gray-900'>{t('revenueOverview.title')}</h3>
-                  <div className='flex items-center space-x-2'>
+                  <div className='flex items-center flex-wrap gap-2'>
                     <button
                       onClick={() => handlePeriodChange('monthly')}
-                      className={`px-3 py-1 text-nav-text rounded-full transition-colors ${
+                      className={`px-2 sm:px-3 py-1 text-xs sm:text-sm rounded-full transition-colors whitespace-nowrap ${
                         selectedPeriod === 'monthly'
                           ? 'bg-blue-100 text-blue-600'
                           : 'text-gray-500 hover:bg-gray-100'
@@ -939,7 +939,7 @@ const Dashboard = () => {
                     </button>
                     <button
                       onClick={() => handlePeriodChange('quarterly')}
-                      className={`px-3 py-1 text-nav-text rounded-full transition-colors ${
+                      className={`px-2 sm:px-3 py-1 text-xs sm:text-sm rounded-full transition-colors whitespace-nowrap ${
                         selectedPeriod === 'quarterly'
                           ? 'bg-blue-100 text-blue-600'
                           : 'text-gray-500 hover:bg-gray-100'
@@ -949,7 +949,7 @@ const Dashboard = () => {
                     </button>
                     <button
                       onClick={() => handlePeriodChange('yearly')}
-                      className={`px-3 py-1 text-nav-text rounded-full transition-colors ${
+                      className={`px-2 sm:px-3 py-1 text-xs sm:text-sm rounded-full transition-colors whitespace-nowrap ${
                         selectedPeriod === 'yearly'
                           ? 'bg-blue-100 text-blue-600'
                           : 'text-gray-500 hover:bg-gray-100'
@@ -961,7 +961,7 @@ const Dashboard = () => {
                 </div>
 
                 {/* Chart Area - Dynamic Area Chart */}
-                <div className='relative h-80 mb-4'>
+                <div className='relative h-64 sm:h-80 mb-4'>
                   {dashboardData?.revenueChart?.length > 0 ? (
                     <svg className='w-full h-full' viewBox='0 0 800 300' preserveAspectRatio='none'>
                       <defs>
@@ -1031,7 +1031,7 @@ const Dashboard = () => {
             </div>
 
             {/* Bottom Section - 2x2 Grid Layout */}
-            <div className='grid grid-cols-2 gap-4 w-full'>
+            <div className='grid grid-cols-1 lg:grid-cols-2 gap-4 w-full'>
               {/* Recent Clients */}
               <div className='bg-gradient-to-br from-cyan-50 to-cyan-100 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border border-cyan-200 hover:border-cyan-300'>
                 <div className='flex items-center justify-between mb-6'>

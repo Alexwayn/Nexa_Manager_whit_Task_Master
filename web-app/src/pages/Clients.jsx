@@ -274,7 +274,7 @@ const ClientStatistics = ({ clients, t, onAddClient, onExportList, onGenerateRep
   };
 
   return (
-    <div className='w-80 bg-white border-l border-gray-200 p-6'>
+    <div className='w-full lg:w-80 bg-white border-t lg:border-t-0 lg:border-l border-gray-200 p-4 sm:p-6'>
       <h2 className='text-section-title text-gray-900 mb-6'>
         {t('statistics.title', 'Client Statistics')}
       </h2>
@@ -873,8 +873,8 @@ function Clients() {
     <ErrorBoundary>
       <div className='min-h-screen bg-gray-50 flex flex-col'>
         {/* Main Content */}
-        <div className='flex-1 flex'>
-          <div className='flex-1'>
+        <div className='flex-1 flex flex-col lg:flex-row'>
+          <div className='flex-1 min-w-0'>
             {/* Breadcrumb */}
             <div className='bg-blue-50 border-b border-gray-200 py-2 px-4 md:px-8'>
               <div className='flex items-center justify-between'>
@@ -894,21 +894,20 @@ function Clients() {
 
             {/* Header */}
             <div className='bg-white border-b border-gray-200'>
-              <div className='px-6 py-4'>
+              <div className='px-4 sm:px-6 py-4'>
                 {/* Header with title and controls */}
-                <div className='flex justify-between items-center mb-6'>
-                  <h1 className='text-page-title text-gray-900'>{t('title')}</h1>
-                  <div className='flex items-center space-x-3'>
+                <div className='flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6'>
+                  <h1 className='text-2xl sm:text-page-title text-gray-900'>{t('title')}</h1>
+                  <div className='flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full sm:w-auto'>
                     {/* Search Input */}
-                    <div className='relative'>
+                    <div className='relative w-full sm:w-auto'>
                       <MagnifyingGlassIcon className='absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400 pointer-events-none' />
                       <input
                         type='text'
                         placeholder={t('search.placeholder', 'Search clients...')}
                         value={searchQuery}
                         onChange={e => setSearchQuery(e.target.value)}
-                        className='pl-12 pr-4 py-2 border border-gray-300 rounded-lg text-nav-text focus:ring-2 focus:ring-blue-500 focus:border-blue-500 w-64 bg-white'
-                        style={{ textIndent: '20px' }}
+                        className='pl-10 pr-4 py-2 border border-gray-300 rounded-lg text-nav-text focus:ring-2 focus:ring-blue-500 focus:border-blue-500 w-full sm:w-64 bg-white'
                       />
                     </div>
 
@@ -940,7 +939,7 @@ function Clients() {
 
                     <button
                       onClick={handleAddClient}
-                      className='bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center space-x-2 hover:bg-blue-700 transition-colors text-button-text font-medium'
+                      className='bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center justify-center space-x-2 hover:bg-blue-700 transition-colors text-button-text font-medium whitespace-nowrap'
                     >
                       <PlusIcon className='h-4 w-4' />
                       <span>{t('addClient')}</span>
@@ -949,8 +948,8 @@ function Clients() {
                 </div>
 
                 {/* Tabs */}
-                <div className='border-b border-gray-200'>
-                  <nav className='flex space-x-8'>
+                <div className='border-b border-gray-200 overflow-x-auto'>
+                  <nav className='flex space-x-4 sm:space-x-8 min-w-max'>
                     {tabs.map(tab => (
                       <button
                         key={tab.id}
@@ -970,11 +969,11 @@ function Clients() {
             </div>
 
             {/* Filters and Controls */}
-            <div className='bg-white border-b border-gray-200 px-6 py-4'>
-              <div className='flex items-center justify-between'>
-                <div className='flex items-center space-x-4'>
+            <div className='bg-white border-b border-gray-200 px-4 sm:px-6 py-4'>
+              <div className='flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4'>
+                <div className='flex flex-wrap items-center gap-3 w-full lg:w-auto'>
                   <button
-                    className={`flex items-center space-x-2 px-3 py-2 border rounded-lg text-nav-text font-medium transition-colors ${
+                    className={`flex items-center space-x-2 px-3 py-2 border rounded-lg text-nav-text font-medium transition-colors whitespace-nowrap ${
                       showFilters
                         ? 'border-blue-500 text-blue-700 bg-blue-50'
                         : 'border-gray-300 text-gray-700 hover:bg-gray-50'
@@ -988,7 +987,7 @@ function Clients() {
                   {showFilters && (
                     <>
                       <select
-                        className='border border-gray-300 rounded-lg px-3 py-2 text-nav-text text-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
+                        className='border border-gray-300 rounded-lg px-3 py-2 text-nav-text text-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 min-w-[120px]'
                         value={filters.industry}
                         onChange={e => setFilters({ ...filters, industry: e.target.value })}
                       >
@@ -1004,7 +1003,7 @@ function Clients() {
                       </select>
 
                       <select
-                        className='border border-gray-300 rounded-lg px-3 py-2 text-nav-text text-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
+                        className='border border-gray-300 rounded-lg px-3 py-2 text-nav-text text-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 min-w-[120px]'
                         value={filters.status}
                         onChange={e => setFilters({ ...filters, status: e.target.value })}
                       >
@@ -1015,7 +1014,7 @@ function Clients() {
                       </select>
 
                       <select
-                        className='border border-gray-300 rounded-lg px-3 py-2 text-nav-text text-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
+                        className='border border-gray-300 rounded-lg px-3 py-2 text-nav-text text-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 min-w-[140px]'
                         value={filters.revenue}
                         onChange={e => setFilters({ ...filters, revenue: e.target.value })}
                       >
@@ -1029,7 +1028,7 @@ function Clients() {
                       {/* Clear Filters Button */}
                       {(filters.industry || filters.status || filters.revenue) && (
                         <button
-                          className='px-3 py-2 text-nav-text font-medium text-red-600 hover:text-red-700 hover:bg-red-50 rounded-lg transition-colors'
+                          className='px-3 py-2 text-nav-text font-medium text-red-600 hover:text-red-700 hover:bg-red-50 rounded-lg transition-colors whitespace-nowrap'
                           onClick={() => setFilters({ industry: '', status: '', revenue: '' })}
                         >
                           {t('filters.clearFilters')}
@@ -1039,14 +1038,14 @@ function Clients() {
                   )}
                 </div>
 
-                <div className='flex items-center space-x-4'>
-                  <button className='flex items-center space-x-2 px-3 py-2 text-nav-text font-medium text-gray-700 hover:bg-gray-50 rounded-lg'>
+                <div className='flex flex-wrap items-center gap-3 w-full lg:w-auto'>
+                  <button className='flex items-center space-x-2 px-3 py-2 text-nav-text font-medium text-gray-700 hover:bg-gray-50 rounded-lg whitespace-nowrap'>
                     <ArrowsUpDownIcon className='h-4 w-4' />
                     <span>{t('sort.by')}:</span>
                   </button>
 
                   <select
-                    className='border border-gray-300 rounded-lg px-3 py-2 text-nav-text text-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
+                    className='border border-gray-300 rounded-lg px-3 py-2 text-nav-text text-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 min-w-[140px]'
                     value={sortBy}
                     onChange={e => setSortBy(e.target.value)}
                   >
@@ -1060,7 +1059,7 @@ function Clients() {
             </div>
 
             {/* Content Area */}
-            <div className='px-6 py-6'>
+            <div className='px-4 sm:px-6 py-4 sm:py-6'>
               {/* Results Info */}
               <div className='mb-4 text-subtitle text-gray-600'>
                 {t('pagination.showing', 'Showing {{start}} to {{end}} of {{total}} results', {
