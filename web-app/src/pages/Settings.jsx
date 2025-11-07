@@ -257,15 +257,15 @@ export default function Settings() {
           </Tab.Group>
         </div>
 
-        {/* Desktop Layout - FORCED FOR TESTING */}
-        <div className='flex min-h-screen'>
+        {/* Desktop Layout */}
+        <div className='flex flex-col lg:flex-row min-h-screen'>
           <Tab.Group selectedIndex={activeTab} onChange={handleTabChange}>
-            <div className='flex w-full'>
+            <div className='flex flex-col lg:flex-row w-full'>
               {/* Sidebar Navigation */}
-              <div className='w-80 bg-white border-r border-gray-200 flex-shrink-0'>
-                <div className='p-6'>
-                  <h1 className='text-2xl font-bold text-gray-900 mb-2'>{t('title')}</h1>
-                  <p className='text-gray-600 text-sm mb-8'>{t('subtitle')}</p>
+              <div className='w-full lg:w-80 bg-white border-b lg:border-b-0 lg:border-r border-gray-200 flex-shrink-0'>
+                <div className='p-4 sm:p-6'>
+                  <h1 className='text-xl sm:text-2xl font-bold text-gray-900 mb-2'>{t('title')}</h1>
+                  <p className='text-gray-600 text-xs sm:text-sm mb-6 sm:mb-8'>{t('subtitle')}</p>
 
                   <Tab.List className='space-y-2'>
                     {tabs.map((tab, index) => (
@@ -306,7 +306,7 @@ export default function Settings() {
               <div className='flex-1 min-w-0'>
                 <Tab.Panels className='h-full'>
                   {tabs.map((_, index) => (
-                    <Tab.Panel key={index} className='h-full p-6 md:p-8 focus:outline-none'>
+                    <Tab.Panel key={index} className='h-full p-4 sm:p-6 md:p-8 focus:outline-none'>
                       {renderPanelContent(index)}
                     </Tab.Panel>
                   ))}

@@ -560,20 +560,20 @@ const QuotesPage = () => {
         {/* Main Content */}
         <div className='flex-1 flex flex-col'>
           {/* Header */}
-          <div className='bg-white border-b border-gray-200 px-8 py-8'>
-            <div className='flex justify-between items-center'>
+          <div className='bg-white border-b border-gray-200 px-4 sm:px-8 py-4 sm:py-8'>
+            <div className='flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4'>
               <div>
-                <h1 className='text-page-title text-gray-900'>{t('title') || 'Quotes'}</h1>
+                <h1 className='text-2xl sm:text-page-title text-gray-900'>{t('title') || 'Quotes'}</h1>
               </div>
-              <div className='flex space-x-4'>
-                <button className='bg-white border border-gray-300 text-gray-700 px-6 py-3 rounded-xl hover:bg-gray-50 transition-colors flex items-center space-x-2 font-medium shadow-sm text-button-text'>
+              <div className='flex flex-col sm:flex-row gap-3 w-full sm:w-auto'>
+                <button className='bg-white border border-gray-300 text-gray-700 px-4 sm:px-6 py-2 sm:py-3 rounded-xl hover:bg-gray-50 transition-colors flex items-center justify-center space-x-2 font-medium shadow-sm text-button-text whitespace-nowrap'>
                   <Download className='w-5 h-5' />
                   <span>{t('actions.export', 'Export')}</span>
                 </button>
                 <button
                   onClick={() => handleCreateQuote()}
                   disabled={isLoading}
-                  className='bg-[#357AF3] text-white px-6 py-3 rounded-xl hover:bg-blue-600 transition-colors flex items-center space-x-2 font-medium shadow-sm disabled:opacity-50 disabled:cursor-not-allowed text-button-text'
+                  className='bg-[#357AF3] text-white px-4 sm:px-6 py-2 sm:py-3 rounded-xl hover:bg-blue-600 transition-colors flex items-center justify-center space-x-2 font-medium shadow-sm disabled:opacity-50 disabled:cursor-not-allowed text-button-text whitespace-nowrap'
                 >
                   <Plus className='w-5 h-5' />
                   <span>{t('actions.createNew', 'Create New Quote')}</span>
@@ -582,36 +582,38 @@ const QuotesPage = () => {
             </div>
 
             {/* Tab Navigation */}
-            <div className='flex space-x-8 mt-8'>
-              <button
-                onClick={() => setActiveTab('quotes')}
-                className={`pb-4 px-1 border-b-2 font-medium text-nav-text transition-colors ${
-                  activeTab === 'quotes'
-                    ? 'border-[#357AF3] text-[#357AF3]'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                }`}
-              >
-                {t('tabs.quotes') || 'Quotes'}
-              </button>
-              <button
-                onClick={() => navigate('/invoices')}
-                className={`pb-4 px-1 border-b-2 font-medium text-nav-text transition-colors ${
-                  activeTab === 'invoices'
-                    ? 'border-[#357AF3] text-[#357AF3]'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                }`}
-              >
-                {t('tabs.invoices') || 'Invoices'}
-              </button>
+            <div className='flex space-x-4 sm:space-x-8 mt-6 sm:mt-8 overflow-x-auto'>
+              <div className='flex min-w-max'>
+                <button
+                  onClick={() => setActiveTab('quotes')}
+                  className={`pb-4 px-1 border-b-2 font-medium text-nav-text transition-colors whitespace-nowrap ${
+                    activeTab === 'quotes'
+                      ? 'border-[#357AF3] text-[#357AF3]'
+                      : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                  }`}
+                >
+                  {t('tabs.quotes') || 'Quotes'}
+                </button>
+                <button
+                  onClick={() => navigate('/invoices')}
+                  className={`pb-4 px-1 border-b-2 font-medium text-nav-text transition-colors whitespace-nowrap ${
+                    activeTab === 'invoices'
+                      ? 'border-[#357AF3] text-[#357AF3]'
+                      : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                  }`}
+                >
+                  {t('tabs.invoices') || 'Invoices'}
+                </button>
+              </div>
             </div>
           </div>
 
           {/* Main Dashboard Content */}
-          <div className='flex-1 px-8 py-8'>
+          <div className='flex-1 px-4 sm:px-8 py-4 sm:py-8'>
             {/* Stats and Actions Row */}
-            <div className='grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8'>
+            <div className='grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8 mb-6 sm:mb-8'>
               {/* Stats Cards - 2x2 Grid */}
-              <div className='lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6'>
+              <div className='lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6'>
                 {stats.map((stat, index) => {
                   const cardColors = {
                     0: 'bg-gradient-to-br from-orange-50 to-orange-100 border border-orange-200 hover:border-orange-300',
@@ -659,7 +661,7 @@ const QuotesPage = () => {
               </div>
 
               {/* Quick Action Cards - Right Side */}
-              <div className='grid grid-cols-2 gap-4'>
+              <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
                 {/* Create Quote */}
                 <div className='group relative bg-gradient-to-br from-[#4F46E5] to-[#357AF3] rounded-2xl p-4 text-white shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 cursor-pointer overflow-hidden h-full'>
                   {/* Background Pattern */}

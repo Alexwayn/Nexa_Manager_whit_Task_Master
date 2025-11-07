@@ -390,20 +390,20 @@ const Analytics = () => {
         {/* Main Content */}
         <div className="flex-1 flex flex-col">
           {/* Header Section */}
-          <div className="bg-white border-b border-gray-200 px-8 py-6">
-            <div className="flex justify-between items-center">
+          <div className="bg-white border-b border-gray-200 px-4 sm:px-8 py-4 sm:py-6">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
               <div>
-                <h1 className="text-page-title">{t('title')}</h1>
+                <h1 className="text-2xl sm:text-page-title">{t('title')}</h1>
               </div>
             </div>
           </div>
 
           {/* Tab Navigation */}
-          <div className="bg-white border-b border-gray-200 px-8">
-            <div className="flex space-x-8">
+          <div className="bg-white border-b border-gray-200 px-4 sm:px-8 overflow-x-auto">
+            <div className="flex space-x-4 sm:space-x-8 min-w-max">
               <button
                 onClick={() => setActiveTab('invoice-analytics')}
-                className={`py-4 px-2 text-base font-semibold border-b-2 transition-colors ${
+                className={`py-4 px-2 text-sm sm:text-base font-semibold border-b-2 transition-colors whitespace-nowrap ${
                   activeTab === 'invoice-analytics'
                     ? 'text-[#357AF3] border-[#357AF3]'
                     : 'text-gray-500 hover:text-gray-700 border-transparent'
@@ -413,7 +413,7 @@ const Analytics = () => {
               </button>
               <button
                 onClick={() => setActiveTab('forecasting')}
-                className={`py-4 px-2 text-base font-semibold border-b-2 transition-colors ${
+                className={`py-4 px-2 text-sm sm:text-base font-semibold border-b-2 transition-colors whitespace-nowrap ${
                   activeTab === 'forecasting'
                     ? 'text-[#357AF3] border-[#357AF3]'
                     : 'text-gray-500 hover:text-gray-700 border-transparent'
@@ -423,7 +423,7 @@ const Analytics = () => {
               </button>
               <button
                 onClick={() => setActiveTab('reports-and-insights')}
-                className={`py-4 px-2 text-base font-semibold border-b-2 transition-colors ${
+                className={`py-4 px-2 text-sm sm:text-base font-semibold border-b-2 transition-colors whitespace-nowrap ${
                   activeTab === 'reports-and-insights'
                     ? 'text-[#357AF3] border-[#357AF3]'
                     : 'text-gray-500 hover:text-gray-700 border-transparent'
@@ -433,7 +433,7 @@ const Analytics = () => {
               </button>
               <button
                 onClick={() => setActiveTab('interactive-charts')}
-                className={`py-4 px-2 text-base font-semibold border-b-2 transition-colors ${
+                className={`py-4 px-2 text-sm sm:text-base font-semibold border-b-2 transition-colors whitespace-nowrap ${
                   activeTab === 'interactive-charts'
                     ? 'text-[#357AF3] border-[#357AF3]'
                     : 'text-gray-500 hover:text-gray-700 border-transparent'
@@ -444,7 +444,7 @@ const Analytics = () => {
             </div>
           </div>
 
-          <div className="px-8 py-8">
+          <div className="px-4 sm:px-8 py-4 sm:py-8">
 
             {/* Tab Content */}
             {activeTab === 'invoice-analytics' && (

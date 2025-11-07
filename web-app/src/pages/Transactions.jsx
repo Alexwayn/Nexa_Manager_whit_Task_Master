@@ -345,24 +345,24 @@ export default function Transactions() {
           </div>
 
           {/* Page Content */}
-          <div className='flex-1 px-6 py-6 space-y-6'>
+          <div className='flex-1 px-4 sm:px-6 py-4 sm:py-6 space-y-4 sm:space-y-6'>
             {/* Page Header */}
-            <div className='flex items-center justify-between'>
-              <h1 className='text-page-title text-gray-900'>
+            <div className='flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4'>
+              <h1 className='text-2xl sm:text-page-title text-gray-900'>
                 {safeT('title', {}, 'Income & Expenses')}
               </h1>
-              <div className='flex items-center gap-3'>
+              <div className='flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full sm:w-auto'>
                 {/* Date Selector */}
-                <div className='relative date-menu-container'>
+                <div className='relative date-menu-container w-full sm:w-auto'>
                   <button
                     onClick={() => setDateMenuOpen(!dateMenuOpen)}
-                    className='flex items-center gap-2 border border-gray-300 rounded-md px-3 py-2 hover:bg-gray-50 transition-colors'
+                    className='flex items-center gap-2 border border-gray-300 rounded-md px-3 py-2 hover:bg-gray-50 transition-colors w-full sm:w-auto justify-between sm:justify-start'
                   >
-                    <CalendarIcon className='w-4 h-4 text-gray-600' />
+                    <CalendarIcon className='w-4 h-4 text-gray-600 flex-shrink-0' />
                     <span className='text-nav-text text-gray-700'>
                       {safeT(`period.${selectedPeriod.toLowerCase()}`, {}, selectedPeriod)}
                     </span>
-                    <ChevronDownIcon className='w-4 h-4 text-gray-600' />
+                    <ChevronDownIcon className='w-4 h-4 text-gray-600 flex-shrink-0' />
                   </button>
                   {dateMenuOpen && (
                     <div className='absolute top-full left-0 mt-1 bg-white border border-gray-200 rounded-md shadow-lg z-10 min-w-full'>
@@ -390,7 +390,7 @@ export default function Transactions() {
                 {/* Export Button */}
                 <button
                   onClick={handleExport}
-                  className='bg-blue-600 text-white px-4 py-2 rounded-md flex items-center gap-2 hover:bg-blue-700 transition-colors'
+                  className='bg-blue-600 text-white px-4 py-2 rounded-md flex items-center justify-center gap-2 hover:bg-blue-700 transition-colors whitespace-nowrap'
                 >
                   <DocumentArrowDownIcon className='w-4 h-4' />
                   <span className='text-button-text'>{safeT('actions.export', {}, 'Export')}</span>
@@ -399,7 +399,7 @@ export default function Transactions() {
             </div>
 
             {/* Summary Cards */}
-            <div className='grid grid-cols-3 gap-6'>
+            <div className='grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6'>
               {/* Total Income Card */}
               <div className='bg-gradient-to-br from-primary-50 to-primary-100 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border border-primary-200 hover:border-primary-300'>
                 <div className='flex items-start justify-between mb-2'>
@@ -507,17 +507,17 @@ export default function Transactions() {
             </div>
 
             {/* Charts, Budget Progress and Quick Actions Row */}
-            <div className='grid grid-cols-6 gap-6'>
+            <div className='grid grid-cols-1 lg:grid-cols-6 gap-4 sm:gap-6'>
               {/* Income vs Expenses Chart */}
-              <div className='col-span-2 bg-white rounded-xl shadow-lg p-6 border border-gray-100'>
-                <div className='flex items-center justify-between mb-6'>
-                  <h3 className='text-section-title text-gray-800'>
+              <div className='lg:col-span-2 bg-white rounded-xl shadow-lg p-4 sm:p-6 border border-gray-100'>
+                <div className='flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-4 sm:mb-6'>
+                  <h3 className='text-lg sm:text-section-title text-gray-800'>
                     {safeT('charts.incomeVsExpenses', {}, 'Income vs Expenses')}
                   </h3>
-                  <div className='flex items-center gap-2 bg-gray-50 p-1 rounded-lg'>
+                  <div className='flex items-center gap-2 bg-gray-50 p-1 rounded-lg flex-wrap'>
                     <button
                       onClick={() => handlePeriodChange('Monthly')}
-                      className={`px-3 py-1.5 rounded-md text-nav-text shadow-sm transition-colors ${
+                      className={`px-2 sm:px-3 py-1.5 rounded-md text-xs sm:text-nav-text shadow-sm transition-colors whitespace-nowrap ${
                         selectedPeriod === 'Monthly'
                           ? 'bg-blue-500 text-white'
                           : 'text-gray-500 hover:text-gray-700'
@@ -527,7 +527,7 @@ export default function Transactions() {
                     </button>
                     <button
                       onClick={() => handlePeriodChange('Quarterly')}
-                      className={`px-3 py-1.5 text-nav-text transition-colors ${
+                      className={`px-2 sm:px-3 py-1.5 text-xs sm:text-nav-text transition-colors whitespace-nowrap ${
                         selectedPeriod === 'Quarterly'
                           ? 'bg-blue-500 text-white rounded-md shadow-sm'
                           : 'text-gray-500 hover:text-gray-700'
@@ -537,7 +537,7 @@ export default function Transactions() {
                     </button>
                     <button
                       onClick={() => handlePeriodChange('Yearly')}
-                      className={`px-3 py-1.5 text-nav-text transition-colors ${
+                      className={`px-2 sm:px-3 py-1.5 text-xs sm:text-nav-text transition-colors whitespace-nowrap ${
                         selectedPeriod === 'Yearly'
                           ? 'bg-blue-500 text-white rounded-md shadow-sm'
                           : 'text-gray-500 hover:text-gray-700'
@@ -547,7 +547,7 @@ export default function Transactions() {
                     </button>
                   </div>
                 </div>
-                <div className='h-64 bg-gradient-to-t from-gray-50 to-white rounded-lg flex items-end justify-center p-6 mb-4 relative overflow-hidden'>
+                <div className='h-48 sm:h-64 bg-gradient-to-t from-gray-50 to-white rounded-lg flex items-end justify-center p-4 sm:p-6 mb-4 relative overflow-hidden'>
                   {/* Background Grid */}
                   <div className='absolute inset-0 opacity-10'>
                     <div
@@ -663,7 +663,7 @@ export default function Transactions() {
                     )}
                   </div>
                 </div>
-                <div className='grid grid-cols-2 gap-6 mb-6'>
+                <div className='grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 mb-4 sm:mb-6'>
                   <div className='text-center'>
                     <p className='text-card-title text-blue-600 mb-3'>
                       {safeT('summary.income', {}, 'Income')}
@@ -780,11 +780,11 @@ export default function Transactions() {
               </div>
 
               {/* Quick Actions */}
-              <div className='col-span-2 bg-white rounded-xl shadow-sm p-6'>
-                <h3 className='text-section-title mb-4'>
+              <div className='lg:col-span-2 bg-white rounded-xl shadow-sm p-4 sm:p-6'>
+                <h3 className='text-lg sm:text-section-title mb-4'>
                   {safeT('quickActions.title', {}, 'Quick Actions')}
                 </h3>
-                <div className='grid grid-cols-2 gap-4 mb-6'>
+                <div className='grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4 sm:mb-6'>
                   <button
                     onClick={handleAdjustBudget}
                     className='relative overflow-hidden bg-gradient-to-br from-blue-600 to-blue-700 text-white p-6 rounded-xl flex flex-col items-center gap-3 hover:from-blue-700 hover:to-blue-800 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl group'
@@ -874,9 +874,9 @@ export default function Transactions() {
             </div>
 
             {/* Transaction Tables */}
-            <div className='grid grid-cols-2 gap-6'>
+            <div className='grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6'>
               {/* Income Transactions */}
-              <div className='bg-white rounded-xl shadow-sm p-6'>
+              <div className='bg-white rounded-xl shadow-sm p-4 sm:p-6'>
                 <div className='flex items-center justify-between mb-4'>
                   <h3 className='text-section-title'>
                     {safeT('income.title', {}, 'Income Transactions')}
@@ -924,20 +924,20 @@ export default function Transactions() {
                 </div>
 
                 {/* Table Header */}
-                <div className='grid grid-cols-5 gap-4 bg-gray-50 px-3 py-3 text-table-header text-gray-500 uppercase tracking-wide'>
-                  <span>{safeT('table.date', {}, 'Date')}</span>
-                  <span>{safeT('table.category', {}, 'Category')}</span>
-                  <span>{safeT('table.client', {}, 'Client')}</span>
-                  <span className='text-right'>{safeT('table.amount', {}, 'Amount')}</span>
-                  <span className='text-center'>{safeT('table.status', {}, 'Status')}</span>
+                <div className='grid grid-cols-5 gap-2 sm:gap-4 bg-gray-50 px-2 sm:px-3 py-2 sm:py-3 text-table-header text-gray-500 uppercase tracking-wide text-xs sm:text-sm overflow-x-auto'>
+                  <span className='min-w-[80px]'>{safeT('table.date', {}, 'Date')}</span>
+                  <span className='min-w-[100px]'>{safeT('table.category', {}, 'Category')}</span>
+                  <span className='min-w-[120px]'>{safeT('table.client', {}, 'Client')}</span>
+                  <span className='text-right min-w-[100px]'>{safeT('table.amount', {}, 'Amount')}</span>
+                  <span className='text-center min-w-[80px]'>{safeT('table.status', {}, 'Status')}</span>
                 </div>
 
                 {/* Table Body */}
-                <div className='border-t border-gray-200'>
+                <div className='border-t border-gray-200 overflow-x-auto'>
                   {incomeTransactions.map(transaction => (
                     <div
                       key={transaction.id}
-                      className='grid grid-cols-5 gap-4 px-3 py-4 border-b border-gray-100 text-body'
+                      className='grid grid-cols-5 gap-2 sm:gap-4 px-2 sm:px-3 py-3 sm:py-4 border-b border-gray-100 text-body min-w-[600px]'
                     >
                       <span className='text-gray-900'>{transaction.date}</span>
                       <div className='flex items-center gap-2'>
@@ -1017,20 +1017,20 @@ export default function Transactions() {
                 </div>
 
                 {/* Table Header */}
-                <div className='grid grid-cols-5 gap-4 bg-gray-50 px-3 py-3 text-table-header text-gray-500 uppercase tracking-wide'>
-                  <span>{safeT('table.date', {}, 'Date')}</span>
-                  <span>{safeT('table.category', {}, 'Category')}</span>
-                  <span>{safeT('table.client', {}, 'Client')}</span>
-                  <span className='text-right'>{safeT('table.amount', {}, 'Amount')}</span>
-                  <span className='text-center'>{safeT('table.status', {}, 'Status')}</span>
+                <div className='grid grid-cols-5 gap-2 sm:gap-4 bg-gray-50 px-2 sm:px-3 py-2 sm:py-3 text-table-header text-gray-500 uppercase tracking-wide text-xs sm:text-sm overflow-x-auto'>
+                  <span className='min-w-[80px]'>{safeT('table.date', {}, 'Date')}</span>
+                  <span className='min-w-[100px]'>{safeT('table.category', {}, 'Category')}</span>
+                  <span className='min-w-[120px]'>{safeT('table.client', {}, 'Client')}</span>
+                  <span className='text-right min-w-[100px]'>{safeT('table.amount', {}, 'Amount')}</span>
+                  <span className='text-center min-w-[80px]'>{safeT('table.status', {}, 'Status')}</span>
                 </div>
 
                 {/* Table Body */}
-                <div className='border-t border-gray-200'>
+                <div className='border-t border-gray-200 overflow-x-auto'>
                   {expenseTransactions.map(transaction => (
                     <div
                       key={transaction.id}
-                      className='grid grid-cols-5 gap-4 px-3 py-4 border-b border-gray-100 text-body'
+                      className='grid grid-cols-5 gap-2 sm:gap-4 px-2 sm:px-3 py-3 sm:py-4 border-b border-gray-100 text-body min-w-[600px]'
                     >
                       <span className='text-gray-900'>{transaction.date}</span>
                       <span>
@@ -1060,7 +1060,7 @@ export default function Transactions() {
             </div>
 
             {/* Bottom Row: Budget Performance, Cash Flow */}
-            <div className='grid grid-cols-2 gap-6'>
+            <div className='grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6'>
               {/* Budget Performance */}
               <div className='bg-white rounded-xl shadow-sm p-6'>
                 <div className='flex items-center justify-between mb-4'>
@@ -1392,7 +1392,7 @@ export default function Transactions() {
 
               {/* Modal Content */}
               <div className='p-6'>
-                <div className='grid grid-cols-2 gap-6 mb-6'>
+                <div className='grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 mb-4 sm:mb-6'>
                   {/* Summary Stats */}
                   <div className='space-y-4'>
                     <h3 className='text-section-title text-gray-800'>

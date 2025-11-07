@@ -540,36 +540,34 @@ export default function Calendar() {
     <div className='min-h-screen bg-gray-50 flex flex-col'>
       {/* Breadcrumb */}
       <nav className='bg-blue-50 border-b border-gray-200 py-2 px-4 md:px-8'>
-        <div className='flex items-center justify-between'>
-          <div className='flex items-center space-x-2 text-base'>
-            <HomeIcon className='h-5 w-5 text-blue-600' />
-            <button
-              onClick={() => navigate('/dashboard')}
-              className='text-blue-600 hover:text-blue-700 font-medium transition-colors'
-            >
-              Dashboard
-            </button>
-            <ChevronRightIcon className='h-5 w-5 text-gray-400' />
-            <span className='text-gray-600 font-bold'>{t('calendar:title')}</span>
-          </div>
-          <div className='flex items-center space-x-4'>
-            <div className='relative'>
+          <div className='flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3'>
+            <div className='flex items-center space-x-2 text-base'>
+              <HomeIcon className='h-5 w-5 text-blue-600 flex-shrink-0' />
+              <button
+                onClick={() => navigate('/dashboard')}
+                className='text-blue-600 hover:text-blue-700 font-medium transition-colors'
+              >
+                Dashboard
+              </button>
+              <ChevronRightIcon className='h-5 w-5 text-gray-400 flex-shrink-0' />
+              <span className='text-gray-600 font-bold'>{t('calendar:title')}</span>
+            </div>
+            <div className='relative w-full sm:w-auto'>
               <Search className='h-4 w-4 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2' />
               <input
                 type='text'
                 placeholder={t('calendar:searchPlaceholder')}
-                className='pl-12 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 w-64 bg-white'
-                style={{ textIndent: '20px' }}
+                className='pl-10 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 w-full sm:w-64 bg-white'
               />
             </div>
           </div>
-        </div>
       </nav>
 
       {/* Main Content */}
       <div className='flex flex-1 bg-gray-50'>
         {/* Left Sidebar */}
-        <div className='w-80 bg-white border-r border-gray-200 p-6 overflow-y-auto'>
+        <div className='flex flex-col lg:flex-row'>
+          <div className='w-full lg:w-80 bg-white border-b lg:border-b-0 lg:border-r border-gray-200 p-4 sm:p-6 overflow-y-auto'>
           {/* Mini Calendar */}
           <div className='mb-6'>
             <div className='flex items-center justify-between mb-4'>
@@ -715,9 +713,9 @@ export default function Calendar() {
         {/* Main Calendar Area */}
         <div className='flex-1'>
           {/* Calendar Header */}
-          <div className='bg-white border-b border-gray-200 px-6 py-4'>
-            <div className='flex items-center justify-between'>
-              <div className='flex items-center space-x-6'>
+          <div className='bg-white border-b border-gray-200 px-4 sm:px-6 py-3 sm:py-4'>
+            <div className='flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4'>
+              <div className='flex items-center space-x-3 sm:space-x-6'>
                 <h1 className='text-page-title text-gray-900'>
                   {format(selectedDate, 'MMMM yyyy', { locale: it })}
                 </h1>
