@@ -113,7 +113,7 @@ const QuickActions = ({ onAddItem, onManageCategories, onExportInventory, onStoc
 
               {/* Content */}
               <div className='relative z-10 flex flex-col items-center gap-3'>
-                <div className='bg-white bg-opacity-20 p-3 rounded-lg group-hover:bg-opacity-30 transition-all duration-300'>
+                <div className='bg-white/20 p-3 rounded-lg group-hover:bg-white/30 transition-all duration-300'>
                   <action.icon className='h-6 w-6 text-white' />
                 </div>
                 <span className='text-center text-sm font-medium leading-tight text-white'>

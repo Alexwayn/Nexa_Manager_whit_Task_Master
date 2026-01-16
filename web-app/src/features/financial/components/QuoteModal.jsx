@@ -111,8 +111,7 @@ const QuoteModal = ({
   return (
     <div className='fixed inset-0 z-50 overflow-y-auto'>
       {/* Background overlay */}
-      <div
-        className='fixed inset-0 bg-black bg-opacity-50 transition-opacity'
+      <div className='fixed inset-0 bg-black/50 transition-opacity'
         onClick={handleClose}
       />
 
@@ -124,7 +123,7 @@ const QuoteModal = ({
         >
           {/* Loading overlay */}
           {isLoading && (
-            <div className='absolute inset-0 bg-white bg-opacity-75 flex items-center justify-center z-10 rounded-xl'>
+            <div className='absolute inset-0 bg-white/75 flex items-center justify-center z-10 rounded-xl'>
               <div className='flex flex-col items-center'>
                 <Loader className='w-8 h-8 animate-spin text-blue-600 mb-2' />
                 <span className='text-sm text-gray-600'>

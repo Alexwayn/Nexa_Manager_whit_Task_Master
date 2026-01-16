@@ -161,7 +161,7 @@ export default function ClientImportExport({ isOpen, onClose, onImportComplete, 
           leaveFrom='opacity-100'
           leaveTo='opacity-0'
         >
-          <div className='fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity' />
+          <div className='fixed inset-0 bg-gray-500/75 transition-opacity' />
         </Transition.Child>
         <div className='fixed inset-0 z-10 overflow-y-auto'>
           <div className='flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0'>
@@ -202,7 +202,7 @@ export default function ClientImportExport({ isOpen, onClose, onImportComplete, 
                               className={({ selected }) =>
                                 classNames(
                                   'w-full rounded-lg py-2.5 text-sm font-medium leading-5 text-gray-700 dark:text-gray-300',
-                                  'focus:outline-none focus:ring-2 ring-offset-2 ring-offset-primary-400 ring-white ring-opacity-60',
+                                  'focus:outline-none focus:ring-2 ring-offset-2 ring-offset-primary-400 ring-white/60',
                                   selected
                                     ? 'bg-white dark:bg-gray-900 shadow'
                                     : 'text-gray-500 dark:text-gray-400 hover:bg-white/[0.12] hover:text-white',

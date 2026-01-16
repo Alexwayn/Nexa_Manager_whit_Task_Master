@@ -171,7 +171,7 @@ export default function Navbar({ onOpenSidebar, sidebarCollapsed = false }) {
                   id='user-menu-dropdown'
                   role='menu'
                   aria-labelledby='user-menu-button'
-                  className='origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white dark:bg-gray-800 ring-1 ring-black ring-opacity-5 focus:outline-none z-50'
+                  className='origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white dark:bg-gray-800 ring-1 ring-black/5 focus:outline-none z-50'
                 >
                   <div className='py-1' role='none'>
                     {/* User info */}

@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">0.49% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/405</span>
+                <span class='fraction'>2/407</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/267</span>
+                <span class='fraction'>0/196</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">0.53% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/375</span>
+                <span class='fraction'>2/377</span>
             </div>
         
             
@@ -1099,7 +1099,8 @@
 <a name='L1034'></a><a href='#L1034'>1034</a>
 <a name='L1035'></a><a href='#L1035'>1035</a>
 <a name='L1036'></a><a href='#L1036'>1036</a>
-<a name='L1037'></a><a href='#L1037'>1037</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L1037'></a><a href='#L1037'>1037</a>
+<a name='L1038'></a><a href='#L1038'>1038</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1108,10 +1109,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -2134,6 +2135,7 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">// OCR result handler implementation
 import type { 
@@ -2147,8 +2149,8 @@ import type {
 import { OCRProvider } from '@/types/scanner';
 &nbsp;
 export class OCRResultHandler implements IOCRResultHandler {
-<span class="fstat-no" title="function not covered" >  fo</span>rmatText(result: OCRResult): string {
-<span class="cstat-no" title="statement not covered" >    if (!result.text) {</span>
+<span class="fstat-no" title="function not covered" >  formatText(</span>result: OCRResult): string {
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!result.text) {</span>
 <span class="cstat-no" title="statement not covered" >      return '';</span>
     }
 &nbsp;
@@ -2161,7 +2163,7 @@ export class OCRResultHandler implements IOCRResultHandler {
 <span class="cstat-no" title="statement not covered" >    formattedText = this.cleanOCRArtifacts(formattedText);</span>
 &nbsp;
     // Fix common OCR errors based on confidence level
-<span class="cstat-no" title="statement not covered" >    if (result.confidence &lt; 0.8) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (result.confidence &lt; 0.8) {</span>
 <span class="cstat-no" title="statement not covered" >      formattedText = this.fixCommonOCRErrors(formattedText);</span>
     }
 &nbsp;
@@ -2174,7 +2176,7 @@ export class OCRResultHandler implements IOCRResultHandler {
 <span class="cstat-no" title="statement not covered" >    return formattedText.trim();</span>
   }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  pr</span>ivate applyProviderSpecificFormatting(text: string, provider: OCRProvider): string {
+  private <span class="fstat-no" title="function not covered" >applyProviderSpecificFormatting(</span>text: string, provider: OCRProvider): string {
 <span class="cstat-no" title="statement not covered" >    switch (provider) {</span>
       case OCRProvider.OpenAI:
         // OpenAI tends to be more verbose, clean up extra explanations
@@ -2193,7 +2195,7 @@ export class OCRResultHandler implements IOCRResultHandler {
     }
   }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  pr</span>ivate cleanOCRArtifacts(text: string): string {
+  private <span class="fstat-no" title="function not covered" >cleanOCRArtifacts(</span>text: string): string {
 <span class="cstat-no" title="statement not covered" >    return text</span>
       // Remove common OCR artifacts
       .replace(/[|]{2,}/g, '') // Multiple pipes
@@ -2208,13 +2210,13 @@ export class OCRResultHandler implements IOCRResultHandler {
       .replace(/\|(?=[a-z])/g, 'l'); // Pipe before lowercase should be l
   }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  pr</span>ivate applyAdvancedFormatting(text: string): string {
+  private <span class="fstat-no" title="function not covered" >applyAdvancedFormatting(</span>text: string): string {
     // Detect and format common document structures
     let formatted = <span class="cstat-no" title="statement not covered" >text;</span>
 &nbsp;
     // Format headers (lines that are all caps or have specific patterns)
-<span class="cstat-no" title="statement not covered" >    formatted = formatted.replace(/^([A-Z\s]{3,})$/gm, <span class="fstat-no" title="function not covered" >(m</span>atch) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >      if (match.trim().length &gt; 2 &amp;&amp; match.trim().length &lt; 50) {</span>
+<span class="cstat-no" title="statement not covered" >    formatted = formatted.replace(/^([A-Z\s]{3,})$/gm, (<span class="fstat-no" title="function not covered" >match)</span> =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (match.trim().length &gt; 2 &amp;&amp; match.trim().length &lt; 50) {</span>
 <span class="cstat-no" title="statement not covered" >        return `\n${match.trim()}\n`;</span>
       }
 <span class="cstat-no" title="statement not covered" >      return match;</span>
@@ -2228,12 +2230,12 @@ export class OCRResultHandler implements IOCRResultHandler {
 &nbsp;
     // Format addresses (lines with numbers and street indicators)
 <span class="cstat-no" title="statement not covered" >    formatted = formatted.replace(/(\d+\s+[A-Za-z\s]+(Street|St|Avenue|Ave|Road|Rd|Drive|Dr|Lane|Ln|Boulevard|Blvd))/gi, </span>
-<span class="fstat-no" title="function not covered" >      (m</span>atch) =&gt; <span class="cstat-no" title="statement not covered" >match.replace(/\s+/g, ' '))</span>;
+      (<span class="fstat-no" title="function not covered" >match)</span> =&gt; <span class="cstat-no" title="statement not covered" >match.replace(/\s+/g, ' '))</span>;
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    return formatted;</span>
   }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  pr</span>ivate normalizeWhitespace(text: string): string {
+  private <span class="fstat-no" title="function not covered" >normalizeWhitespace(</span>text: string): string {
 <span class="cstat-no" title="statement not covered" >    return text</span>
       .replace(/[ \t]+/g, ' ') // Multiple spaces/tabs to single space
       .replace(/\n\s*\n\s*\n/g, '\n\n') // Multiple newlines to double newline
@@ -2241,12 +2243,12 @@ export class OCRResultHandler implements IOCRResultHandler {
       .replace(/\n{3,}/g, '\n\n'); // Max 2 consecutive newlines
   }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  me</span>rgeResults(results: OCRResult[]): OCRResult {
-<span class="cstat-no" title="statement not covered" >    if (results.length === 0) {</span>
+<span class="fstat-no" title="function not covered" >  mergeResults(</span>results: OCRResult[]): OCRResult {
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (results.length === 0) {</span>
 <span class="cstat-no" title="statement not covered" >      throw new Error('No results to merge');</span>
     }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    if (results.length === 1) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (results.length === 1) {</span>
 <span class="cstat-no" title="statement not covered" >      return results[0];</span>
     }
 &nbsp;
@@ -2289,18 +2291,18 @@ export class OCRResultHandler implements IOCRResultHandler {
     };
   }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  pr</span>ivate intelligentTextMerge(sortedResults: OCRResult[]): string {
-<span class="cstat-no" title="statement not covered" >    if (sortedResults.length === 1) {</span>
+  private <span class="fstat-no" title="function not covered" >intelligentTextMerge(</span>sortedResults: OCRResult[]): string {
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (sortedResults.length === 1) {</span>
 <span class="cstat-no" title="statement not covered" >      return sortedResults[0].text;</span>
     }
 &nbsp;
-    const texts = <span class="cstat-no" title="statement not covered" >sortedResults.map(<span class="fstat-no" title="function not covered" >r </span>=&gt; <span class="cstat-no" title="statement not covered" >r.text)</span>.filter(<span class="fstat-no" title="function not covered" >te</span>xt =&gt; <span class="cstat-no" title="statement not covered" >text &amp;&amp; text.trim().length &gt; 0)</span>;</span>
+    const texts = <span class="cstat-no" title="statement not covered" >sortedResults.map(<span class="fstat-no" title="function not covered" >r </span>=&gt; <span class="cstat-no" title="statement not covered" >r.text)</span>.filter(<span class="fstat-no" title="function not covered" >text </span>=&gt; <span class="cstat-no" title="statement not covered" >text &amp;&amp; text.trim().length &gt; 0)</span>;</span>
     
-<span class="cstat-no" title="statement not covered" >    if (texts.length === 0) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (texts.length === 0) {</span>
 <span class="cstat-no" title="statement not covered" >      return '';</span>
     }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    if (texts.length === 1) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (texts.length === 1) {</span>
 <span class="cstat-no" title="statement not covered" >      return texts[0];</span>
     }
 &nbsp;
@@ -2308,12 +2310,12 @@ export class OCRResultHandler implements IOCRResultHandler {
     const similarities = <span class="cstat-no" title="statement not covered" >this.calculateTextSimilarities(texts);</span>
     
     // If texts are very similar (&gt;80% similarity), merge by taking the best parts
-<span class="cstat-no" title="statement not covered" >    if (similarities.maxSimilarity &gt; 0.8) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (similarities.maxSimilarity &gt; 0.8) {</span>
 <span class="cstat-no" title="statement not covered" >      return this.mergeByBestParts(texts, sortedResults);</span>
     }
 &nbsp;
     // If texts are moderately similar (&gt;50%), combine with clear separation
-<span class="cstat-no" title="statement not covered" >    if (similarities.maxSimilarity &gt; 0.5) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (similarities.maxSimilarity &gt; 0.5) {</span>
 <span class="cstat-no" title="statement not covered" >      return this.mergeWithSeparation(texts, sortedResults);</span>
     }
 &nbsp;
@@ -2321,8 +2323,8 @@ export class OCRResultHandler implements IOCRResultHandler {
 <span class="cstat-no" title="statement not covered" >    return this.mergeWithProviderLabels(texts, sortedResults);</span>
   }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  pr</span>ivate calculateTextSimilarities(texts: string[]): { maxSimilarity: number; avgSimilarity: number } {
-<span class="cstat-no" title="statement not covered" >    if (texts.length &lt; 2) {</span>
+  private <span class="fstat-no" title="function not covered" >calculateTextSimilarities(</span>texts: string[]): { maxSimilarity: number; avgSimilarity: number } {
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (texts.length &lt; 2) {</span>
 <span class="cstat-no" title="statement not covered" >      return { maxSimilarity: 1, avgSimilarity: 1 };</span>
     }
 &nbsp;
@@ -2345,12 +2347,12 @@ export class OCRResultHandler implements IOCRResultHandler {
     };
   }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  pr</span>ivate calculateStringSimilarity(str1: string, str2: string): number {
+  private <span class="fstat-no" title="function not covered" >calculateStringSimilarity(</span>str1: string, str2: string): number {
     // Simple Levenshtein distance-based similarity
     const longer = <span class="cstat-no" title="statement not covered" >str1.length &gt; str2.length ? str1 : str2;</span>
     const shorter = <span class="cstat-no" title="statement not covered" >str1.length &gt; str2.length ? str2 : str1;</span>
     
-<span class="cstat-no" title="statement not covered" >    if (longer.length === 0) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (longer.length === 0) {</span>
 <span class="cstat-no" title="statement not covered" >      return 1.0;</span>
     }
 &nbsp;
@@ -2358,8 +2360,8 @@ export class OCRResultHandler implements IOCRResultHandler {
 <span class="cstat-no" title="statement not covered" >    return (longer.length - distance) / longer.length;</span>
   }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  pr</span>ivate levenshteinDistance(str1: string, str2: string): number {
-    const matrix = <span class="cstat-no" title="statement not covered" >Array(str2.length + 1).fill(null).map(<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >Array(str1.length + 1).fill(null))</span>;</span>
+  private <span class="fstat-no" title="function not covered" >levenshteinDistance(</span>str1: string, str2: string): number {
+    const matrix = <span class="cstat-no" title="statement not covered" >Array(str2.length + 1).fill(null).map(<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >A</span>rray(str1.length + 1).fill(null))</span>;</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    for (let i = <span class="cstat-no" title="statement not covered" >0;</span> i &lt;= str1.length; i++) {</span>
 <span class="cstat-no" title="statement not covered" >      matrix[0][i] = i;</span>
@@ -2386,7 +2388,7 @@ export class OCRResultHandler implements IOCRResultHandler {
 <span class="cstat-no" title="statement not covered" >    return matrix[str2.length][str1.length];</span>
   }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  pr</span>ivate mergeByBestParts(texts: string[], _results: OCRResult[]): string {
+  private <span class="fstat-no" title="function not covered" >mergeByBestParts(</span>texts: string[], _results: OCRResult[]): string {
     // For very similar texts, take the longest/most complete version
     const bestText = <span class="cstat-no" title="statement not covered" >texts.reduce(<span class="fstat-no" title="function not covered" >(b</span>est, current) =&gt; </span>
 <span class="cstat-no" title="statement not covered" >      current.length &gt; best.length ? current : best</span>
@@ -2395,13 +2397,13 @@ export class OCRResultHandler implements IOCRResultHandler {
 <span class="cstat-no" title="statement not covered" >    return bestText;</span>
   }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  pr</span>ivate mergeWithSeparation(texts: string[], results: OCRResult[]): string {
+  private <span class="fstat-no" title="function not covered" >mergeWithSeparation(</span>texts: string[], results: OCRResult[]): string {
 <span class="cstat-no" title="statement not covered" >    return texts</span>
       .map(<span class="fstat-no" title="function not covered" >(t</span>ext, index) =&gt; <span class="cstat-no" title="statement not covered" >`[OCR Result ${index + 1} - ${results[index].provider}]\n${text}`)</span>
       .join('\n\n---\n\n');
   }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  pr</span>ivate mergeWithProviderLabels(texts: string[], results: OCRResult[]): string {
+  private <span class="fstat-no" title="function not covered" >mergeWithProviderLabels(</span>texts: string[], results: OCRResult[]): string {
 <span class="cstat-no" title="statement not covered" >    return texts</span>
       .map(<span class="fstat-no" title="function not covered" >(t</span>ext, index) =&gt; {
         const provider = <span class="cstat-no" title="statement not covered" >results[index].provider;</span>
@@ -2411,9 +2413,9 @@ export class OCRResultHandler implements IOCRResultHandler {
       .join('\n\n---\n\n');
   }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  pr</span>ivate calculateWeightedConfidence(results: OCRResult[]): number {
-<span class="cstat-no" title="statement not covered" >    if (results.length === 0) <span class="cstat-no" title="statement not covered" >return 0;</span></span>
-<span class="cstat-no" title="statement not covered" >    if (results.length === 1) <span class="cstat-no" title="statement not covered" >return results[0].confidence;</span></span>
+  private <span class="fstat-no" title="function not covered" >calculateWeightedConfidence(</span>results: OCRResult[]): number {
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (results.length === 0) <span class="cstat-no" title="statement not covered" >return 0;</span></span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (results.length === 1) <span class="cstat-no" title="statement not covered" >return results[0].confidence;</span></span>
 &nbsp;
     // Weight confidence by text length and provider reliability
     let totalWeight = <span class="cstat-no" title="statement not covered" >0;</span>
@@ -2431,7 +2433,7 @@ export class OCRResultHandler implements IOCRResultHandler {
 <span class="cstat-no" title="statement not covered" >    return totalWeight &gt; 0 ? weightedSum / totalWeight : 0;</span>
   }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  pr</span>ivate getProviderReliabilityWeight(provider: OCRProvider): number {
+  private <span class="fstat-no" title="function not covered" >getProviderReliabilityWeight(</span>provider: OCRProvider): number {
 <span class="cstat-no" title="statement not covered" >    switch (provider) {</span>
       case OCRProvider.OpenAI: <span class="cstat-no" title="statement not covered" >return 1.0;</span>
       case OCRProvider.Qwen: <span class="cstat-no" title="statement not covered" >return 0.9;</span>
@@ -2442,10 +2444,10 @@ export class OCRResultHandler implements IOCRResultHandler {
     }
   }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  pr</span>ivate mergeTextBlocks(results: OCRResult[]): TextBlock[] {
-    const allBlocks = <span class="cstat-no" title="statement not covered" >results.flatMap(<span class="fstat-no" title="function not covered" >re</span>sult =&gt; <span class="cstat-no" title="statement not covered" >result.blocks || [])</span>;</span>
+  private <span class="fstat-no" title="function not covered" >mergeTextBlocks(</span>results: OCRResult[]): TextBlock[] {
+    const allBlocks = <span class="cstat-no" title="statement not covered" >results.flatMap(<span class="fstat-no" title="function not covered" >result </span>=&gt; <span class="cstat-no" title="statement not covered" >result.blocks || [])</span>;</span>
     
-<span class="cstat-no" title="statement not covered" >    if (allBlocks.length === 0) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (allBlocks.length === 0) {</span>
 <span class="cstat-no" title="statement not covered" >      return [];</span>
     }
 &nbsp;
@@ -2456,7 +2458,7 @@ export class OCRResultHandler implements IOCRResultHandler {
       const key = <span class="cstat-no" title="statement not covered" >block.text.trim().toLowerCase();</span>
       const existing = <span class="cstat-no" title="statement not covered" >uniqueBlocks.get(key);</span>
       
-<span class="cstat-no" title="statement not covered" >      if (!existing || (block.confidence || 0) &gt; (existing.confidence || 0)) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (!existing || (block.confidence || 0) &gt; (existing.confidence || 0)) {</span>
 <span class="cstat-no" title="statement not covered" >        uniqueBlocks.set(key, block);</span>
       }
     }
@@ -2464,10 +2466,10 @@ export class OCRResultHandler implements IOCRResultHandler {
 <span class="cstat-no" title="statement not covered" >    return Array.from(uniqueBlocks.values());</span>
   }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  pr</span>ivate mergeTables(results: OCRResult[]): TableData[] {
-    const allTables = <span class="cstat-no" title="statement not covered" >results.flatMap(<span class="fstat-no" title="function not covered" >re</span>sult =&gt; <span class="cstat-no" title="statement not covered" >result.tables || [])</span>;</span>
+  private <span class="fstat-no" title="function not covered" >mergeTables(</span>results: OCRResult[]): TableData[] {
+    const allTables = <span class="cstat-no" title="statement not covered" >results.flatMap(<span class="fstat-no" title="function not covered" >result </span>=&gt; <span class="cstat-no" title="statement not covered" >result.tables || [])</span>;</span>
     
-<span class="cstat-no" title="statement not covered" >    if (allTables.length === 0) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (allTables.length === 0) {</span>
 <span class="cstat-no" title="statement not covered" >      return [];</span>
     }
 &nbsp;
@@ -2480,7 +2482,7 @@ export class OCRResultHandler implements IOCRResultHandler {
 <span class="cstat-no" title="statement not covered" >    return bestResult.tables || [];</span>
   }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  ex</span>tractStructuredData(result: OCRResult): StructuredData {
+<span class="fstat-no" title="function not covered" >  extractStructuredData(</span>result: OCRResult): StructuredData {
     const text = <span class="cstat-no" title="statement not covered" >result.text;</span>
     const confidence = <span class="cstat-no" title="statement not covered" >result.confidence;</span>
     const structuredData: StructuredData = <span class="cstat-no" title="statement not covered" >{};</span>
@@ -2505,7 +2507,7 @@ export class OCRResultHandler implements IOCRResultHandler {
 &nbsp;
     // Extract additional structured data based on document type
     const documentType = <span class="cstat-no" title="statement not covered" >this.detectDocumentType(text);</span>
-<span class="cstat-no" title="statement not covered" >    if (documentType) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (documentType) {</span>
 <span class="cstat-no" title="statement not covered" >      structuredData.documentType = documentType;</span>
 <span class="cstat-no" title="statement not covered" >      structuredData.additionalData = this.extractDocumentSpecificData(text, documentType);</span>
     }
@@ -2513,38 +2515,38 @@ export class OCRResultHandler implements IOCRResultHandler {
 <span class="cstat-no" title="statement not covered" >    return structuredData;</span>
   }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  pr</span>ivate detectDocumentType(text: string): string | undefined {
+  private <span class="fstat-no" title="function not covered" >detectDocumentType(</span>text: string): string | undefined {
     const lowerText = <span class="cstat-no" title="statement not covered" >text.toLowerCase();</span>
     
     // Invoice detection
-<span class="cstat-no" title="statement not covered" >    if (lowerText.includes('invoice') || lowerText.includes('bill to') || lowerText.includes('invoice number')) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (lowerText.includes('invoice') || lowerText.includes('bill to') || lowerText.includes('invoice number')) {</span>
 <span class="cstat-no" title="statement not covered" >      return 'invoice';</span>
     }
     
     // Receipt detection
-<span class="cstat-no" title="statement not covered" >    if (lowerText.includes('receipt') || lowerText.includes('total:') || lowerText.includes('thank you')) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (lowerText.includes('receipt') || lowerText.includes('total:') || lowerText.includes('thank you')) {</span>
 <span class="cstat-no" title="statement not covered" >      return 'receipt';</span>
     }
     
     // Contract detection
-<span class="cstat-no" title="statement not covered" >    if (lowerText.includes('agreement') || lowerText.includes('contract') || lowerText.includes('terms and conditions')) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (lowerText.includes('agreement') || lowerText.includes('contract') || lowerText.includes('terms and conditions')) {</span>
 <span class="cstat-no" title="statement not covered" >      return 'contract';</span>
     }
     
     // Business card detection
-<span class="cstat-no" title="statement not covered" >    if (lowerText.includes('@') &amp;&amp; (lowerText.includes('phone') || lowerText.includes('tel') || /\d{3}[-.\s]?\d{3}[-.\s]?\d{4}/.test(lowerText))) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (lowerText.includes('@') &amp;&amp; (lowerText.includes('phone') || lowerText.includes('tel') || /\d{3}[-.\s]?\d{3}[-.\s]?\d{4}/.test(lowerText))) {</span>
 <span class="cstat-no" title="statement not covered" >      return 'business_card';</span>
     }
     
     // Letter detection
-<span class="cstat-no" title="statement not covered" >    if (lowerText.includes('dear') || lowerText.includes('sincerely') || lowerText.includes('regards')) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (lowerText.includes('dear') || lowerText.includes('sincerely') || lowerText.includes('regards')) {</span>
 <span class="cstat-no" title="statement not covered" >      return 'letter';</span>
     }
     
 <span class="cstat-no" title="statement not covered" >    return undefined;</span>
   }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  pr</span>ivate extractDocumentSpecificData(text: string, documentType: string): Record&lt;string, any&gt; {
+  private <span class="fstat-no" title="function not covered" >extractDocumentSpecificData(</span>text: string, documentType: string): Record&lt;string, any&gt; {
 <span class="cstat-no" title="statement not covered" >    switch (documentType) {</span>
       case 'invoice':
 <span class="cstat-no" title="statement not covered" >        return this.extractInvoiceData(text);</span>
@@ -2559,83 +2561,83 @@ export class OCRResultHandler implements IOCRResultHandler {
     }
   }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  pr</span>ivate extractInvoiceData(text: string): Record&lt;string, any&gt; {
+  private <span class="fstat-no" title="function not covered" >extractInvoiceData(</span>text: string): Record&lt;string, any&gt; {
     const data: Record&lt;string, any&gt; = <span class="cstat-no" title="statement not covered" >{};</span>
     
     // Invoice number
     const invoiceNumberMatch = <span class="cstat-no" title="statement not covered" >text.match(/invoice\s*#?\s*:?\s*([A-Z0-9-]+)/i);</span>
-<span class="cstat-no" title="statement not covered" >    if (invoiceNumberMatch) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (invoiceNumberMatch) {</span>
 <span class="cstat-no" title="statement not covered" >      data.invoiceNumber = invoiceNumberMatch[1];</span>
     }
     
     // Due date
     const dueDateMatch = <span class="cstat-no" title="statement not covered" >text.match(/due\s*date\s*:?\s*([0-9\/\-\.]+)/i);</span>
-<span class="cstat-no" title="statement not covered" >    if (dueDateMatch) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (dueDateMatch) {</span>
 <span class="cstat-no" title="statement not covered" >      data.dueDate = dueDateMatch[1];</span>
     }
     
     // Vendor information
     const vendorMatch = <span class="cstat-no" title="statement not covered" >text.match(/from\s*:?\s*([^\n]+)/i);</span>
-<span class="cstat-no" title="statement not covered" >    if (vendorMatch) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (vendorMatch) {</span>
 <span class="cstat-no" title="statement not covered" >      data.vendor = vendorMatch[1].trim();</span>
     }
     
 <span class="cstat-no" title="statement not covered" >    return data;</span>
   }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  pr</span>ivate extractReceiptData(text: string): Record&lt;string, any&gt; {
+  private <span class="fstat-no" title="function not covered" >extractReceiptData(</span>text: string): Record&lt;string, any&gt; {
     const data: Record&lt;string, any&gt; = <span class="cstat-no" title="statement not covered" >{};</span>
     
     // Store name (usually first line or after "receipt from")
-    const lines = <span class="cstat-no" title="statement not covered" >text.split('\n').filter(<span class="fstat-no" title="function not covered" >li</span>ne =&gt; <span class="cstat-no" title="statement not covered" >line.trim().length &gt; 0)</span>;</span>
-<span class="cstat-no" title="statement not covered" >    if (lines.length &gt; 0) {</span>
+    const lines = <span class="cstat-no" title="statement not covered" >text.split('\n').filter(<span class="fstat-no" title="function not covered" >line </span>=&gt; <span class="cstat-no" title="statement not covered" >line.trim().length &gt; 0)</span>;</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (lines.length &gt; 0) {</span>
 <span class="cstat-no" title="statement not covered" >      data.storeName = lines[0].trim();</span>
     }
     
     // Transaction ID
     const transactionMatch = <span class="cstat-no" title="statement not covered" >text.match(/transaction\s*#?\s*:?\s*([A-Z0-9-]+)/i);</span>
-<span class="cstat-no" title="statement not covered" >    if (transactionMatch) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (transactionMatch) {</span>
 <span class="cstat-no" title="statement not covered" >      data.transactionId = transactionMatch[1];</span>
     }
     
 <span class="cstat-no" title="statement not covered" >    return data;</span>
   }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  pr</span>ivate extractBusinessCardData(text: string): Record&lt;string, any&gt; {
+  private <span class="fstat-no" title="function not covered" >extractBusinessCardData(</span>text: string): Record&lt;string, any&gt; {
     const data: Record&lt;string, any&gt; = <span class="cstat-no" title="statement not covered" >{};</span>
     
     // Name (usually first line or largest text)
-    const lines = <span class="cstat-no" title="statement not covered" >text.split('\n').filter(<span class="fstat-no" title="function not covered" >li</span>ne =&gt; <span class="cstat-no" title="statement not covered" >line.trim().length &gt; 0)</span>;</span>
-<span class="cstat-no" title="statement not covered" >    if (lines.length &gt; 0) {</span>
+    const lines = <span class="cstat-no" title="statement not covered" >text.split('\n').filter(<span class="fstat-no" title="function not covered" >line </span>=&gt; <span class="cstat-no" title="statement not covered" >line.trim().length &gt; 0)</span>;</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (lines.length &gt; 0) {</span>
 <span class="cstat-no" title="statement not covered" >      data.name = lines[0].trim();</span>
     }
     
     // Company (often second line)
-<span class="cstat-no" title="statement not covered" >    if (lines.length &gt; 1) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (lines.length &gt; 1) {</span>
 <span class="cstat-no" title="statement not covered" >      data.company = lines[1].trim();</span>
     }
     
     // Title/Position
     const titleMatch = <span class="cstat-no" title="statement not covered" >text.match(/(CEO|CTO|Manager|Director|President|VP|Vice President|Senior|Junior|Lead|Head of)/i);</span>
-<span class="cstat-no" title="statement not covered" >    if (titleMatch) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (titleMatch) {</span>
 <span class="cstat-no" title="statement not covered" >      data.title = titleMatch[0];</span>
     }
     
 <span class="cstat-no" title="statement not covered" >    return data;</span>
   }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  pr</span>ivate extractContractData(text: string): Record&lt;string, any&gt; {
+  private <span class="fstat-no" title="function not covered" >extractContractData(</span>text: string): Record&lt;string, any&gt; {
     const data: Record&lt;string, any&gt; = <span class="cstat-no" title="statement not covered" >{};</span>
     
     // Contract title
     const titleMatch = <span class="cstat-no" title="statement not covered" >text.match(/^([A-Z\s]+AGREEMENT|[A-Z\s]+CONTRACT)/m);</span>
-<span class="cstat-no" title="statement not covered" >    if (titleMatch) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (titleMatch) {</span>
 <span class="cstat-no" title="statement not covered" >      data.contractTitle = titleMatch[1].trim();</span>
     }
     
     // Parties
     const partiesMatch = <span class="cstat-no" title="statement not covered" >text.match(/between\s+([^,\n]+)\s+and\s+([^,\n]+)/i);</span>
-<span class="cstat-no" title="statement not covered" >    if (partiesMatch) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (partiesMatch) {</span>
 <span class="cstat-no" title="statement not covered" >      data.party1 = partiesMatch[1].trim();</span>
 <span class="cstat-no" title="statement not covered" >      data.party2 = partiesMatch[2].trim();</span>
     }
@@ -2643,7 +2645,7 @@ export class OCRResultHandler implements IOCRResultHandler {
 <span class="cstat-no" title="statement not covered" >    return data;</span>
   }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  ge</span>tFormattedHTML(result: OCRResult): string {
+<span class="fstat-no" title="function not covered" >  getFormattedHTML(</span>result: OCRResult): string {
     const text = <span class="cstat-no" title="statement not covered" >this.formatText(result);</span>
     
     // Convert plain text to HTML with enhanced formatting
@@ -2651,7 +2653,7 @@ export class OCRResultHandler implements IOCRResultHandler {
 &nbsp;
     // Add structured data if available
     const structuredData = <span class="cstat-no" title="statement not covered" >this.extractStructuredData(result);</span>
-<span class="cstat-no" title="statement not covered" >    if (Object.keys(structuredData).length &gt; 0) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (Object.keys(structuredData).length &gt; 0) {</span>
 <span class="cstat-no" title="statement not covered" >      html = this.addStructuredDataToHTML(html, structuredData);</span>
     }
 &nbsp;
@@ -2671,7 +2673,7 @@ export class OCRResultHandler implements IOCRResultHandler {
 <span class="cstat-no" title="statement not covered" >    return html;</span>
   }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  pr</span>ivate convertTextToHTML(text: string): string {
+  private <span class="fstat-no" title="function not covered" >convertTextToHTML(</span>text: string): string {
     let html = <span class="cstat-no" title="statement not covered" >text</span>
       // Escape HTML characters
       .replace(/&amp;/g, '&amp;amp;')
@@ -2701,43 +2703,43 @@ export class OCRResultHandler implements IOCRResultHandler {
 <span class="cstat-no" title="statement not covered" >    return html;</span>
   }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  pr</span>ivate addStructuredDataToHTML(html: string, structuredData: StructuredData): string {
+  private <span class="fstat-no" title="function not covered" >addStructuredDataToHTML(</span>html: string, structuredData: StructuredData): string {
     let structuredHTML = <span class="cstat-no" title="statement not covered" >'';</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    if (structuredData.title) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (structuredData.title) {</span>
 <span class="cstat-no" title="statement not covered" >      structuredHTML += `&lt;div class="extracted-title"&gt;&lt;h3&gt;${structuredData.title}&lt;/h3&gt;&lt;/div&gt;`;</span>
     }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    if (structuredData.date) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (structuredData.date) {</span>
 <span class="cstat-no" title="statement not covered" >      structuredHTML += `&lt;div class="extracted-date"&gt;&lt;strong&gt;Date:&lt;/strong&gt; ${structuredData.date.toLocaleDateString()}&lt;/div&gt;`;</span>
     }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    if (structuredData.amount) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (structuredData.amount) {</span>
 <span class="cstat-no" title="statement not covered" >      structuredHTML += `&lt;div class="extracted-amount"&gt;&lt;strong&gt;Amount:&lt;/strong&gt; $${structuredData.amount.toFixed(2)}&lt;/div&gt;`;</span>
     }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    if (structuredData.entities &amp;&amp; structuredData.entities.length &gt; 0) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (structuredData.entities &amp;&amp; structuredData.entities.length &gt; 0) {</span>
       const entitiesHTML = <span class="cstat-no" title="statement not covered" >structuredData.entities</span>
-        .map(<span class="fstat-no" title="function not covered" >en</span>tity =&gt; <span class="cstat-no" title="statement not covered" >`&lt;span class="entity entity-${entity.type}" title="Confidence: ${Math.round(entity.confidence * 100)}%"&gt;${entity.text}&lt;/span&gt;`)</span>
+        .map(<span class="fstat-no" title="function not covered" >entity </span>=&gt; <span class="cstat-no" title="statement not covered" >`&lt;span class="entity entity-${entity.type}" title="Confidence: ${Math.round(entity.confidence * 100)}%"&gt;${entity.text}&lt;/span&gt;`)</span>
         .join(', ');
 <span class="cstat-no" title="statement not covered" >      structuredHTML += `&lt;div class="extracted-entities"&gt;&lt;strong&gt;Entities:&lt;/strong&gt; ${entitiesHTML}&lt;/div&gt;`;</span>
     }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    if (structuredData.keyValuePairs &amp;&amp; Object.keys(structuredData.keyValuePairs).length &gt; 0) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (structuredData.keyValuePairs &amp;&amp; Object.keys(structuredData.keyValuePairs).length &gt; 0) {</span>
       const kvHTML = <span class="cstat-no" title="statement not covered" >Object.entries(structuredData.keyValuePairs)</span>
         .map(<span class="fstat-no" title="function not covered" >([</span>key, value]) =&gt; <span class="cstat-no" title="statement not covered" >`&lt;tr&gt;&lt;td&gt;&lt;strong&gt;${key}:&lt;/strong&gt;&lt;/td&gt;&lt;td&gt;${value}&lt;/td&gt;&lt;/tr&gt;`)</span>
         .join('');
 <span class="cstat-no" title="statement not covered" >      structuredHTML += `&lt;div class="extracted-kv"&gt;&lt;table class="kv-table"&gt;${kvHTML}&lt;/table&gt;&lt;/div&gt;`;</span>
     }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    if (structuredHTML) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (structuredHTML) {</span>
 <span class="cstat-no" title="statement not covered" >      return `&lt;div class="structured-data"&gt;${structuredHTML}&lt;/div&gt;&lt;div class="raw-text"&gt;${html}&lt;/div&gt;`;</span>
     }
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    return html;</span>
   }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  pr</span>ivate generateMetadataHTML(result: OCRResult): string {
+  private <span class="fstat-no" title="function not covered" >generateMetadataHTML(</span>result: OCRResult): string {
     const confidence = <span class="cstat-no" title="statement not covered" >Math.round(result.confidence * 100);</span>
     const processingTime = <span class="cstat-no" title="statement not covered" >result.processingTime;</span>
     
@@ -2751,7 +2753,7 @@ export class OCRResultHandler implements IOCRResultHandler {
     `;
   }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  ca</span>lculateConfidenceScore(result: OCRResult): number {
+<span class="fstat-no" title="function not covered" >  calculateConfidenceScore(</span>result: OCRResult): number {
     let score = <span class="cstat-no" title="statement not covered" >result.confidence;</span>
 &nbsp;
     // Adjust based on text characteristics
@@ -2761,18 +2763,18 @@ export class OCRResultHandler implements IOCRResultHandler {
     const wordCount = <span class="cstat-no" title="statement not covered" >result.text.split(/\s+/).length;</span>
 &nbsp;
     // Length bonus (longer text usually means better extraction)
-<span class="cstat-no" title="statement not covered" >    if (textLength &gt; 100) <span class="cstat-no" title="statement not covered" >score += 0.05;</span></span>
-<span class="cstat-no" title="statement not covered" >    if (textLength &gt; 500) <span class="cstat-no" title="statement not covered" >score += 0.05;</span></span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (textLength &gt; 100) <span class="cstat-no" title="statement not covered" >score += 0.05;</span></span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (textLength &gt; 500) <span class="cstat-no" title="statement not covered" >score += 0.05;</span></span>
 &nbsp;
     // Structure bonus
-<span class="cstat-no" title="statement not covered" >    if (hasStructure) <span class="cstat-no" title="statement not covered" >score += 0.05;</span></span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (hasStructure) <span class="cstat-no" title="statement not covered" >score += 0.05;</span></span>
 &nbsp;
     // Special characters bonus (indicates preserved formatting)
-<span class="cstat-no" title="statement not covered" >    if (hasSpecialChars) <span class="cstat-no" title="statement not covered" >score += 0.03;</span></span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (hasSpecialChars) <span class="cstat-no" title="statement not covered" >score += 0.03;</span></span>
 &nbsp;
     // Word count bonus
-<span class="cstat-no" title="statement not covered" >    if (wordCount &gt; 10) <span class="cstat-no" title="statement not covered" >score += 0.02;</span></span>
-<span class="cstat-no" title="statement not covered" >    if (wordCount &gt; 50) <span class="cstat-no" title="statement not covered" >score += 0.03;</span></span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (wordCount &gt; 10) <span class="cstat-no" title="statement not covered" >score += 0.02;</span></span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (wordCount &gt; 50) <span class="cstat-no" title="statement not covered" >score += 0.03;</span></span>
 &nbsp;
     // Provider-specific adjustments
 <span class="cstat-no" title="statement not covered" >    switch (result.provider) {</span>
@@ -2788,12 +2790,12 @@ export class OCRResultHandler implements IOCRResultHandler {
     }
 &nbsp;
     // Processing time penalty (very fast might indicate poor processing)
-<span class="cstat-no" title="statement not covered" >    if (result.processingTime &lt; 1000) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (result.processingTime &lt; 1000) {</span>
 <span class="cstat-no" title="statement not covered" >      score -= 0.05;</span>
     }
 &nbsp;
     // Error penalty
-<span class="cstat-no" title="statement not covered" >    if (result.error) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (result.error) {</span>
 <span class="cstat-no" title="statement not covered" >      score -= 0.1;</span>
     }
 &nbsp;
@@ -2801,7 +2803,7 @@ export class OCRResultHandler implements IOCRResultHandler {
 <span class="cstat-no" title="statement not covered" >    return Math.min(Math.max(score, 0), 1);</span>
   }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  pr</span>ivate fixCommonOCRErrors(text: string): string {
+  private <span class="fstat-no" title="function not covered" >fixCommonOCRErrors(</span>text: string): string {
     // Apply corrections contextually (this is a simplified version)
     let correctedText = <span class="cstat-no" title="statement not covered" >text;</span>
     
@@ -2815,30 +2817,30 @@ export class OCRResultHandler implements IOCRResultHandler {
 <span class="cstat-no" title="statement not covered" >    return correctedText;</span>
   }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  pr</span>ivate extractTitle(text: string, strategy: string = <span class="branch-0 cbranch-no" title="branch not covered" >'conservative')</span>: string | undefined {
-    const lines = <span class="cstat-no" title="statement not covered" >text.split('\n').filter(<span class="fstat-no" title="function not covered" >li</span>ne =&gt; <span class="cstat-no" title="statement not covered" >line.trim().length &gt; 0)</span>;</span>
+  private <span class="fstat-no" title="function not covered" >extractTitle(</span>text: string, strategy: string = <span class="branch-0 cbranch-no" title="branch not covered" >'conservative')</span>: string | undefined {
+    const lines = <span class="cstat-no" title="statement not covered" >text.split('\n').filter(<span class="fstat-no" title="function not covered" >line </span>=&gt; <span class="cstat-no" title="statement not covered" >line.trim().length &gt; 0)</span>;</span>
     
-<span class="cstat-no" title="statement not covered" >    if (lines.length === 0) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (lines.length === 0) {</span>
 <span class="cstat-no" title="statement not covered" >      return undefined;</span>
     }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    if (strategy === 'aggressive') {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (strategy === 'aggressive') {</span>
       // Look for the most prominent line (all caps, centered, or first substantial line)
 <span class="cstat-no" title="statement not covered" >      for (const line of lines.slice(0, 5)) { // Check first 5 lines</span>
         const trimmed = <span class="cstat-no" title="statement not covered" >line.trim();</span>
         
         // Skip very short lines or lines that look like metadata
-<span class="cstat-no" title="statement not covered" >        if (trimmed.length &lt; 3 || /^\d+$/.test(trimmed) || /^page\s+\d+/i.test(trimmed)) {</span>
+<span class="cstat-no" title="statement not covered" >        <span class="missing-if-branch" title="if path not taken" >I</span>if (trimmed.length &lt; 3 || /^\d+$/.test(trimmed) || /^page\s+\d+/i.test(trimmed)) {</span>
 <span class="cstat-no" title="statement not covered" >          continue;</span>
         }
         
         // Prefer all caps lines (likely headers)
-<span class="cstat-no" title="statement not covered" >        if (trimmed === trimmed.toUpperCase() &amp;&amp; trimmed.length &gt; 5 &amp;&amp; trimmed.length &lt; 80) {</span>
+<span class="cstat-no" title="statement not covered" >        <span class="missing-if-branch" title="if path not taken" >I</span>if (trimmed === trimmed.toUpperCase() &amp;&amp; trimmed.length &gt; 5 &amp;&amp; trimmed.length &lt; 80) {</span>
 <span class="cstat-no" title="statement not covered" >          return trimmed;</span>
         }
         
         // Or lines with title-like formatting
-<span class="cstat-no" title="statement not covered" >        if (trimmed.length &gt; 10 &amp;&amp; trimmed.length &lt; 100) {</span>
+<span class="cstat-no" title="statement not covered" >        <span class="missing-if-branch" title="if path not taken" >I</span>if (trimmed.length &gt; 10 &amp;&amp; trimmed.length &lt; 100) {</span>
 <span class="cstat-no" title="statement not covered" >          return trimmed.length &gt; 100 ? trimmed.substring(0, 100) + '...' : trimmed;</span>
         }
       }
@@ -2848,14 +2850,14 @@ export class OCRResultHandler implements IOCRResultHandler {
     const firstLine = <span class="cstat-no" title="statement not covered" >lines[0].trim();</span>
     
     // Title shouldn't be too long
-<span class="cstat-no" title="statement not covered" >    if (firstLine.length &gt; 100) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (firstLine.length &gt; 100) {</span>
 <span class="cstat-no" title="statement not covered" >      return firstLine.substring(0, 100) + '...';</span>
     }
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    return firstLine;</span>
   }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  pr</span>ivate extractDate(text: string, strategy: string = <span class="branch-0 cbranch-no" title="branch not covered" >'conservative')</span>: Date | undefined {
+  private <span class="fstat-no" title="function not covered" >extractDate(</span>text: string, strategy: string = <span class="branch-0 cbranch-no" title="branch not covered" >'conservative')</span>: Date | undefined {
     // Extended date patterns for aggressive strategy
     const datePatterns = <span class="cstat-no" title="statement not covered" >strategy === 'aggressive' ? [</span>
       // Standard patterns
@@ -2885,21 +2887,21 @@ export class OCRResultHandler implements IOCRResultHandler {
         const dateStr = <span class="cstat-no" title="statement not covered" >match[0];</span>
         const parsedDate = <span class="cstat-no" title="statement not covered" >new Date(dateStr);</span>
         
-<span class="cstat-no" title="statement not covered" >        if (!isNaN(parsedDate.getTime()) &amp;&amp; parsedDate.getFullYear() &gt; 1900 &amp;&amp; parsedDate.getFullYear() &lt; 2100) {</span>
+<span class="cstat-no" title="statement not covered" >        <span class="missing-if-branch" title="if path not taken" >I</span>if (!isNaN(parsedDate.getTime()) &amp;&amp; parsedDate.getFullYear() &gt; 1900 &amp;&amp; parsedDate.getFullYear() &lt; 2100) {</span>
 <span class="cstat-no" title="statement not covered" >          foundDates.push(parsedDate);</span>
         }
       }
     }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    if (foundDates.length === 0) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (foundDates.length === 0) {</span>
 <span class="cstat-no" title="statement not covered" >      return undefined;</span>
     }
 &nbsp;
     // Return the most recent date that's not in the future
     const now = <span class="cstat-no" title="statement not covered" >new Date();</span>
-    const validDates = <span class="cstat-no" title="statement not covered" >foundDates.filter(<span class="fstat-no" title="function not covered" >da</span>te =&gt; <span class="cstat-no" title="statement not covered" >date &lt;= now)</span>;</span>
+    const validDates = <span class="cstat-no" title="statement not covered" >foundDates.filter(<span class="fstat-no" title="function not covered" >date </span>=&gt; <span class="cstat-no" title="statement not covered" >date &lt;= now)</span>;</span>
     
-<span class="cstat-no" title="statement not covered" >    if (validDates.length &gt; 0) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (validDates.length &gt; 0) {</span>
 <span class="cstat-no" title="statement not covered" >      return validDates.reduce(<span class="fstat-no" title="function not covered" >(l</span>atest, current) =&gt; <span class="cstat-no" title="statement not covered" >current &gt; latest ? current : latest)</span>;</span>
     }
 &nbsp;
@@ -2907,7 +2909,7 @@ export class OCRResultHandler implements IOCRResultHandler {
 <span class="cstat-no" title="statement not covered" >    return foundDates.reduce(<span class="fstat-no" title="function not covered" >(e</span>arliest, current) =&gt; <span class="cstat-no" title="statement not covered" >current &lt; earliest ? current : earliest)</span>;</span>
   }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  pr</span>ivate extractAmount(text: string, strategy: string = <span class="branch-0 cbranch-no" title="branch not covered" >'conservative')</span>: number | undefined {
+  private <span class="fstat-no" title="function not covered" >extractAmount(</span>text: string, strategy: string = <span class="branch-0 cbranch-no" title="branch not covered" >'conservative')</span>: number | undefined {
     // Extended amount patterns for aggressive strategy
     const amountPatterns = <span class="cstat-no" title="statement not covered" >strategy === 'aggressive' ? [</span>
       // Standard currency patterns
@@ -2936,13 +2938,13 @@ export class OCRResultHandler implements IOCRResultHandler {
         const amountStr = <span class="cstat-no" title="statement not covered" >match[1].replace(/,/g, '');</span>
         const amount = <span class="cstat-no" title="statement not covered" >parseFloat(amountStr);</span>
         
-<span class="cstat-no" title="statement not covered" >        if (!isNaN(amount) &amp;&amp; amount &gt; 0 &amp;&amp; amount &lt; 1000000) { // Reasonable range</span>
+<span class="cstat-no" title="statement not covered" >        <span class="missing-if-branch" title="if path not taken" >I</span>if (!isNaN(amount) &amp;&amp; amount &gt; 0 &amp;&amp; amount &lt; 1000000) { // Reasonable range</span>
 <span class="cstat-no" title="statement not covered" >          foundAmounts.push(amount);</span>
         }
       }
     }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    if (foundAmounts.length === 0) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (foundAmounts.length === 0) {</span>
 <span class="cstat-no" title="statement not covered" >      return undefined;</span>
     }
 &nbsp;
@@ -2955,7 +2957,7 @@ export class OCRResultHandler implements IOCRResultHandler {
     }
   }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  pr</span>ivate extractNamedEntities(text: string, strategy: string = <span class="branch-0 cbranch-no" title="branch not covered" >'conservative')</span>: NamedEntity[] {
+  private <span class="fstat-no" title="function not covered" >extractNamedEntities(</span>text: string, strategy: string = <span class="branch-0 cbranch-no" title="branch not covered" >'conservative')</span>: NamedEntity[] {
     const entities: NamedEntity[] = <span class="cstat-no" title="statement not covered" >[];</span>
 &nbsp;
     // Email extraction
@@ -2987,7 +2989,7 @@ export class OCRResultHandler implements IOCRResultHandler {
       }
     }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    if (strategy === 'aggressive') {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (strategy === 'aggressive') {</span>
       // URL extraction
       const urlPattern = <span class="cstat-no" title="statement not covered" >/https?:\/\/[^\s]+/g;</span>
       let urlMatch;
@@ -3039,7 +3041,7 @@ export class OCRResultHandler implements IOCRResultHandler {
 <span class="cstat-no" title="statement not covered" >      while ((nameMatch = namePattern.exec(text)) !== null) {</span>
         // Filter out common false positives
         const name = <span class="cstat-no" title="statement not covered" >nameMatch[0];</span>
-<span class="cstat-no" title="statement not covered" >        if (!this.isCommonFalsePositive(name)) {</span>
+<span class="cstat-no" title="statement not covered" >        <span class="missing-if-branch" title="if path not taken" >I</span>if (!this.isCommonFalsePositive(name)) {</span>
 <span class="cstat-no" title="statement not covered" >          entities.push({</span>
             text: name,
             type: 'person_name',
@@ -3065,7 +3067,7 @@ export class OCRResultHandler implements IOCRResultHandler {
 <span class="cstat-no" title="statement not covered" >    for (const entity of entities) {</span>
       const key = <span class="cstat-no" title="statement not covered" >`${entity.type}:${entity.text.toLowerCase()}`;</span>
       const existing = <span class="cstat-no" title="statement not covered" >uniqueEntities.get(key);</span>
-<span class="cstat-no" title="statement not covered" >      if (!existing || entity.confidence &gt; existing.confidence) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (!existing || entity.confidence &gt; existing.confidence) {</span>
 <span class="cstat-no" title="statement not covered" >        uniqueEntities.set(key, entity);</span>
       }
     }
@@ -3073,15 +3075,15 @@ export class OCRResultHandler implements IOCRResultHandler {
 <span class="cstat-no" title="statement not covered" >    return Array.from(uniqueEntities.values());</span>
   }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  pr</span>ivate isCommonFalsePositive(name: string): boolean {
+  private <span class="fstat-no" title="function not covered" >isCommonFalsePositive(</span>name: string): boolean {
     const falsePositives = <span class="cstat-no" title="statement not covered" >[</span>
       'Page Number', 'Date Time', 'First Last', 'John Doe', 'Jane Doe',
       'Your Name', 'Full Name', 'Last Name', 'First Name'
     ];
-<span class="cstat-no" title="statement not covered" >    return falsePositives.some(<span class="fstat-no" title="function not covered" >fp</span> =&gt; <span class="cstat-no" title="statement not covered" >name.toLowerCase().includes(fp.toLowerCase()))</span>;</span>
+<span class="cstat-no" title="statement not covered" >    return falsePositives.some(<span class="fstat-no" title="function not covered" >fp </span>=&gt; <span class="cstat-no" title="statement not covered" >name.toLowerCase().includes(fp.toLowerCase()))</span>;</span>
   }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  pr</span>ivate extractKeyValuePairs(text: string, strategy: string = <span class="branch-0 cbranch-no" title="branch not covered" >'conservative')</span>: Record&lt;string, string&gt; {
+  private <span class="fstat-no" title="function not covered" >extractKeyValuePairs(</span>text: string, strategy: string = <span class="branch-0 cbranch-no" title="branch not covered" >'conservative')</span>: Record&lt;string, string&gt; {
     const pairs: Record&lt;string, string&gt; = <span class="cstat-no" title="statement not covered" >{};</span>
     
     // Multiple patterns for key-value extraction
@@ -3101,33 +3103,33 @@ export class OCRResultHandler implements IOCRResultHandler {
         const value = <span class="cstat-no" title="statement not covered" >match[2].trim();</span>
         
         // Validate key-value pair
-<span class="cstat-no" title="statement not covered" >        if (this.isValidKeyValuePair(key, value, strategy)) {</span>
+<span class="cstat-no" title="statement not covered" >        <span class="missing-if-branch" title="if path not taken" >I</span>if (this.isValidKeyValuePair(key, value, strategy)) {</span>
 <span class="cstat-no" title="statement not covered" >          pairs[key] = value;</span>
         }
       }
     }
 &nbsp;
     // Additional extraction for common document fields
-<span class="cstat-no" title="statement not covered" >    if (strategy === 'aggressive') {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (strategy === 'aggressive') {</span>
 <span class="cstat-no" title="statement not covered" >      this.extractCommonFields(text, pairs);</span>
     }
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    return pairs;</span>
   }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  pr</span>ivate isValidKeyValuePair(key: string, value: string, strategy: string): boolean {
+  private <span class="fstat-no" title="function not covered" >isValidKeyValuePair(</span>key: string, value: string, strategy: string): boolean {
     // Basic validation
-<span class="cstat-no" title="statement not covered" >    if (key.length === 0 || value.length === 0) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (key.length === 0 || value.length === 0) {</span>
 <span class="cstat-no" title="statement not covered" >      return false;</span>
     }
 &nbsp;
     // Key should be reasonable length and not too generic
-<span class="cstat-no" title="statement not covered" >    if (key.length &gt; 50 || key.length &lt; 2) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (key.length &gt; 50 || key.length &lt; 2) {</span>
 <span class="cstat-no" title="statement not covered" >      return false;</span>
     }
 &nbsp;
     // Value should not be too long (likely not a key-value pair)
-<span class="cstat-no" title="statement not covered" >    if (value.length &gt; 200) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (value.length &gt; 200) {</span>
 <span class="cstat-no" title="statement not covered" >      return false;</span>
     }
 &nbsp;
@@ -3140,7 +3142,7 @@ export class OCRResultHandler implements IOCRResultHandler {
     }
   }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  pr</span>ivate extractCommonFields(text: string, pairs: Record&lt;string, string&gt;): void {
+  private <span class="fstat-no" title="function not covered" >extractCommonFields(</span>text: string, pairs: Record&lt;string, string&gt;): void {
     // Common document fields with flexible patterns
     const commonFields = <span class="cstat-no" title="statement not covered" >[</span>
       { key: 'Invoice Number', patterns: [/invoice\s*#?\s*:?\s*([A-Z0-9-]+)/i] },
@@ -3154,10 +3156,10 @@ export class OCRResultHandler implements IOCRResultHandler {
     ];
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    for (const field of commonFields) {</span>
-<span class="cstat-no" title="statement not covered" >      if (!pairs[field.key]) { // Don't override existing values</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (!pairs[field.key]) { // Don't override existing values</span>
 <span class="cstat-no" title="statement not covered" >        for (const pattern of field.patterns) {</span>
           const match = <span class="cstat-no" title="statement not covered" >text.match(pattern);</span>
-<span class="cstat-no" title="statement not covered" >          if (match) {</span>
+<span class="cstat-no" title="statement not covered" >          <span class="missing-if-branch" title="if path not taken" >I</span>if (match) {</span>
 <span class="cstat-no" title="statement not covered" >            pairs[field.key] = match[1];</span>
 <span class="cstat-no" title="statement not covered" >            break;</span>
           }
@@ -3166,19 +3168,20 @@ export class OCRResultHandler implements IOCRResultHandler {
     }
   }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  pr</span>ivate getConfidenceClass(confidence: number): string {
-<span class="cstat-no" title="statement not covered" >    if (confidence &gt;= 0.9) <span class="cstat-no" title="statement not covered" >return 'confidence-high';</span></span>
-<span class="cstat-no" title="statement not covered" >    if (confidence &gt;= 0.7) <span class="cstat-no" title="statement not covered" >return 'confidence-medium';</span></span>
+  private <span class="fstat-no" title="function not covered" >getConfidenceClass(</span>confidence: number): string {
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (confidence &gt;= 0.9) <span class="cstat-no" title="statement not covered" >return 'confidence-high';</span></span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (confidence &gt;= 0.7) <span class="cstat-no" title="statement not covered" >return 'confidence-medium';</span></span>
 <span class="cstat-no" title="statement not covered" >    return 'confidence-low';</span>
   }
-}</pre></td></tr></table></pre>
+}
+&nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-07-27T02:49:48.033Z
+                at 2025-08-19T02:42:45.877Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

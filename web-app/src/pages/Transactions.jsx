@@ -1070,7 +1070,7 @@ export default function Transactions() {
                   <div className='relative budget-performance-menu-container'>
                     <button
                       onClick={handleBudgetPerformanceMenuToggle}
-                      className='p-2 hover:bg-gray-100 rounded-full transition-all duration-200 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50'
+                      className='p-2 hover:bg-gray-100 rounded-full transition-all duration-200 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500/50'
                     >
                       <EllipsisHorizontalIcon className='w-5 h-5 text-gray-500 hover:text-gray-700' />
                     </button>
@@ -1375,7 +1375,7 @@ export default function Transactions() {
 
         {/* Financial Report Modal */}
         {showFinancialReportModal && (
-          <div className='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50'>
+          <div className='fixed inset-0 bg-black/50 flex items-center justify-center z-50'>
             <div className='bg-white rounded-xl shadow-2xl w-full max-w-4xl mx-4 max-h-[90vh] overflow-y-auto'>
               {/* Modal Header */}
               <div className='flex items-center justify-between p-6 border-b border-gray-200'>
@@ -1472,7 +1472,7 @@ export default function Transactions() {
 
         {/* Forecast Tool Modal */}
         {showForecastModal && (
-          <div className='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50'>
+          <div className='fixed inset-0 bg-black/50 flex items-center justify-center z-50'>
             <div className='bg-white rounded-xl shadow-2xl w-full max-w-3xl mx-4 max-h-[90vh] overflow-y-auto'>
               {/* Modal Header */}
               <div className='flex items-center justify-between p-6 border-b border-gray-200'>
@@ -1584,7 +1584,7 @@ export default function Transactions() {
 
         {/* Recurring Items Modal */}
         {showRecurringModal && (
-          <div className='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50'>
+          <div className='fixed inset-0 bg-black/50 flex items-center justify-center z-50'>
             <div className='bg-white rounded-xl shadow-2xl w-full max-w-4xl mx-4 max-h-[90vh] overflow-y-auto'>
               {/* Modal Header */}
               <div className='flex items-center justify-between p-6 border-b border-gray-200'>
@@ -1706,7 +1706,7 @@ export default function Transactions() {
 
         {/* Add Income Modal */}
         {addIncomeModalOpen && (
-          <div className='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4'>
+          <div className='fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4'>
             <div className='bg-white rounded-2xl shadow-2xl w-full max-w-md max-h-[90vh] overflow-hidden'>
               {/* Modal Header */}
               <div className='flex items-center justify-between p-6 bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-gray-200'>
@@ -1819,7 +1819,7 @@ export default function Transactions() {
 
         {/* Add Expense Modal */}
         {addExpenseModalOpen && (
-          <div className='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4'>
+          <div className='fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4'>
             <div className='bg-white rounded-2xl shadow-2xl w-full max-w-md max-h-[90vh] overflow-hidden'>
               {/* Modal Header */}
               <div className='flex items-center justify-between p-6 bg-gradient-to-r from-red-50 to-pink-50 border-b border-gray-200'>
@@ -1937,7 +1937,7 @@ export default function Transactions() {
 
         {/* Budget Modal */}
         {showBudgetModal && (
-          <div className='fixed inset-0 bg-black bg-opacity-60 backdrop-blur-sm flex items-center justify-center z-50 p-4'>
+          <div className='fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4'>
             <div className='bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden'>
               {/* Modal Header */}
               <div className='flex items-center justify-between p-6 bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-gray-200'>
@@ -2099,7 +2099,7 @@ export default function Transactions() {
                               style={{ width: `${Math.min(spentPercentage, 100)}%` }}
                             >
                               {spentPercentage > 10 && (
-                                <div className='absolute inset-0 bg-white bg-opacity-20 animate-pulse'></div>
+                                <div className='absolute inset-0 bg-white/20 animate-pulse'></div>
                               )}
                             </div>
                             {isOverBudget && (

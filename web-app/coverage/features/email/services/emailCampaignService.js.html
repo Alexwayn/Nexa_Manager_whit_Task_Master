@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">4.03% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/217</span>
+                <span class='fraction'>9/223</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">1.28% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/154</span>
+                <span class='fraction'>2/156</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">4.87% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/40</span>
+                <span class='fraction'>2/41</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">4.41% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/198</span>
+                <span class='fraction'>9/204</span>
             </div>
         
             
@@ -818,7 +818,20 @@
 <a name='L753'></a><a href='#L753'>753</a>
 <a name='L754'></a><a href='#L754'>754</a>
 <a name='L755'></a><a href='#L755'>755</a>
-<a name='L756'></a><a href='#L756'>756</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L756'></a><a href='#L756'>756</a>
+<a name='L757'></a><a href='#L757'>757</a>
+<a name='L758'></a><a href='#L758'>758</a>
+<a name='L759'></a><a href='#L759'>759</a>
+<a name='L760'></a><a href='#L760'>760</a>
+<a name='L761'></a><a href='#L761'>761</a>
+<a name='L762'></a><a href='#L762'>762</a>
+<a name='L763'></a><a href='#L763'>763</a>
+<a name='L764'></a><a href='#L764'>764</a>
+<a name='L765'></a><a href='#L765'>765</a>
+<a name='L766'></a><a href='#L766'>766</a>
+<a name='L767'></a><a href='#L767'>767</a>
+<a name='L768'></a><a href='#L768'>768</a>
+<a name='L769'></a><a href='#L769'>769</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -828,15 +841,16 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">8x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1564,28 +1578,41 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">8x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { supabase } from '@lib/supabaseClient';
-import emailTemplateService from '@lib/emailTemplateService';
-import emailService from '@lib/emailService';
-import Logger from '@utils/Logger';
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { supabase } from '@/lib/supabaseClient';
+import emailTemplateService from './emailTemplateService';
+import emailService from './emailService';
+import Logger from '@/utils/Logger';
+import { getEnvVar } from '@/utils/env';
 &nbsp;
 /**
  * EmailCampaignService - Manages bulk email campaigns with tracking and analytics
  */
 class EmailCampaignService {
-<span class="fstat-no" title="function not covered" >  co</span>nstructor() {
-<span class="cstat-no" title="statement not covered" >    this.baseTrackingUrl = import.meta.env.VITE_BASE_URL || 'https://your-domain.com';</span>
-<span class="cstat-no" title="statement not covered" >    this.maxBatchSize = 50; </span>// Maximum emails per batch
-<span class="cstat-no" title="statement not covered" >    this.sendDelay = 1000; </span>// Delay between batches in milliseconds
+  constructor() {
+    this.baseTrackingUrl = getEnvVar('VITE_BASE_URL') || <span class="branch-1 cbranch-no" title="branch not covered" >'https://your-domain.com';</span>
+    this.maxBatchSize = 50; // Maximum emails per batch
+    this.sendDelay = 1000; // Delay between batches in milliseconds
   }
 &nbsp;
   /**
@@ -2327,7 +2354,19 @@ class EmailCampaignService {
   }
 }
 &nbsp;
-export default new EmailCampaignService();
+let emailCampaignServiceInstance = null;
+&nbsp;
+export const getEmailCampaignService = () =&gt; {
+  <span class="missing-if-branch" title="else path not taken" >E</span>if (!emailCampaignServiceInstance) {
+    emailCampaignServiceInstance = new EmailCampaignService();
+  }
+  return emailCampaignServiceInstance;
+};
+&nbsp;
+// Export the service instance for direct access
+export const emailCampaignService = getEmailCampaignService();
+&nbsp;
+export default getEmailCampaignService;
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -2335,7 +2374,7 @@ export default new EmailCampaignService();
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-07-27T02:49:48.033Z
+                at 2025-08-19T02:42:45.877Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

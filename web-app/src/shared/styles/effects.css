@@ -1,99 +1,83 @@
-/* ========================================
-   VISUAL EFFECTS UTILITIES
-   ======================================== */
+@reference "../../index.css";
 
-@layer utilities {
-  /* Gradient utilities */
-  .gradient-primary {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  }
+/* Effects utilities */
+.glass-card {
+  @apply bg-white/20 backdrop-blur-md border border-white/30;
+}
 
-  .gradient-secondary {
-    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-  }
+.gradient-text {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
 
-  /* Glass morphism effect */
-  .glass {
-    @apply bg-white/20 backdrop-blur-md border border-white/30;
-  }
+.pattern-stripes {
+  background-image: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.1) 2px,
+    rgba(0, 0, 0, 0.1) 4px
+  );
+}
 
-  /* Gradient text effect */
-  .gradient-text {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
+.pattern-dots {
+  background-image: radial-gradient(circle at 2px 2px, rgba(0, 0, 0, 0.15) 1px, transparent 0);
+  background-size: 8px 8px;
+}
 
-  /* Pattern-based alternatives for color-only information */
-  .pattern-stripes {
-    background-image: repeating-linear-gradient(
-      45deg,
-      transparent,
-      transparent 2px,
-      rgba(0, 0, 0, 0.1) 2px,
-      rgba(0, 0, 0, 0.1) 4px
-    );
-  }
+.pattern-diagonal {
+  background-image: linear-gradient(
+    135deg,
+    transparent 25%,
+    rgba(0, 0, 0, 0.1) 25%,
+    rgba(0, 0, 0, 0.1) 50%,
+    transparent 50%,
+    transparent 75%,
+    rgba(0, 0, 0, 0.1) 75%
+  );
+  background-size: 8px 8px;
+}
 
-  .pattern-dots {
-    background-image: radial-gradient(circle at 2px 2px, rgba(0, 0, 0, 0.15) 1px, transparent 0);
-    background-size: 8px 8px;
-  }
+.status-success::before {
+  content: "✓ ";
+  color: #10b981;
+  font-weight: bold;
+}
 
-  .pattern-diagonal {
-    background-image: linear-gradient(
-      135deg,
-      transparent 25%,
-      rgba(0, 0, 0, 0.1) 25%,
-      rgba(0, 0, 0, 0.1) 50%,
-      transparent 50%,
-      transparent 75%,
-      rgba(0, 0, 0, 0.1) 75%
-    );
-    background-size: 8px 8px;
-  }
+.status-error::before {
+  content: "✗ ";
+  color: #ef4444;
+  font-weight: bold;
+}
 
-  /* Status indicators with icons */
-  .status-success::before {
-    content: "✓ ";
-    color: #10b981;
-    font-weight: bold;
-  }
+.status-warning::before {
+  content: "⚠ ";
+  color: #f59e0b;
+  font-weight: bold;
+}
 
-  .status-error::before {
-    content: "✗ ";
-    color: #ef4444;
-    font-weight: bold;
-  }
+.status-info::before {
+  content: "ℹ ";
+  color: #3b82f6;
+  font-weight: bold;
+}
 
-  .status-warning::before {
-    content: "⚠ ";
-    color: #f59e0b;
-    font-weight: bold;
-  }
+.high-contrast .status-success::before {
+  color: var(--hc-success) !important;
+}
 
-  .status-info::before {
-    content: "ℹ ";
-    color: #3b82f6;
-    font-weight: bold;
-  }
+.high-contrast .status-error::before {
+  color: var(--hc-error) !important;
+}
 
-  /* High contrast status indicators */
-  .high-contrast .status-success::before {
-    color: var(--hc-success) !important;
-  }
+.high-contrast .status-warning::before {
+  color: var(--hc-warning) !important;
+}
 
-  .high-contrast .status-error::before {
-    color: var(--hc-error) !important;
-  }
-
-  .high-contrast .status-warning::before {
-    color: var(--hc-warning) !important;
-  }
-
-  .high-contrast .status-info::before {
-    color: var(--hc-link) !important;
-    background-color: var(--hc-bg-primary) !important;
-  }
+.high-contrast .status-info::before {
+  color: var(--hc-link) !important;
+  background-color: var(--hc-bg-primary) !important;
+}
 }

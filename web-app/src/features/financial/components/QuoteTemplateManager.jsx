@@ -303,7 +303,7 @@ const QuoteTemplateManager = ({ isOpen, onClose, onSelectTemplate, currentUser }
             leaveFrom='opacity-100'
             leaveTo='opacity-0'
           >
-            <div className='fixed inset-0 bg-black bg-opacity-25' />
+            <div className='fixed inset-0 bg-black/25' />
           </Transition.Child>
 
           <div className='fixed inset-0 overflow-y-auto'>
@@ -577,7 +577,7 @@ const TemplateFormModal = ({ isOpen, onClose, onSave, template, isEditing }) => 
           leaveFrom='opacity-100'
           leaveTo='opacity-0'
         >
-          <div className='fixed inset-0 bg-black bg-opacity-25' />
+          <div className='fixed inset-0 bg-black/25' />
         </Transition.Child>
 
         <div className='fixed inset-0 overflow-y-auto'>
@@ -836,7 +836,7 @@ const TemplatePreviewModal = ({ isOpen, onClose, template }) => {
           leaveFrom='opacity-100'
           leaveTo='opacity-0'
         >
-          <div className='fixed inset-0 bg-black bg-opacity-25' />
+          <div className='fixed inset-0 bg-black/25' />
         </Transition.Child>
 
         <div className='fixed inset-0 overflow-y-auto'>
@@ -880,7 +880,7 @@ const TemplatePreviewModal = ({ isOpen, onClose, template }) => {
                     <h4 className='font-medium text-gray-900 dark:text-white mb-3'>
                       {t('templateManager.previewModal.items')}
                     </h4>
-                    <div className='overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg'>
+                    <div className='overflow-hidden shadow ring-1 ring-black/5 md:rounded-lg'>
                       <table className='min-w-full divide-y divide-gray-300 dark:divide-gray-600'>
                         <thead className='bg-gray-50 dark:bg-gray-700'>
                           <tr>

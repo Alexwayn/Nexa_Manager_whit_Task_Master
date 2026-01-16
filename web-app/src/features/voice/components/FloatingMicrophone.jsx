@@ -203,7 +203,7 @@ export const FloatingMicrophone = ({
 
       {/* Tooltip */}
       <div 
-        className="fixed bottom-24 right-8 bg-black bg-opacity-75 text-white text-xs px-2 py-1 rounded whitespace-nowrap opacity-0 hover:opacity-100 transition-opacity"
+        className="fixed bottom-24 right-8 bg-black/75 text-white text-xs px-2 py-1 rounded whitespace-nowrap opacity-0 hover:opacity-100 transition-opacity"
         style={{ pointerEvents: 'none' }}
       >
         Click to start voice commands

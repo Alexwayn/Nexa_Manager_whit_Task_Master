@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">1.91% </span>
+                <span class="strong">3.75% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>3/157</span>
+                <span class='fraction'>6/160</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/96</span>
+                <span class='fraction'>0/76</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">3.7% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/26</span>
+                <span class='fraction'>1/27</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">1.97% </span>
+                <span class="strong">3.87% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>3/152</span>
+                <span class='fraction'>6/155</span>
             </div>
         
             
@@ -769,12 +769,17 @@
 <a name='L704'></a><a href='#L704'>704</a>
 <a name='L705'></a><a href='#L705'>705</a>
 <a name='L706'></a><a href='#L706'>706</a>
-<a name='L707'></a><a href='#L707'>707</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L707'></a><a href='#L707'>707</a>
+<a name='L708'></a><a href='#L708'>708</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -826,18 +831,14 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -1475,7 +1476,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span></td><td class="text"><pre class="prettyprint lang-js">// Document sharing service implementation
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">// Document sharing service implementation
 import { supabase } from '@/lib/supabaseClient';
 import Logger from '@/utils/Logger';
 import emailNotificationService from '@/lib/emailNotificationService';
@@ -1543,11 +1545,11 @@ export class DocumentSharingService {
   /**
    * Share a document with specified users
    */
-<span class="fstat-no" title="function not covered" >  as</span>ync shareDocument(request: ShareDocumentRequest, sharedBy: string): Promise&lt;ShareDocumentResponse&gt; {
+<span class="fstat-no" title="function not covered" >  async s</span>hareDocument(request: ShareDocumentRequest, sharedBy: string): Promise&lt;ShareDocumentResponse&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
       // Validate document exists and user has permission
       const document = <span class="cstat-no" title="statement not covered" >await this.getDocumentWithPermissionCheck(request.documentId, sharedBy);</span>
-<span class="cstat-no" title="statement not covered" >      if (!document) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (!document) {</span>
 <span class="cstat-no" title="statement not covered" >        return { success: false, error: 'Document not found or access denied' };</span>
       }
 &nbsp;
@@ -1576,9 +1578,9 @@ export class DocumentSharingService {
 <span class="cstat-no" title="statement not covered" >        shareRecords.push(shareRecord);</span>
 &nbsp;
         // Generate public link if requested (only for first recipient for simplicity)
-<span class="cstat-no" title="statement not covered" >        if (request.allowPublicLink &amp;&amp; !publicLink) {</span>
+<span class="cstat-no" title="statement not covered" >        <span class="missing-if-branch" title="if path not taken" >I</span>if (request.allowPublicLink &amp;&amp; !publicLink) {</span>
 <span class="cstat-no" title="statement not covered" >          publicLink = this.generatePublicLink(shareToken);</span>
-<span class="cstat-no" title="statement not covered" >          (shareRecord as any).public_link = publicLink;</span>
+          (<span class="cstat-no" title="statement not covered" >shareRecord as any).public_link = publicLink;</span>
         }
       }
 &nbsp;
@@ -1588,7 +1590,7 @@ export class DocumentSharingService {
         .insert(shareRecords)
         .select();
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      if (shareError) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (shareError) {</span>
 <span class="cstat-no" title="statement not covered" >        Logger.error('Failed to create document shares:', shareError);</span>
 <span class="cstat-no" title="statement not covered" >        return { success: false, error: 'Failed to create document shares' };</span>
       }
@@ -1597,7 +1599,7 @@ export class DocumentSharingService {
 <span class="cstat-no" title="statement not covered" >      await this.updateDocumentSharingSettings(request.documentId, {</span>
         isShared: true,
         accessLevel: this.getHighestAccessLevel(request.sharedWith.map(<span class="fstat-no" title="function not covered" >r </span>=&gt; <span class="cstat-no" title="statement not covered" >r.accessLevel)</span>),
-        sharedWith: request.sharedWith.map(<span class="fstat-no" title="function not covered" >re</span>cipient =&gt; (<span class="cstat-no" title="statement not covered" >{</span>
+        sharedWith: request.sharedWith.map(<span class="fstat-no" title="function not covered" >recipient </span>=&gt; (<span class="cstat-no" title="statement not covered" >{</span>
           userId: '', // Will be populated when user accepts
           email: recipient.email,
           accessLevel: recipient.accessLevel,
@@ -1630,7 +1632,7 @@ export class DocumentSharingService {
   /**
    * Get document with permission check
    */
-<span class="fstat-no" title="function not covered" >  pr</span>ivate async getDocumentWithPermissionCheck(documentId: string, userId: string): Promise&lt;ProcessedDocument | null&gt; {
+  private <span class="fstat-no" title="function not covered" >async g</span>etDocumentWithPermissionCheck(documentId: string, userId: string): Promise&lt;ProcessedDocument | null&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
       const { data, error } = <span class="cstat-no" title="statement not covered" >await supabase</span>
         .from('scanned_documents')
@@ -1639,7 +1641,7 @@ export class DocumentSharingService {
         .eq('created_by', userId)
         .single();
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      if (error || !data) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (error || !data) {</span>
 <span class="cstat-no" title="statement not covered" >        return null;</span>
       }
 &nbsp;
@@ -1653,7 +1655,7 @@ export class DocumentSharingService {
   /**
    * Update document sharing settings
    */
-<span class="fstat-no" title="function not covered" >  pr</span>ivate async updateDocumentSharingSettings(documentId: string, sharingSettings: SharingSettings): Promise&lt;void&gt; {
+  private <span class="fstat-no" title="function not covered" >async u</span>pdateDocumentSharingSettings(documentId: string, sharingSettings: SharingSettings): Promise&lt;void&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
       const { error } = <span class="cstat-no" title="statement not covered" >await supabase</span>
         .from('scanned_documents')
@@ -1663,7 +1665,7 @@ export class DocumentSharingService {
         })
         .eq('id', documentId);
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      if (error) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (error) {</span>
 <span class="cstat-no" title="statement not covered" >        Logger.error('Failed to update document sharing settings:', error);</span>
 <span class="cstat-no" title="statement not covered" >        throw error;</span>
       }
@@ -1676,7 +1678,7 @@ export class DocumentSharingService {
   /**
    * Send sharing notifications via email
    */
-<span class="fstat-no" title="function not covered" >  pr</span>ivate async sendSharingNotifications(
+  private <span class="fstat-no" title="function not covered" >async s</span>endSharingNotifications(
     document: ProcessedDocument, 
     request: ShareDocumentRequest, 
     sharedBy: string
@@ -1736,7 +1738,7 @@ export class DocumentSharingService {
   /**
    * Revoke document share
    */
-<span class="fstat-no" title="function not covered" >  as</span>ync revokeDocumentShare(shareId: string, userId: string): Promise&lt;{ success: boolean; error?: string }&gt; {
+<span class="fstat-no" title="function not covered" >  async r</span>evokeDocumentShare(shareId: string, userId: string): Promise&lt;{ success: boolean; error?: string }&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
       // Verify user has permission to revoke
       const { data: share, error: shareError } = <span class="cstat-no" title="statement not covered" >await supabase</span>
@@ -1746,7 +1748,7 @@ export class DocumentSharingService {
         .eq('shared_by', userId)
         .single();
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      if (shareError || !share) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (shareError || !share) {</span>
 <span class="cstat-no" title="statement not covered" >        return { success: false, error: 'Share not found or access denied' };</span>
       }
 &nbsp;
@@ -1759,7 +1761,7 @@ export class DocumentSharingService {
         })
         .eq('id', shareId);
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      if (updateError) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (updateError) {</span>
 <span class="cstat-no" title="statement not covered" >        Logger.error('Failed to revoke document share:', updateError);</span>
 <span class="cstat-no" title="statement not covered" >        return { success: false, error: 'Failed to revoke share' };</span>
       }
@@ -1786,7 +1788,7 @@ export class DocumentSharingService {
   /**
    * Update document sharing settings after revocation
    */
-<span class="fstat-no" title="function not covered" >  pr</span>ivate async updateDocumentSharingSettingsAfterRevoke(documentId: string): Promise&lt;void&gt; {
+  private <span class="fstat-no" title="function not covered" >async u</span>pdateDocumentSharingSettingsAfterRevoke(documentId: string): Promise&lt;void&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
       // Check if any active shares remain
       const { data: activeShares, error } = <span class="cstat-no" title="statement not covered" >await supabase</span>
@@ -1795,7 +1797,7 @@ export class DocumentSharingService {
         .eq('document_id', documentId)
         .eq('is_active', true);
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      if (error) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (error) {</span>
 <span class="cstat-no" title="statement not covered" >        Logger.error('Failed to check active shares:', error);</span>
 <span class="cstat-no" title="statement not covered" >        return;</span>
       }
@@ -1805,7 +1807,7 @@ export class DocumentSharingService {
         accessLevel: activeShares.length &gt; 0 
           ? this.getHighestAccessLevel(activeShares.map(<span class="fstat-no" title="function not covered" >s </span>=&gt; <span class="cstat-no" title="statement not covered" >s.access_level as AccessLevel)</span>)
           : AccessLevel.View,
-        sharedWith: activeShares.map(<span class="fstat-no" title="function not covered" >sh</span>are =&gt; (<span class="cstat-no" title="statement not covered" >{</span>
+        sharedWith: activeShares.map(<span class="fstat-no" title="function not covered" >share </span>=&gt; (<span class="cstat-no" title="statement not covered" >{</span>
           userId: '',
           email: share.shared_with_email,
           accessLevel: share.access_level as AccessLevel,
@@ -1822,7 +1824,7 @@ export class DocumentSharingService {
   /**
    * Send revocation notification
    */
-<span class="fstat-no" title="function not covered" >  pr</span>ivate async sendRevocationNotification(share: any): Promise&lt;void&gt; {
+  private <span class="fstat-no" title="function not covered" >async s</span>endRevocationNotification(share: any): Promise&lt;void&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
       const notification = <span class="cstat-no" title="statement not covered" >{</span>
         id: `document_share_revoked_${share.id}_${Date.now()}`,
@@ -1848,7 +1850,7 @@ export class DocumentSharingService {
   /**
    * Access shared document
    */
-<span class="fstat-no" title="function not covered" >  as</span>ync accessSharedDocument(
+<span class="fstat-no" title="function not covered" >  async a</span>ccessSharedDocument(
     shareToken: string, 
     action: 'view' | 'download' | 'edit',
     accessData?: Partial&lt;AccessTrackingData&gt;
@@ -1862,17 +1864,17 @@ export class DocumentSharingService {
         .eq('is_active', true)
         .single();
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      if (shareError || !share) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (shareError || !share) {</span>
 <span class="cstat-no" title="statement not covered" >        return { success: false, error: 'Invalid or expired share link' };</span>
       }
 &nbsp;
       // Check if share has expired
-<span class="cstat-no" title="statement not covered" >      if (share.expires_at &amp;&amp; new Date(share.expires_at) &lt; new Date()) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (share.expires_at &amp;&amp; new Date(share.expires_at) &lt; new Date()) {</span>
 <span class="cstat-no" title="statement not covered" >        return { success: false, error: 'Share link has expired' };</span>
       }
 &nbsp;
       // Check if action is allowed based on access level
-<span class="cstat-no" title="statement not covered" >      if (!this.isActionAllowed(action, share.access_level as AccessLevel)) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (!this.isActionAllowed(action, share.access_level as AccessLevel)) {</span>
 <span class="cstat-no" title="statement not covered" >        return { success: false, error: 'Action not permitted with current access level' };</span>
       }
 &nbsp;
@@ -1883,7 +1885,7 @@ export class DocumentSharingService {
         .eq('id', share.document_id)
         .single();
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      if (docError || !documentData) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (docError || !documentData) {</span>
 <span class="cstat-no" title="statement not covered" >        return { success: false, error: 'Document not found' };</span>
       }
 &nbsp;
@@ -1911,14 +1913,14 @@ export class DocumentSharingService {
   /**
    * Check if action is allowed based on access level
    */
-<span class="fstat-no" title="function not covered" >  pr</span>ivate isActionAllowed(action: string, accessLevel: AccessLevel): boolean {
+  private <span class="fstat-no" title="function not covered" >isActionAllowed(</span>action: string, accessLevel: AccessLevel): boolean {
 <span class="cstat-no" title="statement not covered" >    switch (accessLevel) {</span>
       case AccessLevel.View:
 <span class="cstat-no" title="statement not covered" >        return action === 'view';</span>
       case AccessLevel.Download:
 <span class="cstat-no" title="statement not covered" >        return action === 'view' || action === 'download';</span>
       case AccessLevel.Edit:
-<span class="cstat-no" title="statement not covered" >        return true; </span>// All actions allowed
+<span class="cstat-no" title="statement not covered" >        return true; /</span>/ All actions allowed
       default:
 <span class="cstat-no" title="statement not covered" >        return false;</span>
     }
@@ -1927,7 +1929,7 @@ export class DocumentSharingService {
   /**
    * Track document access for analytics
    */
-<span class="fstat-no" title="function not covered" >  pr</span>ivate async trackDocumentAccess(
+  private <span class="fstat-no" title="function not covered" >async t</span>rackDocumentAccess(
     shareId: string, 
     action: string, 
     accessData?: Partial&lt;AccessTrackingData&gt;
@@ -1947,7 +1949,7 @@ export class DocumentSharingService {
         .from(this.ACCESS_LOG_TABLE)
         .insert([accessRecord]);
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      if (error) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (error) {</span>
 <span class="cstat-no" title="statement not covered" >        Logger.error('Failed to track document access:', error);</span>
       }
     } catch (error) {
@@ -1958,7 +1960,7 @@ export class DocumentSharingService {
   /**
    * Get document shares for a document
    */
-<span class="fstat-no" title="function not covered" >  as</span>ync getDocumentShares(documentId: string, userId: string): Promise&lt;{
+<span class="fstat-no" title="function not covered" >  async g</span>etDocumentShares(documentId: string, userId: string): Promise&lt;{
     success: boolean;
     shares?: DocumentShare[];
     error?: string;
@@ -1966,7 +1968,7 @@ export class DocumentSharingService {
 <span class="cstat-no" title="statement not covered" >    try {</span>
       // Verify user owns the document
       const document = <span class="cstat-no" title="statement not covered" >await this.getDocumentWithPermissionCheck(documentId, userId);</span>
-<span class="cstat-no" title="statement not covered" >      if (!document) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (!document) {</span>
 <span class="cstat-no" title="statement not covered" >        return { success: false, error: 'Document not found or access denied' };</span>
       }
 &nbsp;
@@ -1977,12 +1979,12 @@ export class DocumentSharingService {
         .eq('is_active', true)
         .order('created_at', { ascending: false });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      if (error) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (error) {</span>
 <span class="cstat-no" title="statement not covered" >        Logger.error('Failed to get document shares:', error);</span>
 <span class="cstat-no" title="statement not covered" >        return { success: false, error: 'Failed to retrieve shares' };</span>
       }
 &nbsp;
-      const mappedShares: DocumentShare[] = <span class="cstat-no" title="statement not covered" >shares.map(<span class="fstat-no" title="function not covered" >sh</span>are =&gt; (<span class="cstat-no" title="statement not covered" >{</span></span>
+      const mappedShares: DocumentShare[] = <span class="cstat-no" title="statement not covered" >shares.map(<span class="fstat-no" title="function not covered" >share </span>=&gt; (<span class="cstat-no" title="statement not covered" >{</span></span>
         id: share.id,
         documentId: share.document_id,
         sharedBy: share.shared_by,
@@ -2015,7 +2017,7 @@ export class DocumentSharingService {
   /**
    * Get access history for a document
    */
-<span class="fstat-no" title="function not covered" >  as</span>ync getDocumentAccessHistory(documentId: string, userId: string): Promise&lt;{
+<span class="fstat-no" title="function not covered" >  async g</span>etDocumentAccessHistory(documentId: string, userId: string): Promise&lt;{
     success: boolean;
     accessHistory?: AccessLogEntry[];
     error?: string;
@@ -2023,7 +2025,7 @@ export class DocumentSharingService {
 <span class="cstat-no" title="statement not covered" >    try {</span>
       // Verify user owns the document
       const document = <span class="cstat-no" title="statement not covered" >await this.getDocumentWithPermissionCheck(documentId, userId);</span>
-<span class="cstat-no" title="statement not covered" >      if (!document) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (!document) {</span>
 <span class="cstat-no" title="statement not covered" >        return { success: false, error: 'Document not found or access denied' };</span>
       }
 &nbsp;
@@ -2038,12 +2040,12 @@ export class DocumentSharingService {
         .order('timestamp', { ascending: false })
         .limit(100);
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      if (error) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (error) {</span>
 <span class="cstat-no" title="statement not covered" >        Logger.error('Failed to get document access history:', error);</span>
 <span class="cstat-no" title="statement not covered" >        return { success: false, error: 'Failed to retrieve access history' };</span>
       }
 &nbsp;
-      const accessHistory: AccessLogEntry[] = <span class="cstat-no" title="statement not covered" >accessLogs.map(<span class="fstat-no" title="function not covered" >lo</span>g =&gt; (<span class="cstat-no" title="statement not covered" >{</span></span>
+      const accessHistory: AccessLogEntry[] = <span class="cstat-no" title="statement not covered" >accessLogs.map(<span class="fstat-no" title="function not covered" >log </span>=&gt; (<span class="cstat-no" title="statement not covered" >{</span></span>
         userId: log.user_id || 'anonymous',
         action: log.action,
         timestamp: new Date(log.timestamp),
@@ -2060,7 +2062,7 @@ export class DocumentSharingService {
   /**
    * Generate secure share token
    */
-<span class="fstat-no" title="function not covered" >  pr</span>ivate generateShareToken(): string {
+  private <span class="fstat-no" title="function not covered" >generateShareToken(</span>): string {
     const chars = <span class="cstat-no" title="statement not covered" >'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';</span>
     let result = <span class="cstat-no" title="statement not covered" >'';</span>
 <span class="cstat-no" title="statement not covered" >    for (let i = <span class="cstat-no" title="statement not covered" >0;</span> i &lt; 32; i++) {</span>
@@ -2072,14 +2074,14 @@ export class DocumentSharingService {
   /**
    * Generate share ID
    */
-<span class="fstat-no" title="function not covered" >  pr</span>ivate generateShareId(): string {
+  private <span class="fstat-no" title="function not covered" >generateShareId(</span>): string {
 <span class="cstat-no" title="statement not covered" >    return `share_${Date.now()}_${Math.random().toString(36).substring(2, 11)}`;</span>
   }
 &nbsp;
   /**
    * Generate public link from share token
    */
-<span class="fstat-no" title="function not covered" >  pr</span>ivate generatePublicLink(shareToken: string): string {
+  private <span class="fstat-no" title="function not covered" >generatePublicLink(</span>shareToken: string): string {
     const baseUrl = <span class="cstat-no" title="statement not covered" >window.location.origin;</span>
 <span class="cstat-no" title="statement not covered" >    return `${baseUrl}/shared/${shareToken}`;</span>
   }
@@ -2087,16 +2089,16 @@ export class DocumentSharingService {
   /**
    * Get highest access level from array
    */
-<span class="fstat-no" title="function not covered" >  pr</span>ivate getHighestAccessLevel(levels: AccessLevel[]): AccessLevel {
-<span class="cstat-no" title="statement not covered" >    if (levels.includes(AccessLevel.Edit)) <span class="cstat-no" title="statement not covered" >return AccessLevel.Edit;</span></span>
-<span class="cstat-no" title="statement not covered" >    if (levels.includes(AccessLevel.Download)) <span class="cstat-no" title="statement not covered" >return AccessLevel.Download;</span></span>
+  private <span class="fstat-no" title="function not covered" >getHighestAccessLevel(</span>levels: AccessLevel[]): AccessLevel {
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (levels.includes(AccessLevel.Edit)) <span class="cstat-no" title="statement not covered" >return AccessLevel.Edit;</span></span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (levels.includes(AccessLevel.Download)) <span class="cstat-no" title="statement not covered" >return AccessLevel.Download;</span></span>
 <span class="cstat-no" title="statement not covered" >    return AccessLevel.View;</span>
   }
 &nbsp;
   /**
    * Log document access to document's access log
    */
-<span class="fstat-no" title="function not covered" >  pr</span>ivate async logDocumentAccess(
+  private <span class="fstat-no" title="function not covered" >async l</span>ogDocumentAccess(
     documentId: string, 
     userId: string, 
     action: string, 
@@ -2110,7 +2112,7 @@ export class DocumentSharingService {
         .eq('id', documentId)
         .single();
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      if (error) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (error) {</span>
 <span class="cstat-no" title="statement not covered" >        Logger.error('Failed to get document for access logging:', error);</span>
 <span class="cstat-no" title="statement not covered" >        return;</span>
       }
@@ -2139,7 +2141,7 @@ export class DocumentSharingService {
   /**
    * Map database record to ProcessedDocument
    */
-<span class="fstat-no" title="function not covered" >  pr</span>ivate mapDatabaseRecordToDocument(record: any): ProcessedDocument {
+  private <span class="fstat-no" title="function not covered" >mapDatabaseRecordToDocument(</span>record: any): ProcessedDocument {
 <span class="cstat-no" title="statement not covered" >    return {</span>
       id: record.id,
       title: record.title,
@@ -2181,14 +2183,15 @@ export class DocumentSharingService {
 }
 &nbsp;
 // Export singleton instance
-export const documentSharingService = new DocumentSharingService();</pre></td></tr></table></pre>
+export const documentSharingService = new DocumentSharingService();
+&nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-07-27T02:49:48.033Z
+                at 2025-08-19T02:42:45.877Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

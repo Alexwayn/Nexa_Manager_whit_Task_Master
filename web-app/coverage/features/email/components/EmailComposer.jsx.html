@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">0.8% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/124</span>
+                <span class='fraction'>1/124</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">0.84% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/118</span>
+                <span class='fraction'>1/118</span>
             </div>
         
             
@@ -776,7 +776,8 @@
 <a name='L711'></a><a href='#L711'>711</a>
 <a name='L712'></a><a href='#L712'>712</a>
 <a name='L713'></a><a href='#L713'>713</a>
-<a name='L714'></a><a href='#L714'>714</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L714'></a><a href='#L714'>714</a>
+<a name='L715'></a><a href='#L715'>715</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -795,7 +796,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">8x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1474,6 +1475,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1505,10 +1507,10 @@ import {
 import EmailAttachmentManager from './EmailAttachmentManager';
 import EmailTemplateSelector from './EmailTemplateSelector';
 import EmailRecipientInput from './EmailRecipientInput';
-import { useEmailComposer } from '@hooks/useEmailComposer';
+import { useEmailComposer } from '@features/email';
 import { useTranslation } from 'react-i18next';
 &nbsp;
-const EmailComposer = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >({</span></span>
+const EmailComposer = <span class="fstat-no" title="function not covered" >({</span>
   isOpen = <span class="branch-0 cbranch-no" title="branch not covered" >false,</span>
   onClose,
   initialData = <span class="branch-0 cbranch-no" title="branch not covered" >{},</span>
@@ -1822,7 +1824,7 @@ const EmailComposer = <span class="cstat-no" title="statement not covered" ><spa
 <span class="cstat-no" title="statement not covered" >  if (!isOpen) <span class="cstat-no" title="statement not covered" >return null;</span></span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >  return (</span>
-    &lt;div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50"&gt;
+    &lt;div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50"&gt;
       &lt;div className="bg-white rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh] flex flex-col"&gt;
         {/* Header */}
         &lt;div className="flex items-center justify-between p-4 border-b border-gray-200"&gt;
@@ -2083,7 +2085,7 @@ const EmailComposer = <span class="cstat-no" title="statement not covered" ><spa
 &nbsp;
       {/* Template Selector Modal */}
       {showTemplateSelector &amp;&amp; (
-        &lt;div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-60"&gt;
+        &lt;div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-60"&gt;
           &lt;div className="bg-white rounded-lg shadow-xl w-full max-w-6xl max-h-[90vh] overflow-hidden"&gt;
             &lt;EmailTemplateSelector
               onSelectTemplate={handleTemplateSelect}
@@ -2096,7 +2098,7 @@ const EmailComposer = <span class="cstat-no" title="statement not covered" ><spa
 &nbsp;
       {/* Preview Modal */}
       {showPreview &amp;&amp; (
-        &lt;div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-60"&gt;
+        &lt;div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-60"&gt;
           &lt;div className="bg-white rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh] overflow-hidden"&gt;
             &lt;div className="flex items-center justify-between p-4 border-b"&gt;
               &lt;h3 className="text-lg font-semibold"&gt;Email Preview&lt;/h3&gt;
@@ -2142,7 +2144,7 @@ const EmailComposer = <span class="cstat-no" title="statement not covered" ><spa
 &nbsp;
       {/* Send Confirmation Modal */}
       {showSendConfirmation &amp;&amp; (
-        &lt;div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-60"&gt;
+        &lt;div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-60"&gt;
           &lt;div className="bg-white rounded-lg shadow-xl w-full max-w-md"&gt;
             &lt;div className="p-6"&gt;
               &lt;div className="flex items-center mb-4"&gt;
@@ -2202,14 +2204,15 @@ const EmailComposer = <span class="cstat-no" title="statement not covered" ><spa
   );
 };
 &nbsp;
-export default EmailComposer;</pre></td></tr></table></pre>
+export default EmailComposer;
+&nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-07-27T02:49:48.033Z
+                at 2025-08-19T02:42:45.877Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

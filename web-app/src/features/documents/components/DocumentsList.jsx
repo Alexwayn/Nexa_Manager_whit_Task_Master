@@ -236,7 +236,7 @@ const DocumentsList = ({
       )}
 
       {/* Table View */}
-      <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
+      <div className="overflow-hidden shadow ring-1 ring-black/5 md:rounded-lg">
         <table className="min-w-full divide-y divide-gray-300">
           <thead className="bg-gray-50">
             <tr>
@@ -419,4 +419,4 @@ const DocumentsList = ({
   );
 };
 
-export default DocumentsList; 
+export default DocumentsList;

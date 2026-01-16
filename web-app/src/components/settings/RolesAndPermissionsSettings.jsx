@@ -233,7 +233,7 @@ const RoleEditor = ({ role, permissions, onClose, onSave, showNotification }) =>
   };
 
   return (
-    <div className='fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50'>
+    <div className='fixed inset-0 bg-black/50 flex justify-center items-center z-50'>
       <div className='bg-white rounded-lg p-8 max-w-2xl w-full'>
         <h3 className='text-lg font-medium text-gray-900 mb-4'>
           {formData.id ? t('rolesAndPermissions.editRole') : t('rolesAndPermissions.addRole')}

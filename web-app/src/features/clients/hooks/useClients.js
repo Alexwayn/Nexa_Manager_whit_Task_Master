@@ -2,30 +2,7 @@ import { useState, useEffect } from 'react';
 import { useAuth, useUser } from '@clerk/clerk-react';
 import { supabase, withUserContext } from '@/lib/supabaseClient';
 // import Logger from '@/utils/Logger';
-
-// Environment variable access that works in both Vite and Jest
-const getEnvVar = (key, defaultValue = '') => {
-  // In test environment, use process.env
-  if (typeof process !== 'undefined' && process.env && process.env.NODE_ENV === 'test') {
-    return process.env[key] || defaultValue;
-  }
-  
-  // Try to access import.meta.env safely
-  try {
-    if (typeof window !== 'undefined' && window.importMeta && window.importMeta.env) {
-      return window.importMeta.env[key] || defaultValue;
-    }
-  } catch (e) {
-    // Ignore errors accessing import.meta
-  }
-  
-  // Fallback to process.env if available
-  if (typeof process !== 'undefined' && process.env) {
-    return process.env[key] || defaultValue;
-  }
-  
-  return defaultValue;
-};
+import { getEnvVar } from '@/utils/env';
 
 // Sample data for development/fallback
 const SAMPLE_CLIENTS = [

@@ -305,7 +305,7 @@ export default function OrganizationManagement() {
                 key={tab.name}
                 className={({ selected }) =>
                   classNames(
-                    'w-full rounded-md py-2.5 px-4 text-sm font-medium leading-5 transition-colors duration-150 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75',
+                    'w-full rounded-md py-2.5 px-4 text-sm font-medium leading-5 transition-colors duration-150 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500/75',
                     'flex items-center justify-center space-x-2',
                     selected
                       ? 'bg-white dark:bg-gray-700 text-blue-700 dark:text-blue-300 shadow'

@@ -79,7 +79,15 @@ const mockSpeechRecognition = {
   _providerHandlerSet: false, // Track if provider has set its handler
   
   // Custom getters and setters that log when handlers are assigned
-  get onstart() { return this._onstart; },
+  get onstart() { 
+    // Return a safe callable wrapper to avoid TypeError when invoked before assignment
+    const self = this;
+    return function(...args) {
+      if (typeof self._onstart === 'function') {
+        return self._onstart(...args);
+      }
+    };
+  },
   set onstart(handler) { 
     console.log('Setting onstart handler:', typeof handler);
     this._onstart = handler; 
@@ -87,7 +95,12 @@ const mockSpeechRecognition = {
   
   get onresult() { 
     console.log('Getting onresult handler:', typeof this._onresult);
-    return this._onresult; 
+    const self = this;
+    return function(...args) {
+      if (typeof self._onresult === 'function') {
+        return self._onresult(...args);
+      }
+    };
   },
   set onresult(handler) { 
     console.log('Setting onresult handler:', typeof handler);
@@ -108,13 +121,27 @@ const mockSpeechRecognition = {
     }
   },
   
-  get onerror() { return this._onerror; },
+  get onerror() { 
+    const self = this;
+    return function(...args) {
+      if (typeof self._onerror === 'function') {
+        return self._onerror(...args);
+      }
+    };
+  },
   set onerror(handler) { 
     console.log('Setting onerror handler:', typeof handler);
     this._onerror = handler; 
   },
   
-  get onend() { return this._onend; },
+  get onend() { 
+    const self = this;
+    return function(...args) {
+      if (typeof self._onend === 'function') {
+        return self._onend(...args);
+      }
+    };
+  },
   set onend(handler) { 
     console.log('Setting onend handler:', typeof handler);
     this._onend = handler; 

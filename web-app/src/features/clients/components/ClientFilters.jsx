@@ -98,7 +98,7 @@ const ClientFilters = ({
               <ChevronDownIcon className='h-4 w-4 ml-2' />
             </button>
             {showStatusDropdown && (
-              <div className='absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-10'>
+              <div className='absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black/5 z-10'>
                 <div className='py-1'>
                   {statusOptions.map(option => (
                     <button
@@ -130,7 +130,7 @@ const ClientFilters = ({
               <ChevronDownIcon className='h-4 w-4 ml-2' />
             </button>
             {showRevenueDropdown && (
-              <div className='absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-10'>
+              <div className='absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black/5 z-10'>
                 <div className='py-1'>
                   {revenueOptions.map(option => (
                     <button

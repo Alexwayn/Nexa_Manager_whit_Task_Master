@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">12.5% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/77</span>
+                <span class='fraction'>11/88</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/48</span>
+                <span class='fraction'>0/38</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">12.94% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/74</span>
+                <span class='fraction'>11/85</span>
             </div>
         
             
@@ -493,7 +493,11 @@
 <a name='L428'></a><a href='#L428'>428</a>
 <a name='L429'></a><a href='#L429'>429</a>
 <a name='L430'></a><a href='#L430'>430</a>
-<a name='L431'></a><a href='#L431'>431</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L431'></a><a href='#L431'>431</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">8x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -527,17 +531,13 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -828,35 +828,35 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8x</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8x</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -925,9 +925,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { useMemo } from 'react';
 import { useAuth, useUser } from '@clerk/clerk-react';
-import { useOrganizationContext } from '@/shared/state/providers';
+import { useOrganizationContext } from '@/shared/hooks';
 import { useNavigate, useLocation } from 'react-router-dom';
-import Logger from '@utils/Logger';
+import Logger from '@/utils/Logger';
 &nbsp;
 export interface AuthGuardResult {
   isAuthenticated: boolean;
@@ -986,11 +986,11 @@ export function <span class="fstat-no" title="function not covered" >useAuthGuar
     needsOrganizationCreation,
   } = <span class="cstat-no" title="statement not covered" >useOrganizationContext();</span>
 &nbsp;
-  const result = <span class="cstat-no" title="statement not covered" >useMemo(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+  const result = <span class="cstat-no" title="statement not covered" >useMemo(<span class="fstat-no" title="function not covered" >() =&gt; </span>{</span>
     const isLoading = <span class="cstat-no" title="statement not covered" >!isLoaded || !orgLoaded || !isInitialized;</span>
 &nbsp;
     // Loading state
-<span class="cstat-no" title="statement not covered" >    if (isLoading) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (isLoading) {</span>
 <span class="cstat-no" title="statement not covered" >      return {</span>
         isAuthenticated: false,
         isAuthorized: false,
@@ -999,17 +999,17 @@ export function <span class="fstat-no" title="function not covered" >useAuthGuar
         organization: null,
         userRole: null,
         hasAccess: false,
-        redirect: <span class="fstat-no" title="function not covered" >()</span> =&gt; {},
-        checkRole: <span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >false,</span>
-        checkPermission: <span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >false,</span>
-        checkPermissions: <span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >false,</span>
+        redirect: <span class="fstat-no" title="function not covered" >() =&gt; </span>{},
+        checkRole: <span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >f</span>alse,</span>
+        checkPermission: <span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >f</span>alse,</span>
+        checkPermissions: <span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >f</span>alse,</span>
       };
     }
 &nbsp;
     // Authentication check
     const isAuthenticated = <span class="cstat-no" title="statement not covered" >isSignedIn &amp;&amp; !!user;</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    if (!isAuthenticated) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!isAuthenticated) {</span>
 <span class="cstat-no" title="statement not covered" >      return {</span>
         isAuthenticated: false,
         isAuthorized: false,
@@ -1018,14 +1018,14 @@ export function <span class="fstat-no" title="function not covered" >useAuthGuar
         organization: null,
         userRole: null,
         hasAccess: false,
-        redirect: <span class="fstat-no" title="function not covered" >()</span> =&gt;
+        redirect: <span class="fstat-no" title="function not covered" >() =&gt;</span>
 <span class="cstat-no" title="statement not covered" >          navigate(redirectTo, {</span>
             state: { returnTo: location.pathname + location.search },
             replace: true,
           }),
-        checkRole: <span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >false,</span>
-        checkPermission: <span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >false,</span>
-        checkPermissions: <span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >false,</span>
+        checkRole: <span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >f</span>alse,</span>
+        checkPermission: <span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >f</span>alse,</span>
+        checkPermissions: <span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >f</span>alse,</span>
         authError: 'User not authenticated',
       };
     }
@@ -1034,7 +1034,7 @@ export function <span class="fstat-no" title="function not covered" >useAuthGuar
     const hasCompletedOnboarding = <span class="cstat-no" title="statement not covered" >user.unsafeMetadata?.onboardingComplete === true;</span>
     const isOnOnboardingPage = <span class="cstat-no" title="statement not covered" >location.pathname === '/onboarding';</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    if (!hasCompletedOnboarding &amp;&amp; !isOnOnboardingPage) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!hasCompletedOnboarding &amp;&amp; !isOnOnboardingPage) {</span>
 <span class="cstat-no" title="statement not covered" >      return {</span>
         isAuthenticated: true,
         isAuthorized: false,
@@ -1043,17 +1043,17 @@ export function <span class="fstat-no" title="function not covered" >useAuthGuar
         organization: null,
         userRole: null,
         hasAccess: false,
-        redirect: <span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >navigate('/onboarding', { replace: true }),</span>
-        checkRole: <span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >false,</span>
-        checkPermission: <span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >false,</span>
-        checkPermissions: <span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >false,</span>
+        redirect: <span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >n</span>avigate('/onboarding', { replace: true }),</span>
+        checkRole: <span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >f</span>alse,</span>
+        checkPermission: <span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >f</span>alse,</span>
+        checkPermissions: <span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >f</span>alse,</span>
         authError: 'Onboarding not completed',
       };
     }
 &nbsp;
     // Organization requirements
-<span class="cstat-no" title="statement not covered" >    if (organizationRequired) {</span>
-<span class="cstat-no" title="statement not covered" >      if (needsOrganizationCreation) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (organizationRequired) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (needsOrganizationCreation) {</span>
 <span class="cstat-no" title="statement not covered" >        return {</span>
           isAuthenticated: true,
           isAuthorized: false,
@@ -1062,19 +1062,19 @@ export function <span class="fstat-no" title="function not covered" >useAuthGuar
           organization: null,
           userRole: null,
           hasAccess: false,
-          redirect: <span class="fstat-no" title="function not covered" >()</span> =&gt;
+          redirect: <span class="fstat-no" title="function not covered" >() =&gt;</span>
 <span class="cstat-no" title="statement not covered" >            navigate('/organization', {</span>
               state: { action: 'create' },
               replace: true,
             }),
-          checkRole: <span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >false,</span>
-          checkPermission: <span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >false,</span>
-          checkPermissions: <span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >false,</span>
+          checkRole: <span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >f</span>alse,</span>
+          checkPermission: <span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >f</span>alse,</span>
+          checkPermissions: <span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >f</span>alse,</span>
           authError: 'Organization creation required',
         };
       }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      if (needsOrganizationSelection) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (needsOrganizationSelection) {</span>
 <span class="cstat-no" title="statement not covered" >        return {</span>
           isAuthenticated: true,
           isAuthorized: false,
@@ -1083,19 +1083,19 @@ export function <span class="fstat-no" title="function not covered" >useAuthGuar
           organization: null,
           userRole: null,
           hasAccess: false,
-          redirect: <span class="fstat-no" title="function not covered" >()</span> =&gt;
+          redirect: <span class="fstat-no" title="function not covered" >() =&gt;</span>
 <span class="cstat-no" title="statement not covered" >            navigate('/organization', {</span>
               state: { action: 'select' },
               replace: true,
             }),
-          checkRole: <span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >false,</span>
-          checkPermission: <span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >false,</span>
-          checkPermissions: <span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >false,</span>
+          checkRole: <span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >f</span>alse,</span>
+          checkPermission: <span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >f</span>alse,</span>
+          checkPermissions: <span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >f</span>alse,</span>
           authError: 'Organization selection required',
         };
       }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      if (!organization || !isMember()) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (!organization || !isMember()) {</span>
 <span class="cstat-no" title="statement not covered" >        return {</span>
           isAuthenticated: true,
           isAuthorized: false,
@@ -1104,7 +1104,7 @@ export function <span class="fstat-no" title="function not covered" >useAuthGuar
           organization,
           userRole: getUserRole(),
           hasAccess: false,
-          redirect: <span class="fstat-no" title="function not covered" >()</span> =&gt;
+          redirect: <span class="fstat-no" title="function not covered" >() =&gt;</span>
 <span class="cstat-no" title="statement not covered" >            navigate('/dashboard', {</span>
               state: {
                 error: 'You do not have access to this organization.',
@@ -1112,9 +1112,9 @@ export function <span class="fstat-no" title="function not covered" >useAuthGuar
               },
               replace: true,
             }),
-          checkRole: <span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >false,</span>
-          checkPermission: <span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >false,</span>
-          checkPermissions: <span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >false,</span>
+          checkRole: <span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >f</span>alse,</span>
+          checkPermission: <span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >f</span>alse,</span>
+          checkPermissions: <span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >f</span>alse,</span>
           authError: 'Organization membership required',
         };
       }
@@ -1124,15 +1124,15 @@ export function <span class="fstat-no" title="function not covered" >useAuthGuar
     const currentRole = <span class="cstat-no" title="statement not covered" >getUserRole();</span>
     const userPermissions = <span class="cstat-no" title="statement not covered" >getUserPermissions(currentRole);</span>
 &nbsp;
-    const checkRole = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(r</span>ole: string): boolean =&gt; <span class="cstat-no" title="statement not covered" >hasRole(role);</span></span>
+    const checkRole = (<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >role: string)</span>: boolean =&gt; <span class="cstat-no" title="statement not covered" >hasRole(role);</span></span>
 &nbsp;
-    const checkPermission = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(p</span>ermission: string): boolean =&gt; <span class="cstat-no" title="statement not covered" >userPermissions.includes(permission);</span></span>
+    const checkPermission = (<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >permission: string)</span>: boolean =&gt; <span class="cstat-no" title="statement not covered" >userPermissions.includes(permission);</span></span>
 &nbsp;
-    const checkPermissions = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(p</span>ermissions: string[]): boolean =&gt;</span>
-<span class="cstat-no" title="statement not covered" >      permissions.every(<span class="fstat-no" title="function not covered" >pe</span>rmission =&gt; <span class="cstat-no" title="statement not covered" >userPermissions.includes(permission))</span>;</span>
+    const checkPermissions = (<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >permissions: string[])</span>: boolean =&gt;</span>
+<span class="cstat-no" title="statement not covered" >      permissions.every(<span class="fstat-no" title="function not covered" >permission </span>=&gt; <span class="cstat-no" title="statement not covered" >userPermissions.includes(permission))</span>;</span>
 &nbsp;
     // Role-based access control
-<span class="cstat-no" title="statement not covered" >    if (adminOnly &amp;&amp; !isAdmin()) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (adminOnly &amp;&amp; !isAdmin()) {</span>
 <span class="cstat-no" title="statement not covered" >      return {</span>
         isAuthenticated: true,
         isAuthorized: false,
@@ -1141,7 +1141,7 @@ export function <span class="fstat-no" title="function not covered" >useAuthGuar
         organization,
         userRole: currentRole,
         hasAccess: false,
-        redirect: <span class="fstat-no" title="function not covered" >()</span> =&gt;
+        redirect: <span class="fstat-no" title="function not covered" >() =&gt;</span>
 <span class="cstat-no" title="statement not covered" >          navigate('/dashboard', {</span>
             state: {
               error: 'Administrator access required.',
@@ -1156,7 +1156,7 @@ export function <span class="fstat-no" title="function not covered" >useAuthGuar
       };
     }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    if (requiredRole &amp;&amp; !hasRole(requiredRole)) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (requiredRole &amp;&amp; !hasRole(requiredRole)) {</span>
 <span class="cstat-no" title="statement not covered" >      return {</span>
         isAuthenticated: true,
         isAuthorized: false,
@@ -1165,7 +1165,7 @@ export function <span class="fstat-no" title="function not covered" >useAuthGuar
         organization,
         userRole: currentRole,
         hasAccess: false,
-        redirect: <span class="fstat-no" title="function not covered" >()</span> =&gt;
+        redirect: <span class="fstat-no" title="function not covered" >() =&gt;</span>
 <span class="cstat-no" title="statement not covered" >          navigate('/dashboard', {</span>
             state: {
               error: `This page requires ${requiredRole} access. Your current role: ${currentRole || 'none'}.`,
@@ -1181,9 +1181,9 @@ export function <span class="fstat-no" title="function not covered" >useAuthGuar
     }
 &nbsp;
     // Permission-based access control
-<span class="cstat-no" title="statement not covered" >    if (requiredPermissions.length &gt; 0 &amp;&amp; !checkPermissions(requiredPermissions)) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (requiredPermissions.length &gt; 0 &amp;&amp; !checkPermissions(requiredPermissions)) {</span>
       const missingPermissions = <span class="cstat-no" title="statement not covered" >requiredPermissions.filter(</span>
-<span class="fstat-no" title="function not covered" >        pe</span>rmission =&gt; <span class="cstat-no" title="statement not covered" >!checkPermission(permission),</span>
+<span class="fstat-no" title="function not covered" >        permission </span>=&gt; <span class="cstat-no" title="statement not covered" >!checkPermission(permission),</span>
       );
 &nbsp;
 <span class="cstat-no" title="statement not covered" >      return {</span>
@@ -1194,7 +1194,7 @@ export function <span class="fstat-no" title="function not covered" >useAuthGuar
         organization,
         userRole: currentRole,
         hasAccess: false,
-        redirect: <span class="fstat-no" title="function not covered" >()</span> =&gt;
+        redirect: <span class="fstat-no" title="function not covered" >() =&gt;</span>
 <span class="cstat-no" title="statement not covered" >          navigate('/dashboard', {</span>
             state: {
               error: `Missing required permissions: ${missingPermissions.join(', ')}`,
@@ -1225,7 +1225,7 @@ export function <span class="fstat-no" title="function not covered" >useAuthGuar
       organization,
       userRole: currentRole,
       hasAccess: true,
-      redirect: <span class="fstat-no" title="function not covered" >()</span> =&gt; {},
+      redirect: <span class="fstat-no" title="function not covered" >() =&gt; </span>{},
       checkRole,
       checkPermission,
       checkPermissions,
@@ -1360,7 +1360,7 @@ function <span class="fstat-no" title="function not covered" >getUserPermissions
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-07-27T02:49:48.033Z
+                at 2025-08-19T02:42:45.877Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

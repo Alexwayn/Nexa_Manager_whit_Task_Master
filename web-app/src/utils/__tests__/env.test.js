@@ -1,4 +1,4 @@
-import { getEnvVar, isDevelopment, isProduction } from '../env.js';
+import { getEnvVar, isDevelopment, isProduction } from '@/utils/env';
 
 describe('Environment Utility', () => {
   beforeEach(() => {

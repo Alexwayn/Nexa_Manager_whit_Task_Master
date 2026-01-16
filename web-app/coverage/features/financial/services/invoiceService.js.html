@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">0.71% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/418</span>
+                <span class='fraction'>3/418</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">0.72% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/415</span>
+                <span class='fraction'>3/415</span>
             </div>
         
             
@@ -1796,7 +1796,8 @@
 <a name='L1731'></a><a href='#L1731'>1731</a>
 <a name='L1732'></a><a href='#L1732'>1732</a>
 <a name='L1733'></a><a href='#L1733'>1733</a>
-<a name='L1734'></a><a href='#L1734'>1734</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L1734'></a><a href='#L1734'>1734</a>
+<a name='L1735'></a><a href='#L1735'>1735</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1821,7 +1822,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">8x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1833,7 +1834,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">8x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1843,7 +1844,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">8x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -3521,6 +3522,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -3529,10 +3531,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { supabase } from '@lib/supabaseClient';
-import TaxCalculationService from '@lib/taxCalculationService';
-import PDFGenerationService from '@lib/pdfGenerationService';
-import Logger from '@utils/Logger';
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { supabase } from '@/lib/supabaseClient';
+import TaxCalculationService from './taxCalculationService';
+import PDFGenerationService from '../../documents/services/pdfGenerationService';
+import Logger from '@/utils/Logger';
 &nbsp;
 // Note: Using the standard supabase client with RLS policies
 // Service role keys should never be used in frontend applications for security reasons
@@ -3554,7 +3556,7 @@ import Logger from '@utils/Logger';
  */
 &nbsp;
 // Invoice status constants
-export const INVOICE_STATUS = <span class="cstat-no" title="statement not covered" >{</span>
+export const INVOICE_STATUS = {
   DRAFT: 'draft',
   ISSUED: 'issued',
   SENT: 'sent',
@@ -3566,7 +3568,7 @@ export const INVOICE_STATUS = <span class="cstat-no" title="statement not covere
 };
 &nbsp;
 // Payment method constants
-export const PAYMENT_METHODS = <span class="cstat-no" title="statement not covered" >{</span>
+export const PAYMENT_METHODS = {
   BANK_TRANSFER: 'bank_transfer',
   CASH: 'cash',
   CREDIT_CARD: 'credit_card',
@@ -3576,7 +3578,7 @@ export const PAYMENT_METHODS = <span class="cstat-no" title="statement not cover
 };
 &nbsp;
 // Invoice numbering format constants
-export const NUMBERING_FORMATS = <span class="cstat-no" title="statement not covered" >{</span>
+export const NUMBERING_FORMATS = {
   SEQUENTIAL: 'sequential', // 2025-0001
   DATE_BASED: 'date_based', // FATT-19-06-2025-0001
   CUSTOM: 'custom', // Custom prefix + sequential
@@ -4529,7 +4531,7 @@ export class InvoiceService {
       }
 &nbsp;
       // Use business email integration
-      const businessEmailIntegration = <span class="cstat-no" title="statement not covered" >await import('./businessEmailIntegration.js');</span>
+      const businessEmailIntegration = <span class="cstat-no" title="statement not covered" >await import('../../email/services/businessEmailIntegration.js');</span>
       const emailResult = <span class="cstat-no" title="statement not covered" >await businessEmailIntegration.default.sendInvoiceEmail(</span>
         userId,
         invoiceId,
@@ -4582,7 +4584,7 @@ export class InvoiceService {
       }
 &nbsp;
       // Get email history from business email logger
-      const businessEmailLogger = <span class="cstat-no" title="statement not covered" >await import('./businessEmailLogger.js');</span>
+      const businessEmailLogger = <span class="cstat-no" title="statement not covered" >await import('../../email/services/businessEmailLogger.js');</span>
       const historyResult = <span class="cstat-no" title="statement not covered" >await businessEmailLogger.default.getDocumentEmailHistory(</span>
         userId, 
         'invoice', 
@@ -4619,7 +4621,7 @@ export class InvoiceService {
       const invoices = <span class="cstat-no" title="statement not covered" >await this.getInvoices(userId, { client_id: clientId });</span>
 &nbsp;
       // Get email activity for this client's invoices
-      const clientEmailService = <span class="cstat-no" title="statement not covered" >await import('./clientEmailService.js');</span>
+      const clientEmailService = <span class="cstat-no" title="statement not covered" >await import('../../clients/services/clientEmailService.js');</span>
       const emailHistory = <span class="cstat-no" title="statement not covered" >await clientEmailService.default.getClientEmailHistory(</span>
         userId, 
         clientId, 
@@ -4772,7 +4774,7 @@ export class InvoiceService {
       }
 &nbsp;
       // Use new business email integration
-      const businessEmailIntegration = <span class="cstat-no" title="statement not covered" >await import('./businessEmailIntegration.js');</span>
+      const businessEmailIntegration = <span class="cstat-no" title="statement not covered" >await import('../../email/services/businessEmailIntegration.js');</span>
       const emailResult = <span class="cstat-no" title="statement not covered" >await businessEmailIntegration.default.sendInvoiceEmail(</span>
         userId,
         invoiceId,
@@ -5068,7 +5070,7 @@ export class InvoiceService {
       }
 &nbsp;
       // Use business email integration
-      const businessEmailIntegration = <span class="cstat-no" title="statement not covered" >await import('./businessEmailIntegration.js');</span>
+      const businessEmailIntegration = <span class="cstat-no" title="statement not covered" >await import('../../email/services/businessEmailIntegration.js');</span>
       const emailResult = <span class="cstat-no" title="statement not covered" >await businessEmailIntegration.default.sendInvoiceEmail(</span>
         userId,
         invoiceId,
@@ -5132,7 +5134,7 @@ export class InvoiceService {
       }
 &nbsp;
       // Use business email integration
-      const businessEmailIntegration = <span class="cstat-no" title="statement not covered" >await import('./businessEmailIntegration.js');</span>
+      const businessEmailIntegration = <span class="cstat-no" title="statement not covered" >await import('../../email/services/businessEmailIntegration.js');</span>
       const emailResult = <span class="cstat-no" title="statement not covered" >await businessEmailIntegration.default.sendInvoiceEmail(</span>
         userId,
         invoiceId,
@@ -5189,7 +5191,7 @@ export class InvoiceService {
       }
 &nbsp;
       // Generate PDF using existing PDF service
-      const PDFGenerationService = <span class="cstat-no" title="statement not covered" >await import('./pdfGenerationService.js');</span>
+      const PDFGenerationService = <span class="cstat-no" title="statement not covered" >await import('../../documents/services/pdfGenerationService.js');</span>
       const pdfResult = <span class="cstat-no" title="statement not covered" >await PDFGenerationService.default.generateInvoicePDF(invoice);</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >      if (!pdfResult.success) {</span>
@@ -5236,7 +5238,7 @@ export class InvoiceService {
       }
 &nbsp;
       // Get email history from business email logger
-      const businessEmailLogger = <span class="cstat-no" title="statement not covered" >await import('./businessEmailLogger.js');</span>
+      const businessEmailLogger = <span class="cstat-no" title="statement not covered" >await import('../../email/services/businessEmailLogger.js');</span>
       const historyResult = <span class="cstat-no" title="statement not covered" >await businessEmailLogger.default.getDocumentEmailHistory(</span>
         userId, 
         'invoice', 
@@ -5262,14 +5264,15 @@ export class InvoiceService {
   }
 }
 &nbsp;
-export default InvoiceService;</pre></td></tr></table></pre>
+export default InvoiceService;
+&nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-07-27T02:49:48.033Z
+                at 2025-08-19T02:42:45.877Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

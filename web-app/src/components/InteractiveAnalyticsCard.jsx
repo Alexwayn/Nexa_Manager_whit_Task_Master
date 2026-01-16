@@ -385,7 +385,7 @@ const InteractiveAnalyticsCard = ({
   return (
     <motion.div
       ref={cardRef}
-      className={`${gradient} rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-opacity-20 ${className}`}
+      className={`${gradient} rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-500/20 ${className}`}
       layout
       onMouseMove={handleMouseMove}
       onMouseLeave={() => setShowTooltip(false)}
@@ -452,7 +452,7 @@ const InteractiveAnalyticsCard = ({
           >
             <div className="px-4 pb-4">
               {/* Controls */}
-              <div className="bg-white bg-opacity-30 rounded-lg p-4 mb-4">
+              <div className="bg-white/30 rounded-lg p-4 mb-4">
                 <div className="flex flex-wrap items-center justify-between gap-4">
                   {/* Time Range Selector */}
                   <div className="flex items-center space-x-2">
@@ -507,7 +507,7 @@ const InteractiveAnalyticsCard = ({
               </div>
 
               {/* Chart Content */}
-              <div className="bg-white bg-opacity-40 rounded-lg p-4">
+              <div className="bg-white/40 rounded-lg p-4">
                 {renderChart()}
               </div>
             </div>

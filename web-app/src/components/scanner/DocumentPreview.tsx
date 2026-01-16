@@ -295,7 +295,7 @@ const DocumentPreview: React.FC<DocumentPreviewProps> = ({
               />
               
               {/* Image info overlay */}
-              <div className="absolute top-2 left-2 bg-black bg-opacity-50 text-white px-2 py-1 rounded text-xs">
+              <div className="absolute top-2 left-2 bg-black/50 text-white px-2 py-1 rounded text-xs">
                 {viewState.showOriginal ? 'Original' : 'Enhanced'} • {formatFileSize(viewState.showOriginal ? document.originalFile.size : document.enhancedFile.size)}
               </div>
             </div>

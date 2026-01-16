@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">2.41% </span>
+                <span class="strong">3.96% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>3/124</span>
+                <span class='fraction'>5/126</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/51</span>
+                <span class='fraction'>0/38</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">3.7% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/26</span>
+                <span class='fraction'>1/27</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">2.52% </span>
+                <span class="strong">4.13% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>3/119</span>
+                <span class='fraction'>5/121</span>
             </div>
         
             
@@ -541,7 +541,10 @@
 <a name='L476'></a><a href='#L476'>476</a>
 <a name='L477'></a><a href='#L477'>477</a>
 <a name='L478'></a><a href='#L478'>478</a>
-<a name='L479'></a><a href='#L479'>479</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L479'></a><a href='#L479'>479</a>
+<a name='L480'></a><a href='#L480'>480</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -571,16 +574,14 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1018,7 +1019,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">// Document tagging service for managing tags and categories
 import { supabase } from '@/lib/supabaseClient';
 import Logger from '@/utils/Logger';
@@ -1058,7 +1060,7 @@ export class DocumentTaggingService {
   /**
    * Get all tags for the current user
    */
-<span class="fstat-no" title="function not covered" >  as</span>ync getUserTags(userId: string): Promise&lt;DocumentTag[]&gt; {
+<span class="fstat-no" title="function not covered" >  async g</span>etUserTags(userId: string): Promise&lt;DocumentTag[]&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
       const { data, error } = <span class="cstat-no" title="statement not covered" >await supabase</span>
         .from(this.TAGS_TABLE)
@@ -1066,7 +1068,7 @@ export class DocumentTaggingService {
         .eq('created_by', userId)
         .order('usage_count', { ascending: false });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      if (error) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (error) {</span>
 <span class="cstat-no" title="statement not covered" >        Logger.error('Failed to get user tags:', error);</span>
 <span class="cstat-no" title="statement not covered" >        throw new Error(`Failed to get tags: ${error.message}`);</span>
       }
@@ -1081,7 +1083,7 @@ export class DocumentTaggingService {
   /**
    * Get popular tags across all users (for suggestions)
    */
-<span class="fstat-no" title="function not covered" >  as</span>ync getPopularTags(limit: number = <span class="branch-0 cbranch-no" title="branch not covered" >20)</span>: Promise&lt;DocumentTag[]&gt; {
+<span class="fstat-no" title="function not covered" >  async g</span>etPopularTags(limit: number = <span class="branch-0 cbranch-no" title="branch not covered" >20)</span>: Promise&lt;DocumentTag[]&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
       const { data, error } = <span class="cstat-no" title="statement not covered" >await supabase</span>
         .from(this.TAGS_TABLE)
@@ -1089,12 +1091,12 @@ export class DocumentTaggingService {
         .order('usage_count', { ascending: false })
         .limit(limit);
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      if (error) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (error) {</span>
 <span class="cstat-no" title="statement not covered" >        Logger.error('Failed to get popular tags:', error);</span>
 <span class="cstat-no" title="statement not covered" >        throw new Error(`Failed to get popular tags: ${error.message}`);</span>
       }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      return (data || []).map(<span class="fstat-no" title="function not covered" >ta</span>g =&gt; (<span class="cstat-no" title="statement not covered" >{</span></span>
+<span class="cstat-no" title="statement not covered" >      return (data || []).map(<span class="fstat-no" title="function not covered" >tag </span>=&gt; (<span class="cstat-no" title="statement not covered" >{</span></span>
         id: '',
         name: tag.name,
         usageCount: tag.usage_count,
@@ -1111,7 +1113,7 @@ export class DocumentTaggingService {
   /**
    * Create or update a tag
    */
-<span class="fstat-no" title="function not covered" >  as</span>ync createOrUpdateTag(tagName: string, userId: string, metadata?: Partial&lt;DocumentTag&gt;): Promise&lt;DocumentTag&gt; {
+<span class="fstat-no" title="function not covered" >  async c</span>reateOrUpdateTag(tagName: string, userId: string, metadata?: Partial&lt;DocumentTag&gt;): Promise&lt;DocumentTag&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
       const normalizedName = <span class="cstat-no" title="statement not covered" >tagName.toLowerCase().trim();</span>
 &nbsp;
@@ -1123,7 +1125,7 @@ export class DocumentTaggingService {
         .eq('created_by', userId)
         .single();
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      if (findError &amp;&amp; findError.code !== 'PGRST116') { // PGRST116 = no rows returned</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (findError &amp;&amp; findError.code !== 'PGRST116') { // PGRST116 = no rows returned</span>
 <span class="cstat-no" title="statement not covered" >        Logger.error('Failed to check existing tag:', findError);</span>
 <span class="cstat-no" title="statement not covered" >        throw new Error(`Failed to check existing tag: ${findError.message}`);</span>
       }
@@ -1141,7 +1143,7 @@ export class DocumentTaggingService {
           .select()
           .single();
 &nbsp;
-<span class="cstat-no" title="statement not covered" >        if (error) {</span>
+<span class="cstat-no" title="statement not covered" >        <span class="missing-if-branch" title="if path not taken" >I</span>if (error) {</span>
 <span class="cstat-no" title="statement not covered" >          Logger.error('Failed to update tag:', error);</span>
 <span class="cstat-no" title="statement not covered" >          throw new Error(`Failed to update tag: ${error.message}`);</span>
         }
@@ -1166,7 +1168,7 @@ export class DocumentTaggingService {
           .select()
           .single();
 &nbsp;
-<span class="cstat-no" title="statement not covered" >        if (error) {</span>
+<span class="cstat-no" title="statement not covered" >        <span class="missing-if-branch" title="if path not taken" >I</span>if (error) {</span>
 <span class="cstat-no" title="statement not covered" >          Logger.error('Failed to create tag:', error);</span>
 <span class="cstat-no" title="statement not covered" >          throw new Error(`Failed to create tag: ${error.message}`);</span>
         }
@@ -1182,7 +1184,7 @@ export class DocumentTaggingService {
   /**
    * Suggest tags based on document content and category
    */
-<span class="fstat-no" title="function not covered" >  as</span>ync suggestTags(
+<span class="fstat-no" title="function not covered" >  async s</span>uggestTags(
     textContent: string, 
     category: string, 
     userId: string,
@@ -1193,8 +1195,8 @@ export class DocumentTaggingService {
 &nbsp;
       // Category-based suggestions
       const categoryTags = <span class="cstat-no" title="statement not covered" >this.getCategoryBasedTags(category);</span>
-<span class="cstat-no" title="statement not covered" >      categoryTags.forEach(<span class="fstat-no" title="function not covered" >ta</span>g =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >        if (!existingTags.includes(tag)) {</span>
+<span class="cstat-no" title="statement not covered" >      categoryTags.forEach(<span class="fstat-no" title="function not covered" >tag </span>=&gt; {</span>
+<span class="cstat-no" title="statement not covered" >        <span class="missing-if-branch" title="if path not taken" >I</span>if (!existingTags.includes(tag)) {</span>
 <span class="cstat-no" title="statement not covered" >          suggestions.push({</span>
             tag,
             confidence: 0.8,
@@ -1205,8 +1207,8 @@ export class DocumentTaggingService {
 &nbsp;
       // Content-based suggestions
       const contentTags = <span class="cstat-no" title="statement not covered" >await this.getContentBasedTags(textContent);</span>
-<span class="cstat-no" title="statement not covered" >      contentTags.forEach(<span class="fstat-no" title="function not covered" >ta</span>g =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >        if (!existingTags.includes(tag.tag)) {</span>
+<span class="cstat-no" title="statement not covered" >      contentTags.forEach(<span class="fstat-no" title="function not covered" >tag </span>=&gt; {</span>
+<span class="cstat-no" title="statement not covered" >        <span class="missing-if-branch" title="if path not taken" >I</span>if (!existingTags.includes(tag.tag)) {</span>
 <span class="cstat-no" title="statement not covered" >          suggestions.push(tag);</span>
         }
       });
@@ -1214,9 +1216,9 @@ export class DocumentTaggingService {
       // User's frequently used tags
       const userTags = <span class="cstat-no" title="statement not covered" >await this.getUserTags(userId);</span>
       const frequentTags = <span class="cstat-no" title="statement not covered" >userTags</span>
-        .filter(<span class="fstat-no" title="function not covered" >ta</span>g =&gt; <span class="cstat-no" title="statement not covered" >tag.usageCount &gt; 2 &amp;&amp; !existingTags.includes(tag.name))</span>
+        .filter(<span class="fstat-no" title="function not covered" >tag </span>=&gt; <span class="cstat-no" title="statement not covered" >tag.usageCount &gt; 2 &amp;&amp; !existingTags.includes(tag.name))</span>
         .slice(0, 5)
-        .map(<span class="fstat-no" title="function not covered" >ta</span>g =&gt; (<span class="cstat-no" title="statement not covered" >{</span>
+        .map(<span class="fstat-no" title="function not covered" >tag </span>=&gt; (<span class="cstat-no" title="statement not covered" >{</span>
           tag: tag.name,
           confidence: Math.min(0.6 + (tag.usageCount * 0.05), 0.9),
           reason: `Frequently used tag (${tag.usageCount} times)`
@@ -1237,14 +1239,14 @@ export class DocumentTaggingService {
   /**
    * Get document categories
    */
-<span class="fstat-no" title="function not covered" >  as</span>ync getDocumentCategories(): Promise&lt;DocumentCategory[]&gt; {
+<span class="fstat-no" title="function not covered" >  async g</span>etDocumentCategories(): Promise&lt;DocumentCategory[]&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
       const { data, error } = <span class="cstat-no" title="statement not covered" >await supabase</span>
         .from(this.CATEGORIES_TABLE)
         .select('*')
         .order('usage_count', { ascending: false });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      if (error) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (error) {</span>
 <span class="cstat-no" title="statement not covered" >        Logger.error('Failed to get document categories:', error);</span>
 <span class="cstat-no" title="statement not covered" >        throw new Error(`Failed to get categories: ${error.message}`);</span>
       }
@@ -1260,12 +1262,12 @@ export class DocumentTaggingService {
   /**
    * Update category usage count
    */
-<span class="fstat-no" title="function not covered" >  as</span>ync updateCategoryUsage(categoryId: string): Promise&lt;void&gt; {
+<span class="fstat-no" title="function not covered" >  async u</span>pdateCategoryUsage(categoryId: string): Promise&lt;void&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
       const { error } = <span class="cstat-no" title="statement not covered" >await supabase</span>
         .rpc('increment_category_usage', { category_id: categoryId });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      if (error) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (error) {</span>
 <span class="cstat-no" title="statement not covered" >        Logger.error('Failed to update category usage:', error);</span>
       }
     } catch (error) {
@@ -1276,7 +1278,7 @@ export class DocumentTaggingService {
   /**
    * Get tag statistics for a user
    */
-<span class="fstat-no" title="function not covered" >  as</span>ync getTagStatistics(userId: string): Promise&lt;{
+<span class="fstat-no" title="function not covered" >  async g</span>etTagStatistics(userId: string): Promise&lt;{
     totalTags: number;
     mostUsedTags: Array&lt;{ name: string; count: number }&gt;;
     tagsByCategory: Record&lt;string, number&gt;;
@@ -1288,7 +1290,7 @@ export class DocumentTaggingService {
       const mostUsedTags = <span class="cstat-no" title="statement not covered" >tags</span>
         .sort(<span class="fstat-no" title="function not covered" >(a</span>, b) =&gt; <span class="cstat-no" title="statement not covered" >b.usageCount - a.usageCount)</span>
         .slice(0, 10)
-        .map(<span class="fstat-no" title="function not covered" >ta</span>g =&gt; (<span class="cstat-no" title="statement not covered" >{ name: tag.name, count: tag.usageCount })</span>);
+        .map(<span class="fstat-no" title="function not covered" >tag </span>=&gt; (<span class="cstat-no" title="statement not covered" >{ name: tag.name, count: tag.usageCount })</span>);
 &nbsp;
       const tagsByCategory = <span class="cstat-no" title="statement not covered" >tags.reduce(<span class="fstat-no" title="function not covered" >(a</span>cc, tag) =&gt; {</span>
         const category = <span class="cstat-no" title="statement not covered" >tag.category || 'uncategorized';</span>
@@ -1314,7 +1316,7 @@ export class DocumentTaggingService {
   /**
    * Clean up unused tags
    */
-<span class="fstat-no" title="function not covered" >  as</span>ync cleanupUnusedTags(userId: string, minUsageCount: number = <span class="branch-0 cbranch-no" title="branch not covered" >1)</span>: Promise&lt;number&gt; {
+<span class="fstat-no" title="function not covered" >  async c</span>leanupUnusedTags(userId: string, minUsageCount: number = <span class="branch-0 cbranch-no" title="branch not covered" >1)</span>: Promise&lt;number&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
       const { data, error } = <span class="cstat-no" title="statement not covered" >await supabase</span>
         .from(this.TAGS_TABLE)
@@ -1323,7 +1325,7 @@ export class DocumentTaggingService {
         .lt('usage_count', minUsageCount)
         .select('id');
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      if (error) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (error) {</span>
 <span class="cstat-no" title="statement not covered" >        Logger.error('Failed to cleanup unused tags:', error);</span>
 <span class="cstat-no" title="statement not covered" >        throw new Error(`Failed to cleanup tags: ${error.message}`);</span>
       }
@@ -1341,7 +1343,7 @@ export class DocumentTaggingService {
   /**
    * Map database record to DocumentTag
    */
-<span class="fstat-no" title="function not covered" >  pr</span>ivate mapTagFromDB(record: any): DocumentTag {
+  private <span class="fstat-no" title="function not covered" >mapTagFromDB(</span>record: any): DocumentTag {
 <span class="cstat-no" title="statement not covered" >    return {</span>
       id: record.id,
       name: record.name,
@@ -1358,7 +1360,7 @@ export class DocumentTaggingService {
   /**
    * Map database record to DocumentCategory
    */
-<span class="fstat-no" title="function not covered" >  pr</span>ivate mapCategoryFromDB(record: any): DocumentCategory {
+  private <span class="fstat-no" title="function not covered" >mapCategoryFromDB(</span>record: any): DocumentCategory {
 <span class="cstat-no" title="statement not covered" >    return {</span>
       id: record.id,
       name: record.name,
@@ -1373,7 +1375,7 @@ export class DocumentTaggingService {
   /**
    * Get category-based tag suggestions
    */
-<span class="fstat-no" title="function not covered" >  pr</span>ivate getCategoryBasedTags(category: string): string[] {
+  private <span class="fstat-no" title="function not covered" >getCategoryBasedTags(</span>category: string): string[] {
     const categoryTagMap: Record&lt;string, string[]&gt; = <span class="cstat-no" title="statement not covered" >{</span>
       'invoice': ['expense', 'financial', 'tax', 'business', 'payment'],
       'receipt': ['expense', 'financial', 'tax', 'purchase', 'reimbursement'],
@@ -1393,14 +1395,14 @@ export class DocumentTaggingService {
   /**
    * Get content-based tag suggestions using simple keyword matching
    */
-<span class="fstat-no" title="function not covered" >  pr</span>ivate async getContentBasedTags(textContent: string): Promise&lt;TagSuggestion[]&gt; {
+  private <span class="fstat-no" title="function not covered" >async g</span>etContentBasedTags(textContent: string): Promise&lt;TagSuggestion[]&gt; {
     const suggestions: TagSuggestion[] = <span class="cstat-no" title="statement not covered" >[];</span>
     const lowerContent = <span class="cstat-no" title="statement not covered" >textContent.toLowerCase();</span>
 &nbsp;
     // Financial keywords
     const financialKeywords = <span class="cstat-no" title="statement not covered" >['invoice', 'payment', 'tax', 'vat', 'total', 'amount', 'price', 'cost'];</span>
-    const financialMatches = <span class="cstat-no" title="statement not covered" >financialKeywords.filter(<span class="fstat-no" title="function not covered" >ke</span>yword =&gt; <span class="cstat-no" title="statement not covered" >lowerContent.includes(keyword))</span>;</span>
-<span class="cstat-no" title="statement not covered" >    if (financialMatches.length &gt; 0) {</span>
+    const financialMatches = <span class="cstat-no" title="statement not covered" >financialKeywords.filter(<span class="fstat-no" title="function not covered" >keyword </span>=&gt; <span class="cstat-no" title="statement not covered" >lowerContent.includes(keyword))</span>;</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (financialMatches.length &gt; 0) {</span>
 <span class="cstat-no" title="statement not covered" >      suggestions.push({</span>
         tag: 'financial',
         confidence: 0.7,
@@ -1410,8 +1412,8 @@ export class DocumentTaggingService {
 &nbsp;
     // Legal keywords
     const legalKeywords = <span class="cstat-no" title="statement not covered" >['contract', 'agreement', 'terms', 'conditions', 'legal', 'clause'];</span>
-    const legalMatches = <span class="cstat-no" title="statement not covered" >legalKeywords.filter(<span class="fstat-no" title="function not covered" >ke</span>yword =&gt; <span class="cstat-no" title="statement not covered" >lowerContent.includes(keyword))</span>;</span>
-<span class="cstat-no" title="statement not covered" >    if (legalMatches.length &gt; 0) {</span>
+    const legalMatches = <span class="cstat-no" title="statement not covered" >legalKeywords.filter(<span class="fstat-no" title="function not covered" >keyword </span>=&gt; <span class="cstat-no" title="statement not covered" >lowerContent.includes(keyword))</span>;</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (legalMatches.length &gt; 0) {</span>
 <span class="cstat-no" title="statement not covered" >      suggestions.push({</span>
         tag: 'legal',
         confidence: 0.7,
@@ -1421,8 +1423,8 @@ export class DocumentTaggingService {
 &nbsp;
     // Urgency keywords
     const urgentKeywords = <span class="cstat-no" title="statement not covered" >['urgent', 'asap', 'immediate', 'deadline', 'due date'];</span>
-    const urgentMatches = <span class="cstat-no" title="statement not covered" >urgentKeywords.filter(<span class="fstat-no" title="function not covered" >ke</span>yword =&gt; <span class="cstat-no" title="statement not covered" >lowerContent.includes(keyword))</span>;</span>
-<span class="cstat-no" title="statement not covered" >    if (urgentMatches.length &gt; 0) {</span>
+    const urgentMatches = <span class="cstat-no" title="statement not covered" >urgentKeywords.filter(<span class="fstat-no" title="function not covered" >keyword </span>=&gt; <span class="cstat-no" title="statement not covered" >lowerContent.includes(keyword))</span>;</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (urgentMatches.length &gt; 0) {</span>
 <span class="cstat-no" title="statement not covered" >      suggestions.push({</span>
         tag: 'urgent',
         confidence: 0.8,
@@ -1436,7 +1438,7 @@ export class DocumentTaggingService {
   /**
    * Generate a color for a tag based on its name
    */
-<span class="fstat-no" title="function not covered" >  pr</span>ivate generateTagColor(tagName: string): string {
+  private <span class="fstat-no" title="function not covered" >generateTagColor(</span>tagName: string): string {
     const colors = <span class="cstat-no" title="statement not covered" >[</span>
       '#3B82F6', '#EF4444', '#10B981', '#F59E0B', '#8B5CF6',
       '#EC4899', '#06B6D4', '#84CC16', '#F97316', '#6366F1'
@@ -1453,7 +1455,7 @@ export class DocumentTaggingService {
   /**
    * Get default document categories
    */
-<span class="fstat-no" title="function not covered" >  pr</span>ivate getDefaultCategories(): DocumentCategory[] {
+  private <span class="fstat-no" title="function not covered" >getDefaultCategories(</span>): DocumentCategory[] {
 <span class="cstat-no" title="statement not covered" >    return [</span>
       {
         id: 'invoice',
@@ -1497,14 +1499,15 @@ export class DocumentTaggingService {
 &nbsp;
 // Create and export singleton instance
 export const documentTaggingService = new DocumentTaggingService();
-export default documentTaggingService;</pre></td></tr></table></pre>
+export default documentTaggingService;
+&nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-07-27T02:49:48.033Z
+                at 2025-08-19T02:42:45.877Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

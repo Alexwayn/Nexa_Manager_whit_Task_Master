@@ -424,7 +424,7 @@ export default function IntegrationsSettings({ showNotification }) {
 
       {/* API Key Generation Modal */}
       {newApiKeyModal && (
-        <div className='fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center z-50'>
+        <div className='fixed inset-0 bg-gray-500/75 flex items-center justify-center z-50'>
           <div className='bg-white rounded-lg p-6 max-w-lg w-full mx-4 max-h-screen overflow-y-auto'>
             <h3 className='text-lg font-medium text-gray-900 mb-4'>Generate New API Key</h3>
 
@@ -565,7 +565,7 @@ export default function IntegrationsSettings({ showNotification }) {
 
       {/* Generated Key Display Modal */}
       {generatedKey && (
-        <div className='fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center z-50'>
+        <div className='fixed inset-0 bg-gray-500/75 flex items-center justify-center z-50'>
           <div className='bg-white rounded-lg p-6 max-w-md w-full mx-4'>
             <div className='flex items-center space-x-3 mb-4'>
               <CheckCircleIcon className='h-8 w-8 text-green-500' />
@@ -721,7 +721,7 @@ export default function IntegrationsSettings({ showNotification }) {
 
       {/* Integration Configuration Modal */}
       {configModal.open && (
-        <div className='fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center z-50'>
+        <div className='fixed inset-0 bg-gray-500/75 flex items-center justify-center z-50'>
           <div className='bg-white rounded-lg p-6 max-w-md w-full mx-4'>
             <h3 className='text-lg font-medium text-gray-900 mb-4'>
               Configure {configModal.service}

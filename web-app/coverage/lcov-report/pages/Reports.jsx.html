@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">0.53% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/186</span>
+                <span class='fraction'>1/186</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">0.54% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/184</span>
+                <span class='fraction'>1/184</span>
             </div>
         
             
@@ -1345,7 +1345,8 @@
 <a name='L1280'></a><a href='#L1280'>1280</a>
 <a name='L1281'></a><a href='#L1281'>1281</a>
 <a name='L1282'></a><a href='#L1282'>1282</a>
-<a name='L1283'></a><a href='#L1283'>1283</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L1283'></a><a href='#L1283'>1283</a>
+<a name='L1284'></a><a href='#L1284'>1284</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1471,9 +1472,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -2619,6 +2620,7 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -2630,7 +2632,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React, { useState, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import Footer from '../components/shared/Footer';
+import Footer from '@shared/components/Footer';
 import ReportScheduler from '../components/reports/ReportScheduler';
 import ReportHistory from '../components/reports/ReportHistory';
 import CustomReportBuilder from '../components/reports/CustomReportBuilder';
@@ -2682,10 +2684,10 @@ import {
   useScheduleReport,
   usePrefetchReports,
   useReportCache,
-} from '../hooks/useReportsQuery';
-import { usePerformanceMonitor } from '../utils/performance.js';
-import Logger from '../utils/Logger.ts';
-import reportingService from '../lib/reportingService.js';
+} from '../features/financial/hooks/useReportsQuery';
+import { usePerformanceMonitor } from '@utils/performance';
+import Logger from '@/utils/Logger';
+import reportingService from '@shared/services/reportingService';
 &nbsp;
 // Define data structures using JSDoc comments
 /**
@@ -2753,7 +2755,7 @@ import reportingService from '../lib/reportingService.js';
  * @property {string} endDate
  */
 &nbsp;
-const Reports = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+const Reports = <span class="fstat-no" title="function not covered" >()</span> =&gt; {
   const { t } = <span class="cstat-no" title="statement not covered" >useTranslation('reports');</span>
   const navigate = <span class="cstat-no" title="statement not covered" >useNavigate();</span>
 &nbsp;
@@ -3759,7 +3761,7 @@ const Reports = <span class="cstat-no" title="statement not covered" ><span clas
 &nbsp;
       {/* Modals and Phase 3 Components */}
       {showScheduleModal &amp;&amp; scheduleReport &amp;&amp; (
-        &lt;div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"&gt;
+        &lt;div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"&gt;
           &lt;div className="bg-white rounded-lg shadow-xl max-w-md w-full mx-4"&gt;
             &lt;div className="flex items-center justify-between p-6 border-b"&gt;
               &lt;h3 className="text-lg font-semibold text-gray-900"&gt;
@@ -3909,14 +3911,15 @@ const Reports = <span class="cstat-no" title="statement not covered" ><span clas
   );
 };
 &nbsp;
-export default Reports;</pre></td></tr></table></pre>
+export default Reports;
+&nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-07-27T02:49:48.333Z
+                at 2025-08-19T02:42:45.096Z
             </div>
         <script src="../prettify.js"></script>
         <script>

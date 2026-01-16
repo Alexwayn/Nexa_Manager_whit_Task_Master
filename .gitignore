@@ -42,3 +42,7 @@ archive/
 # Tools and scripts working directories
 tools/scripts/node_modules/
 tools/scripts/backups/
+
+# Playwright artifacts
+playwright-report/
+.config/playwright/test-results/

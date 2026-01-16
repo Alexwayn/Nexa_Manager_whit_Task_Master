@@ -121,11 +121,16 @@ module.exports = {
     [
       'jest-junit',
       {
-        outputDirectory: 'reports',
-        outputName: 'report.xml',
+        outputDirectory: 'coverage',
+        outputName: 'junit.xml',
       },
     ],
   ],
+
+  // Coverage configuration for CI
+  collectCoverage: true,
+  coverageDirectory: 'coverage',
+  coverageReporters: ['text', 'lcov', 'html', 'cobertura', 'json-summary'],
   testMatch: [
     '<rootDir>/src/**/__tests__/**/*.{spec,test}.{js,jsx,ts,tsx}',
     '<rootDir>/src/**/*.{spec,test}.{js,jsx,ts,tsx}',
